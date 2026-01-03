@@ -45,6 +45,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - examples/basic-usage.md
   - examples/extending-models.md
 
+### Changed
+- Reorganized ontologies folder structure:
+  - Removed nested `external/` subdirectory
+  - Created `Authoritative Ontologies/` for official RDF/OWL from standards bodies
+  - Created `Derived Ontologies/` for our RDF interpretations of non-RDF standards
+  - Updated catalog-v001.xml to reflect new paths
+  - Updated README.md documentation
+
 ### Migration
 - Migrated from kairos-core-ontology-hub repository
 - Content separated for independent versioning
