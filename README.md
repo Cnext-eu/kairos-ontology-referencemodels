@@ -2,7 +2,7 @@
 
 **Centralized repository for Kairos platform canonical ontologies and reference models**
 
-[![Validation Status](https://img.shields.io/badge/validation-passing-brightgreen.svg)](https://github.com/Cnext-eu/kairos-reference-models/actions)
+[![Validation Status](https://img.shields.io/badge/validation-passing-brightgreen.svg)](https://github.com/Cnext-eu/kairos-ontology-referencemodels/actions)
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](VERSION)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -24,7 +24,7 @@ The Kairos Reference Models repository provides validated, versioned ontologies 
 ## 📁 Repository Structure
 
 ```
-kairos-reference-models/
+kairos-ontology-referencemodels/
 ├── ontologies/                # Core ontology files
 │   ├── core.ttl               # Kairos core model (Customer, Order, Product, Service)
 │   ├── authoritative-ontologies/  # Official RDF/OWL from standards bodies
@@ -55,7 +55,7 @@ kairos-reference-models/
 ```bash
 # Add reference models to your project
 cd my-customer-ontology-project
-git submodule add https://github.com/Cnext-eu/kairos-reference-models.git reference-models
+git submodule add https://github.com/Cnext-eu/kairos-ontology-referencemodels.git reference-models
 git submodule update --init --recursive
 
 # Pin to specific version
@@ -69,7 +69,7 @@ git commit -m "Pin reference-models to v1.0.0"
 **Option 2: Direct Clone**
 ```bash
 # Clone reference models
-git clone --branch v1.0.0 https://github.com/Cnext-eu/kairos-reference-models.git
+git clone --branch v1.0.0 https://github.com/Cnext-eu/kairos-ontology-referencemodels.git
 ```
 
 ### Validate Reference Models
@@ -345,8 +345,8 @@ MIT License - See [LICENSE](LICENSE) for details
 ## 📞 Contact
 
 - **Ontology Team:** ontology@kairos.ai
-- **Issues:** [GitHub Issues](https://github.com/Cnext-eu/kairos-reference-models/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/Cnext-eu/kairos-reference-models/discussions)
+- **Issues:** [GitHub Issues](https://github.com/Cnext-eu/kairos-ontology-referencemodels/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/Cnext-eu/kairos-ontology-referencemodels/discussions)
 
 For questions about using these models in customer projects, contact the Ontology Team.
 
