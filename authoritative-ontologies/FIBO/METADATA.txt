@@ -1,0 +1,11 @@
+FIBO Ontologies - Download Information
+==================================================
+
+source: FIBO - Financial Industry Business Ontology
+publisher: EDM Council
+download_date: 2026-01-03T10:26:53.334194
+version: master_2025Q3
+release_name: Q3 2025 Release
+release_url: https://github.com/edmcouncil/fibo/releases/tag/master_2025Q3
+license: MIT License
+homepage: https://spec.edmcouncil.org/fibo/

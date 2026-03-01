@@ -1,0 +1,1187 @@
+@prefix : <http://kairos.ai/ont/bsp#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "Kairos ISO Buy-Ship-Pay Reference Data Model Ontology" ;
+    dcterms:description """ISO Buy-Ship-Pay Reference Data Model (ISO 20197-1:2024) ontology for international trade lifecycle.
+    
+    This ontology provides a comprehensive semantic framework for the complete trade transaction lifecycle, covering:
+    - Buy: Purchase orders, quotations, contracts, and commercial agreements
+    - Ship: Transport execution, shipment tracking, and logistics operations
+    - Pay: Invoicing, payment terms, settlement, and trade finance
+    - Cross-cutting: Parties, locations, documents, and regulatory compliance
+    - Trade facilitation: Customs, certificates, licenses, and cross-border processes
+    
+    Fully aligned with ISO 20197-1:2024 standard for global supply chain and trade interoperability.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-01-06"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "ISO 20197-1:2024 Buy-Ship-Pay Reference Data Model" ;
+    dcterms:references "UN/CEFACT Multi-Modal Transport Reference Data Model" .
+
+#################################################################
+#    BUY - Commercial Transaction Classes
+#################################################################
+
+:CommercialTransaction a owl:Class ;
+    rdfs:label "Commercial Transaction" ;
+    rdfs:comment """A business transaction involving the exchange of goods or services for payment.
+    
+    ISO BSP: Core transaction encompassing buy-ship-pay lifecycle.""" .
+
+:PurchaseOrder a owl:Class ;
+    rdfs:label "Purchase Order" ;
+    rdfs:comment """A commercial document issued by a buyer to a seller indicating products, quantities, and agreed prices.
+    
+    ISO BSP: Formal request for goods or services.""" ;
+    rdfs:subClassOf :CommercialTransaction ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :purchaseOrderNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:SalesOrder a owl:Class ;
+    rdfs:label "Sales Order" ;
+    rdfs:comment """An order confirmation from a seller to a buyer accepting terms and conditions.
+    
+    ISO BSP: Seller's acceptance and commitment to fulfill order.""" ;
+    rdfs:subClassOf :CommercialTransaction .
+
+:Quotation a owl:Class ;
+    rdfs:label "Quotation" ;
+    rdfs:comment """An offer by a seller to supply goods or services at stated prices and terms.
+    
+    ISO BSP: Pre-order price and terms proposal.""" ;
+    rdfs:subClassOf :CommercialTransaction .
+
+:SalesContract a owl:Class ;
+    rdfs:label "Sales Contract" ;
+    rdfs:comment """A formal agreement between buyer and seller defining rights and obligations.
+    
+    ISO BSP: Legally binding commercial agreement.""" ;
+    rdfs:subClassOf :CommercialTransaction .
+
+:OrderLine a owl:Class ;
+    rdfs:label "Order Line" ;
+    rdfs:comment """A single line item within a purchase or sales order.
+    
+    ISO BSP: Individual product/service entry in order.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :lineNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:Product a owl:Class ;
+    rdfs:label "Product" ;
+    rdfs:comment """A good or service offered for sale.
+    
+    ISO BSP: Item being traded.""" .
+
+:TradeItem a owl:Class ;
+    rdfs:label "Trade Item" ;
+    rdfs:comment """Any item (product or service) upon which there is a need to retrieve pre-defined information.
+    
+    ISO BSP: Standardized product identifier (e.g., GTIN).""" ;
+    rdfs:subClassOf :Product .
+
+#################################################################
+#    SHIP - Shipment and Logistics Classes
+#################################################################
+
+:Shipment a owl:Class ;
+    rdfs:label "Shipment" ;
+    rdfs:comment """The transport of goods from seller to buyer.
+    
+    ISO BSP: Execution of physical delivery.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :shipmentNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:Consignment a owl:Class ;
+    rdfs:label "Consignment" ;
+    rdfs:comment """A batch of goods shipped together from one consignor to one consignee.
+    
+    ISO BSP: Logical grouping of goods for transport.""" ;
+    rdfs:subClassOf :Shipment .
+
+:ShipmentLine a owl:Class ;
+    rdfs:label "Shipment Line" ;
+    rdfs:comment """A line item within a shipment detailing specific goods being transported.
+    
+    ISO BSP: Granular shipment content detail.""" .
+
+:TransportService a owl:Class ;
+    rdfs:label "Transport Service" ;
+    rdfs:comment """A service for moving goods from origin to destination.
+    
+    ISO BSP: Logistics service offering.""" .
+
+:TransportLeg a owl:Class ;
+    rdfs:label "Transport Leg" ;
+    rdfs:comment """A segment of transport journey using a single mode.
+    
+    ISO BSP: Individual movement in multi-modal transport.""" .
+
+:TransportEquipment a owl:Class ;
+    rdfs:label "Transport Equipment" ;
+    rdfs:comment """Equipment used to transport goods (containers, pallets, etc.).
+    
+    ISO BSP: Physical transport units.""" .
+
+:Package a owl:Class ;
+    rdfs:label "Package" ;
+    rdfs:comment """A physical unit in which goods are packed.
+    
+    ISO BSP: Packaging unit (carton, box, pallet).""" .
+
+#################################################################
+#    PAY - Financial and Payment Classes
+#################################################################
+
+:Invoice a owl:Class ;
+    rdfs:label "Invoice" ;
+    rdfs:comment """A commercial document issued by seller to buyer indicating products, quantities, and prices owed.
+    
+    ISO BSP: Payment request document.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :invoiceNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:CommercialInvoice a owl:Class ;
+    rdfs:label "Commercial Invoice" ;
+    rdfs:comment """An invoice used in international trade documenting the transaction.
+    
+    ISO BSP: Primary customs and payment document.""" ;
+    rdfs:subClassOf :Invoice .
+
+:ProformaInvoice a owl:Class ;
+    rdfs:label "Proforma Invoice" ;
+    rdfs:comment """A preliminary invoice sent before goods are delivered.
+    
+    ISO BSP: Quote or commitment to sell at stated terms.""" ;
+    rdfs:subClassOf :Invoice .
+
+:CreditNote a owl:Class ;
+    rdfs:label "Credit Note" ;
+    rdfs:comment """A document reducing the amount owed by buyer to seller.
+    
+    ISO BSP: Invoice correction or return credit.""" .
+
+:DebitNote a owl:Class ;
+    rdfs:label "Debit Note" ;
+    rdfs:comment """A document increasing the amount owed by buyer to seller.
+    
+    ISO BSP: Additional charges or invoice adjustments.""" .
+
+:InvoiceLine a owl:Class ;
+    rdfs:label "Invoice Line" ;
+    rdfs:comment """A single line item on an invoice.
+    
+    ISO BSP: Individual charge or product entry.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :lineNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:Payment a owl:Class ;
+    rdfs:label "Payment" ;
+    rdfs:comment """A transfer of funds from buyer to seller.
+    
+    ISO BSP: Financial settlement.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :paymentAmount ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:PaymentTerms a owl:Class ;
+    rdfs:label "Payment Terms" ;
+    rdfs:comment """Conditions under which payment must be made.
+    
+    ISO BSP: Due dates, methods, discounts, penalties.""" .
+
+:LetterOfCredit a owl:Class ;
+    rdfs:label "Letter of Credit (L/C)" ;
+    rdfs:comment """A bank guarantee to pay seller if conditions are met.
+    
+    ISO BSP: Trade finance instrument.""" .
+
+:BankGuarantee a owl:Class ;
+    rdfs:label "Bank Guarantee" ;
+    rdfs:comment """A commitment by a bank to cover a loss if buyer fails to pay.
+    
+    ISO BSP: Payment security instrument.""" .
+
+:TradeFinanceInstrument a owl:Class ;
+    rdfs:label "Trade Finance Instrument" ;
+    rdfs:comment """A financial product facilitating international trade payment.
+    
+    ISO BSP: L/C, guarantees, documentary collections.""" .
+
+#################################################################
+#    Party Role Classes
+#################################################################
+
+:TradeParty a owl:Class ;
+    rdfs:label "Trade Party" ;
+    rdfs:comment """An organization or person participating in trade.
+    
+    ISO BSP: Abstract parent for all party roles.""" .
+
+:Buyer a owl:Class ;
+    rdfs:label "Buyer" ;
+    rdfs:comment """The party purchasing goods or services.
+    
+    ISO BSP: Commercial purchaser, importer.""" ;
+    rdfs:subClassOf :TradeParty .
+
+:Seller a owl:Class ;
+    rdfs:label "Seller" ;
+    rdfs:comment """The party selling goods or services.
+    
+    ISO BSP: Commercial vendor, exporter.""" ;
+    rdfs:subClassOf :TradeParty .
+
+:Shipper a owl:Class ;
+    rdfs:label "Shipper" ;
+    rdfs:comment """The party tendering goods for transport (consignor).
+    
+    ISO BSP: Usually the seller or their agent.""" ;
+    rdfs:subClassOf :TradeParty .
+
+:Consignee a owl:Class ;
+    rdfs:label "Consignee" ;
+    rdfs:comment """The party to whom goods are shipped.
+    
+    ISO BSP: Usually the buyer or their agent.""" ;
+    rdfs:subClassOf :TradeParty .
+
+:Carrier a owl:Class ;
+    rdfs:label "Carrier" ;
+    rdfs:comment """The party providing transport services.
+    
+    ISO BSP: Ocean carrier, airline, trucker, etc.""" ;
+    rdfs:subClassOf :TradeParty .
+
+:FreightForwarder a owl:Class ;
+    rdfs:label "Freight Forwarder" ;
+    rdfs:comment """A party arranging transport on behalf of shippers.
+    
+    ISO BSP: Logistics service provider, NVOCC.""" ;
+    rdfs:subClassOf :TradeParty .
+
+:CustomsBroker a owl:Class ;
+    rdfs:label "Customs Broker" ;
+    rdfs:comment """A party handling customs clearance.
+    
+    ISO BSP: Licensed customs agent.""" ;
+    rdfs:subClassOf :TradeParty .
+
+:Bank a owl:Class ;
+    rdfs:label "Bank" ;
+    rdfs:comment """A financial institution providing payment and trade finance services.
+    
+    ISO BSP: Issuing bank, advising bank, paying bank.""" ;
+    rdfs:subClassOf :TradeParty .
+
+:IssuingBank a owl:Class ;
+    rdfs:label "Issuing Bank" ;
+    rdfs:comment """The buyer's bank issuing a letter of credit.
+    
+    ISO BSP: Opens L/C on behalf of buyer.""" ;
+    rdfs:subClassOf :Bank .
+
+:AdvisingBank a owl:Class ;
+    rdfs:label "Advising Bank" ;
+    rdfs:comment """The seller's bank advising them of the letter of credit.
+    
+    ISO BSP: Notifies beneficiary of L/C.""" ;
+    rdfs:subClassOf :Bank .
+
+:Manufacturer a owl:Class ;
+    rdfs:label "Manufacturer" ;
+    rdfs:comment """The party producing the goods.
+    
+    ISO BSP: May be seller or supplier to seller.""" ;
+    rdfs:subClassOf :TradeParty .
+
+:Supplier a owl:Class ;
+    rdfs:label "Supplier" ;
+    rdfs:comment """A party supplying goods or components.
+    
+    ISO BSP: Upstream provider in supply chain.""" ;
+    rdfs:subClassOf :TradeParty .
+
+:Distributor a owl:Class ;
+    rdfs:label "Distributor" ;
+    rdfs:comment """A party distributing goods to retailers or end users.
+    
+    ISO BSP: Wholesale distribution channel.""" ;
+    rdfs:subClassOf :TradeParty .
+
+:EndCustomer a owl:Class ;
+    rdfs:label "End Customer" ;
+    rdfs:comment """The final recipient/consumer of goods.
+    
+    ISO BSP: Ultimate buyer in supply chain.""" ;
+    rdfs:subClassOf :TradeParty .
+
+:NotifyParty a owl:Class ;
+    rdfs:label "Notify Party" ;
+    rdfs:comment """A party to be notified of shipment arrival.
+    
+    ISO BSP: Often consignee or their agent.""" ;
+    rdfs:subClassOf :TradeParty .
+
+#################################################################
+#    Location Classes
+#################################################################
+
+:Location a owl:Class ;
+    rdfs:label "Location" ;
+    rdfs:comment """A physical or logical place.
+    
+    ISO BSP: Addresses, facilities, geographic locations.""" .
+
+:Address a owl:Class ;
+    rdfs:label "Address" ;
+    rdfs:comment """A structured postal or physical address.
+    
+    ISO BSP: Street, city, country, postal code.""" ;
+    rdfs:subClassOf :Location .
+
+:Facility a owl:Class ;
+    rdfs:label "Facility" ;
+    rdfs:comment """A physical site where business activities occur.
+    
+    ISO BSP: Factories, warehouses, stores, ports.""" ;
+    rdfs:subClassOf :Location .
+
+:Port a owl:Class ;
+    rdfs:label "Port" ;
+    rdfs:comment """A maritime facility for vessel operations.
+    
+    ISO BSP: Seaport identified by UN/LOCODE.""" ;
+    rdfs:subClassOf :Facility .
+
+:Airport a owl:Class ;
+    rdfs:label "Airport" ;
+    rdfs:comment """An air transport facility.
+    
+    ISO BSP: Identified by IATA/ICAO codes.""" ;
+    rdfs:subClassOf :Facility .
+
+:Warehouse a owl:Class ;
+    rdfs:label "Warehouse" ;
+    rdfs:comment """A storage facility for goods.
+    
+    ISO BSP: Distribution center, depot.""" ;
+    rdfs:subClassOf :Facility .
+
+:ManufacturingPlant a owl:Class ;
+    rdfs:label "Manufacturing Plant" ;
+    rdfs:comment """A facility where goods are produced.
+    
+    ISO BSP: Factory, production site.""" ;
+    rdfs:subClassOf :Facility .
+
+:RetailStore a owl:Class ;
+    rdfs:label "Retail Store" ;
+    rdfs:comment """A facility where goods are sold to end customers.
+    
+    ISO BSP: Shop, outlet, showroom.""" ;
+    rdfs:subClassOf :Facility .
+
+:BorderCrossing a owl:Class ;
+    rdfs:label "Border Crossing" ;
+    rdfs:comment """A location where goods cross international borders.
+    
+    ISO BSP: Customs checkpoint.""" ;
+    rdfs:subClassOf :Location .
+
+:Country a owl:Class ;
+    rdfs:label "Country" ;
+    rdfs:comment """A sovereign nation state.
+    
+    ISO BSP: Identified by ISO 3166 codes.""" ;
+    rdfs:subClassOf :Location .
+
+#################################################################
+#    Document Classes
+#################################################################
+
+:Document a owl:Class ;
+    rdfs:label "Document" ;
+    rdfs:comment """A written, printed, or electronic record.
+    
+    ISO BSP: Trade, transport, financial, regulatory documents.""" .
+
+:TransportDocument a owl:Class ;
+    rdfs:label "Transport Document" ;
+    rdfs:comment """A document evidencing a contract of carriage.
+    
+    ISO BSP: Bill of lading, air waybill, CMR.""" ;
+    rdfs:subClassOf :Document .
+
+:BillOfLading a owl:Class ;
+    rdfs:label "Bill of Lading" ;
+    rdfs:comment """A transport document for ocean freight.
+    
+    ISO BSP: Receipt, contract, and document of title.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+:AirWaybill a owl:Class ;
+    rdfs:label "Air Waybill (AWB)" ;
+    rdfs:comment """A transport document for air cargo.
+    
+    ISO BSP: Non-negotiable air freight contract.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+:PackingList a owl:Class ;
+    rdfs:label "Packing List" ;
+    rdfs:comment """A document detailing the contents of packages.
+    
+    ISO BSP: Required for customs and cargo handling.""" ;
+    rdfs:subClassOf :Document .
+
+:CertificateOfOrigin a owl:Class ;
+    rdfs:label "Certificate of Origin" ;
+    rdfs:comment """A document certifying where goods were produced.
+    
+    ISO BSP: Required for preferential tariff treatment.""" ;
+    rdfs:subClassOf :Document .
+
+:CustomsDeclaration a owl:Class ;
+    rdfs:label "Customs Declaration" ;
+    rdfs:comment """A document declaring goods to customs authorities.
+    
+    ISO BSP: Import/export declaration.""" ;
+    rdfs:subClassOf :Document .
+
+:ImportLicense a owl:Class ;
+    rdfs:label "Import License" ;
+    rdfs:comment """A permit authorizing importation of specified goods.
+    
+    ISO BSP: Required for restricted products.""" ;
+    rdfs:subClassOf :Document .
+
+:ExportLicense a owl:Class ;
+    rdfs:label "Export License" ;
+    rdfs:comment """A permit authorizing exportation of specified goods.
+    
+    ISO BSP: Required for controlled exports.""" ;
+    rdfs:subClassOf :Document .
+
+:InspectionCertificate a owl:Class ;
+    rdfs:label "Inspection Certificate" ;
+    rdfs:comment """A document certifying goods have been inspected.
+    
+    ISO BSP: Quality, quantity, or condition verification.""" ;
+    rdfs:subClassOf :Document .
+
+:PhytosanitaryCertificate a owl:Class ;
+    rdfs:label "Phytosanitary Certificate" ;
+    rdfs:comment """A certificate that plants/plant products meet import requirements.
+    
+    ISO BSP: Required for agricultural shipments.""" ;
+    rdfs:subClassOf :Document .
+
+:HealthCertificate a owl:Class ;
+    rdfs:label "Health Certificate" ;
+    rdfs:comment """A certificate that goods meet health standards.
+    
+    ISO BSP: For food, animal, pharmaceutical products.""" ;
+    rdfs:subClassOf :Document .
+
+:InsuranceCertificate a owl:Class ;
+    rdfs:label "Insurance Certificate" ;
+    rdfs:comment """A document evidencing cargo insurance coverage.
+    
+    ISO BSP: Proof of insurance for goods in transit.""" ;
+    rdfs:subClassOf :Document .
+
+:DeliveryNote a owl:Class ;
+    rdfs:label "Delivery Note" ;
+    rdfs:comment """A document accompanying goods delivery.
+    
+    ISO BSP: Proof of delivery (POD) when signed.""" ;
+    rdfs:subClassOf :Document .
+
+:ReceiptAdvice a owl:Class ;
+    rdfs:label "Receipt Advice" ;
+    rdfs:comment """A document confirming receipt of goods.
+    
+    ISO BSP: Acknowledgment from consignee.""" ;
+    rdfs:subClassOf :Document .
+
+#################################################################
+#    Event Classes
+#################################################################
+
+:BusinessEvent a owl:Class ;
+    rdfs:label "Business Event" ;
+    rdfs:comment """An occurrence in the trade lifecycle.
+    
+    ISO BSP: Order, shipment, payment, customs events.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :eventDateTime ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:OrderEvent a owl:Class ;
+    rdfs:label "Order Event" ;
+    rdfs:comment """An event in the ordering process.
+    
+    ISO BSP: Order placed, confirmed, modified, cancelled.""" ;
+    rdfs:subClassOf :BusinessEvent .
+
+:ShipmentEvent a owl:Class ;
+    rdfs:label "Shipment Event" ;
+    rdfs:comment """An event in the shipping process.
+    
+    ISO BSP: Pickup, loading, departure, arrival, delivery.""" ;
+    rdfs:subClassOf :BusinessEvent .
+
+:CustomsEvent a owl:Class ;
+    rdfs:label "Customs Event" ;
+    rdfs:comment """An event in customs clearance process.
+    
+    ISO BSP: Declaration submitted, inspection, clearance.""" ;
+    rdfs:subClassOf :BusinessEvent .
+
+:PaymentEvent a owl:Class ;
+    rdfs:label "Payment Event" ;
+    rdfs:comment """An event in the payment process.
+    
+    ISO BSP: Invoice issued, payment sent, payment received.""" ;
+    rdfs:subClassOf :BusinessEvent .
+
+:DocumentEvent a owl:Class ;
+    rdfs:label "Document Event" ;
+    rdfs:comment """An event related to document lifecycle.
+    
+    ISO BSP: Issued, submitted, approved, rejected.""" ;
+    rdfs:subClassOf :BusinessEvent .
+
+#################################################################
+#    Regulatory and Compliance Classes
+#################################################################
+
+:RegulatoryRequirement a owl:Class ;
+    rdfs:label "Regulatory Requirement" ;
+    rdfs:comment """A legal or regulatory obligation.
+    
+    ISO BSP: Customs, trade compliance, licensing.""" .
+
+:TariffClassification a owl:Class ;
+    rdfs:label "Tariff Classification" ;
+    rdfs:comment """The classification of goods for customs purposes.
+    
+    ISO BSP: Harmonized System (HS) code.""" .
+
+:DutyTax a owl:Class ;
+    rdfs:label "Duty/Tax" ;
+    rdfs:comment """A customs duty or tax on imported/exported goods.
+    
+    ISO BSP: Import duty, VAT, excise tax.""" .
+
+:TradeSanction a owl:Class ;
+    rdfs:label "Trade Sanction" ;
+    rdfs:comment """A restriction on trade with specific countries or parties.
+    
+    ISO BSP: Embargoes, export controls.""" .
+
+:TradeAgreement a owl:Class ;
+    rdfs:label "Trade Agreement" ;
+    rdfs:comment """An agreement between countries on trade terms.
+    
+    ISO BSP: FTA, preferential trade arrangement.""" .
+
+:RuleOfOrigin a owl:Class ;
+    rdfs:label "Rule of Origin" ;
+    rdfs:comment """Criteria determining economic nationality of goods.
+    
+    ISO BSP: For preferential tariff treatment.""" .
+
+#################################################################
+#    Measurement and Quantity Classes
+#################################################################
+
+:Measurement a owl:Class ;
+    rdfs:label "Measurement" ;
+    rdfs:comment """A quantified observation or dimension.
+    
+    ISO BSP: Weight, volume, length, temperature.""" .
+
+:Weight a owl:Class ;
+    rdfs:label "Weight" ;
+    rdfs:comment """A measurement of mass.
+    
+    ISO BSP: Gross weight, net weight, chargeable weight.""" ;
+    rdfs:subClassOf :Measurement .
+
+:Volume a owl:Class ;
+    rdfs:label "Volume" ;
+    rdfs:comment """A measurement of three-dimensional space.
+    
+    ISO BSP: Cubic meters, cubic feet.""" ;
+    rdfs:subClassOf :Measurement .
+
+:Dimension a owl:Class ;
+    rdfs:label "Dimension" ;
+    rdfs:comment """A linear measurement.
+    
+    ISO BSP: Length, width, height.""" ;
+    rdfs:subClassOf :Measurement .
+
+:MonetaryAmount a owl:Class ;
+    rdfs:label "Monetary Amount" ;
+    rdfs:comment """A sum of money.
+    
+    ISO BSP: Invoice amount, payment amount, duty amount.""" ;
+    rdfs:subClassOf :Measurement .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasPurchaseOrder a owl:ObjectProperty ;
+    rdfs:label "has purchase order" ;
+    rdfs:comment "Relates transaction to its purchase order." ;
+    rdfs:domain :CommercialTransaction ;
+    rdfs:range :PurchaseOrder .
+
+:hasOrderLine a owl:ObjectProperty ;
+    rdfs:label "has order line" ;
+    rdfs:comment "Relates order to its line items." ;
+    rdfs:domain :PurchaseOrder ;
+    rdfs:range :OrderLine .
+
+:orderedProduct a owl:ObjectProperty ;
+    rdfs:label "ordered product" ;
+    rdfs:comment "Relates order line to product." ;
+    rdfs:domain :OrderLine ;
+    rdfs:range :Product .
+
+:hasShipment a owl:ObjectProperty ;
+    rdfs:label "has shipment" ;
+    rdfs:comment "Relates order or transaction to shipment." ;
+    rdfs:range :Shipment .
+
+:hasShipmentLine a owl:ObjectProperty ;
+    rdfs:label "has shipment line" ;
+    rdfs:comment "Relates shipment to line items." ;
+    rdfs:domain :Shipment ;
+    rdfs:range :ShipmentLine .
+
+:hasPackage a owl:ObjectProperty ;
+    rdfs:label "has package" ;
+    rdfs:comment "Relates shipment to packages." ;
+    rdfs:domain :Shipment ;
+    rdfs:range :Package .
+
+:hasTransportEquipment a owl:ObjectProperty ;
+    rdfs:label "has transport equipment" ;
+    rdfs:comment "Relates shipment to transport equipment." ;
+    rdfs:domain :Shipment ;
+    rdfs:range :TransportEquipment .
+
+:hasInvoice a owl:ObjectProperty ;
+    rdfs:label "has invoice" ;
+    rdfs:comment "Relates order or shipment to invoice." ;
+    rdfs:range :Invoice .
+
+:hasInvoiceLine a owl:ObjectProperty ;
+    rdfs:label "has invoice line" ;
+    rdfs:comment "Relates invoice to line items." ;
+    rdfs:domain :Invoice ;
+    rdfs:range :InvoiceLine .
+
+:hasPayment a owl:ObjectProperty ;
+    rdfs:label "has payment" ;
+    rdfs:comment "Relates invoice to payment." ;
+    rdfs:domain :Invoice ;
+    rdfs:range :Payment .
+
+:hasPaymentTerms a owl:ObjectProperty ;
+    rdfs:label "has payment terms" ;
+    rdfs:comment "Relates invoice or order to payment terms." ;
+    rdfs:range :PaymentTerms .
+
+:hasBuyer a owl:ObjectProperty ;
+    rdfs:label "has buyer" ;
+    rdfs:comment "Identifies the buyer." ;
+    rdfs:range :Buyer .
+
+:hasSeller a owl:ObjectProperty ;
+    rdfs:label "has seller" ;
+    rdfs:comment "Identifies the seller." ;
+    rdfs:range :Seller .
+
+:hasShipper a owl:ObjectProperty ;
+    rdfs:label "has shipper" ;
+    rdfs:comment "Identifies the shipper/consignor." ;
+    rdfs:range :Shipper .
+
+:hasConsignee a owl:ObjectProperty ;
+    rdfs:label "has consignee" ;
+    rdfs:comment "Identifies the consignee." ;
+    rdfs:range :Consignee .
+
+:hasCarrier a owl:ObjectProperty ;
+    rdfs:label "has carrier" ;
+    rdfs:comment "Identifies the carrier." ;
+    rdfs:range :Carrier .
+
+:hasManufacturer a owl:ObjectProperty ;
+    rdfs:label "has manufacturer" ;
+    rdfs:comment "Identifies the manufacturer." ;
+    rdfs:range :Manufacturer .
+
+:hasBillingAddress a owl:ObjectProperty ;
+    rdfs:label "has billing address" ;
+    rdfs:comment "Identifies billing address." ;
+    rdfs:range :Address .
+
+:hasShippingAddress a owl:ObjectProperty ;
+    rdfs:label "has shipping address" ;
+    rdfs:comment "Identifies shipping/delivery address." ;
+    rdfs:range :Address .
+
+:hasOriginLocation a owl:ObjectProperty ;
+    rdfs:label "has origin location" ;
+    rdfs:comment "Identifies origin location." ;
+    rdfs:range :Location .
+
+:hasDestinationLocation a owl:ObjectProperty ;
+    rdfs:label "has destination location" ;
+    rdfs:comment "Identifies destination location." ;
+    rdfs:range :Location .
+
+:hasDocument a owl:ObjectProperty ;
+    rdfs:label "has document" ;
+    rdfs:comment "Relates entity to associated documents." ;
+    rdfs:range :Document .
+
+:hasTransportDocument a owl:ObjectProperty ;
+    rdfs:label "has transport document" ;
+    rdfs:comment "Relates shipment to transport documents." ;
+    rdfs:domain :Shipment ;
+    rdfs:range :TransportDocument .
+
+:hasCustomsDeclaration a owl:ObjectProperty ;
+    rdfs:label "has customs declaration" ;
+    rdfs:comment "Relates shipment to customs documents." ;
+    rdfs:domain :Shipment ;
+    rdfs:range :CustomsDeclaration .
+
+:hasEvent a owl:ObjectProperty ;
+    rdfs:label "has event" ;
+    rdfs:comment "Relates entity to business events." ;
+    rdfs:range :BusinessEvent .
+
+:occursAtLocation a owl:ObjectProperty ;
+    rdfs:label "occurs at location" ;
+    rdfs:comment "Relates event to location." ;
+    rdfs:domain :BusinessEvent ;
+    rdfs:range :Location .
+
+:relatedToOrder a owl:ObjectProperty ;
+    rdfs:label "related to order" ;
+    rdfs:comment "Links shipment or invoice to originating order." ;
+    rdfs:range :PurchaseOrder .
+
+:relatedToShipment a owl:ObjectProperty ;
+    rdfs:label "related to shipment" ;
+    rdfs:comment "Links invoice to associated shipment." ;
+    rdfs:range :Shipment .
+
+:hasLetterOfCredit a owl:ObjectProperty ;
+    rdfs:label "has letter of credit" ;
+    rdfs:comment "Relates transaction to L/C." ;
+    rdfs:range :LetterOfCredit .
+
+:hasTariffClassification a owl:ObjectProperty ;
+    rdfs:label "has tariff classification" ;
+    rdfs:comment "Relates product to tariff classification." ;
+    rdfs:domain :Product ;
+    rdfs:range :TariffClassification .
+
+:hasCountryOfOrigin a owl:ObjectProperty ;
+    rdfs:label "has country of origin" ;
+    rdfs:comment "Identifies country where goods were produced." ;
+    rdfs:domain :Product ;
+    rdfs:range :Country .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:purchaseOrderNumber a owl:DatatypeProperty ;
+    rdfs:label "purchase order number" ;
+    rdfs:comment "Unique identifier for purchase order." ;
+    rdfs:domain :PurchaseOrder ;
+    rdfs:range xsd:string .
+
+:orderDate a owl:DatatypeProperty ;
+    rdfs:label "order date" ;
+    rdfs:comment "Date when order was placed." ;
+    rdfs:range xsd:date .
+
+:requestedDeliveryDate a owl:DatatypeProperty ;
+    rdfs:label "requested delivery date" ;
+    rdfs:comment "Date when delivery is requested." ;
+    rdfs:range xsd:date .
+
+:lineNumber a owl:DatatypeProperty ;
+    rdfs:label "line number" ;
+    rdfs:comment "Sequential line item number." ;
+    rdfs:range xsd:integer .
+
+:quantity a owl:DatatypeProperty ;
+    rdfs:label "quantity" ;
+    rdfs:comment "Number of units." ;
+    rdfs:range xsd:decimal .
+
+:unitOfMeasure a owl:DatatypeProperty ;
+    rdfs:label "unit of measure" ;
+    rdfs:comment "Unit in which quantity is expressed (e.g., EA, KG, M)." ;
+    rdfs:range xsd:string .
+
+:unitPrice a owl:DatatypeProperty ;
+    rdfs:label "unit price" ;
+    rdfs:comment "Price per unit." ;
+    rdfs:range xsd:decimal .
+
+:lineAmount a owl:DatatypeProperty ;
+    rdfs:label "line amount" ;
+    rdfs:comment "Total amount for line (quantity × unit price)." ;
+    rdfs:range xsd:decimal .
+
+:productCode a owl:DatatypeProperty ;
+    rdfs:label "product code" ;
+    rdfs:comment "Identifier for product (SKU, GTIN, etc.)." ;
+    rdfs:domain :Product ;
+    rdfs:range xsd:string .
+
+:productDescription a owl:DatatypeProperty ;
+    rdfs:label "product description" ;
+    rdfs:comment "Description of the product." ;
+    rdfs:domain :Product ;
+    rdfs:range xsd:string .
+
+:gtin a owl:DatatypeProperty ;
+    rdfs:label "GTIN" ;
+    rdfs:comment "Global Trade Item Number (barcode)." ;
+    rdfs:domain :TradeItem ;
+    rdfs:range xsd:string .
+
+:shipmentNumber a owl:DatatypeProperty ;
+    rdfs:label "shipment number" ;
+    rdfs:comment "Unique identifier for shipment." ;
+    rdfs:domain :Shipment ;
+    rdfs:range xsd:string .
+
+:shipmentDate a owl:DatatypeProperty ;
+    rdfs:label "shipment date" ;
+    rdfs:comment "Date when shipment occurs." ;
+    rdfs:range xsd:date .
+
+:expectedDeliveryDate a owl:DatatypeProperty ;
+    rdfs:label "expected delivery date" ;
+    rdfs:comment "Expected date of delivery." ;
+    rdfs:range xsd:date .
+
+:actualDeliveryDate a owl:DatatypeProperty ;
+    rdfs:label "actual delivery date" ;
+    rdfs:comment "Actual date of delivery." ;
+    rdfs:range xsd:date .
+
+:invoiceNumber a owl:DatatypeProperty ;
+    rdfs:label "invoice number" ;
+    rdfs:comment "Unique identifier for invoice." ;
+    rdfs:domain :Invoice ;
+    rdfs:range xsd:string .
+
+:invoiceDate a owl:DatatypeProperty ;
+    rdfs:label "invoice date" ;
+    rdfs:comment "Date when invoice was issued." ;
+    rdfs:domain :Invoice ;
+    rdfs:range xsd:date .
+
+:dueDate a owl:DatatypeProperty ;
+    rdfs:label "due date" ;
+    rdfs:comment "Date when payment is due." ;
+    rdfs:range xsd:date .
+
+:totalAmount a owl:DatatypeProperty ;
+    rdfs:label "total amount" ;
+    rdfs:comment "Total monetary amount." ;
+    rdfs:range xsd:decimal .
+
+:subtotalAmount a owl:DatatypeProperty ;
+    rdfs:label "subtotal amount" ;
+    rdfs:comment "Amount before taxes and charges." ;
+    rdfs:range xsd:decimal .
+
+:taxAmount a owl:DatatypeProperty ;
+    rdfs:label "tax amount" ;
+    rdfs:comment "Total tax amount (VAT, sales tax, etc.)." ;
+    rdfs:range xsd:decimal .
+
+:taxRate a owl:DatatypeProperty ;
+    rdfs:label "tax rate" ;
+    rdfs:comment "Tax percentage rate." ;
+    rdfs:range xsd:decimal .
+
+:discountAmount a owl:DatatypeProperty ;
+    rdfs:label "discount amount" ;
+    rdfs:comment "Discount applied." ;
+    rdfs:range xsd:decimal .
+
+:paymentAmount a owl:DatatypeProperty ;
+    rdfs:label "payment amount" ;
+    rdfs:comment "Amount paid." ;
+    rdfs:domain :Payment ;
+    rdfs:range xsd:decimal .
+
+:paymentDate a owl:DatatypeProperty ;
+    rdfs:label "payment date" ;
+    rdfs:comment "Date when payment was made." ;
+    rdfs:domain :Payment ;
+    rdfs:range xsd:date .
+
+:paymentMethod a owl:DatatypeProperty ;
+    rdfs:label "payment method" ;
+    rdfs:comment "Method of payment (e.g., BANK_TRANSFER, CREDIT_CARD, L/C)." ;
+    rdfs:range xsd:string .
+
+:paymentReference a owl:DatatypeProperty ;
+    rdfs:label "payment reference" ;
+    rdfs:comment "Reference number for payment transaction." ;
+    rdfs:domain :Payment ;
+    rdfs:range xsd:string .
+
+:currency a owl:DatatypeProperty ;
+    rdfs:label "currency" ;
+    rdfs:comment "ISO 4217 currency code (e.g., USD, EUR, GBP)." ;
+    rdfs:range xsd:string .
+
+:exchangeRate a owl:DatatypeProperty ;
+    rdfs:label "exchange rate" ;
+    rdfs:comment "Currency exchange rate." ;
+    rdfs:range xsd:decimal .
+
+:incoterm a owl:DatatypeProperty ;
+    rdfs:label "Incoterm" ;
+    rdfs:comment "International Commercial Terms (e.g., FOB, CIF, EXW, DDP)." ;
+    rdfs:range xsd:string .
+
+:paymentTermsDescription a owl:DatatypeProperty ;
+    rdfs:label "payment terms description" ;
+    rdfs:comment "Textual description of payment terms." ;
+    rdfs:domain :PaymentTerms ;
+    rdfs:range xsd:string .
+
+:netDays a owl:DatatypeProperty ;
+    rdfs:label "net days" ;
+    rdfs:comment "Number of days until payment is due (e.g., Net 30)." ;
+    rdfs:domain :PaymentTerms ;
+    rdfs:range xsd:integer .
+
+:documentNumber a owl:DatatypeProperty ;
+    rdfs:label "document number" ;
+    rdfs:comment "Unique identifier for document." ;
+    rdfs:domain :Document ;
+    rdfs:range xsd:string .
+
+:documentDate a owl:DatatypeProperty ;
+    rdfs:label "document date" ;
+    rdfs:comment "Date when document was issued." ;
+    rdfs:domain :Document ;
+    rdfs:range xsd:date .
+
+:documentType a owl:DatatypeProperty ;
+    rdfs:label "document type" ;
+    rdfs:comment "Type or category of document." ;
+    rdfs:domain :Document ;
+    rdfs:range xsd:string .
+
+:billOfLadingNumber a owl:DatatypeProperty ;
+    rdfs:label "bill of lading number" ;
+    rdfs:comment "B/L number." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:string .
+
+:airWaybillNumber a owl:DatatypeProperty ;
+    rdfs:label "air waybill number" ;
+    rdfs:comment "AWB number (11 digits)." ;
+    rdfs:domain :AirWaybill ;
+    rdfs:range xsd:string .
+
+:eventDateTime a owl:DatatypeProperty ;
+    rdfs:label "event date time" ;
+    rdfs:comment "Date and time when event occurred." ;
+    rdfs:domain :BusinessEvent ;
+    rdfs:range xsd:dateTime .
+
+:eventType a owl:DatatypeProperty ;
+    rdfs:label "event type" ;
+    rdfs:comment "Type of business event." ;
+    rdfs:domain :BusinessEvent ;
+    rdfs:range xsd:string .
+
+:eventStatus a owl:DatatypeProperty ;
+    rdfs:label "event status" ;
+    rdfs:comment "Status of event (e.g., PLANNED, ACTUAL, ESTIMATED)." ;
+    rdfs:domain :BusinessEvent ;
+    rdfs:range xsd:string .
+
+:grossWeight a owl:DatatypeProperty ;
+    rdfs:label "gross weight" ;
+    rdfs:comment "Total weight including packaging (kg)." ;
+    rdfs:range xsd:decimal .
+
+:netWeight a owl:DatatypeProperty ;
+    rdfs:label "net weight" ;
+    rdfs:comment "Weight of goods only (kg)." ;
+    rdfs:range xsd:decimal .
+
+:volumeMeasure a owl:DatatypeProperty ;
+    rdfs:label "volume measure" ;
+    rdfs:comment "Volume in cubic meters." ;
+    rdfs:range xsd:decimal .
+
+:numberOfPackages a owl:DatatypeProperty ;
+    rdfs:label "number of packages" ;
+    rdfs:comment "Total number of packages." ;
+    rdfs:range xsd:integer .
+
+:packageType a owl:DatatypeProperty ;
+    rdfs:label "package type" ;
+    rdfs:comment "Type of packaging (e.g., CARTON, PALLET, CRATE)." ;
+    rdfs:range xsd:string .
+
+:hsCode a owl:DatatypeProperty ;
+    rdfs:label "HS code" ;
+    rdfs:comment "Harmonized System tariff classification code." ;
+    rdfs:range xsd:string .
+
+:countryCode a owl:DatatypeProperty ;
+    rdfs:label "country code" ;
+    rdfs:comment "ISO 3166 country code (2 or 3 characters)." ;
+    rdfs:domain :Country ;
+    rdfs:range xsd:string .
+
+:unLocationCode a owl:DatatypeProperty ;
+    rdfs:label "UN location code" ;
+    rdfs:comment "UN/LOCODE (5 characters)." ;
+    rdfs:domain :Location ;
+    rdfs:range xsd:string .
+
+:iataAirportCode a owl:DatatypeProperty ;
+    rdfs:label "IATA airport code" ;
+    rdfs:comment "3-letter IATA code." ;
+    rdfs:domain :Airport ;
+    rdfs:range xsd:string .
+
+:streetAddress a owl:DatatypeProperty ;
+    rdfs:label "street address" ;
+    rdfs:comment "Street name and number." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:string .
+
+:city a owl:DatatypeProperty ;
+    rdfs:label "city" ;
+    rdfs:comment "City name." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:string .
+
+:stateProvince a owl:DatatypeProperty ;
+    rdfs:label "state/province" ;
+    rdfs:comment "State or province name/code." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:string .
+
+:postalCode a owl:DatatypeProperty ;
+    rdfs:label "postal code" ;
+    rdfs:comment "ZIP or postal code." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:string .
+
+:partyName a owl:DatatypeProperty ;
+    rdfs:label "party name" ;
+    rdfs:comment "Name of organization or person." ;
+    rdfs:domain :TradeParty ;
+    rdfs:range xsd:string .
+
+:partyIdentifier a owl:DatatypeProperty ;
+    rdfs:label "party identifier" ;
+    rdfs:comment "Unique identifier for party (e.g., DUNS, GLN, tax ID)." ;
+    rdfs:domain :TradeParty ;
+    rdfs:range xsd:string .
+
+:contactEmail a owl:DatatypeProperty ;
+    rdfs:label "contact email" ;
+    rdfs:comment "Email address for contact." ;
+    rdfs:range xsd:string .
+
+:contactPhone a owl:DatatypeProperty ;
+    rdfs:label "contact phone" ;
+    rdfs:comment "Phone number for contact." ;
+    rdfs:range xsd:string .
+
+:customsValue a owl:DatatypeProperty ;
+    rdfs:label "customs value" ;
+    rdfs:comment "Declared value for customs purposes." ;
+    rdfs:range xsd:decimal .
+
+:dutyRate a owl:DatatypeProperty ;
+    rdfs:label "duty rate" ;
+    rdfs:comment "Customs duty percentage rate." ;
+    rdfs:domain :DutyTax ;
+    rdfs:range xsd:decimal .
+
+:dutyAmount a owl:DatatypeProperty ;
+    rdfs:label "duty amount" ;
+    rdfs:comment "Amount of customs duty owed." ;
+    rdfs:domain :DutyTax ;
+    rdfs:range xsd:decimal .
+
+:letterOfCreditNumber a owl:DatatypeProperty ;
+    rdfs:label "letter of credit number" ;
+    rdfs:comment "L/C reference number." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range xsd:string .
+
+:lcIssueDate a owl:DatatypeProperty ;
+    rdfs:label "L/C issue date" ;
+    rdfs:comment "Date when letter of credit was issued." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range xsd:date .
+
+:lcExpiryDate a owl:DatatypeProperty ;
+    rdfs:label "L/C expiry date" ;
+    rdfs:comment "Expiration date of letter of credit." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range xsd:date .
+
+:lcAmount a owl:DatatypeProperty ;
+    rdfs:label "L/C amount" ;
+    rdfs:comment "Total amount covered by letter of credit." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range xsd:decimal .

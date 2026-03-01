@@ -1,0 +1,1077 @@
+@prefix : <http://kairos.ai/ont/mmt#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "Kairos Multi-Modal Transport (MMT) Ontology" ;
+    dcterms:description """UN/CEFACT Multi-Modal Transport Reference Data Model ontology for international logistics and freight transport.
+    
+    This ontology provides a comprehensive semantic framework for multi-modal transport operations, covering:
+    - Transport service execution and routing
+    - Consignments and cargo handling
+    - Transport equipment (containers, vehicles, units)
+    - Transport events and milestones
+    - Transport documents and instructions
+    - Party roles in logistics operations
+    - Locations, routes, and transport legs
+    - Cross-border and customs processes
+    - Dangerous goods and special cargo
+    
+    Fully aligned with UN/CEFACT MMT Reference Data Model for global supply chain interoperability.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-01-06"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" .
+
+#################################################################
+#    Transport Service Classes
+#################################################################
+
+:TransportService a owl:Class ;
+    rdfs:label "Transport Service" ;
+    rdfs:comment """A service for the transport of goods or persons from one location to another.
+    
+    UN/CEFACT MMT: Core service offering for freight movement.""" .
+
+:TransportServiceExecution a owl:Class ;
+    rdfs:label "Transport Service Execution" ;
+    rdfs:comment """The actual execution of a transport service.
+    
+    UN/CEFACT MMT: Represents the operational delivery of transport services.""" ;
+    rdfs:subClassOf :TransportService .
+
+:TransportRoute a owl:Class ;
+    rdfs:label "Transport Route" ;
+    rdfs:comment """A defined path for transport between origin and destination.
+    
+    UN/CEFACT MMT: May include multiple transport legs and modes.""" .
+
+:TransportLeg a owl:Class ;
+    rdfs:label "Transport Leg" ;
+    rdfs:comment """A single segment of a transport journey using one mode of transport.
+    
+    UN/CEFACT MMT: Part of a multi-modal transport chain.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :departureLocation ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :arrivalLocation ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:TransportMovement a owl:Class ;
+    rdfs:label "Transport Movement" ;
+    rdfs:comment """The physical movement of transport means from one location to another.
+    
+    UN/CEFACT MMT: Actual journey of vehicle, vessel, or aircraft.""" .
+
+#################################################################
+#    Consignment Classes
+#################################################################
+
+:Consignment a owl:Class ;
+    rdfs:label "Consignment" ;
+    rdfs:comment """A separately identifiable collection of goods to be transported from one consignor to one consignee.
+    
+    UN/CEFACT MMT: Primary unit of freight transport.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :consignmentReference ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:MasterConsignment a owl:Class ;
+    rdfs:label "Master Consignment" ;
+    rdfs:comment """A consignment that may contain multiple house consignments.
+    
+    UN/CEFACT MMT: Used by freight forwarders consolidating shipments.""" ;
+    rdfs:subClassOf :Consignment .
+
+:HouseConsignment a owl:Class ;
+    rdfs:label "House Consignment" ;
+    rdfs:comment """An individual shipper's consignment within a master consignment.
+    
+    UN/CEFACT MMT: Represents individual shipments in consolidated freight.""" ;
+    rdfs:subClassOf :Consignment .
+
+:ConsignmentItem a owl:Class ;
+    rdfs:label "Consignment Item" ;
+    rdfs:comment """A separately identifiable item within a consignment.
+    
+    UN/CEFACT MMT: Line item detail of goods being shipped.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :itemSequenceNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:GoodsItem a owl:Class ;
+    rdfs:label "Goods Item" ;
+    rdfs:comment """A physical item or group of items being transported.
+    
+    UN/CEFACT MMT: Actual cargo within consignment items.""" .
+
+:Package a owl:Class ;
+    rdfs:label "Package" ;
+    rdfs:comment """A physical unit in which goods are packed for transport.
+    
+    UN/CEFACT MMT: Cartons, pallets, crates, etc.""" .
+
+#################################################################
+#    Transport Equipment Classes
+#################################################################
+
+:TransportEquipment a owl:Class ;
+    rdfs:label "Transport Equipment" ;
+    rdfs:comment """Equipment used to transport goods.
+    
+    UN/CEFACT MMT: Containers, swap bodies, pallets, vehicles.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :equipmentIdentifier ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:FreightContainer a owl:Class ;
+    rdfs:label "Freight Container" ;
+    rdfs:comment """An ISO freight container for intermodal transport.
+    
+    UN/CEFACT MMT: Standard shipping containers (20ft, 40ft, etc.).""" ;
+    rdfs:subClassOf :TransportEquipment .
+
+:ReeferContainer a owl:Class ;
+    rdfs:label "Reefer Container" ;
+    rdfs:comment """A temperature-controlled freight container.
+    
+    UN/CEFACT MMT: For perishable or temperature-sensitive cargo.""" ;
+    rdfs:subClassOf :FreightContainer .
+
+:TankContainer a owl:Class ;
+    rdfs:label "Tank Container" ;
+    rdfs:comment """A container for liquid or gas cargo.
+    
+    UN/CEFACT MMT: For bulk liquids, chemicals, gases.""" ;
+    rdfs:subClassOf :FreightContainer .
+
+:Pallet a owl:Class ;
+    rdfs:label "Pallet" ;
+    rdfs:comment """A portable platform for storing and moving goods.
+    
+    UN/CEFACT MMT: Standard logistics unit (EUR, US, etc.).""" ;
+    rdfs:subClassOf :TransportEquipment .
+
+:SwapBody a owl:Class ;
+    rdfs:label "Swap Body" ;
+    rdfs:comment """An intermodal freight container for road and rail.
+    
+    UN/CEFACT MMT: Common in European intermodal transport.""" ;
+    rdfs:subClassOf :TransportEquipment .
+
+:TrailerUnit a owl:Class ;
+    rdfs:label "Trailer Unit" ;
+    rdfs:comment """A road trailer used for freight transport.
+    
+    UN/CEFACT MMT: Semi-trailers, full trailers, etc.""" ;
+    rdfs:subClassOf :TransportEquipment .
+
+#################################################################
+#    Transport Means Classes
+#################################################################
+
+:LogisticsMeansOfTransport a owl:Class ;
+    rdfs:label "Logistics Means of Transport" ;
+    rdfs:comment """A vehicle or vessel used to transport goods.
+    
+    UN/CEFACT MMT: The physical conveyance.""" .
+
+:Vessel a owl:Class ;
+    rdfs:label "Vessel" ;
+    rdfs:comment """A ship or boat used for maritime transport.
+    
+    UN/CEFACT MMT: Ocean vessels, barges, ferries.""" ;
+    rdfs:subClassOf :LogisticsMeansOfTransport .
+
+:Aircraft a owl:Class ;
+    rdfs:label "Aircraft" ;
+    rdfs:comment """An airplane or helicopter used for air freight.
+    
+    UN/CEFACT MMT: Cargo aircraft, freight planes.""" ;
+    rdfs:subClassOf :LogisticsMeansOfTransport .
+
+:RailVehicle a owl:Class ;
+    rdfs:label "Rail Vehicle" ;
+    rdfs:comment """A train or railcar used for rail transport.
+    
+    UN/CEFACT MMT: Freight trains, locomotives, wagons.""" ;
+    rdfs:subClassOf :LogisticsMeansOfTransport .
+
+:RoadVehicle a owl:Class ;
+    rdfs:label "Road Vehicle" ;
+    rdfs:comment """A truck or van used for road transport.
+    
+    UN/CEFACT MMT: Trucks, lorries, delivery vehicles.""" ;
+    rdfs:subClassOf :LogisticsMeansOfTransport .
+
+:BargeVessel a owl:Class ;
+    rdfs:label "Barge Vessel" ;
+    rdfs:comment """A flat-bottomed vessel for inland waterway transport.
+    
+    UN/CEFACT MMT: River and canal freight transport.""" ;
+    rdfs:subClassOf :Vessel .
+
+#################################################################
+#    Party Role Classes
+#################################################################
+
+:TransportParty a owl:Class ;
+    rdfs:label "Transport Party" ;
+    rdfs:comment """An organization or person playing a role in transport operations.
+    
+    UN/CEFACT MMT: Abstract parent for all party roles.""" .
+
+:Consignor a owl:Class ;
+    rdfs:label "Consignor" ;
+    rdfs:comment """The party consigning goods to a carrier (shipper).
+    
+    UN/CEFACT MMT: Party sending the goods.""" ;
+    rdfs:subClassOf :TransportParty .
+
+:Consignee a owl:Class ;
+    rdfs:label "Consignee" ;
+    rdfs:comment """The party to whom goods are consigned.
+    
+    UN/CEFACT MMT: Party receiving the goods.""" ;
+    rdfs:subClassOf :TransportParty .
+
+:Carrier a owl:Class ;
+    rdfs:label "Carrier" ;
+    rdfs:comment """The party undertaking to perform or procure transport.
+    
+    UN/CEFACT MMT: Transport service provider.""" ;
+    rdfs:subClassOf :TransportParty .
+
+:FreightForwarder a owl:Class ;
+    rdfs:label "Freight Forwarder" ;
+    rdfs:comment """A party arranging transport on behalf of shippers.
+    
+    UN/CEFACT MMT: Logistics service provider, NVOCC.""" ;
+    rdfs:subClassOf :TransportParty .
+
+:CustomsBroker a owl:Class ;
+    rdfs:label "Customs Broker" ;
+    rdfs:comment """A party handling customs clearance procedures.
+    
+    UN/CEFACT MMT: Facilitates cross-border trade.""" ;
+    rdfs:subClassOf :TransportParty .
+
+:NotifyParty a owl:Class ;
+    rdfs:label "Notify Party" ;
+    rdfs:comment """A party to be notified of cargo arrival.
+    
+    UN/CEFACT MMT: Often the consignee or their agent.""" ;
+    rdfs:subClassOf :TransportParty .
+
+:TerminalOperator a owl:Class ;
+    rdfs:label "Terminal Operator" ;
+    rdfs:comment """A party operating a cargo terminal.
+    
+    UN/CEFACT MMT: Port, airport, or rail terminal operator.""" ;
+    rdfs:subClassOf :TransportParty .
+
+:WarehouseOperator a owl:Class ;
+    rdfs:label "Warehouse Operator" ;
+    rdfs:comment """A party operating a warehouse or storage facility.
+    
+    UN/CEFACT MMT: Provides storage and inventory services.""" ;
+    rdfs:subClassOf :TransportParty .
+
+#################################################################
+#    Location Classes
+#################################################################
+
+:Location a owl:Class ;
+    rdfs:label "Location" ;
+    rdfs:comment """A physical place relevant to transport operations.
+    
+    UN/CEFACT MMT: Ports, terminals, warehouses, etc.""" .
+
+:TransportLocation a owl:Class ;
+    rdfs:label "Transport Location" ;
+    rdfs:comment """A location where transport activities occur.
+    
+    UN/CEFACT MMT: Loading points, discharge points, transit locations.""" ;
+    rdfs:subClassOf :Location .
+
+:Port a owl:Class ;
+    rdfs:label "Port" ;
+    rdfs:comment """A maritime facility for vessel operations.
+    
+    UN/CEFACT MMT: Seaports identified by UN/LOCODE.""" ;
+    rdfs:subClassOf :TransportLocation .
+
+:Airport a owl:Class ;
+    rdfs:label "Airport" ;
+    rdfs:comment """An air transport facility.
+    
+    UN/CEFACT MMT: Cargo airports identified by IATA/ICAO codes.""" ;
+    rdfs:subClassOf :TransportLocation .
+
+:RailTerminal a owl:Class ;
+    rdfs:label "Rail Terminal" ;
+    rdfs:comment """A facility for rail freight operations.
+    
+    UN/CEFACT MMT: Intermodal rail terminals, freight yards.""" ;
+    rdfs:subClassOf :TransportLocation .
+
+:RoadTerminal a owl:Class ;
+    rdfs:label "Road Terminal" ;
+    rdfs:comment """A facility for road freight operations.
+    
+    UN/CEFACT MMT: Truck terminals, distribution centers.""" ;
+    rdfs:subClassOf :TransportLocation .
+
+:InlandPort a owl:Class ;
+    rdfs:label "Inland Port" ;
+    rdfs:comment """A port on inland waterways.
+    
+    UN/CEFACT MMT: River and canal ports.""" ;
+    rdfs:subClassOf :TransportLocation .
+
+:BorderCrossing a owl:Class ;
+    rdfs:label "Border Crossing" ;
+    rdfs:comment """A location where goods cross national borders.
+    
+    UN/CEFACT MMT: Customs checkpoints, border stations.""" ;
+    rdfs:subClassOf :TransportLocation .
+
+:Warehouse a owl:Class ;
+    rdfs:label "Warehouse" ;
+    rdfs:comment """A storage facility for goods.
+    
+    UN/CEFACT MMT: Distribution centers, storage facilities.""" ;
+    rdfs:subClassOf :Location .
+
+:Terminal a owl:Class ;
+    rdfs:label "Terminal" ;
+    rdfs:comment """A facility for cargo handling and transfer.
+    
+    UN/CEFACT MMT: Container terminals, freight terminals.""" ;
+    rdfs:subClassOf :TransportLocation .
+
+#################################################################
+#    Transport Document Classes
+#################################################################
+
+:TransportDocument a owl:Class ;
+    rdfs:label "Transport Document" ;
+    rdfs:comment """A document evidencing a transport contract and cargo receipt.
+    
+    UN/CEFACT MMT: Bill of lading, air waybill, CMR, etc.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :documentNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:BillOfLading a owl:Class ;
+    rdfs:label "Bill of Lading" ;
+    rdfs:comment """A transport document for ocean freight.
+    
+    UN/CEFACT MMT: Maritime transport document and document of title.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+:AirWaybill a owl:Class ;
+    rdfs:label "Air Waybill (AWB)" ;
+    rdfs:comment """A transport document for air cargo.
+    
+    UN/CEFACT MMT: Air freight contract and receipt.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+:RailConsignmentNote a owl:Class ;
+    rdfs:label "Rail Consignment Note (CIM)" ;
+    rdfs:comment """A transport document for rail freight.
+    
+    UN/CEFACT MMT: International rail transport document.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+:RoadConsignmentNote a owl:Class ;
+    rdfs:label "Road Consignment Note (CMR)" ;
+    rdfs:comment """A transport document for road freight.
+    
+    UN/CEFACT MMT: International road transport document.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+:HouseWaybill a owl:Class ;
+    rdfs:label "House Waybill" ;
+    rdfs:comment """A transport document issued by a freight forwarder.
+    
+    UN/CEFACT MMT: Covers house consignments within master shipments.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+:MasterWaybill a owl:Class ;
+    rdfs:label "Master Waybill" ;
+    rdfs:comment """A transport document covering consolidated cargo.
+    
+    UN/CEFACT MMT: Issued by carriers for freight forwarder shipments.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+:CustomsDeclaration a owl:Class ;
+    rdfs:label "Customs Declaration" ;
+    rdfs:comment """A document declaring goods to customs authorities.
+    
+    UN/CEFACT MMT: Import/export declarations, transit documents.""" .
+
+:CommercialInvoice a owl:Class ;
+    rdfs:label "Commercial Invoice" ;
+    rdfs:comment """An invoice for goods being shipped.
+    
+    UN/CEFACT MMT: Required for customs clearance and payment.""" .
+
+:PackingList a owl:Class ;
+    rdfs:label "Packing List" ;
+    rdfs:comment """A document detailing the contents of packages.
+    
+    UN/CEFACT MMT: Shows detailed cargo composition.""" .
+
+:CertificateOfOrigin a owl:Class ;
+    rdfs:label "Certificate of Origin" ;
+    rdfs:comment """A document certifying the country of origin of goods.
+    
+    UN/CEFACT MMT: Required for preferential tariff treatment.""" .
+
+:DangerousGoodsDeclaration a owl:Class ;
+    rdfs:label "Dangerous Goods Declaration" ;
+    rdfs:comment """A declaration for hazardous materials transport.
+    
+    UN/CEFACT MMT: Required for dangerous goods shipments.""" .
+
+#################################################################
+#    Event Classes
+#################################################################
+
+:TransportEvent a owl:Class ;
+    rdfs:label "Transport Event" ;
+    rdfs:comment """An occurrence in the transport lifecycle.
+    
+    UN/CEFACT MMT: Base class for all transport events.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :eventDateTime ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:LoadingEvent a owl:Class ;
+    rdfs:label "Loading Event" ;
+    rdfs:comment """Cargo being loaded onto transport means.
+    
+    UN/CEFACT MMT: Loading onto vessel, aircraft, truck, etc.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:DischargeEvent a owl:Class ;
+    rdfs:label "Discharge Event" ;
+    rdfs:comment """Cargo being discharged from transport means.
+    
+    UN/CEFACT MMT: Unloading from vehicle, vessel, aircraft.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:DepartureEvent a owl:Class ;
+    rdfs:label "Departure Event" ;
+    rdfs:comment """Transport means departing from a location.
+    
+    UN/CEFACT MMT: Actual or estimated departure.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:ArrivalEvent a owl:Class ;
+    rdfs:label "Arrival Event" ;
+    rdfs:comment """Transport means arriving at a location.
+    
+    UN/CEFACT MMT: Actual or estimated arrival.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:PickupEvent a owl:Class ;
+    rdfs:label "Pickup Event" ;
+    rdfs:comment """Cargo picked up from consignor.
+    
+    UN/CEFACT MMT: Collection of goods for transport.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:DeliveryEvent a owl:Class ;
+    rdfs:label "Delivery Event" ;
+    rdfs:comment """Cargo delivered to consignee.
+    
+    UN/CEFACT MMT: Final delivery of goods.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:TransferEvent a owl:Class ;
+    rdfs:label "Transfer Event" ;
+    rdfs:comment """Cargo transferred between transport means.
+    
+    UN/CEFACT MMT: Transshipment, intermodal transfer.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:CustomsClearanceEvent a owl:Class ;
+    rdfs:label "Customs Clearance Event" ;
+    rdfs:comment """Cargo cleared through customs.
+    
+    UN/CEFACT MMT: Import, export, or transit clearance.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:WarehouseStorageEvent a owl:Class ;
+    rdfs:label "Warehouse Storage Event" ;
+    rdfs:comment """Cargo entering or leaving warehouse storage.
+    
+    UN/CEFACT MMT: Warehouse receipt, warehouse release.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:InspectionEvent a owl:Class ;
+    rdfs:label "Inspection Event" ;
+    rdfs:comment """Cargo inspection by authorities or parties.
+    
+    UN/CEFACT MMT: Customs, security, or quality inspection.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+#################################################################
+#    Dangerous Goods Classes
+#################################################################
+
+:DangerousGoods a owl:Class ;
+    rdfs:label "Dangerous Goods" ;
+    rdfs:comment """Hazardous materials requiring special handling.
+    
+    UN/CEFACT MMT: UN-classified dangerous goods.""" .
+
+:ExplosiveGoods a owl:Class ;
+    rdfs:label "Explosive Goods (Class 1)" ;
+    rdfs:comment """Explosive substances and articles.
+    
+    UN/CEFACT MMT: UN Class 1 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:FlammableGas a owl:Class ;
+    rdfs:label "Flammable Gas (Class 2.1)" ;
+    rdfs:comment """Flammable gases.
+    
+    UN/CEFACT MMT: UN Class 2.1 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:FlammableLiquid a owl:Class ;
+    rdfs:label "Flammable Liquid (Class 3)" ;
+    rdfs:comment """Flammable liquids.
+    
+    UN/CEFACT MMT: UN Class 3 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:FlammableSolid a owl:Class ;
+    rdfs:label "Flammable Solid (Class 4)" ;
+    rdfs:comment """Flammable solids.
+    
+    UN/CEFACT MMT: UN Class 4 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:OxidizingSubstance a owl:Class ;
+    rdfs:label "Oxidizing Substance (Class 5)" ;
+    rdfs:comment """Oxidizing substances and organic peroxides.
+    
+    UN/CEFACT MMT: UN Class 5 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:ToxicSubstance a owl:Class ;
+    rdfs:label "Toxic Substance (Class 6)" ;
+    rdfs:comment """Toxic and infectious substances.
+    
+    UN/CEFACT MMT: UN Class 6 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:RadioactiveMaterial a owl:Class ;
+    rdfs:label "Radioactive Material (Class 7)" ;
+    rdfs:comment """Radioactive materials.
+    
+    UN/CEFACT MMT: UN Class 7 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:CorrosiveSubstance a owl:Class ;
+    rdfs:label "Corrosive Substance (Class 8)" ;
+    rdfs:comment """Corrosive substances.
+    
+    UN/CEFACT MMT: UN Class 8 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:MiscellaneousDangerousGoods a owl:Class ;
+    rdfs:label "Miscellaneous Dangerous Goods (Class 9)" ;
+    rdfs:comment """Miscellaneous dangerous substances and articles.
+    
+    UN/CEFACT MMT: UN Class 9 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasConsignment a owl:ObjectProperty ;
+    rdfs:label "has consignment" ;
+    rdfs:comment "Relates transport service to consignments being transported." ;
+    rdfs:domain :TransportService ;
+    rdfs:range :Consignment .
+
+:hasConsignmentItem a owl:ObjectProperty ;
+    rdfs:label "has consignment item" ;
+    rdfs:comment "Relates consignment to its items." ;
+    rdfs:domain :Consignment ;
+    rdfs:range :ConsignmentItem .
+
+:hasHouseConsignment a owl:ObjectProperty ;
+    rdfs:label "has house consignment" ;
+    rdfs:comment "Relates master consignment to house consignments." ;
+    rdfs:domain :MasterConsignment ;
+    rdfs:range :HouseConsignment .
+
+:containsGoods a owl:ObjectProperty ;
+    rdfs:label "contains goods" ;
+    rdfs:comment "Relates consignment item to goods." ;
+    rdfs:domain :ConsignmentItem ;
+    rdfs:range :GoodsItem .
+
+:hasPackage a owl:ObjectProperty ;
+    rdfs:label "has package" ;
+    rdfs:comment "Relates goods to packages." ;
+    rdfs:domain :GoodsItem ;
+    rdfs:range :Package .
+
+:hasTransportEquipment a owl:ObjectProperty ;
+    rdfs:label "has transport equipment" ;
+    rdfs:comment "Relates consignment to equipment used." ;
+    rdfs:domain :Consignment ;
+    rdfs:range :TransportEquipment .
+
+:loadedInEquipment a owl:ObjectProperty ;
+    rdfs:label "loaded in equipment" ;
+    rdfs:comment "Relates goods to equipment they are loaded in." ;
+    rdfs:domain :GoodsItem ;
+    rdfs:range :TransportEquipment .
+
+:hasRoute a owl:ObjectProperty ;
+    rdfs:label "has route" ;
+    rdfs:comment "Relates transport service to planned route." ;
+    rdfs:domain :TransportService ;
+    rdfs:range :TransportRoute .
+
+:hasTransportLeg a owl:ObjectProperty ;
+    rdfs:label "has transport leg" ;
+    rdfs:comment "Relates route to transport legs." ;
+    rdfs:domain :TransportRoute ;
+    rdfs:range :TransportLeg .
+
+:usesTransportMeans a owl:ObjectProperty ;
+    rdfs:label "uses transport means" ;
+    rdfs:comment "Relates transport leg to vehicle/vessel used." ;
+    rdfs:domain :TransportLeg ;
+    rdfs:range :LogisticsMeansOfTransport .
+
+:departureLocation a owl:ObjectProperty ;
+    rdfs:label "departure location" ;
+    rdfs:comment "Identifies the departure location." ;
+    rdfs:domain :TransportLeg ;
+    rdfs:range :TransportLocation .
+
+:arrivalLocation a owl:ObjectProperty ;
+    rdfs:label "arrival location" ;
+    rdfs:comment "Identifies the arrival location." ;
+    rdfs:domain :TransportLeg ;
+    rdfs:range :TransportLocation .
+
+:hasConsignor a owl:ObjectProperty ;
+    rdfs:label "has consignor" ;
+    rdfs:comment "Identifies the consignor (shipper)." ;
+    rdfs:domain :Consignment ;
+    rdfs:range :Consignor .
+
+:hasConsignee a owl:ObjectProperty ;
+    rdfs:label "has consignee" ;
+    rdfs:comment "Identifies the consignee (receiver)." ;
+    rdfs:domain :Consignment ;
+    rdfs:range :Consignee .
+
+:hasCarrier a owl:ObjectProperty ;
+    rdfs:label "has carrier" ;
+    rdfs:comment "Identifies the carrier." ;
+    rdfs:range :Carrier .
+
+:hasFreightForwarder a owl:ObjectProperty ;
+    rdfs:label "has freight forwarder" ;
+    rdfs:comment "Identifies the freight forwarder." ;
+    rdfs:range :FreightForwarder .
+
+:hasNotifyParty a owl:ObjectProperty ;
+    rdfs:label "has notify party" ;
+    rdfs:comment "Identifies a notify party." ;
+    rdfs:range :NotifyParty .
+
+:hasTransportDocument a owl:ObjectProperty ;
+    rdfs:label "has transport document" ;
+    rdfs:comment "Relates consignment to transport documents." ;
+    rdfs:domain :Consignment ;
+    rdfs:range :TransportDocument .
+
+:hasCustomsDeclaration a owl:ObjectProperty ;
+    rdfs:label "has customs declaration" ;
+    rdfs:comment "Relates consignment to customs documents." ;
+    rdfs:domain :Consignment ;
+    rdfs:range :CustomsDeclaration .
+
+:hasEvent a owl:ObjectProperty ;
+    rdfs:label "has event" ;
+    rdfs:comment "Relates consignment or transport to events." ;
+    rdfs:range :TransportEvent .
+
+:occursAtLocation a owl:ObjectProperty ;
+    rdfs:label "occurs at location" ;
+    rdfs:comment "Relates event to location where it occurred." ;
+    rdfs:domain :TransportEvent ;
+    rdfs:range :Location .
+
+:involvesEquipment a owl:ObjectProperty ;
+    rdfs:label "involves equipment" ;
+    rdfs:comment "Relates event to equipment involved." ;
+    rdfs:domain :TransportEvent ;
+    rdfs:range :TransportEquipment .
+
+:involvesTransportMeans a owl:ObjectProperty ;
+    rdfs:label "involves transport means" ;
+    rdfs:comment "Relates event to vehicle/vessel involved." ;
+    rdfs:domain :TransportEvent ;
+    rdfs:range :LogisticsMeansOfTransport .
+
+:hasDangerousGoods a owl:ObjectProperty ;
+    rdfs:label "has dangerous goods" ;
+    rdfs:comment "Indicates consignment contains dangerous goods." ;
+    rdfs:domain :Consignment ;
+    rdfs:range :DangerousGoods .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:consignmentReference a owl:DatatypeProperty ;
+    rdfs:label "consignment reference" ;
+    rdfs:comment "Unique identifier for consignment." ;
+    rdfs:domain :Consignment ;
+    rdfs:range xsd:string .
+
+:masterReferenceNumber a owl:DatatypeProperty ;
+    rdfs:label "master reference number" ;
+    rdfs:comment "Master transport document number." ;
+    rdfs:range xsd:string .
+
+:houseReferenceNumber a owl:DatatypeProperty ;
+    rdfs:label "house reference number" ;
+    rdfs:comment "House transport document number." ;
+    rdfs:range xsd:string .
+
+:itemSequenceNumber a owl:DatatypeProperty ;
+    rdfs:label "item sequence number" ;
+    rdfs:comment "Sequential number of consignment item." ;
+    rdfs:domain :ConsignmentItem ;
+    rdfs:range xsd:integer .
+
+:equipmentIdentifier a owl:DatatypeProperty ;
+    rdfs:label "equipment identifier" ;
+    rdfs:comment "Unique identifier for transport equipment (e.g., container number)." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:string .
+
+:documentNumber a owl:DatatypeProperty ;
+    rdfs:label "document number" ;
+    rdfs:comment "Unique document identifier." ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range xsd:string .
+
+:billOfLadingNumber a owl:DatatypeProperty ;
+    rdfs:label "bill of lading number" ;
+    rdfs:comment "B/L number." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:string .
+
+:airWaybillNumber a owl:DatatypeProperty ;
+    rdfs:label "air waybill number" ;
+    rdfs:comment "AWB number (11 digits)." ;
+    rdfs:domain :AirWaybill ;
+    rdfs:range xsd:string .
+
+:transportMode a owl:DatatypeProperty ;
+    rdfs:label "transport mode" ;
+    rdfs:comment "Mode of transport: MARITIME, AIR, RAIL, ROAD, INLAND_WATERWAY." ;
+    rdfs:range xsd:string .
+
+:modeCode a owl:DatatypeProperty ;
+    rdfs:label "mode code" ;
+    rdfs:comment "UN/CEFACT transport mode code (1-9)." ;
+    rdfs:range xsd:string .
+
+:vesselName a owl:DatatypeProperty ;
+    rdfs:label "vessel name" ;
+    rdfs:comment "Name of the vessel." ;
+    rdfs:domain :Vessel ;
+    rdfs:range xsd:string .
+
+:vesselIMO a owl:DatatypeProperty ;
+    rdfs:label "vessel IMO number" ;
+    rdfs:comment "International Maritime Organization vessel identifier." ;
+    rdfs:domain :Vessel ;
+    rdfs:range xsd:string .
+
+:voyageNumber a owl:DatatypeProperty ;
+    rdfs:label "voyage number" ;
+    rdfs:comment "Voyage or sailing reference." ;
+    rdfs:range xsd:string .
+
+:flightNumber a owl:DatatypeProperty ;
+    rdfs:label "flight number" ;
+    rdfs:comment "Aircraft flight number." ;
+    rdfs:domain :Aircraft ;
+    rdfs:range xsd:string .
+
+:trainNumber a owl:DatatypeProperty ;
+    rdfs:label "train number" ;
+    rdfs:comment "Rail service number." ;
+    rdfs:domain :RailVehicle ;
+    rdfs:range xsd:string .
+
+:vehicleRegistration a owl:DatatypeProperty ;
+    rdfs:label "vehicle registration" ;
+    rdfs:comment "Vehicle license plate or registration number." ;
+    rdfs:domain :RoadVehicle ;
+    rdfs:range xsd:string .
+
+:carrierCode a owl:DatatypeProperty ;
+    rdfs:label "carrier code" ;
+    rdfs:comment "SCAC, IATA, or other carrier identifier." ;
+    rdfs:range xsd:string .
+
+:unLocationCode a owl:DatatypeProperty ;
+    rdfs:label "UN location code" ;
+    rdfs:comment "UN/LOCODE for location (5 characters)." ;
+    rdfs:domain :Location ;
+    rdfs:range xsd:string .
+
+:iataAirportCode a owl:DatatypeProperty ;
+    rdfs:label "IATA airport code" ;
+    rdfs:comment "3-letter IATA airport code." ;
+    rdfs:domain :Airport ;
+    rdfs:range xsd:string .
+
+:icaoAirportCode a owl:DatatypeProperty ;
+    rdfs:label "ICAO airport code" ;
+    rdfs:comment "4-letter ICAO airport code." ;
+    rdfs:domain :Airport ;
+    rdfs:range xsd:string .
+
+:numberOfPackages a owl:DatatypeProperty ;
+    rdfs:label "number of packages" ;
+    rdfs:comment "Total number of packages." ;
+    rdfs:range xsd:integer .
+
+:packageType a owl:DatatypeProperty ;
+    rdfs:label "package type" ;
+    rdfs:comment "Type of packaging (e.g., carton, pallet, crate)." ;
+    rdfs:range xsd:string .
+
+:packageCode a owl:DatatypeProperty ;
+    rdfs:label "package code" ;
+    rdfs:comment "UN/CEFACT package type code." ;
+    rdfs:range xsd:string .
+
+:grossWeight a owl:DatatypeProperty ;
+    rdfs:label "gross weight" ;
+    rdfs:comment "Total weight including packaging (kg)." ;
+    rdfs:range xsd:decimal .
+
+:netWeight a owl:DatatypeProperty ;
+    rdfs:label "net weight" ;
+    rdfs:comment "Weight of goods only (kg)." ;
+    rdfs:range xsd:decimal .
+
+:volume a owl:DatatypeProperty ;
+    rdfs:label "volume" ;
+    rdfs:comment "Volume in cubic meters." ;
+    rdfs:range xsd:decimal .
+
+:chargeableWeight a owl:DatatypeProperty ;
+    rdfs:label "chargeable weight" ;
+    rdfs:comment "Weight used for freight calculation." ;
+    rdfs:range xsd:decimal .
+
+:goodsDescription a owl:DatatypeProperty ;
+    rdfs:label "goods description" ;
+    rdfs:comment "Description of the goods." ;
+    rdfs:range xsd:string .
+
+:hsCode a owl:DatatypeProperty ;
+    rdfs:label "HS code" ;
+    rdfs:comment "Harmonized System commodity classification code." ;
+    rdfs:range xsd:string .
+
+:countryOfOrigin a owl:DatatypeProperty ;
+    rdfs:label "country of origin" ;
+    rdfs:comment "ISO 3166 country code where goods originated." ;
+    rdfs:range xsd:string .
+
+:customsValue a owl:DatatypeProperty ;
+    rdfs:label "customs value" ;
+    rdfs:comment "Declared value for customs purposes." ;
+    rdfs:range xsd:decimal .
+
+:currency a owl:DatatypeProperty ;
+    rdfs:label "currency" ;
+    rdfs:comment "ISO 4217 currency code." ;
+    rdfs:range xsd:string .
+
+:incoterm a owl:DatatypeProperty ;
+    rdfs:label "Incoterm" ;
+    rdfs:comment "International Commercial Terms (e.g., FOB, CIF, EXW)." ;
+    rdfs:range xsd:string .
+
+:freightTerms a owl:DatatypeProperty ;
+    rdfs:label "freight terms" ;
+    rdfs:comment "Freight payment terms: PREPAID, COLLECT." ;
+    rdfs:range xsd:string .
+
+:eventDateTime a owl:DatatypeProperty ;
+    rdfs:label "event date time" ;
+    rdfs:comment "Date and time when event occurred or is scheduled." ;
+    rdfs:domain :TransportEvent ;
+    rdfs:range xsd:dateTime .
+
+:eventType a owl:DatatypeProperty ;
+    rdfs:label "event type" ;
+    rdfs:comment "Type of transport event." ;
+    rdfs:domain :TransportEvent ;
+    rdfs:range xsd:string .
+
+:eventStatus a owl:DatatypeProperty ;
+    rdfs:label "event status" ;
+    rdfs:comment "Status: ACTUAL, ESTIMATED, PLANNED, CANCELLED." ;
+    rdfs:domain :TransportEvent ;
+    rdfs:range xsd:string .
+
+:estimatedDepartureTime a owl:DatatypeProperty ;
+    rdfs:label "estimated departure time (ETD)" ;
+    rdfs:comment "Estimated departure date and time." ;
+    rdfs:range xsd:dateTime .
+
+:actualDepartureTime a owl:DatatypeProperty ;
+    rdfs:label "actual departure time (ATD)" ;
+    rdfs:comment "Actual departure date and time." ;
+    rdfs:range xsd:dateTime .
+
+:estimatedArrivalTime a owl:DatatypeProperty ;
+    rdfs:label "estimated arrival time (ETA)" ;
+    rdfs:comment "Estimated arrival date and time." ;
+    rdfs:range xsd:dateTime .
+
+:actualArrivalTime a owl:DatatypeProperty ;
+    rdfs:label "actual arrival time (ATA)" ;
+    rdfs:comment "Actual arrival date and time." ;
+    rdfs:range xsd:dateTime .
+
+:equipmentSizeType a owl:DatatypeProperty ;
+    rdfs:label "equipment size type" ;
+    rdfs:comment "ISO 6346 equipment size and type code." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:string .
+
+:tareWeight a owl:DatatypeProperty ;
+    rdfs:label "tare weight" ;
+    rdfs:comment "Empty equipment weight (kg)." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:decimal .
+
+:maxGrossWeight a owl:DatatypeProperty ;
+    rdfs:label "maximum gross weight" ;
+    rdfs:comment "Maximum allowed weight (kg)." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:decimal .
+
+:sealNumber a owl:DatatypeProperty ;
+    rdfs:label "seal number" ;
+    rdfs:comment "Security seal identifier." ;
+    rdfs:range xsd:string .
+
+:sealType a owl:DatatypeProperty ;
+    rdfs:label "seal type" ;
+    rdfs:comment "Type of seal: CARRIER, CUSTOMS, SHIPPER." ;
+    rdfs:range xsd:string .
+
+:temperatureSetting a owl:DatatypeProperty ;
+    rdfs:label "temperature setting" ;
+    rdfs:comment "Required temperature in Celsius." ;
+    rdfs:domain :ReeferContainer ;
+    rdfs:range xsd:decimal .
+
+:minimumTemperature a owl:DatatypeProperty ;
+    rdfs:label "minimum temperature" ;
+    rdfs:comment "Minimum allowed temperature in Celsius." ;
+    rdfs:range xsd:decimal .
+
+:maximumTemperature a owl:DatatypeProperty ;
+    rdfs:label "maximum temperature" ;
+    rdfs:comment "Maximum allowed temperature in Celsius." ;
+    rdfs:range xsd:decimal .
+
+:isShipperOwned a owl:DatatypeProperty ;
+    rdfs:label "is shipper owned (SOC)" ;
+    rdfs:comment "Indicates if equipment is shipper-owned." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:boolean .
+
+:isHazardous a owl:DatatypeProperty ;
+    rdfs:label "is hazardous" ;
+    rdfs:comment "Indicates if goods are dangerous/hazardous." ;
+    rdfs:range xsd:boolean .
+
+:unNumber a owl:DatatypeProperty ;
+    rdfs:label "UN number" ;
+    rdfs:comment "UN dangerous goods identification number." ;
+    rdfs:domain :DangerousGoods ;
+    rdfs:range xsd:string .
+
+:hazardClass a owl:DatatypeProperty ;
+    rdfs:label "hazard class" ;
+    rdfs:comment "UN dangerous goods class (1-9)." ;
+    rdfs:domain :DangerousGoods ;
+    rdfs:range xsd:string .
+
+:packingGroup a owl:DatatypeProperty ;
+    rdfs:label "packing group" ;
+    rdfs:comment "Packing group: I (high danger), II (medium), III (low)." ;
+    rdfs:domain :DangerousGoods ;
+    rdfs:range xsd:string .
+
+:properShippingName a owl:DatatypeProperty ;
+    rdfs:label "proper shipping name" ;
+    rdfs:comment "Official UN name for dangerous goods." ;
+    rdfs:domain :DangerousGoods ;
+    rdfs:range xsd:string .
+
+:technicalName a owl:DatatypeProperty ;
+    rdfs:label "technical name" ;
+    rdfs:comment "Chemical or technical name of dangerous goods." ;
+    rdfs:domain :DangerousGoods ;
+    rdfs:range xsd:string .
+
+:flashPoint a owl:DatatypeProperty ;
+    rdfs:label "flash point" ;
+    rdfs:comment "Flash point temperature in Celsius for flammable goods." ;
+    rdfs:range xsd:decimal .
+
+:emergencyContactNumber a owl:DatatypeProperty ;
+    rdfs:label "emergency contact number" ;
+    rdfs:comment "24-hour emergency phone number for dangerous goods." ;
+    rdfs:range xsd:string .
