@@ -15,7 +15,7 @@ def main():
     """Test catalog resolver functionality."""
     
     base_dir = Path(__file__).parent.parent
-    catalog_path = base_dir / "ontology-hub-referencemodels" / "catalog-v001.xml"
+    catalog_path = base_dir / "catalog-v001.xml"
     
     print("=" * 70)
     print("XML Catalog Validation")

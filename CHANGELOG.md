@@ -5,6 +5,25 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-03-01
+
+### Changed
+- Updated FIBO ontologies from Q3 2025 (master_2025Q3) to Q4 2025 (master_2025Q4)
+- Corrected folder structure from `ontologies/authoritative-ontologies/` to `ontology-reference-models/Authoritative Ontologies/`
+- Updated all catalog paths to point to correct FIBO version (edmcouncil-fibo-90770ba)
+- Fixed download_fibo.py script to use correct target directory
+- Fixed test_catalog.py script to use correct catalog path
+
+### Added
+- Backward-compatibility redirect for deprecated `FND/Parties/Roles/` → `FND/Parties/Parties/` in catalog
+
+### Removed
+- Removed non-existent `FND/Organizations/Organizations.rdf` mapping (module no longer exists in Q4 2025 FIBO)
+
+### Fixed
+- Unicode encoding issues in download_fibo.py for Windows console compatibility
+- All 22 catalog mappings now validated and working correctly
+
 ## [1.0.0] - 2025-01-03
 
 ### Added

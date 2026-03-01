@@ -13,7 +13,7 @@ from datetime import datetime
 # Configuration
 FIBO_GITHUB_API = "https://api.github.com/repos/edmcouncil/fibo/releases/latest"
 BASE_DIR = Path(__file__).parent.parent
-TARGET_DIR = BASE_DIR / "ontology-hub-referencemodels" / "Authoritative Ontologies" / "FIBO"
+TARGET_DIR = BASE_DIR / "ontology-reference-models" / "Authoritative Ontologies" / "FIBO"
 
 def get_latest_release():
     """Get the latest FIBO release information from GitHub."""
@@ -128,15 +128,15 @@ def main():
         temp_zip.unlink()
         print(f"\nCleaned up temporary files")
         
-        print(f"\n✓ Successfully downloaded FIBO {version}")
-        print(f"✓ {file_count} ontology files extracted")
-        print(f"✓ Location: {TARGET_DIR}")
+        print(f"\n[OK] Successfully downloaded FIBO {version}")
+        print(f"[OK] {file_count} ontology files extracted")
+        print(f"[OK] Location: {TARGET_DIR}")
         
     except requests.exceptions.RequestException as e:
-        print(f"\n✗ Error downloading FIBO: {e}")
+        print(f"\n[ERROR] Error downloading FIBO: {e}")
         return 1
     except Exception as e:
-        print(f"\n✗ Error: {e}")
+        print(f"\n[ERROR] Error: {e}")
         return 1
     
     return 0
