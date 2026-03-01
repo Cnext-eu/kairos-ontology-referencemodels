@@ -12,44 +12,44 @@
     
     <!-- FIBO Foundation (FND) - Agents and People -->
     <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/" 
-         uri="Authoritative Ontologies/FIBO/edmcouncil-fibo-90770ba/FND/AgentsAndPeople/Agents.rdf"/>
+         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/FND/AgentsAndPeople/Agents.rdf"/>
     <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/People/" 
-         uri="Authoritative Ontologies/FIBO/edmcouncil-fibo-90770ba/FND/AgentsAndPeople/People.rdf"/>
+         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/FND/AgentsAndPeople/People.rdf"/>
     
     <!-- FIBO Foundation (FND) - Organizations -->
     <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/" 
-         uri="Authoritative Ontologies/FIBO/edmcouncil-fibo-90770ba/FND/Organizations/FormalOrganizations.rdf"/>
+         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/FND/Organizations/FormalOrganizations.rdf"/>
     
     <!-- FIBO Foundation (FND) - Agreements -->
     <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/" 
-         uri="Authoritative Ontologies/FIBO/edmcouncil-fibo-90770ba/FND/Agreements/Contracts.rdf"/>
+         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/FND/Agreements/Contracts.rdf"/>
     
     <!-- FIBO Foundation (FND) - Law -->
     <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/Law/LegalCore/" 
-         uri="Authoritative Ontologies/FIBO/edmcouncil-fibo-90770ba/FND/Law/LegalCore.rdf"/>
+         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/FND/Law/LegalCore.rdf"/>
     
     <!-- FIBO Foundation (FND) - Relations -->
     <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/" 
-         uri="Authoritative Ontologies/FIBO/edmcouncil-fibo-90770ba/FND/Relations/Relations.rdf"/>
+         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/FND/Relations/Relations.rdf"/>
     
     <!-- FIBO Foundation (FND) - Dates and Times -->
     <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/" 
-         uri="Authoritative Ontologies/FIBO/edmcouncil-fibo-90770ba/FND/DatesAndTimes/FinancialDates.rdf"/>
+         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/FND/DatesAndTimes/FinancialDates.rdf"/>
     
     <!-- FIBO Foundation (FND) - Products and Services -->
     <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/" 
-         uri="Authoritative Ontologies/FIBO/edmcouncil-fibo-90770ba/FND/ProductsAndServices/ProductsAndServices.rdf"/>
+         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/FND/ProductsAndServices/ProductsAndServices.rdf"/>
     
     <!-- FIBO Foundation (FND) - Parties -->
     <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/" 
-         uri="Authoritative Ontologies/FIBO/edmcouncil-fibo-90770ba/FND/Parties/Parties.rdf"/>
+         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/FND/Parties/Parties.rdf"/>
     <!-- Deprecated: FND/Parties/Roles was merged into FND/Parties/Parties in 2013 -->
     <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/" 
-         uri="Authoritative Ontologies/FIBO/edmcouncil-fibo-90770ba/FND/Parties/Parties.rdf"/>
+         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/FND/Parties/Parties.rdf"/>
     
     <!-- FIBO Business Entities (BE) - Partnerships -->
     <uri name="https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/" 
-         uri="Authoritative Ontologies/FIBO/edmcouncil-fibo-90770ba/BE/Partnerships/Partnerships.rdf"/>
+         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/BE/Partnerships/Partnerships.rdf"/>
     
     <!-- Add more FIBO module mappings as needed -->
     
