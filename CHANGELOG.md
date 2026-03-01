@@ -5,6 +5,13 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2026-03-01
+
+### Fixed
+- Corrected `scripts/test_catalog.py` catalog path to `ontology-reference-models/catalog-v001.xml` (was incorrectly pointing to repo root)
+- Removed redundant `ontology-reference-models/` prefix from all relative URI paths in `ontology-reference-models/catalog-v001.xml` so paths resolve correctly from the catalog's own directory (OASIS XML Catalog spec)
+- Moved canonical catalog location to `ontology-reference-models/catalog-v001.xml`; removed stale copy from repo root
+
 ## [1.2.0] - 2026-03-01
 
 ### Changed
