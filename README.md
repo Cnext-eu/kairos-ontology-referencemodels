@@ -1,61 +1,47 @@
-<div align="center">
+# cldn-ontology-hub
 
-# Project Name
+Kairos ontology hub for **Cldn domain ontologies**.
 
-**Brief description of your project**
-
-</div>
-
----
-
-## 🚀 Getting Started
-
-Follow the **Cnext SmartCoding** workflow with your AI assistant:
-see  [.docs\README.md](.docs\README.md) for more instructions
-
----
-
-## 🔄 Updating SmartCoding AI Instructions
-
-This project uses AI instruction files from the `.smartcoding/` folder. These files are maintained in the template repository and can be updated using Git subtree.
-
-**Current SmartCoding Version**: See [.smartcoding/VERSION](.smartcoding/VERSION)
-
-### First-Time Setup
-
-**Option 1: Run Setup Script (Easiest)**
+## Quick start
 
 ```bash
-# PowerShell (Windows)
-.\.smartcoding\setup-subtree.ps1
+# Install dependencies (includes kairos-ontology-toolkit)
+pip install -e .
 
-# Bash (Linux/Mac)
-chmod +x .smartcoding/setup-subtree.sh
-./.smartcoding/setup-subtree.sh
+# Validate all ontologies
+kairos-ontology validate
+
+# Generate all projections
+kairos-ontology project
+
+# Generate a single target
+kairos-ontology project --target prompt
 ```
 
-**Option 2: GitHub Action**
-- Go to **Actions** → **Setup SmartCoding Subtree** → **Run workflow**
+## Repository structure
 
-**Option 3: Manual**
-```bash
-git remote add smartcoding-template https://github.com/Cnext-eu/smartcoding-kairos-template.git
+```
+├── ontology-hub/                        # Main ontology workspace
+│   ├── ontologies/                      # Domain ontologies (Turtle/RDF)
+│   ├── shapes/                          # SHACL validation constraints
+│   ├── mappings/                        # SKOS synonym mappings
+│   └── output/                          # Generated projections (gitignored)
+├── ontology-reference-models/           # Reference ontologies
+│   ├── authoritative-ontologies/        # FIBO, Schema.org, etc.
+│   ├── derived-ontologies/              # Industry-specific derived models
+│   └── catalog-v001.xml                 # OASIS XML catalog for import resolution
 ```
 
-### Pull Updates (Bi-Weekly Recommended)
+## Workflow
 
-```bash
-# Pull latest AI instructions (from smartcoding-only branch)
-git subtree pull --prefix=.smartcoding smartcoding-template smartcoding-only --squash
+1. Create or edit `.ttl` files in `ontology-hub/ontologies/`.
+2. Run `kairos-ontology validate` to check for errors.
+3. Run `kairos-ontology project` to regenerate downstream artifacts.
+4. Commit on a feature branch, open a PR for review.
 
-# Or pull a specific version (safer)
-git subtree pull --prefix=.smartcoding smartcoding-template smartcoding-v1.1.0 --squash
+## Naming conventions
 
-# Commit and push
-git commit -m "chore: update smartcoding AI instructions"
-git push
-```
-
-**Full instructions**: See [.smartcoding/README.md](.smartcoding/README.md)
-
-**Version history**: See [.smartcoding/CHANGELOG.md](.smartcoding/CHANGELOG.md)
+- **Ontology files**: lowercase with hyphens — `customer.ttl`, `sales-order.ttl`
+- **Classes**: PascalCase — `Customer`, `SalesOrder`
+- **Properties**: camelCase — `customerName`, `orderDate`
+- **Namespaces**: `http://<org>.example.org/ontology/<domain>#`

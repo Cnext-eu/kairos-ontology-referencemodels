@@ -1,0 +1,12 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<https://cldn.com/ont/master> a owl:Ontology ;
+    rdfs:label "Cldn Master Ontology"@en ;
+    rdfs:comment "Unified ontology that imports all domain ontologies for Cldn"@en ;
+    owl:versionInfo "0.1.0" .
+
+## -- Add owl:imports for each domain ontology below --
+## Example:
+##   owl:imports <https://cldn.com/ont/customer> ;
+##   owl:imports <https://cldn.com/ont/order> .

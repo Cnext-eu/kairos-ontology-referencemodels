@@ -1,0 +1,3 @@
+[submodule "ontology-reference-models"]
+	path = ontology-reference-models
+	url = https://github.com/Cnext-eu/kairos-ontology-referencemodels.git

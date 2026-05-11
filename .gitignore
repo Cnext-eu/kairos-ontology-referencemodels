@@ -1,22 +1,22 @@
-# Python virtual environments
-.docs/tools/venv/
-**/venv/
-**/__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Python distribution / packaging
+# Python
+__pycache__/
+*.py[cod]
 *.egg-info/
 dist/
 build/
+.venv/
+venv/
+
+# Node.js
+node_modules/
 
 # IDE
 .vscode/
 .idea/
 *.swp
-*.swo
-*~
+
+# Kairos generated outputs (re-generate with: python -m kairos_ontology project)
+ontology-hub/output/
 
 # OS
 .DS_Store

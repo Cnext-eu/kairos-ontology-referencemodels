@@ -1,0 +1,44 @@
+# Cldn — Ontology Hub
+
+## Company context
+
+| Field              | Value                                          |
+|--------------------|------------------------------------------------|
+| **Company name**   | Cldn                                 |
+| **Company domain** | cldn.com                               |
+| **Namespace base** | `https://cldn.com/ont/`                |
+
+## Namespace convention
+
+All ontologies in this hub use the namespace pattern:
+
+```
+https://cldn.com/ont/<domain>#
+```
+
+For example:
+- Customer domain → `https://cldn.com/ont/customer#`
+- Order domain → `https://cldn.com/ont/order#`
+
+## Domain model overview
+
+Before creating individual domain ontology files, define the high-level domain
+structure here.  This helps avoid fragmented .ttl files and ensures coherent
+coverage.
+
+| Domain | Description | File | Status |
+|--------|-------------|------|--------|
+| *(add domains here)* | | | |
+
+## Master ontology
+
+The file `ontology-hub/model/ontologies/_master.ttl` imports all domain ontologies
+into a single unified graph.  Keep it updated when adding or removing domains.
+
+## Conventions
+
+- One domain per `.ttl` file (e.g., `customer.ttl`, `order.ttl`).
+- Filename = domain identifier (lowercase, hyphens for multi-word).
+- Every file declares an `owl:Ontology` with `rdfs:label` and `owl:versionInfo`.
+- Classes: PascalCase.  Properties: camelCase.
+- Target 5–15 classes per domain file.
