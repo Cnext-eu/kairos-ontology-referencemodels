@@ -1,0 +1,4 @@
+markdown>=3.7
+xhtml2pdf>=0.2.17
+Pillow>=10.0.0
+requests>=2.31.0

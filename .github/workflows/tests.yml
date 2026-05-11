@@ -1,0 +1,63 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+      - release/**
+      - feature/**
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'yarn.lock'
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'yarn.lock'
+
+jobs:
+  test:
+    name: Run Jest tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+      - name: Run Jest (CI)
+        run: |
+          npx jest --ci --runInBand --reporters=default --reporters=jest-junit
+        env:
+          CI: true
+
+      - name: Upload test results
+        if: always()
+
+        uses: actions/upload-artifact@v4
+        with:
+          name: jest-junit
+          path: junit.xml

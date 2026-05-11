@@ -1,0 +1,79 @@
+"area: core":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/**"
+          - "lib/**"
+
+"area: model":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/model/**"
+          - "**/models/**"
+
+"area: training":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/train/**"
+          - "**/training/**"
+          - "**/optim/**"
+          - "**/optimizer/**"
+
+"area: inference":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/infer/**"
+          - "**/inference/**"
+          - "**/serve/**"
+          - "**/decoding/**"
+
+"area: evaluation":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/eval/**"
+          - "**/evaluation/**"
+          - "**/metrics/**"
+          - "tests/**"
+
+"area: data":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/data/**"
+          - "**/dataset/**"
+          - "**/datasets/**"
+          - "**/preprocess/**"
+
+"area: api":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/api/**"
+          - "**/interfaces/**"
+          - "**/public/**"
+
+"area: performance":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/perf/**"
+          - "**/performance/**"
+          - "**/profil**/**"
+          - "**/benchmark**/**"
+
+"area: infra":
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**"
+          - "Dockerfile"
+          - "docker/**"
+          - "scripts/**"
+          - "pyproject.toml"
+          - "setup.cfg"
+          - "setup.py"
+          - "package.json"
+          - "pnpm-lock.yaml"
+          - "poetry.lock"
+
+"area: docs":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "docs/**"
+          - "**/*.md"
+          - "**/*.rst"

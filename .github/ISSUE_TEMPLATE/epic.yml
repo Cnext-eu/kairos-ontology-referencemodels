@@ -1,0 +1,100 @@
+name: Epic
+description: Large feature initiative spanning multiple issues and milestones
+title: "[Epic] "
+labels:
+  - type: feature
+  - priority: p2
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Epic Overview
+        Use this issue to describe a **large initiative** that will be broken down into smaller issues.
+        Track progress using **GitHub Projects** and linked child issues.
+
+  - type: textarea
+    id: background
+    attributes:
+      label: Background
+      description: Context and motivation for this epic
+      placeholder: Why does this epic matter? What problem are we solving?
+    validations:
+      required: true
+
+  - type: textarea
+    id: objectives
+    attributes:
+      label: Objectives
+      description: High-level goals of this epic
+      placeholder: What outcomes are we aiming for?
+    validations:
+      required: true
+
+  - type: textarea
+    id: success
+    attributes:
+      label: Success Criteria
+      description: How will we know this epic is successful?
+      placeholder: Measurable outcomes, benchmarks, or acceptance criteria
+    validations:
+      required: true
+
+  - type: textarea
+    id: stakeholders
+    attributes:
+      label: Stakeholders
+      description: Teams or individuals involved or impacted
+      placeholder: "@team-name, @owner, external dependencies"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Primary Area
+      description: Select the primary area for this epic
+      options:
+        - core
+        - model
+        - training
+        - inference
+        - evaluation
+        - data
+        - api
+        - performance
+        - infra
+        - docs
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies / Blockers
+      description: Link issues, teams, or systems this epic depends on
+      placeholder: |
+        - Depends on #123
+        - Blocked by external service X
+    validations:
+      required: false
+
+  - type: textarea
+    id: child-issues
+    attributes:
+      label: Child Issues
+      description: List issues that are part of this epic
+      placeholder: |
+        - [ ] #123
+        - [ ] #124
+        - [ ] #125
+    validations:
+      required: false
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Notes
+      description: Anything else relevant to planning and tracking
+      placeholder: "Risks, open questions, rollout considerations"
+    validations:
+      required: false

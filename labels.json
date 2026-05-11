@@ -1,0 +1,47 @@
+[
+  { "name": "type: bug", "color": "d73a4a", "description": "Something is broken" },
+  { "name": "type: feature", "color": "a2eeef", "description": "New functionality" },
+  { "name": "type: enhancement", "color": "84b6eb", "description": "Improve existing behavior" },
+  { "name": "type: refactor", "color": "cfd3d7", "description": "Code change with no behavior change" },
+  { "name": "type: research", "color": "fbca04", "description": "Research/design work (papers, approaches, specs)" },
+  { "name": "type: experiment", "color": "fef2c0", "description": "Experiments, benchmarks, ablations, evaluation runs" },
+  { "name": "type: docs", "color": "0075ca", "description": "Documentation changes" },
+  { "name": "type: chore", "color": "ededed", "description": "Maintenance, build, tooling, housekeeping" },
+
+  { "name": "priority: p0", "color": "b60205", "description": "Release blocker / critical breakage" },
+  { "name": "priority: p1", "color": "d93f0b", "description": "High priority" },
+  { "name": "priority: p2", "color": "fbca04", "description": "Normal priority (default)" },
+  { "name": "priority: p3", "color": "0e8a16", "description": "Nice-to-have / backlog" },
+
+  { "name": "status: blocked", "color": "000000", "description": "Blocked by dependency or decision" },
+  { "name": "status: needs-design", "color": "b4a7d6", "description": "Needs design/research decision before implementation" },
+  { "name": "status: needs-info", "color": "d4c5f9", "description": "Needs more info from reporter/owner" },
+  { "name": "status: ready", "color": "0e8a16", "description": "Ready to be worked on" },
+
+  { "name": "area: core", "color": "1d76db", "description": "Core library internals" },
+  { "name": "area: model", "color": "1d76db", "description": "Model architecture / modules" },
+  { "name": "area: training", "color": "1d76db", "description": "Training loop, optimizers, schedulers" },
+  { "name": "area: inference", "color": "1d76db", "description": "Serving/inference, batching, decoding" },
+  { "name": "area: evaluation", "color": "1d76db", "description": "Metrics, eval harness, test suites" },
+  { "name": "area: data", "color": "1d76db", "description": "Datasets, preprocessing, loaders" },
+  { "name": "area: api", "color": "1d76db", "description": "Public API, interfaces, backward compat" },
+  { "name": "area: performance", "color": "1d76db", "description": "Speed/memory optimization, profiling" },
+  { "name": "area: infra", "color": "1d76db", "description": "CI, packaging, releases, dev tooling" },
+  { "name": "area: docs", "color": "1d76db", "description": "Docs site / guides / examples" },
+
+  { "name": "size: xs", "color": "c2e0c6", "description": "< 2 hours" },
+  { "name": "size: s", "color": "c2e0c6", "description": "Half-day" },
+  { "name": "size: m", "color": "c2e0c6", "description": "1–2 days" },
+  { "name": "size: l", "color": "c2e0c6", "description": "3–5 days" },
+  { "name": "size: xl", "color": "c2e0c6", "description": "Needs breakdown" },
+
+  { "name": "breaking-change", "color": "b60205", "description": "Requires migration / changes public API" },
+  { "name": "benchmark", "color": "5319e7", "description": "Performance measurement or benchmark task" },
+  { "name": "regression", "color": "d73a4a", "description": "Something that used to work is broken" },
+  { "name": "repro-needed", "color": "d4c5f9", "description": "Needs a minimal reproducible example" },
+  { "name": "security", "color": "b60205", "description": "Security-related issue (handle carefully)" },
+
+  { "name": "good-first-issue", "color": "7057ff", "description": "Good for first-time contributors" },
+  { "name": "help-wanted", "color": "008672", "description": "Extra help is welcome" },
+  { "name": "discussion", "color": "c5def5", "description": "Discussion / RFC / open question" }
+]

@@ -1,0 +1,37 @@
+name: Issue Default Labels
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+
+jobs:
+  defaults:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add default labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issue_number = context.payload.issue.number;
+
+            const existing = (context.payload.issue.labels || []).map(l => l.name);
+
+            const defaults = ["priority: p2", "status: needs-info"];
+            const toAdd = defaults.filter(l => !existing.includes(l));
+
+            if (toAdd.length === 0) {
+              core.info("No default labels to add.");
+              return;
+            }
+
+            await github.rest.issues.addLabels({
+              owner,
+              repo,
+              issue_number,
+              labels: toAdd
+            });

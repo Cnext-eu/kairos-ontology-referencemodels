@@ -1,0 +1,324 @@
+/* PDF Styling for Kidslife IDP HLSD */
+
+@page {
+    size: A4;
+    margin: 2.5cm 2cm 2cm 2cm;
+    
+    @top-right {
+        content: "Kidslife IDP - HLSD";
+        font-size: 9pt;
+        color: #666;
+        font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    
+    @bottom-center {
+        content: "Page " counter(page) " of " counter(pages);
+        font-size: 9pt;
+        color: #666;
+        font-family: 'Segoe UI', Arial, sans-serif;
+    }
+}
+
+@page :first {
+    @top-right {
+        content: none;
+    }
+    @bottom-center {
+        content: none;
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', 'Calibri', Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #333;
+    max-width: 100%;
+}
+
+/* Headings */
+h1 {
+    color: #0066cc;
+    font-size: 24pt;
+    margin-top: 0;
+    margin-bottom: 20pt;
+    padding-bottom: 10pt;
+    border-bottom: 3px solid #0066cc;
+    page-break-after: avoid;
+}
+
+h2 {
+    color: #0066cc;
+    font-size: 18pt;
+    margin-top: 24pt;
+    margin-bottom: 12pt;
+    page-break-after: avoid;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 6pt;
+}
+
+h3 {
+    color: #333;
+    font-size: 14pt;
+    margin-top: 18pt;
+    margin-bottom: 10pt;
+    page-break-after: avoid;
+    font-weight: 600;
+}
+
+h4 {
+    color: #555;
+    font-size: 12pt;
+    margin-top: 14pt;
+    margin-bottom: 8pt;
+    page-break-after: avoid;
+    font-weight: 600;
+}
+
+h5, h6 {
+    color: #666;
+    font-size: 11pt;
+    margin-top: 12pt;
+    margin-bottom: 6pt;
+    page-break-after: avoid;
+    font-weight: 600;
+}
+
+/* Paragraphs */
+p {
+    margin-bottom: 10pt;
+    text-align: justify;
+}
+
+/* Lists */
+ul, ol {
+    margin-left: 20pt;
+    margin-bottom: 10pt;
+}
+
+li {
+    margin-bottom: 6pt;
+}
+
+ul ul, ol ul, ul ol, ol ol {
+    margin-top: 6pt;
+    margin-bottom: 6pt;
+}
+
+/* Code blocks */
+pre {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-left: 4px solid #0066cc;
+    padding: 12pt;
+    margin: 10pt 0;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 9pt;
+    line-height: 1.4;
+    overflow-x: auto;
+    page-break-inside: avoid;
+}
+
+code {
+    background-color: #f5f5f5;
+    padding: 2pt 4pt;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 9.5pt;
+    color: #c7254e;
+    border-radius: 3px;
+}
+
+pre code {
+    background-color: transparent;
+    padding: 0;
+    color: #333;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12pt 0;
+    font-size: 10pt;
+    page-break-inside: avoid;
+}
+
+th {
+    background-color: #0066cc;
+    color: white;
+    font-weight: 600;
+    padding: 8pt;
+    text-align: left;
+    border: 1px solid #0066cc;
+}
+
+td {
+    padding: 8pt;
+    border: 1px solid #ddd;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Blockquotes */
+blockquote {
+    border-left: 4px solid #0066cc;
+    background-color: #f8f9fa;
+    padding: 10pt 15pt;
+    margin: 10pt 0;
+    font-style: italic;
+    color: #555;
+    page-break-inside: avoid;
+}
+
+/* Horizontal rules */
+hr {
+    border: none;
+    border-top: 2px solid #e0e0e0;
+    margin: 20pt 0;
+}
+
+/* Links */
+a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Images */
+img {
+    max-width: 100%;
+    height: auto;
+    margin: 12pt 0;
+    page-break-inside: avoid;
+}
+
+/* Special formatting for PlantUML code blocks */
+pre.plantuml {
+    background-color: #fffef0;
+    border-left-color: #ffcc00;
+}
+
+/* Task list items */
+input[type="checkbox"] {
+    margin-right: 6pt;
+}
+
+/* Emphasis */
+strong, b {
+    font-weight: 700;
+    color: #000;
+}
+
+em, i {
+    font-style: italic;
+}
+
+/* Page breaks */
+.page-break {
+    page-break-before: always;
+}
+
+/* Status indicators */
+.status-critical {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+.status-warning {
+    color: #ffc107;
+    font-weight: 600;
+}
+
+.status-success {
+    color: #28a745;
+    font-weight: 600;
+}
+
+/* Document header */
+.document-header {
+    text-align: center;
+    margin-bottom: 30pt;
+    padding: 20pt;
+    background: linear-gradient(135deg, #0066cc 0%, #004999 100%);
+    color: white;
+    border-radius: 8px;
+}
+
+.document-header h1 {
+    color: white;
+    border: none;
+    margin-bottom: 10pt;
+}
+
+.document-header p {
+    margin: 5pt 0;
+    text-align: center;
+}
+
+/* Table of contents */
+.toc {
+    background-color: #f8f9fa;
+    padding: 15pt;
+    margin: 20pt 0;
+    border-left: 4px solid #0066cc;
+}
+
+.toc h2 {
+    margin-top: 0;
+    font-size: 16pt;
+}
+
+.toc ul {
+    list-style-type: none;
+    margin-left: 0;
+}
+
+.toc li {
+    margin-bottom: 8pt;
+}
+
+/* Metadata box */
+.metadata {
+    background-color: #e7f3ff;
+    border: 1px solid #0066cc;
+    padding: 12pt;
+    margin: 15pt 0;
+    border-radius: 4px;
+    page-break-inside: avoid;
+}
+
+.metadata strong {
+    color: #0066cc;
+}
+
+/* Emoji support (convert to symbols) */
+.emoji {
+    font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+}
+
+/* Prevent orphans and widows */
+p, li, dd, dt {
+    orphans: 3;
+    widows: 3;
+}
+
+/* Ensure headings stay with content */
+h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+}
+
+/* Keep figures and captions together */
+figure {
+    page-break-inside: avoid;
+}

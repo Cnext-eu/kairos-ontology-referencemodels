@@ -1,0 +1,117 @@
+name: Sync GitHub labels from labels.json
+
+on:
+  # Run manually
+  workflow_dispatch:
+  # Run automatically when the repo is created from the template (first push)
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - labels.json
+      - .github/workflows/sync-labels.yml
+
+jobs:
+  sync-labels:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      issues: write # needed to manage labels
+      # If using fine-grained PAT: make sure 'metadata' and 'issues' are allowed
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Read labels.json and sync labels
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          echo "Syncing labels from labels.json to $REPO_OWNER/$REPO_NAME"
+
+          node - <<'NODE'
+          const fs = require('fs');
+          const path = require('path');
+          const https = require('https');
+
+          const token = process.env.GITHUB_TOKEN;
+          const owner = process.env.REPO_OWNER;
+          const repo = process.env.REPO_NAME;
+
+          if (!token) {
+            console.error('GITHUB_TOKEN is not set');
+            process.exit(1);
+          }
+
+          const labelsPath = path.join(process.cwd(), 'labels.json');
+          if (!fs.existsSync(labelsPath)) {
+            console.error('labels.json not found at', labelsPath);
+            process.exit(1);
+          }
+
+          /** @type {{name:string,color:string,description?:string}[]} */
+          const labels = JSON.parse(fs.readFileSync(labelsPath, 'utf8'));
+
+          function request(method, path, body) {
+            const options = {
+              method,
+              hostname: 'api.github.com',
+              path,
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'User-Agent': 'label-sync-script',
+                'Accept': 'application/vnd.github+json'
+              }
+            };
+            return new Promise((resolve, reject) => {
+              const req = https.request(options, res => {
+                let data = '';
+                res.on('data', chunk => (data += chunk));
+                res.on('end', () => {
+                  if (res.statusCode >= 200 && res.statusCode < 300) {
+                    resolve(data ? JSON.parse(data) : null);
+                  } else {
+                    console.error('GitHub API error', res.statusCode, data);
+                    reject(new Error(`GitHub API error ${res.statusCode}`));
+                  }
+                });
+              });
+              req.on('error', reject);
+              if (body) {
+                req.setHeader('Content-Type', 'application/json');
+                req.write(JSON.stringify(body));
+              }
+              req.end();
+            });
+          }
+
+          async function sync() {
+            console.log(`Syncing ${labels.length} labels...`);
+            for (const label of labels) {
+              const body = {
+                name: label.name,
+                color: label.color,
+                description: label.description || ''
+              };
+              const apiPath = `/repos/${owner}/${repo}/labels/${encodeURIComponent(label.name)}`;
+              try {
+                // Try update (PATCH) first
+                console.log(`Updating label: ${label.name}`);
+                await request('PATCH', apiPath, body);
+              } catch (err) {
+                console.log(`Label ${label.name} does not exist yet, creating...`);
+                // Create (POST) if not found
+                await request('POST', `/repos/${owner}/${repo}/labels`, body);
+              }
+            }
+          }
+
+          sync().catch(err => {
+            console.error(err);
+            process.exit(1);
+          });
+          NODE

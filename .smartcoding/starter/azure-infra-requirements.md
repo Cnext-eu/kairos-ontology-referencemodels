@@ -1,0 +1,14 @@
+when creating infrastructure for solution in Azure, consider the following:
+- Use Bicep as IaC.
+- Default to deployment in a single resource group, unless specific resources require subscription/management group scope or separate shared RGs.
+- Prefer modular structure: a composed main.bicep calls modules per component. Avoid a single monolithic file for anything non-trivial.
+- Use Azure Verified Modules; pin versions. If AVM is not available, use the newest stable resource API pinned in code.
+- Provide a .bicepparam example with all parameters and comments. Treat secrets as secure and reference Key Vault/pipeline secrets.
+- Use Bicep decorators: @description, @allowed, @minLength, @maxLength, @secure.
+- Each deployable component has a parameters object with deploy, name and resourceGroup (optional) and other properties as required. Assume unset values; validate with decorators and defaults.
+- Use‑existing is explicit: if resourceGroup is set, use the existing resource pattern and skip deployment.
+- If VNet is enabled, integrate each component into it; size subnets per service constraints and growth (do not force /24). Add delegations, prefer Private Endpoints + Private DNS; only use service endpoints where PE is not viable. Add NSGs, UDRs/route tables as needed. Prefer NAT Gateway for consistent outbound and to reduce SNAT exhaustion.
+- Apply diagnostic settings to Log Analytics for all supported resources.
+- Default to private access (publicNetworkAccess = Disabled where supported); store secrets in Key Vault; use UAMI + least‑privilege RBAC.
+- Always create parameters object for tags and use it for every resource deployed.
+- Each module must include a README with: purpose, inputs/outputs, examples, required RBAC, constraints, and known limitations.

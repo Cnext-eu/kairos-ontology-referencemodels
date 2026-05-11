@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+#
+# pre-commit hook: Run Prettier on staged files to enforce consistent formatting.
+# Requires Node.js (npx) to be available on the system.
+#
+# Supported file types: js, ts, jsx, tsx, json, css, scss, html, md, yaml, yml, xml
+
+set -e
+
+# File extensions to format
+EXTENSIONS="js,ts,jsx,tsx,json,css,scss,html,md,yaml,yml,xml"
+
+# Build a regex pattern from extensions for filtering
+EXT_PATTERN="\.($(echo "$EXTENSIONS" | sed 's/,/|/g'))$"
+
+# Get staged files (only added, copied, modified, renamed)
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep -E "$EXT_PATTERN" || true)
+
+if [ -z "$STAGED_FILES" ]; then
+    exit 0
+fi
+
+# Check if npx is available
+if ! command -v npx &>/dev/null; then
+    echo ""
+    echo "ERROR: npx is not available. Install Node.js to enable Prettier formatting."
+    echo "  Skipping format check."
+    echo ""
+    exit 0
+fi
+
+echo "Running Prettier on staged files..."
+
+# Format each staged file and re-stage it
+FAILED_FILES=""
+for FILE in $STAGED_FILES; do
+    if [ -f "$FILE" ]; then
+        if npx --yes prettier --write "$FILE" 2>/dev/null; then
+            git add "$FILE"
+        else
+            FAILED_FILES="$FAILED_FILES\n  $FILE"
+        fi
+    fi
+done
+
+if [ -n "$FAILED_FILES" ]; then
+    echo ""
+    echo "WARNING: Prettier could not format some files:$FAILED_FILES"
+    echo ""
+fi
+
+echo "Prettier formatting complete."
+
+
