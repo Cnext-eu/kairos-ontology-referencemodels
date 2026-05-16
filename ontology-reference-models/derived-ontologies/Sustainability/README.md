@@ -1,12 +1,14 @@
 # Sustainability Ontology
 
 **Namespace:** `https://www.kairosflow.ai/ont/sustainability#`  
-**Version:** 1.0.0  
-**Created:** 2026-05-16
+**Version:** 1.1.0  
+**Created:** 2026-05-16  
+**Source:** ISO 14083:2023, GLEC Framework, EU MRV Regulation, IMO DCS, EU ETS Maritime  
+**Reference:** https://www.iso.org/standard/78864.html
 
 ## Description
 
-Sustainability ontology for carbon emissions, energy consumption, and environmental compliance in transport and logistics. Fully aligned with ISO 14083:2023, GLEC Framework, EU MRV Regulation, IMO DCS, and EU ETS Maritime.
+Sustainability ontology for carbon emissions, energy consumption, and environmental compliance in transport and logistics. Aligned with ISO 14083:2023, GLEC Framework, EU MRV Regulation, IMO DCS, and EU ETS Maritime.
 
 ## Structure
 
