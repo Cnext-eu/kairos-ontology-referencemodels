@@ -30,10 +30,6 @@ package:
       name: "FIBO Business Entities – Partnerships"
       uri: "https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/"
       focus: "Partnerships, joint ventures"
-    - id: BSP
-      name: "Buy-Ship-Pay"
-      uri: "https://www.kairosflow.ai/ont/bsp#"
-      focus: "Party, contract, invoice, settlement"
 
   excludes:
     - id: DCSA
@@ -46,9 +42,10 @@ package:
       reason: "Use Logistics Accelerator for maritime regulatory ontologies"
     - id: WCO
       reason: "Use Logistics Accelerator for customs ontologies"
+    - id: BSP
+      reason: "Use Logistics Accelerator for buy-ship-pay ontologies"
     - id: Sustainability
       reason: "Use Logistics Accelerator for sustainability ontologies"
 
   standards_alignment:
     - "FIBO (EDM Council)"
-    - "ISO 20197-1:2024 Buy-Ship-Pay"

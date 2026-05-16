@@ -11,13 +11,15 @@
     
     Includes:
     - FIBO (Financial Industry Business Ontology) foundations
+    - BSP (Buy-Ship-Pay) for party, commercial, and financial domains
     
-    Does NOT include logistics-specific ontologies (DCSA, MMT, TIC, IMO, WCO, BSP, Sustainability).""" ;
+    Does NOT include logistics-specific ontologies (DCSA, MMT, TIC, IMO, WCO, Sustainability).""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;
-    owl:versionInfo "2.0.0" ;
+    owl:versionInfo "1.0.0" ;
     owl:imports <https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/> ,
                 <https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/> ,
                 <https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/> ,
-                <https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/> .
+                <https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/> ,
+                <https://www.kairosflow.ai/ont/bsp#> .
