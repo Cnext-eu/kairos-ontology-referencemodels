@@ -10,14 +10,15 @@
     dcterms:title "IMO Locations Ontology" ;
     dcterms:description """Maritime location and navigational area domain ontology aligned with the IMO Compendium.
 
-    Defines ports, anchorages, berths, fairway buoys, VTS zones, pilot boarding places,
+    Defines ports, anchorages, berths, VTS zones, pilot boarding places,
     port approaches, and traffic separation schemes. Supports the UN/LOCODE location identification
     system and IMO requirements for vessel traffic management and port operations.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
-    dcterms:source "IMO Compendium, FAL Convention, IMDG Code" .
+    dcterms:source "IMO Compendium data set, FAL Convention, COLREG Rule 10, Resolution A.857(20)" ;
+    rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
 
 #################################################################
 #    Classes
@@ -48,14 +49,6 @@
     while awaiting berth availability, pilotage, or port clearance.
 
     Anchorages are charted and may be assigned by the port authority or VTS.""" ;
-    rdfs:subClassOf :MaritimeLocation .
-
-:FairwayBuoy a owl:Class ;
-    rdfs:label "Fairway Buoy" ;
-    rdfs:comment """A navigational buoy marking the entrance to a fairway or channel leading to a port.
-
-    Serves as a reference point for pilot boarding, vessel reporting, and position fixing.
-    Marked according to IALA Maritime Buoyage System.""" ;
     rdfs:subClassOf :MaritimeLocation .
 
 :VTSZone a owl:Class ;
@@ -130,12 +123,6 @@
     rdfs:comment "Associates a port with one of its berths." ;
     rdfs:domain :Port ;
     rdfs:range :Berth .
-
-:hasFairwayBuoy a owl:ObjectProperty ;
-    rdfs:label "has fairway buoy" ;
-    rdfs:comment "Associates a port approach with a fairway buoy marking its entrance." ;
-    rdfs:domain :PortApproach ;
-    rdfs:range :FairwayBuoy .
 
 :hasPortApproach a owl:ObjectProperty ;
     rdfs:label "has port approach" ;

@@ -18,7 +18,8 @@
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
-    dcterms:source "IMO Compendium, FAL Convention, IMDG Code" .
+    dcterms:source "IMO Compendium data set, FAL Convention, ISM Code, STCW Convention" ;
+    rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
 
 #################################################################
 #    Classes

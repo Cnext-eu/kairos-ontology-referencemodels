@@ -17,7 +17,8 @@
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
-    dcterms:source "IMO Compendium, FAL Convention, IMDG Code" .
+    dcterms:source "IMO Compendium data set, SOLAS XI-1/3, Resolution A.1117(30), 1969 Tonnage Convention" ;
+    rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
 
 #################################################################
 #    Classes
@@ -119,21 +120,6 @@
 
     DWT = displacement at summer load line minus lightweight.""" ;
     rdfs:subClassOf :VesselCapacity .
-
-:LengthOverall a owl:Class ;
-    rdfs:label "Length Overall" ;
-    rdfs:comment """The maximum length of a vessel's hull measured from the foremost point of
-    the bow to the aftermost point of the stern, in metres.""" .
-
-:Beam a owl:Class ;
-    rdfs:label "Beam" ;
-    rdfs:comment """The maximum breadth of a vessel measured at the widest point of the hull,
-    in metres. Critical for berth allocation and canal transit planning.""" .
-
-:Draft a owl:Class ;
-    rdfs:label "Draft" ;
-    rdfs:comment """The vertical distance between the waterline and the bottom of the hull (keel),
-    in metres. Determines the minimum water depth required for safe navigation.""" .
 
 :VesselOperationalStatus a owl:Class ;
     rdfs:label "Vessel Operational Status" ;

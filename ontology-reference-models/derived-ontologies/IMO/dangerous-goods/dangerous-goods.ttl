@@ -18,13 +18,14 @@
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
-    dcterms:source "IMO Compendium, FAL Convention, IMDG Code" .
+    dcterms:source "IMDG Code (Amendment 41-22), SOLAS Chapter VII, IMO Compendium data set" ;
+    rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
 
 #################################################################
 #    Classes
 #################################################################
 
-:DangerousGoodsItem a owl:Class ;
+:DangerousGoodsItema owl:Class ;
     rdfs:label "Dangerous Goods Item" ;
     rdfs:comment """An item or substance classified as dangerous goods under the IMDG Code.
 
@@ -54,11 +55,6 @@
     substance or article (e.g., UN 1203 for gasoline). Used universally for DG identification
     across all transport modes.""" .
 
-:IMDGCode a owl:Class ;
-    rdfs:label "IMDG Code" ;
-    rdfs:comment """A reference to the International Maritime Dangerous Goods Code entry governing
-    the transport conditions for a particular dangerous goods item. Published biennially by IMO.""" .
-
 :PackingGroup a owl:Class ;
     rdfs:label "Packing Group" ;
     rdfs:comment """A classification indicating the degree of danger presented by a substance.
@@ -77,16 +73,6 @@
     rdfs:comment """The EmS (Emergency Schedule) number assigned to dangerous goods specifying
     fire-fighting and spillage procedures. Formatted as F-x (fire) and S-x (spillage),
     as per the IMO/ILO/UNECE guidelines.""" .
-
-:Restriction a owl:Class ;
-    rdfs:label "Restriction" ;
-    rdfs:comment """A regulatory restriction applicable to the transport, handling, or storage
-    of dangerous goods, including quantity limits and special provisions.""" .
-
-:AcceptanceRule a owl:Class ;
-    rdfs:label "Acceptance Rule" ;
-    rdfs:comment """A rule governing the acceptance of dangerous goods for maritime transport,
-    including documentation requirements, packaging standards, and marking/labelling criteria.""" .
 
 :SegregationRule a owl:Class ;
     rdfs:label "Segregation Rule" ;
@@ -154,18 +140,6 @@
     rdfs:domain :DangerousGoodsItem ;
     rdfs:range :EmergencySchedule .
 
-:hasRestriction a owl:ObjectProperty ;
-    rdfs:label "has restriction" ;
-    rdfs:comment "Associates a dangerous goods item with an applicable transport restriction." ;
-    rdfs:domain :DangerousGoodsItem ;
-    rdfs:range :Restriction .
-
-:hasAcceptanceRule a owl:ObjectProperty ;
-    rdfs:label "has acceptance rule" ;
-    rdfs:comment "Associates a dangerous goods item with an acceptance rule for maritime transport." ;
-    rdfs:domain :DangerousGoodsItem ;
-    rdfs:range :AcceptanceRule .
-
 :hasSegregationRule a owl:ObjectProperty ;
     rdfs:label "has segregation rule" ;
     rdfs:comment "Associates a hazard class with a segregation rule for incompatible classes." ;
@@ -189,12 +163,6 @@
     rdfs:comment "Associates a DG declaration with a dangerous goods item listed therein." ;
     rdfs:domain :DGDeclaration ;
     rdfs:range :DangerousGoodsItem .
-
-:governedByIMDGCode a owl:ObjectProperty ;
-    rdfs:label "governed by IMDG Code" ;
-    rdfs:comment "Associates a dangerous goods item with the applicable IMDG Code entry." ;
-    rdfs:domain :DangerousGoodsItem ;
-    rdfs:range :IMDGCode .
 
 #################################################################
 #    Datatype Properties
