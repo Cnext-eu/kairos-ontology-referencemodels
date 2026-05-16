@@ -10,14 +10,18 @@
     dcterms:title "DCSA Container Operations Domain" ;
     dcterms:description """Container lifecycle and operational concepts for container shipping.
     
+    Operational modeling patterns derived from DCSA equipment event types
+    (GTIN, GTOT, LOAD, DISC, STUF, STRP). These classes provide a lifecycle
+    abstraction over DCSA's event-driven container tracking model.
+    
     Covers container journey tracking, operational status management,
-    and container lifecycle phases from empty pickup through loaded
-    transport to empty return. Includes concepts for Lift-on/Lift-off
-    (LoLo) operations and container availability management.""" ;
+    stuffing/stripping operations, and Lift-on/Lift-off (LoLo) handling.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;
-    owl:versionInfo "1.0.0" .
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "DCSA Track & Trace API v2.2 (equipment event types)" ;
+    rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
 
 #################################################################
 #    Container Operations Classes
@@ -37,29 +41,6 @@
     
     DCSA: Tracks whether a container is available, in-use, in-transit,
     or returned. Used for fleet management and container tracking.""" .
-
-:ContainerAvailability a owl:Class ;
-    rdfs:label "Container Availability" ;
-    rdfs:comment """Availability status of a container at a specific location.
-    
-    DCSA: Indicates whether a container is available for booking at a
-    given depot or terminal.""" ;
-    rdfs:subClassOf :ContainerOperationalStatus .
-
-:ContainerInTransit a owl:Class ;
-    rdfs:label "Container In Transit" ;
-    rdfs:comment """Status indicating a container is currently being transported.
-    
-    DCSA: Container is on vessel, rail, or truck between origin and destination.""" ;
-    rdfs:subClassOf :ContainerOperationalStatus .
-
-:ContainerAtTerminal a owl:Class ;
-    rdfs:label "Container At Terminal" ;
-    rdfs:comment """Status indicating a container is at a terminal awaiting next operation.
-    
-    DCSA: Container has been gated in or discharged and awaits loading,
-    pickup, or transshipment.""" ;
-    rdfs:subClassOf :ContainerOperationalStatus .
 
 :ContainerStuffing a owl:Class ;
     rdfs:label "Container Stuffing" ;
