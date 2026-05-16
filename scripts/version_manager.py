@@ -54,9 +54,23 @@ def write_version(folder: Path, version: str):
     (folder / "VERSION").write_text(version + "\n", encoding="utf-8")
 
 
+def get_content_dir(folder: Path) -> Path:
+    """Return the directory containing active ontology content.
+
+    If a 'current/' subfolder exists, content lives there; otherwise
+    content is directly in the folder (legacy layout).
+    """
+    current = folder / "current"
+    return current if current.is_dir() else folder
+
+
 def find_ttl_files(folder: Path):
-    """Find all .ttl files in an ontology folder (recursive)."""
-    return sorted(folder.rglob("*.ttl"))
+    """Find all .ttl files in an ontology folder's active content (recursive).
+
+    Excludes the archive/ directory.
+    """
+    content_dir = get_content_dir(folder)
+    return sorted(content_dir.rglob("*.ttl"))
 
 
 def bump_version(current: str, part: str) -> str:

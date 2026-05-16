@@ -73,23 +73,34 @@ def find_ontology_folders():
     return results
 
 
+def get_content_dir(folder: Path) -> Path:
+    """Return the directory containing the active ontology content.
+
+    If a 'current/' subfolder exists, content lives there; otherwise
+    content is directly in the folder (legacy layout).
+    """
+    current = folder / "current"
+    return current if current.is_dir() else folder
+
+
 def find_root_ttl(folder: Path) -> Path | None:
     """Find the root .ttl file for an ontology folder.
 
-    Looks for <foldername>.ttl or a lowercase variant in the folder root.
+    Looks for <foldername>.ttl or a lowercase variant in the content dir.
     """
+    content_dir = get_content_dir(folder)
     name = folder.name
     candidates = [
-        folder / f"{name}.ttl",
-        folder / f"{name.lower()}.ttl",
-        folder / f"{name.replace(' ', '-').lower()}.ttl",
+        content_dir / f"{name}.ttl",
+        content_dir / f"{name.lower()}.ttl",
+        content_dir / f"{name.replace(' ', '-').lower()}.ttl",
     ]
     for c in candidates:
         if c.is_file():
             return c
 
-    # Fallback: any .ttl directly in the folder
-    ttl_files = sorted(folder.glob("*.ttl"))
+    # Fallback: any .ttl directly in the content dir
+    ttl_files = sorted(content_dir.glob("*.ttl"))
     if len(ttl_files) == 1:
         return ttl_files[0]
     return ttl_files[0] if ttl_files else None
@@ -97,9 +108,10 @@ def find_root_ttl(folder: Path) -> Path | None:
 
 def find_domain_subfolders(folder: Path):
     """Find immediate subfolders that look like domain modules."""
+    content_dir = get_content_dir(folder)
     return sorted(
-        d for d in folder.iterdir()
-        if d.is_dir() and not d.name.startswith(".")
+        d for d in content_dir.iterdir()
+        if d.is_dir() and not d.name.startswith(".") and d.name not in ("archive",)
     )
 
 
