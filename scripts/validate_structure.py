@@ -214,6 +214,39 @@ def validate_ontology(folder: Path, verbose: bool) -> ValidationResult:
         else:
             r.fail(f"Subfolder {sub_rel}/: no .ttl files found")
 
+        # 5b. Check nested subfolders (2-level nesting for journey-model structure)
+        nested_subs = sorted(
+            d for d in sub.iterdir()
+            if d.is_dir() and not d.name.startswith(".")
+        )
+        for nested in nested_subs:
+            nested_ttls = sorted(nested.glob("*.ttl"))
+            nested_rel = nested.relative_to(folder)
+            if nested_ttls:
+                r.ok(f"Subfolder {nested_rel}/: has {len(nested_ttls)} .ttl file(s)", verbose, is_verbose=True)
+
+                for ttl in nested_ttls:
+                    mod_content = ttl.read_text(encoding="utf-8")
+                    mod_ver = VERSION_INFO_RE.search(mod_content)
+                    ttl_rel = ttl.relative_to(folder)
+                    if mod_ver:
+                        r.ok(f"{ttl_rel}: owl:versionInfo {mod_ver.group(1)}", verbose, is_verbose=True)
+                    else:
+                        r.fail(f"{ttl_rel}: missing owl:versionInfo")
+
+                    # Check module namespace convention
+                    mod_ns = NAMESPACE_MODULE_RE.search(mod_content)
+                    if mod_ns:
+                        r.ok(f"{ttl_rel}: namespace https://www.kairosflow.ai/ont/{mod_ns.group(1)}/{mod_ns.group(2)}#", verbose, is_verbose=True)
+                    else:
+                        mod_root_ns = NAMESPACE_ROOT_RE.search(mod_content)
+                        if mod_root_ns:
+                            r.ok(f"{ttl_rel}: uses root namespace pattern", verbose, is_verbose=True)
+                        else:
+                            r.warn(f"{ttl_rel}: could not detect namespace")
+            else:
+                r.fail(f"Subfolder {nested_rel}/: no .ttl files found")
+
     return r
 
 

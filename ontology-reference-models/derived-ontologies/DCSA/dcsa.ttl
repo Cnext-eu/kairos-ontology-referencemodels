@@ -8,33 +8,25 @@
 # Ontology Metadata
 : a owl:Ontology ;
     dcterms:title "Kairos DCSA Container Shipping Ontology" ;
-    dcterms:description """Digital Container Shipping Association (DCSA) ontology for standardized container shipping operations.
+    dcterms:description """Digital Container Shipping Association (DCSA) ontology for standardized
+    container shipping operations, organized according to DCSA's journey-based
+    Information Model structure (2024.Q4):
     
-    This ontology provides a semantic framework for digital container shipping, covering:
-    - Container booking and shipping instructions
-    - Electronic Bill of Lading (eBL) and transport documents
-    - Container equipment types and specifications
-    - Track and trace events and milestones
-    - Shipment lifecycle management
-    - Party roles in container shipping
-    - Port and terminal operations
-    - Document status and lifecycle
-    - Container operations and lifecycle management
+    1. Shipment Journey — Booking and transport documents (BKG, EBL)
+    2. Equipment Journey — Container lifecycle and operations
+    3. Vessel Journey — Service loops, schedules, port rotations (OVS)
+    4. Track and Trace — Shipping events and milestones (TNT)
+    5. Shared Kernel (SK) — Common entities: equipment types, parties, locations
     
-    Fully aligned with DCSA API standards for digital container shipping.
-    
-    This root ontology imports all domain modules.""" ;
+    This root ontology imports all journey-level modules.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
     dcterms:source "DCSA Information Model 2024.Q4 (BKG v2.0, EBL v3.0, TNT v2.2, OVS v3.0)" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> ;
-    owl:imports <https://www.kairosflow.ai/ont/dcsa/booking#> ,
-                <https://www.kairosflow.ai/ont/dcsa/container-operations#> ,
-                <https://www.kairosflow.ai/ont/dcsa/equipment#> ,
-                <https://www.kairosflow.ai/ont/dcsa/transport-documents#> ,
-                <https://www.kairosflow.ai/ont/dcsa/party#> ,
-                <https://www.kairosflow.ai/ont/dcsa/locations#> ,
-                <https://www.kairosflow.ai/ont/dcsa/events#> ,
-                <https://www.kairosflow.ai/ont/dcsa/schedule#> .
+    owl:imports <https://www.kairosflow.ai/ont/dcsa/shipment-journey#> ,
+                <https://www.kairosflow.ai/ont/dcsa/equipment-journey#> ,
+                <https://www.kairosflow.ai/ont/dcsa/vessel-journey#> ,
+                <https://www.kairosflow.ai/ont/dcsa/track-and-trace#> ,
+                <https://www.kairosflow.ai/ont/dcsa/shared-kernel#> .
