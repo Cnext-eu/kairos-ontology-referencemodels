@@ -12,14 +12,15 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
-    dcterms:source "WCO Data Model 3.0, eFTI Regulation (EU) 2020/1056" .
+    owl:versionInfo "1.1.0" ;
+    dcterms:source "WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056" ;
+    rdfs:seeAlso <https://www.wcoomd.org/datamodel> .
 
 #################################################################
 #    Classes
 #################################################################
 
-:Certificate a owl:Class ;
+:Certificatea owl:Class ;
     rdfs:label "Certificate" ;
     rdfs:comment """A trade facilitation certificate issued by a competent authority.
 

@@ -1,12 +1,14 @@
 # WCO Customs Ontology
 
 **Namespace:** `https://www.kairosflow.ai/ont/wco#`  
-**Version:** 1.0.0  
-**Created:** 2026-05-16
+**Version:** 1.1.0  
+**Created:** 2026-05-16  
+**Source:** WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056  
+**Reference:** https://www.wcoomd.org/datamodel
 
 ## Description
 
-World Customs Organization (WCO) ontology for international customs procedures and trade facilitation. Fully aligned with the WCO Data Model 3.0 and eFTI Regulation (EU) 2020/1056.
+World Customs Organization (WCO) ontology for international customs procedures and trade facilitation. Aligned with the WCO Data Model 3.10.0 and eFTI Regulation (EU) 2020/1056.
 
 ## Structure
 
