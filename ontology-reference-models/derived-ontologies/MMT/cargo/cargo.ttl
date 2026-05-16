@@ -140,7 +140,84 @@
 
 :weightUnit a owl:DatatypeProperty ;
     rdfs:label "weight unit" ;
-    rdfs:comment "Unit of weight measurement (KG, LB, TON)." ;
+    rdfs:comment "Unit of weight measurement (KG, LB, TON)." .
+
+#################################################################
+#    Instruction Classes (UN/CEFACT RABIE v101)
+#################################################################
+
+:HandlingInstructions a owl:Class ;
+    rdfs:label "Handling Instructions" ;
+    rdfs:comment """Instructions for cargo handling during transport.
+
+    UN/CEFACT RABIE: HandlingInstructionsType — specific requirements for
+    loading, unloading, stacking, or storage of cargo.""" .
+
+:DisposalInstructions a owl:Class ;
+    rdfs:label "Disposal Instructions" ;
+    rdfs:comment """Instructions for the disposal of cargo or waste material.
+
+    UN/CEFACT RABIE: DisposalInstructionsType — requirements for safe
+    disposal of hazardous or regulated materials.""" .
+
+:QuarantineInstructions a owl:Class ;
+    rdfs:label "Quarantine Instructions" ;
+    rdfs:comment """Instructions for quarantine treatment of cargo.
+
+    UN/CEFACT RABIE: QuarantineInstructionsType — phytosanitary,
+    veterinary, or biosecurity treatment requirements.""" .
+
+#################################################################
+#    Additional Cargo Classes (UN/CEFACT RABIE v101)
+#################################################################
+
+:WasteMaterial a owl:Class ;
+    rdfs:label "Waste Material" ;
+    rdfs:comment """Waste material being transported.
+
+    UN/CEFACT RABIE: TransportWasteMaterialType — regulated waste
+    requiring special handling, documentation, and disposal.""" .
+
+:WasteMaterialComponent a owl:Class ;
+    rdfs:label "Waste Material Component" ;
+    rdfs:comment """A component of waste material with specific characteristics.
+
+    UN/CEFACT RABIE: TransportWasteMaterialComponentType — individual
+    constituent of a waste consignment.""" .
+
+:ShippingMarks a owl:Class ;
+    rdfs:label "Shipping Marks" ;
+    rdfs:comment """Marks and numbers applied to packages for identification.
+
+    UN/CEFACT RABIE: LogisticsShippingMarksType — physical markings
+    on cargo for identification, handling, and routing purposes.""" .
+
+:CargoInsurance a owl:Class ;
+    rdfs:label "Cargo Insurance" ;
+    rdfs:comment """Insurance coverage for cargo during transport.
+
+    UN/CEFACT RABIE: TransportCargoInsuranceType — details of insurance
+    coverage, policy, and insured value for goods in transit.""" .
+
+#################################################################
+#    Additional Object Properties
+#################################################################
+
+:hasHandlingInstructions a owl:ObjectProperty ;
+    rdfs:label "has handling instructions" ;
+    rdfs:comment "Handling instructions applicable to this cargo." ;
+    rdfs:domain :CargoItem ;
+    rdfs:range :HandlingInstructions .
+
+:hasShippingMarks a owl:ObjectProperty ;
+    rdfs:label "has shipping marks" ;
+    rdfs:comment "Shipping marks applied to this cargo item or package." ;
+    rdfs:range :ShippingMarks .
+
+:hasInsurance a owl:ObjectProperty ;
+    rdfs:label "has insurance" ;
+    rdfs:comment "Insurance coverage for this cargo." ;
+    rdfs:range :CargoInsurance .
     rdfs:domain :Weight ;
     rdfs:range xsd:string .
 

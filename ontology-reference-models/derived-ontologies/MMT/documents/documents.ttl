@@ -114,6 +114,71 @@
     rdfs:subClassOf :TransportDocument .
 
 #################################################################
+#    Document Lifecycle Classes (UN/CEFACT RABIE v101)
+#################################################################
+
+:DocumentAuthentication a owl:Class ;
+    rdfs:label "Document Authentication" ;
+    rdfs:comment """Authentication or signature applied to a document.
+
+    UN/CEFACT RABIE: DocumentAuthenticationType — electronic or physical
+    authentication, signatory details, and authentication date.""" .
+
+:DocumentVersion a owl:Class ;
+    rdfs:label "Document Version" ;
+    rdfs:comment """A specific version of a document.
+
+    UN/CEFACT RABIE: DocumentVersionType — version identifier, issue date,
+    and revision status of a document.""" .
+
+:ProductCertificate a owl:Class ;
+    rdfs:label "Product Certificate" ;
+    rdfs:comment """A certificate attesting to product characteristics or compliance.
+
+    UN/CEFACT RABIE: ProductCertificateType — phytosanitary, veterinary,
+    quality, or compliance certificates for goods.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+#################################################################
+#    Instruction Document Classes (UN/CEFACT RABIE v101)
+#################################################################
+
+:DeliveryInstructions a owl:Class ;
+    rdfs:label "Delivery Instructions" ;
+    rdfs:comment """Instructions for delivery of consignment to receiver.
+
+    UN/CEFACT RABIE: DeliveryInstructionsType — delivery window, contact
+    details, special requirements, and proof-of-delivery needs.""" .
+
+:TransportInstructions a owl:Class ;
+    rdfs:label "Transport Instructions" ;
+    rdfs:comment """Instructions from shipper to carrier regarding transport execution.
+
+    UN/CEFACT RABIE: TransportInstructionsType — routing preferences,
+    handling requirements, and service level specifications.""" .
+
+#################################################################
+#    Additional Object Properties
+#################################################################
+
+:hasAuthentication a owl:ObjectProperty ;
+    rdfs:label "has authentication" ;
+    rdfs:comment "Authentication applied to this document." ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range :DocumentAuthentication .
+
+:hasVersion a owl:ObjectProperty ;
+    rdfs:label "has version" ;
+    rdfs:comment "Version information for this document." ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range :DocumentVersion .
+
+:hasCertificate a owl:ObjectProperty ;
+    rdfs:label "has certificate" ;
+    rdfs:comment "Product certificate associated with this document." ;
+    rdfs:range :ProductCertificate .
+
+#################################################################
 #    Datatype Properties
 #################################################################
 

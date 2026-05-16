@@ -104,6 +104,13 @@
     UN/CEFACT MMT: Customs, security, or quality inspection.""" ;
     rdfs:subClassOf :TransportEvent .
 
+:InspectionStatus a owl:Class ;
+    rdfs:label "Inspection Status" ;
+    rdfs:comment """The status result of a cargo or equipment inspection.
+
+    UN/CEFACT RABIE: InspectionStatusType — pass, fail, conditional,
+    or pending status of customs, security, or quality inspection.""" .
+
 #################################################################
 #    Datatype Properties
 #################################################################

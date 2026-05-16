@@ -119,7 +119,45 @@
 
 :sealType a owl:DatatypeProperty ;
     rdfs:label "seal type" ;
-    rdfs:comment "Type of seal: CARRIER, CUSTOMS, SHIPPER." ;
+    rdfs:comment "Type of seal: CARRIER, CUSTOMS, SHIPPER." .
+
+#################################################################
+#    Temperature Instruction Class (UN/CEFACT RABIE v101)
+#################################################################
+
+:TemperatureSettingInstructions a owl:Class ;
+    rdfs:label "Temperature Setting Instructions" ;
+    rdfs:comment """Instructions for temperature control of reefer equipment.
+
+    UN/CEFACT RABIE: TemperatureSettingInstructionsType — target temperature,
+    ventilation settings, humidity, and monitoring requirements.""" .
+
+#################################################################
+#    Seal Class (UN/CEFACT RABIE v101)
+#################################################################
+
+:Seal a owl:Class ;
+    rdfs:label "Seal" ;
+    rdfs:comment """A security seal applied to transport equipment.
+
+    UN/CEFACT RABIE: LogisticsSealType — seal number, issuing party,
+    seal type (carrier, customs, shipper), and condition.""" .
+
+#################################################################
+#    Additional Object Properties
+#################################################################
+
+:hasTemperatureInstructions a owl:ObjectProperty ;
+    rdfs:label "has temperature instructions" ;
+    rdfs:comment "Temperature control instructions for this equipment." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range :TemperatureSettingInstructions .
+
+:hasSeal a owl:ObjectProperty ;
+    rdfs:label "has seal" ;
+    rdfs:comment "Security seal applied to this equipment." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range :Seal .
     rdfs:range xsd:string .
 
 :temperatureSetting a owl:DatatypeProperty ;

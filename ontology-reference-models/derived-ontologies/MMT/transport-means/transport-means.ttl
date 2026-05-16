@@ -105,6 +105,27 @@
     rdfs:comment "Voyage or sailing reference." ;
     rdfs:range xsd:string .
 
+#################################################################
+#    Convoy Class (UN/CEFACT RABIE v101)
+#################################################################
+
+:LogisticsConvoy a owl:Class ;
+    rdfs:label "Logistics Convoy" ;
+    rdfs:comment """A group of transport means moving together.
+
+    UN/CEFACT RABIE: LogisticsConvoyType — a convoy of vehicles, vessels,
+    or rail cars travelling together under coordinated movement.""" .
+
+#################################################################
+#    Additional Object Properties
+#################################################################
+
+:hasConvoyMember a owl:ObjectProperty ;
+    rdfs:label "has convoy member" ;
+    rdfs:comment "A transport means that is part of this convoy." ;
+    rdfs:domain :LogisticsConvoy ;
+    rdfs:range :LogisticsMeansOfTransport .
+
 :flightNumber a owl:DatatypeProperty ;
     rdfs:label "flight number" ;
     rdfs:comment "Aircraft flight number." ;

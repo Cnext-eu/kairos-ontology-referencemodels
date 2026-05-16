@@ -114,7 +114,19 @@
 
 :inlandMode a owl:DatatypeProperty ;
     rdfs:label "inland mode" ;
-    rdfs:comment "Inland transport mode: RAIL, BARGE, ROAD." ;
+    rdfs:comment "Inland transport mode: RAIL, BARGE, ROAD." .
+
+#################################################################
+#    Haulage Instructions Class (UN/CEFACT RABIE v101)
+#################################################################
+
+:HaulageInstructions a owl:Class ;
+    rdfs:label "Haulage Instructions" ;
+    rdfs:comment """Instructions for inland haulage of cargo or equipment.
+
+    UN/CEFACT RABIE: HaulageInstructionsType — pickup/delivery locations,
+    time windows, vehicle requirements, and routing preferences for
+    pre-carriage or on-carriage legs.""" .
     rdfs:domain :InlandLeg ;
     rdfs:range xsd:string .
 
