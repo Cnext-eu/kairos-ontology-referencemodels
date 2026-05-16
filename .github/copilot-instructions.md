@@ -66,10 +66,10 @@ Each ontology folder uses the **current/archive** layout:
 
 ## Skills Available
 
-### Ontology Audit (`.github/skills/kairos-ontology-audit.md`)
+### Ontology Audit (`.github/skills/kairos-ontology-audit/SKILL.md`)
 Use when adding/modifying classes to verify alignment with the cited standard. Ensures no invented content enters the reference models.
 
-### Ontology Versioning (`.github/skills/kairos-ontology-versioning.md`)
+### Ontology Versioning (`.github/skills/kairos-ontology-versioning/SKILL.md`)
 Use when making any content change to an ontology. Guides the archive → bump → sync → validate workflow. Ensures old versions are preserved and `owl:versionInfo` stays consistent.
 
 ## Common Tasks

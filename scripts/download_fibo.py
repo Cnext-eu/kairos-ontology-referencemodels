@@ -44,6 +44,9 @@ def download_file(url, dest_path):
                 print(f"\rProgress: {percent:.1f}%", end='')
     print()  # New line after progress
     
+STABLE_FIBO_FOLDER = "fibo"
+
+
 def extract_ontologies(zip_path, extract_to):
     """Extract RDF/TTL/OWL files from the zip archive."""
     print(f"Extracting ontologies to {extract_to}...")
@@ -61,7 +64,33 @@ def extract_ontologies(zip_path, extract_to):
             zip_ref.extract(file, extract_to)
     
     print(f"Extracted {len(ontology_files)} files")
+
+    # Rename the version-specific top-level folder to a stable name so that
+    # catalog-v001.xml paths remain valid across FIBO upgrades.
+    _rename_to_stable_folder(extract_to)
+
     return len(ontology_files)
+
+
+def _rename_to_stable_folder(extract_to):
+    """Rename the extracted top-level folder (e.g. edmcouncil-fibo-574a831) to a stable name."""
+    extract_path = Path(extract_to)
+    stable_path = extract_path / STABLE_FIBO_FOLDER
+
+    # Find the version-specific folder (the only directory that isn't our stable name)
+    candidates = [
+        d for d in extract_path.iterdir()
+        if d.is_dir() and d.name != STABLE_FIBO_FOLDER
+    ]
+
+    if len(candidates) == 1:
+        source = candidates[0]
+        if stable_path.exists():
+            shutil.rmtree(stable_path)
+        source.rename(stable_path)
+        print(f"Renamed {source.name}/ → {STABLE_FIBO_FOLDER}/")
+    elif not stable_path.exists():
+        print("Warning: Could not identify extracted folder to rename.")
 
 def create_metadata(target_dir, release_info):
     """Create metadata file with download information."""

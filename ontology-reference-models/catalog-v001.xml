@@ -7,51 +7,13 @@
     Tools that support XML catalogs (Protégé, rdflib with rdflib-catalog) will use
     local files instead of fetching from the internet.
     
-    Generated for FIBO version: Q1 2026 (master_2026Q1)
+    FIBO URIs are resolved via rewriteURI — no update needed on FIBO upgrades.
     -->
     
-    <!-- FIBO Foundation (FND) - Agents and People -->
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/" 
-         uri="authoritative-ontologies/FIBO/current/edmcouncil-fibo-574a831/FND/AgentsAndPeople/Agents.rdf"/>
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/People/" 
-         uri="authoritative-ontologies/FIBO/current/edmcouncil-fibo-574a831/FND/AgentsAndPeople/People.rdf"/>
-    
-    <!-- FIBO Foundation (FND) - Organizations -->
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/" 
-         uri="authoritative-ontologies/FIBO/current/edmcouncil-fibo-574a831/FND/Organizations/FormalOrganizations.rdf"/>
-    
-    <!-- FIBO Foundation (FND) - Agreements -->
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/" 
-         uri="authoritative-ontologies/FIBO/current/edmcouncil-fibo-574a831/FND/Agreements/Contracts.rdf"/>
-    
-    <!-- FIBO Foundation (FND) - Law -->
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/Law/LegalCore/" 
-         uri="authoritative-ontologies/FIBO/current/edmcouncil-fibo-574a831/FND/Law/LegalCore.rdf"/>
-    
-    <!-- FIBO Foundation (FND) - Relations -->
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/" 
-         uri="authoritative-ontologies/FIBO/current/edmcouncil-fibo-574a831/FND/Relations/Relations.rdf"/>
-    
-    <!-- FIBO Foundation (FND) - Dates and Times -->
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/" 
-         uri="authoritative-ontologies/FIBO/current/edmcouncil-fibo-574a831/FND/DatesAndTimes/FinancialDates.rdf"/>
-    
-    <!-- FIBO Foundation (FND) - Products and Services -->
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/" 
-         uri="authoritative-ontologies/FIBO/current/edmcouncil-fibo-574a831/FND/ProductsAndServices/ProductsAndServices.rdf"/>
-    
-    <!-- FIBO Foundation (FND) - Parties -->
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/" 
-         uri="authoritative-ontologies/FIBO/current/edmcouncil-fibo-574a831/FND/Parties/Parties.rdf"/>
-    <!-- Deprecated: FND/Parties/Roles was merged into FND/Parties/Parties in 2013 -->
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/" 
-         uri="authoritative-ontologies/FIBO/current/edmcouncil-fibo-574a831/FND/Parties/Parties.rdf"/>
-    
-    <!-- FIBO Business Entities (BE) - Partnerships -->
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/" 
-         uri="authoritative-ontologies/FIBO/current/edmcouncil-fibo-574a831/BE/Partnerships/Partnerships.rdf"/>
-    
-    <!-- Add more FIBO module mappings as needed -->
+    <!-- FIBO: single rewrite rule resolves all FIBO URIs to the stable local path.
+         The folder is always named "fibo/" regardless of release version. -->
+    <rewriteURI uriStartString="https://spec.edmcouncil.org/fibo/ontology/"
+                rewritePrefix="authoritative-ontologies/FIBO/current/fibo/"/>
     
     <!-- ========== DCSA (Digital Container Shipping Association) ========== -->
     <uri name="https://www.kairosflow.ai/ont/dcsa#" uri="derived-ontologies/DCSA/current/dcsa.ttl"/>

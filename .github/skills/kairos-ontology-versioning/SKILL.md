@@ -1,3 +1,8 @@
+---
+name: kairos-ontology-versioning
+description: Manage version increments and archiving when ontology content changes. Use when making any content change to an ontology to ensure old versions are preserved and owl:versionInfo stays consistent.
+---
+
 # Ontology Versioning Skill
 
 ## Purpose

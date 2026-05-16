@@ -1,3 +1,8 @@
+---
+name: kairos-ontology-audit
+description: Audit a derived ontology module to verify that every owl:Class is backed by its cited standard. Use when adding/modifying classes, onboarding a new standard, or during compliance reviews.
+---
+
 # Ontology Audit Skill
 
 ## Purpose
