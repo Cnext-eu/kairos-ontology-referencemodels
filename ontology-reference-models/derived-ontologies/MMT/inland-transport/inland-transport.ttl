@@ -12,12 +12,19 @@
 
     Covers inland legs (rail, barge, road), inland carriers, inland terminals,
     and handover events for door-to-door logistics.
-    Based on UN/CEFACT MMT Reference Data Model (pre/on-carriage movements).""" ;
+    Based on UN/CEFACT MMT Reference Data Model (pre/on-carriage movements).
+
+    NOTE: Most classes in this module are OWL modeling constructs that reify
+    BSP D23B code-based distinctions into subclass hierarchies. The BSP model
+    uses a single TransportMovement class with modeCode (2=Rail, 3=Road,
+    8=Inland waterway) and TradeParty with role properties. Only
+    HaulageInstructions is a directly confirmed BSP D23B named class.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
-    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model v1.0 (RABIE v101)" .
+    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model v1.0 (RABIE v101)" ;
+    rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
 
 #################################################################
 #    Inland Transport Classes

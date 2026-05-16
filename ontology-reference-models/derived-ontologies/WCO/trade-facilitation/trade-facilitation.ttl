@@ -8,7 +8,7 @@
 # Ontology Metadata
 : a owl:Ontology ;
     dcterms:title "WCO Trade Facilitation Domain" ;
-    dcterms:description "Trade facilitation certificates, permits, and trusted trader programmes based on the WCO Data Model 3.0 and eFTI Regulation." ;
+    dcterms:description "Trade facilitation certificates, permits, and trusted trader programmes based on the WCO Data Model 3.10.0 and eFTI Regulation." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;
@@ -20,7 +20,7 @@
 #    Classes
 #################################################################
 
-:Certificatea owl:Class ;
+:Certificate a owl:Class ;
     rdfs:label "Certificate" ;
     rdfs:comment """A trade facilitation certificate issued by a competent authority.
 

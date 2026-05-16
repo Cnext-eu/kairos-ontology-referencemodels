@@ -25,6 +25,29 @@ Modular ontology for international logistics and freight transport, based on the
 3. **Properties follow their primary domain** — object/datatype properties are placed in the module of their primary domain class
 4. **Cross-domain references use untyped ranges** — when a property references a class from another domain, the `rdfs:range` is omitted to avoid cross-imports
 
+## Modeling Approach: Reification of BSP Code-Based Distinctions
+
+The UN/CEFACT BSP D23B vocabulary uses a **flat, code-based architecture** — a single generic class
+(e.g., `LogisticsTransportEquipment`, `TradeParty`, `TransportEvent`, `LogisticsLocation`) with
+type/mode/function codes to distinguish subtypes. This ontology deliberately **reifies** those
+code-based distinctions into OWL subclass hierarchies for improved semantic expressiveness and
+reasoning support.
+
+| BSP D23B Pattern | This Ontology's Approach |
+|------------------|--------------------------|
+| `LogisticsTransportEquipment` + `categoryCode` | `FreightContainer`, `ReeferContainer`, `TankContainer`, etc. |
+| `TradeParty` + role properties | `Consignor`, `Consignee`, `Carrier`, `FreightForwarder`, etc. |
+| `TransportEvent` + `typeCode` | `DepartureEvent`, `ArrivalEvent`, `LoadingEvent`, etc. |
+| `LogisticsLocation` + `locationFunctionTypeCode` | `Port`, `Airport`, `RailTerminal`, etc. |
+| `LogisticsTransportMeans` + `modeCode` | `Vessel`, `Aircraft`, `RailVehicle`, etc. |
+| `TransportMovement` + `modeCode` | `InlandLeg`, `RailLeg`, `BargeLeg`, `RoadLeg` |
+| `DangerousGoods` + `hazardClassificationId` | `ExplosiveGoods`, `FlammableGas`, etc. (from UN TDG) |
+
+This design choice enables OWL-DL reasoning, SHACL validation, and SPARQL queries that would
+otherwise require complex FILTER expressions on code values. Classes that are directly confirmed
+BSP D23B entities are noted in their `rdfs:comment`; reified subclasses cite their source code
+list or standard.
+
 ## Metadata
 
 - **Version:** 1.0.0

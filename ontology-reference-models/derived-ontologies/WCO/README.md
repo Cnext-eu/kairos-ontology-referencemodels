@@ -51,7 +51,7 @@ Customs and trade documents including declarations, permits, transit documents, 
 
 ## Standards Alignment
 
-- WCO Data Model 3.0
+- WCO Data Model 3.10.0
 - eFTI Regulation (EU) 2020/1056
 - EU Union Customs Code (UCC)
 - ICS2 (Import Control System 2)

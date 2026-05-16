@@ -17,7 +17,8 @@
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
-    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" .
+    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
+    rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
 
 #################################################################
 #    Location Classes

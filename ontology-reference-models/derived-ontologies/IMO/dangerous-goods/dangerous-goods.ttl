@@ -25,7 +25,7 @@
 #    Classes
 #################################################################
 
-:DangerousGoodsItema owl:Class ;
+:DangerousGoodsItem a owl:Class ;
     rdfs:label "Dangerous Goods Item" ;
     rdfs:comment """An item or substance classified as dangerous goods under the IMDG Code.
 

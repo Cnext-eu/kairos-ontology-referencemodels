@@ -8,7 +8,7 @@
 # Ontology Metadata
 : a owl:Ontology ;
     dcterms:title "WCO Locations Domain" ;
-    dcterms:description "Customs locations, border crossings, bonded facilities, and controlled areas based on the WCO Data Model 3.0." ;
+    dcterms:description "Customs locations, border crossings, bonded facilities, and controlled areas based on the WCO Data Model 3.10.0." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;
@@ -20,7 +20,7 @@
 #    Classes
 #################################################################
 
-:CustomsOfficea owl:Class ;
+:CustomsOffice a owl:Class ;
     rdfs:label "Customs Office" ;
     rdfs:comment """A government facility where customs formalities are performed.
 

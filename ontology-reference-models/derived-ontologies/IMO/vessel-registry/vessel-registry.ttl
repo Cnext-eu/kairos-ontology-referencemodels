@@ -52,7 +52,11 @@
     rdfs:comment """A collection of vessels operated or managed by a single entity.
 
     Used to group vessels under a common owner, operator, or manager for
-    administrative and operational purposes.""" .
+    administrative and operational purposes.
+
+    NOTE: This is a modeling convenience class — 'Fleet' is not a named entity in any
+    IMO Compendium data set or FAL Convention instrument. Consider using a client-specific
+    ontology for fleet management concepts.""" .
 
 :IMONumber a owl:Class ;
     rdfs:label "IMO Number" ;

@@ -22,7 +22,7 @@
     - Customs locations and controlled areas
     - Customs and trade documents
 
-    Fully aligned with WCO Data Model 3.0 and eFTI Regulation (EU) 2020/1056.""" ;
+    Fully aligned with WCO Data Model 3.10.0 and eFTI Regulation (EU) 2020/1056.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;

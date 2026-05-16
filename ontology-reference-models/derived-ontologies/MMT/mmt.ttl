@@ -29,6 +29,7 @@
     dcterms:modified "2026-05-16"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model v1.0 (RABIE v101)" ;
+    rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> ;
     owl:imports <https://www.kairosflow.ai/ont/mmt/consignment> ;
     owl:imports <https://www.kairosflow.ai/ont/mmt/cargo> ;
     owl:imports <https://www.kairosflow.ai/ont/mmt/equipment> ;
@@ -42,76 +43,85 @@
 
 #################################################################
 #    Dangerous Goods Classes
-#    (Kept in root — a separate IMO ontology covers DG in detail)
+#    Source: UN Recommendations on the Transport of Dangerous Goods
+#    ("Orange Book"), 23rd revised edition. The parent DangerousGoods
+#    class corresponds to unece:DangerousGoods in BSP D23B.
+#    Subclasses reify the 9 hazard classes as OWL types; the BSP model
+#    uses a single flat class with hazardClassificationId instead.
+#    (A separate IMO ontology covers DG transport documentation.)
 #################################################################
 
 :DangerousGoods a owl:Class ;
     rdfs:label "Dangerous Goods" ;
     rdfs:comment """Hazardous materials requiring special handling.
     
-    UN/CEFACT MMT: UN-classified dangerous goods.""" .
+    UN/CEFACT BSP D23B: Corresponds to unece:DangerousGoods — goods which may contain
+    a substance which poses risks to people and/or the environment during transportation.
+    The BSP model uses hazardClassificationId to distinguish classes; the subclasses below
+    reify the UN TDG hazard class taxonomy as OWL classes for semantic expressiveness.""" .
 
 :ExplosiveGoods a owl:Class ;
     rdfs:label "Explosive Goods (Class 1)" ;
     rdfs:comment """Explosive substances and articles.
     
-    UN/CEFACT MMT: UN Class 1 dangerous goods.""" ;
+    UN TDG Recommendations, Part 2, §2.1: Class 1 dangerous goods.""" ;
     rdfs:subClassOf :DangerousGoods .
 
 :FlammableGas a owl:Class ;
     rdfs:label "Flammable Gas (Class 2.1)" ;
     rdfs:comment """Flammable gases.
     
-    UN/CEFACT MMT: UN Class 2.1 dangerous goods.""" ;
+    UN TDG Recommendations, Part 2, §2.2: Class 2.1 dangerous goods.""" ;
     rdfs:subClassOf :DangerousGoods .
 
 :FlammableLiquid a owl:Class ;
     rdfs:label "Flammable Liquid (Class 3)" ;
     rdfs:comment """Flammable liquids.
     
-    UN/CEFACT MMT: UN Class 3 dangerous goods.""" ;
+    UN TDG Recommendations, Part 2, §2.3: Class 3 dangerous goods.""" ;
     rdfs:subClassOf :DangerousGoods .
 
 :FlammableSolid a owl:Class ;
     rdfs:label "Flammable Solid (Class 4)" ;
     rdfs:comment """Flammable solids.
     
-    UN/CEFACT MMT: UN Class 4 dangerous goods.""" ;
+    UN TDG Recommendations, Part 2, §2.4: Class 4 dangerous goods.""" ;
     rdfs:subClassOf :DangerousGoods .
 
 :OxidizingSubstance a owl:Class ;
     rdfs:label "Oxidizing Substance (Class 5)" ;
     rdfs:comment """Oxidizing substances and organic peroxides.
     
-    UN/CEFACT MMT: UN Class 5 dangerous goods.""" ;
+    UN TDG Recommendations, Part 2, §2.5: Class 5 dangerous goods.""" ;
     rdfs:subClassOf :DangerousGoods .
 
 :ToxicSubstance a owl:Class ;
     rdfs:label "Toxic Substance (Class 6)" ;
     rdfs:comment """Toxic and infectious substances.
     
-    UN/CEFACT MMT: UN Class 6 dangerous goods.""" ;
+    UN TDG Recommendations, Part 2, §2.6: Class 6 dangerous goods.""" ;
     rdfs:subClassOf :DangerousGoods .
 
 :RadioactiveMaterial a owl:Class ;
     rdfs:label "Radioactive Material (Class 7)" ;
     rdfs:comment """Radioactive materials.
     
-    UN/CEFACT MMT: UN Class 7 dangerous goods.""" ;
+    UN TDG Recommendations, Part 2, §2.7: Class 7 dangerous goods.
+    Also exists as standalone unece:RadioactiveMaterial in BSP D23B.""" ;
     rdfs:subClassOf :DangerousGoods .
 
 :CorrosiveSubstance a owl:Class ;
     rdfs:label "Corrosive Substance (Class 8)" ;
     rdfs:comment """Corrosive substances.
     
-    UN/CEFACT MMT: UN Class 8 dangerous goods.""" ;
+    UN TDG Recommendations, Part 2, §2.8: Class 8 dangerous goods.""" ;
     rdfs:subClassOf :DangerousGoods .
 
 :MiscellaneousDangerousGoods a owl:Class ;
     rdfs:label "Miscellaneous Dangerous Goods (Class 9)" ;
     rdfs:comment """Miscellaneous dangerous substances and articles.
     
-    UN/CEFACT MMT: UN Class 9 dangerous goods.""" ;
+    UN TDG Recommendations, Part 2, §2.9: Class 9 dangerous goods.""" ;
     rdfs:subClassOf :DangerousGoods .
 
 #################################################################
