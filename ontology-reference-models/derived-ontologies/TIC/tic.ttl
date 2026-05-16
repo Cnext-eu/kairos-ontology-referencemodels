@@ -16,20 +16,21 @@
     dcterms:title "Kairos TIC 4.0 Terminal Industry Ontology" ;
     dcterms:description """Terminal Industry Committee (TIC) 4.0 ontology for standardized terminal and port operations.
 
-    This ontology provides a comprehensive semantic framework for terminal operations, covering:
+    This ontology provides a semantic framework for terminal operations, covering:
     - Terminal infrastructure and equipment
-    - Stevedoring and cargo handling operations
+    - Cargo handling operations (carrier visits, cargo visits, moves, cycles)
     - Automotive and vehicle processing services
     - Party roles in terminal operations
     - Terminal locations and positioning
     - Operational events and milestones
 
-    Fully aligned with the Terminal Industry Committee (TIC) 4.0 Standard for terminal interoperability.""" ;
+    Aligned with TIC4.0 Release 2025.017 / BSI PAS 4000:2026.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
-    dcterms:source "Terminal Industry Committee (TIC) 4.0 Standard" ;
+    dcterms:modified "2026-07-15"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
+    dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
+    rdfs:seeAlso <https://tic40.org/standards/> ;
     owl:imports <https://www.kairosflow.ai/ont/tic/terminal-infrastructure#> ;
     owl:imports <https://www.kairosflow.ai/ont/tic/handling-operations#> ;
     owl:imports <https://www.kairosflow.ai/ont/tic/automotive-services#> ;

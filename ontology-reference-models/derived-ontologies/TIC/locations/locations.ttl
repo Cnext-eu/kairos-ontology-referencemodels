@@ -11,13 +11,13 @@
     dcterms:description """Terminal locations and positioning domain of the TIC 4.0 ontology.
 
     Covers the precise location model within a terminal including terminal, berth, yard
-    positions, gate lanes, quay side areas, stack positions, reefer plugs, rail sidings,
-    and barge quays.""" ;
+    positions, gate lanes, quay side areas, reefer plugs, rail sidings, and barge quays.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
-    dcterms:source "Terminal Industry Committee (TIC) 4.0 Standard" .
+    dcterms:modified "2026-07-15"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
+    dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
+    rdfs:seeAlso <https://tic40.org/standards/> .
 
 #################################################################
 #    Location Classes
@@ -99,13 +99,6 @@
 
     TIC 4.0: The operational zone between the vessel and the yard, serviced by quay cranes.""" ;
     rdfs:subClassOf :TerminalLocation .
-
-:StackPosition a owl:Class ;
-    rdfs:label "Stack Position" ;
-    rdfs:comment """A specific container slot within a yard block, identified by bay, row, and tier coordinates.
-
-    TIC 4.0: Extends YardPosition with occupancy status and weight class constraints.""" ;
-    rdfs:subClassOf :YardPosition .
 
 :ReeferPlug a owl:Class ;
     rdfs:label "Reefer Plug" ;

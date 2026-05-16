@@ -10,14 +10,15 @@
     dcterms:title "TIC 4.0 Automotive Services Ontology" ;
     dcterms:description """Automotive and vehicle processing services domain of the TIC 4.0 ontology.
 
-    Covers the full range of vehicle handling at automotive terminals including vehicle units,
-    VIN identification, vehicle storage, pre-delivery inspections (PDI), washing, enhancements,
-    modifications, technical services, body repair, release status, and damage reporting.""" ;
+    Covers vehicle handling at automotive terminals including vehicle units,
+    VIN identification, vehicle storage, pre-delivery inspections (PDI), washing,
+    body repair, release status, and damage reporting.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
-    dcterms:source "Terminal Industry Committee (TIC) 4.0 Standard" .
+    dcterms:modified "2026-07-15"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
+    dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
+    rdfs:seeAlso <https://tic40.org/standards/> .
 
 #################################################################
 #    Vehicle Classes
@@ -86,27 +87,6 @@
     rdfs:comment """A vehicle washing service including exterior wash, interior cleaning, or full detailing.
 
     TIC 4.0: May be a standalone service or part of the PDI process.""" ;
-    rdfs:subClassOf :VehicleService .
-
-:VehicleEnhancement a owl:Class ;
-    rdfs:label "Vehicle Enhancement" ;
-    rdfs:comment """A cosmetic or accessory addition to a vehicle such as decals, trim packages, or protection films.
-
-    TIC 4.0: Non-structural dealer- or OEM-requested additions performed at the terminal.""" ;
-    rdfs:subClassOf :VehicleService .
-
-:VehicleModification a owl:Class ;
-    rdfs:label "Vehicle Modification" ;
-    rdfs:comment """A structural or functional modification to a vehicle such as tow bar fitting, suspension changes, or market-specific adaptations.
-
-    TIC 4.0: Typically performed to meet regional regulatory or customer requirements.""" ;
-    rdfs:subClassOf :VehicleService .
-
-:TechnicalService a owl:Class ;
-    rdfs:label "Technical Service" ;
-    rdfs:comment """A mechanical or electrical service performed on a vehicle such as software updates, fluid top-ups, or battery conditioning.
-
-    TIC 4.0: Ensures vehicles are in optimal condition prior to delivery.""" ;
     rdfs:subClassOf :VehicleService .
 
 :BodyRepair a owl:Class ;

@@ -15,9 +15,10 @@
     yard cranes, reach stackers, and terminal tractors.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
-    dcterms:source "Terminal Industry Committee (TIC) 4.0 Standard" .
+    dcterms:modified "2026-07-15"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
+    dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
+    rdfs:seeAlso <https://tic40.org/standards/> .
 
 #################################################################
 #    Infrastructure Classes
