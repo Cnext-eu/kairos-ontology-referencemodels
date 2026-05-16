@@ -212,9 +212,8 @@
 :hasInsurance a owl:ObjectProperty ;
     rdfs:label "has insurance" ;
     rdfs:comment "Insurance coverage for this cargo." ;
+    rdfs:domain :CargoItem ;
     rdfs:range :CargoInsurance .
-    rdfs:domain :Weight ;
-    rdfs:range xsd:string .
 
 :lengthValue a owl:DatatypeProperty ;
     rdfs:label "length value" ;
