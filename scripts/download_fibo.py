@@ -13,7 +13,7 @@ from datetime import datetime
 # Configuration
 FIBO_GITHUB_API = "https://api.github.com/repos/edmcouncil/fibo/releases/latest"
 BASE_DIR = Path(__file__).parent.parent
-TARGET_DIR = BASE_DIR / "ontology-reference-models" / "Authoritative Ontologies" / "FIBO"
+TARGET_DIR = BASE_DIR / "ontology-reference-models" / "authoritative-ontologies" / "FIBO"
 
 def get_latest_release():
     """Get the latest FIBO release information from GitHub."""
