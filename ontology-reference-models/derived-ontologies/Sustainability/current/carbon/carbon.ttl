@@ -1,0 +1,362 @@
+@prefix : <https://www.kairosflow.ai/ont/sustainability/carbon#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "Sustainability Carbon Domain" ;
+    dcterms:description "Carbon emissions, greenhouse gas accounting, and environmental compliance for transport and logistics based on ISO 14083:2023 and the GLEC Framework." ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
+    dcterms:source "ISO 14083:2023, GLEC Framework, EU MRV Regulation, IMO DCS, EU ETS Maritime" ;
+    rdfs:seeAlso <https://www.iso.org/standard/78864.html> ,
+                 <https://www.smartfreightcentre.org/en/how-to-implement-glec-framework/> .
+
+#################################################################
+#    Emission Classes
+#################################################################
+
+:CarbonEmission a owl:Class ;
+    rdfs:label "Carbon Emission" ;
+    rdfs:comment """A quantified greenhouse gas emission from a transport activity.
+
+    ISO 14083: Quantified greenhouse gas emission from a transport activity.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :emissionValue ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:WellToWake a owl:Class ;
+    rdfs:label "Well-to-Wake" ;
+    rdfs:comment """Full lifecycle emission scope from fuel extraction through combustion.
+
+    GLEC: Full lifecycle emission scope from fuel extraction through combustion.""" ;
+    rdfs:subClassOf :CarbonEmission .
+
+:TankToWake a owl:Class ;
+    rdfs:label "Tank-to-Wake" ;
+    rdfs:comment """Emission scope covering only the combustion phase of fuel use.
+
+    GLEC: Emission scope covering only the combustion phase of fuel use.""" ;
+    rdfs:subClassOf :CarbonEmission .
+
+:Scope1Emission a owl:Class ;
+    rdfs:label "Scope 1 Emission" ;
+    rdfs:comment """Direct emissions from owned or controlled sources.
+
+    GHG Protocol: Direct emissions from owned or controlled sources.""" ;
+    rdfs:subClassOf :CarbonEmission .
+
+:Scope2Emission a owl:Class ;
+    rdfs:label "Scope 2 Emission" ;
+    rdfs:comment """Indirect emissions from purchased electricity, steam, heating, and cooling.
+
+    GHG Protocol: Indirect emissions from purchased electricity, steam, heating, and cooling.""" ;
+    rdfs:subClassOf :CarbonEmission .
+
+:Scope3Emission a owl:Class ;
+    rdfs:label "Scope 3 Emission" ;
+    rdfs:comment """All other indirect emissions in a company's value chain.
+
+    GHG Protocol: All other indirect emissions in a company's value chain.""" ;
+    rdfs:subClassOf :CarbonEmission .
+
+#################################################################
+#    Emission Factor and Intensity Classes
+#################################################################
+
+:EmissionFactor a owl:Class ;
+    rdfs:label "Emission Factor" ;
+    rdfs:comment """A conversion factor to calculate GHG emissions from activity data.
+
+    GLEC: Conversion factor to calculate GHG emissions from activity data.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :factorValue ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:CO2Intensity a owl:Class ;
+    rdfs:label "CO2 Intensity" ;
+    rdfs:comment """Carbon dioxide intensity per unit of transport work.
+
+    ISO 14083: Carbon dioxide intensity per unit of transport work.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :intensityValue ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Transport Work and Modal Shift Classes
+#################################################################
+
+:TonneKilometre a owl:Class ;
+    rdfs:label "Tonne Kilometre" ;
+    rdfs:comment """A unit of transport work representing one tonne of cargo moved one kilometre.
+
+    ISO 14083: Unit of transport work representing one tonne of cargo moved one kilometre.""" .
+
+:ModalShiftMetric a owl:Class ;
+    rdfs:label "Modal Shift Metric" ;
+    rdfs:comment """A metric quantifying emission reductions achieved by shifting cargo between transport modes.
+
+    GLEC: Metric quantifying emission reductions achieved by shifting cargo between transport modes.""" .
+
+#################################################################
+#    Footprint and Reporting Classes
+#################################################################
+
+:CarbonFootprint a owl:Class ;
+    rdfs:label "Carbon Footprint" ;
+    rdfs:comment """Total greenhouse gas emissions associated with a transport chain or shipment.
+
+    ISO 14083: Total greenhouse gas emissions associated with a transport chain or shipment.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :totalCO2e ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:EmissionReport a owl:Class ;
+    rdfs:label "Emission Report" ;
+    rdfs:comment """A formal report of verified emissions over a reporting period.
+
+    EU MRV: Formal report of verified emissions over a reporting period.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :reportingPeriod ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Maritime Compliance Classes
+#################################################################
+
+:CIIRating a owl:Class ;
+    rdfs:label "CII Rating" ;
+    rdfs:comment """Carbon Intensity Indicator rating for vessel operational efficiency.
+
+    IMO DCS: Carbon Intensity Indicator rating for vessel operational efficiency.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :ciiGrade ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:EEXICompliance a owl:Class ;
+    rdfs:label "EEXI Compliance" ;
+    rdfs:comment """Energy Efficiency Existing Ship Index compliance status.
+
+    IMO: Energy Efficiency Existing Ship Index compliance status.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :eexiValue ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:EUETSAllowance a owl:Class ;
+    rdfs:label "EU ETS Allowance" ;
+    rdfs:comment """An emission allowance unit under the EU Emissions Trading System for maritime.
+
+    EU ETS: Emission allowance unit under the EU Emissions Trading System for maritime.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :allowanceQuantity ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Offset Classes
+#################################################################
+
+:CarbonOffset a owl:Class ;
+    rdfs:label "Carbon Offset" ;
+    rdfs:comment """A verified emission reduction credit used to compensate for GHG emissions.
+
+    Verified emission reduction credit used to compensate for GHG emissions.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :offsetQuantity ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasEmissionFactor a owl:ObjectProperty ;
+    rdfs:label "has emission factor" ;
+    rdfs:comment "Relates a carbon emission to its emission factor." ;
+    rdfs:domain :CarbonEmission ;
+    rdfs:range :EmissionFactor .
+
+:hasCO2Intensity a owl:ObjectProperty ;
+    rdfs:label "has CO2 intensity" ;
+    rdfs:comment "Relates an entity to its CO2 intensity metric." ;
+    rdfs:range :CO2Intensity .
+
+:hasCarbonFootprint a owl:ObjectProperty ;
+    rdfs:label "has carbon footprint" ;
+    rdfs:comment "Relates an entity to its carbon footprint." ;
+    rdfs:range :CarbonFootprint .
+
+:hasEmissionReport a owl:ObjectProperty ;
+    rdfs:label "has emission report" ;
+    rdfs:comment "Relates an entity to its emission report." ;
+    rdfs:range :EmissionReport .
+
+:hasCIIRating a owl:ObjectProperty ;
+    rdfs:label "has CII rating" ;
+    rdfs:comment "Relates a vessel to its CII rating." ;
+    rdfs:range :CIIRating .
+
+:hasEEXICompliance a owl:ObjectProperty ;
+    rdfs:label "has EEXI compliance" ;
+    rdfs:comment "Relates a vessel to its EEXI compliance status." ;
+    rdfs:range :EEXICompliance .
+
+:hasEUETSAllowance a owl:ObjectProperty ;
+    rdfs:label "has EU ETS allowance" ;
+    rdfs:comment "Relates an entity to its EU ETS allowance." ;
+    rdfs:range :EUETSAllowance .
+
+:hasCarbonOffset a owl:ObjectProperty ;
+    rdfs:label "has carbon offset" ;
+    rdfs:comment "Relates an entity to a carbon offset credit." ;
+    rdfs:range :CarbonOffset .
+
+:hasModalShiftMetric a owl:ObjectProperty ;
+    rdfs:label "has modal shift metric" ;
+    rdfs:comment "Relates an entity to a modal shift metric." ;
+    rdfs:range :ModalShiftMetric .
+
+:calculatedUsing a owl:ObjectProperty ;
+    rdfs:label "calculated using" ;
+    rdfs:comment "Relates a carbon footprint to the emission factor used for calculation." ;
+    rdfs:domain :CarbonFootprint ;
+    rdfs:range :EmissionFactor .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:emissionValue a owl:DatatypeProperty ;
+    rdfs:label "emission value" ;
+    rdfs:comment "GHG emission quantity in tonnes CO2 equivalent." ;
+    rdfs:domain :CarbonEmission ;
+    rdfs:range xsd:decimal .
+
+:emissionUnit a owl:DatatypeProperty ;
+    rdfs:label "emission unit" ;
+    rdfs:comment "Unit of measurement, typically tCO2e." ;
+    rdfs:domain :CarbonEmission ;
+    rdfs:range xsd:string .
+
+:factorValue a owl:DatatypeProperty ;
+    rdfs:label "factor value" ;
+    rdfs:comment "Numeric value of the emission factor." ;
+    rdfs:domain :EmissionFactor ;
+    rdfs:range xsd:decimal .
+
+:factorUnit a owl:DatatypeProperty ;
+    rdfs:label "factor unit" ;
+    rdfs:comment "Unit of the emission factor." ;
+    rdfs:domain :EmissionFactor ;
+    rdfs:range xsd:string .
+
+:factorSource a owl:DatatypeProperty ;
+    rdfs:label "factor source" ;
+    rdfs:comment "Data source or methodology (e.g. GLEC default, primary data)." ;
+    rdfs:domain :EmissionFactor ;
+    rdfs:range xsd:string .
+
+:intensityValue a owl:DatatypeProperty ;
+    rdfs:label "intensity value" ;
+    rdfs:comment "gCO2e per tonne-kilometre." ;
+    rdfs:domain :CO2Intensity ;
+    rdfs:range xsd:decimal .
+
+:totalCO2e a owl:DatatypeProperty ;
+    rdfs:label "total CO2e" ;
+    rdfs:comment "Total CO2 equivalent emissions in tonnes." ;
+    rdfs:domain :CarbonFootprint ;
+    rdfs:range xsd:decimal .
+
+:reportingPeriod a owl:DatatypeProperty ;
+    rdfs:label "reporting period" ;
+    rdfs:comment "ISO 8601 period (e.g. 2025-01-01/2025-12-31)." ;
+    rdfs:domain :EmissionReport ;
+    rdfs:range xsd:string .
+
+:verificationStatus a owl:DatatypeProperty ;
+    rdfs:label "verification status" ;
+    rdfs:comment "Verification status of the emission report." ;
+    rdfs:domain :EmissionReport ;
+    rdfs:range xsd:string .
+
+:ciiGrade a owl:DatatypeProperty ;
+    rdfs:label "CII grade" ;
+    rdfs:comment "Rating A through E." ;
+    rdfs:domain :CIIRating ;
+    rdfs:range xsd:string .
+
+:ciiValue a owl:DatatypeProperty ;
+    rdfs:label "CII value" ;
+    rdfs:comment "Numeric carbon intensity indicator value." ;
+    rdfs:domain :CIIRating ;
+    rdfs:range xsd:decimal .
+
+:eexiValue a owl:DatatypeProperty ;
+    rdfs:label "EEXI value" ;
+    rdfs:comment "Attained EEXI value for the vessel." ;
+    rdfs:domain :EEXICompliance ;
+    rdfs:range xsd:decimal .
+
+:eexiRequired a owl:DatatypeProperty ;
+    rdfs:label "EEXI required" ;
+    rdfs:comment "Required EEXI value for compliance." ;
+    rdfs:domain :EEXICompliance ;
+    rdfs:range xsd:decimal .
+
+:allowanceQuantity a owl:DatatypeProperty ;
+    rdfs:label "allowance quantity" ;
+    rdfs:comment "Number of EU allowances (EUA)." ;
+    rdfs:domain :EUETSAllowance ;
+    rdfs:range xsd:decimal .
+
+:allowanceYear a owl:DatatypeProperty ;
+    rdfs:label "allowance year" ;
+    rdfs:comment "Year for the EU ETS allowance." ;
+    rdfs:domain :EUETSAllowance ;
+    rdfs:range xsd:gYear .
+
+:offsetQuantity a owl:DatatypeProperty ;
+    rdfs:label "offset quantity" ;
+    rdfs:comment "Quantity of carbon offset credits." ;
+    rdfs:domain :CarbonOffset ;
+    rdfs:range xsd:decimal .
+
+:offsetStandard a owl:DatatypeProperty ;
+    rdfs:label "offset standard" ;
+    rdfs:comment "E.g. Gold Standard, Verra VCS." ;
+    rdfs:domain :CarbonOffset ;
+    rdfs:range xsd:string .
+
+:tonneKilometreValue a owl:DatatypeProperty ;
+    rdfs:label "tonne kilometre value" ;
+    rdfs:comment "Numeric tonne-kilometre value." ;
+    rdfs:domain :TonneKilometre ;
+    rdfs:range xsd:decimal .
+
+:modalShiftReduction a owl:DatatypeProperty ;
+    rdfs:label "modal shift reduction" ;
+    rdfs:comment "Percentage emission reduction from modal shift." ;
+    rdfs:domain :ModalShiftMetric ;
+    rdfs:range xsd:decimal .

@@ -1,0 +1,132 @@
+@prefix : <https://www.kairosflow.ai/ont/mmt/locations#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/mmt/locations> a owl:Ontology ;
+    dcterms:title "MMT Locations Domain" ;
+    dcterms:description """Location classes for the Kairos Multi-Modal Transport ontology.
+
+    Covers ports, airports, rail terminals, road terminals, inland ports, border crossings,
+    warehouses, distribution centers, and general terminals.
+    Based on UN/CEFACT MMT Reference Data Model.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
+    rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
+
+#################################################################
+#    Location Classes
+#################################################################
+
+:Location a owl:Class ;
+    rdfs:label "Location" ;
+    rdfs:comment """A physical place relevant to transport operations.
+    
+    UN/CEFACT MMT: Ports, terminals, warehouses, etc.""" .
+
+:TransportLocation a owl:Class ;
+    rdfs:label "Transport Location" ;
+    rdfs:comment """A location where transport activities occur.
+    
+    UN/CEFACT MMT: Loading points, discharge points, transit locations.""" ;
+    rdfs:subClassOf :Location .
+
+:Port a owl:Class ;
+    rdfs:label "Port" ;
+    rdfs:comment """A maritime facility for vessel operations.
+    
+    UN/CEFACT MMT: Seaports identified by UN/LOCODE.""" ;
+    rdfs:subClassOf :TransportLocation .
+
+:Airport a owl:Class ;
+    rdfs:label "Airport" ;
+    rdfs:comment """An air transport facility.
+    
+    UN/CEFACT MMT: Cargo airports identified by IATA/ICAO codes.""" ;
+    rdfs:subClassOf :TransportLocation .
+
+:RailTerminal a owl:Class ;
+    rdfs:label "Rail Terminal" ;
+    rdfs:comment """A facility for rail freight operations.
+    
+    UN/CEFACT MMT: Intermodal rail terminals, freight yards.""" ;
+    rdfs:subClassOf :TransportLocation .
+
+:RoadTerminal a owl:Class ;
+    rdfs:label "Road Terminal" ;
+    rdfs:comment """A facility for road freight operations.
+    
+    UN/CEFACT MMT: Truck terminals, distribution centers.""" ;
+    rdfs:subClassOf :TransportLocation .
+
+:InlandPort a owl:Class ;
+    rdfs:label "Inland Port" ;
+    rdfs:comment """A port on inland waterways.
+    
+    UN/CEFACT MMT: River and canal ports.""" ;
+    rdfs:subClassOf :TransportLocation .
+
+:BorderCrossing a owl:Class ;
+    rdfs:label "Border Crossing" ;
+    rdfs:comment """A location where goods cross national borders.
+    
+    UN/CEFACT MMT: Customs checkpoints, border stations.""" ;
+    rdfs:subClassOf :TransportLocation .
+
+:Warehouse a owl:Class ;
+    rdfs:label "Warehouse" ;
+    rdfs:comment """A storage facility for goods.
+    
+    UN/CEFACT MMT: Distribution centers, storage facilities.""" ;
+    rdfs:subClassOf :Location .
+
+:Terminal a owl:Class ;
+    rdfs:label "Terminal" ;
+    rdfs:comment """A facility for cargo handling and transfer.
+    
+    UN/CEFACT MMT: Container terminals, freight terminals.""" ;
+    rdfs:subClassOf :TransportLocation .
+
+:DistributionCenter a owl:Class ;
+    rdfs:label "Distribution Center" ;
+    rdfs:comment """A facility for sorting, consolidating, and distributing cargo.
+
+    UN/CEFACT MMT: Hub for logistics distribution operations.""" ;
+    rdfs:subClassOf :Warehouse .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:occursAtLocation a owl:ObjectProperty ;
+    rdfs:label "occurs at location" ;
+    rdfs:comment "Relates event to location where it occurred." ;
+    rdfs:range :Location .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:unLocationCode a owl:DatatypeProperty ;
+    rdfs:label "UN location code" ;
+    rdfs:comment "UN/LOCODE for location (5 characters)." ;
+    rdfs:domain :Location ;
+    rdfs:range xsd:string .
+
+:iataAirportCode a owl:DatatypeProperty ;
+    rdfs:label "IATA airport code" ;
+    rdfs:comment "3-letter IATA airport code." ;
+    rdfs:domain :Airport ;
+    rdfs:range xsd:string .
+
+:icaoAirportCode a owl:DatatypeProperty ;
+    rdfs:label "ICAO airport code" ;
+    rdfs:comment "4-letter ICAO airport code." ;
+    rdfs:domain :Airport ;
+    rdfs:range xsd:string .

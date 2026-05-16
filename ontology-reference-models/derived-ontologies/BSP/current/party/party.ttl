@@ -1,0 +1,174 @@
+@prefix : <https://www.kairosflow.ai/ont/bsp/party#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "Kairos BSP Party Domain Ontology" ;
+    dcterms:description """Party and organisation domain of the Buy-Ship-Pay Reference Data Model.
+
+    This module defines all trade party roles participating in the buy-ship-pay lifecycle, including:
+    - Buyer, Seller, Shipper, Consignee, Carrier
+    - Financial institutions (Banks)
+    - Intermediaries (Freight Forwarder, Customs Broker)
+    - Supply chain participants (Manufacturer, Supplier, Notify Party)""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/> .
+
+#################################################################
+#    Party Role Classes
+#################################################################
+
+:TradeParty a owl:Class ;
+    rdfs:label "Trade Party" ;
+    rdfs:comment """An organization or person participating in trade.
+    
+    UN/CEFACT BSP: Maps to TradeParty — an individual, a group, or a body
+    having a role in a trade business function.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TradeParty> .
+
+:Buyer a owl:Class ;
+    rdfs:label "Buyer" ;
+    rdfs:comment """The party purchasing goods or services.
+    
+    UN/CEFACT BSP: A TradeParty role (buyerTradeParty context).""" ;
+    rdfs:subClassOf :TradeParty .
+
+:Seller a owl:Class ;
+    rdfs:label "Seller" ;
+    rdfs:comment """The party selling goods or services.
+    
+    UN/CEFACT BSP: A TradeParty role (sellerTradeParty context).""" ;
+    rdfs:subClassOf :TradeParty .
+
+:Shipper a owl:Class ;
+    rdfs:label "Shipper" ;
+    rdfs:comment """The party tendering goods for transport (consignor).
+    
+    UN/CEFACT BSP: A TradeParty role (shipFromTradeParty context).""" ;
+    rdfs:subClassOf :TradeParty .
+
+:Consignee a owl:Class ;
+    rdfs:label "Consignee" ;
+    rdfs:comment """The party to whom goods are shipped.
+    
+    UN/CEFACT BSP: A TradeParty role (shipToTradeParty context).""" ;
+    rdfs:subClassOf :TradeParty .
+
+:Carrier a owl:Class ;
+    rdfs:label "Carrier" ;
+    rdfs:comment """The party providing transport services.
+    
+    UN/CEFACT BSP: A TradeParty role (carrierTradeParty context).""" ;
+    rdfs:subClassOf :TradeParty .
+
+:FreightForwarder a owl:Class ;
+    rdfs:label "Freight Forwarder" ;
+    rdfs:comment """A party arranging transport on behalf of shippers.
+    
+    UN/CEFACT BSP: A TradeParty role (freightForwarderTradeParty context).""" ;
+    rdfs:subClassOf :TradeParty .
+
+:CustomsBroker a owl:Class ;
+    rdfs:label "Customs Broker" ;
+    rdfs:comment """A party handling customs clearance.
+    
+    UN/CEFACT BSP: A TradeParty role (customsBrokerTradeParty context).""" ;
+    rdfs:subClassOf :TradeParty .
+
+:Bank a owl:Class ;
+    rdfs:label "Bank" ;
+    rdfs:comment """A financial institution providing payment and trade finance services.
+    
+    UN/CEFACT BSP: Maps to PaymentFinancialInstitution / CreditorFinancialInstitution /
+    DebtorFinancialInstitution.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/PaymentFinancialInstitution> ;
+    rdfs:subClassOf :TradeParty .
+
+:Manufacturer a owl:Class ;
+    rdfs:label "Manufacturer" ;
+    rdfs:comment """The party producing the goods.
+    
+    UN/CEFACT BSP: A TradeParty role — may be seller or supplier to seller.""" ;
+    rdfs:subClassOf :TradeParty .
+
+:Supplier a owl:Class ;
+    rdfs:label "Supplier" ;
+    rdfs:comment """A party supplying goods or components.
+    
+    UN/CEFACT BSP: A TradeParty role — upstream provider in supply chain.""" ;
+    rdfs:subClassOf :TradeParty .
+
+:NotifyParty a owl:Class ;
+    rdfs:label "Notify Party" ;
+    rdfs:comment """A party to be notified of shipment arrival.
+    
+    ISO BSP: Often consignee or their agent.""" ;
+    rdfs:subClassOf :TradeParty .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasBuyer a owl:ObjectProperty ;
+    rdfs:label "has buyer" ;
+    rdfs:comment "Identifies the buyer." ;
+    rdfs:range :Buyer .
+
+:hasSeller a owl:ObjectProperty ;
+    rdfs:label "has seller" ;
+    rdfs:comment "Identifies the seller." ;
+    rdfs:range :Seller .
+
+:hasShipper a owl:ObjectProperty ;
+    rdfs:label "has shipper" ;
+    rdfs:comment "Identifies the shipper/consignor." ;
+    rdfs:range :Shipper .
+
+:hasConsignee a owl:ObjectProperty ;
+    rdfs:label "has consignee" ;
+    rdfs:comment "Identifies the consignee." ;
+    rdfs:range :Consignee .
+
+:hasCarrier a owl:ObjectProperty ;
+    rdfs:label "has carrier" ;
+    rdfs:comment "Identifies the carrier." ;
+    rdfs:range :Carrier .
+
+:hasManufacturer a owl:ObjectProperty ;
+    rdfs:label "has manufacturer" ;
+    rdfs:comment "Identifies the manufacturer." ;
+    rdfs:range :Manufacturer .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:partyName a owl:DatatypeProperty ;
+    rdfs:label "party name" ;
+    rdfs:comment "Name of organization or person." ;
+    rdfs:domain :TradeParty ;
+    rdfs:range xsd:string .
+
+:partyIdentifier a owl:DatatypeProperty ;
+    rdfs:label "party identifier" ;
+    rdfs:comment "Unique identifier for party (e.g., DUNS, GLN, tax ID)." ;
+    rdfs:domain :TradeParty ;
+    rdfs:range xsd:string .
+
+:contactEmail a owl:DatatypeProperty ;
+    rdfs:label "contact email" ;
+    rdfs:comment "Email address for contact." ;
+    rdfs:range xsd:string .
+
+:contactPhone a owl:DatatypeProperty ;
+    rdfs:label "contact phone" ;
+    rdfs:comment "Phone number for contact." ;
+    rdfs:range xsd:string .

@@ -13,7 +13,9 @@ from datetime import datetime
 # Configuration
 FIBO_GITHUB_API = "https://api.github.com/repos/edmcouncil/fibo/releases/latest"
 BASE_DIR = Path(__file__).parent.parent
-TARGET_DIR = BASE_DIR / "ontology-reference-models" / "Authoritative Ontologies" / "FIBO"
+FIBO_DIR = BASE_DIR / "ontology-reference-models" / "authoritative-ontologies" / "FIBO"
+TARGET_DIR = FIBO_DIR / "current"
+ARCHIVE_DIR = FIBO_DIR / "archive"
 
 def get_latest_release():
     """Get the latest FIBO release information from GitHub."""
@@ -42,6 +44,9 @@ def download_file(url, dest_path):
                 print(f"\rProgress: {percent:.1f}%", end='')
     print()  # New line after progress
     
+STABLE_FIBO_FOLDER = "fibo"
+
+
 def extract_ontologies(zip_path, extract_to):
     """Extract RDF/TTL/OWL files from the zip archive."""
     print(f"Extracting ontologies to {extract_to}...")
@@ -59,7 +64,33 @@ def extract_ontologies(zip_path, extract_to):
             zip_ref.extract(file, extract_to)
     
     print(f"Extracted {len(ontology_files)} files")
+
+    # Rename the version-specific top-level folder to a stable name so that
+    # catalog-v001.xml paths remain valid across FIBO upgrades.
+    _rename_to_stable_folder(extract_to)
+
     return len(ontology_files)
+
+
+def _rename_to_stable_folder(extract_to):
+    """Rename the extracted top-level folder (e.g. edmcouncil-fibo-574a831) to a stable name."""
+    extract_path = Path(extract_to)
+    stable_path = extract_path / STABLE_FIBO_FOLDER
+
+    # Find the version-specific folder (the only directory that isn't our stable name)
+    candidates = [
+        d for d in extract_path.iterdir()
+        if d.is_dir() and d.name != STABLE_FIBO_FOLDER
+    ]
+
+    if len(candidates) == 1:
+        source = candidates[0]
+        if stable_path.exists():
+            shutil.rmtree(stable_path)
+        source.rename(stable_path)
+        print(f"Renamed {source.name}/ → {STABLE_FIBO_FOLDER}/")
+    elif not stable_path.exists():
+        print("Warning: Could not identify extracted folder to rename.")
 
 def create_metadata(target_dir, release_info):
     """Create metadata file with download information."""
@@ -83,11 +114,57 @@ def create_metadata(target_dir, release_info):
     
     print(f"Created metadata file: {metadata_file}")
 
+
+def archive_current(target_dir, archive_dir):
+    """Archive the current FIBO version before downloading a new one."""
+    metadata_file = target_dir / "METADATA.txt"
+    if not metadata_file.is_file():
+        print("No existing FIBO to archive (fresh install).")
+        return
+
+    # Read old version from METADATA.txt
+    old_version = None
+    with open(metadata_file, 'r', encoding='utf-8') as f:
+        for line in f:
+            if line.startswith("version:"):
+                old_version = line.split(":", 1)[1].strip()
+                break
+
+    if not old_version:
+        print("Warning: Could not determine old version, skipping archive.")
+        return
+
+    archive_dest = archive_dir / old_version
+    if archive_dest.is_dir():
+        print(f"Archive for {old_version} already exists, skipping.")
+        return
+
+    print(f"Archiving current FIBO ({old_version}) → archive/{old_version}/")
+    archive_dest.mkdir(parents=True, exist_ok=True)
+
+    for item in target_dir.iterdir():
+        dest = archive_dest / item.name
+        if item.is_dir():
+            shutil.copytree(item, dest)
+        else:
+            shutil.copy2(item, dest)
+
+    # Clear current/ for fresh download
+    for item in target_dir.iterdir():
+        if item.is_dir():
+            shutil.rmtree(item)
+        else:
+            item.unlink()
+
+    print(f"Archived and cleared current/ for new download.")
+
 def main():
     """Main download process."""
     try:
-        # Create target directory
+        # Ensure directories exist
+        FIBO_DIR.mkdir(parents=True, exist_ok=True)
         TARGET_DIR.mkdir(parents=True, exist_ok=True)
+        ARCHIVE_DIR.mkdir(parents=True, exist_ok=True)
         print(f"Target directory: {TARGET_DIR}")
         
         # Get latest release info
@@ -95,6 +172,9 @@ def main():
         version = release_info.get("tag_name", "unknown")
         print(f"\nLatest FIBO version: {version}")
         print(f"Release name: {release_info.get('name', 'N/A')}")
+        
+        # Archive existing version before downloading new one
+        archive_current(TARGET_DIR, ARCHIVE_DIR)
         
         # Find the zipball/tarball download URL
         # FIBO typically has assets, but we can use the source code download

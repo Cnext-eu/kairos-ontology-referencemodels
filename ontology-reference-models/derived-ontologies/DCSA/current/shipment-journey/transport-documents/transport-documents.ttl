@@ -1,0 +1,97 @@
+@prefix : <https://www.kairosflow.ai/ont/dcsa/transport-documents#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "DCSA Transport Documents Domain" ;
+    dcterms:description """Transport document concepts for container shipping.
+    
+    Covers Bills of Lading (including electronic eBL), Sea Waybills,
+    and their associated properties such as document status, negotiability,
+    and reference numbers.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "DCSA Electronic Bill of Lading (EBL) API v3.0" ;
+    rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
+
+#################################################################
+#    Transport Document Classes
+#################################################################
+
+:TransportDocument a owl:Class ;
+    rdfs:label "Transport Document" ;
+    rdfs:comment """A document evidencing a contract of carriage and receipt of cargo.
+    
+    DCSA: Bill of Lading or Sea Waybill.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :transportDocumentReference ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:BillOfLading a owl:Class ;
+    rdfs:label "Bill of Lading" ;
+    rdfs:comment """A transport document serving as receipt, contract, and document of title for ocean freight.
+    
+    DCSA: Traditional negotiable shipping document.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+:ElectronicBillOfLading a owl:Class ;
+    rdfs:label "Electronic Bill of Lading (eBL)" ;
+    rdfs:comment """A digital, legally equivalent version of a paper Bill of Lading.
+    
+    DCSA: Standardized electronic B/L with same legal force as paper document.""" ;
+    rdfs:subClassOf :BillOfLading .
+
+:SeaWaybill a owl:Class ;
+    rdfs:label "Sea Waybill" ;
+    rdfs:comment """A non-negotiable transport document for ocean freight.
+    
+    DCSA: Simpler alternative to B/L, cargo released to named consignee without presenting original.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:transportDocumentReference a owl:DatatypeProperty ;
+    rdfs:label "transport document reference" ;
+    rdfs:comment "Unique B/L or Sea Waybill number." ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range xsd:string .
+
+:billOfLadingNumber a owl:DatatypeProperty ;
+    rdfs:label "bill of lading number" ;
+    rdfs:comment "Unique B/L number." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:string .
+
+:documentStatus a owl:DatatypeProperty ;
+    rdfs:label "document status" ;
+    rdfs:comment "Status: DRAFT, PENDING APPROVAL, APPROVED, ISSUED, SURRENDERED, VOID." ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range xsd:string .
+
+:isNegotiable a owl:DatatypeProperty ;
+    rdfs:label "is negotiable" ;
+    rdfs:comment "Indicates if B/L is negotiable (document of title)." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:boolean .
+
+:numberOfOriginals a owl:DatatypeProperty ;
+    rdfs:label "number of originals" ;
+    rdfs:comment "Number of original B/L copies issued." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:integer .
+
+:isElectronic a owl:DatatypeProperty ;
+    rdfs:label "is electronic" ;
+    rdfs:comment "Indicates if document is electronic." ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range xsd:boolean .

@@ -1,0 +1,32 @@
+@prefix : <https://www.kairosflow.ai/ont/dcsa#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "Kairos DCSA Container Shipping Ontology" ;
+    dcterms:description """Digital Container Shipping Association (DCSA) ontology for standardized
+    container shipping operations, organized according to DCSA's journey-based
+    Information Model structure (2024.Q4):
+    
+    1. Shipment Journey — Booking and transport documents (BKG, EBL)
+    2. Equipment Journey — Container lifecycle and operations
+    3. Vessel Journey — Service loops, schedules, port rotations (OVS)
+    4. Track and Trace — Shipping events and milestones (TNT)
+    5. Shared Kernel (SK) — Common entities: equipment types, parties, locations
+    
+    This root ontology imports all journey-level modules.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "DCSA Information Model 2024.Q4 (BKG v2.0, EBL v3.0, TNT v2.2, OVS v3.0)" ;
+    rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> ;
+    owl:imports <https://www.kairosflow.ai/ont/dcsa/shipment-journey#> ,
+                <https://www.kairosflow.ai/ont/dcsa/equipment-journey#> ,
+                <https://www.kairosflow.ai/ont/dcsa/vessel-journey#> ,
+                <https://www.kairosflow.ai/ont/dcsa/track-and-trace#> ,
+                <https://www.kairosflow.ai/ont/dcsa/shared-kernel#> .

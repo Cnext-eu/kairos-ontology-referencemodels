@@ -1,0 +1,96 @@
+@prefix : <https://www.kairosflow.ai/ont/dcsa/locations#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "DCSA Locations Domain" ;
+    dcterms:description """Location concepts for container shipping.
+    
+    Covers ports, terminals, and other shipping locations including
+    place of receipt, port of loading, port of discharge, place of
+    delivery, and transshipment ports.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "DCSA Booking API (BKG) v2.0" ;
+    rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
+
+#################################################################
+#    Location Classes
+#################################################################
+
+:Location a owl:Class ;
+    rdfs:label "Location" ;
+    rdfs:comment """A physical location relevant to container shipping.
+    
+    DCSA: Ports, terminals, and other facilities in the supply chain.""" .
+
+:Port a owl:Class ;
+    rdfs:label "Port" ;
+    rdfs:comment """A maritime facility for vessel operations.
+    
+    DCSA: Identified by UN/LOCODE.""" ;
+    rdfs:subClassOf :Location .
+
+:Terminal a owl:Class ;
+    rdfs:label "Container Terminal" ;
+    rdfs:comment """A facility within a port for container handling and storage.
+    
+    DCSA: Where containers are loaded/discharged from vessels.""" ;
+    rdfs:subClassOf :Location .
+
+:PlaceOfReceipt a owl:Class ;
+    rdfs:label "Place of Receipt" ;
+    rdfs:comment """Location where carrier receives cargo from shipper.
+    
+    DCSA: Start point of carrier responsibility.""" ;
+    rdfs:subClassOf :Location .
+
+:PortOfLoading a owl:Class ;
+    rdfs:label "Port of Loading" ;
+    rdfs:comment """Port where cargo is loaded onto the ocean vessel.
+    
+    DCSA: Origin port for main ocean transport.""" ;
+    rdfs:subClassOf :Port .
+
+:PortOfDischarge a owl:Class ;
+    rdfs:label "Port of Discharge" ;
+    rdfs:comment """Port where cargo is discharged from the ocean vessel.
+    
+    DCSA: Destination port for main ocean transport.""" ;
+    rdfs:subClassOf :Port .
+
+:PlaceOfDelivery a owl:Class ;
+    rdfs:label "Place of Delivery" ;
+    rdfs:comment """Location where carrier delivers cargo to consignee.
+    
+    DCSA: End point of carrier responsibility.""" ;
+    rdfs:subClassOf :Location .
+
+:TransshipmentPort a owl:Class ;
+    rdfs:label "Transshipment Port" ;
+    rdfs:comment """Port where cargo is transferred between vessels.
+    
+    DCSA: Intermediate port in multi-vessel journey.""" ;
+    rdfs:subClassOf :Port .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:unLocationCode a owl:DatatypeProperty ;
+    rdfs:label "UN location code" ;
+    rdfs:comment "UN/LOCODE for location identification." ;
+    rdfs:domain :Location ;
+    rdfs:range xsd:string .
+
+:facilityCode a owl:DatatypeProperty ;
+    rdfs:label "facility code" ;
+    rdfs:comment "SMDG or BIC facility code for terminal." ;
+    rdfs:domain :Terminal ;
+    rdfs:range xsd:string .

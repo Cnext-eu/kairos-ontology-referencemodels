@@ -1,0 +1,180 @@
+@prefix : <https://www.kairosflow.ai/ont/wco/locations#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "WCO Locations Domain" ;
+    dcterms:description "Customs locations, border crossings, bonded facilities, and controlled areas based on the WCO Data Model 3.10.0." ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
+    dcterms:source "WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056" ;
+    rdfs:seeAlso <https://www.wcoomd.org/datamodel> .
+
+#################################################################
+#    Classes
+#################################################################
+
+:CustomsOffice a owl:Class ;
+    rdfs:label "Customs Office" ;
+    rdfs:comment """A government facility where customs formalities are performed.
+
+    WCO: Designated office where customs formalities are carried out.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :officeCode ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:BorderCrossing a owl:Class ;
+    rdfs:label "Border Crossing" ;
+    rdfs:comment """An authorized point for entering or exiting a national territory.
+
+    WCO: Authorized point of entry or exit at a national border.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :borderCrossingCode ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:BondedWarehouse a owl:Class ;
+    rdfs:label "Bonded Warehouse" ;
+    rdfs:comment """A secure facility approved by customs for storing goods under customs control.
+
+    WCO: Secure premises approved by customs for storing goods under customs control without payment of duties.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :warehouseApprovalNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:FreeZone a owl:Class ;
+    rdfs:label "Free Zone" ;
+    rdfs:comment """A designated area where goods are treated as outside the customs territory for duty purposes.
+
+    WCO: Designated area within a customs territory where goods are treated as outside the customs territory for duty purposes.""" .
+
+:CustomsControlledArea a owl:Class ;
+    rdfs:label "Customs Controlled Area" ;
+    rdfs:comment """An area designated by customs authorities for examination, storage, or processing of goods.
+
+    WCO: Any area designated by customs authorities for examination, storage, or processing of goods under customs supervision.""" .
+
+:DesignatedExportPlace a owl:Class ;
+    rdfs:label "Designated Export Place" ;
+    rdfs:comment """An approved location where export formalities and customs clearance are performed.
+
+    WCO: Approved location where export formalities and customs clearance are performed.""" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:locatedAtCustomsOffice a owl:ObjectProperty ;
+    rdfs:label "located at customs office" ;
+    rdfs:comment "The customs office associated with this entity." ;
+    rdfs:range :CustomsOffice .
+
+:hasBorderCrossing a owl:ObjectProperty ;
+    rdfs:label "has border crossing" ;
+    rdfs:comment "The border crossing point associated with this entity." ;
+    rdfs:range :BorderCrossing .
+
+:storedInBondedWarehouse a owl:ObjectProperty ;
+    rdfs:label "stored in bonded warehouse" ;
+    rdfs:comment "The bonded warehouse where goods are stored." ;
+    rdfs:range :BondedWarehouse .
+
+:locatedInFreeZone a owl:ObjectProperty ;
+    rdfs:label "located in free zone" ;
+    rdfs:comment "The free zone in which this entity is located." ;
+    rdfs:range :FreeZone .
+
+:withinCustomsControlledArea a owl:ObjectProperty ;
+    rdfs:label "within customs controlled area" ;
+    rdfs:comment "The customs controlled area in which this entity is situated." ;
+    rdfs:range :CustomsControlledArea .
+
+:hasDesignatedExportPlace a owl:ObjectProperty ;
+    rdfs:label "has designated export place" ;
+    rdfs:comment "The designated export place associated with this entity." ;
+    rdfs:range :DesignatedExportPlace .
+
+:supervisedBy a owl:ObjectProperty ;
+    rdfs:label "supervised by" ;
+    rdfs:comment "The customs office supervising this bonded facility." ;
+    rdfs:domain :BondedWarehouse ;
+    rdfs:range :CustomsOffice .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:officeCode a owl:DatatypeProperty ;
+    rdfs:label "office code" ;
+    rdfs:comment "UN/LOCODE or national customs office code." ;
+    rdfs:domain :CustomsOffice ;
+    rdfs:range xsd:string .
+
+:officeName a owl:DatatypeProperty ;
+    rdfs:label "office name" ;
+    rdfs:comment "Human-readable name of the customs office." ;
+    rdfs:domain :CustomsOffice ;
+    rdfs:range xsd:string .
+
+:borderCrossingCode a owl:DatatypeProperty ;
+    rdfs:label "border crossing code" ;
+    rdfs:comment "Code identifying the border crossing point." ;
+    rdfs:domain :BorderCrossing ;
+    rdfs:range xsd:string .
+
+:borderCrossingName a owl:DatatypeProperty ;
+    rdfs:label "border crossing name" ;
+    rdfs:comment "Human-readable name of the border crossing." ;
+    rdfs:domain :BorderCrossing ;
+    rdfs:range xsd:string .
+
+:warehouseApprovalNumber a owl:DatatypeProperty ;
+    rdfs:label "warehouse approval number" ;
+    rdfs:comment "Customs-issued approval number for the bonded warehouse." ;
+    rdfs:domain :BondedWarehouse ;
+    rdfs:range xsd:string .
+
+:warehouseType a owl:DatatypeProperty ;
+    rdfs:label "warehouse type" ;
+    rdfs:comment "Classification of the bonded warehouse (e.g., public, private)." ;
+    rdfs:domain :BondedWarehouse ;
+    rdfs:range xsd:string .
+
+:freeZoneIdentifier a owl:DatatypeProperty ;
+    rdfs:label "free zone identifier" ;
+    rdfs:comment "Code or identifier for the free zone." ;
+    rdfs:domain :FreeZone ;
+    rdfs:range xsd:string .
+
+:areaIdentifier a owl:DatatypeProperty ;
+    rdfs:label "area identifier" ;
+    rdfs:comment "Code or identifier for the customs controlled area." ;
+    rdfs:domain :CustomsControlledArea ;
+    rdfs:range xsd:string .
+
+:placeCode a owl:DatatypeProperty ;
+    rdfs:label "place code" ;
+    rdfs:comment "Code identifying the designated export place." ;
+    rdfs:domain :DesignatedExportPlace ;
+    rdfs:range xsd:string .
+
+:latitude a owl:DatatypeProperty ;
+    rdfs:label "latitude" ;
+    rdfs:comment "Geographic latitude coordinate in decimal degrees." ;
+    rdfs:range xsd:decimal .
+
+:longitude a owl:DatatypeProperty ;
+    rdfs:label "longitude" ;
+    rdfs:comment "Geographic longitude coordinate in decimal degrees." ;
+    rdfs:range xsd:decimal .

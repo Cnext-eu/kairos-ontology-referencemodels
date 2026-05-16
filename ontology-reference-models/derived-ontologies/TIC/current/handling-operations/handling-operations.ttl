@@ -1,0 +1,241 @@
+@prefix : <https://www.kairosflow.ai/ont/tic/handling-operations#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "TIC 4.0 Handling Operations Ontology" ;
+    dcterms:description """Cargo handling operations domain of the TIC 4.0 ontology.
+
+    Covers core TIC 4.0 operational concepts: carrier visits, cargo visits, moves, cycles,
+    job instructions, and move types (load, discharge, lift, horizontal).""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-07-15"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
+    dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
+    rdfs:seeAlso <https://tic40.org/standards/> .
+
+#################################################################
+#    Visit Classes
+#################################################################
+
+:CarrierVisit a owl:Class ;
+    rdfs:label "Carrier Visit" ;
+    rdfs:comment """The visit of a carrier (vessel, truck, train, or barge) to the terminal.
+
+    TIC 4.0 subject: carriervisit. Encompasses the full lifecycle from arrival through
+    mooring/positioning to departure. The primary operational planning unit for vessel operations.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :visitArrivalTime ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:CargoVisit a owl:Class ;
+    rdfs:label "Cargo Visit" ;
+    rdfs:comment """The lifecycle of a cargo unit at the terminal from arrival to departure.
+
+    TIC 4.0 subject: cargovisit. Tracks a container or cargo unit through its entire stay
+    at the terminal, linking gate-in, yard storage, vessel operations, and gate-out.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :cargoArrivalTime ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Move Classes
+#################################################################
+
+:Move a owl:Class ;
+    rdfs:label "Move" ;
+    rdfs:comment """An atomic operation transferring a cargo unit between two locations within the terminal.
+
+    TIC 4.0 concept: move. The fundamental unit of work — each move has an origin, destination,
+    and is performed by a piece of cargo handling equipment.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :moveTimestamp ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:LoadMove a owl:Class ;
+    rdfs:label "Load Move" ;
+    rdfs:comment """A move that places a cargo unit onto a vessel for export.
+
+    TIC 4.0: The quay-side operation transferring a unit from quay/chassis to vessel stowage position.""" ;
+    rdfs:subClassOf :Move .
+
+:DischargeMove a owl:Class ;
+    rdfs:label "Discharge Move" ;
+    rdfs:comment """A move that removes a cargo unit from a vessel during import.
+
+    TIC 4.0: The quay-side operation transferring a unit from vessel stowage to quay/chassis.""" ;
+    rdfs:subClassOf :Move .
+
+:LiftMove a owl:Class ;
+    rdfs:label "Lift Move" ;
+    rdfs:comment """A vertical handling move that lifts or lowers a cargo unit using crane equipment.
+
+    TIC 4.0: Includes quay crane lifts, yard crane lifts, and reach stacker operations.""" ;
+    rdfs:subClassOf :Move .
+
+:HorizontalMove a owl:Class ;
+    rdfs:label "Horizontal Move" ;
+    rdfs:comment """A lateral transport move of a cargo unit between terminal zones (e.g., quay to yard).
+
+    TIC 4.0: Typically performed by terminal tractors, straddle carriers, or automated guided vehicles.""" ;
+    rdfs:subClassOf :Move .
+
+#################################################################
+#    Cycle and Instruction Classes
+#################################################################
+
+:Cycle a owl:Class ;
+    rdfs:label "Cycle" ;
+    rdfs:comment """A complete sequence of moves performed by a piece of cargo handling equipment (CHE).
+
+    TIC 4.0 concept: cycle. Typically consists of pick, travel-loaded, place, and return-empty.
+    Cycles are the basis for CHE productivity measurement (moves per hour).""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :hasMove ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:JobInstruction a owl:Class ;
+    rdfs:label "Job Instruction" ;
+    rdfs:comment """A directive from the TOS to a piece of CHE or operator to execute a move.
+
+    TIC 4.0 concept: jobinstruction. Contains origin, destination, unit reference, priority,
+    and the assigned CHE identifier.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :instructionOrigin ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :instructionDestination ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasCargoVisit a owl:ObjectProperty ;
+    rdfs:label "has cargo visit" ;
+    rdfs:comment "Links a carrier visit to the cargo visits handled during the call." ;
+    rdfs:domain :CarrierVisit ;
+    rdfs:range :CargoVisit .
+
+:hasMove a owl:ObjectProperty ;
+    rdfs:label "has move" ;
+    rdfs:comment "Links a cycle or cargo visit to an individual move." ;
+    rdfs:range :Move .
+
+:hasCycle a owl:ObjectProperty ;
+    rdfs:label "has cycle" ;
+    rdfs:comment "Links a carrier visit or cargo visit to a cycle performed during it." ;
+    rdfs:range :Cycle .
+
+:executesInstruction a owl:ObjectProperty ;
+    rdfs:label "executes instruction" ;
+    rdfs:comment "Links a move to the job instruction it fulfils." ;
+    rdfs:domain :Move ;
+    rdfs:range :JobInstruction .
+
+:instructionOrigin a owl:ObjectProperty ;
+    rdfs:label "instruction origin" ;
+    rdfs:comment "The origin location for a job instruction." ;
+    rdfs:domain :JobInstruction .
+
+:instructionDestination a owl:ObjectProperty ;
+    rdfs:label "instruction destination" ;
+    rdfs:comment "The destination location for a job instruction." ;
+    rdfs:domain :JobInstruction .
+
+:performedBy a owl:ObjectProperty ;
+    rdfs:label "performed by" ;
+    rdfs:comment "Links a move or cycle to the CHE that performed it." ;
+    rdfs:domain :Move .
+
+:followsMove a owl:ObjectProperty ;
+    rdfs:label "follows move" ;
+    rdfs:comment "Indicates ordering: this move follows the referenced move in a cycle." ;
+    rdfs:domain :Move ;
+    rdfs:range :Move .
+
+:partOfCarrierVisit a owl:ObjectProperty ;
+    rdfs:label "part of carrier visit" ;
+    rdfs:comment "Links a cargo visit to the carrier visit it is associated with." ;
+    rdfs:domain :CargoVisit ;
+    rdfs:range :CarrierVisit .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:visitArrivalTime a owl:DatatypeProperty ;
+    rdfs:label "visit arrival time" ;
+    rdfs:comment "The date and time when the carrier arrived at the terminal." ;
+    rdfs:domain :CarrierVisit ;
+    rdfs:range xsd:dateTime .
+
+:visitDepartureTime a owl:DatatypeProperty ;
+    rdfs:label "visit departure time" ;
+    rdfs:comment "The date and time when the carrier departed from the terminal." ;
+    rdfs:domain :CarrierVisit ;
+    rdfs:range xsd:dateTime .
+
+:carrierType a owl:DatatypeProperty ;
+    rdfs:label "carrier type" ;
+    rdfs:comment "Type of carrier (VESSEL, TRUCK, TRAIN, BARGE)." ;
+    rdfs:domain :CarrierVisit ;
+    rdfs:range xsd:string .
+
+:cargoArrivalTime a owl:DatatypeProperty ;
+    rdfs:label "cargo arrival time" ;
+    rdfs:comment "The date and time when the cargo unit arrived at the terminal." ;
+    rdfs:domain :CargoVisit ;
+    rdfs:range xsd:dateTime .
+
+:cargoDepartureTime a owl:DatatypeProperty ;
+    rdfs:label "cargo departure time" ;
+    rdfs:comment "The date and time when the cargo unit departed from the terminal." ;
+    rdfs:domain :CargoVisit ;
+    rdfs:range xsd:dateTime .
+
+:moveTimestamp a owl:DatatypeProperty ;
+    rdfs:label "move timestamp" ;
+    rdfs:comment "The date and time when a move was executed." ;
+    rdfs:domain :Move ;
+    rdfs:range xsd:dateTime .
+
+:moveDurationSeconds a owl:DatatypeProperty ;
+    rdfs:label "move duration (seconds)" ;
+    rdfs:comment "Duration of the move in seconds." ;
+    rdfs:domain :Move ;
+    rdfs:range xsd:integer .
+
+:sequenceNumber a owl:DatatypeProperty ;
+    rdfs:label "sequence number" ;
+    rdfs:comment "Ordinal position of a move within its cycle." ;
+    rdfs:domain :Move ;
+    rdfs:range xsd:integer .
+
+:moveCount a owl:DatatypeProperty ;
+    rdfs:label "move count" ;
+    rdfs:comment "Total number of moves in a cycle or carrier visit." ;
+    rdfs:range xsd:integer .
+
+:instructionPriority a owl:DatatypeProperty ;
+    rdfs:label "instruction priority" ;
+    rdfs:comment "Priority level of the job instruction (e.g., 1=urgent, 5=normal)." ;
+    rdfs:domain :JobInstruction ;
+    rdfs:range xsd:integer .

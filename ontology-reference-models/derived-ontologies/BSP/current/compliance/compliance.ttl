@@ -1,0 +1,104 @@
+@prefix : <https://www.kairosflow.ai/ont/bsp/compliance#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "Kairos BSP Compliance Domain Ontology" ;
+    dcterms:description """Regulatory and compliance domain of the Buy-Ship-Pay Reference Data Model.
+
+    This module defines regulatory and compliance classes covering:
+    - Regulatory Requirements: Legal and regulatory obligations for trade
+    - Tariff Classification: Harmonized System (HS) code classification
+    - Duties and Taxes: Customs duties, VAT, excise
+    - Trade Agreements: Buyer-seller contractual terms
+    - Events: Customs clearance lifecycle events""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/> .
+
+#################################################################
+#    Regulatory and Compliance Classes
+#################################################################
+
+:RegulatoryRequirement a owl:Class ;
+    rdfs:label "Regulatory Requirement" ;
+    rdfs:comment """A legal or regulatory obligation for cross-border trade.
+    
+    UN/CEFACT BSP: Maps to RegulatoryProcedure — formal steps to satisfy
+    a cross-border regulation, law or convention.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/RegulatoryProcedure> .
+
+:TariffClassification a owl:Class ;
+    rdfs:label "Tariff Classification" ;
+    rdfs:comment """The classification of goods for customs purposes using the Harmonized System.
+    
+    UN/CEFACT BSP: Maps to Classification and CustomsValuation.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Classification> .
+
+:DutyTax a owl:Class ;
+    rdfs:label "Duty/Tax" ;
+    rdfs:comment """A customs duty or tax on imported/exported goods.
+    
+    UN/CEFACT BSP: Maps to TradeTax — a trade related fiscal levy or duty.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TradeTax> .
+
+:TradeAgreement a owl:Class ;
+    rdfs:label "Trade Agreement" ;
+    rdfs:comment """The contractual terms agreed between buyer and seller for a trade transaction.
+    
+    UN/CEFACT BSP: Maps to HeaderTradeAgreement — covers Incoterms, pricing,
+    delivery terms, and conditions between trading parties.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/HeaderTradeAgreement> .
+
+#################################################################
+#    Event Classes
+#################################################################
+
+:CustomsEvent a owl:Class ;
+    rdfs:label "Customs Event" ;
+    rdfs:comment """An event in the customs clearance process.
+    
+    UN/CEFACT BSP: A SupplyChainEvent occurring during regulatory procedures
+    (declaration submitted, inspection, clearance granted).""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/SupplyChainEvent> .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasTariffClassification a owl:ObjectProperty ;
+    rdfs:label "has tariff classification" ;
+    rdfs:comment "Relates product to tariff classification." ;
+    rdfs:range :TariffClassification .
+
+:hasCountryOfOrigin a owl:ObjectProperty ;
+    rdfs:label "has country of origin" ;
+    rdfs:comment "Identifies country where goods were produced." .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:hsCode a owl:DatatypeProperty ;
+    rdfs:label "HS code" ;
+    rdfs:comment "Harmonized System tariff classification code." ;
+    rdfs:range xsd:string .
+
+:dutyRate a owl:DatatypeProperty ;
+    rdfs:label "duty rate" ;
+    rdfs:comment "Customs duty percentage rate." ;
+    rdfs:domain :DutyTax ;
+    rdfs:range xsd:decimal .
+
+:dutyAmount a owl:DatatypeProperty ;
+    rdfs:label "duty amount" ;
+    rdfs:comment "Amount of customs duty owed." ;
+    rdfs:domain :DutyTax ;
+    rdfs:range xsd:decimal .

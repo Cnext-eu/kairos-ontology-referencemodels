@@ -1,0 +1,252 @@
+@prefix : <https://www.kairosflow.ai/ont/mmt/cargo#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/mmt/cargo> a owl:Ontology ;
+    dcterms:title "MMT Cargo Domain" ;
+    dcterms:description """Cargo, goods, packaging, weight, dimension, and commodity classes for the Kairos Multi-Modal Transport ontology.
+
+    Covers cargo items, goods descriptions, packaging types, weight and dimension specifications,
+    commodity classifications, and handling requirements. Based on UN/CEFACT MMT Reference Data Model.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
+    rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
+
+#################################################################
+#    Cargo Classes
+#################################################################
+
+:CargoItem a owl:Class ;
+    rdfs:label "Cargo Item" ;
+    rdfs:comment """A distinct item of cargo being transported.
+
+    UN/CEFACT MMT: Physical cargo unit with specific characteristics.""" .
+
+:Goods a owl:Class ;
+    rdfs:label "Goods" ;
+    rdfs:comment """A collection of merchandise or commodities for transport.
+
+    UN/CEFACT MMT: General term for transported items.""" .
+
+:PackageSpecification a owl:Class ;
+    rdfs:label "Package Specification" ;
+    rdfs:comment """The specification of packaging used for cargo.
+
+    UN/CEFACT MMT: Packaging type, material, and standards.""" .
+
+:Weight a owl:Class ;
+    rdfs:label "Weight" ;
+    rdfs:comment """A weight measurement for cargo or equipment.
+
+    UN/CEFACT MMT: Gross, net, tare, chargeable weight.""" .
+
+:Dimension a owl:Class ;
+    rdfs:label "Dimension" ;
+    rdfs:comment """Physical dimensions of cargo or equipment.
+
+    UN/CEFACT MMT: Length, width, height, volume.""" .
+
+:Commodity a owl:Class ;
+    rdfs:label "Commodity" ;
+    rdfs:comment """A classification of goods by commodity type.
+
+    UN/CEFACT MMT: HS code, commodity description, trade category.""" .
+
+:CargoMeasurement a owl:Class ;
+    rdfs:label "Cargo Measurement" ;
+    rdfs:comment """A measurement associated with cargo items.
+
+    UN/CEFACT MMT: Weight, volume, quantity measurements.""" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasCommodity a owl:ObjectProperty ;
+    rdfs:label "has commodity" ;
+    rdfs:comment "Relates cargo to its commodity classification." ;
+    rdfs:domain :CargoItem ;
+    rdfs:range :Commodity .
+
+:hasWeight a owl:ObjectProperty ;
+    rdfs:label "has weight" ;
+    rdfs:comment "Relates cargo to weight measurement." ;
+    rdfs:domain :CargoItem ;
+    rdfs:range :Weight .
+
+:hasDimension a owl:ObjectProperty ;
+    rdfs:label "has dimension" ;
+    rdfs:comment "Relates cargo to physical dimensions." ;
+    rdfs:domain :CargoItem ;
+    rdfs:range :Dimension .
+
+:hasHandlingRequirement a owl:ObjectProperty ;
+    rdfs:label "has handling requirement" ;
+    rdfs:comment "Relates cargo to special handling instructions." ;
+    rdfs:domain :CargoItem ;
+    rdfs:range :HandlingInstructions .
+
+:hasPackageSpecification a owl:ObjectProperty ;
+    rdfs:label "has package specification" ;
+    rdfs:comment "Relates cargo to packaging specifications." ;
+    rdfs:domain :CargoItem ;
+    rdfs:range :PackageSpecification .
+
+:hasMeasurement a owl:ObjectProperty ;
+    rdfs:label "has measurement" ;
+    rdfs:comment "Relates cargo to a measurement." ;
+    rdfs:domain :CargoItem ;
+    rdfs:range :CargoMeasurement .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:cargoDescription a owl:DatatypeProperty ;
+    rdfs:label "cargo description" ;
+    rdfs:comment "Textual description of cargo." ;
+    rdfs:domain :CargoItem ;
+    rdfs:range xsd:string .
+
+:commodityCode a owl:DatatypeProperty ;
+    rdfs:label "commodity code" ;
+    rdfs:comment "HS or other commodity classification code." ;
+    rdfs:domain :Commodity ;
+    rdfs:range xsd:string .
+
+:commodityDescription a owl:DatatypeProperty ;
+    rdfs:label "commodity description" ;
+    rdfs:comment "Description of the commodity." ;
+    rdfs:domain :Commodity ;
+    rdfs:range xsd:string .
+
+:weightValue a owl:DatatypeProperty ;
+    rdfs:label "weight value" ;
+    rdfs:comment "Numeric weight value." ;
+    rdfs:domain :Weight ;
+    rdfs:range xsd:decimal .
+
+:weightUnit a owl:DatatypeProperty ;
+    rdfs:label "weight unit" ;
+    rdfs:comment "Unit of weight measurement (KG, LB, TON)." .
+
+#################################################################
+#    Instruction Classes (UN/CEFACT RABIE v101)
+#################################################################
+
+:HandlingInstructions a owl:Class ;
+    rdfs:label "Handling Instructions" ;
+    rdfs:comment """Instructions for cargo handling during transport.
+
+    UN/CEFACT RABIE: HandlingInstructionsType — specific requirements for
+    loading, unloading, stacking, or storage of cargo.""" .
+
+:DisposalInstructions a owl:Class ;
+    rdfs:label "Disposal Instructions" ;
+    rdfs:comment """Instructions for the disposal of cargo or waste material.
+
+    UN/CEFACT RABIE: DisposalInstructionsType — requirements for safe
+    disposal of hazardous or regulated materials.""" .
+
+:QuarantineInstructions a owl:Class ;
+    rdfs:label "Quarantine Instructions" ;
+    rdfs:comment """Instructions for quarantine treatment of cargo.
+
+    UN/CEFACT RABIE: QuarantineInstructionsType — phytosanitary,
+    veterinary, or biosecurity treatment requirements.""" .
+
+#################################################################
+#    Additional Cargo Classes (UN/CEFACT RABIE v101)
+#################################################################
+
+:WasteMaterial a owl:Class ;
+    rdfs:label "Waste Material" ;
+    rdfs:comment """Waste material being transported.
+
+    UN/CEFACT RABIE: TransportWasteMaterialType — regulated waste
+    requiring special handling, documentation, and disposal.""" .
+
+:WasteMaterialComponent a owl:Class ;
+    rdfs:label "Waste Material Component" ;
+    rdfs:comment """A component of waste material with specific characteristics.
+
+    UN/CEFACT RABIE: TransportWasteMaterialComponentType — individual
+    constituent of a waste consignment.""" .
+
+:ShippingMarks a owl:Class ;
+    rdfs:label "Shipping Marks" ;
+    rdfs:comment """Marks and numbers applied to packages for identification.
+
+    UN/CEFACT RABIE: LogisticsShippingMarksType — physical markings
+    on cargo for identification, handling, and routing purposes.""" .
+
+:CargoInsurance a owl:Class ;
+    rdfs:label "Cargo Insurance" ;
+    rdfs:comment """Insurance coverage for cargo during transport.
+
+    UN/CEFACT RABIE: TransportCargoInsuranceType — details of insurance
+    coverage, policy, and insured value for goods in transit.""" .
+
+#################################################################
+#    Additional Object Properties
+#################################################################
+
+:hasHandlingInstructions a owl:ObjectProperty ;
+    rdfs:label "has handling instructions" ;
+    rdfs:comment "Handling instructions applicable to this cargo." ;
+    rdfs:domain :CargoItem ;
+    rdfs:range :HandlingInstructions .
+
+:hasShippingMarks a owl:ObjectProperty ;
+    rdfs:label "has shipping marks" ;
+    rdfs:comment "Shipping marks applied to this cargo item or package." ;
+    rdfs:range :ShippingMarks .
+
+:hasInsurance a owl:ObjectProperty ;
+    rdfs:label "has insurance" ;
+    rdfs:comment "Insurance coverage for this cargo." ;
+    rdfs:domain :CargoItem ;
+    rdfs:range :CargoInsurance .
+
+:lengthValue a owl:DatatypeProperty ;
+    rdfs:label "length value" ;
+    rdfs:comment "Length measurement." ;
+    rdfs:domain :Dimension ;
+    rdfs:range xsd:decimal .
+
+:widthValue a owl:DatatypeProperty ;
+    rdfs:label "width value" ;
+    rdfs:comment "Width measurement." ;
+    rdfs:domain :Dimension ;
+    rdfs:range xsd:decimal .
+
+:heightValue a owl:DatatypeProperty ;
+    rdfs:label "height value" ;
+    rdfs:comment "Height measurement." ;
+    rdfs:domain :Dimension ;
+    rdfs:range xsd:decimal .
+
+:dimensionUnit a owl:DatatypeProperty ;
+    rdfs:label "dimension unit" ;
+    rdfs:comment "Unit of dimension measurement (M, CM, FT, IN)." ;
+    rdfs:domain :Dimension ;
+    rdfs:range xsd:string .
+
+:handlingCode a owl:DatatypeProperty ;
+    rdfs:label "handling code" ;
+    rdfs:comment "Standard handling instruction code." ;
+    rdfs:domain :HandlingInstructions ;
+    rdfs:range xsd:string .
+
+:handlingInstruction a owl:DatatypeProperty ;
+    rdfs:label "handling instruction" ;
+    rdfs:comment "Free-text handling instruction." ;
+    rdfs:domain :HandlingInstructions ;
+    rdfs:range xsd:string .

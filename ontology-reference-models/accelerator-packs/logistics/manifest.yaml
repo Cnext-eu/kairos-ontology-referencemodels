@@ -1,0 +1,63 @@
+package:
+  id: logistics
+  name: "Kairos Logistics Accelerator Pack"
+  version: "1.0.0"
+  description: "Pre-composed ontology bundle for logistics companies"
+  namespace: "https://www.kairosflow.ai/ont/accelerator/logistics#"
+  
+  target_sectors:
+    - Freight forwarding
+    - Ocean carrier (vessel)
+    - Road carrier (trucking)
+    - Terminal operations
+    - 3PL / logistics service provider
+    - NVOCC
+    - Customs brokerage
+
+  includes:
+    - id: DCSA
+      name: "Digital Container Shipping Association"
+      uri: "https://www.kairosflow.ai/ont/dcsa#"
+      focus: "Container shipping lifecycle"
+    - id: MMT
+      name: "Multi-Modal Transport"
+      uri: "https://www.kairosflow.ai/ont/mmt#"
+      focus: "Consignment, movement, cargo, equipment"
+    - id: BSP
+      name: "Buy-Ship-Pay"
+      uri: "https://www.kairosflow.ai/ont/bsp#"
+      focus: "Party, contract, invoice, settlement"
+    - id: TIC
+      name: "Terminal Industry Committee 4.0"
+      uri: "https://www.kairosflow.ai/ont/tic#"
+      focus: "Terminal operations, handling, automotive"
+    - id: IMO
+      name: "International Maritime Organization"
+      uri: "https://www.kairosflow.ai/ont/imo#"
+      focus: "Vessel registry, dangerous goods, port-call"
+    - id: WCO
+      name: "World Customs Organization"
+      uri: "https://www.kairosflow.ai/ont/wco#"
+      focus: "Customs declarations, trade facilitation"
+    - id: Sustainability
+      name: "Sustainability & Carbon"
+      uri: "https://www.kairosflow.ai/ont/sustainability#"
+      focus: "Emissions, energy, ESG reporting"
+    - id: supply-chain
+      name: "Supply Chain"
+      uri: "https://www.kairosflow.ai/ont/supply-chain#"
+      focus: "Integration layer"
+
+  excludes:
+    - id: FIBO
+      reason: "Use Financial Services Accelerator for financial ontologies"
+
+  standards_alignment:
+    - "DCSA API Standards"
+    - "UN/CEFACT MMT-RDM"
+    - "ISO 20197-1:2024 Buy-Ship-Pay"
+    - "TIC 4.0"
+    - "IMO Compendium / FAL / IMDG"
+    - "WCO Data Model 3.0"
+    - "ISO 14083:2023"
+    - "GLEC Framework"

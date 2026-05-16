@@ -1,0 +1,212 @@
+@prefix : <https://www.kairosflow.ai/ont/wco/party#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "WCO Party Domain" ;
+    dcterms:description "Party roles in customs processes including declarants, authorities, brokers, and traders based on the WCO Data Model 3.10.0." ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
+    dcterms:source "WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056" ;
+    rdfs:seeAlso <https://www.wcoomd.org/datamodel> .
+
+#################################################################
+#    Classes
+#################################################################
+
+:Declarant a owl:Class ;
+    rdfs:label "Declarant" ;
+    rdfs:comment """The party making or on whose behalf a customs declaration is made.
+
+    WCO: Party making or on whose behalf a customs declaration is made.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :declarantIdentifier ;
+        owl:minCardinality 1
+    ] .
+
+:CustomsAuthority a owl:Class ;
+    rdfs:label "Customs Authority" ;
+    rdfs:comment """A government authority responsible for customs administration.
+
+    WCO: Government authority responsible for customs administration.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :authorityCode ;
+        owl:minCardinality 1
+    ] .
+
+:CustomsBroker a owl:Class ;
+    rdfs:label "Customs Broker" ;
+    rdfs:comment """A licensed intermediary acting on behalf of importers or exporters.
+
+    WCO: Licensed intermediary acting on behalf of importers/exporters.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :brokerLicenseNumber ;
+        owl:minCardinality 1
+    ] .
+
+:Importer a owl:Class ;
+    rdfs:label "Importer" ;
+    rdfs:comment """The party responsible for importing goods into a customs territory.
+
+    WCO: Party responsible for importing goods into a customs territory.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :importerEORI ;
+        owl:minCardinality 1
+    ] .
+
+:Exporter a owl:Class ;
+    rdfs:label "Exporter" ;
+    rdfs:comment """The party responsible for exporting goods from a customs territory.
+
+    WCO: Party responsible for exporting goods from a customs territory.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :exporterEORI ;
+        owl:minCardinality 1
+    ] .
+
+:AEOHolder a owl:Class ;
+    rdfs:label "AEO Holder" ;
+    rdfs:comment """A party holding Authorised Economic Operator status under the SAFE Framework.
+
+    WCO: Party holding Authorised Economic Operator status under the SAFE Framework.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :aeoNumber ;
+        owl:minCardinality 1
+    ] .
+
+:FreightAgent a owl:Class ;
+    rdfs:label "Freight Agent" ;
+    rdfs:comment """An agent arranging freight transport and customs formalities on behalf of principals.
+
+    WCO: Agent arranging freight transport and customs formalities on behalf of principals.""" .
+
+:GuaranteeProvider a owl:Class ;
+    rdfs:label "Guarantee Provider" ;
+    rdfs:comment """A party providing financial guarantees for customs duties and obligations.
+
+    WCO: Party providing financial guarantees for customs duties and obligations.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :guaranteeReference ;
+        owl:minCardinality 1
+    ] .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:actsAsDeclarant a owl:ObjectProperty ;
+    rdfs:label "acts as declarant" ;
+    rdfs:comment "Relates a party to the Declarant role it fulfils." ;
+    rdfs:range :Declarant .
+
+:regulatedBy a owl:ObjectProperty ;
+    rdfs:label "regulated by" ;
+    rdfs:comment "Relates a party to the Customs Authority that regulates it." ;
+    rdfs:range :CustomsAuthority .
+
+:representedByBroker a owl:ObjectProperty ;
+    rdfs:label "represented by broker" ;
+    rdfs:comment "Relates a party to the Customs Broker representing it." ;
+    rdfs:range :CustomsBroker .
+
+:hasImporter a owl:ObjectProperty ;
+    rdfs:label "has importer" ;
+    rdfs:comment "Relates a customs transaction to its Importer." ;
+    rdfs:range :Importer .
+
+:hasExporter a owl:ObjectProperty ;
+    rdfs:label "has exporter" ;
+    rdfs:comment "Relates a customs transaction to its Exporter." ;
+    rdfs:range :Exporter .
+
+:hasAEOHolder a owl:ObjectProperty ;
+    rdfs:label "has AEO holder" ;
+    rdfs:comment "Relates a customs transaction to a party with AEO status." ;
+    rdfs:range :AEOHolder .
+
+:hasFreightAgent a owl:ObjectProperty ;
+    rdfs:label "has freight agent" ;
+    rdfs:comment "Relates a customs transaction to a Freight Agent." ;
+    rdfs:range :FreightAgent .
+
+:hasGuaranteeProvider a owl:ObjectProperty ;
+    rdfs:label "has guarantee provider" ;
+    rdfs:comment "Relates a customs obligation to a Guarantee Provider." ;
+    rdfs:range :GuaranteeProvider .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:declarantIdentifier a owl:DatatypeProperty ;
+    rdfs:label "declarant identifier" ;
+    rdfs:comment "Unique identifier of the declarant (e.g. EORI number)." ;
+    rdfs:domain :Declarant ;
+    rdfs:range xsd:string .
+
+:declarantName a owl:DatatypeProperty ;
+    rdfs:label "declarant name" ;
+    rdfs:comment "Full legal name of the declarant." ;
+    rdfs:domain :Declarant ;
+    rdfs:range xsd:string .
+
+:authorityCode a owl:DatatypeProperty ;
+    rdfs:label "authority code" ;
+    rdfs:comment "Code identifying the customs authority." ;
+    rdfs:domain :CustomsAuthority ;
+    rdfs:range xsd:string .
+
+:authorityName a owl:DatatypeProperty ;
+    rdfs:label "authority name" ;
+    rdfs:comment "Name of the customs authority." ;
+    rdfs:domain :CustomsAuthority ;
+    rdfs:range xsd:string .
+
+:brokerLicenseNumber a owl:DatatypeProperty ;
+    rdfs:label "broker license number" ;
+    rdfs:comment "License number of the customs broker." ;
+    rdfs:domain :CustomsBroker ;
+    rdfs:range xsd:string .
+
+:importerEORI a owl:DatatypeProperty ;
+    rdfs:label "importer EORI" ;
+    rdfs:comment "EORI number of the importer." ;
+    rdfs:domain :Importer ;
+    rdfs:range xsd:string .
+
+:exporterEORI a owl:DatatypeProperty ;
+    rdfs:label "exporter EORI" ;
+    rdfs:comment "EORI number of the exporter." ;
+    rdfs:domain :Exporter ;
+    rdfs:range xsd:string .
+
+:aeoNumber a owl:DatatypeProperty ;
+    rdfs:label "AEO number" ;
+    rdfs:comment "Authorised Economic Operator certification number." ;
+    rdfs:domain :AEOHolder ;
+    rdfs:range xsd:string .
+
+:guaranteeReference a owl:DatatypeProperty ;
+    rdfs:label "guarantee reference" ;
+    rdfs:comment "Reference number of the financial guarantee." ;
+    rdfs:domain :GuaranteeProvider ;
+    rdfs:range xsd:string .
+
+:guaranteeAmount a owl:DatatypeProperty ;
+    rdfs:label "guarantee amount" ;
+    rdfs:comment "Monetary amount of the financial guarantee." ;
+    rdfs:domain :GuaranteeProvider ;
+    rdfs:range xsd:decimal .

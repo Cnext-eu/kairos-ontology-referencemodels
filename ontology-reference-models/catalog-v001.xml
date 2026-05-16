@@ -7,51 +7,85 @@
     Tools that support XML catalogs (Protégé, rdflib with rdflib-catalog) will use
     local files instead of fetching from the internet.
     
-    Generated for FIBO version: Q4 2025 (master_2025Q4)
+    FIBO URIs are resolved via rewriteURI — no update needed on FIBO upgrades.
     -->
     
-    <!-- FIBO Foundation (FND) - Agents and People -->
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/" 
-         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/FND/AgentsAndPeople/Agents.rdf"/>
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/People/" 
-         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/FND/AgentsAndPeople/People.rdf"/>
+    <!-- FIBO: single rewrite rule resolves all FIBO URIs to the stable local path.
+         The folder is always named "fibo/" regardless of release version. -->
+    <rewriteURI uriStartString="https://spec.edmcouncil.org/fibo/ontology/"
+                rewritePrefix="authoritative-ontologies/FIBO/current/fibo/"/>
     
-    <!-- FIBO Foundation (FND) - Organizations -->
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/" 
-         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/FND/Organizations/FormalOrganizations.rdf"/>
+    <!-- ========== DCSA (Digital Container Shipping Association) ========== -->
+    <uri name="https://www.kairosflow.ai/ont/dcsa#" uri="derived-ontologies/DCSA/current/dcsa.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/shipment-journey#" uri="derived-ontologies/DCSA/current/shipment-journey/shipment-journey.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/booking#" uri="derived-ontologies/DCSA/current/shipment-journey/booking/booking.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/transport-documents#" uri="derived-ontologies/DCSA/current/shipment-journey/transport-documents/transport-documents.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/equipment-journey#" uri="derived-ontologies/DCSA/current/equipment-journey/equipment-journey.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/container-operations#" uri="derived-ontologies/DCSA/current/equipment-journey/container-operations/container-operations.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/vessel-journey#" uri="derived-ontologies/DCSA/current/vessel-journey/vessel-journey.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/schedule#" uri="derived-ontologies/DCSA/current/vessel-journey/schedule/schedule.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/track-and-trace#" uri="derived-ontologies/DCSA/current/track-and-trace/track-and-trace.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/events#" uri="derived-ontologies/DCSA/current/track-and-trace/events/events.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/shared-kernel#" uri="derived-ontologies/DCSA/current/shared-kernel/shared-kernel.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/equipment#" uri="derived-ontologies/DCSA/current/shared-kernel/equipment/equipment.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/party#" uri="derived-ontologies/DCSA/current/shared-kernel/party/party.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/locations#" uri="derived-ontologies/DCSA/current/shared-kernel/locations/locations.ttl"/>
     
-    <!-- FIBO Foundation (FND) - Agreements -->
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/" 
-         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/FND/Agreements/Contracts.rdf"/>
+    <!-- ========== MMT (Multi-Modal Transport) ========== -->
+    <uri name="https://www.kairosflow.ai/ont/mmt#" uri="derived-ontologies/MMT/current/mmt.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/cargo#" uri="derived-ontologies/MMT/current/cargo/cargo.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/consignment#" uri="derived-ontologies/MMT/current/consignment/consignment.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/documents#" uri="derived-ontologies/MMT/current/documents/documents.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/equipment#" uri="derived-ontologies/MMT/current/equipment/equipment.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/events#" uri="derived-ontologies/MMT/current/events/events.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/inland-transport#" uri="derived-ontologies/MMT/current/inland-transport/inland-transport.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/locations#" uri="derived-ontologies/MMT/current/locations/locations.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/party#" uri="derived-ontologies/MMT/current/party/party.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/route-network#" uri="derived-ontologies/MMT/current/route-network/route-network.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/transport-means#" uri="derived-ontologies/MMT/current/transport-means/transport-means.ttl"/>
     
-    <!-- FIBO Foundation (FND) - Law -->
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/Law/LegalCore/" 
-         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/FND/Law/LegalCore.rdf"/>
+    <!-- ========== BSP (Buy-Ship-Pay) ========== -->
+    <uri name="https://www.kairosflow.ai/ont/bsp#" uri="derived-ontologies/BSP/current/bsp.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/bsp/commercial#" uri="derived-ontologies/BSP/current/commercial/commercial.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/bsp/compliance#" uri="derived-ontologies/BSP/current/compliance/compliance.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/bsp/documents#" uri="derived-ontologies/BSP/current/documents/documents.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/bsp/financial#" uri="derived-ontologies/BSP/current/financial/financial.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/bsp/party#" uri="derived-ontologies/BSP/current/party/party.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/bsp/reference-data#" uri="derived-ontologies/BSP/current/reference-data/reference-data.ttl"/>
     
-    <!-- FIBO Foundation (FND) - Relations -->
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/" 
-         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/FND/Relations/Relations.rdf"/>
+    <!-- ========== TIC (Terminal Industry Committee 4.0) ========== -->
+    <uri name="https://www.kairosflow.ai/ont/tic#" uri="derived-ontologies/TIC/current/tic.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/tic/automotive-services#" uri="derived-ontologies/TIC/current/automotive-services/automotive-services.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/tic/events#" uri="derived-ontologies/TIC/current/events/events.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/tic/handling-operations#" uri="derived-ontologies/TIC/current/handling-operations/handling-operations.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/tic/locations#" uri="derived-ontologies/TIC/current/locations/locations.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/tic/party#" uri="derived-ontologies/TIC/current/party/party.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/tic/terminal-infrastructure#" uri="derived-ontologies/TIC/current/terminal-infrastructure/terminal-infrastructure.ttl"/>
     
-    <!-- FIBO Foundation (FND) - Dates and Times -->
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/" 
-         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/FND/DatesAndTimes/FinancialDates.rdf"/>
+    <!-- ========== IMO (International Maritime Organization) ========== -->
+    <uri name="https://www.kairosflow.ai/ont/imo#" uri="derived-ontologies/IMO/current/imo.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/imo/dangerous-goods#" uri="derived-ontologies/IMO/current/dangerous-goods/dangerous-goods.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/imo/locations#" uri="derived-ontologies/IMO/current/locations/locations.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/imo/party#" uri="derived-ontologies/IMO/current/party/party.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/imo/port-call#" uri="derived-ontologies/IMO/current/port-call/port-call.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/imo/vessel-registry#" uri="derived-ontologies/IMO/current/vessel-registry/vessel-registry.ttl"/>
     
-    <!-- FIBO Foundation (FND) - Products and Services -->
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/" 
-         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/FND/ProductsAndServices/ProductsAndServices.rdf"/>
+    <!-- ========== WCO (World Customs Organization) ========== -->
+    <uri name="https://www.kairosflow.ai/ont/wco#" uri="derived-ontologies/WCO/current/wco.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/wco/customs#" uri="derived-ontologies/WCO/current/customs/customs.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/wco/documents#" uri="derived-ontologies/WCO/current/documents/documents.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/wco/locations#" uri="derived-ontologies/WCO/current/locations/locations.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/wco/party#" uri="derived-ontologies/WCO/current/party/party.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/wco/trade-facilitation#" uri="derived-ontologies/WCO/current/trade-facilitation/trade-facilitation.ttl"/>
     
-    <!-- FIBO Foundation (FND) - Parties -->
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/" 
-         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/FND/Parties/Parties.rdf"/>
-    <!-- Deprecated: FND/Parties/Roles was merged into FND/Parties/Parties in 2013 -->
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/" 
-         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/FND/Parties/Parties.rdf"/>
+    <!-- ========== Sustainability ========== -->
+    <uri name="https://www.kairosflow.ai/ont/sustainability#" uri="derived-ontologies/Sustainability/current/sustainability.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/sustainability/carbon#" uri="derived-ontologies/Sustainability/current/carbon/carbon.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/sustainability/energy#" uri="derived-ontologies/Sustainability/current/energy/energy.ttl"/>
     
-    <!-- FIBO Business Entities (BE) - Partnerships -->
-    <uri name="https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/" 
-         uri="authoritative-ontologies/FIBO/edmcouncil-fibo-90770ba/BE/Partnerships/Partnerships.rdf"/>
-    
-    <!-- Add more FIBO module mappings as needed -->
+    <!-- ========== Accelerator Packs ========== -->
+    <uri name="https://www.kairosflow.ai/ont/accelerator/logistics#" uri="accelerator-packs/logistics/current/logistics-accelerator.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/accelerator/financial-services#" uri="accelerator-packs/financial-services/current/financial-services-accelerator.ttl"/>
     
 </catalog>
 

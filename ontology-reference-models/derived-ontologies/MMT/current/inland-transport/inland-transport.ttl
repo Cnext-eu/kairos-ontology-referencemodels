@@ -1,0 +1,152 @@
+@prefix : <https://www.kairosflow.ai/ont/mmt/inland-transport#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/mmt/inland-transport> a owl:Ontology ;
+    dcterms:title "MMT Inland Transport Domain" ;
+    dcterms:description """Inland transport classes for the Kairos Multi-Modal Transport ontology.
+
+    Covers inland legs (rail, barge, road), inland carriers, inland terminals,
+    and handover events for door-to-door logistics.
+    Based on UN/CEFACT MMT Reference Data Model (pre/on-carriage movements).
+
+    NOTE: Most classes in this module are OWL modeling constructs that reify
+    BSP D23B code-based distinctions into subclass hierarchies. The BSP model
+    uses a single TransportMovement class with modeCode (2=Rail, 3=Road,
+    8=Inland waterway) and TradeParty with role properties. Only
+    HaulageInstructions is a directly confirmed BSP D23B named class.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model v1.0 (RABIE v101)" ;
+    rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
+
+#################################################################
+#    Inland Transport Classes
+#################################################################
+
+:InlandLeg a owl:Class ;
+    rdfs:label "Inland Leg" ;
+    rdfs:comment """A transport leg using inland modes (rail, barge, road).
+
+    UN/CEFACT RABIE: PreCarriageLogisticsTransportMovement or
+    OnCarriageLogisticsTransportMovement in SupplyChainConsignmentType.""" .
+
+:RailLeg a owl:Class ;
+    rdfs:label "Rail Leg" ;
+    rdfs:comment """An inland transport leg using rail.
+
+    UN/CEFACT RABIE: Transport movement with ModeCode = 2 (Rail).""" ;
+    rdfs:subClassOf :InlandLeg .
+
+:BargeLeg a owl:Class ;
+    rdfs:label "Barge Leg" ;
+    rdfs:comment """An inland transport leg using barge on inland waterways.
+
+    UN/CEFACT RABIE: Transport movement with ModeCode = 8 (Inland waterway).""" ;
+    rdfs:subClassOf :InlandLeg .
+
+:RoadLeg a owl:Class ;
+    rdfs:label "Road Leg" ;
+    rdfs:comment """An inland transport leg using road (truck).
+
+    UN/CEFACT RABIE: Transport movement with ModeCode = 3 (Road).""" ;
+    rdfs:subClassOf :InlandLeg .
+
+:InlandCarrier a owl:Class ;
+    rdfs:label "Inland Carrier" ;
+    rdfs:comment """A carrier providing inland transport services.
+
+    UN/CEFACT RABIE: CarrierTradeParty within a pre/on-carriage movement.""" .
+
+:InlandTerminal a owl:Class ;
+    rdfs:label "Inland Terminal" ;
+    rdfs:comment """A terminal for inland transport operations.
+
+    UN/CEFACT RABIE: LogisticsLocationType used as origin/destination
+    of pre-carriage or on-carriage movements (ICD, dry port, rail yard).""" .
+
+:HandoverEvent a owl:Class ;
+    rdfs:label "Handover Event" ;
+    rdfs:comment """An event where cargo responsibility transfers between parties or modes.
+
+    UN/CEFACT RABIE: Represented via TransportEvent with specific TypeCode
+    at the junction between main-carriage and pre/on-carriage.""" .
+
+#################################################################
+#    Instruction Class (UN/CEFACT RABIE v101)
+#################################################################
+
+:HaulageInstructions a owl:Class ;
+    rdfs:label "Haulage Instructions" ;
+    rdfs:comment """Instructions for inland haulage of cargo or equipment.
+
+    UN/CEFACT RABIE: HaulageInstructionsType — pickup/delivery locations,
+    time windows, vehicle requirements, and routing preferences for
+    pre-carriage or on-carriage legs.""" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:operatedBy a owl:ObjectProperty ;
+    rdfs:label "operated by" ;
+    rdfs:comment "Relates an inland leg to the carrier operating it." ;
+    rdfs:domain :InlandLeg ;
+    rdfs:range :InlandCarrier .
+
+:hasOriginTerminal a owl:ObjectProperty ;
+    rdfs:label "has origin terminal" ;
+    rdfs:comment "Relates an inland leg to its origin terminal." ;
+    rdfs:domain :InlandLeg ;
+    rdfs:range :InlandTerminal .
+
+:hasDestinationTerminal a owl:ObjectProperty ;
+    rdfs:label "has destination terminal" ;
+    rdfs:comment "Relates an inland leg to its destination terminal." ;
+    rdfs:domain :InlandLeg ;
+    rdfs:range :InlandTerminal .
+
+:hasHandoverEvent a owl:ObjectProperty ;
+    rdfs:label "has handover event" ;
+    rdfs:comment "Relates an inland leg to its handover event." ;
+    rdfs:domain :InlandLeg ;
+    rdfs:range :HandoverEvent .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:inlandMode a owl:DatatypeProperty ;
+    rdfs:label "inland mode" ;
+    rdfs:comment "Inland transport mode: RAIL, BARGE, ROAD." .
+
+:inlandCarrierCode a owl:DatatypeProperty ;
+    rdfs:label "inland carrier code" ;
+    rdfs:comment "Identifier for the inland carrier." ;
+    rdfs:domain :InlandCarrier ;
+    rdfs:range xsd:string .
+
+:terminalCode a owl:DatatypeProperty ;
+    rdfs:label "terminal code" ;
+    rdfs:comment "Identifier for the inland terminal." ;
+    rdfs:domain :InlandTerminal ;
+    rdfs:range xsd:string .
+
+:handoverDateTime a owl:DatatypeProperty ;
+    rdfs:label "handover date time" ;
+    rdfs:comment "Date and time of cargo handover." ;
+    rdfs:domain :HandoverEvent ;
+    rdfs:range xsd:dateTime .
+
+:handoverType a owl:DatatypeProperty ;
+    rdfs:label "handover type" ;
+    rdfs:comment "Type of handover: PICKUP, DELIVERY, TRANSFER." ;
+    rdfs:domain :HandoverEvent ;
+    rdfs:range xsd:string .
+

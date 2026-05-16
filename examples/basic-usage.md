@@ -94,19 +94,19 @@ kairos-ontology validate \
 
 ```turtle
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix kairos: <http://kairos.ai/ont/core#> .
+@prefix kairos: <https://www.kairosflow.ai/ont/core#> .
 
 <http://example.com/my-company/ontology> a owl:Ontology ;
     rdfs:label "My Company Ontology"@en ;
-    owl:imports <http://kairos.ai/ont/core> .
+    owl:imports <https://www.kairosflow.ai/ont/core> .
 ```
 
-**Note:** When using file-based imports (not dereferenced URIs), configure your system to resolve `http://kairos.ai/ont/core` to `reference-models/ontologies/core.ttl`.
+**Note:** When using file-based imports (not dereferenced URIs), configure your system to resolve `https://www.kairosflow.ai/ont/core` to `reference-models/ontologies/core.ttl`.
 
 ### Using Kairos Classes
 
 ```turtle
-@prefix kairos: <http://kairos.ai/ont/core#> .
+@prefix kairos: <https://www.kairosflow.ai/ont/core#> .
 @prefix mycomp: <http://example.com/my-company#> .
 
 # Create a Customer instance
@@ -177,7 +177,7 @@ g.parse("reference-models/mappings/schema-org.ttl", format="turtle")
 # Query for mappings
 query = """
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX kairos: <http://kairos.ai/ont/core#>
+PREFIX kairos: <https://www.kairosflow.ai/ont/core#>
 
 SELECT ?kairos_class ?schema_class
 WHERE {

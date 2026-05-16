@@ -1,0 +1,88 @@
+@prefix : <https://www.kairosflow.ai/ont/tic/party#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "TIC 4.0 Party Ontology" ;
+    dcterms:description """Party roles domain of the TIC 4.0 ontology.
+
+    Covers the key organizational roles referenced in terminal operations:
+    terminal operators and stevedoring companies.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-07-15"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
+    dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
+    rdfs:seeAlso <https://tic40.org/standards/> .
+
+#################################################################
+#    Party Classes
+#################################################################
+
+:TerminalParty a owl:Class ;
+    rdfs:label "Terminal Party" ;
+    rdfs:comment """An organization playing a role in terminal operations.
+
+    TIC 4.0: Abstract superclass for party roles referenced in terminal messaging.""" .
+
+:TerminalOperator a owl:Class ;
+    rdfs:label "Terminal Operator" ;
+    rdfs:comment """The organization responsible for the overall management and operation of a terminal facility.
+
+    TIC 4.0: The principal entity accountable for terminal performance, safety, and service delivery.
+    Referenced in TIC 4.0 as the TOS operator context.""" ;
+    rdfs:subClassOf :TerminalParty ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :operatorCode ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:Stevedore a owl:Class ;
+    rdfs:label "Stevedore" ;
+    rdfs:comment """A company responsible for loading and discharging cargo from vessels.
+
+    TIC 4.0: Stevedores may be employed by the terminal operator or contracted independently.
+    Referenced in carrier visit context.""" ;
+    rdfs:subClassOf :TerminalParty .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:operatesTerminal a owl:ObjectProperty ;
+    rdfs:label "operates terminal" ;
+    rdfs:comment "Links a terminal operator to the terminal it manages." ;
+    rdfs:domain :TerminalOperator .
+
+:employedBy a owl:ObjectProperty ;
+    rdfs:label "employed by" ;
+    rdfs:comment "Links a party to the organization employing them." ;
+    rdfs:domain :TerminalParty ;
+    rdfs:range :TerminalParty .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:operatorCode a owl:DatatypeProperty ;
+    rdfs:label "operator code" ;
+    rdfs:comment "Unique identifier code for the terminal operator." ;
+    rdfs:domain :TerminalOperator ;
+    rdfs:range xsd:string .
+
+:partyName a owl:DatatypeProperty ;
+    rdfs:label "party name" ;
+    rdfs:comment "Full name of the party (organization)." ;
+    rdfs:domain :TerminalParty ;
+    rdfs:range xsd:string .
+
+:partyIdentifier a owl:DatatypeProperty ;
+    rdfs:label "party identifier" ;
+    rdfs:comment "Unique identifier for the party within the terminal system." ;
+    rdfs:domain :TerminalParty ;
+    rdfs:range xsd:string .

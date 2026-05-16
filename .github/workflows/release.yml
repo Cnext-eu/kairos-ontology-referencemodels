@@ -56,10 +56,10 @@ jobs:
       - name: Create release archive
         run: |
           tar -czf kairos-reference-models-${{ steps.get_version.outputs.version }}.tar.gz \
-            ontologies/ \
+            ontology-reference-models/ \
             shapes/ \
             mappings/ \
-            catalog-v001.xml \
+            scripts/ \
             VERSION \
             CHANGELOG.md \
             README.md \
