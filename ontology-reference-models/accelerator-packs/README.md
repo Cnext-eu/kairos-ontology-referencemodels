@@ -21,11 +21,11 @@ Accelerator Packs are curated bundles of Kairos ontologies tailored to a particu
 ```turtle
 # Logistics example
 <http://example.com/my-ontology> a owl:Ontology ;
-    owl:imports <http://kairos.ai/ont/accelerator/logistics#> .
+    owl:imports <https://www.kairosflow.ai/ont/accelerator/logistics#> .
 
 # Financial Services example
 <http://example.com/my-ontology> a owl:Ontology ;
-    owl:imports <http://kairos.ai/ont/accelerator/financial-services#> .
+    owl:imports <https://www.kairosflow.ai/ont/accelerator/financial-services#> .
 ```
 
 3. **Or reference the local file** if working offline:

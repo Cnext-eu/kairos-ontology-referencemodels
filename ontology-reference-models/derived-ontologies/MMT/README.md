@@ -6,17 +6,17 @@ Modular ontology for international logistics and freight transport, based on the
 
 | Module | Namespace | Description |
 |--------|-----------|-------------|
-| **mmt.ttl** | `http://kairos.ai/ont/mmt#` | Root ontology — imports all domains; contains Dangerous Goods classes |
-| **consignment/** | `http://kairos.ai/ont/mmt/consignment#` | Consignment, ConsignmentItem, TransportService, TransportLeg, Goods, Package |
-| **cargo/** | `http://kairos.ai/ont/mmt/cargo#` | CargoItem, Weight, Dimension, Commodity, HandlingRequirement |
-| **equipment/** | `http://kairos.ai/ont/mmt/equipment#` | FreightContainer, ReeferContainer, TankContainer, Pallet, SwapBody, Trailer |
-| **transport-means/** | `http://kairos.ai/ont/mmt/transport-means#` | Vessel, Aircraft, RailVehicle, RoadVehicle, BargeVessel, Capacity |
-| **route-network/** | `http://kairos.ai/ont/mmt/route-network#` | Route, Corridor, ServiceLoop, SailingSchedule, CutOffTime, TransitTime |
-| **inland-transport/** | `http://kairos.ai/ont/mmt/inland-transport#` | InlandLeg, RailLeg, BargeLeg, RoadLeg, InlandCarrier, IntermodalConnection |
-| **party/** | `http://kairos.ai/ont/mmt/party#` | Consignor, Consignee, Carrier, FreightForwarder, CustomsBroker, NotifyParty |
-| **locations/** | `http://kairos.ai/ont/mmt/locations#` | Port, Airport, RailTerminal, Warehouse, BorderCrossing, DistributionCenter |
-| **documents/** | `http://kairos.ai/ont/mmt/documents#` | BillOfLading, AirWaybill, CMR, RailConsignmentNote, CargoManifest, PackingList |
-| **events/** | `http://kairos.ai/ont/mmt/events#` | Departure, Arrival, Loading, Discharge, Transfer, CustomsClearance |
+| **mmt.ttl** | `https://www.kairosflow.ai/ont/mmt#` | Root ontology — imports all domains; contains Dangerous Goods classes |
+| **consignment/** | `https://www.kairosflow.ai/ont/mmt/consignment#` | Consignment, ConsignmentItem, TransportService, TransportLeg, Goods, Package |
+| **cargo/** | `https://www.kairosflow.ai/ont/mmt/cargo#` | CargoItem, Weight, Dimension, Commodity, HandlingRequirement |
+| **equipment/** | `https://www.kairosflow.ai/ont/mmt/equipment#` | FreightContainer, ReeferContainer, TankContainer, Pallet, SwapBody, Trailer |
+| **transport-means/** | `https://www.kairosflow.ai/ont/mmt/transport-means#` | Vessel, Aircraft, RailVehicle, RoadVehicle, BargeVessel, Capacity |
+| **route-network/** | `https://www.kairosflow.ai/ont/mmt/route-network#` | Route, Corridor, ServiceLoop, SailingSchedule, CutOffTime, TransitTime |
+| **inland-transport/** | `https://www.kairosflow.ai/ont/mmt/inland-transport#` | InlandLeg, RailLeg, BargeLeg, RoadLeg, InlandCarrier, IntermodalConnection |
+| **party/** | `https://www.kairosflow.ai/ont/mmt/party#` | Consignor, Consignee, Carrier, FreightForwarder, CustomsBroker, NotifyParty |
+| **locations/** | `https://www.kairosflow.ai/ont/mmt/locations#` | Port, Airport, RailTerminal, Warehouse, BorderCrossing, DistributionCenter |
+| **documents/** | `https://www.kairosflow.ai/ont/mmt/documents#` | BillOfLading, AirWaybill, CMR, RailConsignmentNote, CargoManifest, PackingList |
+| **events/** | `https://www.kairosflow.ai/ont/mmt/events#` | Departure, Arrival, Loading, Discharge, Transfer, CustomsClearance |
 
 ## Design Principles
 

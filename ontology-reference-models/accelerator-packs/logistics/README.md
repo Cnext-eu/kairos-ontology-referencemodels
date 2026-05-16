@@ -41,7 +41,7 @@ Import the root Turtle file to pull in every logistics ontology at once:
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
 <http://example.com/my-logistics-ontology> a owl:Ontology ;
-    owl:imports <http://kairos.ai/ont/accelerator/logistics#> .
+    owl:imports <https://www.kairosflow.ai/ont/accelerator/logistics#> .
 ```
 
 Or, if working locally, point your tool at:

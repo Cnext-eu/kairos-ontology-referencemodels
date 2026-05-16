@@ -10,12 +10,12 @@ An OWL ontology modelling the International Maritime Organization (IMO) referenc
 
 | Scope | Namespace |
 |---|---|
-| Root ontology | `http://kairos.ai/ont/imo#` |
-| Vessel Registry | `http://kairos.ai/ont/imo/vessel-registry#` |
-| Dangerous Goods | `http://kairos.ai/ont/imo/dangerous-goods#` |
-| Port Call | `http://kairos.ai/ont/imo/port-call#` |
-| Party | `http://kairos.ai/ont/imo/party#` |
-| Locations | `http://kairos.ai/ont/imo/locations#` |
+| Root ontology | `https://www.kairosflow.ai/ont/imo#` |
+| Vessel Registry | `https://www.kairosflow.ai/ont/imo/vessel-registry#` |
+| Dangerous Goods | `https://www.kairosflow.ai/ont/imo/dangerous-goods#` |
+| Port Call | `https://www.kairosflow.ai/ont/imo/port-call#` |
+| Party | `https://www.kairosflow.ai/ont/imo/party#` |
+| Locations | `https://www.kairosflow.ai/ont/imo/locations#` |
 
 ## Structure
 

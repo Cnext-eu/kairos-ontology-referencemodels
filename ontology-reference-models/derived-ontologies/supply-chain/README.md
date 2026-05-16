@@ -13,7 +13,7 @@ supply-chain/
 
 ## Namespace
 
-**Root:** `http://kairos.ai/ont/supply-chain#`
+**Root:** `https://www.kairosflow.ai/ont/supply-chain#`
 
 ## Version
 
@@ -64,5 +64,5 @@ supply-chain/
 ## Usage
 
 ```turtle
-@prefix sc: <http://kairos.ai/ont/supply-chain#> .
+@prefix sc: <https://www.kairosflow.ai/ont/supply-chain#> .
 ```

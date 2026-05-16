@@ -1,10 +1,10 @@
-@prefix : <http://kairos.ai/ont/tic#> .
-@prefix tic-infra: <http://kairos.ai/ont/tic/terminal-infrastructure#> .
-@prefix tic-ops: <http://kairos.ai/ont/tic/handling-operations#> .
-@prefix tic-auto: <http://kairos.ai/ont/tic/automotive-services#> .
-@prefix tic-party: <http://kairos.ai/ont/tic/party#> .
-@prefix tic-loc: <http://kairos.ai/ont/tic/locations#> .
-@prefix tic-evt: <http://kairos.ai/ont/tic/events#> .
+@prefix : <https://www.kairosflow.ai/ont/tic#> .
+@prefix tic-infra: <https://www.kairosflow.ai/ont/tic/terminal-infrastructure#> .
+@prefix tic-ops: <https://www.kairosflow.ai/ont/tic/handling-operations#> .
+@prefix tic-auto: <https://www.kairosflow.ai/ont/tic/automotive-services#> .
+@prefix tic-party: <https://www.kairosflow.ai/ont/tic/party#> .
+@prefix tic-loc: <https://www.kairosflow.ai/ont/tic/locations#> .
+@prefix tic-evt: <https://www.kairosflow.ai/ont/tic/events#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -30,9 +30,9 @@
     dcterms:modified "2026-05-16"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
     dcterms:source "Terminal Industry Committee (TIC) 4.0 Standard" ;
-    owl:imports <http://kairos.ai/ont/tic/terminal-infrastructure#> ;
-    owl:imports <http://kairos.ai/ont/tic/handling-operations#> ;
-    owl:imports <http://kairos.ai/ont/tic/automotive-services#> ;
-    owl:imports <http://kairos.ai/ont/tic/party#> ;
-    owl:imports <http://kairos.ai/ont/tic/locations#> ;
-    owl:imports <http://kairos.ai/ont/tic/events#> .
+    owl:imports <https://www.kairosflow.ai/ont/tic/terminal-infrastructure#> ;
+    owl:imports <https://www.kairosflow.ai/ont/tic/handling-operations#> ;
+    owl:imports <https://www.kairosflow.ai/ont/tic/automotive-services#> ;
+    owl:imports <https://www.kairosflow.ai/ont/tic/party#> ;
+    owl:imports <https://www.kairosflow.ai/ont/tic/locations#> ;
+    owl:imports <https://www.kairosflow.ai/ont/tic/events#> .

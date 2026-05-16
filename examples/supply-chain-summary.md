@@ -11,7 +11,7 @@ The Kairos Supply Chain Ontology is a derived ontology based on **UN/CEFACT Mult
 
 ## Namespace
 ```
-http://kairos.ai/ont/supply-chain#
+https://www.kairosflow.ai/ont/supply-chain#
 ```
 
 ## Key Concepts

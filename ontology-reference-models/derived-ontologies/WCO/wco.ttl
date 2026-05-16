@@ -1,14 +1,14 @@
-@prefix : <http://kairos.ai/ont/wco#> .
+@prefix : <https://www.kairosflow.ai/ont/wco#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix wco-customs: <http://kairos.ai/ont/wco/customs#> .
-@prefix wco-tf: <http://kairos.ai/ont/wco/trade-facilitation#> .
-@prefix wco-party: <http://kairos.ai/ont/wco/party#> .
-@prefix wco-loc: <http://kairos.ai/ont/wco/locations#> .
-@prefix wco-doc: <http://kairos.ai/ont/wco/documents#> .
+@prefix wco-customs: <https://www.kairosflow.ai/ont/wco/customs#> .
+@prefix wco-tf: <https://www.kairosflow.ai/ont/wco/trade-facilitation#> .
+@prefix wco-party: <https://www.kairosflow.ai/ont/wco/party#> .
+@prefix wco-loc: <https://www.kairosflow.ai/ont/wco/locations#> .
+@prefix wco-doc: <https://www.kairosflow.ai/ont/wco/documents#> .
 
 # Ontology Metadata
 : a owl:Ontology ;
@@ -28,8 +28,8 @@
     dcterms:modified "2026-05-16"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
     dcterms:source "WCO Data Model 3.0, eFTI Regulation (EU) 2020/1056" ;
-    owl:imports <http://kairos.ai/ont/wco/customs#> ,
-                <http://kairos.ai/ont/wco/trade-facilitation#> ,
-                <http://kairos.ai/ont/wco/party#> ,
-                <http://kairos.ai/ont/wco/locations#> ,
-                <http://kairos.ai/ont/wco/documents#> .
+    owl:imports <https://www.kairosflow.ai/ont/wco/customs#> ,
+                <https://www.kairosflow.ai/ont/wco/trade-facilitation#> ,
+                <https://www.kairosflow.ai/ont/wco/party#> ,
+                <https://www.kairosflow.ai/ont/wco/locations#> ,
+                <https://www.kairosflow.ai/ont/wco/documents#> .

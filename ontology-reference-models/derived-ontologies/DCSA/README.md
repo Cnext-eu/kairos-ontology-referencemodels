@@ -21,12 +21,12 @@ DCSA/
 ## Domain Modules
 
 ### Root — `dcsa.ttl`
-**Namespace:** `http://kairos.ai/ont/dcsa#`
+**Namespace:** `https://www.kairosflow.ai/ont/dcsa#`
 
 The root ontology imports all seven domain modules via `owl:imports`. Use this as the single entry point to load the complete DCSA ontology.
 
 ### Booking — `booking/booking.ttl`
-**Namespace:** `http://kairos.ai/ont/dcsa/booking#`
+**Namespace:** `https://www.kairosflow.ai/ont/dcsa/booking#`
 
 Core booking and shipping workflow classes:
 - `Booking`, `BookingRequest`, `ConfirmedBooking`
@@ -37,7 +37,7 @@ Core booking and shipping workflow classes:
 Also contains object properties relating shipments to bookings, cargo, equipment, parties, locations, and events, plus datatype properties for booking references, cargo details, and commercial terms.
 
 ### Container Operations — `container-operations/container-operations.ttl`
-**Namespace:** `http://kairos.ai/ont/dcsa/container-operations#`
+**Namespace:** `https://www.kairosflow.ai/ont/dcsa/container-operations#`
 
 Container lifecycle and operational concepts (new domain, not in original monolith):
 - `ContainerJourney` — full lifecycle from empty pickup to empty return
@@ -46,7 +46,7 @@ Container lifecycle and operational concepts (new domain, not in original monoli
 - `LiftOnLiftOff` — LoLo crane handling operations
 
 ### Equipment — `equipment/equipment.ttl`
-**Namespace:** `http://kairos.ai/ont/dcsa/equipment#`
+**Namespace:** `https://www.kairosflow.ai/ont/dcsa/equipment#`
 
 ISO container types and physical properties:
 - `Container` (base), `DryContainer`, `ReeferContainer`, `TankContainer`
@@ -54,21 +54,21 @@ ISO container types and physical properties:
 - Properties: container number, ISO codes, VGM, tare weight, temperature settings, etc.
 
 ### Transport Documents — `transport-documents/transport-documents.ttl`
-**Namespace:** `http://kairos.ai/ont/dcsa/transport-documents#`
+**Namespace:** `https://www.kairosflow.ai/ont/dcsa/transport-documents#`
 
 Shipping documentation:
 - `TransportDocument`, `BillOfLading`, `ElectronicBillOfLading`, `SeaWaybill`
 - Properties: document reference, status, negotiability, number of originals
 
 ### Party — `party/party.ttl`
-**Namespace:** `http://kairos.ai/ont/dcsa/party#`
+**Namespace:** `https://www.kairosflow.ai/ont/dcsa/party#`
 
 Shipping party roles:
 - `ShippingParty` (base)
 - `Shipper`, `Consignee`, `Carrier`, `BookingParty`, `NotifyParty`, `FreightForwarder`
 
 ### Locations — `locations/locations.ttl`
-**Namespace:** `http://kairos.ai/ont/dcsa/locations#`
+**Namespace:** `https://www.kairosflow.ai/ont/dcsa/locations#`
 
 Geographic and facility locations:
 - `Location`, `Port`, `Terminal`
@@ -76,7 +76,7 @@ Geographic and facility locations:
 - Properties: UN/LOCODE, facility code
 
 ### Events — `events/events.ttl`
-**Namespace:** `http://kairos.ai/ont/dcsa/events#`
+**Namespace:** `https://www.kairosflow.ai/ont/dcsa/events#`
 
 Track and trace events:
 - `Event` (base), `TransportEvent`, `EquipmentEvent`, `DocumentEvent`
@@ -97,11 +97,11 @@ Track and trace events:
 
 To load the complete ontology, import the root:
 ```turtle
-@prefix dcsa: <http://kairos.ai/ont/dcsa#> .
+@prefix dcsa: <https://www.kairosflow.ai/ont/dcsa#> .
 ```
 
 To use a specific domain only:
 ```turtle
-@prefix booking: <http://kairos.ai/ont/dcsa/booking#> .
-@prefix equipment: <http://kairos.ai/ont/dcsa/equipment#> .
+@prefix booking: <https://www.kairosflow.ai/ont/dcsa/booking#> .
+@prefix equipment: <https://www.kairosflow.ai/ont/dcsa/equipment#> .
 ```

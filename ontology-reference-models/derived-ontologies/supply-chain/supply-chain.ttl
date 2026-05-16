@@ -1,4 +1,4 @@
-@prefix : <http://kairos.ai/ont/supply-chain#> .
+@prefix : <https://www.kairosflow.ai/ont/supply-chain#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -12,7 +12,7 @@
 @prefix fibo-fnd-plc-loc: <https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/> .
 
 # Kairos Core Import
-@prefix kairos-core: <http://kairos.ai/ont/core#> .
+@prefix kairos-core: <https://www.kairosflow.ai/ont/core#> .
 
 # Ontology Metadata
 : a owl:Ontology ;
@@ -32,7 +32,7 @@
     dcterms:modified "2026-01-05"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
     dcterms:source "UN/CEFACT MMT RDM", "ISO Buy-Ship-Pay Reference Data Model" ;
-    owl:imports <http://kairos.ai/ont/core#> ,
+    owl:imports <https://www.kairosflow.ai/ont/core#> ,
                 <https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/> ,
                 <https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/> ,
                 <https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/IdentifiersAndIndices/> ,

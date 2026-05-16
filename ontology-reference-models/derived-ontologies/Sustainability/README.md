@@ -1,6 +1,6 @@
 # Sustainability Ontology
 
-**Namespace:** `http://kairos.ai/ont/sustainability#`  
+**Namespace:** `https://www.kairosflow.ai/ont/sustainability#`  
 **Version:** 1.0.0  
 **Created:** 2026-05-16
 
@@ -19,12 +19,12 @@ Sustainability/
 
 ## Domain Modules
 
-### Carbon (`http://kairos.ai/ont/sustainability/carbon#`)
+### Carbon (`https://www.kairosflow.ai/ont/sustainability/carbon#`)
 Carbon emissions, greenhouse gas accounting, and environmental compliance.
 
 **Classes:** CarbonEmission, EmissionFactor, CO2Intensity, WellToWake, TankToWake, Scope1Emission, Scope2Emission, Scope3Emission, TonneKilometre, ModalShiftMetric, CarbonFootprint, EmissionReport, CIIRating, EEXICompliance, EUETSAllowance, CarbonOffset
 
-### Energy (`http://kairos.ai/ont/sustainability/energy#`)
+### Energy (`https://www.kairosflow.ai/ont/sustainability/energy#`)
 Energy consumption, fuel types, and energy efficiency for transport operations.
 
 **Classes:** EnergyConsumption, FuelType (HFO, VLSFO, LNG, Methanol, Ammonia, Electric, Hydrogen), EnergySource, RenewableEnergy, Shorepower, EnergyEfficiency, FuelOilConsumption, BunkerDeliveryNote, EnergyPerformanceIndicator
@@ -43,10 +43,10 @@ Energy consumption, fuel types, and energy efficiency for transport operations.
 ## Usage
 
 ```turtle
-@prefix sust: <http://kairos.ai/ont/sustainability#> .
+@prefix sust: <https://www.kairosflow.ai/ont/sustainability#> .
 
 <http://example.org/my-ontology> a owl:Ontology ;
-    owl:imports <http://kairos.ai/ont/sustainability#> .
+    owl:imports <https://www.kairosflow.ai/ont/sustainability#> .
 ```
 
 Importing the root ontology (`sustainability.ttl`) automatically imports all domain modules.

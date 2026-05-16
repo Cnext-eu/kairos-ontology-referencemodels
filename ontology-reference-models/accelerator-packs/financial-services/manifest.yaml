@@ -3,7 +3,7 @@ package:
   name: "Kairos Financial Services Accelerator Pack"
   version: "1.0.0"
   description: "Pre-composed ontology bundle for financial services companies"
-  namespace: "http://kairos.ai/ont/accelerator/financial-services#"
+  namespace: "https://www.kairosflow.ai/ont/accelerator/financial-services#"
   
   target_sectors:
     - Accounting firms
@@ -32,7 +32,7 @@ package:
       focus: "Partnerships, joint ventures"
     - id: BSP
       name: "Buy-Ship-Pay"
-      uri: "http://kairos.ai/ont/bsp#"
+      uri: "https://www.kairosflow.ai/ont/bsp#"
       focus: "Party, contract, invoice, settlement"
 
   excludes:

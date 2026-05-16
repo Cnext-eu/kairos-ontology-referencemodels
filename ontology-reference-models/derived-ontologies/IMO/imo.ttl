@@ -1,4 +1,4 @@
-@prefix : <http://kairos.ai/ont/imo#> .
+@prefix : <https://www.kairosflow.ai/ont/imo#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -25,8 +25,8 @@
     dcterms:modified "2026-05-16"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
     dcterms:source "IMO Compendium, FAL Convention, IMDG Code" ;
-    owl:imports <http://kairos.ai/ont/imo/vessel-registry#> ;
-    owl:imports <http://kairos.ai/ont/imo/dangerous-goods#> ;
-    owl:imports <http://kairos.ai/ont/imo/port-call#> ;
-    owl:imports <http://kairos.ai/ont/imo/party#> ;
-    owl:imports <http://kairos.ai/ont/imo/locations#> .
+    owl:imports <https://www.kairosflow.ai/ont/imo/vessel-registry#> ;
+    owl:imports <https://www.kairosflow.ai/ont/imo/dangerous-goods#> ;
+    owl:imports <https://www.kairosflow.ai/ont/imo/port-call#> ;
+    owl:imports <https://www.kairosflow.ai/ont/imo/party#> ;
+    owl:imports <https://www.kairosflow.ai/ont/imo/locations#> .

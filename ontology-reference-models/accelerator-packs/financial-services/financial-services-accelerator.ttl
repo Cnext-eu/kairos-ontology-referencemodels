@@ -1,4 +1,4 @@
-@prefix : <http://kairos.ai/ont/accelerator/financial-services#> .
+@prefix : <https://www.kairosflow.ai/ont/accelerator/financial-services#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -21,4 +21,4 @@
                 <https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/> ,
                 <https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/> ,
                 <https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/> ,
-                <http://kairos.ai/ont/bsp#> .
+                <https://www.kairosflow.ai/ont/bsp#> .

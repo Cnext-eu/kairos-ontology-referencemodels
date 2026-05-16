@@ -1,6 +1,6 @@
 # WCO Customs Ontology
 
-**Namespace:** `http://kairos.ai/ont/wco#`  
+**Namespace:** `https://www.kairosflow.ai/ont/wco#`  
 **Version:** 1.0.0  
 **Created:** 2026-05-16
 
@@ -22,27 +22,27 @@ WCO/
 
 ## Domain Modules
 
-### Customs (`http://kairos.ai/ont/wco/customs#`)
+### Customs (`https://www.kairosflow.ai/ont/wco/customs#`)
 Customs declarations, duty calculations, tariff classifications, and filing procedures.
 
 **Classes:** CustomsDeclaration, EntryExitSummary, ImportDeclaration, ExportDeclaration, TransitDeclaration, Filing, AuthorityMessage, InspectionReference, ICS2Reference, DeclarationStatus, DutyCalculation, TariffClassification, CustomsValue, PreferenceClaim
 
-### Trade Facilitation (`http://kairos.ai/ont/wco/trade-facilitation#`)
+### Trade Facilitation (`https://www.kairosflow.ai/ont/wco/trade-facilitation#`)
 Trade facilitation certificates, permits, and trusted trader programmes.
 
 **Classes:** Certificate, CertificateOfOrigin, SPSCertificate, License, ImportPermit, ExportPermit, eFTIRecord, AEOCertification, TrustedTrader, SingleWindow, TradeAgreementReference
 
-### Party (`http://kairos.ai/ont/wco/party#`)
+### Party (`https://www.kairosflow.ai/ont/wco/party#`)
 Party roles in customs processes including declarants, authorities, and brokers.
 
 **Classes:** Declarant, CustomsAuthority, CustomsBroker, Importer, Exporter, AEOHolder, FreightAgent, GuaranteeProvider
 
-### Locations (`http://kairos.ai/ont/wco/locations#`)
+### Locations (`https://www.kairosflow.ai/ont/wco/locations#`)
 Customs locations, border crossings, bonded facilities, and controlled areas.
 
 **Classes:** CustomsOffice, BorderCrossing, BondedWarehouse, FreeZone, CustomsControlledArea, DesignatedExportPlace
 
-### Documents (`http://kairos.ai/ont/wco/documents#`)
+### Documents (`https://www.kairosflow.ai/ont/wco/documents#`)
 Customs and trade documents including declarations, permits, transit documents, and carnets.
 
 **Classes:** CustomsDeclarationDocument, TransitDocument, ImportPermitDocument, ExportLicenseDocument, PreferentialOriginDoc, SADForm, T1Document, T2Document, ATACarnet, TIRCarnet
@@ -60,10 +60,10 @@ Customs and trade documents including declarations, permits, transit documents, 
 ## Usage
 
 ```turtle
-@prefix wco: <http://kairos.ai/ont/wco#> .
+@prefix wco: <https://www.kairosflow.ai/ont/wco#> .
 
 <http://example.org/my-ontology> a owl:Ontology ;
-    owl:imports <http://kairos.ai/ont/wco#> .
+    owl:imports <https://www.kairosflow.ai/ont/wco#> .
 ```
 
 Importing the root ontology (`wco.ttl`) automatically imports all domain modules.

@@ -1,4 +1,4 @@
-@prefix : <http://kairos.ai/ont/bsp#> .
+@prefix : <https://www.kairosflow.ai/ont/bsp#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -32,9 +32,9 @@
     owl:versionInfo "1.0.0" ;
     dcterms:source "ISO 20197-1:2024 Buy-Ship-Pay Reference Data Model" ;
     dcterms:references "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
-    owl:imports <http://kairos.ai/ont/bsp/party> ;
-    owl:imports <http://kairos.ai/ont/bsp/commercial> ;
-    owl:imports <http://kairos.ai/ont/bsp/financial> ;
-    owl:imports <http://kairos.ai/ont/bsp/documents> ;
-    owl:imports <http://kairos.ai/ont/bsp/compliance> ;
-    owl:imports <http://kairos.ai/ont/bsp/reference-data> .
+    owl:imports <https://www.kairosflow.ai/ont/bsp/party> ;
+    owl:imports <https://www.kairosflow.ai/ont/bsp/commercial> ;
+    owl:imports <https://www.kairosflow.ai/ont/bsp/financial> ;
+    owl:imports <https://www.kairosflow.ai/ont/bsp/documents> ;
+    owl:imports <https://www.kairosflow.ai/ont/bsp/compliance> ;
+    owl:imports <https://www.kairosflow.ai/ont/bsp/reference-data> .

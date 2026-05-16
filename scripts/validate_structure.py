@@ -5,7 +5,7 @@ Checks:
   1. Each ontology folder has VERSION, README.md, and a root .ttl file
   2. Each root .ttl has an owl:Ontology declaration
   3. Each root .ttl has owl:imports statements (for multi-domain ontologies)
-  4. Namespace convention: http://kairos.ai/ont/<name># or .../name/domain#
+  4. Namespace convention: https://www.kairosflow.ai/ont/<name># or .../name/domain#
   5. Each domain subfolder has a .ttl file
   6. Each .ttl file has owl:versionInfo
   7. VERSION file matches owl:versionInfo in the root .ttl
@@ -34,8 +34,8 @@ SCAN_DIRS = [
 VERSION_INFO_RE = re.compile(r'owl:versionInfo\s+"([^"]*)"')
 OWL_ONTOLOGY_RE = re.compile(r'\ba\s+owl:Ontology\b')
 OWL_IMPORTS_RE = re.compile(r'owl:imports\s')
-NAMESPACE_ROOT_RE = re.compile(r'@prefix\s+:\s+<http://kairos\.ai/ont/([^/>]+)#>\s*\.')
-NAMESPACE_MODULE_RE = re.compile(r'@prefix\s+:\s+<http://kairos\.ai/ont/([^/>]+)/([^/>]+)#>\s*\.')
+NAMESPACE_ROOT_RE = re.compile(r'@prefix\s+:\s+<https://www\.kairosflow\.ai/ont/([^/>]+)#>\s*\.')
+NAMESPACE_MODULE_RE = re.compile(r'@prefix\s+:\s+<https://www\.kairosflow\.ai/ont/([^/>]+)/([^/>]+)#>\s*\.')
 
 
 class ValidationResult:
@@ -161,7 +161,7 @@ def validate_ontology(folder: Path, verbose: bool) -> ValidationResult:
         ns_name = ns_match.group(1)
         expected_ns = name.lower().replace(" ", "-")
         if ns_name == expected_ns or ns_name == name:
-            r.ok(f"Namespace: http://kairos.ai/ont/{ns_name}#", verbose, is_verbose=True)
+            r.ok(f"Namespace: https://www.kairosflow.ai/ont/{ns_name}#", verbose, is_verbose=True)
         else:
             r.warn(f"Namespace name '{ns_name}' differs from folder '{name}'")
     else:
@@ -203,7 +203,7 @@ def validate_ontology(folder: Path, verbose: bool) -> ValidationResult:
                 # 4 (continued). Check module namespace convention
                 mod_ns = NAMESPACE_MODULE_RE.search(mod_content)
                 if mod_ns:
-                    r.ok(f"{ttl_rel}: namespace http://kairos.ai/ont/{mod_ns.group(1)}/{mod_ns.group(2)}#", verbose, is_verbose=True)
+                    r.ok(f"{ttl_rel}: namespace https://www.kairosflow.ai/ont/{mod_ns.group(1)}/{mod_ns.group(2)}#", verbose, is_verbose=True)
                 else:
                     # Also accept root namespace pattern for modules
                     mod_root_ns = NAMESPACE_ROOT_RE.search(mod_content)

@@ -1,11 +1,11 @@
-@prefix : <http://kairos.ai/ont/sustainability#> .
+@prefix : <https://www.kairosflow.ai/ont/sustainability#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix sust-carbon: <http://kairos.ai/ont/sustainability/carbon#> .
-@prefix sust-energy: <http://kairos.ai/ont/sustainability/energy#> .
+@prefix sust-carbon: <https://www.kairosflow.ai/ont/sustainability/carbon#> .
+@prefix sust-energy: <https://www.kairosflow.ai/ont/sustainability/energy#> .
 
 # Ontology Metadata
 : a owl:Ontology ;
@@ -22,5 +22,5 @@
     dcterms:modified "2026-05-16"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
     dcterms:source "ISO 14083:2023, GLEC Framework, EU MRV Regulation, IMO DCS, EU ETS Maritime" ;
-    owl:imports <http://kairos.ai/ont/sustainability/carbon#> ,
-                <http://kairos.ai/ont/sustainability/energy#> .
+    owl:imports <https://www.kairosflow.ai/ont/sustainability/carbon#> ,
+                <https://www.kairosflow.ai/ont/sustainability/energy#> .

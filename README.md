@@ -88,13 +88,13 @@ Accelerator Packs are **pre-composed bundles** that let you import an entire ver
 
 | Pack | Import URI | What's included |
 |------|-----------|-----------------|
-| **Logistics** | `http://kairos.ai/ont/accelerator/logistics#` | DCSA, MMT, BSP, TIC, IMO, WCO, Sustainability, Supply Chain |
-| **Financial Services** | `http://kairos.ai/ont/accelerator/financial-services#` | FIBO foundations + BSP |
+| **Logistics** | `https://www.kairosflow.ai/ont/accelerator/logistics#` | DCSA, MMT, BSP, TIC, IMO, WCO, Sustainability, Supply Chain |
+| **Financial Services** | `https://www.kairosflow.ai/ont/accelerator/financial-services#` | FIBO foundations + BSP |
 
 ```turtle
 # Example — import the entire logistics suite in one line
 <http://example.com/my-ontology> a owl:Ontology ;
-    owl:imports <http://kairos.ai/ont/accelerator/logistics#> .
+    owl:imports <https://www.kairosflow.ai/ont/accelerator/logistics#> .
 ```
 
 See [`ontology-reference-models/accelerator-packs/`](ontology-reference-models/accelerator-packs/) for details.
@@ -348,12 +348,12 @@ External contributions are welcome! Please:
 ### Example 1: Basic Import
 
 ```turtle
-@prefix kairos: <http://kairos.ai/ont/core#> .
+@prefix kairos: <https://www.kairosflow.ai/ont/core#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
 # Import Kairos core ontology
 <http://example.com/my-ontology> a owl:Ontology ;
-    owl:imports <http://kairos.ai/ont/core> .
+    owl:imports <https://www.kairosflow.ai/ont/core> .
 
 # Use Kairos classes
 :acme-customer-1 a kairos:Customer ;

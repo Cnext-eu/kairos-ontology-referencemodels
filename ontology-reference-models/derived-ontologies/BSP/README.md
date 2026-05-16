@@ -19,18 +19,18 @@ BSP/
 
 | Module | Namespace | Description |
 |--------|-----------|-------------|
-| **Party** | `http://kairos.ai/ont/bsp/party#` | TradeParty, Buyer, Seller, Carrier, Bank, and other party roles |
-| **Commercial** | `http://kairos.ai/ont/bsp/commercial#` | PurchaseOrder, SalesOrder, Quotation, Shipment, TransportService, BusinessEvent |
-| **Financial** | `http://kairos.ai/ont/bsp/financial#` | Invoice, Payment, PaymentTerms, LetterOfCredit, TradeFinanceInstrument |
-| **Documents** | `http://kairos.ai/ont/bsp/documents#` | Document, BillOfLading, AirWaybill, Certificates, CustomsDeclaration |
-| **Compliance** | `http://kairos.ai/ont/bsp/compliance#` | RegulatoryRequirement, TariffClassification, DutyTax, TradeSanction |
-| **Reference Data** | `http://kairos.ai/ont/bsp/reference-data#` | Location, Address, Port, Airport, Country, Measurement, Weight, Volume |
+| **Party** | `https://www.kairosflow.ai/ont/bsp/party#` | TradeParty, Buyer, Seller, Carrier, Bank, and other party roles |
+| **Commercial** | `https://www.kairosflow.ai/ont/bsp/commercial#` | PurchaseOrder, SalesOrder, Quotation, Shipment, TransportService, BusinessEvent |
+| **Financial** | `https://www.kairosflow.ai/ont/bsp/financial#` | Invoice, Payment, PaymentTerms, LetterOfCredit, TradeFinanceInstrument |
+| **Documents** | `https://www.kairosflow.ai/ont/bsp/documents#` | Document, BillOfLading, AirWaybill, Certificates, CustomsDeclaration |
+| **Compliance** | `https://www.kairosflow.ai/ont/bsp/compliance#` | RegulatoryRequirement, TariffClassification, DutyTax, TradeSanction |
+| **Reference Data** | `https://www.kairosflow.ai/ont/bsp/reference-data#` | Location, Address, Port, Airport, Country, Measurement, Weight, Volume |
 
 ## Design Principles
 
 - **No cross-imports** between domain modules — each module is self-contained
 - The **root `bsp.ttl`** imports all six domains via `owl:imports`
-- Each module uses its own namespace: `http://kairos.ai/ont/bsp/<domain>#`
+- Each module uses its own namespace: `https://www.kairosflow.ai/ont/bsp/<domain>#`
 - All original comments and annotations from the monolithic source are preserved
 - Properties are distributed to the domain of their primary class
 

@@ -6,13 +6,13 @@ This document provides practical examples of using the Kairos Supply Chain Ontol
 
 ```turtle
 @prefix : <http://example.org/shipment-data#> .
-@prefix sc: <http://kairos.ai/ont/supply-chain#> .
+@prefix sc: <https://www.kairosflow.ai/ont/supply-chain#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
 <http://example.org/shipment-data> a owl:Ontology ;
-    owl:imports <http://kairos.ai/ont/supply-chain#> .
+    owl:imports <https://www.kairosflow.ai/ont/supply-chain#> .
 ```
 
 ---
@@ -323,7 +323,7 @@ Tracking goods through distribution facilities.
 ### Query 1: Find all shipments scheduled for delivery in January 2026
 
 ```sparql
-PREFIX sc: <http://kairos.ai/ont/supply-chain#>
+PREFIX sc: <https://www.kairosflow.ai/ont/supply-chain#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 SELECT ?shipment ?shipmentId ?deliveryDate ?origin ?destination
@@ -343,7 +343,7 @@ ORDER BY ?deliveryDate
 ### Query 2: List all consignments by a specific shipper
 
 ```sparql
-PREFIX sc: <http://kairos.ai/ont/supply-chain#>
+PREFIX sc: <https://www.kairosflow.ai/ont/supply-chain#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?consignment ?consignmentId ?shipperName
@@ -360,7 +360,7 @@ WHERE {
 ### Query 3: Find multi-modal shipments (more than one transport mode)
 
 ```sparql
-PREFIX sc: <http://kairos.ai/ont/supply-chain#>
+PREFIX sc: <https://www.kairosflow.ai/ont/supply-chain#>
 
 SELECT ?consignment (COUNT(?movement) as ?legCount) 
        (GROUP_CONCAT(?mode; separator=", ") as ?modes)
@@ -376,7 +376,7 @@ HAVING (COUNT(?movement) > 1)
 ### Query 4: Get all equipment used for a specific consignment
 
 ```sparql
-PREFIX sc: <http://kairos.ai/ont/supply-chain#>
+PREFIX sc: <https://www.kairosflow.ai/ont/supply-chain#>
 
 SELECT ?equipment ?equipmentType ?equipmentId
 WHERE {
@@ -389,7 +389,7 @@ WHERE {
 ### Query 5: Find all documents associated with a consignment
 
 ```sparql
-PREFIX sc: <http://kairos.ai/ont/supply-chain#>
+PREFIX sc: <https://www.kairosflow.ai/ont/supply-chain#>
 
 SELECT ?document ?docType ?docNumber ?docDate
 WHERE {
@@ -429,7 +429,7 @@ The Supply Chain ontology extends Kairos Core concepts:
 Example integration:
 
 ```turtle
-@prefix kairos-core: <http://kairos.ai/ont/core#> .
+@prefix kairos-core: <https://www.kairosflow.ai/ont/core#> .
 
 :consignment-006 a sc:Consignment ;
     sc:hasConsignmentId "CNS-2026-006" ;

@@ -37,7 +37,7 @@ Import the root Turtle file to pull in every financial-services ontology at once
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
 <http://example.com/my-financial-ontology> a owl:Ontology ;
-    owl:imports <http://kairos.ai/ont/accelerator/financial-services#> .
+    owl:imports <https://www.kairosflow.ai/ont/accelerator/financial-services#> .
 ```
 
 Or, if working locally, point your tool at:

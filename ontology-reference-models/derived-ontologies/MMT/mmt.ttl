@@ -1,4 +1,4 @@
-@prefix : <http://kairos.ai/ont/mmt#> .
+@prefix : <https://www.kairosflow.ai/ont/mmt#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -6,7 +6,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 
 # Ontology Metadata
-<http://kairos.ai/ont/mmt> a owl:Ontology ;
+<https://www.kairosflow.ai/ont/mmt> a owl:Ontology ;
     dcterms:title "Kairos Multi-Modal Transport (MMT) Ontology" ;
     dcterms:description """UN/CEFACT Multi-Modal Transport Reference Data Model ontology for international logistics and freight transport.
     
@@ -29,16 +29,16 @@
     dcterms:modified "2026-05-16"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
-    owl:imports <http://kairos.ai/ont/mmt/consignment> ;
-    owl:imports <http://kairos.ai/ont/mmt/cargo> ;
-    owl:imports <http://kairos.ai/ont/mmt/equipment> ;
-    owl:imports <http://kairos.ai/ont/mmt/transport-means> ;
-    owl:imports <http://kairos.ai/ont/mmt/party> ;
-    owl:imports <http://kairos.ai/ont/mmt/locations> ;
-    owl:imports <http://kairos.ai/ont/mmt/documents> ;
-    owl:imports <http://kairos.ai/ont/mmt/events> ;
-    owl:imports <http://kairos.ai/ont/mmt/route-network> ;
-    owl:imports <http://kairos.ai/ont/mmt/inland-transport> .
+    owl:imports <https://www.kairosflow.ai/ont/mmt/consignment> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/cargo> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/equipment> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/transport-means> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/party> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/locations> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/documents> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/events> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/route-network> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/inland-transport> .
 
 #################################################################
 #    Dangerous Goods Classes

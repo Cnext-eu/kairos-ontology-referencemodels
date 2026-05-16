@@ -3,7 +3,7 @@ package:
   name: "Kairos Logistics Accelerator Pack"
   version: "1.0.0"
   description: "Pre-composed ontology bundle for logistics companies"
-  namespace: "http://kairos.ai/ont/accelerator/logistics#"
+  namespace: "https://www.kairosflow.ai/ont/accelerator/logistics#"
   
   target_sectors:
     - Freight forwarding
@@ -17,35 +17,35 @@ package:
   includes:
     - id: DCSA
       name: "Digital Container Shipping Association"
-      uri: "http://kairos.ai/ont/dcsa#"
+      uri: "https://www.kairosflow.ai/ont/dcsa#"
       focus: "Container shipping lifecycle"
     - id: MMT
       name: "Multi-Modal Transport"
-      uri: "http://kairos.ai/ont/mmt#"
+      uri: "https://www.kairosflow.ai/ont/mmt#"
       focus: "Consignment, movement, cargo, equipment"
     - id: BSP
       name: "Buy-Ship-Pay"
-      uri: "http://kairos.ai/ont/bsp#"
+      uri: "https://www.kairosflow.ai/ont/bsp#"
       focus: "Party, contract, invoice, settlement"
     - id: TIC
       name: "Terminal Industry Committee 4.0"
-      uri: "http://kairos.ai/ont/tic#"
+      uri: "https://www.kairosflow.ai/ont/tic#"
       focus: "Terminal operations, handling, automotive"
     - id: IMO
       name: "International Maritime Organization"
-      uri: "http://kairos.ai/ont/imo#"
+      uri: "https://www.kairosflow.ai/ont/imo#"
       focus: "Vessel registry, dangerous goods, port-call"
     - id: WCO
       name: "World Customs Organization"
-      uri: "http://kairos.ai/ont/wco#"
+      uri: "https://www.kairosflow.ai/ont/wco#"
       focus: "Customs declarations, trade facilitation"
     - id: Sustainability
       name: "Sustainability & Carbon"
-      uri: "http://kairos.ai/ont/sustainability#"
+      uri: "https://www.kairosflow.ai/ont/sustainability#"
       focus: "Emissions, energy, ESG reporting"
     - id: supply-chain
       name: "Supply Chain"
-      uri: "http://kairos.ai/ont/supply-chain#"
+      uri: "https://www.kairosflow.ai/ont/supply-chain#"
       focus: "Integration layer"
 
   excludes:
