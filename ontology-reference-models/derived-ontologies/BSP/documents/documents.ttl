@@ -8,7 +8,7 @@
 # Ontology Metadata
 : a owl:Ontology ;
     dcterms:title "Kairos BSP Documents Domain Ontology" ;
-    dcterms:description """Trade document domain of the ISO Buy-Ship-Pay Reference Data Model (ISO 20197-1:2024).
+    dcterms:description """Trade document domain of the Buy-Ship-Pay Reference Data Model.
 
     This module defines trade and transport document classes covering:
     - Transport Documents: Bill of Lading, Air Waybill
@@ -20,7 +20,8 @@
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
-    dcterms:source "ISO 20197-1:2024 Buy-Ship-Pay Reference Data Model" .
+    dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
 #################################################################
 #    Document Classes
@@ -30,7 +31,9 @@
     rdfs:label "Document" ;
     rdfs:comment """A written, printed, or electronic record.
     
-    ISO BSP: Trade, transport, financial, regulatory documents.""" .
+    UN/CEFACT BSP: Maps to ExchangedDocument — a collection of data for a
+    piece of written, printed or electronic matter exchanged between parties.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/ExchangedDocument> .
 
 :TransportDocument a owl:Class ;
     rdfs:label "Transport Document" ;

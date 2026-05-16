@@ -8,7 +8,7 @@
 # Ontology Metadata
 : a owl:Ontology ;
     dcterms:title "Kairos BSP Commercial Domain Ontology" ;
-    dcterms:description """Commercial and logistics domain of the ISO Buy-Ship-Pay Reference Data Model (ISO 20197-1:2024).
+    dcterms:description """Commercial and logistics domain of the Buy-Ship-Pay Reference Data Model.
 
     This module defines commercial transaction and shipment classes covering:
     - Buy: Purchase orders, sales orders, quotations, contracts, order lines, products
@@ -18,7 +18,8 @@
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
-    dcterms:source "ISO 20197-1:2024 Buy-Ship-Pay Reference Data Model" .
+    dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
 #################################################################
 #    BUY - Commercial Transaction Classes
@@ -28,13 +29,16 @@
     rdfs:label "Commercial Transaction" ;
     rdfs:comment """A business transaction involving the exchange of goods or services for payment.
     
-    ISO BSP: Core transaction encompassing buy-ship-pay lifecycle.""" .
+    UN/CEFACT BSP: Maps to SupplyChainTradeTransaction — a group of trade
+    line items, agreement, delivery and settlement details.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/SupplyChainTradeTransaction> .
 
 :PurchaseOrder a owl:Class ;
     rdfs:label "Purchase Order" ;
     rdfs:comment """A commercial document issued by a buyer to a seller indicating products, quantities, and agreed prices.
     
-    ISO BSP: Formal request for goods or services.""" ;
+    UN/CEFACT BSP: An ExchangedDocument with order function type code.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/ExchangedDocument> ;
     rdfs:subClassOf :CommercialTransaction ;
     rdfs:subClassOf [
         a owl:Restriction ;
@@ -60,14 +64,18 @@
     rdfs:label "Sales Contract" ;
     rdfs:comment """A formal agreement between buyer and seller defining rights and obligations.
     
-    ISO BSP: Legally binding commercial agreement.""" ;
+    UN/CEFACT BSP: Maps to Contract — an agreement between two or more
+    parties for trade purposes.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Contract> ;
     rdfs:subClassOf :CommercialTransaction .
 
 :OrderLine a owl:Class ;
     rdfs:label "Order Line" ;
     rdfs:comment """A single line item within a purchase or sales order.
     
-    ISO BSP: Individual product/service entry in order.""" ;
+    UN/CEFACT BSP: Maps to SupplyChainTradeLineItem — a collection of
+    information specific to an item for supply chain trade purposes.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/SupplyChainTradeLineItem> ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :lineNumber ;
@@ -78,7 +86,9 @@
     rdfs:label "Product" ;
     rdfs:comment """A good or service offered for sale.
     
-    ISO BSP: Item being traded.""" .
+    UN/CEFACT BSP: Maps to TradeProduct — any tangible output or service
+    produced by human or mechanical effort for trade purposes.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TradeProduct> .
 
 :TradeItem a owl:Class ;
     rdfs:label "Trade Item" ;
@@ -106,7 +116,9 @@
     rdfs:label "Consignment" ;
     rdfs:comment """A batch of goods shipped together from one consignor to one consignee.
     
-    ISO BSP: Logical grouping of goods for transport.""" ;
+    UN/CEFACT BSP: Maps to Consignment — a separately identifiable collection
+    of goods items to be transported via one or more modes of transport.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Consignment> ;
     rdfs:subClassOf :Shipment .
 
 :ShipmentLine a owl:Class ;
@@ -131,13 +143,17 @@
     rdfs:label "Transport Equipment" ;
     rdfs:comment """Equipment used to transport goods (containers, pallets, etc.).
     
-    ISO BSP: Physical transport units.""" .
+    UN/CEFACT BSP: Maps to LogisticsTransportEquipment — a piece of equipment
+    used to hold, protect or secure cargo for logistics purposes.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/LogisticsTransportEquipment> .
 
 :Package a owl:Class ;
     rdfs:label "Package" ;
     rdfs:comment """A physical unit in which goods are packed.
     
-    ISO BSP: Packaging unit (carton, box, pallet).""" .
+    UN/CEFACT BSP: Maps to Package — a self-contained wrapping or container
+    within which goods can be contained for logistics purposes.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Package> .
 
 #################################################################
 #    Event Classes
@@ -147,7 +163,9 @@
     rdfs:label "Business Event" ;
     rdfs:comment """An occurrence in the trade lifecycle.
     
-    ISO BSP: Order, shipment, payment, customs events.""" ;
+    UN/CEFACT BSP: Maps to SupplyChainEvent — a significant occurrence
+    or happening in a supply chain.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/SupplyChainEvent> ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :eventDateTime ;
@@ -165,7 +183,9 @@
     rdfs:label "Shipment Event" ;
     rdfs:comment """An event in the shipping process.
     
-    ISO BSP: Pickup, loading, departure, arrival, delivery.""" ;
+    UN/CEFACT BSP: Maps to TransportEvent — a significant occurrence
+    or happening during transport.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportEvent> ;
     rdfs:subClassOf :BusinessEvent .
 
 #################################################################

@@ -8,18 +8,19 @@
 # Ontology Metadata
 : a owl:Ontology ;
     dcterms:title "Kairos BSP Financial Domain Ontology" ;
-    dcterms:description """Financial and payment domain of the ISO Buy-Ship-Pay Reference Data Model (ISO 20197-1:2024).
+    dcterms:description """Financial and payment domain of the Buy-Ship-Pay Reference Data Model.
 
     This module defines financial transaction classes covering:
     - Invoicing: Invoice, Commercial Invoice, Proforma Invoice, Credit/Debit Notes
     - Payment: Payment, Payment Terms, payment methods
-    - Trade Finance: Letter of Credit, Bank Guarantee, Trade Finance Instruments
+    - Guarantees: Bank Guarantee
     - Events: Payment lifecycle events""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
-    dcterms:source "ISO 20197-1:2024 Buy-Ship-Pay Reference Data Model" .
+    dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
 #################################################################
 #    PAY - Financial and Payment Classes
@@ -77,7 +78,9 @@
     rdfs:label "Payment" ;
     rdfs:comment """A transfer of funds from buyer to seller.
     
-    ISO BSP: Financial settlement.""" ;
+    UN/CEFACT BSP: Maps to TradeSettlementPayment — discharge of obligations
+    in respect of funds transferred between parties.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TradeSettlementPayment> ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :paymentAmount ;
@@ -88,25 +91,17 @@
     rdfs:label "Payment Terms" ;
     rdfs:comment """Conditions under which payment must be made.
     
-    ISO BSP: Due dates, methods, discounts, penalties.""" .
-
-:LetterOfCredit a owl:Class ;
-    rdfs:label "Letter of Credit (L/C)" ;
-    rdfs:comment """A bank guarantee to pay seller if conditions are met.
-    
-    ISO BSP: Trade finance instrument.""" .
+    UN/CEFACT BSP: Maps to PaymentTerms — terms and conditions by which
+    payment has been or will be made.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/PaymentTerms> .
 
 :BankGuarantee a owl:Class ;
     rdfs:label "Bank Guarantee" ;
-    rdfs:comment """A commitment by a bank to cover a loss if buyer fails to pay.
+    rdfs:comment """A commitment by a bank to cover a loss if a trade party fails to fulfill obligations.
     
-    ISO BSP: Payment security instrument.""" .
-
-:TradeFinanceInstrument a owl:Class ;
-    rdfs:label "Trade Finance Instrument" ;
-    rdfs:comment """A financial product facilitating international trade payment.
-    
-    ISO BSP: L/C, guarantees, documentary collections.""" .
+    UN/CEFACT BSP: Maps to Guarantee — an official promise or assurance
+    to fulfil a financial obligation.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Guarantee> .
 
 #################################################################
 #    Event Classes
@@ -114,9 +109,10 @@
 
 :PaymentEvent a owl:Class ;
     rdfs:label "Payment Event" ;
-    rdfs:comment """An event in the payment process.
+    rdfs:comment """An event in the payment process (invoice issued, payment sent, received).
     
-    ISO BSP: Invoice issued, payment sent, payment received.""" .
+    UN/CEFACT BSP: A SupplyChainEvent in the settlement domain.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/SupplyChainEvent> .
 
 #################################################################
 #    Object Properties
@@ -143,11 +139,6 @@
     rdfs:label "has payment terms" ;
     rdfs:comment "Relates invoice or order to payment terms." ;
     rdfs:range :PaymentTerms .
-
-:hasLetterOfCredit a owl:ObjectProperty ;
-    rdfs:label "has letter of credit" ;
-    rdfs:comment "Relates transaction to L/C." ;
-    rdfs:range :LetterOfCredit .
 
 #################################################################
 #    Datatype Properties
@@ -248,28 +239,4 @@
 :customsValue a owl:DatatypeProperty ;
     rdfs:label "customs value" ;
     rdfs:comment "Declared value for customs purposes." ;
-    rdfs:range xsd:decimal .
-
-:letterOfCreditNumber a owl:DatatypeProperty ;
-    rdfs:label "letter of credit number" ;
-    rdfs:comment "L/C reference number." ;
-    rdfs:domain :LetterOfCredit ;
-    rdfs:range xsd:string .
-
-:lcIssueDate a owl:DatatypeProperty ;
-    rdfs:label "L/C issue date" ;
-    rdfs:comment "Date when letter of credit was issued." ;
-    rdfs:domain :LetterOfCredit ;
-    rdfs:range xsd:date .
-
-:lcExpiryDate a owl:DatatypeProperty ;
-    rdfs:label "L/C expiry date" ;
-    rdfs:comment "Expiration date of letter of credit." ;
-    rdfs:domain :LetterOfCredit ;
-    rdfs:range xsd:date .
-
-:lcAmount a owl:DatatypeProperty ;
-    rdfs:label "L/C amount" ;
-    rdfs:comment "Total amount covered by letter of credit." ;
-    rdfs:domain :LetterOfCredit ;
     rdfs:range xsd:decimal .

@@ -8,10 +8,10 @@
 # Ontology Metadata
 : a owl:Ontology ;
     dcterms:title "Kairos BSP Reference Data Domain Ontology" ;
-    dcterms:description """Reference data domain of the ISO Buy-Ship-Pay Reference Data Model (ISO 20197-1:2024).
+    dcterms:description """Reference data domain of the Buy-Ship-Pay Reference Data Model.
 
     This module defines location and measurement reference data covering:
-    - Locations: Addresses, facilities, ports, airports, warehouses, border crossings
+    - Locations: Addresses, facilities, ports, airports, warehouses
     - Countries: Sovereign nations with ISO 3166 codes
     - Measurements: Weight, volume, dimension, monetary amounts
     - Code lists: UN/LOCODE, IATA codes, country codes""" ;
@@ -19,7 +19,8 @@
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
-    dcterms:source "ISO 20197-1:2024 Buy-Ship-Pay Reference Data Model" .
+    dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
 #################################################################
 #    Location Classes
@@ -29,13 +30,17 @@
     rdfs:label "Location" ;
     rdfs:comment """A physical or logical place.
     
-    ISO BSP: Addresses, facilities, geographic locations.""" .
+    UN/CEFACT BSP: Maps to LogisticsLocation — a logistics related
+    physical location or place.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/LogisticsLocation> .
 
 :Address a owl:Class ;
     rdfs:label "Address" ;
     rdfs:comment """A structured postal or physical address.
     
-    ISO BSP: Street, city, country, postal code.""" ;
+    UN/CEFACT BSP: Maps to TradeAddress — the location at which a trade
+    related organization or person may be found.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TradeAddress> ;
     rdfs:subClassOf :Location .
 
 :Facility a owl:Class ;
@@ -70,28 +75,18 @@
     rdfs:label "Manufacturing Plant" ;
     rdfs:comment """A facility where goods are produced.
     
-    ISO BSP: Factory, production site.""" ;
+    UN/CEFACT BSP: Maps to ProductionFacility — a man made physical structure
+    in which something is produced.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/ProductionFacility> ;
     rdfs:subClassOf :Facility .
-
-:RetailStore a owl:Class ;
-    rdfs:label "Retail Store" ;
-    rdfs:comment """A facility where goods are sold to end customers.
-    
-    ISO BSP: Shop, outlet, showroom.""" ;
-    rdfs:subClassOf :Facility .
-
-:BorderCrossing a owl:Class ;
-    rdfs:label "Border Crossing" ;
-    rdfs:comment """A location where goods cross international borders.
-    
-    ISO BSP: Customs checkpoint.""" ;
-    rdfs:subClassOf :Location .
 
 :Country a owl:Class ;
     rdfs:label "Country" ;
-    rdfs:comment """A sovereign nation state.
+    rdfs:comment """A sovereign nation state identified by ISO 3166 codes.
     
-    ISO BSP: Identified by ISO 3166 codes.""" ;
+    UN/CEFACT BSP: Maps to Country — the area of land that belongs to a nation,
+    used or referenced for trade purposes.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Country> ;
     rdfs:subClassOf :Location .
 
 #################################################################
@@ -102,7 +97,9 @@
     rdfs:label "Measurement" ;
     rdfs:comment """A quantified observation or dimension.
     
-    ISO BSP: Weight, volume, length, temperature.""" .
+    UN/CEFACT BSP: Maps to Measurement — an amount, size, or extent
+    as established by measuring.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Measurement> .
 
 :Weight a owl:Class ;
     rdfs:label "Weight" ;
