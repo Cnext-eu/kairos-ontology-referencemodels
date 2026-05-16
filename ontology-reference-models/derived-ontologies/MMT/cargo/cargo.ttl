@@ -58,12 +58,6 @@
 
     UN/CEFACT MMT: HS code, commodity description, trade category.""" .
 
-:HandlingRequirement a owl:Class ;
-    rdfs:label "Handling Requirement" ;
-    rdfs:comment """Special handling instructions for cargo.
-
-    UN/CEFACT MMT: Temperature control, fragile, keep dry, orientation.""" .
-
 :CargoMeasurement a owl:Class ;
     rdfs:label "Cargo Measurement" ;
     rdfs:comment """A measurement associated with cargo items.
@@ -96,7 +90,7 @@
     rdfs:label "has handling requirement" ;
     rdfs:comment "Relates cargo to special handling instructions." ;
     rdfs:domain :CargoItem ;
-    rdfs:range :HandlingRequirement .
+    rdfs:range :HandlingInstructions .
 
 :hasPackageSpecification a owl:ObjectProperty ;
     rdfs:label "has package specification" ;
@@ -248,11 +242,11 @@
 :handlingCode a owl:DatatypeProperty ;
     rdfs:label "handling code" ;
     rdfs:comment "Standard handling instruction code." ;
-    rdfs:domain :HandlingRequirement ;
+    rdfs:domain :HandlingInstructions ;
     rdfs:range xsd:string .
 
 :handlingInstruction a owl:DatatypeProperty ;
     rdfs:label "handling instruction" ;
     rdfs:comment "Free-text handling instruction." ;
-    rdfs:domain :HandlingRequirement ;
+    rdfs:domain :HandlingInstructions ;
     rdfs:range xsd:string .

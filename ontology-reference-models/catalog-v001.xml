@@ -62,6 +62,7 @@
     <uri name="https://www.kairosflow.ai/ont/dcsa/locations#" uri="derived-ontologies/DCSA/locations/locations.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/dcsa/party#" uri="derived-ontologies/DCSA/party/party.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/dcsa/transport-documents#" uri="derived-ontologies/DCSA/transport-documents/transport-documents.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/schedule#" uri="derived-ontologies/DCSA/schedule/schedule.ttl"/>
     
     <!-- ========== MMT (Multi-Modal Transport) ========== -->
     <uri name="https://www.kairosflow.ai/ont/mmt#" uri="derived-ontologies/MMT/mmt.ttl"/>

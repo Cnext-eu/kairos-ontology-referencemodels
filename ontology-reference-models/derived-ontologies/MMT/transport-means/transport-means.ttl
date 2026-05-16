@@ -63,12 +63,6 @@
     UN/CEFACT MMT: River and canal freight transport.""" ;
     rdfs:subClassOf :Vessel .
 
-:TransportMeansCapacity a owl:Class ;
-    rdfs:label "Transport Means Capacity" ;
-    rdfs:comment """The carrying capacity of a transport means.
-
-    UN/CEFACT MMT: TEU capacity, deadweight tonnage, payload volume.""" .
-
 #################################################################
 #    Object Properties
 #################################################################
@@ -77,12 +71,6 @@
     rdfs:label "involves transport means" ;
     rdfs:comment "Relates event to vehicle/vessel involved." ;
     rdfs:range :LogisticsMeansOfTransport .
-
-:hasCapacity a owl:ObjectProperty ;
-    rdfs:label "has capacity" ;
-    rdfs:comment "Relates transport means to its carrying capacity." ;
-    rdfs:domain :LogisticsMeansOfTransport ;
-    rdfs:range :TransportMeansCapacity .
 
 #################################################################
 #    Datatype Properties

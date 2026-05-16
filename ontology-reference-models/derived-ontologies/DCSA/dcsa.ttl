@@ -35,4 +35,5 @@
                 <https://www.kairosflow.ai/ont/dcsa/transport-documents#> ,
                 <https://www.kairosflow.ai/ont/dcsa/party#> ,
                 <https://www.kairosflow.ai/ont/dcsa/locations#> ,
-                <https://www.kairosflow.ai/ont/dcsa/events#> .
+                <https://www.kairosflow.ai/ont/dcsa/events#> ,
+                <https://www.kairosflow.ai/ont/dcsa/schedule#> .

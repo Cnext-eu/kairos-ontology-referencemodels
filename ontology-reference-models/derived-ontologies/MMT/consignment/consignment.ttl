@@ -357,3 +357,86 @@
     rdfs:label "is hazardous" ;
     rdfs:comment "Indicates if goods are dangerous/hazardous." ;
     rdfs:range xsd:boolean .
+
+#################################################################
+#    Additional Properties (UN/CEFACT RABIE v101)
+#################################################################
+
+:consignorAssignedID a owl:DatatypeProperty ;
+    rdfs:label "consignor assigned ID" ;
+    rdfs:comment "Identifier assigned to the consignment by the consignor." ;
+    rdfs:domain :Consignment ;
+    rdfs:range xsd:string .
+
+:consigneeAssignedID a owl:DatatypeProperty ;
+    rdfs:label "consignee assigned ID" ;
+    rdfs:comment "Identifier assigned to the consignment by the consignee." ;
+    rdfs:domain :Consignment ;
+    rdfs:range xsd:string .
+
+:carrierAssignedID a owl:DatatypeProperty ;
+    rdfs:label "carrier assigned ID" ;
+    rdfs:comment "Identifier assigned to the consignment by the carrier." ;
+    rdfs:domain :Consignment ;
+    rdfs:range xsd:string .
+
+:freightForwarderAssignedID a owl:DatatypeProperty ;
+    rdfs:label "freight forwarder assigned ID" ;
+    rdfs:comment "Identifier assigned to the consignment by the freight forwarder." ;
+    rdfs:domain :Consignment ;
+    rdfs:range xsd:string .
+
+:customsID a owl:DatatypeProperty ;
+    rdfs:label "customs ID" ;
+    rdfs:comment "Identifier assigned by customs authorities." ;
+    rdfs:domain :Consignment ;
+    rdfs:range xsd:string .
+
+:availabilityDueDateTime a owl:DatatypeProperty ;
+    rdfs:label "availability due date time" ;
+    rdfs:comment "Date/time when consignment is due to be available for collection." ;
+    rdfs:domain :Consignment ;
+    rdfs:range xsd:dateTime .
+
+:carrierAcceptanceDateTime a owl:DatatypeProperty ;
+    rdfs:label "carrier acceptance date time" ;
+    rdfs:comment "Date/time when carrier accepted the consignment." ;
+    rdfs:domain :Consignment ;
+    rdfs:range xsd:dateTime .
+
+:exportExitDateTime a owl:DatatypeProperty ;
+    rdfs:label "export exit date time" ;
+    rdfs:comment "Date/time when consignment exited the country of export." ;
+    rdfs:domain :Consignment ;
+    rdfs:range xsd:dateTime .
+
+:containerizationIndicator a owl:DatatypeProperty ;
+    rdfs:label "containerization indicator" ;
+    rdfs:comment "Indicates whether the consignment is containerized." ;
+    rdfs:domain :Consignment ;
+    rdfs:range xsd:boolean .
+
+:transshipmentPermissionIndicator a owl:DatatypeProperty ;
+    rdfs:label "transshipment permission indicator" ;
+    rdfs:comment "Indicates whether transshipment is permitted." ;
+    rdfs:domain :Consignment ;
+    rdfs:range xsd:boolean .
+
+:loadingSequenceNumeric a owl:DatatypeProperty ;
+    rdfs:label "loading sequence number" ;
+    rdfs:comment "Sequence number for loading order." ;
+    rdfs:domain :Consignment ;
+    rdfs:range xsd:integer .
+
+:stageCode a owl:DatatypeProperty ;
+    rdfs:label "stage code" ;
+    rdfs:comment "Transport stage: PRE-CARRIAGE, MAIN-CARRIAGE, ON-CARRIAGE." ;
+    rdfs:domain :TransportMovement ;
+    rdfs:range xsd:string .
+
+:movementStatusCode a owl:DatatypeProperty ;
+    rdfs:label "movement status code" ;
+    rdfs:comment "Status of the transport movement." ;
+    rdfs:domain :TransportMovement ;
+    rdfs:range xsd:string .
+

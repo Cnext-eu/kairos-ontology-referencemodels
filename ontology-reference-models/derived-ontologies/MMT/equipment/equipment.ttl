@@ -158,7 +158,6 @@
     rdfs:comment "Security seal applied to this equipment." ;
     rdfs:domain :TransportEquipment ;
     rdfs:range :Seal .
-    rdfs:range xsd:string .
 
 :temperatureSetting a owl:DatatypeProperty ;
     rdfs:label "temperature setting" ;
@@ -181,3 +180,26 @@
     rdfs:comment "Indicates if equipment is shipper-owned." ;
     rdfs:domain :TransportEquipment ;
     rdfs:range xsd:boolean .
+
+#################################################################
+#    Additional Properties (UN/CEFACT RABIE v101)
+#################################################################
+
+:categoryCode a owl:DatatypeProperty ;
+    rdfs:label "category code" ;
+    rdfs:comment "Equipment category code (LogisticsTransportEquipmentType.CategoryCode)." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:string .
+
+:operationalStatusCode a owl:DatatypeProperty ;
+    rdfs:label "operational status code" ;
+    rdfs:comment "Operational status of the equipment (e.g., EMPTY, LOADED, DAMAGED)." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:string .
+
+:transportMovementStatusCode a owl:DatatypeProperty ;
+    rdfs:label "transport movement status code" ;
+    rdfs:comment "Status of equipment relative to transport movement." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:string .
+
