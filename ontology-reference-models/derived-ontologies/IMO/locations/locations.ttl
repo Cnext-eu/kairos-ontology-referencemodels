@@ -1,0 +1,250 @@
+@prefix : <http://kairos.ai/ont/imo/locations#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "IMO Locations Ontology" ;
+    dcterms:description """Maritime location and navigational area domain ontology aligned with the IMO Compendium.
+
+    Defines ports, anchorages, berths, fairway buoys, VTS zones, pilot boarding places,
+    port approaches, and traffic separation schemes. Supports the UN/LOCODE location identification
+    system and IMO requirements for vessel traffic management and port operations.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "IMO Compendium, FAL Convention, IMDG Code" .
+
+#################################################################
+#    Classes
+#################################################################
+
+:MaritimeLocation a owl:Class ;
+    rdfs:label "Maritime Location" ;
+    rdfs:comment """A geographically defined point, area, or zone relevant to maritime navigation,
+    port operations, or vessel traffic management.""" .
+
+:Port a owl:Class ;
+    rdfs:label "Port" ;
+    rdfs:comment """A maritime port facility with infrastructure for the loading, unloading, and
+    transit of cargo and passengers. Identified by a UN/LOCODE.
+
+    IMO: A port encompasses all terminals, anchorages, and approaches within its jurisdiction.""" ;
+    rdfs:subClassOf :MaritimeLocation ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :unlocode ;
+        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onDataRange xsd:string
+    ] .
+
+:Anchorage a owl:Class ;
+    rdfs:label "Anchorage" ;
+    rdfs:comment """A designated area within port waters or its approaches where vessels may anchor
+    while awaiting berth availability, pilotage, or port clearance.
+
+    Anchorages are charted and may be assigned by the port authority or VTS.""" ;
+    rdfs:subClassOf :MaritimeLocation .
+
+:FairwayBuoy a owl:Class ;
+    rdfs:label "Fairway Buoy" ;
+    rdfs:comment """A navigational buoy marking the entrance to a fairway or channel leading to a port.
+
+    Serves as a reference point for pilot boarding, vessel reporting, and position fixing.
+    Marked according to IALA Maritime Buoyage System.""" ;
+    rdfs:subClassOf :MaritimeLocation .
+
+:VTSZone a owl:Class ;
+    rdfs:label "VTS Zone" ;
+    rdfs:comment """A Vessel Traffic Service zone — an area of sea monitored and managed by a
+    shore-based VTS authority in accordance with IMO Resolution A.857(20).
+
+    Vessels entering a VTS zone must report to the VTS centre and comply with
+    traffic management instructions.""" ;
+    rdfs:subClassOf :MaritimeLocation ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :vtsAuthority ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:PilotBoardingPlace a owl:Class ;
+    rdfs:label "Pilot Boarding Place" ;
+    rdfs:comment """The designated geographical position where a maritime pilot boards or disembarks
+    a vessel. Defined by coordinates and published in nautical publications (Admiralty Pilot).""" ;
+    rdfs:subClassOf :MaritimeLocation ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :latitude ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :longitude ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:Berth a owl:Class ;
+    rdfs:label "Berth" ;
+    rdfs:comment """A designated location at a port terminal where a vessel is moored for cargo
+    operations, passenger embarkation/disembarkation, or lay-by.
+
+    Berth specifications include length, depth alongside, and available equipment.""" ;
+    rdfs:subClassOf :MaritimeLocation ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :berthName ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:PortApproach a owl:Class ;
+    rdfs:label "Port Approach" ;
+    rdfs:comment """The navigable waterway and channel system leading from the open sea to the
+    port's inner harbour. Includes approach channels, turning basins, and
+    fairways, each with defined depth and width characteristics.""" ;
+    rdfs:subClassOf :MaritimeLocation .
+
+:TrafficSeparationScheme a owl:Class ;
+    rdfs:label "Traffic Separation Scheme" ;
+    rdfs:comment """A routing measure adopted by IMO under COLREG Rule 10 to separate opposing
+    streams of vessel traffic using traffic lanes, separation zones, and inshore
+    traffic zones. Reduces the risk of collision in congested or convergent areas.""" ;
+    rdfs:subClassOf :MaritimeLocation .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasAnchorage a owl:ObjectProperty ;
+    rdfs:label "has anchorage" ;
+    rdfs:comment "Associates a port with one of its designated anchorage areas." ;
+    rdfs:domain :Port ;
+    rdfs:range :Anchorage .
+
+:hasBerth a owl:ObjectProperty ;
+    rdfs:label "has berth" ;
+    rdfs:comment "Associates a port with one of its berths." ;
+    rdfs:domain :Port ;
+    rdfs:range :Berth .
+
+:hasFairwayBuoy a owl:ObjectProperty ;
+    rdfs:label "has fairway buoy" ;
+    rdfs:comment "Associates a port approach with a fairway buoy marking its entrance." ;
+    rdfs:domain :PortApproach ;
+    rdfs:range :FairwayBuoy .
+
+:hasPortApproach a owl:ObjectProperty ;
+    rdfs:label "has port approach" ;
+    rdfs:comment "Associates a port with its approach channel system." ;
+    rdfs:domain :Port ;
+    rdfs:range :PortApproach .
+
+:hasPilotBoardingPlace a owl:ObjectProperty ;
+    rdfs:label "has pilot boarding place" ;
+    rdfs:comment "Associates a port with its designated pilot boarding place." ;
+    rdfs:domain :Port ;
+    rdfs:range :PilotBoardingPlace .
+
+:hasVTSZone a owl:ObjectProperty ;
+    rdfs:label "has VTS zone" ;
+    rdfs:comment "Associates a port or port approach with a VTS zone covering the area." ;
+    rdfs:domain :Port ;
+    rdfs:range :VTSZone .
+
+:hasTrafficSeparationScheme a owl:ObjectProperty ;
+    rdfs:label "has traffic separation scheme" ;
+    rdfs:comment "Associates a port approach or VTS zone with an applicable traffic separation scheme." ;
+    rdfs:domain :PortApproach ;
+    rdfs:range :TrafficSeparationScheme .
+
+:locatedWithin a owl:ObjectProperty ;
+    rdfs:label "located within" ;
+    rdfs:comment "Indicates that a maritime location is geographically within another location." ;
+    rdfs:domain :MaritimeLocation ;
+    rdfs:range :MaritimeLocation .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:unlocode a owl:DatatypeProperty ;
+    rdfs:label "UN/LOCODE" ;
+    rdfs:comment "The UN/LOCODE (five-character code) identifying a port or location (e.g., 'NLRTM' for Rotterdam)." ;
+    rdfs:domain :Port ;
+    rdfs:range xsd:string .
+
+:portName a owl:DatatypeProperty ;
+    rdfs:label "port name" ;
+    rdfs:comment "The common name of the port." ;
+    rdfs:domain :Port ;
+    rdfs:range xsd:string .
+
+:latitude a owl:DatatypeProperty ;
+    rdfs:label "latitude" ;
+    rdfs:comment "WGS 84 latitude in decimal degrees." ;
+    rdfs:domain :MaritimeLocation ;
+    rdfs:range xsd:decimal .
+
+:longitude a owl:DatatypeProperty ;
+    rdfs:label "longitude" ;
+    rdfs:comment "WGS 84 longitude in decimal degrees." ;
+    rdfs:domain :MaritimeLocation ;
+    rdfs:range xsd:decimal .
+
+:berthName a owl:DatatypeProperty ;
+    rdfs:label "berth name" ;
+    rdfs:comment "The designation or name of a berth at a terminal." ;
+    rdfs:domain :Berth ;
+    rdfs:range xsd:string .
+
+:berthLength a owl:DatatypeProperty ;
+    rdfs:label "berth length" ;
+    rdfs:comment "The length of the berth in metres." ;
+    rdfs:domain :Berth ;
+    rdfs:range xsd:decimal .
+
+:depthAlongside a owl:DatatypeProperty ;
+    rdfs:label "depth alongside" ;
+    rdfs:comment "The charted depth alongside the berth at chart datum, in metres." ;
+    rdfs:domain :Berth ;
+    rdfs:range xsd:decimal .
+
+:channelDepth a owl:DatatypeProperty ;
+    rdfs:label "channel depth" ;
+    rdfs:comment "The maintained depth of a port approach channel, in metres." ;
+    rdfs:domain :PortApproach ;
+    rdfs:range xsd:decimal .
+
+:channelWidth a owl:DatatypeProperty ;
+    rdfs:label "channel width" ;
+    rdfs:comment "The width of a port approach channel, in metres." ;
+    rdfs:domain :PortApproach ;
+    rdfs:range xsd:decimal .
+
+:vtsAuthority a owl:DatatypeProperty ;
+    rdfs:label "VTS authority" ;
+    rdfs:comment "The name of the authority operating the Vessel Traffic Service." ;
+    rdfs:domain :VTSZone ;
+    rdfs:range xsd:string .
+
+:vtsChannel a owl:DatatypeProperty ;
+    rdfs:label "VTS channel" ;
+    rdfs:comment "The VHF radio channel used for communication with the VTS centre." ;
+    rdfs:domain :VTSZone ;
+    rdfs:range xsd:string .
+
+:anchorageName a owl:DatatypeProperty ;
+    rdfs:label "anchorage name" ;
+    rdfs:comment "The designated name or code of the anchorage area." ;
+    rdfs:domain :Anchorage ;
+    rdfs:range xsd:string .
+
+:maxDraftAllowed a owl:DatatypeProperty ;
+    rdfs:label "maximum draft allowed" ;
+    rdfs:comment "The maximum vessel draft permitted in this location, in metres." ;
+    rdfs:domain :MaritimeLocation ;
+    rdfs:range xsd:decimal .

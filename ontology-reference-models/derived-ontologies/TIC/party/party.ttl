@@ -1,0 +1,158 @@
+@prefix : <http://kairos.ai/ont/tic/party#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "TIC 4.0 Party Ontology" ;
+    dcterms:description """Party roles and actors domain of the TIC 4.0 ontology.
+
+    Covers the organizational and individual roles involved in terminal operations including
+    terminal operators, stevedores, gate agents, yard planners, shift supervisors, and
+    vehicle service providers.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "Terminal Industry Committee (TIC) 4.0 Standard" .
+
+#################################################################
+#    Party Classes
+#################################################################
+
+:TerminalParty a owl:Class ;
+    rdfs:label "Terminal Party" ;
+    rdfs:comment """An organization or individual playing a role in terminal operations.
+
+    TIC 4.0: Abstract superclass for all party roles within the terminal domain.""" .
+
+:TerminalOperator a owl:Class ;
+    rdfs:label "Terminal Operator" ;
+    rdfs:comment """The organization responsible for the overall management and operation of a terminal facility.
+
+    TIC 4.0: The principal entity accountable for terminal performance, safety, and service delivery.""" ;
+    rdfs:subClassOf :TerminalParty ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :operatorCode ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:Stevedore a owl:Class ;
+    rdfs:label "Stevedore" ;
+    rdfs:comment """A company or work crew responsible for loading and discharging cargo from vessels.
+
+    TIC 4.0: Stevedores may be employed by the terminal operator or contracted independently.""" ;
+    rdfs:subClassOf :TerminalParty .
+
+:GateAgent a owl:Class ;
+    rdfs:label "Gate Agent" ;
+    rdfs:comment """An individual responsible for processing vehicles and cargo at the terminal gate.
+
+    TIC 4.0: Performs identification checks, condition surveys, and documentation verification.""" ;
+    rdfs:subClassOf :TerminalParty .
+
+:YardPlanner a owl:Class ;
+    rdfs:label "Yard Planner" ;
+    rdfs:comment """An individual or system responsible for planning the placement and movement of cargo within the yard.
+
+    TIC 4.0: Optimizes yard utilization, minimizes re-handles, and coordinates equipment allocation.""" ;
+    rdfs:subClassOf :TerminalParty .
+
+:ShiftSupervisor a owl:Class ;
+    rdfs:label "Shift Supervisor" ;
+    rdfs:comment """The operational supervisor in charge of terminal activities during a specific work shift.
+
+    TIC 4.0: Coordinates stevedoring gangs, equipment deployment, and exception handling.""" ;
+    rdfs:subClassOf :TerminalParty ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :supervisesShift ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:VehicleServiceProvider a owl:Class ;
+    rdfs:label "Vehicle Service Provider" ;
+    rdfs:comment """A company or individual providing automotive processing services at the terminal.
+
+    TIC 4.0: Includes PDI providers, body shops, detailing services, and modification workshops.""" ;
+    rdfs:subClassOf :TerminalParty .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:operatesTerminal a owl:ObjectProperty ;
+    rdfs:label "operates terminal" ;
+    rdfs:comment "Links a terminal operator to the terminal it manages." ;
+    rdfs:domain :TerminalOperator .
+
+:employedBy a owl:ObjectProperty ;
+    rdfs:label "employed by" ;
+    rdfs:comment "Links an individual party to the organization employing them." ;
+    rdfs:domain :TerminalParty ;
+    rdfs:range :TerminalParty .
+
+:supervisesShift a owl:ObjectProperty ;
+    rdfs:label "supervises shift" ;
+    rdfs:comment "Links a shift supervisor to the shift they are responsible for." ;
+    rdfs:domain :ShiftSupervisor .
+
+:assignedToArea a owl:ObjectProperty ;
+    rdfs:label "assigned to area" ;
+    rdfs:comment "Links a party to the terminal area where they are currently assigned." ;
+    rdfs:domain :TerminalParty .
+
+:providesService a owl:ObjectProperty ;
+    rdfs:label "provides service" ;
+    rdfs:comment "Links a vehicle service provider to the services they offer." ;
+    rdfs:domain :VehicleServiceProvider .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:operatorCode a owl:DatatypeProperty ;
+    rdfs:label "operator code" ;
+    rdfs:comment "Unique identifier code for the terminal operator." ;
+    rdfs:domain :TerminalOperator ;
+    rdfs:range xsd:string .
+
+:partyName a owl:DatatypeProperty ;
+    rdfs:label "party name" ;
+    rdfs:comment "Full name of the party (organization or individual)." ;
+    rdfs:domain :TerminalParty ;
+    rdfs:range xsd:string .
+
+:partyIdentifier a owl:DatatypeProperty ;
+    rdfs:label "party identifier" ;
+    rdfs:comment "Unique identifier for the party within the terminal system." ;
+    rdfs:domain :TerminalParty ;
+    rdfs:range xsd:string .
+
+:contactEmail a owl:DatatypeProperty ;
+    rdfs:label "contact email" ;
+    rdfs:comment "Email address for the party." ;
+    rdfs:domain :TerminalParty ;
+    rdfs:range xsd:string .
+
+:contactPhone a owl:DatatypeProperty ;
+    rdfs:label "contact phone" ;
+    rdfs:comment "Telephone number for the party." ;
+    rdfs:domain :TerminalParty ;
+    rdfs:range xsd:string .
+
+:shiftCode a owl:DatatypeProperty ;
+    rdfs:label "shift code" ;
+    rdfs:comment "Identifier of the work shift (e.g., DAY, SWING, NIGHT)." ;
+    rdfs:domain :ShiftSupervisor ;
+    rdfs:range xsd:string .
+
+:certificationLevel a owl:DatatypeProperty ;
+    rdfs:label "certification level" ;
+    rdfs:comment "Professional certification or qualification level of the party." ;
+    rdfs:domain :TerminalParty ;
+    rdfs:range xsd:string .

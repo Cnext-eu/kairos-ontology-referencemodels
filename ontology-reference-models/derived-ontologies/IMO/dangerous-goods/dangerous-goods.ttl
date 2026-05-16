@@ -1,0 +1,267 @@
+@prefix : <http://kairos.ai/ont/imo/dangerous-goods#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "IMO Dangerous Goods Ontology" ;
+    dcterms:description """Dangerous goods classification, declaration, and transport domain ontology
+    aligned with the IMDG Code and the IMO Compendium.
+
+    Covers UN number identification, hazard classes, packing groups, stowage and segregation rules,
+    and the Dangerous Goods Declaration (IMO FAL Form 7). Supports compliance with SOLAS Chapter VII
+    and MARPOL Annex III for the safe carriage of dangerous goods by sea.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "IMO Compendium, FAL Convention, IMDG Code" .
+
+#################################################################
+#    Classes
+#################################################################
+
+:DangerousGoodsItem a owl:Class ;
+    rdfs:label "Dangerous Goods Item" ;
+    rdfs:comment """An item or substance classified as dangerous goods under the IMDG Code.
+
+    Each DG item must be identified by its UN number and assigned to a hazard class
+    for proper handling, stowage, and segregation during maritime transport.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :hasUNNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :hasHazardClass ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:HazardClass a owl:Class ;
+    rdfs:label "Hazard Class" ;
+    rdfs:comment """One of the nine hazard classes (and their divisions) defined by the IMDG Code,
+    e.g., Class 1 Explosives, Class 3 Flammable Liquids, Class 7 Radioactive Material.
+
+    Determines applicable transport, stowage, and emergency response requirements.""" .
+
+:UNNumber a owl:Class ;
+    rdfs:label "UN Number" ;
+    rdfs:comment """A four-digit identifier assigned by the UN Committee of Experts to a dangerous
+    substance or article (e.g., UN 1203 for gasoline). Used universally for DG identification
+    across all transport modes.""" .
+
+:IMDGCode a owl:Class ;
+    rdfs:label "IMDG Code" ;
+    rdfs:comment """A reference to the International Maritime Dangerous Goods Code entry governing
+    the transport conditions for a particular dangerous goods item. Published biennially by IMO.""" .
+
+:PackingGroup a owl:Class ;
+    rdfs:label "Packing Group" ;
+    rdfs:comment """A classification indicating the degree of danger presented by a substance.
+
+    Packing Group I — high danger; Packing Group II — medium danger;
+    Packing Group III — low danger. Determines packaging requirements.""" .
+
+:FlashPoint a owl:Class ;
+    rdfs:label "Flash Point" ;
+    rdfs:comment """The lowest temperature at which a substance gives off sufficient vapour to
+    form an ignitable mixture with air. Critical for classification of flammable liquids
+    under the IMDG Code.""" .
+
+:EmergencySchedule a owl:Class ;
+    rdfs:label "Emergency Schedule" ;
+    rdfs:comment """The EmS (Emergency Schedule) number assigned to dangerous goods specifying
+    fire-fighting and spillage procedures. Formatted as F-x (fire) and S-x (spillage),
+    as per the IMO/ILO/UNECE guidelines.""" .
+
+:Restriction a owl:Class ;
+    rdfs:label "Restriction" ;
+    rdfs:comment """A regulatory restriction applicable to the transport, handling, or storage
+    of dangerous goods, including quantity limits and special provisions.""" .
+
+:AcceptanceRule a owl:Class ;
+    rdfs:label "Acceptance Rule" ;
+    rdfs:comment """A rule governing the acceptance of dangerous goods for maritime transport,
+    including documentation requirements, packaging standards, and marking/labelling criteria.""" .
+
+:SegregationRule a owl:Class ;
+    rdfs:label "Segregation Rule" ;
+    rdfs:comment """A rule specifying the required physical separation between incompatible
+    dangerous goods classes during stowage aboard a vessel.
+
+    Defined in IMDG Code Chapter 7.2 with categories: away from, separated from,
+    separated by a complete compartment from, etc.""" .
+
+:StowageCategory a owl:Class ;
+    rdfs:label "Stowage Category" ;
+    rdfs:comment """A stowage category code (A through E) assigned by the IMDG Code indicating
+    whether dangerous goods may be stowed on deck, under deck, or have other stowage restrictions.""" .
+
+:EmergencyContact a owl:Class ;
+    rdfs:label "Emergency Contact" ;
+    rdfs:comment """A designated 24-hour emergency contact point for dangerous goods incidents,
+    as required by IMDG Code section 5.4.1.7. Typically provided by the shipper or
+    a contracted emergency response service.""" .
+
+:DGDeclaration a owl:Class ;
+    rdfs:label "Dangerous Goods Declaration" ;
+    rdfs:comment """The Dangerous Goods Declaration (IMO FAL Form 7 / Multimodal Dangerous Goods Form)
+    listing all dangerous goods aboard or to be loaded.
+
+    Must accompany every consignment of dangerous goods and include proper shipping name,
+    UN number, class, packing group, and emergency information.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :declaresItem ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasUNNumber a owl:ObjectProperty ;
+    rdfs:label "has UN number" ;
+    rdfs:comment "Associates a dangerous goods item with its UN number." ;
+    rdfs:domain :DangerousGoodsItem ;
+    rdfs:range :UNNumber .
+
+:hasHazardClass a owl:ObjectProperty ;
+    rdfs:label "has hazard class" ;
+    rdfs:comment "Associates a dangerous goods item with its primary hazard class." ;
+    rdfs:domain :DangerousGoodsItem ;
+    rdfs:range :HazardClass .
+
+:hasPackingGroup a owl:ObjectProperty ;
+    rdfs:label "has packing group" ;
+    rdfs:comment "Associates a dangerous goods item with its packing group." ;
+    rdfs:domain :DangerousGoodsItem ;
+    rdfs:range :PackingGroup .
+
+:hasFlashPoint a owl:ObjectProperty ;
+    rdfs:label "has flash point" ;
+    rdfs:comment "Associates a dangerous goods item with its flash point measurement." ;
+    rdfs:domain :DangerousGoodsItem ;
+    rdfs:range :FlashPoint .
+
+:hasEmergencySchedule a owl:ObjectProperty ;
+    rdfs:label "has emergency schedule" ;
+    rdfs:comment "Associates a dangerous goods item with its EmS fire and spillage schedules." ;
+    rdfs:domain :DangerousGoodsItem ;
+    rdfs:range :EmergencySchedule .
+
+:hasRestriction a owl:ObjectProperty ;
+    rdfs:label "has restriction" ;
+    rdfs:comment "Associates a dangerous goods item with an applicable transport restriction." ;
+    rdfs:domain :DangerousGoodsItem ;
+    rdfs:range :Restriction .
+
+:hasAcceptanceRule a owl:ObjectProperty ;
+    rdfs:label "has acceptance rule" ;
+    rdfs:comment "Associates a dangerous goods item with an acceptance rule for maritime transport." ;
+    rdfs:domain :DangerousGoodsItem ;
+    rdfs:range :AcceptanceRule .
+
+:hasSegregationRule a owl:ObjectProperty ;
+    rdfs:label "has segregation rule" ;
+    rdfs:comment "Associates a hazard class with a segregation rule for incompatible classes." ;
+    rdfs:domain :HazardClass ;
+    rdfs:range :SegregationRule .
+
+:hasStowageCategory a owl:ObjectProperty ;
+    rdfs:label "has stowage category" ;
+    rdfs:comment "Associates a dangerous goods item with its assigned stowage category." ;
+    rdfs:domain :DangerousGoodsItem ;
+    rdfs:range :StowageCategory .
+
+:hasEmergencyContact a owl:ObjectProperty ;
+    rdfs:label "has emergency contact" ;
+    rdfs:comment "Associates a DG declaration or item with a 24-hour emergency contact." ;
+    rdfs:domain :DGDeclaration ;
+    rdfs:range :EmergencyContact .
+
+:declaresItem a owl:ObjectProperty ;
+    rdfs:label "declares item" ;
+    rdfs:comment "Associates a DG declaration with a dangerous goods item listed therein." ;
+    rdfs:domain :DGDeclaration ;
+    rdfs:range :DangerousGoodsItem .
+
+:governedByIMDGCode a owl:ObjectProperty ;
+    rdfs:label "governed by IMDG Code" ;
+    rdfs:comment "Associates a dangerous goods item with the applicable IMDG Code entry." ;
+    rdfs:domain :DangerousGoodsItem ;
+    rdfs:range :IMDGCode .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:unNumberValue a owl:DatatypeProperty ;
+    rdfs:label "UN number value" ;
+    rdfs:comment "The four-digit UN number as a string (e.g., '1203')." ;
+    rdfs:domain :UNNumber ;
+    rdfs:range xsd:string .
+
+:hazardClassCode a owl:DatatypeProperty ;
+    rdfs:label "hazard class code" ;
+    rdfs:comment "The IMDG hazard class and division code (e.g., '3', '2.1', '6.1')." ;
+    rdfs:domain :HazardClass ;
+    rdfs:range xsd:string .
+
+:subsidiaryRisk a owl:DatatypeProperty ;
+    rdfs:label "subsidiary risk" ;
+    rdfs:comment "A subsidiary hazard class code for a DG item with multiple risks." ;
+    rdfs:domain :DangerousGoodsItem ;
+    rdfs:range xsd:string .
+
+:packingGroupCode a owl:DatatypeProperty ;
+    rdfs:label "packing group code" ;
+    rdfs:comment "The packing group designation: 'I', 'II', or 'III'." ;
+    rdfs:domain :PackingGroup ;
+    rdfs:range xsd:string .
+
+:flashPointValue a owl:DatatypeProperty ;
+    rdfs:label "flash point value" ;
+    rdfs:comment "Flash point temperature in degrees Celsius." ;
+    rdfs:domain :FlashPoint ;
+    rdfs:range xsd:decimal .
+
+:properShippingName a owl:DatatypeProperty ;
+    rdfs:label "proper shipping name" ;
+    rdfs:comment "The proper shipping name as specified in the IMDG Code Dangerous Goods List." ;
+    rdfs:domain :DangerousGoodsItem ;
+    rdfs:range xsd:string .
+
+:emsFireSchedule a owl:DatatypeProperty ;
+    rdfs:label "EmS fire schedule" ;
+    rdfs:comment "The EmS fire-fighting schedule code (e.g., 'F-E')." ;
+    rdfs:domain :EmergencySchedule ;
+    rdfs:range xsd:string .
+
+:emsSpillageSchedule a owl:DatatypeProperty ;
+    rdfs:label "EmS spillage schedule" ;
+    rdfs:comment "The EmS spillage schedule code (e.g., 'S-D')." ;
+    rdfs:domain :EmergencySchedule ;
+    rdfs:range xsd:string .
+
+:declarationDate a owl:DatatypeProperty ;
+    rdfs:label "declaration date" ;
+    rdfs:comment "The date the DG declaration was issued." ;
+    rdfs:domain :DGDeclaration ;
+    rdfs:range xsd:date .
+
+:contactName a owl:DatatypeProperty ;
+    rdfs:label "contact name" ;
+    rdfs:comment "Name of the emergency contact person or organization." ;
+    rdfs:domain :EmergencyContact ;
+    rdfs:range xsd:string .
+
+:contactPhone a owl:DatatypeProperty ;
+    rdfs:label "contact phone" ;
+    rdfs:comment "24-hour telephone number of the emergency contact." ;
+    rdfs:domain :EmergencyContact ;
+    rdfs:range xsd:string .

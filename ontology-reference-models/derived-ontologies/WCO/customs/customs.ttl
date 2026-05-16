@@ -1,0 +1,269 @@
+@prefix : <http://kairos.ai/ont/wco/customs#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "WCO Customs Domain" ;
+    dcterms:description "Customs declarations, duty calculations, tariff classifications, and filing procedures based on the WCO Data Model 3.0." ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "WCO Data Model 3.0, eFTI Regulation (EU) 2020/1056" .
+
+#################################################################
+#    Customs Declaration Classes
+#################################################################
+
+:CustomsDeclaration a owl:Class ;
+    rdfs:label "Customs Declaration" ;
+    rdfs:comment """A formal document submitted to customs authorities declaring goods for import, export, or transit.
+
+    WCO: Aligns with WCO Data Model 3.0 Declaration entity, serving as the base class for all customs declaration types.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :declarationNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:EntryExitSummary a owl:Class ;
+    rdfs:label "Entry Exit Summary" ;
+    rdfs:comment """A summary declaration submitted prior to or upon arrival/departure of goods at a customs territory.
+
+    WCO: Corresponds to Entry Summary Declaration (ENS) and Exit Summary Declaration (EXS) under WCO guidelines and EU ICS2 requirements.""" ;
+    rdfs:subClassOf :CustomsDeclaration .
+
+:ImportDeclaration a owl:Class ;
+    rdfs:label "Import Declaration" ;
+    rdfs:comment """A customs declaration for goods being imported into a customs territory for release into free circulation.
+
+    WCO: Aligns with WCO Data Model 3.0 Import Declaration, covering standard and simplified procedures.""" ;
+    rdfs:subClassOf :CustomsDeclaration .
+
+:ExportDeclaration a owl:Class ;
+    rdfs:label "Export Declaration" ;
+    rdfs:comment """A customs declaration for goods leaving a customs territory for export to a third country.
+
+    WCO: Aligns with WCO Data Model 3.0 Export Declaration, including pre-departure and post-departure filings.""" ;
+    rdfs:subClassOf :CustomsDeclaration .
+
+:TransitDeclaration a owl:Class ;
+    rdfs:label "Transit Declaration" ;
+    rdfs:comment """A customs declaration for goods moving through a customs territory under a transit procedure without being released.
+
+    WCO: Aligns with WCO Data Model 3.0 Transit Declaration, covering common and union transit procedures.""" ;
+    rdfs:subClassOf :CustomsDeclaration .
+
+#################################################################
+#    Filing and Authority Classes
+#################################################################
+
+:Filing a owl:Class ;
+    rdfs:label "Filing" ;
+    rdfs:comment """A submission event representing the act of filing a customs declaration with the relevant authority.
+
+    WCO: Captures the filing metadata including reference number, date, and submission channel as defined in the WCO Data Model.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :filingReference ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:AuthorityMessage a owl:Class ;
+    rdfs:label "Authority Message" ;
+    rdfs:comment """A message issued by a customs authority in response to a declaration or filing, such as acceptance, rejection, or query.
+
+    WCO: Represents official communications from customs administrations as described in the WCO messaging framework.""" .
+
+:InspectionReference a owl:Class ;
+    rdfs:label "Inspection Reference" ;
+    rdfs:comment """A reference to a physical or documentary inspection carried out by customs authorities on declared goods.
+
+    WCO: Aligns with WCO inspection and control data elements for risk-based targeting and examination.""" .
+
+:ICS2Reference a owl:Class ;
+    rdfs:label "ICS2 Reference" ;
+    rdfs:comment """A reference to data exchanged with the EU Import Control System 2 (ICS2) for advance cargo information.
+
+    WCO: Supports the EU ICS2 pre-loading and pre-arrival safety and security filing requirements under Union Customs Code.""" .
+
+#################################################################
+#    Declaration Assessment Classes
+#################################################################
+
+:DeclarationStatus a owl:Class ;
+    rdfs:label "Declaration Status" ;
+    rdfs:comment """The current processing status of a customs declaration within the customs authority system.
+
+    WCO: Aligns with WCO Data Model 3.0 status lifecycle codes for declaration processing and release.""" .
+
+:DutyCalculation a owl:Class ;
+    rdfs:label "Duty Calculation" ;
+    rdfs:comment """A calculation of customs duties and taxes applicable to declared goods based on tariff classification and valuation.
+
+    WCO: Corresponds to WCO Data Model 3.0 duty/tax computation elements including rate, amount, and method of payment.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :dutyAmount ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:TariffClassification a owl:Class ;
+    rdfs:label "Tariff Classification" ;
+    rdfs:comment """The classification of goods under the Harmonized System (HS) for customs tariff and statistical purposes.
+
+    WCO: Aligns with the WCO Harmonized System nomenclature and WCO Data Model 3.0 commodity classification elements.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :hsCode ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:CustomsValue a owl:Class ;
+    rdfs:label "Customs Value" ;
+    rdfs:comment """The declared transaction value of imported goods used as the basis for calculating customs duties.
+
+    WCO: Aligns with WCO Valuation Agreement methods (Articles 1-7) and Data Model 3.0 valuation data elements.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :valueDeclared ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:PreferenceClaim a owl:Class ;
+    rdfs:label "Preference Claim" ;
+    rdfs:comment """A claim for preferential tariff treatment based on rules of origin under a free trade agreement or customs union.
+
+    WCO: Aligns with WCO Rules of Origin guidelines and Data Model 3.0 preference and origin data elements.""" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasDeclarationStatus a owl:ObjectProperty ;
+    rdfs:label "has declaration status" ;
+    rdfs:comment "Relates a customs declaration to its current processing status." ;
+    rdfs:domain :CustomsDeclaration ;
+    rdfs:range :DeclarationStatus .
+
+:hasDutyCalculation a owl:ObjectProperty ;
+    rdfs:label "has duty calculation" ;
+    rdfs:comment "Relates a customs declaration to its duty and tax calculations." ;
+    rdfs:domain :CustomsDeclaration ;
+    rdfs:range :DutyCalculation .
+
+:hasTariffClassification a owl:ObjectProperty ;
+    rdfs:label "has tariff classification" ;
+    rdfs:comment "Relates a customs declaration to the tariff classification of its goods." ;
+    rdfs:domain :CustomsDeclaration ;
+    rdfs:range :TariffClassification .
+
+:hasCustomsValue a owl:ObjectProperty ;
+    rdfs:label "has customs value" ;
+    rdfs:comment "Relates a customs declaration to the declared customs valuation." ;
+    rdfs:domain :CustomsDeclaration ;
+    rdfs:range :CustomsValue .
+
+:hasPreferenceClaim a owl:ObjectProperty ;
+    rdfs:label "has preference claim" ;
+    rdfs:comment "Relates a customs declaration to a preferential tariff claim." ;
+    rdfs:domain :CustomsDeclaration ;
+    rdfs:range :PreferenceClaim .
+
+:hasFiling a owl:ObjectProperty ;
+    rdfs:label "has filing" ;
+    rdfs:comment "Relates a customs declaration to its filing submission event." ;
+    rdfs:domain :CustomsDeclaration ;
+    rdfs:range :Filing .
+
+:hasAuthorityMessage a owl:ObjectProperty ;
+    rdfs:label "has authority message" ;
+    rdfs:comment "Relates a customs declaration to messages from customs authorities." ;
+    rdfs:domain :CustomsDeclaration ;
+    rdfs:range :AuthorityMessage .
+
+:hasInspectionReference a owl:ObjectProperty ;
+    rdfs:label "has inspection reference" ;
+    rdfs:comment "Relates a customs declaration to a customs inspection record." ;
+    rdfs:domain :CustomsDeclaration ;
+    rdfs:range :InspectionReference .
+
+:hasICS2Reference a owl:ObjectProperty ;
+    rdfs:label "has ICS2 reference" ;
+    rdfs:comment "Relates an entry/exit summary to its EU ICS2 system reference." ;
+    rdfs:domain :EntryExitSummary ;
+    rdfs:range :ICS2Reference .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:declarationNumber a owl:DatatypeProperty ;
+    rdfs:label "declaration number" ;
+    rdfs:comment "Unique identifier assigned to a customs declaration." ;
+    rdfs:domain :CustomsDeclaration ;
+    rdfs:range xsd:string .
+
+:filingReference a owl:DatatypeProperty ;
+    rdfs:label "filing reference" ;
+    rdfs:comment "Unique reference number for a customs filing submission." ;
+    rdfs:domain :Filing ;
+    rdfs:range xsd:string .
+
+:filingDate a owl:DatatypeProperty ;
+    rdfs:label "filing date" ;
+    rdfs:comment "Date and time when the customs filing was submitted." ;
+    rdfs:domain :Filing ;
+    rdfs:range xsd:dateTime .
+
+:hsCode a owl:DatatypeProperty ;
+    rdfs:label "HS code" ;
+    rdfs:comment "Harmonized System commodity code for tariff classification." ;
+    rdfs:domain :TariffClassification ;
+    rdfs:range xsd:string .
+
+:dutyAmount a owl:DatatypeProperty ;
+    rdfs:label "duty amount" ;
+    rdfs:comment "Total calculated duty amount for the declared goods." ;
+    rdfs:domain :DutyCalculation ;
+    rdfs:range xsd:decimal .
+
+:dutyRate a owl:DatatypeProperty ;
+    rdfs:label "duty rate" ;
+    rdfs:comment "Applicable duty rate percentage for the tariff classification." ;
+    rdfs:domain :DutyCalculation ;
+    rdfs:range xsd:decimal .
+
+:valueDeclared a owl:DatatypeProperty ;
+    rdfs:label "value declared" ;
+    rdfs:comment "Declared transaction value of the imported goods." ;
+    rdfs:domain :CustomsValue ;
+    rdfs:range xsd:decimal .
+
+:valuationMethod a owl:DatatypeProperty ;
+    rdfs:label "valuation method" ;
+    rdfs:comment "WCO valuation method used to determine customs value (Articles 1-7)." ;
+    rdfs:domain :CustomsValue ;
+    rdfs:range xsd:string .
+
+:statusCode a owl:DatatypeProperty ;
+    rdfs:label "status code" ;
+    rdfs:comment "Code representing the current status of a customs declaration." ;
+    rdfs:domain :DeclarationStatus ;
+    rdfs:range xsd:string .
+
+:statusDateTime a owl:DatatypeProperty ;
+    rdfs:label "status date time" ;
+    rdfs:comment "Date and time when the declaration status was recorded." ;
+    rdfs:domain :DeclarationStatus ;
+    rdfs:range xsd:dateTime .
+
+:preferenceCode a owl:DatatypeProperty ;
+    rdfs:label "preference code" ;
+    rdfs:comment "Code identifying the preferential tariff treatment claimed." ;
+    rdfs:domain :PreferenceClaim ;
+    rdfs:range xsd:string .

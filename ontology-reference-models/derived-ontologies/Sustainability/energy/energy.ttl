@@ -1,0 +1,302 @@
+@prefix : <http://kairos.ai/ont/sustainability/energy#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "Sustainability Energy Domain" ;
+    dcterms:description "Energy consumption, fuel types, and energy efficiency for transport and logistics based on EU MRV Regulation and IMO DCS." ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "ISO 14083:2023, GLEC Framework, EU MRV Regulation, IMO DCS, EU ETS Maritime" .
+
+#################################################################
+#    Energy Consumption and Fuel Classes
+#################################################################
+
+:EnergyConsumption a owl:Class ;
+    rdfs:label "Energy Consumption" ;
+    rdfs:comment """Measured energy consumption for a transport activity or voyage.
+
+    EU MRV: Measured energy consumption for a transport activity or voyage.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :consumptionValue ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:FuelType a owl:Class ;
+    rdfs:label "Fuel Type" ;
+    rdfs:comment """Classification of fuel used for propulsion or auxiliary power.
+
+    IMO DCS: Classification of fuel used for propulsion or auxiliary power.""" .
+
+:HFO a owl:Class ;
+    rdfs:label "HFO" ;
+    rdfs:comment "Heavy Fuel Oil, a residual marine fuel with high sulphur content." ;
+    rdfs:subClassOf :FuelType .
+
+:VLSFO a owl:Class ;
+    rdfs:label "VLSFO" ;
+    rdfs:comment "Very Low Sulphur Fuel Oil compliant with IMO 2020 sulphur cap." ;
+    rdfs:subClassOf :FuelType .
+
+:LNG a owl:Class ;
+    rdfs:label "LNG" ;
+    rdfs:comment "Liquefied Natural Gas used as a lower-emission marine fuel." ;
+    rdfs:subClassOf :FuelType .
+
+:Methanol a owl:Class ;
+    rdfs:label "Methanol" ;
+    rdfs:comment "Methanol used as an alternative marine fuel, potentially carbon-neutral when bio- or e-sourced." ;
+    rdfs:subClassOf :FuelType .
+
+:Ammonia a owl:Class ;
+    rdfs:label "Ammonia" ;
+    rdfs:comment "Ammonia as a zero-carbon fuel for maritime decarbonisation." ;
+    rdfs:subClassOf :FuelType .
+
+:Electric a owl:Class ;
+    rdfs:label "Electric" ;
+    rdfs:comment "Battery-electric propulsion or auxiliary power." ;
+    rdfs:subClassOf :FuelType .
+
+:Hydrogen a owl:Class ;
+    rdfs:label "Hydrogen" ;
+    rdfs:comment "Hydrogen fuel for fuel cell or combustion propulsion." ;
+    rdfs:subClassOf :FuelType .
+
+#################################################################
+#    Energy Source Classes
+#################################################################
+
+:EnergySource a owl:Class ;
+    rdfs:label "Energy Source" ;
+    rdfs:comment "Classification of the primary energy source (fossil, renewable, nuclear)." .
+
+:RenewableEnergy a owl:Class ;
+    rdfs:label "Renewable Energy" ;
+    rdfs:comment "Energy derived from renewable sources such as wind, solar, or biofuels." ;
+    rdfs:subClassOf :EnergySource .
+
+#################################################################
+#    Shorepower and Efficiency Classes
+#################################################################
+
+:Shorepower a owl:Class ;
+    rdfs:label "Shorepower" ;
+    rdfs:comment """Onshore power supply (cold ironing) for vessels at berth to reduce port emissions.
+
+    EU: Onshore power supply (cold ironing) for vessels at berth to reduce port emissions.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :connectionVoltage ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:EnergyEfficiency a owl:Class ;
+    rdfs:label "Energy Efficiency" ;
+    rdfs:comment """Energy efficiency metric for vessel or transport operation.
+
+    IMO: Energy efficiency metric for vessel or transport operation.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :efficiencyValue ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Fuel Oil Consumption, BDN, and KPI Classes
+#################################################################
+
+:FuelOilConsumption a owl:Class ;
+    rdfs:label "Fuel Oil Consumption" ;
+    rdfs:comment """Fuel oil consumption record for voyage or reporting period.
+
+    IMO DCS: Fuel oil consumption record for voyage or reporting period.""" ;
+    rdfs:subClassOf :EnergyConsumption ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :fuelQuantity ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:BunkerDeliveryNote a owl:Class ;
+    rdfs:label "Bunker Delivery Note" ;
+    rdfs:comment "Document recording fuel delivery to a vessel." ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :bdnNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:EnergyPerformanceIndicator a owl:Class ;
+    rdfs:label "Energy Performance Indicator" ;
+    rdfs:comment "KPI measuring energy performance relative to transport work." ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :kpiValue ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasEnergyConsumption a owl:ObjectProperty ;
+    rdfs:label "has energy consumption" ;
+    rdfs:comment "Relates an entity to its energy consumption record." ;
+    rdfs:range :EnergyConsumption .
+
+:usesFuelType a owl:ObjectProperty ;
+    rdfs:label "uses fuel type" ;
+    rdfs:comment "Relates energy consumption to the fuel type used." ;
+    rdfs:domain :EnergyConsumption ;
+    rdfs:range :FuelType .
+
+:hasEnergySource a owl:ObjectProperty ;
+    rdfs:label "has energy source" ;
+    rdfs:comment "Relates a fuel type to its primary energy source." ;
+    rdfs:domain :FuelType ;
+    rdfs:range :EnergySource .
+
+:hasShorepower a owl:ObjectProperty ;
+    rdfs:label "has shorepower" ;
+    rdfs:comment "Relates an entity to a shorepower connection." ;
+    rdfs:range :Shorepower .
+
+:hasEnergyEfficiency a owl:ObjectProperty ;
+    rdfs:label "has energy efficiency" ;
+    rdfs:comment "Relates an entity to its energy efficiency metric." ;
+    rdfs:range :EnergyEfficiency .
+
+:hasFuelOilConsumption a owl:ObjectProperty ;
+    rdfs:label "has fuel oil consumption" ;
+    rdfs:comment "Relates an entity to a fuel oil consumption record." ;
+    rdfs:range :FuelOilConsumption .
+
+:hasBunkerDeliveryNote a owl:ObjectProperty ;
+    rdfs:label "has bunker delivery note" ;
+    rdfs:comment "Relates an entity to a bunker delivery note." ;
+    rdfs:range :BunkerDeliveryNote .
+
+:hasEnergyPerformanceIndicator a owl:ObjectProperty ;
+    rdfs:label "has energy performance indicator" ;
+    rdfs:comment "Relates an entity to an energy performance indicator." ;
+    rdfs:range :EnergyPerformanceIndicator .
+
+:suppliedByRenewable a owl:ObjectProperty ;
+    rdfs:label "supplied by renewable" ;
+    rdfs:comment "Relates an entity to its renewable energy source." ;
+    rdfs:range :RenewableEnergy .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:consumptionValue a owl:DatatypeProperty ;
+    rdfs:label "consumption value" ;
+    rdfs:comment "Energy consumed in MJ or kWh." ;
+    rdfs:domain :EnergyConsumption ;
+    rdfs:range xsd:decimal .
+
+:consumptionUnit a owl:DatatypeProperty ;
+    rdfs:label "consumption unit" ;
+    rdfs:comment "Unit of energy measurement." ;
+    rdfs:domain :EnergyConsumption ;
+    rdfs:range xsd:string .
+
+:fuelName a owl:DatatypeProperty ;
+    rdfs:label "fuel name" ;
+    rdfs:comment "Name of the fuel type." ;
+    rdfs:domain :FuelType ;
+    rdfs:range xsd:string .
+
+:fuelSulphurContent a owl:DatatypeProperty ;
+    rdfs:label "fuel sulphur content" ;
+    rdfs:comment "Sulphur content as mass percentage." ;
+    rdfs:domain :FuelType ;
+    rdfs:range xsd:decimal .
+
+:fuelCarbonFactor a owl:DatatypeProperty ;
+    rdfs:label "fuel carbon factor" ;
+    rdfs:comment "CO2 emission factor in g CO2/g fuel." ;
+    rdfs:domain :FuelType ;
+    rdfs:range xsd:decimal .
+
+:fuelLowerCalorificValue a owl:DatatypeProperty ;
+    rdfs:label "fuel lower calorific value" ;
+    rdfs:comment "LCV in MJ/kg." ;
+    rdfs:domain :FuelType ;
+    rdfs:range xsd:decimal .
+
+:connectionVoltage a owl:DatatypeProperty ;
+    rdfs:label "connection voltage" ;
+    rdfs:comment "Connection voltage in kV." ;
+    rdfs:domain :Shorepower ;
+    rdfs:range xsd:decimal .
+
+:connectionFrequency a owl:DatatypeProperty ;
+    rdfs:label "connection frequency" ;
+    rdfs:comment "Connection frequency in Hz." ;
+    rdfs:domain :Shorepower ;
+    rdfs:range xsd:decimal .
+
+:efficiencyValue a owl:DatatypeProperty ;
+    rdfs:label "efficiency value" ;
+    rdfs:comment "Numeric value of the energy efficiency metric." ;
+    rdfs:domain :EnergyEfficiency ;
+    rdfs:range xsd:decimal .
+
+:efficiencyUnit a owl:DatatypeProperty ;
+    rdfs:label "efficiency unit" ;
+    rdfs:comment "E.g. gCO2/t-nm, EEDI, EEOI." ;
+    rdfs:domain :EnergyEfficiency ;
+    rdfs:range xsd:string .
+
+:fuelQuantity a owl:DatatypeProperty ;
+    rdfs:label "fuel quantity" ;
+    rdfs:comment "Fuel quantity in metric tonnes." ;
+    rdfs:domain :FuelOilConsumption ;
+    rdfs:range xsd:decimal .
+
+:bdnNumber a owl:DatatypeProperty ;
+    rdfs:label "BDN number" ;
+    rdfs:comment "Bunker delivery note reference number." ;
+    rdfs:domain :BunkerDeliveryNote ;
+    rdfs:range xsd:string .
+
+:bdnDate a owl:DatatypeProperty ;
+    rdfs:label "BDN date" ;
+    rdfs:comment "Date of the bunker delivery." ;
+    rdfs:domain :BunkerDeliveryNote ;
+    rdfs:range xsd:date .
+
+:bdnSupplier a owl:DatatypeProperty ;
+    rdfs:label "BDN supplier" ;
+    rdfs:comment "Name of the fuel supplier." ;
+    rdfs:domain :BunkerDeliveryNote ;
+    rdfs:range xsd:string .
+
+:kpiValue a owl:DatatypeProperty ;
+    rdfs:label "KPI value" ;
+    rdfs:comment "Numeric value of the energy performance indicator." ;
+    rdfs:domain :EnergyPerformanceIndicator ;
+    rdfs:range xsd:decimal .
+
+:kpiUnit a owl:DatatypeProperty ;
+    rdfs:label "KPI unit" ;
+    rdfs:comment "Unit of the energy performance indicator." ;
+    rdfs:domain :EnergyPerformanceIndicator ;
+    rdfs:range xsd:string .
+
+:kpiDescription a owl:DatatypeProperty ;
+    rdfs:label "KPI description" ;
+    rdfs:comment "Textual description of the energy performance indicator." ;
+    rdfs:domain :EnergyPerformanceIndicator ;
+    rdfs:range xsd:string .

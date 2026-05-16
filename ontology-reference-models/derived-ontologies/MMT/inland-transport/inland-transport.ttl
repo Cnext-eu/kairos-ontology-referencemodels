@@ -1,0 +1,149 @@
+@prefix : <http://kairos.ai/ont/mmt/inland-transport#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<http://kairos.ai/ont/mmt/inland-transport> a owl:Ontology ;
+    dcterms:title "MMT Inland Transport Domain" ;
+    dcterms:description """Inland transport classes for the Kairos Multi-Modal Transport ontology.
+
+    Covers inland legs (rail, barge, road), inland carriers, inland terminals,
+    intermodal connections, and handover events for door-to-door logistics.
+    Based on UN/CEFACT MMT Reference Data Model.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" .
+
+#################################################################
+#    Inland Transport Classes
+#################################################################
+
+:InlandLeg a owl:Class ;
+    rdfs:label "Inland Leg" ;
+    rdfs:comment """A transport leg using inland modes (rail, barge, road).
+
+    UN/CEFACT MMT: Pre-carriage or on-carriage leg in multi-modal transport.""" .
+
+:RailLeg a owl:Class ;
+    rdfs:label "Rail Leg" ;
+    rdfs:comment """An inland transport leg using rail.
+
+    UN/CEFACT MMT: Rail haulage between terminals or to/from ports.""" ;
+    rdfs:subClassOf :InlandLeg .
+
+:BargeLeg a owl:Class ;
+    rdfs:label "Barge Leg" ;
+    rdfs:comment """An inland transport leg using barge on inland waterways.
+
+    UN/CEFACT MMT: River or canal barge feeder services.""" ;
+    rdfs:subClassOf :InlandLeg .
+
+:RoadLeg a owl:Class ;
+    rdfs:label "Road Leg" ;
+    rdfs:comment """An inland transport leg using road (truck).
+
+    UN/CEFACT MMT: Trucking for first-mile/last-mile delivery.""" ;
+    rdfs:subClassOf :InlandLeg .
+
+:InlandCarrier a owl:Class ;
+    rdfs:label "Inland Carrier" ;
+    rdfs:comment """A carrier providing inland transport services.
+
+    UN/CEFACT MMT: Trucking company, rail operator, or barge operator.""" .
+
+:InlandTerminal a owl:Class ;
+    rdfs:label "Inland Terminal" ;
+    rdfs:comment """A terminal for inland transport operations.
+
+    UN/CEFACT MMT: Inland container depot (ICD), dry port, rail yard.""" .
+
+:IntermodalConnection a owl:Class ;
+    rdfs:label "Intermodal Connection" ;
+    rdfs:comment """A connection point between different transport modes.
+
+    UN/CEFACT MMT: Transfer point where cargo changes mode (e.g., rail to truck).""" .
+
+:HandoverEvent a owl:Class ;
+    rdfs:label "Handover Event" ;
+    rdfs:comment """An event where cargo responsibility transfers between parties or modes.
+
+    UN/CEFACT MMT: Handover from ocean carrier to inland carrier, or vice versa.""" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:operatedBy a owl:ObjectProperty ;
+    rdfs:label "operated by" ;
+    rdfs:comment "Relates an inland leg to the carrier operating it." ;
+    rdfs:domain :InlandLeg ;
+    rdfs:range :InlandCarrier .
+
+:hasOriginTerminal a owl:ObjectProperty ;
+    rdfs:label "has origin terminal" ;
+    rdfs:comment "Relates an inland leg to its origin terminal." ;
+    rdfs:domain :InlandLeg ;
+    rdfs:range :InlandTerminal .
+
+:hasDestinationTerminal a owl:ObjectProperty ;
+    rdfs:label "has destination terminal" ;
+    rdfs:comment "Relates an inland leg to its destination terminal." ;
+    rdfs:domain :InlandLeg ;
+    rdfs:range :InlandTerminal .
+
+:hasIntermodalConnection a owl:ObjectProperty ;
+    rdfs:label "has intermodal connection" ;
+    rdfs:comment "Relates a terminal to available intermodal connections." ;
+    rdfs:domain :InlandTerminal ;
+    rdfs:range :IntermodalConnection .
+
+:hasHandoverEvent a owl:ObjectProperty ;
+    rdfs:label "has handover event" ;
+    rdfs:comment "Relates an inland leg to its handover event." ;
+    rdfs:domain :InlandLeg ;
+    rdfs:range :HandoverEvent .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:inlandMode a owl:DatatypeProperty ;
+    rdfs:label "inland mode" ;
+    rdfs:comment "Inland transport mode: RAIL, BARGE, ROAD." ;
+    rdfs:domain :InlandLeg ;
+    rdfs:range xsd:string .
+
+:inlandCarrierCode a owl:DatatypeProperty ;
+    rdfs:label "inland carrier code" ;
+    rdfs:comment "Identifier for the inland carrier." ;
+    rdfs:domain :InlandCarrier ;
+    rdfs:range xsd:string .
+
+:terminalCode a owl:DatatypeProperty ;
+    rdfs:label "terminal code" ;
+    rdfs:comment "Identifier for the inland terminal." ;
+    rdfs:domain :InlandTerminal ;
+    rdfs:range xsd:string .
+
+:connectionType a owl:DatatypeProperty ;
+    rdfs:label "connection type" ;
+    rdfs:comment "Type of intermodal connection: RAIL_TO_ROAD, BARGE_TO_RAIL, etc." ;
+    rdfs:domain :IntermodalConnection ;
+    rdfs:range xsd:string .
+
+:handoverDateTime a owl:DatatypeProperty ;
+    rdfs:label "handover date time" ;
+    rdfs:comment "Date and time of cargo handover." ;
+    rdfs:domain :HandoverEvent ;
+    rdfs:range xsd:dateTime .
+
+:handoverType a owl:DatatypeProperty ;
+    rdfs:label "handover type" ;
+    rdfs:comment "Type of handover: PICKUP, DELIVERY, TRANSFER." ;
+    rdfs:domain :HandoverEvent ;
+    rdfs:range xsd:string .

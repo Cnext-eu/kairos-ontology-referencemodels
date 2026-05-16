@@ -1,0 +1,136 @@
+@prefix : <http://kairos.ai/ont/mmt/documents#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<http://kairos.ai/ont/mmt/documents> a owl:Ontology ;
+    dcterms:title "MMT Documents Domain" ;
+    dcterms:description """Transport document classes for the Kairos Multi-Modal Transport ontology.
+
+    Covers bills of lading, air waybills, rail and road consignment notes, house and master
+    waybills, customs declarations, commercial invoices, packing lists, certificates of origin,
+    and dangerous goods declarations. Based on UN/CEFACT MMT Reference Data Model.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" .
+
+#################################################################
+#    Transport Document Classes
+#################################################################
+
+:TransportDocument a owl:Class ;
+    rdfs:label "Transport Document" ;
+    rdfs:comment """A document evidencing a transport contract and cargo receipt.
+    
+    UN/CEFACT MMT: Bill of lading, air waybill, CMR, etc.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :documentNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:BillOfLading a owl:Class ;
+    rdfs:label "Bill of Lading" ;
+    rdfs:comment """A transport document for ocean freight.
+    
+    UN/CEFACT MMT: Maritime transport document and document of title.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+:AirWaybill a owl:Class ;
+    rdfs:label "Air Waybill (AWB)" ;
+    rdfs:comment """A transport document for air cargo.
+    
+    UN/CEFACT MMT: Air freight contract and receipt.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+:RailConsignmentNote a owl:Class ;
+    rdfs:label "Rail Consignment Note (CIM)" ;
+    rdfs:comment """A transport document for rail freight.
+    
+    UN/CEFACT MMT: International rail transport document.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+:RoadConsignmentNote a owl:Class ;
+    rdfs:label "Road Consignment Note (CMR)" ;
+    rdfs:comment """A transport document for road freight.
+    
+    UN/CEFACT MMT: International road transport document.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+:HouseWaybill a owl:Class ;
+    rdfs:label "House Waybill" ;
+    rdfs:comment """A transport document issued by a freight forwarder.
+    
+    UN/CEFACT MMT: Covers house consignments within master shipments.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+:MasterWaybill a owl:Class ;
+    rdfs:label "Master Waybill" ;
+    rdfs:comment """A transport document covering consolidated cargo.
+    
+    UN/CEFACT MMT: Issued by carriers for freight forwarder shipments.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+:CustomsDeclaration a owl:Class ;
+    rdfs:label "Customs Declaration" ;
+    rdfs:comment """A document declaring goods to customs authorities.
+    
+    UN/CEFACT MMT: Import/export declarations, transit documents.""" .
+
+:CommercialInvoice a owl:Class ;
+    rdfs:label "Commercial Invoice" ;
+    rdfs:comment """An invoice for goods being shipped.
+    
+    UN/CEFACT MMT: Required for customs clearance and payment.""" .
+
+:PackingList a owl:Class ;
+    rdfs:label "Packing List" ;
+    rdfs:comment """A document detailing the contents of packages.
+    
+    UN/CEFACT MMT: Shows detailed cargo composition.""" .
+
+:CertificateOfOrigin a owl:Class ;
+    rdfs:label "Certificate of Origin" ;
+    rdfs:comment """A document certifying the country of origin of goods.
+    
+    UN/CEFACT MMT: Required for preferential tariff treatment.""" .
+
+:DangerousGoodsDeclaration a owl:Class ;
+    rdfs:label "Dangerous Goods Declaration" ;
+    rdfs:comment """A declaration for hazardous materials transport.
+    
+    UN/CEFACT MMT: Required for dangerous goods shipments.""" .
+
+:CargoManifest a owl:Class ;
+    rdfs:label "Cargo Manifest" ;
+    rdfs:comment """A document listing all cargo aboard a transport means.
+
+    UN/CEFACT MMT: Required for vessel, aircraft, or train cargo reporting.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:documentNumber a owl:DatatypeProperty ;
+    rdfs:label "document number" ;
+    rdfs:comment "Unique document identifier." ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range xsd:string .
+
+:billOfLadingNumber a owl:DatatypeProperty ;
+    rdfs:label "bill of lading number" ;
+    rdfs:comment "B/L number." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:string .
+
+:airWaybillNumber a owl:DatatypeProperty ;
+    rdfs:label "air waybill number" ;
+    rdfs:comment "AWB number (11 digits)." ;
+    rdfs:domain :AirWaybill ;
+    rdfs:range xsd:string .

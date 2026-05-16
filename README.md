@@ -13,9 +13,11 @@
 The Kairos Reference Models repository provides validated, versioned ontologies that serve as the foundation for the Kairos platform and customer-specific implementations. These models define the canonical structure for core business entities and their relationships.
 
 **Key Features:**
-- ✅ **Semantic versioning** for stable evolution
-- ✅ **Automated validation** on every commit (syntax, SHACL, consistency)
+- ✅ **Semantic versioning** for stable evolution (per-ontology + global)
+- ✅ **Automated validation** on every commit (syntax, SHACL, consistency, structure)
 - ✅ **FIBO integration** with 300+ Financial Industry Business Ontology files
+- ✅ **8 derived ontology suites** covering logistics, trade, and sustainability
+- ✅ **Accelerator Packs** — one-import bundles for Logistics and Financial Services
 - ✅ **SKOS mappings** for alignment with industry standards (Schema.org)
 - ✅ **Git-based distribution** via tags and submodules
 
@@ -25,25 +27,77 @@ The Kairos Reference Models repository provides validated, versioned ontologies 
 
 ```
 kairos-ontology-referencemodels/
-├── ontologies/                # Core ontology files
-│   ├── core.ttl               # Kairos core model (Customer, Order, Product, Service)
-│   ├── authoritative-ontologies/  # Official RDF/OWL from standards bodies
-│   │   └── FIBO/              # FIBO Q3 2025 (300+ files)
-│   ├── derived-ontologies/    # Our RDF interpretations of non-RDF standards
-│   └── README.md
-├── shapes/                    # SHACL validation constraints
-│   ├── core.shacl.ttl         # Validation rules for core.ttl
-│   └── README.md
-├── mappings/                  # SKOS synonym mappings
-│   ├── schema-org.ttl         # Schema.org concept alignments
-│   └── README.md
-├── catalog-v001.xml           # XML catalog for FIBO import resolution
-├── VERSION                    # Semantic version (1.0.0)
-├── CHANGELOG.md               # Version history
-└── examples/                  # Usage examples
-    ├── basic-usage.md         # How to consume these models
-    └── extending-models.md    # How to extend in customer projects
+├── ontology-reference-models/
+│   ├── authoritative-ontologies/      # Official RDF/OWL from standards bodies
+│   │   └── FIBO/                      # FIBO Q4 2025 (300+ files)
+│   ├── derived-ontologies/            # Our RDF interpretations of non-RDF standards
+│   │   ├── DCSA/                      # Container shipping (1 root + 7 domains)
+│   │   │   ├── dcsa.ttl
+│   │   │   ├── booking/
+│   │   │   ├── container-operations/
+│   │   │   ├── equipment/
+│   │   │   ├── events/
+│   │   │   ├── locations/
+│   │   │   ├── party/
+│   │   │   └── transport-documents/
+│   │   ├── MMT/                       # Multi-modal transport (1 root + 10 domains)
+│   │   ├── BSP/                       # Buy-Ship-Pay (1 root + 6 domains)
+│   │   ├── TIC/                       # Terminal operations (1 root + 6 domains)
+│   │   ├── IMO/                       # Maritime regulatory (1 root + 5 domains)
+│   │   ├── WCO/                       # Customs & border (1 root + 5 domains)
+│   │   ├── Sustainability/            # Carbon & energy (1 root + 2 domains)
+│   │   └── supply-chain/              # Integration layer (1 root)
+│   ├── accelerator-packs/             # Pre-composed bundles
+│   │   ├── logistics/                 # 8 ontologies for logistics companies
+│   │   └── financial-services/        # FIBO + BSP for financial services
+│   └── catalog-v001.xml               # XML catalog for import resolution
+├── scripts/                           # Tooling (validation, version management)
+├── examples/                          # Usage examples
+├── .github/workflows/                 # CI/CD (validate + release)
+├── VERSION                            # Global semantic version
+├── CHANGELOG.md                       # Version history
+└── README.md
 ```
+
+---
+
+## 🏭 Ontology Suite
+
+The repository ships **8 derived ontologies** covering the full logistics, trade, and sustainability value chain:
+
+| # | Ontology | Standard | Focus | Domains |
+|---|----------|----------|-------|---------|
+| 1 | **DCSA** | DCSA API Standards | Container shipping lifecycle | 8 |
+| 2 | **MMT** | UN/CEFACT MMT-RDM | Consignment, movement, cargo, equipment | 11 |
+| 3 | **BSP** | ISO 20197-1:2024 | Party, contract, invoice, settlement | 7 |
+| 4 | **TIC** | TIC 4.0 | Terminal operations, handling, automotive | 7 |
+| 5 | **IMO** | IMO Compendium / FAL / IMDG | Vessel registry, dangerous goods, port-call | 6 |
+| 6 | **WCO** | WCO Data Model 3.0 | Customs declarations, trade facilitation | 6 |
+| 7 | **Sustainability** | ISO 14083:2023 / GLEC | Emissions, energy, ESG reporting | 3 |
+| 8 | **Supply Chain** | — | Integration layer | 1 |
+
+Plus **FIBO** (300+ authoritative ontology files from the EDM Council) for financial industry concepts.
+
+Each derived ontology lives in its own directory under `ontology-reference-models/derived-ontologies/` with a `VERSION` file for independent versioning.
+
+---
+
+## 🚀 Accelerator Packs
+
+Accelerator Packs are **pre-composed bundles** that let you import an entire vertical with a single `owl:imports` statement.
+
+| Pack | Import URI | What's included |
+|------|-----------|-----------------|
+| **Logistics** | `http://kairos.ai/ont/accelerator/logistics#` | DCSA, MMT, BSP, TIC, IMO, WCO, Sustainability, Supply Chain |
+| **Financial Services** | `http://kairos.ai/ont/accelerator/financial-services#` | FIBO foundations + BSP |
+
+```turtle
+# Example — import the entire logistics suite in one line
+<http://example.com/my-ontology> a owl:Ontology ;
+    owl:imports <http://kairos.ai/ont/accelerator/logistics#> .
+```
+
+See [`ontology-reference-models/accelerator-packs/`](ontology-reference-models/accelerator-packs/) for details.
 
 ---
 
@@ -174,7 +228,7 @@ kairos:Product owl:sameAs schema:Product ;
 
 ### Financial Industry Business Ontology
 
-[ontologies/authoritative-ontologies/FIBO/](ontologies/authoritative-ontologies/FIBO/) contains 300+ FIBO Q3 2025 ontologies:
+[ontologies/authoritative-ontologies/FIBO/](ontology-reference-models/authoritative-ontologies/FIBO/) contains 300+ FIBO Q4 2025 ontologies:
 
 - **fibo-fnd**: Foundations (agents, organizations, people)
 - **fibo-fbc**: Business Contracts
@@ -182,7 +236,7 @@ kairos:Product owl:sameAs schema:Product ;
 
 **XML Catalog Resolution:**
 
-[catalog-v001.xml](catalog-v001.xml) maps FIBO URIs to local files:
+[catalog-v001.xml](ontology-reference-models/catalog-v001.xml) maps FIBO URIs and all derived-ontology URIs to local files:
 
 ```xml
 <uri name="https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/"
@@ -198,6 +252,10 @@ This enables offline development and consistent import resolution.
 ### Semantic Versioning
 
 Reference models follow [SemVer 2.0.0](https://semver.org/):
+
+**Global version** — tracked in the root `VERSION` file and used for release tags.
+
+**Per-ontology versioning** — each derived ontology and accelerator pack has its own `VERSION` file (e.g. `derived-ontologies/DCSA/VERSION`) so individual suites can evolve independently.
 
 **MAJOR.MINOR.PATCH** (e.g., `1.0.0`)
 
@@ -332,7 +390,7 @@ See [examples/](examples/) for more detailed usage patterns.
 | Catalog | OASIS XML Catalogs | 1.1 |
 | CI/CD | GitHub Actions | - |
 | Toolkit | kairos-ontology-toolkit | 1.0.0+ |
-| External | FIBO Q3 2025 | 300+ files |
+| External | FIBO Q4 2025 | 300+ files |
 
 ---
 
@@ -360,4 +418,4 @@ For questions about using these models in customer projects, contact the Ontolog
 
 ---
 
-**Current Version:** 1.0.0 | **Last Updated:** 2025-01-03
+**Current Version:** 1.2.0 | **Last Updated:** 2026-05-16

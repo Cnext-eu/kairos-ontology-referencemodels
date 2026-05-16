@@ -1,0 +1,54 @@
+package:
+  id: financial-services
+  name: "Kairos Financial Services Accelerator Pack"
+  version: "1.0.0"
+  description: "Pre-composed ontology bundle for financial services companies"
+  namespace: "http://kairos.ai/ont/accelerator/financial-services#"
+  
+  target_sectors:
+    - Accounting firms
+    - Banks and credit institutions
+    - Auditors
+    - Financial services providers
+    - Insurance companies
+    - Trade finance
+
+  includes:
+    - id: FIBO-FND-Agents
+      name: "FIBO Foundation – Agents and People"
+      uri: "https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/"
+      focus: "Autonomous agents, people"
+    - id: FIBO-FND-Orgs
+      name: "FIBO Foundation – Formal Organizations"
+      uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/"
+      focus: "Legal entities, organisations"
+    - id: FIBO-FND-Contracts
+      name: "FIBO Foundation – Contracts"
+      uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
+      focus: "Agreements, contractual obligations"
+    - id: FIBO-BE-Partnerships
+      name: "FIBO Business Entities – Partnerships"
+      uri: "https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/"
+      focus: "Partnerships, joint ventures"
+    - id: BSP
+      name: "Buy-Ship-Pay"
+      uri: "http://kairos.ai/ont/bsp#"
+      focus: "Party, contract, invoice, settlement"
+
+  excludes:
+    - id: DCSA
+      reason: "Use Logistics Accelerator for container shipping ontologies"
+    - id: MMT
+      reason: "Use Logistics Accelerator for multi-modal transport ontologies"
+    - id: TIC
+      reason: "Use Logistics Accelerator for terminal operations ontologies"
+    - id: IMO
+      reason: "Use Logistics Accelerator for maritime regulatory ontologies"
+    - id: WCO
+      reason: "Use Logistics Accelerator for customs ontologies"
+    - id: Sustainability
+      reason: "Use Logistics Accelerator for sustainability ontologies"
+
+  standards_alignment:
+    - "FIBO (EDM Council)"
+    - "ISO 20197-1:2024 Buy-Ship-Pay"

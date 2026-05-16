@@ -1,0 +1,282 @@
+@prefix : <http://kairos.ai/ont/imo/port-call#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "IMO Port Call Ontology" ;
+    dcterms:description """Port call, voyage, and maritime logistics operations domain ontology aligned with
+    the IMO Compendium and the FAL Convention.
+
+    Covers the complete port call lifecycle including arrival/departure notifications, berth stays,
+    pilotage, towage, bunkering, waste disposal, and crew changes. Supports the IMO Reference Data
+    Model for port calls and the FAL Convention electronic data exchange requirements.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "IMO Compendium, FAL Convention, IMDG Code" .
+
+#################################################################
+#    Classes
+#################################################################
+
+:Voyage a owl:Class ;
+    rdfs:label "Voyage" ;
+    rdfs:comment """A complete journey of a vessel from its port of departure to its final port
+    of destination, consisting of one or more sea legs and port calls.
+
+    IMO: The voyage concept supports the FAL Convention requirement for
+    pre-arrival and pre-departure information exchange.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :voyageNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:SeaLeg a owl:Class ;
+    rdfs:label "Sea Leg" ;
+    rdfs:comment """A segment of a voyage between two consecutive ports. Each sea leg has
+    a departure port and an arrival port with associated timestamps.""" .
+
+:PortCall a owl:Class ;
+    rdfs:label "Port Call" ;
+    rdfs:comment """A vessel's visit to a port, encompassing arrival, berth stay(s), and departure.
+
+    The port call is the central concept for information exchange under the FAL Convention
+    and the IMO Compendium. Each port call requires submission of FAL forms.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :hasPortCallStatus ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:BerthStay a owl:Class ;
+    rdfs:label "Berth Stay" ;
+    rdfs:comment """The period during which a vessel occupies a berth at a port terminal.
+
+    A port call may involve multiple berth stays (e.g., shifting between berths).
+    Berth stays are the basis for cargo operations, bunkering, and provisioning.""" .
+
+:ArrivalNotice a owl:Class ;
+    rdfs:label "Arrival Notice" ;
+    rdfs:comment """A notification submitted by a vessel or its agent to the port authority
+    prior to arrival, containing vessel particulars, ETA, crew list, cargo manifest,
+    and other FAL Convention-required information.""" .
+
+:DepartureNotice a owl:Class ;
+    rdfs:label "Departure Notice" ;
+    rdfs:comment """A notification submitted by a vessel or its agent to the port authority
+    prior to departure, including ETD, updated crew list, and departure cargo manifest.""" .
+
+:FALForm a owl:Class ;
+    rdfs:label "FAL Form" ;
+    rdfs:comment """One of the standardized documents defined by the IMO FAL Convention for
+    facilitating international maritime traffic. Includes FAL Forms 1-7 covering
+    general declaration, cargo, stores, crew, passengers, and dangerous goods.""" .
+
+:PortCallStatus a owl:Class ;
+    rdfs:label "Port Call Status" ;
+    rdfs:comment """The current status of a port call within its lifecycle, e.g., planned,
+    requested, confirmed, arriving, at berth, departing, completed, cancelled.""" .
+
+:PilotageRequest a owl:Class ;
+    rdfs:label "Pilotage Request" ;
+    rdfs:comment """A request for pilotage services submitted by a vessel or its agent to the
+    port's pilot service. Contains vessel details, requested pilot boarding time/place,
+    and any special requirements.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :requestedTime ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:TowageRequest a owl:Class ;
+    rdfs:label "Towage Request" ;
+    rdfs:comment """A request for towage services (tug assistance) submitted for a vessel's
+    arrival, departure, or shifting manoeuvre within port waters.""" .
+
+:BunkeringOperation a owl:Class ;
+    rdfs:label "Bunkering Operation" ;
+    rdfs:comment """A fuel supply operation during a port call, covering the delivery of marine
+    fuel (bunkers) to a vessel. Subject to MARPOL Annex VI fuel quality and
+    documentation requirements.""" .
+
+:WasteDisposal a owl:Class ;
+    rdfs:label "Waste Disposal" ;
+    rdfs:comment """The discharge of ship-generated waste to port reception facilities during
+    a port call, as required by MARPOL. Includes oily waste, garbage, sewage,
+    and cargo residues.""" .
+
+:CrewChange a owl:Class ;
+    rdfs:label "Crew Change" ;
+    rdfs:comment """An embarkation or disembarkation of crew members during a port call.
+
+    Subject to port state immigration requirements and FAL Convention provisions
+    for facilitating crew transit.""" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasSeaLeg a owl:ObjectProperty ;
+    rdfs:label "has sea leg" ;
+    rdfs:comment "Associates a voyage with a sea leg segment." ;
+    rdfs:domain :Voyage ;
+    rdfs:range :SeaLeg .
+
+:hasPortCall a owl:ObjectProperty ;
+    rdfs:label "has port call" ;
+    rdfs:comment "Associates a voyage with a port call." ;
+    rdfs:domain :Voyage ;
+    rdfs:range :PortCall .
+
+:hasBerthStay a owl:ObjectProperty ;
+    rdfs:label "has berth stay" ;
+    rdfs:comment "Associates a port call with a berth stay." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :BerthStay .
+
+:hasArrivalNotice a owl:ObjectProperty ;
+    rdfs:label "has arrival notice" ;
+    rdfs:comment "Associates a port call with its arrival notification." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :ArrivalNotice .
+
+:hasDepartureNotice a owl:ObjectProperty ;
+    rdfs:label "has departure notice" ;
+    rdfs:comment "Associates a port call with its departure notification." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :DepartureNotice .
+
+:hasFALForm a owl:ObjectProperty ;
+    rdfs:label "has FAL form" ;
+    rdfs:comment "Associates a port call with a submitted FAL form." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :FALForm .
+
+:hasPortCallStatus a owl:ObjectProperty ;
+    rdfs:label "has port call status" ;
+    rdfs:comment "Associates a port call with its current lifecycle status." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :PortCallStatus .
+
+:hasPilotageRequest a owl:ObjectProperty ;
+    rdfs:label "has pilotage request" ;
+    rdfs:comment "Associates a port call with a pilotage request." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :PilotageRequest .
+
+:hasTowageRequest a owl:ObjectProperty ;
+    rdfs:label "has towage request" ;
+    rdfs:comment "Associates a port call with a towage request." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :TowageRequest .
+
+:hasBunkeringOperation a owl:ObjectProperty ;
+    rdfs:label "has bunkering operation" ;
+    rdfs:comment "Associates a port call with a bunkering (fuel supply) operation." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :BunkeringOperation .
+
+:hasWasteDisposal a owl:ObjectProperty ;
+    rdfs:label "has waste disposal" ;
+    rdfs:comment "Associates a port call with a waste disposal operation." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :WasteDisposal .
+
+:hasCrewChange a owl:ObjectProperty ;
+    rdfs:label "has crew change" ;
+    rdfs:comment "Associates a port call with a crew change event." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :CrewChange .
+
+:partOfVoyage a owl:ObjectProperty ;
+    rdfs:label "part of voyage" ;
+    rdfs:comment "Associates a port call or sea leg with its parent voyage." ;
+    rdfs:range :Voyage ;
+    owl:inverseOf :hasPortCall .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:voyageNumber a owl:DatatypeProperty ;
+    rdfs:label "voyage number" ;
+    rdfs:comment "The identifier assigned to a voyage by the vessel operator." ;
+    rdfs:domain :Voyage ;
+    rdfs:range xsd:string .
+
+:estimatedTimeOfArrival a owl:DatatypeProperty ;
+    rdfs:label "estimated time of arrival" ;
+    rdfs:comment "The estimated date and time of arrival at the port." ;
+    rdfs:domain :PortCall ;
+    rdfs:range xsd:dateTime .
+
+:actualTimeOfArrival a owl:DatatypeProperty ;
+    rdfs:label "actual time of arrival" ;
+    rdfs:comment "The actual date and time the vessel arrived at the port." ;
+    rdfs:domain :PortCall ;
+    rdfs:range xsd:dateTime .
+
+:estimatedTimeOfDeparture a owl:DatatypeProperty ;
+    rdfs:label "estimated time of departure" ;
+    rdfs:comment "The estimated date and time of departure from the port." ;
+    rdfs:domain :PortCall ;
+    rdfs:range xsd:dateTime .
+
+:actualTimeOfDeparture a owl:DatatypeProperty ;
+    rdfs:label "actual time of departure" ;
+    rdfs:comment "The actual date and time the vessel departed the port." ;
+    rdfs:domain :PortCall ;
+    rdfs:range xsd:dateTime .
+
+:berthArrivalTime a owl:DatatypeProperty ;
+    rdfs:label "berth arrival time" ;
+    rdfs:comment "The date and time the vessel was all fast at the berth." ;
+    rdfs:domain :BerthStay ;
+    rdfs:range xsd:dateTime .
+
+:berthDepartureTime a owl:DatatypeProperty ;
+    rdfs:label "berth departure time" ;
+    rdfs:comment "The date and time the vessel cast off from the berth." ;
+    rdfs:domain :BerthStay ;
+    rdfs:range xsd:dateTime .
+
+:requestedTime a owl:DatatypeProperty ;
+    rdfs:label "requested time" ;
+    rdfs:comment "The requested date and time for a service (pilotage, towage, etc.)." ;
+    rdfs:range xsd:dateTime .
+
+:falFormNumber a owl:DatatypeProperty ;
+    rdfs:label "FAL form number" ;
+    rdfs:comment "The FAL form type number (1 through 7)." ;
+    rdfs:domain :FALForm ;
+    rdfs:range xsd:integer .
+
+:bunkerQuantity a owl:DatatypeProperty ;
+    rdfs:label "bunker quantity" ;
+    rdfs:comment "Quantity of fuel delivered or requested, in metric tonnes." ;
+    rdfs:domain :BunkeringOperation ;
+    rdfs:range xsd:decimal .
+
+:wasteType a owl:DatatypeProperty ;
+    rdfs:label "waste type" ;
+    rdfs:comment "Type of ship-generated waste (e.g., oily waste, garbage, sewage)." ;
+    rdfs:domain :WasteDisposal ;
+    rdfs:range xsd:string .
+
+:wasteQuantity a owl:DatatypeProperty ;
+    rdfs:label "waste quantity" ;
+    rdfs:comment "Quantity of waste to be discharged, in cubic metres or metric tonnes." ;
+    rdfs:domain :WasteDisposal ;
+    rdfs:range xsd:decimal .
+
+:crewMemberCount a owl:DatatypeProperty ;
+    rdfs:label "crew member count" ;
+    rdfs:comment "Number of crew members embarking or disembarking." ;
+    rdfs:domain :CrewChange ;
+    rdfs:range xsd:integer .

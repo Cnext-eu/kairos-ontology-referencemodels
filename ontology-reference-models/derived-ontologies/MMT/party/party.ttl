@@ -1,0 +1,86 @@
+@prefix : <http://kairos.ai/ont/mmt/party#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<http://kairos.ai/ont/mmt/party> a owl:Ontology ;
+    dcterms:title "MMT Party Domain" ;
+    dcterms:description """Party role classes for the Kairos Multi-Modal Transport ontology.
+
+    Covers consignors, consignees, carriers, freight forwarders, customs brokers,
+    notify parties, terminal operators, and warehouse operators.
+    Based on UN/CEFACT MMT Reference Data Model.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" .
+
+#################################################################
+#    Party Role Classes
+#################################################################
+
+:TransportParty a owl:Class ;
+    rdfs:label "Transport Party" ;
+    rdfs:comment """An organization or person playing a role in transport operations.
+    
+    UN/CEFACT MMT: Abstract parent for all party roles.""" .
+
+:Consignor a owl:Class ;
+    rdfs:label "Consignor" ;
+    rdfs:comment """The party consigning goods to a carrier (shipper).
+    
+    UN/CEFACT MMT: Party sending the goods.""" ;
+    rdfs:subClassOf :TransportParty .
+
+:Consignee a owl:Class ;
+    rdfs:label "Consignee" ;
+    rdfs:comment """The party to whom goods are consigned.
+    
+    UN/CEFACT MMT: Party receiving the goods.""" ;
+    rdfs:subClassOf :TransportParty .
+
+:Carrier a owl:Class ;
+    rdfs:label "Carrier" ;
+    rdfs:comment """The party undertaking to perform or procure transport.
+    
+    UN/CEFACT MMT: Transport service provider.""" ;
+    rdfs:subClassOf :TransportParty .
+
+:FreightForwarder a owl:Class ;
+    rdfs:label "Freight Forwarder" ;
+    rdfs:comment """A party arranging transport on behalf of shippers.
+    
+    UN/CEFACT MMT: Logistics service provider, NVOCC.""" ;
+    rdfs:subClassOf :TransportParty .
+
+:CustomsBroker a owl:Class ;
+    rdfs:label "Customs Broker" ;
+    rdfs:comment """A party handling customs clearance procedures.
+    
+    UN/CEFACT MMT: Facilitates cross-border trade.""" ;
+    rdfs:subClassOf :TransportParty .
+
+:NotifyParty a owl:Class ;
+    rdfs:label "Notify Party" ;
+    rdfs:comment """A party to be notified of cargo arrival.
+    
+    UN/CEFACT MMT: Often the consignee or their agent.""" ;
+    rdfs:subClassOf :TransportParty .
+
+:TerminalOperator a owl:Class ;
+    rdfs:label "Terminal Operator" ;
+    rdfs:comment """A party operating a cargo terminal.
+    
+    UN/CEFACT MMT: Port, airport, or rail terminal operator.""" ;
+    rdfs:subClassOf :TransportParty .
+
+:WarehouseOperator a owl:Class ;
+    rdfs:label "Warehouse Operator" ;
+    rdfs:comment """A party operating a warehouse or storage facility.
+    
+    UN/CEFACT MMT: Provides storage and inventory services.""" ;
+    rdfs:subClassOf :TransportParty .

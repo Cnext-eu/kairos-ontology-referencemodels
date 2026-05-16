@@ -1,0 +1,129 @@
+@prefix : <http://kairos.ai/ont/mmt/transport-means#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<http://kairos.ai/ont/mmt/transport-means> a owl:Ontology ;
+    dcterms:title "MMT Transport Means Domain" ;
+    dcterms:description """Transport means classes for the Kairos Multi-Modal Transport ontology.
+
+    Covers vessels, aircraft, rail vehicles, road vehicles, barges, and transport means
+    capacity. Based on UN/CEFACT MMT Reference Data Model.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" .
+
+#################################################################
+#    Transport Means Classes
+#################################################################
+
+:LogisticsMeansOfTransport a owl:Class ;
+    rdfs:label "Logistics Means of Transport" ;
+    rdfs:comment """A vehicle or vessel used to transport goods.
+    
+    UN/CEFACT MMT: The physical conveyance.""" .
+
+:Vessel a owl:Class ;
+    rdfs:label "Vessel" ;
+    rdfs:comment """A ship or boat used for maritime transport.
+    
+    UN/CEFACT MMT: Ocean vessels, barges, ferries.""" ;
+    rdfs:subClassOf :LogisticsMeansOfTransport .
+
+:Aircraft a owl:Class ;
+    rdfs:label "Aircraft" ;
+    rdfs:comment """An airplane or helicopter used for air freight.
+    
+    UN/CEFACT MMT: Cargo aircraft, freight planes.""" ;
+    rdfs:subClassOf :LogisticsMeansOfTransport .
+
+:RailVehicle a owl:Class ;
+    rdfs:label "Rail Vehicle" ;
+    rdfs:comment """A train or railcar used for rail transport.
+    
+    UN/CEFACT MMT: Freight trains, locomotives, wagons.""" ;
+    rdfs:subClassOf :LogisticsMeansOfTransport .
+
+:RoadVehicle a owl:Class ;
+    rdfs:label "Road Vehicle" ;
+    rdfs:comment """A truck or van used for road transport.
+    
+    UN/CEFACT MMT: Trucks, lorries, delivery vehicles.""" ;
+    rdfs:subClassOf :LogisticsMeansOfTransport .
+
+:BargeVessel a owl:Class ;
+    rdfs:label "Barge Vessel" ;
+    rdfs:comment """A flat-bottomed vessel for inland waterway transport.
+    
+    UN/CEFACT MMT: River and canal freight transport.""" ;
+    rdfs:subClassOf :Vessel .
+
+:TransportMeansCapacity a owl:Class ;
+    rdfs:label "Transport Means Capacity" ;
+    rdfs:comment """The carrying capacity of a transport means.
+
+    UN/CEFACT MMT: TEU capacity, deadweight tonnage, payload volume.""" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:involvesTransportMeans a owl:ObjectProperty ;
+    rdfs:label "involves transport means" ;
+    rdfs:comment "Relates event to vehicle/vessel involved." ;
+    rdfs:range :LogisticsMeansOfTransport .
+
+:hasCapacity a owl:ObjectProperty ;
+    rdfs:label "has capacity" ;
+    rdfs:comment "Relates transport means to its carrying capacity." ;
+    rdfs:domain :LogisticsMeansOfTransport ;
+    rdfs:range :TransportMeansCapacity .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:vesselName a owl:DatatypeProperty ;
+    rdfs:label "vessel name" ;
+    rdfs:comment "Name of the vessel." ;
+    rdfs:domain :Vessel ;
+    rdfs:range xsd:string .
+
+:vesselIMO a owl:DatatypeProperty ;
+    rdfs:label "vessel IMO number" ;
+    rdfs:comment "International Maritime Organization vessel identifier." ;
+    rdfs:domain :Vessel ;
+    rdfs:range xsd:string .
+
+:voyageNumber a owl:DatatypeProperty ;
+    rdfs:label "voyage number" ;
+    rdfs:comment "Voyage or sailing reference." ;
+    rdfs:range xsd:string .
+
+:flightNumber a owl:DatatypeProperty ;
+    rdfs:label "flight number" ;
+    rdfs:comment "Aircraft flight number." ;
+    rdfs:domain :Aircraft ;
+    rdfs:range xsd:string .
+
+:trainNumber a owl:DatatypeProperty ;
+    rdfs:label "train number" ;
+    rdfs:comment "Rail service number." ;
+    rdfs:domain :RailVehicle ;
+    rdfs:range xsd:string .
+
+:vehicleRegistration a owl:DatatypeProperty ;
+    rdfs:label "vehicle registration" ;
+    rdfs:comment "Vehicle license plate or registration number." ;
+    rdfs:domain :RoadVehicle ;
+    rdfs:range xsd:string .
+
+:carrierCode a owl:DatatypeProperty ;
+    rdfs:label "carrier code" ;
+    rdfs:comment "SCAC, IATA, or other carrier identifier." ;
+    rdfs:range xsd:string .

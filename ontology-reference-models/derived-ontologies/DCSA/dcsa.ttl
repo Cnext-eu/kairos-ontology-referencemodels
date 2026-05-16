@@ -1,0 +1,38 @@
+@prefix : <http://kairos.ai/ont/dcsa#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "Kairos DCSA Container Shipping Ontology" ;
+    dcterms:description """Digital Container Shipping Association (DCSA) ontology for standardized container shipping operations.
+    
+    This ontology provides a semantic framework for digital container shipping, covering:
+    - Container booking and shipping instructions
+    - Electronic Bill of Lading (eBL) and transport documents
+    - Container equipment types and specifications
+    - Track and trace events and milestones
+    - Shipment lifecycle management
+    - Party roles in container shipping
+    - Port and terminal operations
+    - Document status and lifecycle
+    - Container operations and lifecycle management
+    
+    Fully aligned with DCSA API standards for digital container shipping.
+    
+    This root ontology imports all domain modules.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "Digital Container Shipping Association (DCSA) Standards" ;
+    owl:imports <http://kairos.ai/ont/dcsa/booking#> ,
+                <http://kairos.ai/ont/dcsa/container-operations#> ,
+                <http://kairos.ai/ont/dcsa/equipment#> ,
+                <http://kairos.ai/ont/dcsa/transport-documents#> ,
+                <http://kairos.ai/ont/dcsa/party#> ,
+                <http://kairos.ai/ont/dcsa/locations#> ,
+                <http://kairos.ai/ont/dcsa/events#> .

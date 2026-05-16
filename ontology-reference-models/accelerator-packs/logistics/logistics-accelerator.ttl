@@ -1,0 +1,33 @@
+@prefix : <http://kairos.ai/ont/accelerator/logistics#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+: a owl:Ontology ;
+    dcterms:title "Kairos Logistics Accelerator Pack" ;
+    dcterms:description """Pre-composed ontology bundle for logistics companies.
+    
+    Includes all logistics-relevant ontologies:
+    - DCSA (container shipping)
+    - MMT (multi-modal transport)
+    - BSP (buy-ship-pay commercial core)
+    - TIC (terminal operations)
+    - IMO (maritime regulatory)
+    - WCO (customs & border)
+    - Sustainability (carbon & energy)
+    - Supply Chain (integration layer)
+    
+    Does NOT include FIBO (use Financial Services Accelerator for financial ontologies).""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    owl:imports <http://kairos.ai/ont/dcsa#> ,
+                <http://kairos.ai/ont/mmt#> ,
+                <http://kairos.ai/ont/bsp#> ,
+                <http://kairos.ai/ont/tic#> ,
+                <http://kairos.ai/ont/imo#> ,
+                <http://kairos.ai/ont/wco#> ,
+                <http://kairos.ai/ont/sustainability#> ,
+                <http://kairos.ai/ont/supply-chain#> .

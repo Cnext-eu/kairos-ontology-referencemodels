@@ -1,0 +1,158 @@
+@prefix : <http://kairos.ai/ont/mmt/route-network#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<http://kairos.ai/ont/mmt/route-network> a owl:Ontology ;
+    dcterms:title "MMT Route Network Domain" ;
+    dcterms:description """Route and network classes for the Kairos Multi-Modal Transport ontology.
+
+    Covers routes, corridors, service loops, sailing schedules, cut-off times,
+    transit times, and network connections for multi-modal transport planning.
+    Based on UN/CEFACT MMT Reference Data Model.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" .
+
+#################################################################
+#    Route Network Classes
+#################################################################
+
+:Route a owl:Class ;
+    rdfs:label "Route" ;
+    rdfs:comment """A defined transport path between origin and destination.
+
+    UN/CEFACT MMT: A sequence of ports/locations forming a service route.""" .
+
+:Corridor a owl:Class ;
+    rdfs:label "Corridor" ;
+    rdfs:comment """A major transport corridor connecting regions or trade zones.
+
+    UN/CEFACT MMT: E.g., Asia-Europe, Trans-Pacific trade lanes.""" .
+
+:ServiceLoop a owl:Class ;
+    rdfs:label "Service Loop" ;
+    rdfs:comment """A recurring sequence of port calls operated by a carrier or alliance.
+
+    UN/CEFACT MMT: Liner shipping rotation, scheduled service pattern.""" .
+
+:SailingSchedule a owl:Class ;
+    rdfs:label "Sailing Schedule" ;
+    rdfs:comment """A timetable of vessel departures and arrivals for a service.
+
+    UN/CEFACT MMT: Published carrier schedules with ETD/ETA per port.""" .
+
+:CutOffTime a owl:Class ;
+    rdfs:label "Cut-Off Time" ;
+    rdfs:comment """A deadline before which cargo must be delivered to the terminal.
+
+    UN/CEFACT MMT: Documentation cut-off, cargo receiving cut-off, VGM cut-off.""" .
+
+:TransitTime a owl:Class ;
+    rdfs:label "Transit Time" ;
+    rdfs:comment """The expected duration of transport between two points.
+
+    UN/CEFACT MMT: Port-to-port or door-to-door transit duration.""" .
+
+:NetworkConnection a owl:Class ;
+    rdfs:label "Network Connection" ;
+    rdfs:comment """A link between two nodes in a transport network.
+
+    UN/CEFACT MMT: Direct or indirect connection between locations in a service network.""" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasServiceLoop a owl:ObjectProperty ;
+    rdfs:label "has service loop" ;
+    rdfs:comment "Relates a route to its service loop." ;
+    rdfs:domain :Route ;
+    rdfs:range :ServiceLoop .
+
+:hasSailingSchedule a owl:ObjectProperty ;
+    rdfs:label "has sailing schedule" ;
+    rdfs:comment "Relates a service loop to its sailing schedule." ;
+    rdfs:domain :ServiceLoop ;
+    rdfs:range :SailingSchedule .
+
+:hasCutOffTime a owl:ObjectProperty ;
+    rdfs:label "has cut-off time" ;
+    rdfs:comment "Relates a schedule entry to its cut-off times." ;
+    rdfs:domain :SailingSchedule ;
+    rdfs:range :CutOffTime .
+
+:hasTransitTime a owl:ObjectProperty ;
+    rdfs:label "has transit time" ;
+    rdfs:comment "Relates a route or leg to its transit time." ;
+    rdfs:domain :Route ;
+    rdfs:range :TransitTime .
+
+:belongsToCorridor a owl:ObjectProperty ;
+    rdfs:label "belongs to corridor" ;
+    rdfs:comment "Relates a route to the trade corridor it serves." ;
+    rdfs:domain :Route ;
+    rdfs:range :Corridor .
+
+:hasConnection a owl:ObjectProperty ;
+    rdfs:label "has connection" ;
+    rdfs:comment "Relates a route to its network connections." ;
+    rdfs:domain :Route ;
+    rdfs:range :NetworkConnection .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:routeCode a owl:DatatypeProperty ;
+    rdfs:label "route code" ;
+    rdfs:comment "Identifier code for the route." ;
+    rdfs:domain :Route ;
+    rdfs:range xsd:string .
+
+:corridorName a owl:DatatypeProperty ;
+    rdfs:label "corridor name" ;
+    rdfs:comment "Name of the trade corridor." ;
+    rdfs:domain :Corridor ;
+    rdfs:range xsd:string .
+
+:serviceLoopCode a owl:DatatypeProperty ;
+    rdfs:label "service loop code" ;
+    rdfs:comment "Carrier-assigned code for the service loop." ;
+    rdfs:domain :ServiceLoop ;
+    rdfs:range xsd:string .
+
+:cutOffType a owl:DatatypeProperty ;
+    rdfs:label "cut-off type" ;
+    rdfs:comment "Type of cut-off: CARGO, DOCUMENTATION, VGM, REEFER." ;
+    rdfs:domain :CutOffTime ;
+    rdfs:range xsd:string .
+
+:cutOffDateTime a owl:DatatypeProperty ;
+    rdfs:label "cut-off date time" ;
+    rdfs:comment "Date and time of the cut-off deadline." ;
+    rdfs:domain :CutOffTime ;
+    rdfs:range xsd:dateTime .
+
+:transitDays a owl:DatatypeProperty ;
+    rdfs:label "transit days" ;
+    rdfs:comment "Number of days for transit." ;
+    rdfs:domain :TransitTime ;
+    rdfs:range xsd:integer .
+
+:transitHours a owl:DatatypeProperty ;
+    rdfs:label "transit hours" ;
+    rdfs:comment "Number of hours for transit." ;
+    rdfs:domain :TransitTime ;
+    rdfs:range xsd:integer .
+
+:frequency a owl:DatatypeProperty ;
+    rdfs:label "frequency" ;
+    rdfs:comment "Service frequency: WEEKLY, BI-WEEKLY, MONTHLY." ;
+    rdfs:domain :ServiceLoop ;
+    rdfs:range xsd:string .

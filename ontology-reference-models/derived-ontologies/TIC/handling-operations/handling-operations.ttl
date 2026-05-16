@@ -1,0 +1,246 @@
+@prefix : <http://kairos.ai/ont/tic/handling-operations#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "TIC 4.0 Handling Operations Ontology" ;
+    dcterms:description """Cargo handling and stevedoring operations domain of the TIC 4.0 ontology.
+
+    Covers the full lifecycle of cargo moves within a terminal including stevedoring operations,
+    load and discharge moves, lift and horizontal transport, move sequencing, instructions,
+    completion tracking, exception handling, and equipment assignment.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "Terminal Industry Committee (TIC) 4.0 Standard" .
+
+#################################################################
+#    Operation Classes
+#################################################################
+
+:StevedoringOperation a owl:Class ;
+    rdfs:label "Stevedoring Operation" ;
+    rdfs:comment """The overarching operation of loading or discharging cargo from a vessel at a terminal berth.
+
+    TIC 4.0: A stevedoring operation encompasses all moves related to a single vessel call
+    and is the primary unit of operational planning and performance measurement.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :hasMoveSequence ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:LoadMove a owl:Class ;
+    rdfs:label "Load Move" ;
+    rdfs:comment """A move that places a cargo unit onto a vessel for export.
+
+    TIC 4.0: The final quay-side operation transferring a unit from quay/chassis to vessel stowage position.""" ;
+    rdfs:subClassOf :Move .
+
+:DischargeMove a owl:Class ;
+    rdfs:label "Discharge Move" ;
+    rdfs:comment """A move that removes a cargo unit from a vessel during import.
+
+    TIC 4.0: The initial quay-side operation transferring a unit from vessel stowage to quay/chassis.""" ;
+    rdfs:subClassOf :Move .
+
+:LiftMove a owl:Class ;
+    rdfs:label "Lift Move" ;
+    rdfs:comment """A vertical handling move that lifts or lowers a cargo unit using crane equipment.
+
+    TIC 4.0: Includes quay crane lifts, yard crane lifts, and reach stacker operations.""" ;
+    rdfs:subClassOf :Move .
+
+:HorizontalMove a owl:Class ;
+    rdfs:label "Horizontal Move" ;
+    rdfs:comment """A lateral transport move of a cargo unit between terminal zones (e.g., quay to yard).
+
+    TIC 4.0: Typically performed by terminal tractors, straddle carriers, or automated guided vehicles.""" ;
+    rdfs:subClassOf :Move .
+
+:Move a owl:Class ;
+    rdfs:label "Move" ;
+    rdfs:comment """An individual physical relocation of a cargo unit within the terminal.
+
+    TIC 4.0: Abstract superclass for all move types (load, discharge, lift, horizontal).""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :moveTimestamp ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Sequencing and Instruction Classes
+#################################################################
+
+:MoveSequence a owl:Class ;
+    rdfs:label "Move Sequence" ;
+    rdfs:comment """An ordered series of moves comprising a complete cargo handling workflow.
+
+    TIC 4.0: Defines the planned or actual sequence of moves for a unit from origin to
+    destination within the terminal (e.g., vessel → quay → yard).""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :hasMove ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:MoveInstruction a owl:Class ;
+    rdfs:label "Move Instruction" ;
+    rdfs:comment """A directive issued to handling personnel or equipment to execute a specific move.
+
+    TIC 4.0: Contains origin, destination, unit reference, priority, and equipment assignment details.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :instructionOrigin ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :instructionDestination ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:MoveCompletion a owl:Class ;
+    rdfs:label "Move Completion" ;
+    rdfs:comment """A record confirming the successful execution of a move instruction.
+
+    TIC 4.0: Captures actual timestamps, equipment used, and any deviations from the plan.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :completesInstruction ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:ExceptionDuringMove a owl:Class ;
+    rdfs:label "Exception During Move" ;
+    rdfs:comment """An abnormal condition or disruption occurring during a cargo handling move.
+
+    TIC 4.0: Covers equipment breakdowns, cargo damage, safety stops, and operational delays.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :exceptionType ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:HandlingEquipmentAssignment a owl:Class ;
+    rdfs:label "Handling Equipment Assignment" ;
+    rdfs:comment """The allocation of a specific piece of handling equipment to a move or operation.
+
+    TIC 4.0: Links equipment identifiers, operator details, and time windows to planned moves.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :assignedTo ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasMoveSequence a owl:ObjectProperty ;
+    rdfs:label "has move sequence" ;
+    rdfs:comment "Links a stevedoring operation to its constituent move sequences." ;
+    rdfs:domain :StevedoringOperation ;
+    rdfs:range :MoveSequence .
+
+:hasMove a owl:ObjectProperty ;
+    rdfs:label "has move" ;
+    rdfs:comment "Links a move sequence to an individual move." ;
+    rdfs:domain :MoveSequence ;
+    rdfs:range :Move .
+
+:partOfOperation a owl:ObjectProperty ;
+    rdfs:label "part of operation" ;
+    rdfs:comment "Links a move to its parent stevedoring operation." ;
+    rdfs:range :StevedoringOperation ;
+    owl:inverseOf :hasMoveSequence .
+
+:completesInstruction a owl:ObjectProperty ;
+    rdfs:label "completes instruction" ;
+    rdfs:comment "Links a move completion record to the instruction it fulfils." ;
+    rdfs:domain :MoveCompletion ;
+    rdfs:range :MoveInstruction .
+
+:hasException a owl:ObjectProperty ;
+    rdfs:label "has exception" ;
+    rdfs:comment "Links a move to an exception that occurred during its execution." ;
+    rdfs:domain :Move ;
+    rdfs:range :ExceptionDuringMove .
+
+:assignedTo a owl:ObjectProperty ;
+    rdfs:label "assigned to" ;
+    rdfs:comment "Links an equipment assignment to the move or operation it supports." ;
+    rdfs:domain :HandlingEquipmentAssignment .
+
+:instructionOrigin a owl:ObjectProperty ;
+    rdfs:label "instruction origin" ;
+    rdfs:comment "The origin location for a move instruction." ;
+    rdfs:domain :MoveInstruction .
+
+:instructionDestination a owl:ObjectProperty ;
+    rdfs:label "instruction destination" ;
+    rdfs:comment "The destination location for a move instruction." ;
+    rdfs:domain :MoveInstruction .
+
+:followsMove a owl:ObjectProperty ;
+    rdfs:label "follows move" ;
+    rdfs:comment "Indicates ordering: this move follows the referenced move in a sequence." ;
+    rdfs:domain :Move ;
+    rdfs:range :Move .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:moveTimestamp a owl:DatatypeProperty ;
+    rdfs:label "move timestamp" ;
+    rdfs:comment "The date and time when a move was executed." ;
+    rdfs:domain :Move ;
+    rdfs:range xsd:dateTime .
+
+:moveDurationSeconds a owl:DatatypeProperty ;
+    rdfs:label "move duration (seconds)" ;
+    rdfs:comment "Duration of the move in seconds." ;
+    rdfs:domain :Move ;
+    rdfs:range xsd:integer .
+
+:sequenceNumber a owl:DatatypeProperty ;
+    rdfs:label "sequence number" ;
+    rdfs:comment "Ordinal position of a move within its sequence." ;
+    rdfs:domain :Move ;
+    rdfs:range xsd:integer .
+
+:exceptionType a owl:DatatypeProperty ;
+    rdfs:label "exception type" ;
+    rdfs:comment "Classification code of the exception (e.g., EQUIPMENT_FAILURE, DAMAGE, SAFETY_STOP)." ;
+    rdfs:domain :ExceptionDuringMove ;
+    rdfs:range xsd:string .
+
+:exceptionDescription a owl:DatatypeProperty ;
+    rdfs:label "exception description" ;
+    rdfs:comment "Free-text description of the exception." ;
+    rdfs:domain :ExceptionDuringMove ;
+    rdfs:range xsd:string .
+
+:moveCount a owl:DatatypeProperty ;
+    rdfs:label "move count" ;
+    rdfs:comment "Total number of moves in a stevedoring operation or sequence." ;
+    rdfs:range xsd:integer .
+
+:instructionPriority a owl:DatatypeProperty ;
+    rdfs:label "instruction priority" ;
+    rdfs:comment "Priority level of the move instruction (e.g., 1=urgent, 5=normal)." ;
+    rdfs:domain :MoveInstruction ;
+    rdfs:range xsd:integer .
+
+:completionTimestamp a owl:DatatypeProperty ;
+    rdfs:label "completion timestamp" ;
+    rdfs:comment "The date and time when the move was completed." ;
+    rdfs:domain :MoveCompletion ;
+    rdfs:range xsd:dateTime .

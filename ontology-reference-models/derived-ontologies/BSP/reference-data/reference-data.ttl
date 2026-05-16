@@ -1,0 +1,203 @@
+@prefix : <http://kairos.ai/ont/bsp/reference-data#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "Kairos BSP Reference Data Domain Ontology" ;
+    dcterms:description """Reference data domain of the ISO Buy-Ship-Pay Reference Data Model (ISO 20197-1:2024).
+
+    This module defines location and measurement reference data covering:
+    - Locations: Addresses, facilities, ports, airports, warehouses, border crossings
+    - Countries: Sovereign nations with ISO 3166 codes
+    - Measurements: Weight, volume, dimension, monetary amounts
+    - Code lists: UN/LOCODE, IATA codes, country codes""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "ISO 20197-1:2024 Buy-Ship-Pay Reference Data Model" .
+
+#################################################################
+#    Location Classes
+#################################################################
+
+:Location a owl:Class ;
+    rdfs:label "Location" ;
+    rdfs:comment """A physical or logical place.
+    
+    ISO BSP: Addresses, facilities, geographic locations.""" .
+
+:Address a owl:Class ;
+    rdfs:label "Address" ;
+    rdfs:comment """A structured postal or physical address.
+    
+    ISO BSP: Street, city, country, postal code.""" ;
+    rdfs:subClassOf :Location .
+
+:Facility a owl:Class ;
+    rdfs:label "Facility" ;
+    rdfs:comment """A physical site where business activities occur.
+    
+    ISO BSP: Factories, warehouses, stores, ports.""" ;
+    rdfs:subClassOf :Location .
+
+:Port a owl:Class ;
+    rdfs:label "Port" ;
+    rdfs:comment """A maritime facility for vessel operations.
+    
+    ISO BSP: Seaport identified by UN/LOCODE.""" ;
+    rdfs:subClassOf :Facility .
+
+:Airport a owl:Class ;
+    rdfs:label "Airport" ;
+    rdfs:comment """An air transport facility.
+    
+    ISO BSP: Identified by IATA/ICAO codes.""" ;
+    rdfs:subClassOf :Facility .
+
+:Warehouse a owl:Class ;
+    rdfs:label "Warehouse" ;
+    rdfs:comment """A storage facility for goods.
+    
+    ISO BSP: Distribution center, depot.""" ;
+    rdfs:subClassOf :Facility .
+
+:ManufacturingPlant a owl:Class ;
+    rdfs:label "Manufacturing Plant" ;
+    rdfs:comment """A facility where goods are produced.
+    
+    ISO BSP: Factory, production site.""" ;
+    rdfs:subClassOf :Facility .
+
+:RetailStore a owl:Class ;
+    rdfs:label "Retail Store" ;
+    rdfs:comment """A facility where goods are sold to end customers.
+    
+    ISO BSP: Shop, outlet, showroom.""" ;
+    rdfs:subClassOf :Facility .
+
+:BorderCrossing a owl:Class ;
+    rdfs:label "Border Crossing" ;
+    rdfs:comment """A location where goods cross international borders.
+    
+    ISO BSP: Customs checkpoint.""" ;
+    rdfs:subClassOf :Location .
+
+:Country a owl:Class ;
+    rdfs:label "Country" ;
+    rdfs:comment """A sovereign nation state.
+    
+    ISO BSP: Identified by ISO 3166 codes.""" ;
+    rdfs:subClassOf :Location .
+
+#################################################################
+#    Measurement and Quantity Classes
+#################################################################
+
+:Measurement a owl:Class ;
+    rdfs:label "Measurement" ;
+    rdfs:comment """A quantified observation or dimension.
+    
+    ISO BSP: Weight, volume, length, temperature.""" .
+
+:Weight a owl:Class ;
+    rdfs:label "Weight" ;
+    rdfs:comment """A measurement of mass.
+    
+    ISO BSP: Gross weight, net weight, chargeable weight.""" ;
+    rdfs:subClassOf :Measurement .
+
+:Volume a owl:Class ;
+    rdfs:label "Volume" ;
+    rdfs:comment """A measurement of three-dimensional space.
+    
+    ISO BSP: Cubic meters, cubic feet.""" ;
+    rdfs:subClassOf :Measurement .
+
+:Dimension a owl:Class ;
+    rdfs:label "Dimension" ;
+    rdfs:comment """A linear measurement.
+    
+    ISO BSP: Length, width, height.""" ;
+    rdfs:subClassOf :Measurement .
+
+:MonetaryAmount a owl:Class ;
+    rdfs:label "Monetary Amount" ;
+    rdfs:comment """A sum of money.
+    
+    ISO BSP: Invoice amount, payment amount, duty amount.""" ;
+    rdfs:subClassOf :Measurement .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasBillingAddress a owl:ObjectProperty ;
+    rdfs:label "has billing address" ;
+    rdfs:comment "Identifies billing address." ;
+    rdfs:range :Address .
+
+:hasShippingAddress a owl:ObjectProperty ;
+    rdfs:label "has shipping address" ;
+    rdfs:comment "Identifies shipping/delivery address." ;
+    rdfs:range :Address .
+
+:hasOriginLocation a owl:ObjectProperty ;
+    rdfs:label "has origin location" ;
+    rdfs:comment "Identifies origin location." ;
+    rdfs:range :Location .
+
+:hasDestinationLocation a owl:ObjectProperty ;
+    rdfs:label "has destination location" ;
+    rdfs:comment "Identifies destination location." ;
+    rdfs:range :Location .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:countryCode a owl:DatatypeProperty ;
+    rdfs:label "country code" ;
+    rdfs:comment "ISO 3166 country code (2 or 3 characters)." ;
+    rdfs:domain :Country ;
+    rdfs:range xsd:string .
+
+:unLocationCode a owl:DatatypeProperty ;
+    rdfs:label "UN location code" ;
+    rdfs:comment "UN/LOCODE (5 characters)." ;
+    rdfs:domain :Location ;
+    rdfs:range xsd:string .
+
+:iataAirportCode a owl:DatatypeProperty ;
+    rdfs:label "IATA airport code" ;
+    rdfs:comment "3-letter IATA code." ;
+    rdfs:domain :Airport ;
+    rdfs:range xsd:string .
+
+:streetAddress a owl:DatatypeProperty ;
+    rdfs:label "street address" ;
+    rdfs:comment "Street name and number." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:string .
+
+:city a owl:DatatypeProperty ;
+    rdfs:label "city" ;
+    rdfs:comment "City name." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:string .
+
+:stateProvince a owl:DatatypeProperty ;
+    rdfs:label "state/province" ;
+    rdfs:comment "State or province name/code." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:string .
+
+:postalCode a owl:DatatypeProperty ;
+    rdfs:label "postal code" ;
+    rdfs:comment "ZIP or postal code." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:string .

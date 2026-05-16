@@ -1,0 +1,181 @@
+@prefix : <http://kairos.ai/ont/dcsa/events#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "DCSA Events Domain" ;
+    dcterms:description """Track and trace event concepts for container shipping.
+    
+    Covers all shipping events including transport events (vessel departure/arrival),
+    equipment events (gate-in/out, loading, discharge, empty pickup/return),
+    and document events (issuance, surrender).""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" .
+
+#################################################################
+#    Event Classes
+#################################################################
+
+:Event a owl:Class ;
+    rdfs:label "Shipment Event" ;
+    rdfs:comment """An occurrence in the container shipping lifecycle.
+    
+    DCSA: Base class for all tracking events.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :eventDateTime ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:TransportEvent a owl:Class ;
+    rdfs:label "Transport Event" ;
+    rdfs:comment """An event related to vessel or transport operations.
+    
+    DCSA: Vessel departure, arrival, berthing events.""" ;
+    rdfs:subClassOf :Event .
+
+:EquipmentEvent a owl:Class ;
+    rdfs:label "Equipment Event" ;
+    rdfs:comment """An event related to container handling or status.
+    
+    DCSA: Container pickup, gate-in, loading, discharge, delivery events.""" ;
+    rdfs:subClassOf :Event .
+
+:DocumentEvent a owl:Class ;
+    rdfs:label "Document Event" ;
+    rdfs:comment """An event related to shipping document status.
+    
+    DCSA: Document draft, approval, issuance, surrender events.""" ;
+    rdfs:subClassOf :Event .
+
+:VesselDepartureEvent a owl:Class ;
+    rdfs:label "Vessel Departure" ;
+    rdfs:comment """Vessel departing from a port.
+    
+    DCSA: ATD (Actual Time of Departure) or ETD (Estimated).""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:VesselArrivalEvent a owl:Class ;
+    rdfs:label "Vessel Arrival" ;
+    rdfs:comment """Vessel arriving at a port.
+    
+    DCSA: ATA (Actual Time of Arrival) or ETA (Estimated).""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:GateInEvent a owl:Class ;
+    rdfs:label "Gate-In" ;
+    rdfs:comment """Container entering a terminal or depot.
+    
+    DCSA: Container received at terminal.""" ;
+    rdfs:subClassOf :EquipmentEvent .
+
+:GateOutEvent a owl:Class ;
+    rdfs:label "Gate-Out" ;
+    rdfs:comment """Container leaving a terminal or depot.
+    
+    DCSA: Container released from terminal.""" ;
+    rdfs:subClassOf :EquipmentEvent .
+
+:LoadedOnVesselEvent a owl:Class ;
+    rdfs:label "Loaded on Vessel" ;
+    rdfs:comment """Container loaded onto ocean vessel.
+    
+    DCSA: Critical milestone for shipment tracking.""" ;
+    rdfs:subClassOf :EquipmentEvent .
+
+:DischargedFromVesselEvent a owl:Class ;
+    rdfs:label "Discharged from Vessel" ;
+    rdfs:comment """Container discharged from ocean vessel.
+    
+    DCSA: Container unloaded at destination port.""" ;
+    rdfs:subClassOf :EquipmentEvent .
+
+:EmptyContainerPickupEvent a owl:Class ;
+    rdfs:label "Empty Container Pickup" ;
+    rdfs:comment """Empty container picked up by shipper.
+    
+    DCSA: Start of container use cycle.""" ;
+    rdfs:subClassOf :EquipmentEvent .
+
+:EmptyContainerReturnEvent a owl:Class ;
+    rdfs:label "Empty Container Return" ;
+    rdfs:comment """Empty container returned to depot.
+    
+    DCSA: End of container use cycle.""" ;
+    rdfs:subClassOf :EquipmentEvent .
+
+:DocumentIssuedEvent a owl:Class ;
+    rdfs:label "Document Issued" ;
+    rdfs:comment """Transport document officially issued.
+    
+    DCSA: B/L or Sea Waybill released.""" ;
+    rdfs:subClassOf :DocumentEvent .
+
+:DocumentSurrenderedEvent a owl:Class ;
+    rdfs:label "Document Surrendered" ;
+    rdfs:comment """Original Bill of Lading surrendered.
+    
+    DCSA: Releases cargo for delivery.""" ;
+    rdfs:subClassOf :DocumentEvent .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:occursAtLocation a owl:ObjectProperty ;
+    rdfs:label "occurs at location" ;
+    rdfs:comment "Relates event to location where it occurred." ;
+    rdfs:domain :Event .
+
+:involvesContainer a owl:ObjectProperty ;
+    rdfs:label "involves container" ;
+    rdfs:comment "Relates equipment event to specific container." ;
+    rdfs:domain :EquipmentEvent .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:eventDateTime a owl:DatatypeProperty ;
+    rdfs:label "event date time" ;
+    rdfs:comment "Date and time when event occurred or is estimated." ;
+    rdfs:domain :Event ;
+    rdfs:range xsd:dateTime .
+
+:eventTypeCode a owl:DatatypeProperty ;
+    rdfs:label "event type code" ;
+    rdfs:comment "DCSA event type code." ;
+    rdfs:domain :Event ;
+    rdfs:range xsd:string .
+
+:eventClassifierCode a owl:DatatypeProperty ;
+    rdfs:label "event classifier code" ;
+    rdfs:comment "Event classifier: ACT (Actual), EST (Estimated), PLN (Planned), REQ (Requested)." ;
+    rdfs:domain :Event ;
+    rdfs:range xsd:string .
+
+:estimatedTimeOfArrival a owl:DatatypeProperty ;
+    rdfs:label "estimated time of arrival (ETA)" ;
+    rdfs:comment "Estimated vessel arrival time." ;
+    rdfs:range xsd:dateTime .
+
+:estimatedTimeOfDeparture a owl:DatatypeProperty ;
+    rdfs:label "estimated time of departure (ETD)" ;
+    rdfs:comment "Estimated vessel departure time." ;
+    rdfs:range xsd:dateTime .
+
+:actualTimeOfArrival a owl:DatatypeProperty ;
+    rdfs:label "actual time of arrival (ATA)" ;
+    rdfs:comment "Actual vessel arrival time." ;
+    rdfs:range xsd:dateTime .
+
+:actualTimeOfDeparture a owl:DatatypeProperty ;
+    rdfs:label "actual time of departure (ATD)" ;
+    rdfs:comment "Actual vessel departure time." ;
+    rdfs:range xsd:dateTime .

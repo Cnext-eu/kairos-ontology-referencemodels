@@ -1,0 +1,38 @@
+@prefix : <http://kairos.ai/ont/tic#> .
+@prefix tic-infra: <http://kairos.ai/ont/tic/terminal-infrastructure#> .
+@prefix tic-ops: <http://kairos.ai/ont/tic/handling-operations#> .
+@prefix tic-auto: <http://kairos.ai/ont/tic/automotive-services#> .
+@prefix tic-party: <http://kairos.ai/ont/tic/party#> .
+@prefix tic-loc: <http://kairos.ai/ont/tic/locations#> .
+@prefix tic-evt: <http://kairos.ai/ont/tic/events#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "Kairos TIC 4.0 Terminal Industry Ontology" ;
+    dcterms:description """Terminal Industry Committee (TIC) 4.0 ontology for standardized terminal and port operations.
+
+    This ontology provides a comprehensive semantic framework for terminal operations, covering:
+    - Terminal infrastructure and equipment
+    - Stevedoring and cargo handling operations
+    - Automotive and vehicle processing services
+    - Party roles in terminal operations
+    - Terminal locations and positioning
+    - Operational events and milestones
+
+    Fully aligned with the Terminal Industry Committee (TIC) 4.0 Standard for terminal interoperability.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "Terminal Industry Committee (TIC) 4.0 Standard" ;
+    owl:imports <http://kairos.ai/ont/tic/terminal-infrastructure#> ;
+    owl:imports <http://kairos.ai/ont/tic/handling-operations#> ;
+    owl:imports <http://kairos.ai/ont/tic/automotive-services#> ;
+    owl:imports <http://kairos.ai/ont/tic/party#> ;
+    owl:imports <http://kairos.ai/ont/tic/locations#> ;
+    owl:imports <http://kairos.ai/ont/tic/events#> .

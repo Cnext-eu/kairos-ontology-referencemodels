@@ -53,5 +53,74 @@
     
     <!-- Add more FIBO module mappings as needed -->
     
+    <!-- ========== DCSA (Digital Container Shipping Association) ========== -->
+    <uri name="http://kairos.ai/ont/dcsa#" uri="derived-ontologies/DCSA/dcsa.ttl"/>
+    <uri name="http://kairos.ai/ont/dcsa/booking#" uri="derived-ontologies/DCSA/booking/booking.ttl"/>
+    <uri name="http://kairos.ai/ont/dcsa/container-operations#" uri="derived-ontologies/DCSA/container-operations/container-operations.ttl"/>
+    <uri name="http://kairos.ai/ont/dcsa/equipment#" uri="derived-ontologies/DCSA/equipment/equipment.ttl"/>
+    <uri name="http://kairos.ai/ont/dcsa/events#" uri="derived-ontologies/DCSA/events/events.ttl"/>
+    <uri name="http://kairos.ai/ont/dcsa/locations#" uri="derived-ontologies/DCSA/locations/locations.ttl"/>
+    <uri name="http://kairos.ai/ont/dcsa/party#" uri="derived-ontologies/DCSA/party/party.ttl"/>
+    <uri name="http://kairos.ai/ont/dcsa/transport-documents#" uri="derived-ontologies/DCSA/transport-documents/transport-documents.ttl"/>
+    
+    <!-- ========== MMT (Multi-Modal Transport) ========== -->
+    <uri name="http://kairos.ai/ont/mmt#" uri="derived-ontologies/MMT/mmt.ttl"/>
+    <uri name="http://kairos.ai/ont/mmt/cargo#" uri="derived-ontologies/MMT/cargo/cargo.ttl"/>
+    <uri name="http://kairos.ai/ont/mmt/consignment#" uri="derived-ontologies/MMT/consignment/consignment.ttl"/>
+    <uri name="http://kairos.ai/ont/mmt/documents#" uri="derived-ontologies/MMT/documents/documents.ttl"/>
+    <uri name="http://kairos.ai/ont/mmt/equipment#" uri="derived-ontologies/MMT/equipment/equipment.ttl"/>
+    <uri name="http://kairos.ai/ont/mmt/events#" uri="derived-ontologies/MMT/events/events.ttl"/>
+    <uri name="http://kairos.ai/ont/mmt/inland-transport#" uri="derived-ontologies/MMT/inland-transport/inland-transport.ttl"/>
+    <uri name="http://kairos.ai/ont/mmt/locations#" uri="derived-ontologies/MMT/locations/locations.ttl"/>
+    <uri name="http://kairos.ai/ont/mmt/party#" uri="derived-ontologies/MMT/party/party.ttl"/>
+    <uri name="http://kairos.ai/ont/mmt/route-network#" uri="derived-ontologies/MMT/route-network/route-network.ttl"/>
+    <uri name="http://kairos.ai/ont/mmt/transport-means#" uri="derived-ontologies/MMT/transport-means/transport-means.ttl"/>
+    
+    <!-- ========== BSP (Buy-Ship-Pay) ========== -->
+    <uri name="http://kairos.ai/ont/bsp#" uri="derived-ontologies/BSP/bsp.ttl"/>
+    <uri name="http://kairos.ai/ont/bsp/commercial#" uri="derived-ontologies/BSP/commercial/commercial.ttl"/>
+    <uri name="http://kairos.ai/ont/bsp/compliance#" uri="derived-ontologies/BSP/compliance/compliance.ttl"/>
+    <uri name="http://kairos.ai/ont/bsp/documents#" uri="derived-ontologies/BSP/documents/documents.ttl"/>
+    <uri name="http://kairos.ai/ont/bsp/financial#" uri="derived-ontologies/BSP/financial/financial.ttl"/>
+    <uri name="http://kairos.ai/ont/bsp/party#" uri="derived-ontologies/BSP/party/party.ttl"/>
+    <uri name="http://kairos.ai/ont/bsp/reference-data#" uri="derived-ontologies/BSP/reference-data/reference-data.ttl"/>
+    
+    <!-- ========== TIC (Terminal Industry Committee 4.0) ========== -->
+    <uri name="http://kairos.ai/ont/tic#" uri="derived-ontologies/TIC/tic.ttl"/>
+    <uri name="http://kairos.ai/ont/tic/automotive-services#" uri="derived-ontologies/TIC/automotive-services/automotive-services.ttl"/>
+    <uri name="http://kairos.ai/ont/tic/events#" uri="derived-ontologies/TIC/events/events.ttl"/>
+    <uri name="http://kairos.ai/ont/tic/handling-operations#" uri="derived-ontologies/TIC/handling-operations/handling-operations.ttl"/>
+    <uri name="http://kairos.ai/ont/tic/locations#" uri="derived-ontologies/TIC/locations/locations.ttl"/>
+    <uri name="http://kairos.ai/ont/tic/party#" uri="derived-ontologies/TIC/party/party.ttl"/>
+    <uri name="http://kairos.ai/ont/tic/terminal-infrastructure#" uri="derived-ontologies/TIC/terminal-infrastructure/terminal-infrastructure.ttl"/>
+    
+    <!-- ========== IMO (International Maritime Organization) ========== -->
+    <uri name="http://kairos.ai/ont/imo#" uri="derived-ontologies/IMO/imo.ttl"/>
+    <uri name="http://kairos.ai/ont/imo/dangerous-goods#" uri="derived-ontologies/IMO/dangerous-goods/dangerous-goods.ttl"/>
+    <uri name="http://kairos.ai/ont/imo/locations#" uri="derived-ontologies/IMO/locations/locations.ttl"/>
+    <uri name="http://kairos.ai/ont/imo/party#" uri="derived-ontologies/IMO/party/party.ttl"/>
+    <uri name="http://kairos.ai/ont/imo/port-call#" uri="derived-ontologies/IMO/port-call/port-call.ttl"/>
+    <uri name="http://kairos.ai/ont/imo/vessel-registry#" uri="derived-ontologies/IMO/vessel-registry/vessel-registry.ttl"/>
+    
+    <!-- ========== WCO (World Customs Organization) ========== -->
+    <uri name="http://kairos.ai/ont/wco#" uri="derived-ontologies/WCO/wco.ttl"/>
+    <uri name="http://kairos.ai/ont/wco/customs#" uri="derived-ontologies/WCO/customs/customs.ttl"/>
+    <uri name="http://kairos.ai/ont/wco/documents#" uri="derived-ontologies/WCO/documents/documents.ttl"/>
+    <uri name="http://kairos.ai/ont/wco/locations#" uri="derived-ontologies/WCO/locations/locations.ttl"/>
+    <uri name="http://kairos.ai/ont/wco/party#" uri="derived-ontologies/WCO/party/party.ttl"/>
+    <uri name="http://kairos.ai/ont/wco/trade-facilitation#" uri="derived-ontologies/WCO/trade-facilitation/trade-facilitation.ttl"/>
+    
+    <!-- ========== Sustainability ========== -->
+    <uri name="http://kairos.ai/ont/sustainability#" uri="derived-ontologies/Sustainability/sustainability.ttl"/>
+    <uri name="http://kairos.ai/ont/sustainability/carbon#" uri="derived-ontologies/Sustainability/carbon/carbon.ttl"/>
+    <uri name="http://kairos.ai/ont/sustainability/energy#" uri="derived-ontologies/Sustainability/energy/energy.ttl"/>
+    
+    <!-- ========== Supply Chain ========== -->
+    <uri name="http://kairos.ai/ont/supply-chain#" uri="derived-ontologies/supply-chain/supply-chain.ttl"/>
+    
+    <!-- ========== Accelerator Packs ========== -->
+    <uri name="http://kairos.ai/ont/accelerator/logistics#" uri="accelerator-packs/logistics/logistics-accelerator.ttl"/>
+    <uri name="http://kairos.ai/ont/accelerator/financial-services#" uri="accelerator-packs/financial-services/financial-services-accelerator.ttl"/>
+    
 </catalog>
 

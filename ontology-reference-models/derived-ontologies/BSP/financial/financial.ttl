@@ -1,0 +1,275 @@
+@prefix : <http://kairos.ai/ont/bsp/financial#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+: a owl:Ontology ;
+    dcterms:title "Kairos BSP Financial Domain Ontology" ;
+    dcterms:description """Financial and payment domain of the ISO Buy-Ship-Pay Reference Data Model (ISO 20197-1:2024).
+
+    This module defines financial transaction classes covering:
+    - Invoicing: Invoice, Commercial Invoice, Proforma Invoice, Credit/Debit Notes
+    - Payment: Payment, Payment Terms, payment methods
+    - Trade Finance: Letter of Credit, Bank Guarantee, Trade Finance Instruments
+    - Events: Payment lifecycle events""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "ISO 20197-1:2024 Buy-Ship-Pay Reference Data Model" .
+
+#################################################################
+#    PAY - Financial and Payment Classes
+#################################################################
+
+:Invoice a owl:Class ;
+    rdfs:label "Invoice" ;
+    rdfs:comment """A commercial document issued by seller to buyer indicating products, quantities, and prices owed.
+    
+    ISO BSP: Payment request document.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :invoiceNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:CommercialInvoice a owl:Class ;
+    rdfs:label "Commercial Invoice" ;
+    rdfs:comment """An invoice used in international trade documenting the transaction.
+    
+    ISO BSP: Primary customs and payment document.""" ;
+    rdfs:subClassOf :Invoice .
+
+:ProformaInvoice a owl:Class ;
+    rdfs:label "Proforma Invoice" ;
+    rdfs:comment """A preliminary invoice sent before goods are delivered.
+    
+    ISO BSP: Quote or commitment to sell at stated terms.""" ;
+    rdfs:subClassOf :Invoice .
+
+:CreditNote a owl:Class ;
+    rdfs:label "Credit Note" ;
+    rdfs:comment """A document reducing the amount owed by buyer to seller.
+    
+    ISO BSP: Invoice correction or return credit.""" .
+
+:DebitNote a owl:Class ;
+    rdfs:label "Debit Note" ;
+    rdfs:comment """A document increasing the amount owed by buyer to seller.
+    
+    ISO BSP: Additional charges or invoice adjustments.""" .
+
+:InvoiceLine a owl:Class ;
+    rdfs:label "Invoice Line" ;
+    rdfs:comment """A single line item on an invoice.
+    
+    ISO BSP: Individual charge or product entry.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :lineNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:Payment a owl:Class ;
+    rdfs:label "Payment" ;
+    rdfs:comment """A transfer of funds from buyer to seller.
+    
+    ISO BSP: Financial settlement.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :paymentAmount ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:PaymentTerms a owl:Class ;
+    rdfs:label "Payment Terms" ;
+    rdfs:comment """Conditions under which payment must be made.
+    
+    ISO BSP: Due dates, methods, discounts, penalties.""" .
+
+:LetterOfCredit a owl:Class ;
+    rdfs:label "Letter of Credit (L/C)" ;
+    rdfs:comment """A bank guarantee to pay seller if conditions are met.
+    
+    ISO BSP: Trade finance instrument.""" .
+
+:BankGuarantee a owl:Class ;
+    rdfs:label "Bank Guarantee" ;
+    rdfs:comment """A commitment by a bank to cover a loss if buyer fails to pay.
+    
+    ISO BSP: Payment security instrument.""" .
+
+:TradeFinanceInstrument a owl:Class ;
+    rdfs:label "Trade Finance Instrument" ;
+    rdfs:comment """A financial product facilitating international trade payment.
+    
+    ISO BSP: L/C, guarantees, documentary collections.""" .
+
+#################################################################
+#    Event Classes
+#################################################################
+
+:PaymentEvent a owl:Class ;
+    rdfs:label "Payment Event" ;
+    rdfs:comment """An event in the payment process.
+    
+    ISO BSP: Invoice issued, payment sent, payment received.""" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasInvoice a owl:ObjectProperty ;
+    rdfs:label "has invoice" ;
+    rdfs:comment "Relates order or shipment to invoice." ;
+    rdfs:range :Invoice .
+
+:hasInvoiceLine a owl:ObjectProperty ;
+    rdfs:label "has invoice line" ;
+    rdfs:comment "Relates invoice to line items." ;
+    rdfs:domain :Invoice ;
+    rdfs:range :InvoiceLine .
+
+:hasPayment a owl:ObjectProperty ;
+    rdfs:label "has payment" ;
+    rdfs:comment "Relates invoice to payment." ;
+    rdfs:domain :Invoice ;
+    rdfs:range :Payment .
+
+:hasPaymentTerms a owl:ObjectProperty ;
+    rdfs:label "has payment terms" ;
+    rdfs:comment "Relates invoice or order to payment terms." ;
+    rdfs:range :PaymentTerms .
+
+:hasLetterOfCredit a owl:ObjectProperty ;
+    rdfs:label "has letter of credit" ;
+    rdfs:comment "Relates transaction to L/C." ;
+    rdfs:range :LetterOfCredit .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:invoiceNumber a owl:DatatypeProperty ;
+    rdfs:label "invoice number" ;
+    rdfs:comment "Unique identifier for invoice." ;
+    rdfs:domain :Invoice ;
+    rdfs:range xsd:string .
+
+:invoiceDate a owl:DatatypeProperty ;
+    rdfs:label "invoice date" ;
+    rdfs:comment "Date when invoice was issued." ;
+    rdfs:domain :Invoice ;
+    rdfs:range xsd:date .
+
+:dueDate a owl:DatatypeProperty ;
+    rdfs:label "due date" ;
+    rdfs:comment "Date when payment is due." ;
+    rdfs:range xsd:date .
+
+:lineNumber a owl:DatatypeProperty ;
+    rdfs:label "line number" ;
+    rdfs:comment "Sequential line item number." ;
+    rdfs:range xsd:integer .
+
+:totalAmount a owl:DatatypeProperty ;
+    rdfs:label "total amount" ;
+    rdfs:comment "Total monetary amount." ;
+    rdfs:range xsd:decimal .
+
+:subtotalAmount a owl:DatatypeProperty ;
+    rdfs:label "subtotal amount" ;
+    rdfs:comment "Amount before taxes and charges." ;
+    rdfs:range xsd:decimal .
+
+:taxAmount a owl:DatatypeProperty ;
+    rdfs:label "tax amount" ;
+    rdfs:comment "Total tax amount (VAT, sales tax, etc.)." ;
+    rdfs:range xsd:decimal .
+
+:taxRate a owl:DatatypeProperty ;
+    rdfs:label "tax rate" ;
+    rdfs:comment "Tax percentage rate." ;
+    rdfs:range xsd:decimal .
+
+:discountAmount a owl:DatatypeProperty ;
+    rdfs:label "discount amount" ;
+    rdfs:comment "Discount applied." ;
+    rdfs:range xsd:decimal .
+
+:paymentAmount a owl:DatatypeProperty ;
+    rdfs:label "payment amount" ;
+    rdfs:comment "Amount paid." ;
+    rdfs:domain :Payment ;
+    rdfs:range xsd:decimal .
+
+:paymentDate a owl:DatatypeProperty ;
+    rdfs:label "payment date" ;
+    rdfs:comment "Date when payment was made." ;
+    rdfs:domain :Payment ;
+    rdfs:range xsd:date .
+
+:paymentMethod a owl:DatatypeProperty ;
+    rdfs:label "payment method" ;
+    rdfs:comment "Method of payment (e.g., BANK_TRANSFER, CREDIT_CARD, L/C)." ;
+    rdfs:range xsd:string .
+
+:paymentReference a owl:DatatypeProperty ;
+    rdfs:label "payment reference" ;
+    rdfs:comment "Reference number for payment transaction." ;
+    rdfs:domain :Payment ;
+    rdfs:range xsd:string .
+
+:currency a owl:DatatypeProperty ;
+    rdfs:label "currency" ;
+    rdfs:comment "ISO 4217 currency code (e.g., USD, EUR, GBP)." ;
+    rdfs:range xsd:string .
+
+:exchangeRate a owl:DatatypeProperty ;
+    rdfs:label "exchange rate" ;
+    rdfs:comment "Currency exchange rate." ;
+    rdfs:range xsd:decimal .
+
+:paymentTermsDescription a owl:DatatypeProperty ;
+    rdfs:label "payment terms description" ;
+    rdfs:comment "Textual description of payment terms." ;
+    rdfs:domain :PaymentTerms ;
+    rdfs:range xsd:string .
+
+:netDays a owl:DatatypeProperty ;
+    rdfs:label "net days" ;
+    rdfs:comment "Number of days until payment is due (e.g., Net 30)." ;
+    rdfs:domain :PaymentTerms ;
+    rdfs:range xsd:integer .
+
+:customsValue a owl:DatatypeProperty ;
+    rdfs:label "customs value" ;
+    rdfs:comment "Declared value for customs purposes." ;
+    rdfs:range xsd:decimal .
+
+:letterOfCreditNumber a owl:DatatypeProperty ;
+    rdfs:label "letter of credit number" ;
+    rdfs:comment "L/C reference number." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range xsd:string .
+
+:lcIssueDate a owl:DatatypeProperty ;
+    rdfs:label "L/C issue date" ;
+    rdfs:comment "Date when letter of credit was issued." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range xsd:date .
+
+:lcExpiryDate a owl:DatatypeProperty ;
+    rdfs:label "L/C expiry date" ;
+    rdfs:comment "Expiration date of letter of credit." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range xsd:date .
+
+:lcAmount a owl:DatatypeProperty ;
+    rdfs:label "L/C amount" ;
+    rdfs:comment "Total amount covered by letter of credit." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range xsd:decimal .
