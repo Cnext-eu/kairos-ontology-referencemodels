@@ -55,14 +55,19 @@
     
     <!-- ========== DCSA (Digital Container Shipping Association) ========== -->
     <uri name="https://www.kairosflow.ai/ont/dcsa#" uri="derived-ontologies/DCSA/dcsa.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/booking#" uri="derived-ontologies/DCSA/booking/booking.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/container-operations#" uri="derived-ontologies/DCSA/container-operations/container-operations.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/equipment#" uri="derived-ontologies/DCSA/equipment/equipment.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/events#" uri="derived-ontologies/DCSA/events/events.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/locations#" uri="derived-ontologies/DCSA/locations/locations.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/party#" uri="derived-ontologies/DCSA/party/party.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/transport-documents#" uri="derived-ontologies/DCSA/transport-documents/transport-documents.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/schedule#" uri="derived-ontologies/DCSA/schedule/schedule.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/shipment-journey#" uri="derived-ontologies/DCSA/shipment-journey/shipment-journey.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/booking#" uri="derived-ontologies/DCSA/shipment-journey/booking/booking.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/transport-documents#" uri="derived-ontologies/DCSA/shipment-journey/transport-documents/transport-documents.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/equipment-journey#" uri="derived-ontologies/DCSA/equipment-journey/equipment-journey.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/container-operations#" uri="derived-ontologies/DCSA/equipment-journey/container-operations/container-operations.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/vessel-journey#" uri="derived-ontologies/DCSA/vessel-journey/vessel-journey.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/schedule#" uri="derived-ontologies/DCSA/vessel-journey/schedule/schedule.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/track-and-trace#" uri="derived-ontologies/DCSA/track-and-trace/track-and-trace.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/events#" uri="derived-ontologies/DCSA/track-and-trace/events/events.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/shared-kernel#" uri="derived-ontologies/DCSA/shared-kernel/shared-kernel.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/equipment#" uri="derived-ontologies/DCSA/shared-kernel/equipment/equipment.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/party#" uri="derived-ontologies/DCSA/shared-kernel/party/party.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/locations#" uri="derived-ontologies/DCSA/shared-kernel/locations/locations.ttl"/>
     
     <!-- ========== MMT (Multi-Modal Transport) ========== -->
     <uri name="https://www.kairosflow.ai/ont/mmt#" uri="derived-ontologies/MMT/mmt.ttl"/>
@@ -115,9 +120,6 @@
     <uri name="https://www.kairosflow.ai/ont/sustainability#" uri="derived-ontologies/Sustainability/sustainability.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/sustainability/carbon#" uri="derived-ontologies/Sustainability/carbon/carbon.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/sustainability/energy#" uri="derived-ontologies/Sustainability/energy/energy.ttl"/>
-    
-    <!-- ========== Supply Chain ========== -->
-    <uri name="https://www.kairosflow.ai/ont/supply-chain#" uri="derived-ontologies/supply-chain/supply-chain.ttl"/>
     
     <!-- ========== Accelerator Packs ========== -->
     <uri name="https://www.kairosflow.ai/ont/accelerator/logistics#" uri="accelerator-packs/logistics/logistics-accelerator.ttl"/>

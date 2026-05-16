@@ -46,7 +46,6 @@ kairos-ontology-referencemodels/
 │   │   ├── IMO/                       # Maritime regulatory (1 root + 5 domains)
 │   │   ├── WCO/                       # Customs & border (1 root + 5 domains)
 │   │   ├── Sustainability/            # Carbon & energy (1 root + 2 domains)
-│   │   └── supply-chain/              # Integration layer (1 root)
 │   ├── accelerator-packs/             # Pre-composed bundles
 │   │   ├── logistics/                 # 8 ontologies for logistics companies
 │   │   └── financial-services/        # FIBO + BSP for financial services
@@ -63,18 +62,17 @@ kairos-ontology-referencemodels/
 
 ## 🏭 Ontology Suite
 
-The repository ships **8 derived ontologies** covering the full logistics, trade, and sustainability value chain:
+The repository ships **7 derived ontologies** covering the full logistics, trade, and sustainability value chain:
 
 | # | Ontology | Standard | Focus | Domains |
 |---|----------|----------|-------|---------|
-| 1 | **DCSA** | DCSA API Standards | Container shipping lifecycle | 8 |
+| 1 | **DCSA** | DCSA API Standards | Container shipping lifecycle | 13 |
 | 2 | **MMT** | UN/CEFACT MMT-RDM | Consignment, movement, cargo, equipment | 11 |
 | 3 | **BSP** | ISO 20197-1:2024 | Party, contract, invoice, settlement | 7 |
 | 4 | **TIC** | TIC 4.0 | Terminal operations, handling, automotive | 7 |
 | 5 | **IMO** | IMO Compendium / FAL / IMDG | Vessel registry, dangerous goods, port-call | 6 |
 | 6 | **WCO** | WCO Data Model 3.0 | Customs declarations, trade facilitation | 6 |
 | 7 | **Sustainability** | ISO 14083:2023 / GLEC | Emissions, energy, ESG reporting | 3 |
-| 8 | **Supply Chain** | — | Integration layer | 1 |
 
 Plus **FIBO** (300+ authoritative ontology files from the EDM Council) for financial industry concepts.
 
@@ -88,7 +86,7 @@ Accelerator Packs are **pre-composed bundles** that let you import an entire ver
 
 | Pack | Import URI | What's included |
 |------|-----------|-----------------|
-| **Logistics** | `https://www.kairosflow.ai/ont/accelerator/logistics#` | DCSA, MMT, BSP, TIC, IMO, WCO, Sustainability, Supply Chain |
+| **Logistics** | `https://www.kairosflow.ai/ont/accelerator/logistics#` | DCSA, MMT, BSP, TIC, IMO, WCO, Sustainability |
 | **Financial Services** | `https://www.kairosflow.ai/ont/accelerator/financial-services#` | FIBO foundations + BSP |
 
 ```turtle

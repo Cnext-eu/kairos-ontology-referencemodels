@@ -29,5 +29,4 @@
                 <https://www.kairosflow.ai/ont/tic#> ,
                 <https://www.kairosflow.ai/ont/imo#> ,
                 <https://www.kairosflow.ai/ont/wco#> ,
-                <https://www.kairosflow.ai/ont/sustainability#> ,
-                <https://www.kairosflow.ai/ont/supply-chain#> .
+                <https://www.kairosflow.ai/ont/sustainability#> .
