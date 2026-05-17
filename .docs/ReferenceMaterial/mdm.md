@@ -6,21 +6,20 @@
 
 ## 1. Chosen MDM Pattern: Phased Coexistence
 
-Frachtgroup adopts a **phased coexistence** MDM strategy aligned with
-Gartner's MDM implementation styles. The approach balances immediate GDWH
-trust requirements with the realities of a federated operating model where
-multiple TMS platforms (CargoWise, Soloplan, Atlantis) serve regional
-operations.
+This pattern describes a **phased coexistence** MDM strategy aligned with
+Gartner's MDM implementation styles. The approach balances immediate data
+warehouse trust requirements with the realities of a federated operating model
+where multiple operational platforms serve regional operations.
 
 | Phase | Gartner Pattern | Goal |
 |-------|----------------|------|
-| **Phase 1** | Consolidation | Golden records for GDWH Gold, reporting, ODQ, MyFracht analytics |
+| **Phase 1** | Consolidation | Golden records for data warehouse Gold layer, reporting, and analytics |
 | **Phase 2** | Coexistence | Bi-directional sync of governed master attributes back to sources |
 | **Future** | Selective Centralization | Centrally authored reference data (location codes, KPI definitions) |
 
 > **Key principle:** Phase 1 does _not_ require source systems to change how
 > they create or maintain master data. MDM operates as the authoritative
-> source for the GDWH — not yet for the TMS systems themselves.
+> source for the data warehouse — not yet for the operational systems themselves.
 
 ---
 
@@ -78,15 +77,15 @@ party subtype.
 The crosswalk is the central MDM construct. It answers:
 _"Which record in which source system corresponds to which golden record?"_
 
-For the **party/client** domain, a single customer like _"Nestlé SA"_ may
+For the **party/client** domain, a single customer like _"Acme Corp"_ may
 appear in:
 
 | Source System | Source Entity | Source Record ID | Role |
 |---------------|---------------|-----------------|------|
-| CargoWise (CW1 Zurich) | `OrgHeader` | `OH_Code = "NESTZUR"` | Customer, Shipper |
-| CargoWise (CW1 Singapore) | `OrgHeader` | `OH_Code = "NESTLSG"` | Customer |
-| Soloplan (DE) | `Adresse` | `ADR_Nummer = 40291` | Customer (`KUN`) |
-| Atlantis | `BusinessPartner` | `BP_ID = "C-00847"` | Client |
+| TMS Instance A (Europe) | `Customer` | `CUST-00123` | Customer, Shipper |
+| TMS Instance B (Asia) | `Customer` | `CUST-00456` | Customer |
+| ERP System | `BusinessPartner` | `BP_ID = "C-00847"` | Client |
+| Legacy System | `Address` | `ADR_42091` | Customer |
 
 The MDM hub creates **one golden record** and **four crosswalks**:
 
@@ -95,24 +94,24 @@ GoldenRecord (goldenRecordId = "GR-PARTY-00001")
   │  masteringDomain = "Client"
   │  mastersParty → party:Customer (the canonical Party instance)
   │
-  ├── Crosswalk (sourceRecordId = "NESTZUR")
-  │     fromSourceSystem → SourceSystem (sourceSystemCode = "CW1-ZUR")
-  │     sourceEntityType = "OrgHeader"
+  ├── Crosswalk (sourceRecordId = "CUST-00123")
+  │     fromSourceSystem → SourceSystem (sourceSystemCode = "TMS-A-EU")
+  │     sourceEntityType = "Customer"
   │     hasCrosswalkStatus → statusActive
   │
-  ├── Crosswalk (sourceRecordId = "NESTLSG")
-  │     fromSourceSystem → SourceSystem (sourceSystemCode = "CW1-SIN")
-  │     sourceEntityType = "OrgHeader"
+  ├── Crosswalk (sourceRecordId = "CUST-00456")
+  │     fromSourceSystem → SourceSystem (sourceSystemCode = "TMS-B-ASIA")
+  │     sourceEntityType = "Customer"
   │     hasCrosswalkStatus → statusActive
   │
-  ├── Crosswalk (sourceRecordId = "40291")
-  │     fromSourceSystem → SourceSystem (sourceSystemCode = "SOLOPLAN-DE")
-  │     sourceEntityType = "Adresse"
+  ├── Crosswalk (sourceRecordId = "C-00847")
+  │     fromSourceSystem → SourceSystem (sourceSystemCode = "ERP")
+  │     sourceEntityType = "BusinessPartner"
   │     hasCrosswalkStatus → statusActive
   │
-  └── Crosswalk (sourceRecordId = "C-00847")
-        fromSourceSystem → SourceSystem (sourceSystemCode = "ATLANTIS")
-        sourceEntityType = "BusinessPartner"
+  └── Crosswalk (sourceRecordId = "ADR_42091")
+        fromSourceSystem → SourceSystem (sourceSystemCode = "LEGACY")
+        sourceEntityType = "Address"
         hasCrosswalkStatus → statusActive
 ```
 
@@ -127,9 +126,9 @@ Example configuration:
 
 | Source System | `survivorshipPriority` | `isTrustedSource` | Rationale |
 |---------------|----------------------|-------------------|-----------|
-| CW1 (any instance) | 1 | `true` | Most complete party data, global standard |
-| Atlantis | 2 | `true` | Legacy but high-quality master data |
-| Soloplan | 3 | `true` | Good for DACH region, less global coverage |
+| TMS Primary | 1 | `true` | Most complete party data, global standard |
+| ERP | 2 | `true` | Reliable but less frequently updated |
+| Legacy System | 3 | `true` | Regional coverage, less global |
 | Manual MDM entry | 0 | `true` | Data steward override — always wins |
 
 ### 2.5 Match/Merge Lifecycle
@@ -167,15 +166,15 @@ detection and resolution workflow:
 
 ---
 
-## 3. Phase 1 Implementation — Consolidation for GDWH
+## 3. Phase 1 Implementation — Consolidation for Data Warehouse
 
 ### 3.1 What Phase 1 Delivers
 
 | Deliverable | Description |
 |-------------|-------------|
-| **Golden records for Clients** | One mastered `party:Customer` per real-world client, consolidated from CW1, Soloplan, and Atlantis |
-| **Crosswalk registry** | Every TMS-native customer ID linked to its golden record ID |
-| **GDWH Gold integration** | Gold-layer `dim_customer` built from golden records instead of per-source silver tables |
+| **Golden records for Clients** | One mastered `party:Customer` per real-world client, consolidated from multiple source systems |
+| **Crosswalk registry** | Every source-system-native customer ID linked to its golden record ID |
+| **Data warehouse Gold integration** | Gold-layer `dim_customer` built from golden records instead of per-source silver tables |
 | **Data quality rules** | Standardization (name normalization, address cleansing, country code validation) |
 | **Match/merge engine** | Automated duplicate detection with steward review for uncertain matches |
 | **Steward UI** | Review match candidates, approve/reject golden records, manage merge/split, audit trail |
@@ -189,46 +188,40 @@ the party/client domain, mapped to the Kairos toolkit workflow.
 
 | Artifact | Location | Status |
 |----------|----------|--------|
-| Party domain ontology | `model/ontologies/party.ttl` | ✅ Complete — 15 classes, roles, contacts, addresses |
-| MDM domain ontology | `model/ontologies/mdm.ttl` | ✅ Complete — golden record, crosswalk, source system, match/merge |
+| Party domain ontology | `model/ontologies/party/party.ttl` | ✅ Complete — classes, roles, contacts, addresses |
+| MDM domain ontology | `model/ontologies/mdm/mdm.ttl` | ✅ Complete — golden record, crosswalk, source system, match/merge |
 | Party silver extension | `model/extensions/party-silver-ext.ttl` | ✅ Complete — SCD Type 2, GDPR satellites, discriminator column |
-| CW1 → Party mapping | `model/mappings/cargowise/cargowise-to-party.ttl` | ✅ Complete — OrgHeader, OrgAddress, role flags |
-| Soloplan → Party mapping | `model/mappings/soloplan/soloplan-to-party.ttl` | ✅ Complete — Adresse, AdresseRolle, FK resolution |
-| CW1 bronze vocabulary | `integration/sources/cargowise/cargowise.vocabulary.ttl` | ✅ Complete |
-| Soloplan bronze vocabulary | `integration/sources/soloplan/soloplan.vocabulary.ttl` | ✅ Complete |
 
 #### 3.2.2 To Be Created 🔲
 
 | # | Artifact | Location | Purpose | Kairos Skill |
 |---|----------|----------|---------|-------------|
 | 1 | **MDM silver extension** | `model/extensions/mdm-silver-ext.ttl` | DDL + dbt for `silver_mdm.golden_record`, `silver_mdm.crosswalk`, `silver_mdm.source_system`, `silver_mdm.match_group`, `silver_mdm.merge_event` tables | `kairos-ontology-medallion-silver` |
-| 2 | **Atlantis bronze vocabulary** | `integration/sources/atlantis/atlantis.vocabulary.ttl` | Describe Atlantis `BusinessPartner` table structure | `kairos-ontology-medallion-source` |
-| 3 | **Atlantis → Party mapping** | `model/mappings/atlantis/atlantis-to-party.ttl` | Map Atlantis party fields to `party:` ontology | `kairos-ontology-medallion-silver` |
-| 4 | **CW1 → MDM mapping** | `model/mappings/cargowise/cargowise-to-mdm.ttl` | Map CW1 `OrgHeader.OH_Code` → `mdm:Crosswalk.sourceRecordId` | `kairos-ontology-medallion-silver` |
-| 5 | **Soloplan → MDM mapping** | `model/mappings/soloplan/soloplan-to-mdm.ttl` | Map Soloplan `Adresse.ADR_Nummer` → `mdm:Crosswalk.sourceRecordId` | `kairos-ontology-medallion-silver` |
-| 6 | **Atlantis → MDM mapping** | `model/mappings/atlantis/atlantis-to-mdm.ttl` | Map Atlantis `BusinessPartner.BP_ID` → `mdm:Crosswalk.sourceRecordId` | `kairos-ontology-medallion-silver` |
-| 7 | **MDM gold extension** | `model/extensions/mdm-gold-ext.ttl` | Gold-layer `dim_customer_master` and `fact_crosswalk` for Power BI | `kairos-ontology-medallion-gold` |
-| 8 | **Mapping report** | `output/report/` | HTML coverage reports for MDM mappings per source | `kairos-ontology-mapping-report` |
+| 2 | **Source system bronze vocabularies** | `integration/sources/<source>/<source>.vocabulary.ttl` | Describe source system table structures | `kairos-ontology-medallion-source` |
+| 3 | **Source → Party mappings** | `model/mappings/<source>/<source>-to-party.ttl` | Map source party fields to `party:` ontology | `kairos-ontology-medallion-silver` |
+| 4 | **Source → MDM mappings** | `model/mappings/<source>/<source>-to-mdm.ttl` | Map source record IDs → `mdm:Crosswalk.sourceRecordId` | `kairos-ontology-medallion-silver` |
+| 5 | **MDM gold extension** | `model/extensions/mdm-gold-ext.ttl` | Gold-layer `dim_customer_master` and `fact_crosswalk` for BI | `kairos-ontology-medallion-gold` |
+| 6 | **Mapping report** | `output/report/` | HTML coverage reports for MDM mappings per source | `kairos-ontology-mapping-report` |
 
 ### 3.3 Data Flow — Phase 1 (Consolidation)
 
 ```
  ┌────────────┐    ┌────────────┐    ┌────────────┐
- │ CargoWise  │    │  Soloplan   │    │  Atlantis  │
- │ OrgHeader  │    │  Adresse    │    │ BusParter  │
+ │  TMS A     │    │  TMS B     │    │    ERP     │
+ │ (Europe)   │    │  (Asia)    │    │            │
  └─────┬──────┘    └─────┬──────┘    └─────┬──────┘
        │                 │                 │
        ▼                 ▼                 ▼
  ┌─────────────────────────────────────────────────┐
- │              Bronze Layer (Fabric)               │
- │  bronze_cargowise.org_header                     │
- │  bronze_soloplan.adresse                         │
- │  bronze_atlantis.business_partner                │
+ │              Bronze Layer                        │
+ │  bronze_tms_a.customer                          │
+ │  bronze_tms_b.customer                          │
+ │  bronze_erp.business_partner                    │
  └─────────────────────┬───────────────────────────┘
                        │  dbt bronze-to-silver models
                        ▼
  ┌─────────────────────────────────────────────────┐
- │             Silver Layer (Fabric)                │
+ │             Silver Layer                         │
  │  silver_party.party        (SCD-2, canonical)   │
  │  silver_party.address      (GDPR satellite)     │
  │  silver_party.contact_details (GDPR satellite)  │
@@ -241,7 +234,7 @@ the party/client domain, mapped to the Kairos toolkit workflow.
                        │  gold projection
                        ▼
  ┌─────────────────────────────────────────────────┐
- │             Gold Layer (Fabric)                  │
+ │             Gold Layer                           │
  │  gold_party.dim_customer_master                 │
  │     ← built from golden_record + party          │
  │  gold_mdm.fact_crosswalk                        │
@@ -251,7 +244,7 @@ the party/client domain, mapped to the Kairos toolkit workflow.
                        │
                        ▼
  ┌─────────────────────────────────────────────────┐
- │         Power BI / Semantic Model                │
+ │         BI / Semantic Model                      │
  │  DirectLake on dim_customer_master               │
  │  Crosswalk slicer for source-system drill-down   │
  │  Data quality dashboard (match coverage, etc.)   │
@@ -277,13 +270,13 @@ in the ontology.
 
 | Party Attribute | Survivorship Rule | Rationale |
 |----------------|-------------------|-----------|
-| `partyName` | Most complete (longest non-null) | CW1 often has abbreviated names |
+| `partyName` | Most complete (longest non-null) | Operational systems often have abbreviated names |
 | `taxIdentifier` | Highest-priority trusted source | Tax ID must be authoritative |
 | `eoriNumber` | Highest-priority trusted source | EORI is a regulated identifier |
 | `streetAddress` | Most recently updated | Address changes should reflect latest |
 | `country` | Highest-priority trusted source | Country codes must be standardized |
 | `email` | Most recently updated | Contact info changes frequently |
-| `scacCode` | CW1 always (source of truth for carrier codes) | CW1 is the carrier data authority |
+| `scacCode` | Designated source of truth | Carrier codes require a single authority |
 
 ---
 
@@ -298,9 +291,9 @@ golden-record updates flow _back_ to source systems.
 |------------|-----------------|----------------|
 | **Field-level system-of-record** | `SourceSystem.isTrustedSource` per attribute | Extend ontology with `FieldOwnership` class mapping attributes to owning systems |
 | **Origin tagging** | `Crosswalk.lastVerifiedAt` + new `originSystem` property on sync events | Add `SyncEvent` class to `mdm.ttl` |
-| **Loop prevention** | `originSystem` stamp on every change event | Fracht Connect checks origin tag; suppresses re-publish if origin = MDM |
+| **Loop prevention** | `originSystem` stamp on every change event | Integration middleware checks origin tag; suppresses re-publish if origin = MDM |
 | **Approval workflows** | `MatchDecision.decisionConfirmed` + `MergeEvent.mergePerformedBy` | Steward UI workflow; `MergeEvent` audit trail |
-| **Publish-back** | `Crosswalk` provides the target system + record ID for write-back | Fracht Connect routes golden-record deltas to the correct source using crosswalk metadata |
+| **Publish-back** | `Crosswalk` provides the target system + record ID for write-back | Integration middleware routes golden-record deltas to the correct source using crosswalk metadata |
 
 ### 4.2 Ontology Extensions Needed for Phase 2
 
@@ -346,10 +339,10 @@ golden-record updates flow _back_ to source systems.
 
 | Reference Data | Current Source | Centralization Rationale |
 |---------------|----------------|------------------------|
-| Global location codes (UN/LOCODE) | Per-TMS maintenance | Single authoritative source; changes infrequently |
-| Shipment milestone definitions | Per-TMS event catalogs | Enterprise KPI consistency |
-| Global KPI definitions | Spreadsheets / ad hoc | GDWH reporting standardization |
-| Carrier hierarchy structures | CW1 + manual | Global carrier management |
+| Global location codes (UN/LOCODE) | Per-system maintenance | Single authoritative source; changes infrequently |
+| Shipment milestone definitions | Per-system event catalogs | Enterprise KPI consistency |
+| Global KPI definitions | Spreadsheets / ad hoc | Data warehouse reporting standardization |
+| Carrier hierarchy structures | TMS + manual | Global carrier management |
 | Customer hierarchy / grouping | Regional spreadsheets | Enterprise client segmentation |
 
 ### 5.2 Ontology Support
@@ -369,21 +362,18 @@ of the existing model.
 ### Step-by-step using the Kairos toolkit:
 
 ```
- 1. ✅ Party ontology (party.ttl)               — done
- 2. ✅ MDM ontology (mdm.ttl)                   — done
- 3. ✅ Party silver extension                    — done
- 4. ✅ CW1 + Soloplan bronze vocabularies        — done
- 5. ✅ CW1 + Soloplan → Party mappings           — done
- 6. 🔲 MDM silver extension                     — kairos-ontology-medallion-silver
- 7. 🔲 Atlantis bronze vocabulary               — kairos-ontology-medallion-source
- 8. 🔲 Atlantis → Party + MDM mappings          — kairos-ontology-medallion-silver
- 9. 🔲 CW1 → MDM crosswalk mapping             — kairos-ontology-medallion-silver
-10. 🔲 Soloplan → MDM crosswalk mapping         — kairos-ontology-medallion-silver
-11. 🔲 MDM gold extension                       — kairos-ontology-medallion-gold
-12. 🔲 Mapping coverage reports                 — kairos-ontology-mapping-report
-13. 🔲 Silver DDL projection                    — kairos project --target silver
-14. 🔲 dbt model projection                     — kairos project --target dbt
-15. 🔲 Gold / Power BI projection               — kairos project --target powerbi
+ 1. Party ontology (party.ttl)
+ 2. MDM ontology (mdm.ttl)
+ 3. Party silver extension
+ 4. Source system bronze vocabularies
+ 5. Source → Party mappings
+ 6. MDM silver extension
+ 7. Source → MDM crosswalk mappings
+ 8. MDM gold extension
+ 9. Mapping coverage reports
+10. Silver DDL projection                    — kairos project --target silver
+11. dbt model projection                     — kairos project --target dbt
+12. Gold / BI projection                     — kairos project --target powerbi
 ```
 
 ### Validation at each step:
@@ -412,7 +402,7 @@ python -m kairos_ontology project --target powerbi
 | 1 | MDM is modeled as a **separate domain** (`mdm.ttl`), not embedded in `party.ttl` | MDM is a cross-cutting concern; separation allows extending to Location, Carrier, and Reference Data domains without modifying `party.ttl` |
 | 2 | `GoldenRecord` links to `party:Party` via `mastersParty` (not subclass) | A golden record is _about_ a party, not _a kind of_ party — composition over inheritance |
 | 3 | `masteringDomain` is a string, not an enum | Allows extending to new domains (Location, Cargo) without modifying the MDM ontology |
-| 4 | Crosswalks are per-source-system-instance, not per-product | CW1 Zurich and CW1 Singapore are separate source systems with separate crosswalks — reflecting Fracht's federated operating model |
+| 4 | Crosswalks are per-source-system-instance, not per-product | Regional instances of the same product are separate source systems with separate crosswalks — reflecting federated operating models |
 | 5 | Phase 2 classes (`FieldOwnership`, `SyncEvent`) are **designed but not yet modeled** | Avoids over-engineering; will be added to `mdm.ttl` when Phase 2 activates |
 | 6 | Match rules and survivorship rules are **configuration, not ontology** | The ontology captures _what happened_ (match scores, decisions); the _how_ is implementation-level configuration |
 | 7 | SCD Type 2 for all MDM tables | Golden records and crosswalks need full history for audit, compliance, and merge/unmerge traceability |
