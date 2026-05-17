@@ -1,0 +1,481 @@
+# Data Domain Registry — Financial Services Client Hub Blueprint
+#
+# This file defines the recommended data domains for a financial services ontology hub.
+# Each domain specifies which FIBO reference model modules to owl:imports.
+#
+# Usage:
+#   - Tooling can read this file to scaffold a new client project
+#   - Humans can use it as a lookup for "which module do I import for X?"
+#
+# Structure:
+#   L1 groups → L2 domains → import URIs + metadata
+
+schema_version: "1.0"
+
+groups:
+  - id: party-organisation
+    name: "Party & Organisation"
+    question: "Who are we doing business with, and what is their legal/corporate structure?"
+    domains:
+
+      - id: party
+        name: "Party, Person & Agent"
+        folder: "model/ontologies/party/"
+        owns: "Legal persons, natural persons, autonomous agents, party roles, contact details, and party identifiers."
+        does_not_own: "Corporate structure, ownership chains, financial instruments, contracts, or transactions."
+        imports:
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/"
+            module: "FIBO FND / Agents"
+            provides: "AutonomousAgent, SoftwareAgent"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/People/"
+            module: "FIBO FND / People"
+            provides: "Person, date of birth, nationality"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"
+            module: "FIBO FND / Parties"
+            provides: "Party, PartyInRole, situation"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"
+            module: "FIBO BE / Legal Persons"
+            provides: "LegalEntity, LegalPerson, BusinessEntity"
+        standards:
+          - "FIBO FND (EDM Council)"
+          - "FIBO BE (EDM Council)"
+
+      - id: organisation
+        name: "Organisation, Corporate Structure & Ownership"
+        folder: "model/ontologies/organisation/"
+        owns: "Formal organisations, corporate hierarchy, ownership chains, control relationships, partnerships, trusts, and sole proprietorships."
+        does_not_own: "Natural persons, party roles, financial instruments, regulatory filings, or market data."
+        imports:
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/"
+            module: "FIBO FND / Formal Organizations"
+            provides: "FormalOrganization, OrganizationalSubUnit, membership"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/OwnershipAndControl/"
+            module: "FIBO FND / Ownership and Control"
+            provides: "Ownership, Control, OwnershipSituation"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/"
+            module: "FIBO FND / Ownership"
+            provides: "Owner, OwnedAsset, OwnershipRelationship"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Control/"
+            module: "FIBO FND / Control"
+            provides: "ControllingParty, ControlSituation"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/OwnershipParties/"
+            module: "FIBO BE / Ownership Parties"
+            provides: "Shareholder, StakeHolder, ControllingInterestParty"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/"
+            module: "FIBO BE / Partnerships"
+            provides: "Partnership, JointVenture, GeneralPartner, LimitedPartner"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/BE/Trusts/Trusts/"
+            module: "FIBO BE / Trusts"
+            provides: "Trust, Trustee, Beneficiary, Settlor"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/BE/SoleProprietorships/SoleProprietorships/"
+            module: "FIBO BE / Sole Proprietorships"
+            provides: "SoleProprietorship, SoleProprietor"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/BE/PrivateLimitedCompanies/PrivateLimitedCompanies/"
+            module: "FIBO BE / Private Limited Companies"
+            provides: "PrivateLimitedCompany, PrivateCompanyWithLimitedLiability"
+        standards:
+          - "FIBO FND (EDM Council)"
+          - "FIBO BE (EDM Council)"
+
+      - id: regulatory
+        name: "Government, Regulatory & Jurisdictional"
+        folder: "model/ontologies/regulatory/"
+        owns: "Government entities, regulatory bodies, jurisdictions, legal frameworks, and legal capacity."
+        does_not_own: "Compliance obligations, audit evidence, financial instruments, or market infrastructure."
+        imports:
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/BE/GovernmentEntities/GovernmentEntities/"
+            module: "FIBO BE / Government Entities"
+            provides: "Government, GovernmentBody, GovernmentAgency, Instrumentality"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Law/LegalCore/"
+            module: "FIBO FND / Legal Core"
+            provides: "Law, Regulation, Jurisdiction, LegalConstruct"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Law/LegalCapacity/"
+            module: "FIBO FND / Legal Capacity"
+            provides: "LegalCapacity, Signatory, License, Duty"
+        standards:
+          - "FIBO FND (EDM Council)"
+          - "FIBO BE (EDM Council)"
+
+      - id: financial-market-participants
+        name: "Financial Market Participants & Infrastructure"
+        folder: "model/ontologies/financial-market-participants/"
+        owns: "Exchanges, clearing houses, registries, central counterparties, financial intermediaries, financial service providers, and market infrastructure entities."
+        does_not_own: "Legal entity master data, party contact details, financial instruments, or market data."
+        imports:
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/"
+            module: "FIBO FBC / Financial Services Entities"
+            provides: "FinancialServiceProvider, FinancialInstitution, Bank, ClearingHouse"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegulatoryAgencies/"
+            module: "FIBO FBC / Regulatory Agencies"
+            provides: "RegulatoryAgency, RegistrationAuthority, Regulator"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/Markets/"
+            module: "FIBO FBC / Markets"
+            provides: "Exchange, TradingVenue, MarketPlace"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/"
+            module: "FIBO BE / Functional Entities"
+            provides: "FunctionalEntity, EntityInRole"
+        standards:
+          - "FIBO FBC (EDM Council)"
+          - "FIBO BE (EDM Council)"
+
+  - id: agreements-products
+    name: "Agreements & Products"
+    question: "Under what contractual terms and for which products?"
+    domains:
+
+      - id: contracts
+        name: "Agreements, Contracts & Obligations"
+        folder: "model/ontologies/contracts/"
+        owns: "Legal agreements, contracts, contractual terms, conditions, obligations, warranties, and contract lifecycle."
+        does_not_own: "Financial instrument terms, ACTUS cashflow analytics, product catalogs, or transaction settlement."
+        imports:
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/"
+            module: "FIBO FND / Agreements"
+            provides: "Agreement, MutualCommitment, UnilateralCommitment"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
+            module: "FIBO FND / Contracts"
+            provides: "Contract, WrittenContract, ContractualObligation, ContractParty"
+        standards:
+          - "FIBO FND (EDM Council)"
+
+      - id: products-services
+        name: "Financial Products & Services"
+        folder: "model/ontologies/products-services/"
+        owns: "Product catalogs, service offerings, product types, payment schedules, and product lifecycle."
+        does_not_own: "Specific instrument types (securities, derivatives, loans), market data, or party master data."
+        imports:
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/"
+            module: "FIBO FND / Products and Services"
+            provides: "Product, Service, ProductLifecycle"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/PaymentsAndSchedules/"
+            module: "FIBO FND / Payments and Schedules"
+            provides: "Payment, PaymentSchedule, PaymentObligation"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"
+            module: "FIBO FBC / Financial Products and Services"
+            provides: "FinancialProduct, FinancialService, Account, CatalogEntry"
+        standards:
+          - "FIBO FND (EDM Council)"
+          - "FIBO FBC (EDM Council)"
+
+      - id: actus-contract-analytics
+        name: "ACTUS Contract Terms & Cashflow Analytics"
+        folder: "model/ontologies/actus/"
+        owns: "Algorithmic contract types, contract term definitions, cashflow taxonomy, contract state machines, and term applicability."
+        does_not_own: "Legal contract lifecycle, product catalogs, settlement, or market data."
+        imports:
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/ACTUS/ACTUSContractTerms/"
+            module: "FIBO ACTUS / Contract Terms"
+            provides: "ContractTerm, cashflow attributes, maturity, coupon, notional"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/ACTUS/ACTUSTaxonomy/"
+            module: "FIBO ACTUS / Taxonomy"
+            provides: "ContractType taxonomy (PAM, ANN, LAM, NAM, etc.)"
+        standards:
+          - "ACTUS (Algorithmic Contract Types Unified Standards)"
+
+  - id: financial-instruments
+    name: "Financial Instruments"
+    question: "What financial instruments are being traded, held, or managed?"
+    domains:
+
+      - id: instruments
+        name: "Core Financial Instruments"
+        folder: "model/ontologies/instruments/"
+        owns: "Instrument base concepts, instrument identifiers (ISIN, CUSIP, FIGI), debt and equity instrument foundations, and instrument classification."
+        does_not_own: "Specific security types, derivative contracts, loan products, or market prices."
+        imports:
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
+            module: "FIBO FBC / Financial Instruments"
+            provides: "FinancialInstrument, Entitlement, CashInstrument"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"
+            module: "FIBO FBC / Debt"
+            provides: "DebtInstrument, CreditFacility"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Guaranty/"
+            module: "FIBO FBC / Guaranty"
+            provides: "Guaranty, Collateral, SecurityInterest"
+        standards:
+          - "FIBO FBC (EDM Council)"
+
+      - id: securities
+        name: "Securities — Debt, Equities & Funds"
+        folder: "model/ontologies/securities/"
+        owns: "Bonds, notes, equities, shares, fund units, ETFs, security identifiers, listings, restrictions, and issuance details."
+        does_not_own: "Derivatives, loans, market prices/yields, or corporate actions."
+        imports:
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIdentification/"
+            module: "FIBO SEC / Securities Identification"
+            provides: "SecurityIdentifier, ISIN, CUSIP, SEDOL, ticker"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"
+            module: "FIBO SEC / Securities Listings"
+            provides: "Listing, ListedSecurity, TradingVenue"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/"
+            module: "FIBO SEC / Bonds"
+            provides: "Bond, CorporateBond, GovernmentBond, coupon, maturity"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/"
+            module: "FIBO SEC / Equity Instruments"
+            provides: "Share, CommonShare, PreferredShare, EquityInstrument"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/Funds/"
+            module: "FIBO SEC / Funds"
+            provides: "Fund, MutualFund, ETF, FundUnit, NAV"
+        standards:
+          - "FIBO SEC (EDM Council)"
+
+      - id: derivatives
+        name: "Derivatives — Options, Futures, Swaps"
+        folder: "model/ontologies/derivatives/"
+        owns: "Options, futures, forwards, swaps, credit derivatives, rate derivatives, security-based derivatives, and derivative contract terms."
+        does_not_own: "Underlying securities, loans, market data, or settlement transactions."
+        imports:
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"
+            module: "FIBO DER / Derivatives Basics"
+            provides: "DerivativeInstrument, Underlier, ExerciseTerms"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/"
+            module: "FIBO DER / Options"
+            provides: "Option, CallOption, PutOption, OptionPremium"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/FuturesAndForwards/"
+            module: "FIBO DER / Futures and Forwards"
+            provides: "Future, Forward, DeliveryTerms"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/"
+            module: "FIBO DER / Swaps"
+            provides: "Swap, InterestRateSwap, CurrencySwap, SwapLeg"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/DER/CreditDerivatives/CreditDefaultSwaps/"
+            module: "FIBO DER / Credit Default Swaps"
+            provides: "CreditDefaultSwap, CreditEvent, ReferenceEntity"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/DER/RateDerivatives/RateDerivatives/"
+            module: "FIBO DER / Rate Derivatives"
+            provides: "InterestRateDerivative, FRA, Cap, Floor"
+        standards:
+          - "FIBO DER (EDM Council)"
+
+      - id: loans
+        name: "Loans — Commercial, Consumer & Mortgage"
+        folder: "model/ontologies/loans/"
+        owns: "Loan products, loan terms, amortisation schedules, collateral, borrower/lender roles, mortgage specifics, and loan lifecycle."
+        does_not_own: "Securities, derivatives, market data, or party master data."
+        imports:
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansGeneral/Loans/"
+            module: "FIBO LOAN / Loans General"
+            provides: "Loan, LoanContract, Borrower, Lender, LoanTerms"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/CardAccounts/"
+            module: "FIBO LOAN / Card Accounts"
+            provides: "CreditCardAccount, CardIssuer"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/StudentLoans/"
+            module: "FIBO LOAN / Student Loans"
+            provides: "StudentLoan, StudentLoanContract"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/LOAN/RealEstateLoans/MortgageLoans/"
+            module: "FIBO LOAN / Mortgage Loans"
+            provides: "Mortgage, MortgageLoan, PropertyPledge"
+        standards:
+          - "FIBO LOAN (EDM Council)"
+
+  - id: markets-indicators
+    name: "Markets & Indicators"
+    question: "What are the current prices, rates, and economic indicators?"
+    domains:
+
+      - id: market-data
+        name: "Market Data — Prices, Yields & Analytics"
+        folder: "model/ontologies/market-data/"
+        owns: "Market prices, yields, spreads, analytics, valuations, and temporal market snapshots."
+        does_not_own: "Instrument definitions, economic indicators, FX rates, or index compositions."
+        imports:
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/SecurityTemporal/"
+            module: "FIBO MD / Security Temporal"
+            provides: "SecurityPrice, Yield, Spread, PriceAnalytic"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtAnalytics/"
+            module: "FIBO MD / Debt Analytics"
+            provides: "DebtPrice, YieldToMaturity, Duration, Convexity"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/MD/DerivativesTemporal/DerivativesPricing/"
+            module: "FIBO MD / Derivatives Pricing"
+            provides: "OptionPrice, Greeks, ImpliedVolatility"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/MD/CIVTemporal/FundsTemporal/"
+            module: "FIBO MD / Funds Temporal"
+            provides: "FundNAV, FundPerformance"
+        standards:
+          - "FIBO MD (EDM Council)"
+
+      - id: indicators
+        name: "Indicators, Indices, FX & Interest Rates"
+        folder: "model/ontologies/indicators/"
+        owns: "Economic indicators, foreign exchange rates, interest rate benchmarks, market indices, and reference rates."
+        does_not_own: "Instrument-level market data, security prices, or transaction data."
+        imports:
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/"
+            module: "FIBO IND / Economic Indicators"
+            provides: "EconomicIndicator, GDP, CPI, UnemploymentRate"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/IND/ForeignExchange/ForeignExchange/"
+            module: "FIBO IND / Foreign Exchange"
+            provides: "CurrencyPair, ExchangeRate, SpotRate"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/"
+            module: "FIBO IND / Interest Rates"
+            provides: "InterestRate, ReferenceRate, SOFR, EURIBOR"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/IND/MarketIndices/BasketIndices/"
+            module: "FIBO IND / Market Indices"
+            provides: "MarketIndex, BasketConstituent, IndexValue"
+        standards:
+          - "FIBO IND (EDM Council)"
+
+  - id: transactions-events
+    name: "Transactions & Events"
+    question: "What financial transactions and corporate events have occurred?"
+    domains:
+
+      - id: transactions
+        name: "Transactions, Settlement & Positions"
+        folder: "model/ontologies/transactions/"
+        owns: "Financial transactions, trade execution, settlement, clearing, position keeping, and transaction lifecycle."
+        does_not_own: "Instrument definitions, accounting entries, market data, or contract terms."
+        imports:
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/REATransactions/"
+            module: "FIBO FND / REA Transactions"
+            provides: "Transaction, EconomicEvent, EconomicAgent, Commitment"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/MarketTransactions/"
+            module: "FIBO FND / Market Transactions"
+            provides: "MarketTransaction, Trade, Settlement, ClearingProcess"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/SecuritiesTransactions/"
+            module: "FIBO FND / Securities Transactions"
+            provides: "SecuritiesTransaction, BuySide, SellSide, ExecutionVenue"
+        standards:
+          - "FIBO FND (EDM Council)"
+
+      - id: accounting
+        name: "Accounting, Ledger & Financial Reporting"
+        folder: "model/ontologies/accounting/"
+        owns: "Accounting entries, ledger balances, currency amounts, cashflows, equity accounting, and financial reporting."
+        does_not_own: "Transaction execution, instrument definitions, party master data, or market data."
+        imports:
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
+            module: "FIBO FND / Currency Amount"
+            provides: "MonetaryAmount, Currency, AmountOfMoney"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/AccountingEquity/"
+            module: "FIBO FND / Accounting Equity"
+            provides: "FinancialAsset, OwnersEquity, Balance"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CashFlows/"
+            module: "FIBO FND / Cash Flows"
+            provides: "CashFlow, CashInflow, CashOutflow"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/"
+            module: "FIBO FND / ISO 4217 Currency Codes"
+            provides: "ISO currency code list (USD, EUR, GBP, etc.)"
+        standards:
+          - "FIBO FND (EDM Council)"
+          - "ISO 4217"
+
+      - id: corporate-actions
+        name: "Corporate Actions & Events"
+        folder: "model/ontologies/corporate-actions/"
+        owns: "Corporate actions, stock splits, dividends, rights issues, mergers, tender offers, and corporate event lifecycle."
+        does_not_own: "Securities definitions, market prices, transaction settlement, or party master data."
+        imports:
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/CorporateActions/"
+            module: "FIBO CAE / Corporate Actions"
+            provides: "CorporateAction, Dividend, StockSplit, RightsIssue, MergerAcquisition"
+        standards:
+          - "FIBO CAE (EDM Council)"
+
+      - id: securities-issuance
+        name: "Securities Issuance Process"
+        folder: "model/ontologies/securities-issuance/"
+        owns: "Securities issuance workflows, IPO process, underwriting, bookbuilding, allocation, and issuance lifecycle."
+        does_not_own: "Security definitions, corporate actions post-issuance, market data, or settlement."
+        imports:
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/DebtIssuance/"
+            module: "FIBO BP / Debt Issuance"
+            provides: "DebtIssuanceProcess, Underwriting, BookBuilding"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/EquitiesIPOIssuance/"
+            module: "FIBO BP / Equities IPO Issuance"
+            provides: "IPOProcess, Allocation, Prospectus"
+        note: "FIBO BP is provisional. Client may need to extend with custom process steps."
+        standards:
+          - "FIBO BP (EDM Council, provisional)"
+
+  - id: reference-master-data
+    name: "Reference & Master Data"
+    question: "What shared identifiers, classifications, and golden records underpin all domains?"
+    domains:
+
+      - id: reference-data
+        name: "Reference Data, Identifiers & Classifications"
+        folder: "model/ontologies/reference-data/"
+        owns: "Shared identifiers, code lists, classification schemes, places, addresses, dates, time concepts, ratings, and arrangements."
+        does_not_own: "Domain-specific transactions, instrument definitions, or party master data."
+        imports:
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/IdentifiersAndIndices/"
+            module: "FIBO FND / Identifiers and Indices"
+            provides: "Identifier, Index, IdentificationScheme"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/ClassificationSchemes/"
+            module: "FIBO FND / Classification Schemes"
+            provides: "ClassificationScheme, Classifier, IndustrySectorClassifier"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/"
+            module: "FIBO FND / Addresses"
+            provides: "Address, PostalAddress, PhysicalAddress"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Places/Facilities/"
+            module: "FIBO FND / Facilities"
+            provides: "Facility, Site, PhysicalLocation"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
+            module: "FIBO FND / Financial Dates"
+            provides: "Date, DateTime, DatePeriod, BusinessRecurrenceInterval"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/BusinessDates/"
+            module: "FIBO FND / Business Dates"
+            provides: "BusinessDayConvention, BusinessDayAdjustment"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Ratings/"
+            module: "FIBO FND / Ratings"
+            provides: "Rating, CreditRating, RatingAgency, RatingScale"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Reporting/"
+            module: "FIBO FND / Reporting"
+            provides: "Report, ReportingRequirement"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
+            module: "FIBO FND / Relations"
+            provides: "Relation, isPartOf, comprises, isDefinedIn"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/"
+            module: "FIBO FND / Documents"
+            provides: "Document, LegalDocument, ReferenceDocument"
+          - uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Lifecycles/"
+            module: "FIBO FND / Lifecycles"
+            provides: "Lifecycle, LifecycleStage, LifecycleEvent"
+        note: "Cross-cutting domain consumed by all other domains."
+        standards:
+          - "FIBO FND (EDM Council)"
+
+      - id: compliance
+        name: "Compliance, Governance & Audit"
+        folder: "model/ontologies/compliance/"
+        owns: "Regulatory compliance obligations, governance policies, audit evidence, KYC/AML requirements, and reporting obligations."
+        does_not_own: "Regulatory body definitions, party master data, financial instruments, or transactions."
+        imports: []
+        note: "Primarily a client extension domain. Build on top of regulatory, reference-data, and party domains. FIBO does not define a dedicated compliance module — clients compose from FND/Law, BE/GovernmentEntities, and FND/Arrangements/Reporting."
+        standards: []
+
+      - id: mdm
+        name: "MDM Hub (Golden Records, Crosswalks, Match/Merge)"
+        folder: "model/ontologies/mdm/"
+        owns: "Golden records, crosswalks (source-to-golden links), source system registry, match groups, merge events, and survivorship rules."
+        does_not_own: "Domain-specific entity definitions — it masters them via reference."
+        imports: []
+        note: "MDM does not import domain ontologies. Instead, domain entities reference MDM via mastersEntity. This keeps MDM decoupled and reusable across any domain."
+        standards:
+          - "Gartner MDM Implementation Styles"
+
+  - id: client-extensions
+    name: "Client Extension Sectors"
+    question: "What sector-specific extensions are needed beyond core FIBO?"
+    domains:
+
+      - id: insurance
+        name: "Insurance — Policy, Claims & Underwriting"
+        folder: "model/ontologies/insurance/"
+        owns: "Insurance policies, claims, underwriting, premiums, coverage, loss events, and actuarial concepts."
+        does_not_own: "Core financial instruments, banking products, securities, or market data."
+        imports: []
+        note: "Client extension domain. FIBO does not include a dedicated insurance module. Build on contracts, products-services, and party domains. Consider ACORD standards for alignment."
+        standards:
+          - "ACORD (reference)"
+
+      - id: trade-finance
+        name: "Trade Finance — Letters of Credit, Guarantees & Collections"
+        folder: "model/ontologies/trade-finance/"
+        owns: "Letters of credit, bank guarantees, documentary collections, trade finance instruments, and documentary workflows."
+        does_not_own: "General contracts, securities, derivatives, or party master data."
+        imports: []
+        note: "Client extension domain. Build on contracts, instruments, and party domains. Consider ICC UCP 600 / URDG 758 for alignment."
+        standards:
+          - "ICC UCP 600 (reference)"
+          - "ICC URDG 758 (reference)"

@@ -1,7 +1,7 @@
 package:
   id: financial-services
   name: "Kairos Financial Services Accelerator Pack"
-  version: "1.0.0"
+  version: "2.1.0"
   description: "Pre-composed ontology bundle for financial services companies"
   namespace: "https://www.kairosflow.ai/ont/accelerator/financial-services#"
   
@@ -11,25 +11,53 @@ package:
     - Auditors
     - Financial services providers
     - Insurance companies
-    - Trade finance
+    - Trade finance institutions
 
   includes:
-    - id: FIBO-FND-Agents
-      name: "FIBO Foundation – Agents and People"
-      uri: "https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/"
-      focus: "Autonomous agents, people"
-    - id: FIBO-FND-Orgs
-      name: "FIBO Foundation – Formal Organizations"
-      uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/"
-      focus: "Legal entities, organisations"
-    - id: FIBO-FND-Contracts
-      name: "FIBO Foundation – Contracts"
-      uri: "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
-      focus: "Agreements, contractual obligations"
-    - id: FIBO-BE-Partnerships
-      name: "FIBO Business Entities – Partnerships"
-      uri: "https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/"
-      focus: "Partnerships, joint ventures"
+    - id: FIBO-FND
+      name: "FIBO Foundations"
+      uri: "https://spec.edmcouncil.org/fibo/ontology/FND/"
+      focus: "Agents, parties, organisations, agreements, contracts, dates, places, accounting, transactions"
+    - id: FIBO-BE
+      name: "FIBO Business Entities"
+      uri: "https://spec.edmcouncil.org/fibo/ontology/BE/"
+      focus: "Legal entities, corporate structure, ownership, partnerships, trusts, government entities"
+    - id: FIBO-FBC
+      name: "FIBO Financial Business and Commerce"
+      uri: "https://spec.edmcouncil.org/fibo/ontology/FBC/"
+      focus: "Financial instruments, intermediaries, registries, products and services"
+    - id: FIBO-SEC
+      name: "FIBO Securities"
+      uri: "https://spec.edmcouncil.org/fibo/ontology/SEC/"
+      focus: "Debt, equities, funds, issuance, classification, listings"
+    - id: FIBO-DER
+      name: "FIBO Derivatives"
+      uri: "https://spec.edmcouncil.org/fibo/ontology/DER/"
+      focus: "Options, futures, forwards, swaps, credit/rate/security-based derivatives"
+    - id: FIBO-LOAN
+      name: "FIBO Loans"
+      uri: "https://spec.edmcouncil.org/fibo/ontology/LOAN/"
+      focus: "Commercial, consumer, student, mortgage, green loans"
+    - id: FIBO-IND
+      name: "FIBO Indicators and Indices"
+      uri: "https://spec.edmcouncil.org/fibo/ontology/IND/"
+      focus: "Economic indicators, FX, interest rates, market indices"
+    - id: FIBO-MD
+      name: "FIBO Market Data"
+      uri: "https://spec.edmcouncil.org/fibo/ontology/MD/"
+      focus: "Prices, yields, analytics, temporal market data"
+    - id: FIBO-CAE
+      name: "FIBO Corporate Actions and Events"
+      uri: "https://spec.edmcouncil.org/fibo/ontology/CAE/"
+      focus: "Corporate actions: splits, dividends, offerings, events"
+    - id: FIBO-BP
+      name: "FIBO Business Process"
+      uri: "https://spec.edmcouncil.org/fibo/ontology/BP/"
+      focus: "Securities issuance, transaction workflows"
+    - id: FIBO-ACTUS
+      name: "ACTUS Contract Analytics"
+      uri: "https://spec.edmcouncil.org/fibo/ontology/ACTUS/"
+      focus: "Algorithmic contract terms, cashflow taxonomy"
 
   excludes:
     - id: DCSA
@@ -49,3 +77,4 @@ package:
 
   standards_alignment:
     - "FIBO (EDM Council)"
+    - "ACTUS (Algorithmic Contract Types Unified Standards)"

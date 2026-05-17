@@ -15,19 +15,25 @@ This accelerator pack is designed for organisations in the financial services se
 
 ## What's included?
 
-The Financial Services Accelerator imports **FIBO foundations** and the **BSP** commercial/financial ontology:
+The Financial Services Accelerator imports the **FIBO** (Financial Industry Business Ontology) suite:
 
 | Ontology | Standard | Focus |
 |----------|----------|-------|
-| FIBO FND – Agents | EDM Council FIBO | Autonomous agents, people |
-| FIBO FND – Organizations | EDM Council FIBO | Legal entities, organisations |
-| FIBO FND – Contracts | EDM Council FIBO | Agreements, contractual obligations |
-| FIBO BE – Partnerships | EDM Council FIBO | Partnerships, joint ventures |
-| BSP | ISO 20197-1:2024 | Party, contract, invoice, settlement |
+| FIBO FND | EDM Council FIBO | Agents, parties, organisations, agreements, contracts, dates, places, accounting, transactions |
+| FIBO BE | EDM Council FIBO | Legal entities, corporate structure, ownership, partnerships, trusts, government entities |
+| FIBO FBC | EDM Council FIBO | Financial instruments, intermediaries, registries, products and services |
+| FIBO SEC | EDM Council FIBO | Debt, equities, funds, issuance, classification, listings |
+| FIBO DER | EDM Council FIBO | Options, futures, forwards, swaps, credit/rate/security-based derivatives |
+| FIBO LOAN | EDM Council FIBO | Commercial, consumer, student, mortgage, green loans |
+| FIBO IND | EDM Council FIBO | Economic indicators, FX, interest rates, market indices |
+| FIBO MD | EDM Council FIBO | Prices, yields, analytics, temporal market data |
+| FIBO CAE | EDM Council FIBO | Corporate actions: splits, dividends, offerings, events |
+| FIBO BP | EDM Council FIBO | Securities issuance, transaction workflows |
+| FIBO ACTUS | ACTUS / EDM Council | Algorithmic contract terms, cashflow taxonomy |
 
 ### What's NOT included?
 
-- **DCSA, MMT, TIC, IMO, WCO, Sustainability** — use the [Logistics Accelerator](../logistics/) for logistics-specific ontologies.
+- **DCSA, MMT, TIC, IMO, WCO, BSP, Sustainability** — use the [Logistics Accelerator](../logistics/) for logistics-specific ontologies.
 
 ## How to use
 
@@ -43,9 +49,16 @@ Import the root Turtle file to pull in every financial-services ontology at once
 Or, if working locally, point your tool at:
 
 ```
-ontology-reference-models/accelerator-packs/financial-services/financial-services-accelerator.ttl
+ontology-reference-models/accelerator-packs/financial-services/current/financial-services-accelerator.ttl
 ```
+
+## Client Hub Blueprint
+
+See the [client-hub-blueprint/](client-hub-blueprint/) folder for:
+
+- **[BLUEPRINT.md](client-hub-blueprint/BLUEPRINT.md)** — recommended folder structure and import guidance for organising a client ontology hub
+- **[data-domains.yaml](client-hub-blueprint/data-domains.yaml)** — machine-readable domain registry with ownership boundaries and import URIs
 
 ## Version
 
-See [VERSION](VERSION) — currently **1.0.0**.
+See [VERSION](VERSION) — currently **2.1.0**.
