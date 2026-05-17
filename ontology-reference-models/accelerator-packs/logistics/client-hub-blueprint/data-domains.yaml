@@ -1,0 +1,370 @@
+# Data Domain Registry — Logistics Client Hub Blueprint
+#
+# This file defines the recommended data domains for a logistics ontology hub.
+# Each domain specifies which Kairos reference model modules to owl:imports.
+#
+# Usage:
+#   - Tooling can read this file to scaffold a new client project
+#   - Humans can use it as a lookup for "which module do I import for X?"
+#
+# Structure:
+#   L1 groups → L2 domains → import URIs + metadata
+
+schema_version: "1.0"
+
+groups:
+  - id: party-commercial
+    name: "Party & Commercial"
+    question: "Who are we doing business with, under what terms, at what price?"
+    domains:
+
+      - id: party
+        name: "Party, Role & Organisation"
+        folder: "model/ontologies/party/"
+        owns: "Legal entities, customers, suppliers, carriers, terminal operators, agents, authorities, contacts, roles, and organisational hierarchy."
+        does_not_own: "Contracts, bookings, invoices, operational events, or terminal moves."
+        imports:
+          - uri: "https://www.kairosflow.ai/ont/bsp/party#"
+            module: "BSP / Party"
+            provides: "Party, Organisation, Customer, Supplier, role assignments"
+          - uri: "https://www.kairosflow.ai/ont/mmt/party#"
+            module: "MMT / Party"
+            provides: "Carrier, transport service provider, consignee, consignor"
+        standards:
+          - "UN/CEFACT CCL"
+          - "ISO 20197-1:2024 BSP-RDM"
+
+      - id: commercial
+        name: "Customer, Contract & Commercial Agreement"
+        folder: "model/ontologies/commercial/"
+        owns: "Commercial relationships, service agreements, trade terms, customer commitments, pricing conditions at contract level."
+        does_not_own: "Surcharge calculation, invoice posting, booking execution, or terminal tariff events."
+        imports:
+          - uri: "https://www.kairosflow.ai/ont/bsp/commercial#"
+            module: "BSP / Commercial"
+            provides: "Contract, agreement, trade terms, service commitments"
+        standards:
+          - "ISO 20197-1:2024 BSP-RDM"
+          - "UN/CEFACT SCRDM"
+
+      - id: booking
+        name: "Booking, Quote & Order Management"
+        folder: "model/ontologies/booking/"
+        owns: "Booking requests, quotes, transport orders, customer instructions, booking confirmation, and booking lifecycle."
+        does_not_own: "Transport execution events, invoices, vessel schedules, or terminal handling."
+        imports:
+          - uri: "https://www.kairosflow.ai/ont/dcsa/booking#"
+            module: "DCSA / Booking"
+            provides: "Booking, shipping instruction, confirmation, amendment"
+          - uri: "https://www.kairosflow.ai/ont/bsp/documents#"
+            module: "BSP / Documents"
+            provides: "Order document, commercial instruction"
+        standards:
+          - "DCSA Booking API"
+          - "ISO 20197-1:2024 BSP-RDM"
+
+      - id: financial
+        name: "Tariff, Surcharge, Invoice & Settlement"
+        folder: "model/ontologies/financial/"
+        owns: "Tariff structures, surcharges, charge calculation, invoices, credit notes, settlement, and billing status."
+        does_not_own: "Customer contracts, booking lifecycle, emissions methodology, or operational events."
+        imports:
+          - uri: "https://www.kairosflow.ai/ont/bsp/financial#"
+            module: "BSP / Financial"
+            provides: "Invoice, charge, payment, settlement, credit note"
+        standards:
+          - "ISO 20197-1:2024 BSP-RDM"
+          - "UN/CEFACT CII"
+
+  - id: transport-cargo
+    name: "Transport & Cargo"
+    question: "What is being moved, by which route and asset?"
+    domains:
+
+      - id: consignment
+        name: "Consignment, Shipment & Transport Movement"
+        folder: "model/ontologies/consignment/"
+        owns: "Consignments, shipments, transport legs, multimodal chains, handovers, and transport status."
+        does_not_own: "Terminal micro-events, commercial pricing, customs declarations, or vehicle service details."
+        imports:
+          - uri: "https://www.kairosflow.ai/ont/mmt/consignment#"
+            module: "MMT / Consignment"
+            provides: "Consignment, shipment, transport movement, leg, handover"
+          - uri: "https://www.kairosflow.ai/ont/dcsa/shipment-journey#"
+            module: "DCSA / Shipment Journey"
+            provides: "Shipment, transport plan, carrier service"
+        standards:
+          - "UN/CEFACT MMT-RDM"
+          - "DCSA API Standards"
+
+      - id: cargo
+        name: "Cargo, Goods & Cargo Unit"
+        folder: "model/ontologies/cargo/"
+        owns: "Cargo description, goods classification, packages, weights, dimensions, commodity attributes, and handling requirements."
+        does_not_own: "Transport equipment, terminal moves, automotive services, or DG regulatory rules."
+        imports:
+          - uri: "https://www.kairosflow.ai/ont/mmt/cargo#"
+            module: "MMT / Cargo"
+            provides: "Cargo item, goods, package, weight, dimension, commodity"
+        standards:
+          - "UN/CEFACT MMT-RDM"
+          - "UN/CEFACT CCL"
+
+      - id: equipment
+        name: "Cargo Equipment & Fleet Equipment"
+        folder: "model/ontologies/equipment/"
+        owns: "Trailers, containers, tank containers, reefer units, chassis, swap bodies, equipment identifiers, and equipment status."
+        does_not_own: "Vessel fleet, terminal cranes, cargo contents, or operational moves."
+        imports:
+          - uri: "https://www.kairosflow.ai/ont/mmt/equipment#"
+            module: "MMT / Equipment"
+            provides: "Transport equipment, trailer, container types"
+          - uri: "https://www.kairosflow.ai/ont/dcsa/equipment#"
+            module: "DCSA / Equipment"
+            provides: "Container, reefer, ISO equipment codes"
+        standards:
+          - "UN/CEFACT MMT-RDM"
+          - "DCSA API Standards"
+
+      - id: route-schedule
+        name: "Route, Network, Schedule & Service"
+        folder: "model/ontologies/route-schedule/"
+        owns: "Service network, routes, corridors, sailing schedules, service loops, cut-offs, and transit times."
+        does_not_own: "Actual cargo loaded, terminal moves, invoices, or customer contracts."
+        imports:
+          - uri: "https://www.kairosflow.ai/ont/dcsa/schedule#"
+            module: "DCSA / Schedule"
+            provides: "Vessel schedule, port call plan, cut-off, service loop"
+          - uri: "https://www.kairosflow.ai/ont/mmt/route-network#"
+            module: "MMT / Route Network"
+            provides: "Route, corridor, network connection, transit time"
+        standards:
+          - "DCSA Operational Vessel Schedules"
+          - "UN/CEFACT MMT-RDM"
+
+      - id: intermodal
+        name: "Intermodal Rail, Barge & Inland Execution"
+        folder: "model/ontologies/intermodal/"
+        owns: "Inland legs, rail/barge connections, road execution, terminal-to-terminal handovers, and inland route execution."
+        does_not_own: "Maritime voyage execution, terminal yard moves, cargo master data, or customer contracts."
+        imports:
+          - uri: "https://www.kairosflow.ai/ont/mmt/inland-transport#"
+            module: "MMT / Inland Transport"
+            provides: "Inland leg, rail connection, barge connection, road transport"
+        standards:
+          - "UN/CEFACT MMT-RDM"
+
+  - id: maritime-terminal
+    name: "Maritime & Terminal"
+    question: "What happens on vessels, at berths, gates, and yards?"
+    domains:
+
+      - id: vessel-maritime
+        name: "Vessel, Fleet & Maritime Operations"
+        folder: "model/ontologies/vessel-maritime/"
+        owns: "Vessels, vessel characteristics, voyages, sea legs, port calls, berthing, and fleet capabilities."
+        does_not_own: "Terminal yard moves, customer bookings, cargo commercial terms, or emissions formulas."
+        imports:
+          - uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#"
+            module: "IMO / Vessel Registry"
+            provides: "Vessel, IMO number, flag state, vessel type"
+          - uri: "https://www.kairosflow.ai/ont/dcsa/vessel-journey#"
+            module: "DCSA / Vessel Journey"
+            provides: "Voyage, sea leg, vessel operational status"
+          - uri: "https://www.kairosflow.ai/ont/imo/port-call#"
+            module: "IMO / Port Call"
+            provides: "Port call, arrival, departure, berth stay"
+        standards:
+          - "IMO Compendium / FAL"
+          - "DCSA API Standards"
+
+      - id: terminal-operations
+        name: "Terminal, Yard, Berth, Gate & Handling Operations"
+        folder: "model/ontologies/terminal-operations/"
+        owns: "Terminal infrastructure, yard areas, gates, berths, storage zones, stevedoring, load/discharge moves, and handling instructions."
+        does_not_own: "Customer contracts, route network, vessel master data, cargo semantics, or customs declarations."
+        imports:
+          - uri: "https://www.kairosflow.ai/ont/tic/terminal-infrastructure#"
+            module: "TIC / Terminal Infrastructure"
+            provides: "Terminal, berth, yard, gate, storage zone, rail head"
+          - uri: "https://www.kairosflow.ai/ont/tic/handling-operations#"
+            module: "TIC / Handling Operations"
+            provides: "Stevedoring, load/discharge move, handling instruction, move sequence"
+          - uri: "https://www.kairosflow.ai/ont/tic/locations#"
+            module: "TIC / Locations"
+            provides: "Terminal location, yard position, berth position"
+        standards:
+          - "TIC 4.0"
+          - "BSI PAS 4000:2026"
+
+      - id: roro
+        name: "RoRo Operations"
+        folder: "model/ontologies/roro/"
+        owns: "RoRo-specific cargo concepts: trailers, self-drive units, rolling machinery, lane-metre planning, RoRo load/discharge context."
+        does_not_own: "Generic cargo master data, vessel master data, terminal yard moves, or commercial charges."
+        imports:
+          - uri: "https://www.kairosflow.ai/ont/mmt/cargo#"
+            module: "MMT / Cargo"
+            provides: "Base cargo classification for rolling cargo"
+          - uri: "https://www.kairosflow.ai/ont/tic/handling-operations#"
+            module: "TIC / Handling Operations"
+            provides: "RoRo handling context"
+        note: "Primarily a client extension domain. Reference models provide base classes; client adds RoRo-specific subclasses and properties."
+        standards:
+          - "UN/CEFACT MMT-RDM"
+          - "TIC 4.0"
+
+      - id: automotive
+        name: "Automotive Logistics & Vehicle Services"
+        folder: "model/ontologies/automotive/"
+        owns: "Vehicle-unit lifecycle, PDI, wash, enhancement, modification, technical service, body repair, storage, and release readiness."
+        does_not_own: "Generic RoRo handling, general cargo classification, terminal yard master data, or contract terms."
+        imports:
+          - uri: "https://www.kairosflow.ai/ont/tic/automotive-services#"
+            module: "TIC / Automotive Services"
+            provides: "Vehicle service types, PDI, wash, repair, storage"
+        standards:
+          - "TIC 4.0"
+
+  - id: compliance-sustainability
+    name: "Compliance & Sustainability"
+    question: "What must be reported or restricted?"
+    domains:
+
+      - id: dangerous-goods
+        name: "Dangerous Goods & Cargo Restrictions"
+        folder: "model/ontologies/dangerous-goods/"
+        owns: "DG restrictions, hazardous cargo attributes, acceptance rules, route/terminal/vessel restrictions, and regulatory classes."
+        does_not_own: "All cargo classification, customs declarations, booking lifecycle, or incident response."
+        imports:
+          - uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#"
+            module: "IMO / Dangerous Goods"
+            provides: "DG item, hazard class, UN number, IMDG classification, restrictions"
+        standards:
+          - "IMDG Code"
+          - "IMO Compendium"
+
+      - id: customs
+        name: "Customs, Border & Regulatory Declarations"
+        folder: "model/ontologies/customs/"
+        owns: "Customs declarations, border filings, regulatory declarations, authority messages, and regulatory status."
+        does_not_own: "Transport execution, cargo operations, commercial contracts, or DG acceptance rules."
+        imports:
+          - uri: "https://www.kairosflow.ai/ont/wco/customs#"
+            module: "WCO / Customs"
+            provides: "Customs declaration, filing, inspection, import/export reference"
+          - uri: "https://www.kairosflow.ai/ont/wco/trade-facilitation#"
+            module: "WCO / Trade Facilitation"
+            provides: "AEO, single window, risk assessment"
+        standards:
+          - "WCO Data Model 3.10.0"
+          - "UN/CEFACT Cross-Border Management"
+
+      - id: compliance
+        name: "Compliance, Governance, Policy & Legal"
+        folder: "model/ontologies/compliance/"
+        owns: "Regulatory policies, corporate governance, privacy, audit evidence, and legal document metadata."
+        does_not_own: "Customs filings, cargo restrictions, commercial contracts, or invoice settlement."
+        imports:
+          - uri: "https://www.kairosflow.ai/ont/bsp/compliance#"
+            module: "BSP / Compliance"
+            provides: "Compliance obligation, policy, regulatory requirement"
+        standards:
+          - "ISO 20197-1:2024 BSP-RDM"
+
+      - id: sustainability
+        name: "Sustainability, Carbon, Energy & ESG"
+        folder: "model/ontologies/sustainability/"
+        owns: "Carbon intensity, emissions factors, energy consumption, modal-shift metrics, Scope 1/2/3 reporting, and ESG indicators."
+        does_not_own: "Commercial surcharge pricing, operational events, or vessel/terminal master data."
+        imports:
+          - uri: "https://www.kairosflow.ai/ont/sustainability/carbon#"
+            module: "Sustainability / Carbon"
+            provides: "Carbon emission, emission factor, CO₂ intensity, tonne-km"
+          - uri: "https://www.kairosflow.ai/ont/sustainability/energy#"
+            module: "Sustainability / Energy"
+            provides: "Energy consumption, fuel type, modal shift metric"
+        standards:
+          - "ISO 14083:2023"
+          - "GLEC Framework"
+          - "EU MRV/ETS"
+
+  - id: visibility-events
+    name: "Visibility & Events"
+    question: "What happened, where, when, to what?"
+    domains:
+
+      - id: events
+        name: "Track & Trace / Operational Events"
+        folder: "model/ontologies/events/"
+        owns: "Normalised event model across cargo, equipment, vessel, terminal, gate, and handover events."
+        does_not_own: "Master definitions of cargo, vessel, equipment, terminal, route, or customer."
+        imports:
+          - uri: "https://www.kairosflow.ai/ont/dcsa/track-and-trace#"
+            module: "DCSA / Track and Trace"
+            provides: "Shipment event, equipment event, transport event"
+          - uri: "https://www.kairosflow.ai/ont/dcsa/events#"
+            module: "DCSA / Events"
+            provides: "Event classification, event type codes"
+          - uri: "https://www.kairosflow.ai/ont/tic/events#"
+            module: "TIC / Events"
+            provides: "Terminal operational events, gate events"
+        standards:
+          - "DCSA Track & Trace"
+          - "TIC 4.0"
+          - "GS1 EPCIS/CBV (reference)"
+
+      - id: claims
+        name: "Claims, Damage, Exception & Incident Management"
+        folder: "model/ontologies/claims/"
+        owns: "Damage records, claims, operational exceptions, incidents, root-cause classification, and resolution status."
+        does_not_own: "Routine operational events, cargo master data, vehicle service completion, or invoice settlement."
+        imports: []
+        note: "Primarily a client extension domain. No dedicated reference model — build on top of events and cargo domains."
+        standards: []
+
+      - id: documents
+        name: "Documents, Messages & Evidence"
+        folder: "model/ontologies/documents/"
+        owns: "Business and transport documents, message metadata, document versions, evidence, and document-to-shipment links."
+        does_not_own: "Semantic truth of cargo, bookings, customs, or invoices — references them via links."
+        imports:
+          - uri: "https://www.kairosflow.ai/ont/bsp/documents#"
+            module: "BSP / Documents"
+            provides: "Document types, evidence, attachments"
+          - uri: "https://www.kairosflow.ai/ont/dcsa/transport-documents#"
+            module: "DCSA / Transport Documents"
+            provides: "Bill of lading, waybill, shipping instruction document"
+        standards:
+          - "ISO 20197-1:2024 BSP-RDM"
+          - "DCSA eBL"
+
+      - id: reference-data
+        name: "Master Data, Code Lists & Reference Data"
+        folder: "model/ontologies/reference-data/"
+        owns: "Shared identifiers, code lists, location codes, port codes, equipment type codes, status codes, UoM, and currency."
+        does_not_own: "Domain-specific transactions or operational events."
+        imports:
+          - uri: "https://www.kairosflow.ai/ont/bsp/reference-data#"
+            module: "BSP / Reference Data"
+            provides: "Code list, location, country, currency, UoM"
+        note: "Cross-cutting domain consumed by all other domains."
+        standards:
+          - "UN/LOCODE"
+          - "ISO code lists"
+          - "UN/CEFACT CCL"
+
+  - id: master-data-management
+    name: "Master Data Management"
+    question: "What is the single golden-record truth?"
+    domains:
+
+      - id: mdm
+        name: "MDM Hub (Golden Records, Crosswalks, Match/Merge)"
+        folder: "model/ontologies/mdm/"
+        owns: "Golden records, crosswalks (source-to-golden links), source system registry, match groups, merge events, and survivorship rules."
+        does_not_own: "Domain-specific entity definitions — it masters them via reference."
+        imports: []
+        note: "MDM does not import domain ontologies. Instead, domain entities reference MDM via mastersEntity. This keeps MDM decoupled and reusable across any domain."
+        standards:
+          - "Gartner MDM Implementation Styles"
