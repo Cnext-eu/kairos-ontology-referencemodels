@@ -102,6 +102,15 @@ groups:
         folder: "model/ontologies/cargo/"
         owns: "Cargo description, goods classification, packages, weights, dimensions, commodity attributes, and handling requirements."
         does_not_own: "Transport equipment, terminal moves, automotive services, or DG regulatory rules."
+        overlaps:
+          - class: Dimension
+            candidates: [BSP/Reference, MMT/Cargo]
+            resolved_to: MMT/Cargo
+            rationale: "Physical dimensions relate to cargo handling in transport."
+          - class: Weight
+            candidates: [BSP/Reference, MMT/Cargo]
+            resolved_to: MMT/Cargo
+            rationale: "Weight is cargo-operational context."
         imports:
           - uri: "https://www.kairosflow.ai/ont/mmt/cargo#"
             module: "MMT / Cargo"
@@ -164,6 +173,11 @@ groups:
         folder: "model/ontologies/vessel-maritime/"
         owns: "Vessels, vessel characteristics, voyages, sea legs, port calls, berthing, and fleet capabilities."
         does_not_own: "Terminal yard moves, customer bookings, cargo commercial terms, or emissions formulas."
+        overlaps:
+          - class: ClassificationSociety
+            candidates: [IMO/Party, IMO/Vessel-Registry]
+            resolved_to: IMO/Party
+            rationale: "Both are IMO — use Party module for the organizational entity."
         imports:
           - uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#"
             module: "IMO / Vessel Registry"
@@ -249,6 +263,11 @@ groups:
         folder: "model/ontologies/customs/"
         owns: "Customs declarations, border filings, regulatory declarations, authority messages, and regulatory status."
         does_not_own: "Transport execution, cargo operations, commercial contracts, or DG acceptance rules."
+        overlaps:
+          - class: TariffClassification
+            candidates: [BSP/Compliance, WCO/Customs]
+            resolved_to: WCO/Customs
+            rationale: "WCO is authoritative for HS codes and tariff classification."
         imports:
           - uri: "https://www.kairosflow.ai/ont/wco/customs#"
             module: "WCO / Customs"
@@ -299,6 +318,15 @@ groups:
         folder: "model/ontologies/events/"
         owns: "Normalised event model across cargo, equipment, vessel, terminal, gate, and handover events."
         does_not_own: "Master definitions of cargo, vessel, equipment, terminal, route, or customer."
+        overlaps:
+          - class: ShipmentEvent
+            candidates: [BSP/Commercial, DCSA/Events]
+            resolved_to: DCSA/Events
+            rationale: "DCSA event model is authoritative for shipping milestones."
+          - class: InspectionEvent
+            candidates: [MMT/Events, TIC/Events]
+            resolved_to: TIC/Events
+            rationale: "Inspections are terminal operations."
         imports:
           - uri: "https://www.kairosflow.ai/ont/dcsa/track-and-trace#"
             module: "DCSA / Track and Trace"

@@ -243,6 +243,27 @@ client's specific operations.
 
 ---
 
+## Overlap Resolutions
+
+Where a class appears in multiple reference modules, `data-domains.yaml` records
+which module is **canonical** via the `overlaps` field on each domain. Review
+these resolutions before modeling starts to avoid duplicate imports.
+
+**Resolution principles:**
+
+| Principle | Application |
+|---|---|
+| Authority first | Use the most authoritative standard (IMO for vessels, WCO for customs, DCSA for shipping events) |
+| Transport-centric | Prefer MMT over BSP for operational concepts |
+| Domain ownership | Each class is owned by one domain; others reference via imports |
+| No duplication | Never subclass the same concept from two parents — pick one canonical source |
+| Equivalence later | Add `owl:equivalentClass` only if cross-model querying is needed |
+
+See `data-domains.yaml` → `overlaps` entries for the full list of resolved
+classes.
+
+---
+
 ## Reference
 
 - Domain registry with full import mappings: [`data-domains.yaml`](data-domains.yaml)
