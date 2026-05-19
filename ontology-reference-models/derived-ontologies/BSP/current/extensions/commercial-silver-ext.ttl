@@ -1,0 +1,177 @@
+@prefix : <https://www.kairosflow.ai/ont/bsp/commercial/silver-ext#> .
+@prefix bsp-comm: <https://www.kairosflow.ai/ont/bsp/commercial#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix kairos-ext: <https://kairos.cnext.eu/ext#> .
+
+# =============================================================================
+# Silver Extension — BSP Commercial Domain
+# =============================================================================
+
+: a owl:Ontology ;
+    dcterms:title "BSP Commercial — Silver Extension" ;
+    dcterms:description "Silver-layer projection annotations for the BSP Commercial domain ontology. Controls DDL generation, SCD behaviour, and table structure." ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-19"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
+    owl:imports <https://www.kairosflow.ai/ont/bsp/commercial#> ;
+    kairos-ext:namingConvention "camel-to-snake" ;
+    kairos-ext:includeNaturalKeyColumn "true"^^xsd:boolean ;
+    kairos-ext:inlineRefThreshold "3"^^xsd:integer .
+
+# =============================================================================
+# Class Annotations — Commercial Transaction Hierarchy
+# =============================================================================
+
+bsp-comm:CommercialTransaction
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean ;
+    kairos-ext:inheritanceStrategy "discriminator" ;
+    kairos-ext:discriminatorColumn "transaction_type" ;
+    kairos-ext:clusterBy "is_current, transaction_type" .
+
+bsp-comm:PurchaseOrder
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean ;
+    kairos-ext:naturalKey "purchaseOrderNumber" .
+
+bsp-comm:SalesOrder
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+bsp-comm:Quotation
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+bsp-comm:SalesContract
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+# =============================================================================
+# Class Annotations — Order Line
+# =============================================================================
+
+bsp-comm:OrderLine
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean ;
+    kairos-ext:naturalKey "lineNumber" .
+
+# =============================================================================
+# Class Annotations — Product Hierarchy
+# =============================================================================
+
+bsp-comm:Product
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean ;
+    kairos-ext:inheritanceStrategy "discriminator" ;
+    kairos-ext:discriminatorColumn "product_type" ;
+    kairos-ext:naturalKey "productCode" .
+
+bsp-comm:TradeItem
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+# =============================================================================
+# Class Annotations — Shipment Hierarchy
+# =============================================================================
+
+bsp-comm:Shipment
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean ;
+    kairos-ext:inheritanceStrategy "discriminator" ;
+    kairos-ext:discriminatorColumn "shipment_type" ;
+    kairos-ext:naturalKey "shipmentNumber" ;
+    kairos-ext:clusterBy "is_current, shipment_type" .
+
+bsp-comm:Consignment
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+# =============================================================================
+# Class Annotations — Shipment Detail Tables
+# =============================================================================
+
+bsp-comm:ShipmentLine
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+bsp-comm:TransportService
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+bsp-comm:TransportLeg
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+bsp-comm:TransportEquipment
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+bsp-comm:Package
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+# =============================================================================
+# Class Annotations — Business Event Hierarchy
+# =============================================================================
+
+bsp-comm:BusinessEvent
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean ;
+    kairos-ext:inheritanceStrategy "discriminator" ;
+    kairos-ext:discriminatorColumn "event_type_discriminator" ;
+    kairos-ext:clusterBy "is_current, event_type_discriminator" .
+
+bsp-comm:OrderEvent
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+bsp-comm:ShipmentEvent
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+# =============================================================================
+# Object Property Annotations (FK declarations)
+# =============================================================================
+
+# PurchaseOrder belongs to CommercialTransaction (many-to-one via hasPurchaseOrder)
+bsp-comm:hasPurchaseOrder
+    kairos-ext:silverForeignKey "true"^^xsd:boolean .
+
+# OrderLine belongs to PurchaseOrder — FK on OrderLine (child)
+bsp-comm:hasOrderLine
+    kairos-ext:silverForeignKeyOn bsp-comm:OrderLine .
+
+# OrderLine references Product
+bsp-comm:orderedProduct
+    kairos-ext:silverForeignKey "true"^^xsd:boolean .
+
+# Shipment has ShipmentLines — FK on ShipmentLine (child)
+bsp-comm:hasShipmentLine
+    kairos-ext:silverForeignKeyOn bsp-comm:ShipmentLine .
+
+# Shipment has Packages — FK on Package (child)
+bsp-comm:hasPackage
+    kairos-ext:silverForeignKeyOn bsp-comm:Package .
+
+# Shipment has TransportEquipment — FK on TransportEquipment (child)
+bsp-comm:hasTransportEquipment
+    kairos-ext:silverForeignKeyOn bsp-comm:TransportEquipment .
+
+# BusinessEvent relates to Order
+bsp-comm:relatedToOrder
+    kairos-ext:silverForeignKey "true"^^xsd:boolean .
+
+# BusinessEvent relates to Shipment
+bsp-comm:relatedToShipment
+    kairos-ext:silverForeignKey "true"^^xsd:boolean .
+
+# hasEvent — FK on BusinessEvent (child)
+bsp-comm:hasEvent
+    kairos-ext:silverForeignKey "true"^^xsd:boolean .
+
+# hasShipment — FK on referencing entity
+bsp-comm:hasShipment
+    kairos-ext:silverForeignKey "true"^^xsd:boolean .

@@ -1,0 +1,117 @@
+@prefix : <https://www.kairosflow.ai/ont/bsp/financial/silver-ext#> .
+@prefix bsp-fin: <https://www.kairosflow.ai/ont/bsp/financial#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix kairos-ext: <https://kairos.cnext.eu/ext#> .
+
+# =============================================================================
+# Silver Extension — BSP Financial Domain
+# =============================================================================
+
+: a owl:Ontology ;
+    dcterms:title "BSP Financial — Silver Extension" ;
+    dcterms:description "Silver-layer projection annotations for the BSP Financial domain ontology. Controls DDL generation, SCD behaviour, and table structure." ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-19"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
+    owl:imports <https://www.kairosflow.ai/ont/bsp/financial#> ;
+    kairos-ext:namingConvention "camel-to-snake" ;
+    kairos-ext:includeNaturalKeyColumn "true"^^xsd:boolean ;
+    kairos-ext:inlineRefThreshold "3"^^xsd:integer .
+
+# =============================================================================
+# Class Annotations — Invoice Hierarchy
+# =============================================================================
+
+# Invoice — root class with discriminator. CommercialInvoice and ProformaInvoice
+# flatten into a single table.
+bsp-fin:Invoice
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean ;
+    kairos-ext:inheritanceStrategy "discriminator" ;
+    kairos-ext:discriminatorColumn "invoice_type" ;
+    kairos-ext:naturalKey "invoiceNumber" ;
+    kairos-ext:clusterBy "is_current, invoice_type" .
+
+bsp-fin:CommercialInvoice
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+bsp-fin:ProformaInvoice
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+# =============================================================================
+# Class Annotations — Credit/Debit Notes
+# =============================================================================
+
+bsp-fin:CreditNote
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+bsp-fin:DebitNote
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+# =============================================================================
+# Class Annotations — Invoice Line
+# =============================================================================
+
+bsp-fin:InvoiceLine
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean ;
+    kairos-ext:naturalKey "lineNumber" .
+
+# =============================================================================
+# Class Annotations — Payment
+# =============================================================================
+
+bsp-fin:Payment
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean ;
+    kairos-ext:naturalKey "paymentReference" .
+
+# =============================================================================
+# Class Annotations — Payment Terms (Reference Data)
+# =============================================================================
+
+# PaymentTerms — reusable reference table (e.g., "Net 30", "Net 60").
+# SCD Type 1, ref_ prefix.
+bsp-fin:PaymentTerms
+    kairos-ext:scdType "1" ;
+    kairos-ext:isReferenceData "true"^^xsd:boolean ;
+    kairos-ext:naturalKey "paymentTermsDescription" .
+
+# =============================================================================
+# Class Annotations — Bank Guarantee & Payment Event
+# =============================================================================
+
+bsp-fin:BankGuarantee
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+bsp-fin:PaymentEvent
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+# =============================================================================
+# Object Property Annotations (FK declarations)
+# =============================================================================
+
+# hasInvoice — many-to-one from referencing entity to Invoice
+bsp-fin:hasInvoice
+    kairos-ext:silverForeignKey "true"^^xsd:boolean .
+
+# hasInvoiceLine — Invoice has InvoiceLines (FK on child)
+bsp-fin:hasInvoiceLine
+    kairos-ext:silverForeignKeyOn bsp-fin:InvoiceLine .
+
+# hasPayment — Invoice has Payments (FK on child)
+bsp-fin:hasPayment
+    kairos-ext:silverForeignKeyOn bsp-fin:Payment .
+
+# hasPaymentTerms — many-to-one from referencing entity to PaymentTerms
+bsp-fin:hasPaymentTerms
+    kairos-ext:silverForeignKey "true"^^xsd:boolean .
