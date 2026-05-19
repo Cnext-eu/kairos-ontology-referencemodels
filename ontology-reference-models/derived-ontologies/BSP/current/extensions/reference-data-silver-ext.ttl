@@ -1,0 +1,114 @@
+@prefix : <https://www.kairosflow.ai/ont/bsp/reference-data/silver-ext#> .
+@prefix bsp-ref: <https://www.kairosflow.ai/ont/bsp/reference-data#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix kairos-ext: <https://kairos.cnext.eu/ext#> .
+
+# =============================================================================
+# Silver Extension — BSP Reference Data Domain
+# =============================================================================
+
+: a owl:Ontology ;
+    dcterms:title "BSP Reference Data — Silver Extension" ;
+    dcterms:description "Silver-layer projection annotations for the BSP Reference Data domain ontology. Controls DDL generation, SCD behaviour, and table structure." ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-19"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
+    owl:imports <https://www.kairosflow.ai/ont/bsp/reference-data#> ;
+    kairos-ext:namingConvention "camel-to-snake" ;
+    kairos-ext:includeNaturalKeyColumn "true"^^xsd:boolean ;
+    kairos-ext:inlineRefThreshold "3"^^xsd:integer .
+
+# =============================================================================
+# Class Annotations — Location Hierarchy
+# =============================================================================
+
+# Location — reference data table. All subtypes (Address, Facility, Port,
+# Airport, Warehouse, ManufacturingPlant, Country) flatten into a single table.
+# SCD Type 1 (locations are master data, overwrite on change).
+bsp-ref:Location
+    kairos-ext:scdType "1" ;
+    kairos-ext:isReferenceData "true"^^xsd:boolean ;
+    kairos-ext:inheritanceStrategy "discriminator" ;
+    kairos-ext:discriminatorColumn "location_type" ;
+    kairos-ext:naturalKey "unLocationCode" ;
+    kairos-ext:clusterBy "location_type" .
+
+bsp-ref:Address
+    kairos-ext:scdType "1" ;
+    kairos-ext:isReferenceData "true"^^xsd:boolean .
+
+bsp-ref:Facility
+    kairos-ext:scdType "1" ;
+    kairos-ext:isReferenceData "true"^^xsd:boolean .
+
+bsp-ref:Port
+    kairos-ext:scdType "1" ;
+    kairos-ext:isReferenceData "true"^^xsd:boolean .
+
+bsp-ref:Airport
+    kairos-ext:scdType "1" ;
+    kairos-ext:isReferenceData "true"^^xsd:boolean .
+
+bsp-ref:Warehouse
+    kairos-ext:scdType "1" ;
+    kairos-ext:isReferenceData "true"^^xsd:boolean .
+
+bsp-ref:ManufacturingPlant
+    kairos-ext:scdType "1" ;
+    kairos-ext:isReferenceData "true"^^xsd:boolean .
+
+bsp-ref:Country
+    kairos-ext:scdType "1" ;
+    kairos-ext:isReferenceData "true"^^xsd:boolean ;
+    kairos-ext:naturalKey "countryCode" .
+
+# =============================================================================
+# Class Annotations — Measurement Hierarchy
+# =============================================================================
+
+# Measurement — transactional data (tied to cargo/shipment instances).
+# All subtypes (Weight, Volume, Dimension, MonetaryAmount) flatten in.
+bsp-ref:Measurement
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean ;
+    kairos-ext:inheritanceStrategy "discriminator" ;
+    kairos-ext:discriminatorColumn "measurement_type" .
+
+bsp-ref:Weight
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+bsp-ref:Volume
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+bsp-ref:Dimension
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+bsp-ref:MonetaryAmount
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+# =============================================================================
+# Object Property Annotations (FK declarations)
+# =============================================================================
+
+# hasBillingAddress — many-to-one from referencing entity to Address/Location
+bsp-ref:hasBillingAddress
+    kairos-ext:silverForeignKey "true"^^xsd:boolean .
+
+# hasShippingAddress — many-to-one from referencing entity to Address/Location
+bsp-ref:hasShippingAddress
+    kairos-ext:silverForeignKey "true"^^xsd:boolean .
+
+# hasOriginLocation — many-to-one from referencing entity to Location
+bsp-ref:hasOriginLocation
+    kairos-ext:silverForeignKey "true"^^xsd:boolean .
+
+# hasDestinationLocation — many-to-one from referencing entity to Location
+bsp-ref:hasDestinationLocation
+    kairos-ext:silverForeignKey "true"^^xsd:boolean .
