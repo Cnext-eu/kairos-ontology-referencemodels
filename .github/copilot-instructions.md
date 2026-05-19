@@ -1,102 +1,176 @@
-# Copilot Instructions — Kairos Ontology Reference Models
+<!-- kairos-ontology-toolkit:managed v2.30.2 -->
+# Kairos Ontology Toolkit — Copilot Instructions
 
-## Repository Purpose
+## Session greeting (MANDATORY)
 
-This repository contains **reference ontologies** derived from international standards for use in Kairos client deployments. Each ontology must be strictly aligned with its cited standard — no invented content.
+**IMPORTANT:** On the VERY FIRST response of every new conversation, ALWAYS start
+by displaying the welcome message below BEFORE addressing the user's question.
+This applies even if the user's first message is a direct question — greet first,
+then answer.
 
-## Key Principle
+### Welcome message
 
-> **Only include classes that are explicitly defined or enumerated in the cited standard.**
-> Classes that are "common knowledge" but not in the standard belong in client-specific ontologies, not here.
+> 👋 Welcome to the **Kairos Ontology Toolkit** — an ontology-driven platform that
+> generates data pipelines, BI models, search indexes, and more from OWL/Turtle
+> domain models.
+>
+> **New here?** Invoke the **kairos-ontology-help** skill for a full orientation — it covers
+> the shift-left design philosophy, hub folder structure, available projections,
+> CLI commands, and best practices.
 
-## Repository Structure
+## Project overview
 
+This is a Python toolkit + FastAPI service for managing OWL/Turtle ontologies.
+It provides validation (syntax + SHACL), multi-target projections (dbt, neo4j,
+azure-search, a2ui, prompt), and an AI chat interface via the GitHub Models API.
+
+## Code conventions
+
+- Python 3.12+, src-layout (`src/kairos_ontology/`).
+- Line length: 100 characters (black + ruff).
+- Use `rdflib.Graph` for all RDF operations. Never serialize RDF by string concatenation.
+- Async endpoints in FastAPI routers; sync helpers in the core toolkit.
+- Service code lives under `service/app/`.
+- Tests live under `tests/` (toolkit) and `tests/service/` (API endpoints).
+
+## Open-source & licensing
+
+This project is **open source** under the **Apache License 2.0**, part of the
+**Kairos Community Edition** by Cnext.eu.
+
+### SPDX headers (mandatory)
+
+Every `.py` file MUST start with these two lines:
+
+```python
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Cnext.eu
 ```
-ontology-reference-models/
-├── derived-ontologies/       # Standards-based ontologies
-│   ├── BSP/                  # Baltic Shipping Procedures
-│   ├── DCSA/                 # DCSA Information Model (journey-based)
-│   ├── IMO/                  # IMO FAL/GISIS
-│   ├── MMT/                  # UN/CEFACT Multimodal Transport
-│   ├── Sustainability/       # ISO 14083 / GLEC / EU MRV
-│   ├── TIC/                  # TIC 4.0 / BSI PAS 4000
-│   └── WCO/                  # WCO Data Model 3.10.0
-├── authoritative-ontologies/ # Upstream standards (read-only reference)
-│   └── FIBO/                 # EDM Council FIBO (current/ + archive/)
-├── accelerator-packs/        # Sector-specific bundles
-│   ├── logistics/
-│   └── financial-services/
-├── catalog-v001.xml          # OWL catalog for URI resolution
-└── VERSIONING.md             # Versioning strategy documentation
-```
 
-Each ontology folder uses the **current/archive** layout:
-```
-<ontology>/
-  VERSION          ← semver string
-  README.md
-  current/         ← active .ttl files (this is what gets validated)
-  archive/         ← frozen snapshots of previous versions (never edited)
-```
+When creating a new Python file, always include the SPDX header as the very
+first lines, before any docstrings or imports.
 
-## Conventions
+### PR / code-review checklist (open-source)
 
-### Ontology Files
-- Format: Turtle (.ttl)
-- Each module is a standalone `owl:Ontology`
-- Root ontology imports sub-modules via `owl:imports`
-- Required metadata: `dcterms:title`, `dcterms:description`, `dcterms:source`, `owl:versionInfo`, `dcterms:created`, `dcterms:modified`
-- Include `rdfs:seeAlso` with URL to official standard documentation
+When reviewing or creating a pull request, verify:
 
-### Versioning
-- Semantic versioning (MAJOR.MINOR.PATCH)
-- Version in both `owl:versionInfo` (in .ttl) and `VERSION` file
-- Must be consistent — validated by `scripts/version_manager.py check`
-- **Every content change requires a version bump** — archive first, then bump
-- Workflow: `archive_version.py` → `version_manager.py bump` → `version_manager.py sync` → validate
+| Check | What to look for |
+|-------|-----------------|
+| **SPDX headers** | Every new or modified `.py` file has the `SPDX-License-Identifier` + `Copyright` header |
+| **No secrets** | No API keys, tokens, passwords, or internal URLs in code, config, or comments |
+| **No PII** | No personal data (names, emails, addresses) in ontology labels, test fixtures, or comments |
+| **Design decisions** | If the PR introduces an architectural choice, update `docs/design/toolkit-design-decisions.md` |
+| **Dependency licenses** | New dependencies must be compatible with Apache 2.0 (BSD, MIT, Apache, ISC are OK; GPL is NOT) |
+| **DCO sign-off** | Contributor commits should have `Signed-off-by:` trailer (enforced by convention) |
+| **NOTICE file** | If adding a bundled third-party component, update `NOTICE` with attribution |
+| **No proprietary content** | Ontology examples, sample data, and docs must not contain client-specific or proprietary information |
 
-### Namespace Pattern
-- Base: `https://www.kairosflow.ai/ont/`
-- Example: `https://www.kairosflow.ai/ont/tic/handling-operations#`
+### Key open-source files
 
-### Validation
-- Structure: `python scripts/validate_structure.py` (211 checks)
-- Versions: `python scripts/version_manager.py check` (56 versions)
-- Both must pass before committing
+| File | Purpose |
+|------|---------|
+| `LICENSE` | Apache License 2.0 full text |
+| `NOTICE` | Required attribution file (Apache 2.0 §4d) |
+| `CONTRIBUTING.md` | Contribution guidelines + DCO workflow |
+| `CODE_OF_CONDUCT.md` | Contributor Covenant v2.1 |
+| `SECURITY.md` | Vulnerability reporting policy |
+| `CHANGELOG.md` | Release history |
 
-## Skills Available
+## Dev toolchain
 
-### Ontology Audit (`.github/skills/kairos-ontology-audit/SKILL.md`)
-Use when adding/modifying classes to verify alignment with the cited standard. Ensures no invented content enters the reference models.
+- **Poetry** manages dependencies and builds the package. It must be installed separately
+  on the developer's machine — it is NOT a pip dependency.
+  Install: `(Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | python -`
+  or `pipx install poetry`.
+- Run tests with `py -m pytest` (Windows) — Poetry's venv is not required for tests if
+  dependencies are already installed via pip.
 
-### Ontology Versioning (`.github/skills/kairos-ontology-versioning/SKILL.md`)
-Use when making any content change to an ontology. Guides the archive → bump → sync → validate workflow. Ensures old versions are preserved and `owl:versionInfo` stays consistent.
+## Testing rules
 
-## Common Tasks
+- **Every new function, service, or endpoint MUST have unit tests.**
+- Toolkit tests go in `tests/`, service/API tests go in `tests/service/`.
+- Mock external calls (GitHub API, OpenAI client) with `unittest.mock` — never hit real APIs in tests.
+- Use `pytest-asyncio` with `asyncio_mode = "auto"` for async test functions.
+- Run tests with `py -m pytest` (Windows) or `python -m pytest` (Unix).
+- Aim for coverage of: happy path, auth failure (401), and at least one edge/error case per endpoint.
 
-### Adding a new class
-1. Verify it exists in the cited standard (exact name or clear enumeration)
-2. Add with proper `rdfs:label`, `rdfs:comment` citing the standard
-3. Run validation
-4. Follow versioning workflow (archive → bump → sync → validate → commit)
+### Scenario testing rules
 
-### Modifying an existing ontology
-1. Archive the current version: `python scripts/archive_version.py <ONTOLOGY>`
-2. Make changes in `<ontology>/current/`
-3. Bump version: `python scripts/version_manager.py bump <ONTOLOGY> <patch|minor|major>`
-4. Sync: `python scripts/version_manager.py sync`
-5. Validate: `python scripts/validate_structure.py && python scripts/version_manager.py check`
-6. Commit
+The `tests/scenarios/` directory contains an **acme-hub** — a synthetic ontology hub with
+two domains (`client`, `invoice`), two source systems, silver/gold extensions, and SKOS
+mappings that exercise the full projection pipeline.
 
-### Auditing an ontology
-1. Follow `.github/skills/ontology-audit.md` process
-2. Research the standard's official data model
-3. Flag invented classes for removal
-4. Flag missing standard concepts for addition
+**When to update scenario tests:**
 
-### Adding a new standard
-1. Create folder under `derived-ontologies/` with `current/` and `archive/` subfolders
-2. Create root .ttl inside `current/`, VERSION and README.md at ontology root
-3. Decompose into domain modules (one .ttl per domain) inside `current/`
-4. Add to `catalog-v001.xml` (paths include `current/`)
-5. Run validation
+| What changed | What to update in `tests/scenarios/` |
+|---|---|
+| New `kairos-ext:` annotation in a projector | Add the annotation to the relevant `acme-hub/model/extensions/*.ttl` file and add/update a test in `test_scenario_silver.py` or `test_scenario_gold.py` |
+| New `kairos-map:` annotation in dbt projector | Add the annotation to a mapping file in `acme-hub/model/mappings/` and add/update a test in `test_scenario_dbt.py` |
+| Changed projection logic (SQL generation, column selection, joins) | Verify existing scenario tests still pass; add a new test case if the change covers a pattern not yet tested |
+| New extension file type (e.g., a new `*-ext.ttl` convention) | Add the file to `acme-hub/model/extensions/` and add scenario coverage |
+| Bug fix for a projection edge case | Add a regression test in the appropriate `test_scenario_*.py` that would have caught the bug |
+
+**Rule**: PRs that add or change projection logic or extension annotations MUST include
+corresponding scenario test updates. Run `py -m pytest tests/scenarios/ -v` to verify.
+
+## Ontology conventions
+
+- All ontology files use Turtle (.ttl) syntax.
+- Every ontology MUST declare an `owl:Ontology` with `rdfs:label` and `owl:versionInfo`.
+- Use HTTP/HTTPS namespaces with `#` or `/` separator.
+- Every `owl:Class` must have `rdfs:label` and `rdfs:comment`.
+- Every property must have `rdfs:domain`, `rdfs:range`, and `rdfs:label`.
+- Naming: PascalCase for classes, camelCase for properties.
+- Never modify `main` branch directly — always use feature branches + PRs.
+
+### Modeling skill
+
+When designing or modifying ontologies, use the **kairos-ontology-modeling** skill.
+It combines core modeling knowledge (class hierarchies, property design, naming
+conventions, reference-model-first workflow, extension annotations) with an
+interactive configurator (business alignment checkpoints, session persistence in
+`ontology-hub/.modeling-sessions/`, and structured validation gates). For minor
+edits (adding a property, fixing a label) it supports a quick-edit mode that
+skips checkpoints.
+
+## Validation rules
+
+- Always validate syntax before applying changes.
+- SHACL shapes live in `shapes/` and are optional.
+- `validate_content()` returns `{"syntax": {"passed": bool}, "shacl": {"passed": bool}}`.
+
+## Projection targets
+
+Available targets: `dbt`, `neo4j`, `azure-search`, `a2ui`, `prompt`, `silver`, `powerbi`, `report`.
+Each ontology domain produces separate output artifacts per target.
+
+> **Silver FK annotations:** When a domain ontology imports reference models via
+> `owl:imports`, imported object properties lack cardinality restrictions and will
+> not generate FK columns automatically.  Use `kairos-ext:silverForeignKey` /
+> `silverForeignKeyOn` in the silver extension file to declare FK relationships.
+> See the **kairos-ontology-medallion-silver** skill §3e for details.
+
+## Scaffold packaging rules
+
+The scaffold folder `src/kairos_ontology/scaffold/` is what gets distributed to hub repos
+via `init`, `new-repo`, and `update`. Any change in this repo that affects hub repos MUST
+also be applied to the corresponding scaffold location:
+
+| What changed | Scaffold location to update |
+|---|---|
+| New or updated Copilot skill in `.github/skills/` | `src/kairos_ontology/scaffold/skills/<skill-name>/SKILL.md` |
+| New output target directory | Add to the `for d in [...]` directory lists in `cli/main.py` |
+| New scaffold template / config file | `src/kairos_ontology/scaffold/ontology-hub/` or `src/kairos_ontology/scaffold/` |
+| New core functionality (projections, annotations, CLI commands) | Update `kairos-ontology-help` skill in `.github/skills/kairos-ontology-help/` + scaffold copy |
+
+**Rule**: After adding or modifying a skill in `.github/skills/`, always copy it to
+`src/kairos_ontology/scaffold/skills/` before committing. Run `py -m pytest` to confirm
+no packaging tests break.
+
+## Design decisions log
+
+- All significant design decisions are recorded in `docs/design/toolkit-design-decisions.md`.
+- **PR rule:** If a PR introduces or changes an architectural decision, add or update an
+  entry in the design decisions log before merging.
+- Use the ADR template at the bottom of the file for new entries.
+- Increment the DD-NNN number sequentially.
