@@ -4,6 +4,9 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix vessel: <https://www.kairosflow.ai/ont/imo/vessel-registry#> .
+@prefix pc: <https://www.kairosflow.ai/ont/imo/port-call#> .
+@prefix party: <https://www.kairosflow.ai/ont/imo/party#> .
 
 # Ontology Metadata
 : a owl:Ontology ;
@@ -11,11 +14,14 @@
     dcterms:description "Carbon emissions, greenhouse gas accounting, and environmental compliance for transport and logistics based on ISO 14083:2023 and the GLEC Framework." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-21"^^xsd:date ;
     owl:versionInfo "1.1.0" ;
     dcterms:source "ISO 14083:2023, GLEC Framework, EU MRV Regulation, IMO DCS, EU ETS Maritime" ;
     rdfs:seeAlso <https://www.iso.org/standard/78864.html> ,
-                 <https://www.smartfreightcentre.org/en/how-to-implement-glec-framework/> .
+                 <https://www.smartfreightcentre.org/en/how-to-implement-glec-framework/> ;
+    owl:imports <https://www.kairosflow.ai/ont/imo/vessel-registry#> ,
+                <https://www.kairosflow.ai/ont/imo/port-call#> ,
+                <https://www.kairosflow.ai/ont/imo/party#> .
 
 #################################################################
 #    Emission Classes
@@ -200,41 +206,52 @@
 :hasCO2Intensity a owl:ObjectProperty ;
     rdfs:label "has CO2 intensity" ;
     rdfs:comment "Relates an entity to its CO2 intensity metric." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( vessel:Vessel pc:Voyage )
+    ] ;
     rdfs:range :CO2Intensity .
 
 :hasCarbonFootprint a owl:ObjectProperty ;
     rdfs:label "has carbon footprint" ;
     rdfs:comment "Relates an entity to its carbon footprint." ;
+    rdfs:domain pc:Voyage ;
     rdfs:range :CarbonFootprint .
 
 :hasEmissionReport a owl:ObjectProperty ;
     rdfs:label "has emission report" ;
     rdfs:comment "Relates an entity to its emission report." ;
+    rdfs:domain vessel:Vessel ;
     rdfs:range :EmissionReport .
 
 :hasCIIRating a owl:ObjectProperty ;
     rdfs:label "has CII rating" ;
     rdfs:comment "Relates a vessel to its CII rating." ;
+    rdfs:domain vessel:Vessel ;
     rdfs:range :CIIRating .
 
 :hasEEXICompliance a owl:ObjectProperty ;
     rdfs:label "has EEXI compliance" ;
     rdfs:comment "Relates a vessel to its EEXI compliance status." ;
+    rdfs:domain vessel:Vessel ;
     rdfs:range :EEXICompliance .
 
 :hasEUETSAllowance a owl:ObjectProperty ;
     rdfs:label "has EU ETS allowance" ;
     rdfs:comment "Relates an entity to its EU ETS allowance." ;
+    rdfs:domain vessel:Vessel ;
     rdfs:range :EUETSAllowance .
 
 :hasCarbonOffset a owl:ObjectProperty ;
     rdfs:label "has carbon offset" ;
     rdfs:comment "Relates an entity to a carbon offset credit." ;
+    rdfs:domain party:MaritimeParty ;
     rdfs:range :CarbonOffset .
 
 :hasModalShiftMetric a owl:ObjectProperty ;
     rdfs:label "has modal shift metric" ;
     rdfs:comment "Relates an entity to a modal shift metric." ;
+    rdfs:domain pc:Voyage ;
     rdfs:range :ModalShiftMetric .
 
 :calculatedUsing a owl:ObjectProperty ;

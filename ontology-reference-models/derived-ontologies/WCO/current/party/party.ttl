@@ -4,6 +4,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix wco-customs: <https://www.kairosflow.ai/ont/wco/customs#> .
 
 # Ontology Metadata
 : a owl:Ontology ;
@@ -11,7 +12,7 @@
     dcterms:description "Party roles in customs processes including declarants, authorities, brokers, and traders based on the WCO Data Model 3.10.0." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-21"^^xsd:date ;
     owl:versionInfo "1.1.0" ;
     dcterms:source "WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056" ;
     rdfs:seeAlso <https://www.wcoomd.org/datamodel> .
@@ -110,41 +111,58 @@
 :actsAsDeclarant a owl:ObjectProperty ;
     rdfs:label "acts as declarant" ;
     rdfs:comment "Relates a party to the Declarant role it fulfils." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :Importer :Exporter :CustomsBroker :FreightAgent :AEOHolder :GuaranteeProvider )
+    ] ;
     rdfs:range :Declarant .
 
 :regulatedBy a owl:ObjectProperty ;
     rdfs:label "regulated by" ;
     rdfs:comment "Relates a party to the Customs Authority that regulates it." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :Declarant :CustomsBroker :Importer :Exporter :AEOHolder :FreightAgent :GuaranteeProvider )
+    ] ;
     rdfs:range :CustomsAuthority .
 
 :representedByBroker a owl:ObjectProperty ;
     rdfs:label "represented by broker" ;
     rdfs:comment "Relates a party to the Customs Broker representing it." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :Declarant :Importer :Exporter :AEOHolder :FreightAgent :GuaranteeProvider )
+    ] ;
     rdfs:range :CustomsBroker .
 
 :hasImporter a owl:ObjectProperty ;
     rdfs:label "has importer" ;
     rdfs:comment "Relates a customs transaction to its Importer." ;
+    rdfs:domain wco-customs:ImportDeclaration ;
     rdfs:range :Importer .
 
 :hasExporter a owl:ObjectProperty ;
     rdfs:label "has exporter" ;
     rdfs:comment "Relates a customs transaction to its Exporter." ;
+    rdfs:domain wco-customs:ExportDeclaration ;
     rdfs:range :Exporter .
 
 :hasAEOHolder a owl:ObjectProperty ;
     rdfs:label "has AEO holder" ;
     rdfs:comment "Relates a customs transaction to a party with AEO status." ;
+    rdfs:domain wco-customs:CustomsDeclaration ;
     rdfs:range :AEOHolder .
 
 :hasFreightAgent a owl:ObjectProperty ;
     rdfs:label "has freight agent" ;
     rdfs:comment "Relates a customs transaction to a Freight Agent." ;
+    rdfs:domain wco-customs:CustomsDeclaration ;
     rdfs:range :FreightAgent .
 
 :hasGuaranteeProvider a owl:ObjectProperty ;
     rdfs:label "has guarantee provider" ;
     rdfs:comment "Relates a customs obligation to a Guarantee Provider." ;
+    rdfs:domain wco-customs:CustomsDeclaration ;
     rdfs:range :GuaranteeProvider .
 
 #################################################################

@@ -16,7 +16,7 @@
     Model for port calls and the FAL Convention electronic data exchange requirements.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-21"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
     dcterms:source "IMO Compendium data set, FAL Convention (2023 amendments)" ;
     rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
@@ -198,6 +198,10 @@
 :partOfVoyage a owl:ObjectProperty ;
     rdfs:label "part of voyage" ;
     rdfs:comment "Associates a port call or sea leg with its parent voyage." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :PortCall :SeaLeg )
+    ] ;
     rdfs:range :Voyage ;
     owl:inverseOf :hasPortCall .
 
@@ -250,6 +254,10 @@
 :requestedTime a owl:DatatypeProperty ;
     rdfs:label "requested time" ;
     rdfs:comment "The requested date and time for a service (pilotage, towage, etc.)." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :PilotageRequest :TowageRequest )
+    ] ;
     rdfs:range xsd:dateTime .
 
 :falFormNumber a owl:DatatypeProperty ;

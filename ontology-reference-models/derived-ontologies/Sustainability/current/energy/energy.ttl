@@ -4,6 +4,8 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix vessel: <https://www.kairosflow.ai/ont/imo/vessel-registry#> .
+@prefix pc: <https://www.kairosflow.ai/ont/imo/port-call#> .
 
 # Ontology Metadata
 : a owl:Ontology ;
@@ -11,10 +13,12 @@
     dcterms:description "Energy consumption, fuel types, and energy efficiency for transport and logistics based on EU MRV Regulation and IMO DCS." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-21"^^xsd:date ;
     owl:versionInfo "1.1.0" ;
     dcterms:source "ISO 14083:2023, GLEC Framework, EU MRV Regulation, IMO DCS, EU ETS Maritime" ;
-    rdfs:seeAlso <https://www.iso.org/standard/78864.html> .
+    rdfs:seeAlso <https://www.iso.org/standard/78864.html> ;
+    owl:imports <https://www.kairosflow.ai/ont/imo/vessel-registry#> ,
+                <https://www.kairosflow.ai/ont/imo/port-call#> .
 
 #################################################################
 #    Energy Consumption and Fuel Classes
@@ -152,6 +156,10 @@
 :hasEnergyConsumption a owl:ObjectProperty ;
     rdfs:label "has energy consumption" ;
     rdfs:comment "Relates an entity to its energy consumption record." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( vessel:Vessel pc:Voyage )
+    ] ;
     rdfs:range :EnergyConsumption .
 
 :usesFuelType a owl:ObjectProperty ;
@@ -169,31 +177,43 @@
 :hasShorepower a owl:ObjectProperty ;
     rdfs:label "has shorepower" ;
     rdfs:comment "Relates an entity to a shorepower connection." ;
+    rdfs:domain pc:BerthStay ;
     rdfs:range :Shorepower .
 
 :hasEnergyEfficiency a owl:ObjectProperty ;
     rdfs:label "has energy efficiency" ;
     rdfs:comment "Relates an entity to its energy efficiency metric." ;
+    rdfs:domain vessel:Vessel ;
     rdfs:range :EnergyEfficiency .
 
 :hasFuelOilConsumption a owl:ObjectProperty ;
     rdfs:label "has fuel oil consumption" ;
     rdfs:comment "Relates an entity to a fuel oil consumption record." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( vessel:Vessel pc:Voyage )
+    ] ;
     rdfs:range :FuelOilConsumption .
 
 :hasBunkerDeliveryNote a owl:ObjectProperty ;
     rdfs:label "has bunker delivery note" ;
     rdfs:comment "Relates an entity to a bunker delivery note." ;
+    rdfs:domain pc:BunkeringOperation ;
     rdfs:range :BunkerDeliveryNote .
 
 :hasEnergyPerformanceIndicator a owl:ObjectProperty ;
     rdfs:label "has energy performance indicator" ;
     rdfs:comment "Relates an entity to an energy performance indicator." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( vessel:Vessel pc:Voyage )
+    ] ;
     rdfs:range :EnergyPerformanceIndicator .
 
 :suppliedByRenewable a owl:ObjectProperty ;
     rdfs:label "supplied by renewable" ;
     rdfs:comment "Relates an entity to its renewable energy source." ;
+    rdfs:domain :EnergyConsumption ;
     rdfs:range :RenewableEnergy .
 
 #################################################################

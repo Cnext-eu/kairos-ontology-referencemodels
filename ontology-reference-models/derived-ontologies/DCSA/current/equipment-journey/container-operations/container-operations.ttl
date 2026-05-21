@@ -4,6 +4,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix equip: <https://www.kairosflow.ai/ont/dcsa/equipment#> .
 
 # Ontology Metadata
 : a owl:Ontology ;
@@ -18,7 +19,7 @@
     stuffing/stripping operations, and Lift-on/Lift-off (LoLo) handling.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-21"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
     dcterms:source "DCSA Track & Trace API v2.2 (equipment event types)" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
@@ -70,11 +71,14 @@
 
 :hasContainerJourney a owl:ObjectProperty ;
     rdfs:label "has container journey" ;
-    rdfs:comment "Relates a container or shipment to its container journey lifecycle." .
+    rdfs:comment "Relates a container or shipment to its container journey lifecycle." ;
+    rdfs:domain equip:Container ;
+    rdfs:range :ContainerJourney .
 
 :hasOperationalStatus a owl:ObjectProperty ;
     rdfs:label "has operational status" ;
     rdfs:comment "Relates a container to its current operational status." ;
+    rdfs:domain :ContainerJourney ;
     rdfs:range :ContainerOperationalStatus .
 
 :hasStuffingOperation a owl:ObjectProperty ;

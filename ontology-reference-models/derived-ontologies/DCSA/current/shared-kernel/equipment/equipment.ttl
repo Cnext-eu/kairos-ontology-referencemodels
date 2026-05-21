@@ -126,16 +126,19 @@
 :temperatureUnit a owl:DatatypeProperty ;
     rdfs:label "temperature unit" ;
     rdfs:comment "Unit: CEL (Celsius) or FAH (Fahrenheit)." ;
+    rdfs:domain :ReeferContainer ;
     rdfs:range xsd:string .
 
 :humidityPercent a owl:DatatypeProperty ;
     rdfs:label "humidity percent" ;
     rdfs:comment "Required humidity percentage." ;
+    rdfs:domain :ReeferContainer ;
     rdfs:range xsd:decimal .
 
 :ventilationSetting a owl:DatatypeProperty ;
     rdfs:label "ventilation setting" ;
     rdfs:comment "Ventilation in cubic meters per hour." ;
+    rdfs:domain :ReeferContainer ;
     rdfs:range xsd:decimal .
 
 :isShipperOwned a owl:DatatypeProperty ;

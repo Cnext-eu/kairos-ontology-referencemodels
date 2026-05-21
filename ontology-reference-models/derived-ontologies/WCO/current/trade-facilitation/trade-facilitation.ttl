@@ -4,6 +4,8 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix wco-customs: <https://www.kairosflow.ai/ont/wco/customs#> .
+@prefix wco-party: <https://www.kairosflow.ai/ont/wco/party#> .
 
 # Ontology Metadata
 : a owl:Ontology ;
@@ -11,7 +13,7 @@
     dcterms:description "Trade facilitation certificates, permits, and trusted trader programmes based on the WCO Data Model 3.10.0 and eFTI Regulation." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-21"^^xsd:date ;
     owl:versionInfo "1.1.0" ;
     dcterms:source "WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056" ;
     rdfs:seeAlso <https://www.wcoomd.org/datamodel> .
@@ -122,36 +124,43 @@
 :hasCertificate a owl:ObjectProperty ;
     rdfs:label "has certificate" ;
     rdfs:comment "Links an entity to a trade facilitation certificate." ;
+    rdfs:domain wco-customs:CustomsDeclaration ;
     rdfs:range :Certificate .
 
 :hasLicense a owl:ObjectProperty ;
     rdfs:label "has license" ;
     rdfs:comment "Links an entity to a trade license or authorization." ;
+    rdfs:domain wco-customs:CustomsDeclaration ;
     rdfs:range :License .
 
 :hasAEOCertification a owl:ObjectProperty ;
     rdfs:label "has AEO certification" ;
     rdfs:comment "Links an entity to an Authorised Economic Operator certification." ;
+    rdfs:domain wco-party:AEOHolder ;
     rdfs:range :AEOCertification .
 
 :haseFTIRecord a owl:ObjectProperty ;
     rdfs:label "has eFTI record" ;
     rdfs:comment "Links an entity to an electronic freight transport information record." ;
+    rdfs:domain wco-customs:Filing ;
     rdfs:range :eFTIRecord .
 
 :hasTrustedTrader a owl:ObjectProperty ;
     rdfs:label "has trusted trader" ;
     rdfs:comment "Links an entity to a recognized trusted trader." ;
+    rdfs:domain wco-customs:CustomsDeclaration ;
     rdfs:range :TrustedTrader .
 
 :hasSingleWindow a owl:ObjectProperty ;
     rdfs:label "has single window" ;
     rdfs:comment "Links an entity to a Single Window environment." ;
+    rdfs:domain wco-customs:Filing ;
     rdfs:range :SingleWindow .
 
 :hasTradeAgreementReference a owl:ObjectProperty ;
     rdfs:label "has trade agreement reference" ;
     rdfs:comment "Links an entity to a trade agreement reference." ;
+    rdfs:domain wco-customs:PreferenceClaim ;
     rdfs:range :TradeAgreementReference .
 
 :issuedUnder a owl:ObjectProperty ;

@@ -4,6 +4,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix wco-customs: <https://www.kairosflow.ai/ont/wco/customs#> .
 
 # Ontology Metadata
 : a owl:Ontology ;
@@ -11,7 +12,7 @@
     dcterms:description "Customs and trade documents including declarations, permits, transit documents, and international trade carnets based on the WCO Data Model 3.10.0." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-21"^^xsd:date ;
     owl:versionInfo "1.1.0" ;
     dcterms:source "WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056" ;
     rdfs:seeAlso <https://www.wcoomd.org/datamodel> .
@@ -134,36 +135,43 @@
 :hasCustomsDocument a owl:ObjectProperty ;
     rdfs:label "has customs document" ;
     rdfs:comment "Links an entity to its associated customs declaration document." ;
+    rdfs:domain wco-customs:CustomsDeclaration ;
     rdfs:range :CustomsDeclarationDocument .
 
 :hasTransitDocument a owl:ObjectProperty ;
     rdfs:label "has transit document" ;
     rdfs:comment "Links an entity to its associated transit document." ;
+    rdfs:domain wco-customs:TransitDeclaration ;
     rdfs:range :TransitDocument .
 
 :hasImportPermitDocument a owl:ObjectProperty ;
     rdfs:label "has import permit document" ;
     rdfs:comment "Links an entity to its associated import permit document." ;
+    rdfs:domain wco-customs:ImportDeclaration ;
     rdfs:range :ImportPermitDocument .
 
 :hasExportLicenseDocument a owl:ObjectProperty ;
     rdfs:label "has export license document" ;
     rdfs:comment "Links an entity to its associated export license document." ;
+    rdfs:domain wco-customs:ExportDeclaration ;
     rdfs:range :ExportLicenseDocument .
 
 :hasOriginDocument a owl:ObjectProperty ;
     rdfs:label "has origin document" ;
     rdfs:comment "Links an entity to its associated preferential origin document." ;
+    rdfs:domain wco-customs:PreferenceClaim ;
     rdfs:range :PreferentialOriginDoc .
 
 :accompaniedByCarnet a owl:ObjectProperty ;
     rdfs:label "accompanied by carnet" ;
     rdfs:comment "Links an entity to an accompanying ATA Carnet." ;
+    rdfs:domain wco-customs:CustomsDeclaration ;
     rdfs:range :ATACarnet .
 
 :coveredByTIRCarnet a owl:ObjectProperty ;
     rdfs:label "covered by TIR carnet" ;
     rdfs:comment "Links an entity to a covering TIR Carnet." ;
+    rdfs:domain wco-customs:TransitDeclaration ;
     rdfs:range :TIRCarnet .
 
 :supersedes a owl:ObjectProperty ;
@@ -251,4 +259,8 @@
 :numberOfPages a owl:DatatypeProperty ;
     rdfs:label "number of pages" ;
     rdfs:comment "Total number of pages in the document." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :CustomsDeclarationDocument :ImportPermitDocument :ExportLicenseDocument :PreferentialOriginDoc :ATACarnet :TIRCarnet )
+    ] ;
     rdfs:range xsd:integer .

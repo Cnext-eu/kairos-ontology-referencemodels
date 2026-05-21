@@ -4,6 +4,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix loc: <https://www.kairosflow.ai/ont/imo/locations#> .
 
 # Ontology Metadata
 : a owl:Ontology ;
@@ -16,10 +17,11 @@
     identifying responsible parties in port call and vessel registration processes.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-21"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
     dcterms:source "IMO Compendium data set, FAL Convention, ISM Code, STCW Convention" ;
-    rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
+    rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> ;
+    owl:imports <https://www.kairosflow.ai/ont/imo/locations#> .
 
 #################################################################
 #    Classes
@@ -149,7 +151,8 @@
 :providesServiceAt a owl:ObjectProperty ;
     rdfs:label "provides service at" ;
     rdfs:comment "Associates a service provider (pilot, towage) with the port or location where it operates." ;
-    rdfs:domain :MaritimeParty .
+    rdfs:domain :MaritimeParty ;
+    rdfs:range loc:MaritimeLocation .
 
 #################################################################
 #    Datatype Properties

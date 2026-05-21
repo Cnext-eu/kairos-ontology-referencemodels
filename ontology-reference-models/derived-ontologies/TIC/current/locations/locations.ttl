@@ -14,7 +14,7 @@
     positions, gate lanes, quay side areas, reefer plugs, rail sidings, and barge quays.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-07-15"^^xsd:date ;
+    dcterms:modified "2026-05-21"^^xsd:date ;
     owl:versionInfo "1.1.0" ;
     dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
     rdfs:seeAlso <https://tic40.org/standards/> .
@@ -135,6 +135,10 @@
 :withinTerminal a owl:ObjectProperty ;
     rdfs:label "within terminal" ;
     rdfs:comment "Links a location to the terminal it belongs to." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :Berth :YardPosition :GateLane :QuaySide :ReeferPlug :RailSiding :BargeQuay )
+    ] ;
     rdfs:range :Terminal .
 
 :hasLocation a owl:ObjectProperty ;
