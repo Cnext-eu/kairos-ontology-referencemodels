@@ -14,7 +14,7 @@
     commodity classifications, and handling requirements. Based on UN/CEFACT MMT Reference Data Model.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-21"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
@@ -135,7 +135,9 @@
 
 :weightUnit a owl:DatatypeProperty ;
     rdfs:label "weight unit" ;
-    rdfs:comment "Unit of weight measurement (KG, LB, TON)." .
+    rdfs:comment "Unit of weight measurement (KG, LB, TON)." ;
+    rdfs:domain :Weight ;
+    rdfs:range xsd:string .
 
 #################################################################
 #    Instruction Classes (UN/CEFACT RABIE v101)
@@ -207,6 +209,7 @@
 :hasShippingMarks a owl:ObjectProperty ;
     rdfs:label "has shipping marks" ;
     rdfs:comment "Shipping marks applied to this cargo item or package." ;
+    rdfs:domain :CargoItem ;
     rdfs:range :ShippingMarks .
 
 :hasInsurance a owl:ObjectProperty ;

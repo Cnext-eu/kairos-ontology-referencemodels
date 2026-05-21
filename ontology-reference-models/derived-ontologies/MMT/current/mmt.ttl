@@ -161,9 +161,11 @@
 :flashPoint a owl:DatatypeProperty ;
     rdfs:label "flash point" ;
     rdfs:comment "Flash point temperature in Celsius for flammable goods." ;
+    rdfs:domain :DangerousGoods ;
     rdfs:range xsd:decimal .
 
 :emergencyContactNumber a owl:DatatypeProperty ;
     rdfs:label "emergency contact number" ;
     rdfs:comment "24-hour emergency phone number for dangerous goods." ;
+    rdfs:domain :DangerousGoods ;
     rdfs:range xsd:string .

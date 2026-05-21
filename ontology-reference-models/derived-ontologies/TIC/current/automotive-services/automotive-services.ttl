@@ -1,4 +1,5 @@
 @prefix : <https://www.kairosflow.ai/ont/tic/automotive-services#> .
+@prefix tic-party: <https://www.kairosflow.ai/ont/tic/party#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -15,7 +16,7 @@
     body repair, release status, and damage reporting.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-07-15"^^xsd:date ;
+    dcterms:modified "2026-05-21"^^xsd:date ;
     owl:versionInfo "1.1.0" ;
     dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
     rdfs:seeAlso <https://tic40.org/standards/> .
@@ -172,7 +173,8 @@
 :performedBy a owl:ObjectProperty ;
     rdfs:label "performed by" ;
     rdfs:comment "Links a vehicle service to the party who performed it." ;
-    rdfs:domain :VehicleService .
+    rdfs:domain :VehicleService ;
+    rdfs:range tic-party:TerminalParty .
 
 #################################################################
 #    Datatype Properties

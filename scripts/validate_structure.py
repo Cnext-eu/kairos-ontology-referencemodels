@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Cnext.eu
 #!/usr/bin/env python3
 """Validate repository structure conventions for Kairos ontology reference models.
 
@@ -36,6 +38,12 @@ OWL_ONTOLOGY_RE = re.compile(r'\ba\s+owl:Ontology\b')
 OWL_IMPORTS_RE = re.compile(r'owl:imports\s')
 NAMESPACE_ROOT_RE = re.compile(r'@prefix\s+:\s+<https://www\.kairosflow\.ai/ont/([^/>]+)#>\s*\.')
 NAMESPACE_MODULE_RE = re.compile(r'@prefix\s+:\s+<https://www\.kairosflow\.ai/ont/([^/>]+)/([^/>]+)#>\s*\.')
+PROPERTY_START_RE = re.compile(
+    r'^\s*(?P<property>\S+)\s+a\s+owl:(?P<property_type>ObjectProperty|DatatypeProperty)\s*;\s*$'
+)
+BLOCK_END_RE = re.compile(r'\s\.\s*$')
+RDFS_DOMAIN_RE = re.compile(r'\brdfs:domain\b')
+RDFS_RANGE_RE = re.compile(r'\brdfs:range\b')
 
 
 class ValidationResult:
@@ -111,7 +119,7 @@ def find_domain_subfolders(folder: Path):
     content_dir = get_content_dir(folder)
     return sorted(
         d for d in content_dir.iterdir()
-        if d.is_dir() and not d.name.startswith(".") and d.name not in ("archive",)
+        if d.is_dir() and not d.name.startswith(".") and d.name not in ("archive", "extensions")
     )
 
 
@@ -262,6 +270,74 @@ def validate_ontology(folder: Path, verbose: bool) -> ValidationResult:
     return r
 
 
+def validate_property_completeness(folder: Path, verbose: bool) -> ValidationResult:
+    """Validate that property definitions include rdfs:domain and rdfs:range."""
+    r = ValidationResult()
+    content_dir = get_content_dir(folder)
+    ttl_files = sorted(content_dir.rglob("*.ttl"))
+
+    r.messages.append("\n── Property Completeness ──")
+
+    for ttl_file in ttl_files:
+        if "archive" in ttl_file.relative_to(folder).parts:
+            continue
+
+        content = ttl_file.read_text(encoding="utf-8")
+        lines = content.splitlines()
+        property_blocks = []
+        index = 0
+
+        while index < len(lines):
+            match = PROPERTY_START_RE.match(lines[index])
+            if not match:
+                index += 1
+                continue
+
+            block_lines = [lines[index]]
+            index += 1
+            while index < len(lines):
+                block_lines.append(lines[index])
+                if BLOCK_END_RE.search(lines[index]):
+                    break
+                index += 1
+
+            property_blocks.append(
+                (match.group("property"), match.group("property_type"), "\n".join(block_lines))
+            )
+            index += 1
+
+        if not property_blocks:
+            continue
+
+        ttl_rel = ttl_file.relative_to(ONTOLOGY_ROOT)
+        r.ok(
+            f"{ttl_rel}: checked {len(property_blocks)} property definition(s)",
+            verbose,
+            is_verbose=True,
+        )
+
+        for property_name, property_type, block in property_blocks:
+            if RDFS_DOMAIN_RE.search(block):
+                r.ok(
+                    f"{ttl_rel}: {property_name} ({property_type}) has rdfs:domain",
+                    verbose,
+                    is_verbose=True,
+                )
+            else:
+                r.fail(f"{ttl_rel}: {property_name} ({property_type}) missing rdfs:domain")
+
+            if RDFS_RANGE_RE.search(block):
+                r.ok(
+                    f"{ttl_rel}: {property_name} ({property_type}) has rdfs:range",
+                    verbose,
+                    is_verbose=True,
+                )
+            else:
+                r.fail(f"{ttl_rel}: {property_name} ({property_type}) missing rdfs:range")
+
+    return r
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Validate Kairos ontology repository structure conventions."
@@ -286,6 +362,13 @@ def main():
             print(msg)
         total_pass += result.passes
         total_fail += result.failures
+
+        if folder.parent.name == "derived-ontologies":
+            property_result = validate_property_completeness(folder, args.verbose)
+            for msg in property_result.messages:
+                print(msg)
+            total_pass += property_result.passes
+            total_fail += property_result.failures
 
     print(f"\n{'─' * 50}")
     if total_fail:

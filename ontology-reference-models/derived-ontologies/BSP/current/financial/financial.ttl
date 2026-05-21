@@ -4,6 +4,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix comm: <https://www.kairosflow.ai/ont/bsp/commercial#> .
 
 # Ontology Metadata
 : a owl:Ontology ;
@@ -17,7 +18,7 @@
     - Events: Payment lifecycle events""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-21"^^xsd:date ;
     owl:versionInfo "1.1.0" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
@@ -121,6 +122,7 @@
 :hasInvoice a owl:ObjectProperty ;
     rdfs:label "has invoice" ;
     rdfs:comment "Relates order or shipment to invoice." ;
+    rdfs:domain comm:CommercialTransaction ;
     rdfs:range :Invoice .
 
 :hasInvoiceLine a owl:ObjectProperty ;
@@ -138,6 +140,7 @@
 :hasPaymentTerms a owl:ObjectProperty ;
     rdfs:label "has payment terms" ;
     rdfs:comment "Relates invoice or order to payment terms." ;
+    rdfs:domain :Invoice ;
     rdfs:range :PaymentTerms .
 
 #################################################################
@@ -159,36 +162,43 @@
 :dueDate a owl:DatatypeProperty ;
     rdfs:label "due date" ;
     rdfs:comment "Date when payment is due." ;
+    rdfs:domain :Invoice ;
     rdfs:range xsd:date .
 
 :lineNumber a owl:DatatypeProperty ;
     rdfs:label "line number" ;
     rdfs:comment "Sequential line item number." ;
+    rdfs:domain :InvoiceLine ;
     rdfs:range xsd:integer .
 
 :totalAmount a owl:DatatypeProperty ;
     rdfs:label "total amount" ;
     rdfs:comment "Total monetary amount." ;
+    rdfs:domain :Invoice ;
     rdfs:range xsd:decimal .
 
 :subtotalAmount a owl:DatatypeProperty ;
     rdfs:label "subtotal amount" ;
     rdfs:comment "Amount before taxes and charges." ;
+    rdfs:domain :Invoice ;
     rdfs:range xsd:decimal .
 
 :taxAmount a owl:DatatypeProperty ;
     rdfs:label "tax amount" ;
     rdfs:comment "Total tax amount (VAT, sales tax, etc.)." ;
+    rdfs:domain :Invoice ;
     rdfs:range xsd:decimal .
 
 :taxRate a owl:DatatypeProperty ;
     rdfs:label "tax rate" ;
     rdfs:comment "Tax percentage rate." ;
+    rdfs:domain :InvoiceLine ;
     rdfs:range xsd:decimal .
 
 :discountAmount a owl:DatatypeProperty ;
     rdfs:label "discount amount" ;
     rdfs:comment "Discount applied." ;
+    rdfs:domain :Invoice ;
     rdfs:range xsd:decimal .
 
 :paymentAmount a owl:DatatypeProperty ;
@@ -206,6 +216,7 @@
 :paymentMethod a owl:DatatypeProperty ;
     rdfs:label "payment method" ;
     rdfs:comment "Method of payment (e.g., BANK_TRANSFER, CREDIT_CARD, L/C)." ;
+    rdfs:domain :Payment ;
     rdfs:range xsd:string .
 
 :paymentReference a owl:DatatypeProperty ;
@@ -217,11 +228,13 @@
 :currency a owl:DatatypeProperty ;
     rdfs:label "currency" ;
     rdfs:comment "ISO 4217 currency code (e.g., USD, EUR, GBP)." ;
+    rdfs:domain :Invoice ;
     rdfs:range xsd:string .
 
 :exchangeRate a owl:DatatypeProperty ;
     rdfs:label "exchange rate" ;
     rdfs:comment "Currency exchange rate." ;
+    rdfs:domain :Invoice ;
     rdfs:range xsd:decimal .
 
 :paymentTermsDescription a owl:DatatypeProperty ;
@@ -239,4 +252,5 @@
 :customsValue a owl:DatatypeProperty ;
     rdfs:label "customs value" ;
     rdfs:comment "Declared value for customs purposes." ;
+    rdfs:domain :CommercialInvoice ;
     rdfs:range xsd:decimal .

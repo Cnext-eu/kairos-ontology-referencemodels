@@ -4,6 +4,8 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix loc: <https://www.kairosflow.ai/ont/dcsa/locations#> .
+@prefix equip: <https://www.kairosflow.ai/ont/dcsa/equipment#> .
 
 # Ontology Metadata
 : a owl:Ontology ;
@@ -15,7 +17,7 @@
     and document events (issuance, surrender).""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-21"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
     dcterms:source "DCSA Track & Trace (TNT) API v2.2" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
@@ -133,12 +135,14 @@
 :occursAtLocation a owl:ObjectProperty ;
     rdfs:label "occurs at location" ;
     rdfs:comment "Relates event to location where it occurred." ;
-    rdfs:domain :Event .
+    rdfs:domain :Event ;
+    rdfs:range loc:Location .
 
 :involvesContainer a owl:ObjectProperty ;
     rdfs:label "involves container" ;
     rdfs:comment "Relates equipment event to specific container." ;
-    rdfs:domain :EquipmentEvent .
+    rdfs:domain :EquipmentEvent ;
+    rdfs:range equip:Container .
 
 #################################################################
 #    Datatype Properties
@@ -165,19 +169,23 @@
 :estimatedTimeOfArrival a owl:DatatypeProperty ;
     rdfs:label "estimated time of arrival (ETA)" ;
     rdfs:comment "Estimated vessel arrival time." ;
+    rdfs:domain :VesselArrivalEvent ;
     rdfs:range xsd:dateTime .
 
 :estimatedTimeOfDeparture a owl:DatatypeProperty ;
     rdfs:label "estimated time of departure (ETD)" ;
     rdfs:comment "Estimated vessel departure time." ;
+    rdfs:domain :VesselDepartureEvent ;
     rdfs:range xsd:dateTime .
 
 :actualTimeOfArrival a owl:DatatypeProperty ;
     rdfs:label "actual time of arrival (ATA)" ;
     rdfs:comment "Actual vessel arrival time." ;
+    rdfs:domain :VesselArrivalEvent ;
     rdfs:range xsd:dateTime .
 
 :actualTimeOfDeparture a owl:DatatypeProperty ;
     rdfs:label "actual time of departure (ATD)" ;
     rdfs:comment "Actual vessel departure time." ;
+    rdfs:domain :VesselDepartureEvent ;
     rdfs:range xsd:dateTime .

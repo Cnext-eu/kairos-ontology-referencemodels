@@ -4,6 +4,8 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix comm: <https://www.kairosflow.ai/ont/bsp/commercial#> .
+@prefix party: <https://www.kairosflow.ai/ont/bsp/party#> .
 
 # Ontology Metadata
 : a owl:Ontology ;
@@ -17,7 +19,7 @@
     - Code lists: UN/LOCODE, IATA codes, country codes""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-21"^^xsd:date ;
     owl:versionInfo "1.1.0" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
@@ -136,21 +138,25 @@
 :hasBillingAddress a owl:ObjectProperty ;
     rdfs:label "has billing address" ;
     rdfs:comment "Identifies billing address." ;
+    rdfs:domain party:TradeParty ;
     rdfs:range :Address .
 
 :hasShippingAddress a owl:ObjectProperty ;
     rdfs:label "has shipping address" ;
     rdfs:comment "Identifies shipping/delivery address." ;
+    rdfs:domain party:TradeParty ;
     rdfs:range :Address .
 
 :hasOriginLocation a owl:ObjectProperty ;
     rdfs:label "has origin location" ;
     rdfs:comment "Identifies origin location." ;
+    rdfs:domain comm:Shipment ;
     rdfs:range :Location .
 
 :hasDestinationLocation a owl:ObjectProperty ;
     rdfs:label "has destination location" ;
     rdfs:comment "Identifies destination location." ;
+    rdfs:domain comm:Shipment ;
     rdfs:range :Location .
 
 #################################################################

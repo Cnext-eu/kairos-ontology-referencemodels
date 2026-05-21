@@ -4,6 +4,8 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix fin: <https://www.kairosflow.ai/ont/bsp/financial#> .
+@prefix refdata: <https://www.kairosflow.ai/ont/bsp/reference-data#> .
 
 # Ontology Metadata
 : a owl:Ontology ;
@@ -16,7 +18,7 @@
     - Events: Business events, order events, shipment events""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-21"^^xsd:date ;
     owl:versionInfo "1.1.0" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
@@ -213,6 +215,7 @@
 :hasShipment a owl:ObjectProperty ;
     rdfs:label "has shipment" ;
     rdfs:comment "Relates order or transaction to shipment." ;
+    rdfs:domain :CommercialTransaction ;
     rdfs:range :Shipment .
 
 :hasShipmentLine a owl:ObjectProperty ;
@@ -236,21 +239,25 @@
 :hasEvent a owl:ObjectProperty ;
     rdfs:label "has event" ;
     rdfs:comment "Relates entity to business events." ;
+    rdfs:domain :CommercialTransaction ;
     rdfs:range :BusinessEvent .
 
 :occursAtLocation a owl:ObjectProperty ;
     rdfs:label "occurs at location" ;
     rdfs:comment "Relates event to location." ;
-    rdfs:domain :BusinessEvent .
+    rdfs:domain :BusinessEvent ;
+    rdfs:range refdata:Location .
 
 :relatedToOrder a owl:ObjectProperty ;
     rdfs:label "related to order" ;
     rdfs:comment "Links shipment or invoice to originating order." ;
+    rdfs:domain :Shipment ;
     rdfs:range :PurchaseOrder .
 
 :relatedToShipment a owl:ObjectProperty ;
     rdfs:label "related to shipment" ;
     rdfs:comment "Links invoice to associated shipment." ;
+    rdfs:domain fin:Invoice ;
     rdfs:range :Shipment .
 
 #################################################################
@@ -266,36 +273,43 @@
 :orderDate a owl:DatatypeProperty ;
     rdfs:label "order date" ;
     rdfs:comment "Date when order was placed." ;
+    rdfs:domain :PurchaseOrder ;
     rdfs:range xsd:date .
 
 :requestedDeliveryDate a owl:DatatypeProperty ;
     rdfs:label "requested delivery date" ;
     rdfs:comment "Date when delivery is requested." ;
+    rdfs:domain :PurchaseOrder ;
     rdfs:range xsd:date .
 
 :lineNumber a owl:DatatypeProperty ;
     rdfs:label "line number" ;
     rdfs:comment "Sequential line item number." ;
+    rdfs:domain :OrderLine ;
     rdfs:range xsd:integer .
 
 :quantity a owl:DatatypeProperty ;
     rdfs:label "quantity" ;
     rdfs:comment "Number of units." ;
+    rdfs:domain :OrderLine ;
     rdfs:range xsd:decimal .
 
 :unitOfMeasure a owl:DatatypeProperty ;
     rdfs:label "unit of measure" ;
     rdfs:comment "Unit in which quantity is expressed (e.g., EA, KG, M)." ;
+    rdfs:domain :OrderLine ;
     rdfs:range xsd:string .
 
 :unitPrice a owl:DatatypeProperty ;
     rdfs:label "unit price" ;
     rdfs:comment "Price per unit." ;
+    rdfs:domain :OrderLine ;
     rdfs:range xsd:decimal .
 
 :lineAmount a owl:DatatypeProperty ;
     rdfs:label "line amount" ;
     rdfs:comment "Total amount for line (quantity × unit price)." ;
+    rdfs:domain :OrderLine ;
     rdfs:range xsd:decimal .
 
 :productCode a owl:DatatypeProperty ;
@@ -325,21 +339,25 @@
 :shipmentDate a owl:DatatypeProperty ;
     rdfs:label "shipment date" ;
     rdfs:comment "Date when shipment occurs." ;
+    rdfs:domain :Shipment ;
     rdfs:range xsd:date .
 
 :expectedDeliveryDate a owl:DatatypeProperty ;
     rdfs:label "expected delivery date" ;
     rdfs:comment "Expected date of delivery." ;
+    rdfs:domain :Shipment ;
     rdfs:range xsd:date .
 
 :actualDeliveryDate a owl:DatatypeProperty ;
     rdfs:label "actual delivery date" ;
     rdfs:comment "Actual date of delivery." ;
+    rdfs:domain :Shipment ;
     rdfs:range xsd:date .
 
 :incoterm a owl:DatatypeProperty ;
     rdfs:label "Incoterm" ;
     rdfs:comment "International Commercial Terms (e.g., FOB, CIF, EXW, DDP)." ;
+    rdfs:domain :CommercialTransaction ;
     rdfs:range xsd:string .
 
 :eventDateTime a owl:DatatypeProperty ;
@@ -363,24 +381,29 @@
 :numberOfPackages a owl:DatatypeProperty ;
     rdfs:label "number of packages" ;
     rdfs:comment "Total number of packages." ;
+    rdfs:domain :Shipment ;
     rdfs:range xsd:integer .
 
 :packageType a owl:DatatypeProperty ;
     rdfs:label "package type" ;
     rdfs:comment "Type of packaging (e.g., CARTON, PALLET, CRATE)." ;
+    rdfs:domain :Shipment ;
     rdfs:range xsd:string .
 
 :grossWeight a owl:DatatypeProperty ;
     rdfs:label "gross weight" ;
     rdfs:comment "Total weight including packaging (kg)." ;
+    rdfs:domain :Shipment ;
     rdfs:range xsd:decimal .
 
 :netWeight a owl:DatatypeProperty ;
     rdfs:label "net weight" ;
     rdfs:comment "Weight of goods only (kg)." ;
+    rdfs:domain :Shipment ;
     rdfs:range xsd:decimal .
 
 :volumeMeasure a owl:DatatypeProperty ;
     rdfs:label "volume measure" ;
     rdfs:comment "Volume in cubic meters." ;
+    rdfs:domain :Shipment ;
     rdfs:range xsd:decimal .

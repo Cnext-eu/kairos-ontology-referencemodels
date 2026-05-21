@@ -1,4 +1,9 @@
 @prefix : <https://www.kairosflow.ai/ont/tic/events#> .
+@prefix tic-auto: <https://www.kairosflow.ai/ont/tic/automotive-services#> .
+@prefix tic-infra: <https://www.kairosflow.ai/ont/tic/terminal-infrastructure#> .
+@prefix tic-loc: <https://www.kairosflow.ai/ont/tic/locations#> .
+@prefix tic-ops: <https://www.kairosflow.ai/ont/tic/handling-operations#> .
+@prefix tic-party: <https://www.kairosflow.ai/ont/tic/party#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -14,7 +19,7 @@
     vessel loading and discharging, stacking, service completion, damage detection, and inspections.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-07-15"^^xsd:date ;
+    dcterms:modified "2026-05-21"^^xsd:date ;
     owl:versionInfo "1.1.0" ;
     dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
     rdfs:seeAlso <https://tic40.org/standards/> .
@@ -125,27 +130,35 @@
 :fromLocation a owl:ObjectProperty ;
     rdfs:label "from location" ;
     rdfs:comment "The origin location of a move event." ;
-    rdfs:domain :TerminalEvent .
+    rdfs:domain :TerminalEvent ;
+    rdfs:range tic-loc:TerminalLocation .
 
 :toLocation a owl:ObjectProperty ;
     rdfs:label "to location" ;
     rdfs:comment "The destination location of a move event." ;
-    rdfs:domain :TerminalEvent .
+    rdfs:domain :TerminalEvent ;
+    rdfs:range tic-loc:TerminalLocation .
 
 :involvesCargo a owl:ObjectProperty ;
     rdfs:label "involves cargo" ;
     rdfs:comment "Links an event to the cargo unit or vehicle it pertains to." ;
-    rdfs:domain :TerminalEvent .
+    rdfs:domain :TerminalEvent ;
+    rdfs:range [
+        a owl:Class ;
+        owl:unionOf ( tic-ops:CargoVisit tic-auto:VehicleUnit )
+    ] .
 
 :involvedEquipment a owl:ObjectProperty ;
     rdfs:label "involved equipment" ;
     rdfs:comment "Links an event to the handling equipment used." ;
-    rdfs:domain :TerminalEvent .
+    rdfs:domain :TerminalEvent ;
+    rdfs:range tic-infra:TerminalEquipment .
 
 :recordedBy a owl:ObjectProperty ;
     rdfs:label "recorded by" ;
     rdfs:comment "Links an event to the party or system that recorded it." ;
-    rdfs:domain :TerminalEvent .
+    rdfs:domain :TerminalEvent ;
+    rdfs:range tic-party:TerminalParty .
 
 :triggeredBy a owl:ObjectProperty ;
     rdfs:label "triggered by" ;
@@ -156,7 +169,8 @@
 :relatedVesselCall a owl:ObjectProperty ;
     rdfs:label "related vessel call" ;
     rdfs:comment "Links a vessel load/discharge event to its vessel call reference." ;
-    rdfs:domain :TerminalEvent .
+    rdfs:domain :TerminalEvent ;
+    rdfs:range tic-ops:CarrierVisit .
 
 #################################################################
 #    Datatype Properties
@@ -189,21 +203,34 @@
 :vesselCallReference a owl:DatatypeProperty ;
     rdfs:label "vessel call reference" ;
     rdfs:comment "Identifier of the vessel call (port visit) associated with the event." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :VesselLoadEvent :VesselDischargeEvent )
+    ] ;
     rdfs:range xsd:string .
 
 :sealNumber a owl:DatatypeProperty ;
     rdfs:label "seal number" ;
     rdfs:comment "Seal identifier verified during gate events." ;
+    rdfs:domain :GateInEvent ;
     rdfs:range xsd:string .
 
 :truckLicensePlate a owl:DatatypeProperty ;
     rdfs:label "truck license plate" ;
     rdfs:comment "License plate of the truck involved in a gate event." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :GateInEvent :GateOutEvent )
+    ] ;
     rdfs:range xsd:string .
 
 :stowagePosition a owl:DatatypeProperty ;
     rdfs:label "stowage position" ;
     rdfs:comment "Vessel stowage position (bay-row-tier) for load/discharge events." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :VesselLoadEvent :VesselDischargeEvent )
+    ] ;
     rdfs:range xsd:string .
 
 :inspectionOutcome a owl:DatatypeProperty ;

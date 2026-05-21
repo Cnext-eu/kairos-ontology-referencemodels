@@ -124,7 +124,9 @@
 
 :inlandMode a owl:DatatypeProperty ;
     rdfs:label "inland mode" ;
-    rdfs:comment "Inland transport mode: RAIL, BARGE, ROAD." .
+    rdfs:comment "Inland transport mode: RAIL, BARGE, ROAD." ;
+    rdfs:domain :InlandLeg ;
+    rdfs:range xsd:string .
 
 :inlandCarrierCode a owl:DatatypeProperty ;
     rdfs:label "inland carrier code" ;
