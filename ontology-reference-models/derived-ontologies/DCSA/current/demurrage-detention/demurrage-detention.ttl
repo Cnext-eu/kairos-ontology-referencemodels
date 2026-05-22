@@ -169,21 +169,25 @@
 :appliesTariff a owl:ObjectProperty ;
     rdfs:label "applies tariff" ;
     rdfs:comment "Relates a D&D charge to the tariff used for calculation." ;
+    rdfs:domain :DemurrageCharge ;
     rdfs:range :DemurrageDetentionTariff .
 
 :triggeredBy a owl:ObjectProperty ;
     rdfs:label "triggered by" ;
     rdfs:comment "Relates a charge to the event that triggered the charge clock." ;
+    rdfs:domain :DemurrageCharge ;
     rdfs:range :DemurrageEvent .
 
 :stoppedBy a owl:ObjectProperty ;
     rdfs:label "stopped by" ;
     rdfs:comment "Relates a charge to the event that stopped the charge clock." ;
+    rdfs:domain :DemurrageCharge ;
     rdfs:range :DemurrageEvent .
 
 :hasDispute a owl:ObjectProperty ;
     rdfs:label "has dispute" ;
     rdfs:comment "Relates a D&D charge to a dispute record." ;
+    rdfs:domain :DemurrageCharge ;
     rdfs:range :DisputeRecord .
 
 :hasWaiver a owl:ObjectProperty ;
@@ -199,11 +203,13 @@
 :chargeAmount a owl:DatatypeProperty ;
     rdfs:label "charge amount" ;
     rdfs:comment "Total monetary amount of the D&D charge." ;
+    rdfs:domain :DemurrageCharge ;
     rdfs:range xsd:decimal .
 
 :currency a owl:DatatypeProperty ;
     rdfs:label "currency" ;
     rdfs:comment "ISO 4217 currency code for the charge (e.g., USD, EUR)." ;
+    rdfs:domain :DemurrageCharge ;
     rdfs:range xsd:string .
 
 :freeDays a owl:DatatypeProperty ;
@@ -245,31 +251,37 @@
 :chargeStartDate a owl:DatatypeProperty ;
     rdfs:label "charge start date" ;
     rdfs:comment "Date when D&D charges started accruing." ;
+    rdfs:domain :DemurrageCharge ;
     rdfs:range xsd:date .
 
 :chargeEndDate a owl:DatatypeProperty ;
     rdfs:label "charge end date" ;
     rdfs:comment "Date when D&D charges stopped accruing." ;
+    rdfs:domain :DemurrageCharge ;
     rdfs:range xsd:date .
 
 :chargeableDays a owl:DatatypeProperty ;
     rdfs:label "chargeable days" ;
     rdfs:comment "Total number of days for which charges apply (after free time)." ;
+    rdfs:domain :DemurrageCharge ;
     rdfs:range xsd:integer .
 
 :equipmentType a owl:DatatypeProperty ;
     rdfs:label "equipment type" ;
     rdfs:comment "ISO equipment type code (e.g., 22G1 for 20ft dry, 45G1 for 40ft HC)." ;
+    rdfs:domain :DemurrageDetentionTariff ;
     rdfs:range xsd:string .
 
 :tradeDirection a owl:DatatypeProperty ;
     rdfs:label "trade direction" ;
     rdfs:comment "Import or export direction: IMPORT, EXPORT." ;
+    rdfs:domain :DemurrageDetentionTariff ;
     rdfs:range xsd:string .
 
 :portCode a owl:DatatypeProperty ;
     rdfs:label "port code" ;
     rdfs:comment "UN/LOCODE of the port where D&D applies." ;
+    rdfs:domain :DemurrageDetentionTariff ;
     rdfs:range xsd:string .
 
 :disputeReason a owl:DatatypeProperty ;
@@ -299,9 +311,11 @@
 :validFrom a owl:DatatypeProperty ;
     rdfs:label "valid from" ;
     rdfs:comment "Start date of tariff validity." ;
+    rdfs:domain :DemurrageDetentionTariff ;
     rdfs:range xsd:date .
 
 :validTo a owl:DatatypeProperty ;
     rdfs:label "valid to" ;
     rdfs:comment "End date of tariff validity." ;
+    rdfs:domain :DemurrageDetentionTariff ;
     rdfs:range xsd:date .

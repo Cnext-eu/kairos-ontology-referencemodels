@@ -413,16 +413,19 @@
 :hasCharge a owl:ObjectProperty ;
     rdfs:label "has charge" ;
     rdfs:comment "Relates a shipment, booking, or invoice to its applicable charges." ;
+    rdfs:domain :Invoice ;
     rdfs:range :Charge .
 
 :hasSurcharge a owl:ObjectProperty ;
     rdfs:label "has surcharge" ;
     rdfs:comment "Relates a freight charge or invoice to applied surcharges." ;
+    rdfs:domain :FreightCharge ;
     rdfs:range :Surcharge .
 
 :appliesTariff a owl:ObjectProperty ;
     rdfs:label "applies tariff" ;
     rdfs:comment "Relates a charge to the tariff schedule that defines its rate." ;
+    rdfs:domain :Charge ;
     rdfs:range :TariffSchedule .
 
 :hasFreightRate a owl:ObjectProperty ;
@@ -434,6 +437,7 @@
 :hasFreeTime a owl:ObjectProperty ;
     rdfs:label "has free time" ;
     rdfs:comment "Relates a tariff or charge to the applicable free-time period." ;
+    rdfs:domain :Charge ;
     rdfs:range :FreeTimePeriod .
 
 :hasAllocation a owl:ObjectProperty ;
@@ -451,6 +455,7 @@
 :hasLetterOfCredit a owl:ObjectProperty ;
     rdfs:label "has letter of credit" ;
     rdfs:comment "Relates a commercial transaction to a letter of credit." ;
+    rdfs:domain :Invoice ;
     rdfs:range :LetterOfCredit .
 
 #################################################################
@@ -490,11 +495,13 @@
 :validFrom a owl:DatatypeProperty ;
     rdfs:label "valid from" ;
     rdfs:comment "Start date of rate or tariff validity." ;
+    rdfs:domain :TariffSchedule ;
     rdfs:range xsd:date .
 
 :validTo a owl:DatatypeProperty ;
     rdfs:label "valid to" ;
     rdfs:comment "End date of rate or tariff validity." ;
+    rdfs:domain :TariffSchedule ;
     rdfs:range xsd:date .
 
 :freeDays a owl:DatatypeProperty ;
@@ -530,4 +537,5 @@
 :expiryDate a owl:DatatypeProperty ;
     rdfs:label "expiry date" ;
     rdfs:comment "Expiration date of a financial instrument or rate." ;
+    rdfs:domain :LetterOfCredit ;
     rdfs:range xsd:date .

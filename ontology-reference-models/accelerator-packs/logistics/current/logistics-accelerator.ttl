@@ -10,21 +10,21 @@
     dcterms:description """Pre-composed ontology bundle for logistics companies.
     
     Includes all logistics-relevant ontologies:
-    - DCSA (container shipping)
+    - DCSA (container shipping, demurrage & detention)
     - MMT (multi-modal transport)
-    - BSP (buy-ship-pay commercial core)
+    - BSP (buy-ship-pay: commercial, financial, cost accounting, revenue & yield)
     - TIC (terminal operations)
     - IMO (maritime regulatory)
     - WCO (customs & border)
     - Sustainability (carbon & energy)
-    - Supply Chain (integration layer)
     
-    Does NOT include FIBO (use Financial Services Accelerator for financial ontologies).""" ;
+    Does NOT include FIBO (use Financial Services Accelerator for capital-markets ontologies).""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    dcterms:modified "2026-05-22"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
     owl:imports <https://www.kairosflow.ai/ont/dcsa#> ,
+                <https://www.kairosflow.ai/ont/dcsa/demurrage-detention#> ,
                 <https://www.kairosflow.ai/ont/mmt#> ,
                 <https://www.kairosflow.ai/ont/bsp#> ,
                 <https://www.kairosflow.ai/ont/tic#> ,

@@ -146,16 +146,19 @@
 :hasRevenueItem a owl:ObjectProperty ;
     rdfs:label "has revenue item" ;
     rdfs:comment "Relates a shipment, booking, or scope to its revenue items." ;
+    rdfs:domain :ProfitabilityScope ;
     rdfs:range :RevenueItem .
 
 :hasRevenuePerUnit a owl:ObjectProperty ;
     rdfs:label "has revenue per unit" ;
     rdfs:comment "Relates a scope to its calculated yield metric." ;
+    rdfs:domain :ProfitabilityScope ;
     rdfs:range :RevenuePerUnit .
 
 :hasLoadFactor a owl:ObjectProperty ;
     rdfs:label "has load factor" ;
     rdfs:comment "Relates a voyage, vessel, or route to its load factor." ;
+    rdfs:domain :ProfitabilityScope ;
     rdfs:range :LoadFactor .
 
 :hasContributionMargin a owl:ObjectProperty ;
@@ -173,11 +176,13 @@
 :measuredFor a owl:ObjectProperty ;
     rdfs:label "measured for" ;
     rdfs:comment "Relates a metric to the profitability scope it measures." ;
+    rdfs:domain :RevenuePerUnit ;
     rdfs:range :ProfitabilityScope .
 
 :appliesRateCard a owl:ObjectProperty ;
     rdfs:label "applies rate card" ;
     rdfs:comment "Relates a booking or shipment to the rate card used for pricing." ;
+    rdfs:domain :RevenueItem ;
     rdfs:range :RateCard .
 
 #################################################################
@@ -271,11 +276,13 @@
 :period a owl:DatatypeProperty ;
     rdfs:label "period" ;
     rdfs:comment "Time period for the metric (e.g., 2026-Q1, 2026-03, VOYAGE-2026-001)." ;
+    rdfs:domain :YieldAnalysis ;
     rdfs:range xsd:string .
 
 :currency a owl:DatatypeProperty ;
     rdfs:label "currency" ;
     rdfs:comment "ISO 4217 currency code." ;
+    rdfs:domain :RevenueItem ;
     rdfs:range xsd:string .
 
 :rateAmount a owl:DatatypeProperty ;
@@ -293,9 +300,11 @@
 :validFrom a owl:DatatypeProperty ;
     rdfs:label "valid from" ;
     rdfs:comment "Start date of rate card validity." ;
+    rdfs:domain :RateCard ;
     rdfs:range xsd:date .
 
 :validTo a owl:DatatypeProperty ;
     rdfs:label "valid to" ;
     rdfs:comment "End date of rate card validity." ;
+    rdfs:domain :RateCard ;
     rdfs:range xsd:date .
