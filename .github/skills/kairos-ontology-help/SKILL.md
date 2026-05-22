@@ -5,7 +5,7 @@ description: >
   hub structure, projections, CLI commands, and best practices.
   Invoke whenever a user asks "how does Kairos work?" or needs orientation.
 ---
-<!-- kairos-ontology-toolkit:managed v2.25.0 -->
+<!-- kairos-ontology-toolkit:managed v2.31.0 -->
 
 # Kairos Ontology Toolkit — Help & Reference
 
@@ -137,6 +137,19 @@ The toolkit supports 8 projection targets:
 | `prompt` | `--target prompt` | LLM-optimised ontology descriptions | AI / copilot context |
 | `report` | `--target report` | HTML mapping report with data flow diagrams and coverage dashboards | Documentation / governance |
 | `all` | `--target all` | All of the above | Full regeneration |
+
+> **Import whitelisting (DD-021):** When a domain ontology uses `owl:imports`
+> to reference external models, imported classes are NOT projected by default.
+> Use `kairos-ext:silverInclude` / `kairos-ext:goldInclude` per class or
+> `kairos-ext:silverIncludeImports` / `kairos-ext:goldIncludeImports` on the
+> ontology to explicitly claim imported classes for projection.  See the
+> silver and gold medallion skills for details.
+>
+> **Simplified FK annotations (DD-022):** Use `kairos-ext:silverForeignKey true`
+> on an object property to generate a FK column without OWL cardinality
+> restrictions.  Use `kairos-ext:silverForeignKeyOn <Class>` to control which
+> table receives the FK (useful for parent→child relationships on imported
+> properties).
 
 ## 4  CLI Commands
 

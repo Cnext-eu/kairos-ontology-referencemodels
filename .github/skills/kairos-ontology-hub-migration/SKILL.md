@@ -6,7 +6,7 @@ description: >
   migrate CLI command.
 ---
 
-<!-- kairos-ontology-toolkit:managed v2.25.0 -->
+<!-- kairos-ontology-toolkit:managed v2.31.0 -->
 
 # Hub Migration Skill
 

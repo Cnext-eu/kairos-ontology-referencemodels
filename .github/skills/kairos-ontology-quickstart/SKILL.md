@@ -5,7 +5,7 @@ description: >
   Covers repo naming, CLI bootstrapping, first domain, validation, and projections.
   Usable by both humans and AI assistants.
 ---
-<!-- kairos-ontology-toolkit:managed v2.25.0 -->
+<!-- kairos-ontology-toolkit:managed v2.31.0 -->
 
 # Quickstart — New Ontology Hub
 

@@ -5,7 +5,7 @@ description: >
   repository. Covers dbt package consumption (via dbt deps), Power BI semantic model
   deployment, version pinning, release pipeline, and the feedback loop for gap requests.
 ---
-<!-- kairos-ontology-toolkit:managed v2.25.0 -->
+<!-- kairos-ontology-toolkit:managed v2.31.0 -->
 
 # Kairos Dataplatform Integration Skill
 

@@ -5,7 +5,7 @@ description: >
   and extension/mapping correctness. Produces a structured report with
   what's good, what's broken, and what can be improved.
 ---
-<!-- kairos-ontology-toolkit:managed v2.25.0 -->
+<!-- kairos-ontology-toolkit:managed v2.31.0 -->
 
 # Ontology Validation & Review Skill
 

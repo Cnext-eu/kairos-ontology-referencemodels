@@ -4,7 +4,7 @@ description: >
   Create a pull request to merge the current feature branch into main.
   Covers commit hygiene, push, PR creation via gh CLI, and post-merge cleanup.
 ---
-<!-- kairos-ontology-toolkit:managed v2.25.0 -->
+<!-- kairos-ontology-toolkit:managed v2.31.0 -->
 
 # SC — Merge via Pull Request
 

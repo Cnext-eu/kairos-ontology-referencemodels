@@ -4,7 +4,7 @@ description: >
   Knowledge about generating downstream artifacts from ontologies.
   Covers all 7 projection targets and when to use each.
 ---
-<!-- kairos-ontology-toolkit:managed v2.25.0 -->
+<!-- kairos-ontology-toolkit:managed v2.31.0 -->
 
 # Projection Generation Skill
 
@@ -37,7 +37,7 @@ You help users generate and understand projection artifacts.
 - **azure-search**: When building a search index. Maps ontology properties to Azure Search field types with filters and facets.
 - **a2ui**: When generating UI forms. Creates JSON schemas that describe the data structure for automatic UI rendering.
 - **prompt**: When using the ontology as LLM context. Generates a compact version (entity→fields map) and a detailed version (with types, descriptions, relationships).
-- **silver**: When building the silver layer of a medallion data platform (e.g. MS Fabric warehouse). Generates T-SQL DDL (`CREATE TABLE`), FK/UNIQUE constraints (`ALTER TABLE`), and a Mermaid ERD. Requires a `*-silver-ext.ttl` annotation file in `model/extensions/`. See the **kairos-medallion-silver** skill.
+- **silver**: When building the silver layer of a medallion data platform (e.g. MS Fabric warehouse). Generates T-SQL DDL (`CREATE TABLE`), FK/UNIQUE constraints (`ALTER TABLE`), and a Mermaid ERD. Requires a `*-silver-ext.ttl` annotation file in `model/extensions/`. Imported classes (via `owl:imports`) are not projected by default — use `silverInclude` or `silverIncludeImports` to claim them (DD-021). See the **kairos-medallion-silver** skill.
 
 ## CLI commands
 
@@ -67,6 +67,11 @@ data platform from ontology → warehouse → BI layer.  They all write to
 | **silver** | Generates the **physical schema** for the silver warehouse layer | `*-silver-ext.ttl` | DDL (`CREATE TABLE`), FK/UNIQUE constraints (`ALTER TABLE`), Mermaid ERD + SVG |
 | **dbt** | Generates a **dbt Core project** with transformation models that populate the silver schema from bronze sources | `*-silver-ext.ttl` + bronze vocabularies + SKOS mappings | SQL models, `schema.yml` with tests, `dbt_project.yml`, macros |
 | **powerbi** | Generates the **gold layer** star schema + Power BI semantic model | `*-gold-ext.ttl` | Gold DDL, TMDL semantic model, DAX measures, star-schema ERD |
+
+> **Import whitelisting (DD-021):** The silver and powerbi targets only project
+> classes defined in the hub domain by default. Imported classes (via `owl:imports`)
+> require explicit claiming with `silverInclude`/`silverIncludeImports` or
+> `goldInclude`/`goldIncludeImports` in the appropriate extension file.
 
 ### How they relate (execution order)
 
@@ -219,3 +224,10 @@ You can also check `summary.warnings` or inspect `projections` entries with
 - Use `dbt` projection when you want to see the full property extraction including SHACL tests.
 - Run all targets at once to catch issues specific to certain mappings.
 - For `silver`: run the **kairos-medallion-silver** skill first to set up `kairos-ext:` annotations in `model/extensions/` before projecting.
+
+## Common warnings
+
+| Warning | Meaning | Action |
+|---------|---------|--------|
+| **DD-021: Unclaimed parent** | A projected class has a parent NOT in the projection set. Properties are auto-inherited from unprojected parents. | Review whether the parent should be a separate table (`silverInclude`) or if inheritance is sufficient. |
+| **PII detected** | A property name matches PII keywords but the class lacks `kairos-ext:gdprClassification`. | Add GDPR annotations or confirm the property is not sensitive. |

@@ -4,7 +4,7 @@ description: >
   Create a feature branch from main for a new piece of work.
   Ensures clean working tree, up-to-date main, and consistent branch naming.
 ---
-<!-- kairos-ontology-toolkit:managed v2.25.0 -->
+<!-- kairos-ontology-toolkit:managed v2.31.0 -->
 
 # SC — Create Feature Branch
 

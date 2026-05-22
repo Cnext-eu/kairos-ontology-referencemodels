@@ -4,7 +4,7 @@ description: >
   Guide for setting up a new ontology hub repository.
   Covers folder structure, starter ontologies, SHACL shapes, and projections.
 ---
-<!-- kairos-ontology-toolkit:managed v2.25.0 -->
+<!-- kairos-ontology-toolkit:managed v2.31.0 -->
 
 # Hub Setup Skill
 

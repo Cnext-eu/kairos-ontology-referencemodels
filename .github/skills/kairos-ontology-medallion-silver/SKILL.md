@@ -6,7 +6,7 @@ description: >
   Covers R1-R16 annotation vocabulary, S1-S8 Silver Fabric Warehouse
   behaviours, and the full bronze-to-silver dbt pipeline.
 ---
-<!-- kairos-ontology-toolkit:managed v2.25.0 -->
+<!-- kairos-ontology-toolkit:managed v2.31.0 -->
 
 # Kairos Medallion Silver Skill
 
@@ -174,6 +174,10 @@ class in the domain MUST have at minimum:
 | `kairos-ext:namingConvention` | Ontology-level | `"camel-to-snake"` |
 | `kairos-ext:includeNaturalKeyColumn` | Ontology-level | `"true"` |
 | `kairos-ext:inlineRefThreshold` | Ontology-level | `"3"` |
+| `kairos-ext:silverIncludeImports` | Ontology-level (only if uses `owl:imports`) | `"false"` |
+| `kairos-ext:silverInclude` | Only on imported classes | `"false"` |
+| `kairos-ext:silverForeignKey` | On ObjectProperty (imported props lacking cardinality) | `"false"` |
+| `kairos-ext:silverForeignKeyOn` | On ObjectProperty (reversal pattern) | _(none)_ |
 
 Run a quick scan:
 ```bash
@@ -185,6 +189,12 @@ grep -c "kairos-ext:scdType" ontology-hub/model/extensions/{DOMAIN}-silver-ext.t
 ---
 
 ## Phase 3 — Gather per-property design decisions
+
+> ⚠️ **Imported reference model properties** (from `owl:imports`) typically define
+> `owl:ObjectProperty` without cardinality constraints. These will **NOT** generate
+> FK columns automatically. You MUST annotate each many-to-one relationship with
+> `kairos-ext:silverForeignKey "true"` or `kairos-ext:silverForeignKeyOn` in the
+> extension file. See [§3e](#3e--dd-022-simplified-fk-annotations) below.
 
 For each `owl:ObjectProperty` in the domain:
 
@@ -206,6 +216,11 @@ ex:{PropertyName}
     kairos-ext:silverColumnName "fk_column_name" ;
     kairos-ext:silverDataType   "NVARCHAR(16)" .
 ```
+
+> 💡 **For imported properties** that you cannot modify, use the simpler
+> `kairos-ext:silverForeignKey "true"` annotation instead of OWL restrictions.
+> For parent→child relationships, use `kairos-ext:silverForeignKeyOn` to place
+> the FK on the child table. See [§3e](#3e--dd-022-simplified-fk-annotations).
 
 **Many-to-many** → junction table (R13):
 ```turtle
@@ -248,6 +263,71 @@ For FK columns only meaningful for certain discriminator subtypes:
 ex:{PropertyName}
     kairos-ext:conditionalOnType "SubtypeA SubtypeB" .
 ```
+
+### 3e — DD-022: Simplified FK annotations
+
+The standard FK detection (section 3a) relies on `owl:maxQualifiedCardinality 1`
+or `owl:FunctionalProperty` to distinguish many-to-one from many-to-many. This
+works well for classes defined inside the hub, but **imported reference model
+properties** often lack OWL cardinality restrictions — they arrive as plain
+`owl:ObjectProperty` with no restrictions in the hub's extension file.
+
+Two extension annotations solve this without requiring changes to the imported
+ontology:
+
+#### `kairos-ext:silverForeignKey` (boolean)
+
+Marks an object property as a FK column. Equivalent to declaring
+`owl:FunctionalProperty` but works in extension files on imported properties
+that cannot be modified.
+
+```turtle
+@prefix ref:       <https://referencemodels.kairos.cnext.eu/logistics#> .
+@prefix kairos-ext: <https://kairos.cnext.eu/ext#> .
+@prefix xsd:       <http://www.w3.org/2001/XMLSchema#> .
+
+# Mark an imported property as FK (many-to-one)
+ref:hasShipperParty
+    kairos-ext:silverForeignKey "true"^^xsd:boolean .
+```
+
+The FK column is placed on the **domain** table (the class that "has" the
+property) by default, just like a standard cardinality-1 relationship.
+
+#### `kairos-ext:silverForeignKeyOn` (class URI)
+
+Overrides **which table** receives the FK column. Set the value to the
+**range class** to reverse the FK direction — the range table gets a column
+pointing back to the domain table. This is the standard parent→child pattern
+(e.g., `Consignment hasConsignmentItem ConsignmentItem` where the FK lives on
+`ConsignmentItem`).
+
+```turtle
+@prefix ref:       <https://referencemodels.kairos.cnext.eu/logistics#> .
+@prefix kairos-ext: <https://kairos.cnext.eu/ext#> .
+
+# Parent → child: FK lives on the child (range) table
+ref:hasConsignmentItem
+    kairos-ext:silverForeignKeyOn ref:ConsignmentItem .
+```
+
+> **Note:** `silverForeignKeyOn` implies `silverForeignKey "true"` — there is no
+> need to set both annotations on the same property.
+
+#### Interaction with other annotations
+
+- **`silverColumnName`** — fully compatible. Use it alongside either annotation
+  to control the physical column name:
+  ```turtle
+  ref:hasShipperParty
+      kairos-ext:silverForeignKey "true"^^xsd:boolean ;
+      kairos-ext:silverColumnName "shipper_party_sk" .
+  ```
+- **`silverDataType`** — compatible, overrides the FK column's SQL type.
+- **`conditionalOnType`** — compatible, restricts the FK to specific discriminator
+  subtypes.
+- **`junctionTableName`** — mutually exclusive. Do not combine FK annotations
+  with junction-table annotations on the same property.
 
 ---
 
@@ -519,6 +599,134 @@ ex:hasLegalForm
 ex:hasEngagementMember
     kairos-ext:junctionTableName "engagement_team_member" .
 ```
+
+### FK on imported property (DD-022)
+
+```turtle
+# Simple FK — imported property with no OWL cardinality
+ref:hasShipperParty
+    kairos-ext:silverForeignKey "true"^^xsd:boolean ;
+    kairos-ext:silverColumnName "shipper_party_sk" .
+
+# Reversed FK — parent→child, FK lives on the child table
+ref:hasConsignmentItem
+    kairos-ext:silverForeignKeyOn ref:ConsignmentItem .
+```
+
+### Working with imported classes (DD-021)
+
+When a domain ontology uses `owl:imports` to reference external models (e.g.,
+reference models), imported classes are **NOT projected** to silver by default.
+Hub authors must explicitly claim them.
+
+**Per-class claiming:**
+```turtle
+@prefix ref: <https://referencemodels.kairos.cnext.eu/party#> .
+ref:TradeParty kairos-ext:silverInclude "true"^^xsd:boolean .
+```
+
+**Bulk claiming (all first-level imported classes):**
+```turtle
+<https://contoso.com/ont/customer> kairos-ext:silverIncludeImports "true"^^xsd:boolean .
+```
+
+**Rules:**
+- Bulk mode (`silverIncludeImports`) claims all classes from directly imported
+  ontologies (first-level `owl:imports` only).
+- Peer hub domains (other domains in the same hub) are **excluded** from bulk
+  claiming — they have their own extension files.
+- The silver schema comes from the **hub domain name** (e.g., `silver_customer`),
+  not from the reference model namespace.
+- Per-class `silverInclude` overrides bulk mode for individual classes.
+
+**Example extension file** (`customer-silver-ext.ttl`):
+```turtle
+@prefix kairos-ext: <https://kairos.cnext.eu/ext#> .
+@prefix ref: <https://referencemodels.kairos.cnext.eu/party#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Bulk-claim all imported reference model classes
+<https://contoso.com/ont/customer>
+    kairos-ext:silverSchema "silver_customer" ;
+    kairos-ext:silverIncludeImports "true"^^xsd:boolean .
+
+# Or claim individual classes
+ref:TradeParty
+    kairos-ext:silverInclude "true"^^xsd:boolean ;
+    kairos-ext:scdType "2" .
+```
+
+### Property inheritance from unprojected parents
+
+When a projected class has a parent that is **not** in the projected set (i.e.,
+not claimed via `silverInclude` or `silverIncludeImports`), the projector
+automatically inherits datatype properties and FK object properties from the full
+`rdfs:subClassOf` chain.
+
+### Reference model extension defaults (DD-023)
+
+Reference model repositories can ship **default extension files** alongside their
+ontologies. These provide sensible silver annotations (scdType, naturalKey,
+silverInclude, etc.) that downstream hubs inherit automatically.
+
+**Naming convention:**
+```
+{ontology-stem}-silver-defaults.ttl   # e.g., bsp-party-silver-defaults.ttl
+{ontology-stem}-gold-defaults.ttl
+```
+
+**Discovery:** When the catalog resolves an `owl:imports` URI, the toolkit looks
+for a sibling `*-silver-defaults.ttl` alongside the resolved file.
+
+**Merge priority (highest → lowest):**
+1. Hub domain extension (`{domain}-silver-ext.ttl`) — always wins
+2. Reference model defaults — fallback layer
+3. Built-in projector conventions (rdfs:range inference)
+
+**Override semantics:** If the hub's domain extension declares the same
+subject+predicate as the defaults file, the defaults value is skipped.
+
+**Example reference model defaults** (`bsp-party-silver-defaults.ttl`):
+```turtle
+@prefix kairos-ext: <https://kairos.community/ns/ext#> .
+@prefix bsp: <https://bsp.2024.org/party#> .
+
+# Pre-declare which classes are suitable for silver materialization
+bsp:TradeParty kairos-ext:silverInclude "true"^^xsd:boolean ;
+    kairos-ext:scdType "1" ;
+    kairos-ext:naturalKey "partyCode" .
+
+bsp:Buyer kairos-ext:silverInclude "true"^^xsd:boolean ;
+    kairos-ext:scdType "1" .
+```
+
+**Hub override** (`customer-silver-ext.ttl`):
+```turtle
+# Override just scdType — naturalKey and silverInclude come from defaults
+bsp:TradeParty kairos-ext:scdType "2" .
+```
+
+**Benefits:**
+- Eliminates per-hub duplication of extension annotations
+- `silverInclude` in defaults means hubs don't need to repeat claims
+- Reference model repos are standard ontology-hubs with the toolkit installed
+- Fully backward-compatible — hubs without defaults work unchanged
+
+**How it works:**
+- The projector walks `rdfs:subClassOf` from the projected class upward.
+- Ancestor classes that are NOT separately projected contribute their properties
+  to the child table.
+- Ancestors that ARE projected are skipped (S3 flattening handles those via the
+  parent table).
+- Cycle protection prevents infinite loops.
+
+**Warning:** The projector emits a DD-021 warning when unclaimed parents are
+detected. This is informational — inherited properties will still appear. Review
+the warning to confirm you don't need the parent as a separate table.
+
+**Example:** If `Truck rdfs:subClassOf Vehicle` and only `Truck` is projected,
+`Vehicle`'s properties (`registrationNumber`, etc.) appear on the `truck` table
+automatically.
 
 ---
 

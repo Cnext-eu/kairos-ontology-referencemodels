@@ -5,7 +5,7 @@ description: >
   the domain ontology. Combines source-centric and entity-centric views with
   data flow diagrams, transform expressions, coverage dashboards, and action items.
 ---
-<!-- kairos-ontology-toolkit:managed v2.25.0 -->
+<!-- kairos-ontology-toolkit:managed v2.31.0 -->
 
 # Mapping Report Skill
 

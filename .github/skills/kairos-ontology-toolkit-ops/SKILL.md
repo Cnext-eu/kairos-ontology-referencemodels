@@ -5,7 +5,7 @@ description: >
   Covers releasing new versions (stable + pre-release), upgrading hub repos
   via channels (update --upgrade), refreshing managed files, and version diagnostics.
 ---
-<!-- kairos-ontology-toolkit:managed v2.25.0 -->
+<!-- kairos-ontology-toolkit:managed v2.31.0 -->
 
 # Toolkit Operations Skill
 
