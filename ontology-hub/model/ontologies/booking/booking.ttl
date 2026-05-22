@@ -1,0 +1,145 @@
+@prefix : <https://cldn.com/ont/booking#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix party: <https://cldn.com/ont/party#> .
+@prefix route-schedule: <https://cldn.com/ont/route-schedule#> .
+@prefix consignment: <https://cldn.com/ont/consignment#> .
+
+<https://cldn.com/ont/booking> a owl:Ontology ;
+    rdfs:label "CLdN Booking Domain"@en ;
+    rdfs:comment "Cargo quoting and sales lifecycle for CLdN Logistics — covers the pre-booking quote process from draft through negotiation to won/booked status."@en ;
+    owl:versionInfo "1.0.0" ;
+    owl:imports <https://cldn.com/ont/party> ,
+                <https://cldn.com/ont/route-schedule> ,
+                <https://cldn.com/ont/consignment> .
+
+# =============================================================================
+# Classes
+# =============================================================================
+
+:CargoQuote a owl:Class ;
+    rdfs:label "Cargo Quote"@en ;
+    rdfs:comment "A price proposal for transporting cargo, following a sales lifecycle from Draft through Quoted, Negotiation, to Won/Booked or Unsuccessful. A won quote results in a transport order."@en .
+
+# =============================================================================
+# Datatype Properties
+# =============================================================================
+
+:quoteReference a owl:DatatypeProperty ;
+    rdfs:domain :CargoQuote ;
+    rdfs:range xsd:string ;
+    rdfs:label "Quote Reference"@en ;
+    rdfs:comment "Unique identifier for the cargo quote."@en .
+
+:quoteStatus a owl:DatatypeProperty ;
+    rdfs:domain :CargoQuote ;
+    rdfs:range xsd:string ;
+    rdfs:label "Quote Status"@en ;
+    rdfs:comment "Current lifecycle status: Draft, Quoted, Negotiation, Won, Booked, or Unsuccessful."@en .
+
+:quoteDate a owl:DatatypeProperty ;
+    rdfs:domain :CargoQuote ;
+    rdfs:range xsd:date ;
+    rdfs:label "Quote Date"@en ;
+    rdfs:comment "Date the quote was created or issued to the customer."@en .
+
+:expiryDate a owl:DatatypeProperty ;
+    rdfs:domain :CargoQuote ;
+    rdfs:range xsd:date ;
+    rdfs:label "Expiry Date"@en ;
+    rdfs:comment "Date after which the quote is no longer valid."@en .
+
+:wonDate a owl:DatatypeProperty ;
+    rdfs:domain :CargoQuote ;
+    rdfs:range xsd:date ;
+    rdfs:label "Won Date"@en ;
+    rdfs:comment "Date the quote was won (customer accepted)."@en .
+
+:bookingDate a owl:DatatypeProperty ;
+    rdfs:domain :CargoQuote ;
+    rdfs:range xsd:date ;
+    rdfs:label "Booking Date"@en ;
+    rdfs:comment "Date the quote was converted into an actual transport booking."@en .
+
+:forecastLoads a owl:DatatypeProperty ;
+    rdfs:domain :CargoQuote ;
+    rdfs:range xsd:integer ;
+    rdfs:label "Forecast Loads"@en ;
+    rdfs:comment "Expected number of transport loads for the quoted period."@en .
+
+:actualLoads a owl:DatatypeProperty ;
+    rdfs:domain :CargoQuote ;
+    rdfs:range xsd:integer ;
+    rdfs:label "Actual Loads"@en ;
+    rdfs:comment "Actual number of transport loads realized from this quote."@en .
+
+:quotedPrice a owl:DatatypeProperty ;
+    rdfs:domain :CargoQuote ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Quoted Price"@en ;
+    rdfs:comment "Price amount quoted to the customer."@en .
+
+:currency a owl:DatatypeProperty ;
+    rdfs:domain :CargoQuote ;
+    rdfs:range xsd:string ;
+    rdfs:label "Currency"@en ;
+    rdfs:comment "ISO 4217 currency code for the quoted price (e.g., EUR, GBP)."@en .
+
+:margin a owl:DatatypeProperty ;
+    rdfs:domain :CargoQuote ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Margin"@en ;
+    rdfs:comment "Profit margin on the quote (percentage or absolute amount)."@en .
+
+:transportMode a owl:DatatypeProperty ;
+    rdfs:domain :CargoQuote ;
+    rdfs:range xsd:string ;
+    rdfs:label "Transport Mode"@en ;
+    rdfs:comment "Mode of transport offered (e.g., intermodal, road-only, sea-only)."@en .
+
+:validityPeriod a owl:DatatypeProperty ;
+    rdfs:domain :CargoQuote ;
+    rdfs:range xsd:string ;
+    rdfs:label "Validity Period"@en ;
+    rdfs:comment "Description of the period during which the quoted rates apply."@en .
+
+# =============================================================================
+# Object Properties
+# =============================================================================
+
+:forCustomer a owl:ObjectProperty ;
+    rdfs:domain :CargoQuote ;
+    rdfs:range party:Customer ;
+    rdfs:label "for customer"@en ;
+    rdfs:comment "The customer to whom this quote is addressed."@en .
+
+:bySalesperson a owl:ObjectProperty ;
+    rdfs:domain :CargoQuote ;
+    rdfs:range party:Employee ;
+    rdfs:label "by salesperson"@en ;
+    rdfs:comment "The sales employee who created or owns this quote."@en .
+
+:approvedByManager a owl:ObjectProperty ;
+    rdfs:domain :CargoQuote ;
+    rdfs:range party:Employee ;
+    rdfs:label "approved by manager"@en ;
+    rdfs:comment "The manager who approved or oversees this quote."@en .
+
+:fromMarket a owl:ObjectProperty ;
+    rdfs:domain :CargoQuote ;
+    rdfs:range route-schedule:Market ;
+    rdfs:label "from market"@en ;
+    rdfs:comment "The origin market (geographic trade lane) for this quote."@en .
+
+:toMarket a owl:ObjectProperty ;
+    rdfs:domain :CargoQuote ;
+    rdfs:range route-schedule:Market ;
+    rdfs:label "to market"@en ;
+    rdfs:comment "The destination market (geographic trade lane) for this quote."@en .
+
+:resultsInOrder a owl:ObjectProperty ;
+    rdfs:domain :CargoQuote ;
+    rdfs:range consignment:TransportOrder ;
+    rdfs:label "results in order"@en ;
+    rdfs:comment "The transport order created when this quote is won and converted to a booking."@en .

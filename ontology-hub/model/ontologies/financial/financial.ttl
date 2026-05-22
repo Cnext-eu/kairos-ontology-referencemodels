@@ -1,0 +1,129 @@
+@prefix : <https://cldn.com/ont/financial#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix consignment: <https://cldn.com/ont/consignment#> .
+@prefix equipment: <https://cldn.com/ont/equipment#> .
+@prefix party: <https://cldn.com/ont/party#> .
+
+<https://cldn.com/ont/financial> a owl:Ontology ;
+    rdfs:label "CLdN Financial Domain"@en ;
+    rdfs:comment "Operational cost analysis for CLdN Logistics — covers demurrage charges and haulier performance metrics (HPI)."@en ;
+    owl:versionInfo "1.0.0" ;
+    owl:imports <https://cldn.com/ont/consignment> ,
+                <https://cldn.com/ont/equipment> ,
+                <https://cldn.com/ont/party> .
+
+# =============================================================================
+# Classes
+# =============================================================================
+
+:DemurrageCharge a owl:Class ;
+    rdfs:label "Demurrage Charge"@en ;
+    rdfs:comment "A penalty charge incurred when transport equipment (trailer, container) is returned after the allowed free-time period has expired."@en .
+
+:HaulierPerformance a owl:Class ;
+    rdfs:label "Haulier Performance"@en ;
+    rdfs:comment "A cost performance record measuring haulier efficiency over a period, expressed as cost per kilometer (HPI — Haulier Performance Index)."@en .
+
+# =============================================================================
+# Datatype Properties — DemurrageCharge
+# =============================================================================
+
+:demurrageReference a owl:DatatypeProperty ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range xsd:string ;
+    rdfs:label "Demurrage Reference"@en ;
+    rdfs:comment "Unique identifier for the demurrage charge record (typically order + physical number combination)."@en .
+
+:demurrageDays a owl:DatatypeProperty ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range xsd:integer ;
+    rdfs:label "Demurrage Days"@en ;
+    rdfs:comment "Number of days the equipment was held beyond the allowed free-time period."@en .
+
+:demurrageAmount a owl:DatatypeProperty ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Demurrage Amount"@en ;
+    rdfs:comment "Monetary amount of the demurrage charge."@en .
+
+:freeTimeDays a owl:DatatypeProperty ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range xsd:integer ;
+    rdfs:label "Free Time Days"@en ;
+    rdfs:comment "Number of free days allowed before demurrage charges begin accruing."@en .
+
+:returnDate a owl:DatatypeProperty ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range xsd:date ;
+    rdfs:label "Return Date"@en ;
+    rdfs:comment "Actual date the equipment was returned."@en .
+
+:dueDate a owl:DatatypeProperty ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range xsd:date ;
+    rdfs:label "Due Date"@en ;
+    rdfs:comment "Date by which the demurrage charge must be paid."@en .
+
+:currency a owl:DatatypeProperty ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range xsd:string ;
+    rdfs:label "Currency"@en ;
+    rdfs:comment "ISO 4217 currency code for the charge amount (e.g., EUR, GBP)."@en .
+
+# =============================================================================
+# Datatype Properties — HaulierPerformance
+# =============================================================================
+
+:performancePeriod a owl:DatatypeProperty ;
+    rdfs:domain :HaulierPerformance ;
+    rdfs:range xsd:date ;
+    rdfs:label "Performance Period"@en ;
+    rdfs:comment "Start date of the assessment period for this performance record."@en .
+
+:costPerKm a owl:DatatypeProperty ;
+    rdfs:domain :HaulierPerformance ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Cost per Km"@en ;
+    rdfs:comment "Average cost per kilometer for the haulier in this period (EUR/km)."@en .
+
+:totalCost a owl:DatatypeProperty ;
+    rdfs:domain :HaulierPerformance ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Total Cost"@en ;
+    rdfs:comment "Total cost incurred for the haulier in this assessment period."@en .
+
+:totalKm a owl:DatatypeProperty ;
+    rdfs:domain :HaulierPerformance ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Total Kilometers"@en ;
+    rdfs:comment "Total kilometers driven by the haulier in this assessment period."@en .
+
+:geozone a owl:DatatypeProperty ;
+    rdfs:domain :HaulierPerformance ;
+    rdfs:range xsd:string ;
+    rdfs:label "Geozone"@en ;
+    rdfs:comment "Geographic zone in which the performance was measured."@en .
+
+# =============================================================================
+# Object Properties
+# =============================================================================
+
+:forOrder a owl:ObjectProperty ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range consignment:TransportOrder ;
+    rdfs:label "for order"@en ;
+    rdfs:comment "The transport order that incurred this demurrage charge."@en .
+
+:forAsset a owl:ObjectProperty ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range equipment:Asset ;
+    rdfs:label "for asset"@en ;
+    rdfs:comment "The transport equipment (trailer/container) that was returned late."@en .
+
+:forHaulier a owl:ObjectProperty ;
+    rdfs:domain :HaulierPerformance ;
+    rdfs:range party:Haulier ;
+    rdfs:label "for haulier"@en ;
+    rdfs:comment "The haulier whose cost performance is being measured."@en .

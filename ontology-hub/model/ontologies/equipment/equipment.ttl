@@ -1,0 +1,85 @@
+@prefix : <https://cldn.com/ont/equipment#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix mmt-equip: <https://www.kairosflow.ai/ont/mmt/equipment#> .
+
+# =============================================================================
+# Ontology Metadata
+# =============================================================================
+
+<https://cldn.com/ont/equipment> a owl:Ontology ;
+    rdfs:label "CLdN Equipment Domain"@en ;
+    rdfs:comment "Equipment domain for CLdN Logistics — transport assets and unit type classification."@en ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:creator "CLdN Ontology Team" ;
+    dcterms:created "2026-05-22"^^xsd:date ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/equipment#> .
+
+# =============================================================================
+# Classes
+# =============================================================================
+
+:Asset a owl:Class ;
+    rdfs:subClassOf mmt-equip:TransportEquipment ;
+    rdfs:label "Asset"@en ;
+    rdfs:comment "A physical transport unit (trailer, container, etc.) tracked in CLdN operational systems."@en .
+
+:UnitType a owl:Class ;
+    rdfs:label "Unit Type"@en ;
+    rdfs:comment "A classification of transport medium types (e.g., Trailer, Container 20ft, Container 45ft)."@en .
+
+# =============================================================================
+# Object Properties
+# =============================================================================
+
+:hasUnitType a owl:ObjectProperty ;
+    rdfs:domain :Asset ;
+    rdfs:range :UnitType ;
+    rdfs:label "has unit type"@en ;
+    rdfs:comment "The unit type classification of this asset."@en .
+
+# =============================================================================
+# Datatype Properties — Asset
+# =============================================================================
+
+:assetName a owl:DatatypeProperty ;
+    rdfs:domain :Asset ;
+    rdfs:range xsd:string ;
+    rdfs:label "asset name"@en ;
+    rdfs:comment "The display name of the asset."@en .
+
+:assetSource a owl:DatatypeProperty ;
+    rdfs:domain :Asset ;
+    rdfs:range xsd:string ;
+    rdfs:label "asset source"@en ;
+    rdfs:comment "The source system from which the asset record originates."@en .
+
+:isActive a owl:DatatypeProperty ;
+    rdfs:domain :Asset ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "is active"@en ;
+    rdfs:comment "Indicates whether the transport medium is currently active in the fleet."@en .
+
+:equipmentOwner a owl:DatatypeProperty ;
+    rdfs:domain :Asset ;
+    rdfs:range xsd:string ;
+    rdfs:label "equipment owner"@en ;
+    rdfs:comment "The owner of the transport equipment (e.g., CLdN, shipper-owned, leased)."@en .
+
+# =============================================================================
+# Datatype Properties — UnitType
+# =============================================================================
+
+:unitTypeCode a owl:DatatypeProperty ;
+    rdfs:domain :UnitType ;
+    rdfs:range xsd:string ;
+    rdfs:label "unit type code"@en ;
+    rdfs:comment "The short code classifying the unit type (e.g., TRL, CTR)."@en .
+
+:transportMediumDescription a owl:DatatypeProperty ;
+    rdfs:domain :UnitType ;
+    rdfs:range xsd:string ;
+    rdfs:label "transport medium description"@en ;
+    rdfs:comment "The human-readable description of the transport medium type."@en .

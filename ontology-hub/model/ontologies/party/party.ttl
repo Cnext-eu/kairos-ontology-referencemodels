@@ -1,0 +1,164 @@
+@prefix : <https://cldn.com/ont/party#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix bsp-party: <https://www.kairosflow.ai/ont/bsp/party#> .
+@prefix mmt-party: <https://www.kairosflow.ai/ont/mmt/party#> .
+
+# =============================================================================
+# Ontology Metadata
+# =============================================================================
+
+<https://cldn.com/ont/party> a owl:Ontology ;
+    rdfs:label "CLdN Party Domain"@en ;
+    rdfs:comment "Party domain for CLdN Logistics — customers, hauliers, and employees."@en ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:creator "CLdN Ontology Team" ;
+    dcterms:created "2026-05-22"^^xsd:date ;
+    owl:imports <https://www.kairosflow.ai/ont/bsp/party#> ,
+                <https://www.kairosflow.ai/ont/mmt/party#> .
+
+# =============================================================================
+# Classes
+# =============================================================================
+
+:Customer a owl:Class ;
+    rdfs:subClassOf bsp-party:TradeParty ;
+    rdfs:label "Customer"@en ;
+    rdfs:comment "A freight customer (debtor) that contracts CLdN for transport services."@en .
+
+:Haulier a owl:Class ;
+    rdfs:subClassOf mmt-party:Carrier ;
+    rdfs:label "Haulier"@en ;
+    rdfs:comment "A road transport subcontractor that performs collection or delivery on behalf of CLdN."@en .
+
+:Employee a owl:Class ;
+    rdfs:label "Employee"@en ;
+    rdfs:comment "An internal CLdN staff member involved in sales, quoting, or customer service."@en .
+
+# =============================================================================
+# Datatype Properties — Customer
+# =============================================================================
+
+:countryOfCustomer a owl:DatatypeProperty ;
+    rdfs:domain :Customer ;
+    rdfs:range xsd:string ;
+    rdfs:label "country of customer"@en ;
+    rdfs:comment "The country where the customer is registered or primarily operates."@en .
+
+:customerType a owl:DatatypeProperty ;
+    rdfs:domain :Customer ;
+    rdfs:range xsd:integer ;
+    rdfs:label "customer type"@en ;
+    rdfs:comment "Numeric classification of the customer type."@en .
+
+:sector a owl:DatatypeProperty ;
+    rdfs:domain :Customer ;
+    rdfs:range xsd:string ;
+    rdfs:label "sector"@en ;
+    rdfs:comment "The industry sector the customer belongs to."@en .
+
+:loyaltyTier a owl:DatatypeProperty ;
+    rdfs:domain :Customer ;
+    rdfs:range xsd:string ;
+    rdfs:label "loyalty tier"@en ;
+    rdfs:comment "The loyalty tier classification of the customer."@en .
+
+:segment a owl:DatatypeProperty ;
+    rdfs:domain :Customer ;
+    rdfs:range xsd:string ;
+    rdfs:label "segment"@en ;
+    rdfs:comment "The business segment the customer belongs to."@en .
+
+:customerState a owl:DatatypeProperty ;
+    rdfs:domain :Customer ;
+    rdfs:range xsd:string ;
+    rdfs:label "customer state"@en ;
+    rdfs:comment "The lifecycle state of the customer (e.g., Prospect, Active, Inactive)."@en .
+
+:customerSource a owl:DatatypeProperty ;
+    rdfs:domain :Customer ;
+    rdfs:range xsd:string ;
+    rdfs:label "customer source"@en ;
+    rdfs:comment "The source system from which the customer record originates."@en .
+
+# =============================================================================
+# Datatype Properties — Haulier
+# =============================================================================
+
+:creditorNumber a owl:DatatypeProperty ;
+    rdfs:domain :Haulier ;
+    rdfs:range xsd:string ;
+    rdfs:label "creditor number"@en ;
+    rdfs:comment "The accounting creditor number identifying the haulier in the ERP system."@en .
+
+:creditorName a owl:DatatypeProperty ;
+    rdfs:domain :Haulier ;
+    rdfs:range xsd:string ;
+    rdfs:label "creditor name"@en ;
+    rdfs:comment "The name of the haulier as registered in the creditor/supplier ledger."@en .
+
+:haulierSearchName a owl:DatatypeProperty ;
+    rdfs:domain :Haulier ;
+    rdfs:range xsd:string ;
+    rdfs:label "haulier search name"@en ;
+    rdfs:comment "A short search alias used to identify the haulier in operational systems."@en .
+
+:planningAssignment a owl:DatatypeProperty ;
+    rdfs:domain :Haulier ;
+    rdfs:range xsd:string ;
+    rdfs:label "planning assignment"@en ;
+    rdfs:comment "The planning zone or group the haulier is assigned to for route allocation."@en .
+
+# =============================================================================
+# Datatype Properties — Employee
+# =============================================================================
+
+:employeeId a owl:DatatypeProperty ;
+    rdfs:domain :Employee ;
+    rdfs:range xsd:integer ;
+    rdfs:label "employee ID"@en ;
+    rdfs:comment "The unique numeric identifier of the employee."@en .
+
+:firstName a owl:DatatypeProperty ;
+    rdfs:domain :Employee ;
+    rdfs:range xsd:string ;
+    rdfs:label "first name"@en ;
+    rdfs:comment "The first name of the employee."@en .
+
+:lastName a owl:DatatypeProperty ;
+    rdfs:domain :Employee ;
+    rdfs:range xsd:string ;
+    rdfs:label "last name"@en ;
+    rdfs:comment "The last name of the employee."@en .
+
+:fullName a owl:DatatypeProperty ;
+    rdfs:domain :Employee ;
+    rdfs:range xsd:string ;
+    rdfs:label "full name"@en ;
+    rdfs:comment "The full display name of the employee."@en .
+
+:email a owl:DatatypeProperty ;
+    rdfs:domain :Employee ;
+    rdfs:range xsd:string ;
+    rdfs:label "email"@en ;
+    rdfs:comment "The email address of the employee."@en .
+
+:employeeStatus a owl:DatatypeProperty ;
+    rdfs:domain :Employee ;
+    rdfs:range xsd:string ;
+    rdfs:label "employee status"@en ;
+    rdfs:comment "The current status of the employee (e.g., Active, Inactive)."@en .
+
+:userGroup a owl:DatatypeProperty ;
+    rdfs:domain :Employee ;
+    rdfs:range xsd:string ;
+    rdfs:label "user group"@en ;
+    rdfs:comment "The organizational user group the employee belongs to."@en .
+
+:employeeSource a owl:DatatypeProperty ;
+    rdfs:domain :Employee ;
+    rdfs:range xsd:string ;
+    rdfs:label "employee source"@en ;
+    rdfs:comment "The source system from which the employee record originates."@en .

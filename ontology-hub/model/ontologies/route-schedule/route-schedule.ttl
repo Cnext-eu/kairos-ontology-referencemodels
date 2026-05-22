@@ -1,0 +1,139 @@
+@prefix : <https://cldn.com/ont/route-schedule#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix mmt-route: <https://www.kairosflow.ai/ont/mmt/route-network#> .
+@prefix mmt-inland: <https://www.kairosflow.ai/ont/mmt/inland-transport#> .
+
+# =============================================================================
+# Ontology Metadata
+# =============================================================================
+
+<https://cldn.com/ont/route-schedule> a owl:Ontology ;
+    rdfs:label "CLdN Route & Schedule Domain"@en ;
+    rdfs:comment "Route and schedule domain for CLdN Logistics — shipping routes, trade lane markets, and intermodal legs."@en ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:creator "CLdN Ontology Team" ;
+    dcterms:created "2026-05-22"^^xsd:date ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/route-network#> ,
+                <https://www.kairosflow.ai/ont/mmt/inland-transport#> .
+
+# =============================================================================
+# Classes
+# =============================================================================
+
+:ShippingRoute a owl:Class ;
+    rdfs:subClassOf mmt-route:Route ;
+    rdfs:label "Shipping Route"@en ;
+    rdfs:comment "A CLdN sea route connecting ports (e.g., Zeebrugge-Purfleet, Rotterdam-Killingholme)."@en .
+
+:Market a owl:Class ;
+    rdfs:label "Market"@en ;
+    rdfs:comment "A geographic trade lane or market zone defined by country pairs and postal code ranges, used for volume analysis and margin benchmarking."@en .
+
+:IntermodalLeg a owl:Class ;
+    rdfs:label "Intermodal Leg"@en ;
+    rdfs:comment "A segment of a multimodal journey — either a sea crossing or a rail/train connection between terminals."@en .
+
+# =============================================================================
+# Datatype Properties — ShippingRoute
+# =============================================================================
+
+:shipperType a owl:DatatypeProperty ;
+    rdfs:domain :ShippingRoute ;
+    rdfs:range xsd:string ;
+    rdfs:label "shipper type"@en ;
+    rdfs:comment "The type of shipper operating on this route."@en .
+
+:searchName a owl:DatatypeProperty ;
+    rdfs:domain :ShippingRoute ;
+    rdfs:range xsd:string ;
+    rdfs:label "search name"@en ;
+    rdfs:comment "A short search alias for the shipping route."@en .
+
+# =============================================================================
+# Datatype Properties — Market
+# =============================================================================
+
+:marketName a owl:DatatypeProperty ;
+    rdfs:domain :Market ;
+    rdfs:range xsd:string ;
+    rdfs:label "market name"@en ;
+    rdfs:comment "The name of the market zone (e.g., BE-UK, NL-IE)."@en .
+
+:marketCode a owl:DatatypeProperty ;
+    rdfs:domain :Market ;
+    rdfs:range xsd:string ;
+    rdfs:label "market code"@en ;
+    rdfs:comment "A code identifying the market in operational systems."@en .
+
+:loadingCountry a owl:DatatypeProperty ;
+    rdfs:domain :Market ;
+    rdfs:range xsd:string ;
+    rdfs:label "loading country"@en ;
+    rdfs:comment "The origin country of the trade lane."@en .
+
+:unloadingCountry a owl:DatatypeProperty ;
+    rdfs:domain :Market ;
+    rdfs:range xsd:string ;
+    rdfs:label "unloading country"@en ;
+    rdfs:comment "The destination country of the trade lane."@en .
+
+:fromTo a owl:DatatypeProperty ;
+    rdfs:domain :Market ;
+    rdfs:range xsd:string ;
+    rdfs:label "from-to"@en ;
+    rdfs:comment "The country-pair string representing the trade lane direction (e.g., BE-UK)."@en .
+
+:countryCode a owl:DatatypeProperty ;
+    rdfs:domain :Market ;
+    rdfs:range xsd:string ;
+    rdfs:label "country code"@en ;
+    rdfs:comment "The ISO country code for the market location."@en .
+
+:postalCode a owl:DatatypeProperty ;
+    rdfs:domain :Market ;
+    rdfs:range xsd:string ;
+    rdfs:label "postal code"@en ;
+    rdfs:comment "The postal code defining the market's geographic scope."@en .
+
+:city a owl:DatatypeProperty ;
+    rdfs:domain :Market ;
+    rdfs:range xsd:string ;
+    rdfs:label "city"@en ;
+    rdfs:comment "The city associated with this market location."@en .
+
+:marketSource a owl:DatatypeProperty ;
+    rdfs:domain :Market ;
+    rdfs:range xsd:string ;
+    rdfs:label "market source"@en ;
+    rdfs:comment "The source system from which the market record originates."@en .
+
+# =============================================================================
+# Datatype Properties — IntermodalLeg
+# =============================================================================
+
+:legType a owl:DatatypeProperty ;
+    rdfs:domain :IntermodalLeg ;
+    rdfs:range xsd:string ;
+    rdfs:label "leg type"@en ;
+    rdfs:comment "The transport mode of this leg (sea or train)."@en .
+
+:legCode a owl:DatatypeProperty ;
+    rdfs:domain :IntermodalLeg ;
+    rdfs:range xsd:string ;
+    rdfs:label "leg code"@en ;
+    rdfs:comment "A code identifying this intermodal leg."@en .
+
+:routeName a owl:DatatypeProperty ;
+    rdfs:domain :IntermodalLeg ;
+    rdfs:range xsd:string ;
+    rdfs:label "route name"@en ;
+    rdfs:comment "The name of the route this leg belongs to."@en .
+
+:intermodalLegSource a owl:DatatypeProperty ;
+    rdfs:domain :IntermodalLeg ;
+    rdfs:range xsd:string ;
+    rdfs:label "intermodal leg source"@en ;
+    rdfs:comment "The source system from which the intermodal leg record originates."@en .

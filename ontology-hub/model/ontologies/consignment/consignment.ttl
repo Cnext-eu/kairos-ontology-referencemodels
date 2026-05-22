@@ -1,0 +1,160 @@
+@prefix : <https://cldn.com/ont/consignment#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix mmt-consignment: <https://referencemodels.kairos.cnext.eu/mmt/consignment#> .
+@prefix party: <https://cldn.com/ont/party#> .
+@prefix equipment: <https://cldn.com/ont/equipment#> .
+@prefix route-schedule: <https://cldn.com/ont/route-schedule#> .
+
+<https://cldn.com/ont/consignment> a owl:Ontology ;
+    rdfs:label "CLdN Consignment Domain"@en ;
+    rdfs:comment "Transport order management for CLdN Logistics — covers the operational lifecycle of cargo movements from loading to unloading."@en ;
+    owl:versionInfo "1.0.0" ;
+    owl:imports <https://referencemodels.kairos.cnext.eu/mmt/consignment> ,
+                <https://cldn.com/ont/party> ,
+                <https://cldn.com/ont/equipment> ,
+                <https://cldn.com/ont/route-schedule> .
+
+# =============================================================================
+# Classes
+# =============================================================================
+
+:TransportOrder a owl:Class ;
+    rdfs:subClassOf mmt-consignment:Consignment ;
+    rdfs:label "Transport Order"@en ;
+    rdfs:comment "A CLdN transport order representing a single cargo movement from loading point to unloading point. Central operational entity identified by OrderNo (mapped to inherited consignmentReference)."@en .
+
+# =============================================================================
+# Datatype Properties
+# =============================================================================
+
+:orderType a owl:DatatypeProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range xsd:string ;
+    rdfs:label "Order Type"@en ;
+    rdfs:comment "Classification of the transport order (e.g., import, export, domestic)."@en .
+
+:requestedDate a owl:DatatypeProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range xsd:date ;
+    rdfs:label "Requested Date"@en ;
+    rdfs:comment "Date requested by the customer for collection or delivery."@en .
+
+:loadingDate a owl:DatatypeProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range xsd:date ;
+    rdfs:label "Loading Date"@en ;
+    rdfs:comment "Actual date the cargo was loaded/collected."@en .
+
+:unloadingDate a owl:DatatypeProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range xsd:date ;
+    rdfs:label "Unloading Date"@en ;
+    rdfs:comment "Actual date the cargo was unloaded/delivered."@en .
+
+:loadingCountry a owl:DatatypeProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range xsd:string ;
+    rdfs:label "Loading Country"@en ;
+    rdfs:comment "Country where the cargo is loaded."@en .
+
+:loadingCity a owl:DatatypeProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range xsd:string ;
+    rdfs:label "Loading City"@en ;
+    rdfs:comment "City where the cargo is loaded."@en .
+
+:unloadingCountry a owl:DatatypeProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range xsd:string ;
+    rdfs:label "Unloading Country"@en ;
+    rdfs:comment "Country where the cargo is unloaded."@en .
+
+:unloadingCity a owl:DatatypeProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range xsd:string ;
+    rdfs:label "Unloading City"@en ;
+    rdfs:comment "City where the cargo is unloaded."@en .
+
+:onTimeCollection a owl:DatatypeProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range xsd:string ;
+    rdfs:label "On Time Collection"@en ;
+    rdfs:comment "On-time arrival status for the collection/loading operation."@en .
+
+:onTimeDelivery a owl:DatatypeProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range xsd:string ;
+    rdfs:label "On Time Delivery"@en ;
+    rdfs:comment "On-time arrival status for the delivery/unloading operation."@en .
+
+:timeOnSite a owl:DatatypeProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Time on Site"@en ;
+    rdfs:comment "Duration (in hours) spent on site during loading or unloading."@en .
+
+:transitTime a owl:DatatypeProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Transit Time"@en ;
+    rdfs:comment "Total transit time (in days) from loading to unloading."@en .
+
+:fullOrEmpty a owl:DatatypeProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range xsd:string ;
+    rdfs:label "Full or Empty"@en ;
+    rdfs:comment "Indicates whether the transport unit was full or empty."@en .
+
+:ediOrderEntry a owl:DatatypeProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range xsd:string ;
+    rdfs:label "EDI Order Entry"@en ;
+    rdfs:comment "Indicates whether the order was submitted via EDI."@en .
+
+:customerServiceTeam a owl:DatatypeProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range xsd:string ;
+    rdfs:label "Customer Service Team"@en ;
+    rdfs:comment "Name of the customer service team responsible for this order."@en .
+
+:companyDescription a owl:DatatypeProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range xsd:string ;
+    rdfs:label "Company Description"@en ;
+    rdfs:comment "Description of the CLdN operating company handling this order."@en .
+
+# =============================================================================
+# Object Properties
+# =============================================================================
+
+:hasCustomer a owl:ObjectProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range party:Customer ;
+    rdfs:label "has customer"@en ;
+    rdfs:comment "The customer (debtor) who placed this transport order."@en .
+
+:hasHaulier a owl:ObjectProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range party:Haulier ;
+    rdfs:label "has haulier"@en ;
+    rdfs:comment "The haulier executing the land-side collection or delivery."@en .
+
+:hasAsset a owl:ObjectProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range equipment:Asset ;
+    rdfs:label "has asset"@en ;
+    rdfs:comment "The transport unit (trailer, container, etc.) carrying the cargo."@en .
+
+:onShippingRoute a owl:ObjectProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range route-schedule:ShippingRoute ;
+    rdfs:label "on shipping route"@en ;
+    rdfs:comment "The sea shipping route used for this transport order."@en .
+
+:inMarket a owl:ObjectProperty ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range route-schedule:Market ;
+    rdfs:label "in market"@en ;
+    rdfs:comment "The geographic trade lane (market) this order belongs to."@en .

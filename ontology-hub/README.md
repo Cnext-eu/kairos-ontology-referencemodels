@@ -28,7 +28,12 @@ coverage.
 
 | Domain | Description | File | Status |
 |--------|-------------|------|--------|
-| *(add domains here)* | | | |
+| party | Customers, hauliers, and employees | `model/ontologies/party/party.ttl` | ✅ Modeled |
+| equipment | Trailers, containers, unit types, asset availability | `model/ontologies/equipment/equipment.ttl` | 🔲 Planned |
+| route-schedule | Shipping routes, markets, intermodal legs | `model/ontologies/route-schedule/route-schedule.ttl` | 🔲 Planned |
+| consignment | Transport orders, loading/unloading, volumes, OTA | `model/ontologies/consignment/consignment.ttl` | 🔲 Planned |
+| financial | Demurrage, HPI cost/km, margins | `model/ontologies/financial/financial.ttl` | 🔲 Planned |
+| booking | Cargo quotes, quote lifecycle, forecast loads | `model/ontologies/booking/booking.ttl` | 🔲 Planned |
 
 ## Master ontology
 
