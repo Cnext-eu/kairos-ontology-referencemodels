@@ -14,12 +14,15 @@
     This module defines financial transaction classes covering:
     - Invoicing: Invoice, Commercial Invoice, Proforma Invoice, Credit/Debit Notes
     - Payment: Payment, Payment Terms, payment methods
-    - Guarantees: Bank Guarantee
+    - Charges: Freight charges, surcharges (BAF, CAF, THC), documentation fees
+    - Tariffs: Tariff schedules, freight rates, free-time periods
+    - Trade Finance: Letter of Credit, Documentary Collection, Bank Guarantee
+    - Settlement: Payment allocation, reconciliation, aging
     - Events: Payment lifecycle events""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    dcterms:modified "2026-05-22"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
@@ -254,3 +257,277 @@
     rdfs:comment "Declared value for customs purposes." ;
     rdfs:domain :CommercialInvoice ;
     rdfs:range xsd:decimal .
+
+#################################################################
+#    CHARGE - Charge and Surcharge Taxonomy
+#################################################################
+
+:Charge a owl:Class ;
+    rdfs:label "Charge" ;
+    rdfs:comment """A monetary amount levied for a service, product, or event.
+
+    UN/CEFACT BSP: Maps to LogisticsServiceCharge — a charge related to a
+    logistics service such as transport, handling, or storage.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/LogisticsServiceCharge> ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :chargeAmount ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:FreightCharge a owl:Class ;
+    rdfs:label "Freight Charge" ;
+    rdfs:comment """The base charge for transporting cargo from origin to destination.
+
+    UN/CEFACT BSP: Maps to TradeAllowanceCharge with freight type code —
+    the primary transport cost in ocean, air, rail, or road shipments.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TradeAllowanceCharge> ;
+    rdfs:subClassOf :Charge .
+
+:Surcharge a owl:Class ;
+    rdfs:label "Surcharge" ;
+    rdfs:comment """An additional charge applied on top of the base freight rate.
+
+    UN/CEFACT BSP: Maps to TradeAllowanceCharge with surcharge category —
+    variable or periodic adjustments to the base freight.""" ;
+    rdfs:subClassOf :Charge .
+
+:BunkerAdjustmentFactor a owl:Class ;
+    rdfs:label "Bunker Adjustment Factor" ;
+    rdfs:comment """Fuel surcharge (BAF/BUC) reflecting fluctuations in bunker fuel prices.
+
+    Industry standard surcharge applied to ocean freight to pass on fuel
+    cost variability to shippers.""" ;
+    rdfs:subClassOf :Surcharge .
+
+:CurrencyAdjustmentFactor a owl:Class ;
+    rdfs:label "Currency Adjustment Factor" ;
+    rdfs:comment """Currency surcharge (CAF) compensating for exchange rate fluctuations
+    between the billing currency and the carrier's base currency.""" ;
+    rdfs:subClassOf :Surcharge .
+
+:TerminalHandlingCharge a owl:Class ;
+    rdfs:label "Terminal Handling Charge" ;
+    rdfs:comment """Charge (THC) for handling containers at the port terminal, covering
+    loading/discharge, stacking, and movement between quay and yard.""" ;
+    rdfs:subClassOf :Surcharge .
+
+:PeakSeasonSurcharge a owl:Class ;
+    rdfs:label "Peak Season Surcharge" ;
+    rdfs:comment """Surcharge (PSS) applied during periods of high demand to reflect
+    capacity constraints and premium pricing.""" ;
+    rdfs:subClassOf :Surcharge .
+
+:EmergencyBunkerSurcharge a owl:Class ;
+    rdfs:label "Emergency Bunker Surcharge" ;
+    rdfs:comment """Extraordinary surcharge (EBS) applied when fuel prices spike
+    beyond the levels covered by standard BAF adjustments.""" ;
+    rdfs:subClassOf :Surcharge .
+
+:DocumentationFee a owl:Class ;
+    rdfs:label "Documentation Fee" ;
+    rdfs:comment """Fee for issuing, amending, or releasing transport documentation
+    such as bills of lading, waybills, or release orders.""" ;
+    rdfs:subClassOf :Charge .
+
+:HandlingCharge a owl:Class ;
+    rdfs:label "Handling Charge" ;
+    rdfs:comment """Charge for physical handling of cargo or equipment, distinct from
+    terminal handling — e.g., warehouse handling, stuffing/stripping fees.""" ;
+    rdfs:subClassOf :Charge .
+
+:StorageCharge a owl:Class ;
+    rdfs:label "Storage Charge" ;
+    rdfs:comment """Charge for storing cargo or equipment beyond the allowed free-time
+    period at a terminal, depot, or warehouse.""" ;
+    rdfs:subClassOf :Charge .
+
+#################################################################
+#    TARIFF - Pricing and Rate Structures
+#################################################################
+
+:TariffSchedule a owl:Class ;
+    rdfs:label "Tariff Schedule" ;
+    rdfs:comment """A published schedule of rates, charges, and conditions for a service.
+
+    Defines the pricing structure applied to freight, surcharges, and
+    ancillary services for a validity period.""" .
+
+:FreightRate a owl:Class ;
+    rdfs:label "Freight Rate" ;
+    rdfs:comment """A specific rate for transporting cargo on a lane, for an equipment type,
+    during a validity period. May be per-TEU, per-tonne, per-CBM, or lump-sum.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :rateAmount ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:FreeTimePeriod a owl:Class ;
+    rdfs:label "Free Time Period" ;
+    rdfs:comment """The number of days allowed before demurrage, detention, or storage
+    charges begin to accrue. Defined per tariff, port, and equipment type.""" .
+
+#################################################################
+#    TRADE FINANCE - Instruments
+#################################################################
+
+:LetterOfCredit a owl:Class ;
+    rdfs:label "Letter of Credit" ;
+    rdfs:comment """A bank-issued instrument guaranteeing payment to the seller upon
+    presentation of conforming documents.
+
+    UN/CEFACT BSP: Maps to FinancialInstitutionIdentity-related instruments —
+    a promise to pay used extensively in international trade.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/FinancialInstitutionIdentity> .
+
+:DocumentaryCollection a owl:Class ;
+    rdfs:label "Documentary Collection" ;
+    rdfs:comment """A trade finance arrangement where the seller's bank collects payment
+    from the buyer through the buyer's bank, releasing documents upon payment
+    (D/P) or acceptance (D/A).""" .
+
+#################################################################
+#    SETTLEMENT - Allocation and Reconciliation
+#################################################################
+
+:PaymentAllocation a owl:Class ;
+    rdfs:label "Payment Allocation" ;
+    rdfs:comment """The assignment of a received payment to one or more invoices or
+    invoice lines. Supports partial payments and overpayments.""" .
+
+:Reconciliation a owl:Class ;
+    rdfs:label "Reconciliation" ;
+    rdfs:comment """The process of matching expected charges (from tariff/contract) with
+    actual invoiced amounts and received payments.""" .
+
+:AgingBucket a owl:Class ;
+    rdfs:label "Aging Bucket" ;
+    rdfs:comment """A classification of receivables or payables by age (e.g., current,
+    1-30 days, 31-60 days, 61-90 days, 90+ days overdue).""" .
+
+#################################################################
+#    Additional Object Properties - Charges & Tariffs
+#################################################################
+
+:hasCharge a owl:ObjectProperty ;
+    rdfs:label "has charge" ;
+    rdfs:comment "Relates a shipment, booking, or invoice to its applicable charges." ;
+    rdfs:range :Charge .
+
+:hasSurcharge a owl:ObjectProperty ;
+    rdfs:label "has surcharge" ;
+    rdfs:comment "Relates a freight charge or invoice to applied surcharges." ;
+    rdfs:range :Surcharge .
+
+:appliesTariff a owl:ObjectProperty ;
+    rdfs:label "applies tariff" ;
+    rdfs:comment "Relates a charge to the tariff schedule that defines its rate." ;
+    rdfs:range :TariffSchedule .
+
+:hasFreightRate a owl:ObjectProperty ;
+    rdfs:label "has freight rate" ;
+    rdfs:comment "Relates a tariff schedule to its freight rates." ;
+    rdfs:domain :TariffSchedule ;
+    rdfs:range :FreightRate .
+
+:hasFreeTime a owl:ObjectProperty ;
+    rdfs:label "has free time" ;
+    rdfs:comment "Relates a tariff or charge to the applicable free-time period." ;
+    rdfs:range :FreeTimePeriod .
+
+:hasAllocation a owl:ObjectProperty ;
+    rdfs:label "has allocation" ;
+    rdfs:comment "Relates a payment to its allocation across invoices." ;
+    rdfs:domain :Payment ;
+    rdfs:range :PaymentAllocation .
+
+:allocatedToInvoice a owl:ObjectProperty ;
+    rdfs:label "allocated to invoice" ;
+    rdfs:comment "Relates a payment allocation to the target invoice." ;
+    rdfs:domain :PaymentAllocation ;
+    rdfs:range :Invoice .
+
+:hasLetterOfCredit a owl:ObjectProperty ;
+    rdfs:label "has letter of credit" ;
+    rdfs:comment "Relates a commercial transaction to a letter of credit." ;
+    rdfs:range :LetterOfCredit .
+
+#################################################################
+#    Additional Datatype Properties - Charges & Tariffs
+#################################################################
+
+:chargeAmount a owl:DatatypeProperty ;
+    rdfs:label "charge amount" ;
+    rdfs:comment "Monetary amount of the charge." ;
+    rdfs:domain :Charge ;
+    rdfs:range xsd:decimal .
+
+:chargeType a owl:DatatypeProperty ;
+    rdfs:label "charge type" ;
+    rdfs:comment "Classification code for the charge (e.g., FREIGHT, THC, BAF, DOC)." ;
+    rdfs:domain :Charge ;
+    rdfs:range xsd:string .
+
+:chargeBasis a owl:DatatypeProperty ;
+    rdfs:label "charge basis" ;
+    rdfs:comment "Unit basis for the charge calculation (e.g., PER_TEU, PER_TONNE, PER_CBM, LUMP_SUM)." ;
+    rdfs:domain :Charge ;
+    rdfs:range xsd:string .
+
+:rateAmount a owl:DatatypeProperty ;
+    rdfs:label "rate amount" ;
+    rdfs:comment "Monetary rate per unit." ;
+    rdfs:domain :FreightRate ;
+    rdfs:range xsd:decimal .
+
+:rateBasis a owl:DatatypeProperty ;
+    rdfs:label "rate basis" ;
+    rdfs:comment "Unit for rate application (e.g., PER_TEU, PER_FEU, PER_TONNE, PER_CBM)." ;
+    rdfs:domain :FreightRate ;
+    rdfs:range xsd:string .
+
+:validFrom a owl:DatatypeProperty ;
+    rdfs:label "valid from" ;
+    rdfs:comment "Start date of rate or tariff validity." ;
+    rdfs:range xsd:date .
+
+:validTo a owl:DatatypeProperty ;
+    rdfs:label "valid to" ;
+    rdfs:comment "End date of rate or tariff validity." ;
+    rdfs:range xsd:date .
+
+:freeDays a owl:DatatypeProperty ;
+    rdfs:label "free days" ;
+    rdfs:comment "Number of free days before charges accrue." ;
+    rdfs:domain :FreeTimePeriod ;
+    rdfs:range xsd:integer .
+
+:freeTimeType a owl:DatatypeProperty ;
+    rdfs:label "free time type" ;
+    rdfs:comment "Type of free time: DEMURRAGE, DETENTION, STORAGE, COMBINED." ;
+    rdfs:domain :FreeTimePeriod ;
+    rdfs:range xsd:string .
+
+:allocatedAmount a owl:DatatypeProperty ;
+    rdfs:label "allocated amount" ;
+    rdfs:comment "Portion of payment allocated to a specific invoice." ;
+    rdfs:domain :PaymentAllocation ;
+    rdfs:range xsd:decimal .
+
+:agingCategory a owl:DatatypeProperty ;
+    rdfs:label "aging category" ;
+    rdfs:comment "Aging classification label (e.g., CURRENT, 30_DAYS, 60_DAYS, 90_PLUS)." ;
+    rdfs:domain :AgingBucket ;
+    rdfs:range xsd:string .
+
+:creditAmount a owl:DatatypeProperty ;
+    rdfs:label "credit amount" ;
+    rdfs:comment "Value of the letter of credit or guarantee." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range xsd:decimal .
+
+:expiryDate a owl:DatatypeProperty ;
+    rdfs:label "expiry date" ;
+    rdfs:comment "Expiration date of a financial instrument or rate." ;
+    rdfs:range xsd:date .

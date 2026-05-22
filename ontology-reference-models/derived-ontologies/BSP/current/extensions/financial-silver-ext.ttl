@@ -15,7 +15,7 @@
     dcterms:description "Silver-layer projection annotations for the BSP Financial domain ontology. Controls DDL generation, SCD behaviour, and table structure." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-19"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    owl:versionInfo "1.2.0" ;
     owl:imports <https://www.kairosflow.ai/ont/bsp/financial#> ;
     kairos-ext:namingConvention "camel-to-snake" ;
     kairos-ext:includeNaturalKeyColumn "true"^^xsd:boolean ;
@@ -114,4 +114,65 @@ bsp-fin:hasPayment
 
 # hasPaymentTerms — many-to-one from referencing entity to PaymentTerms
 bsp-fin:hasPaymentTerms
+    kairos-ext:silverForeignKey "true"^^xsd:boolean .
+
+# =============================================================================
+# Class Annotations — Charges & Surcharges (v1.2.0)
+# =============================================================================
+
+bsp-fin:Charge
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean ;
+    kairos-ext:inheritanceStrategy "discriminator" ;
+    kairos-ext:discriminatorColumn "charge_category" ;
+    kairos-ext:naturalKey "chargeType" .
+
+bsp-fin:FreightCharge
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+bsp-fin:Surcharge
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+bsp-fin:TariffSchedule
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "true"^^xsd:boolean ;
+    kairos-ext:naturalKey "validFrom, validTo" .
+
+bsp-fin:FreightRate
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+bsp-fin:FreeTimePeriod
+    kairos-ext:scdType "1" ;
+    kairos-ext:isReferenceData "true"^^xsd:boolean .
+
+bsp-fin:LetterOfCredit
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+bsp-fin:PaymentAllocation
+    kairos-ext:scdType "2" ;
+    kairos-ext:isReferenceData "false"^^xsd:boolean .
+
+bsp-fin:AgingBucket
+    kairos-ext:scdType "1" ;
+    kairos-ext:isReferenceData "true"^^xsd:boolean ;
+    kairos-ext:naturalKey "agingCategory" .
+
+# Charge FK relationships
+bsp-fin:hasCharge
+    kairos-ext:silverForeignKey "true"^^xsd:boolean .
+
+bsp-fin:appliesTariff
+    kairos-ext:silverForeignKey "true"^^xsd:boolean .
+
+bsp-fin:hasFreightRate
+    kairos-ext:silverForeignKeyOn bsp-fin:FreightRate .
+
+bsp-fin:hasAllocation
+    kairos-ext:silverForeignKeyOn bsp-fin:PaymentAllocation .
+
+bsp-fin:allocatedToInvoice
     kairos-ext:silverForeignKey "true"^^xsd:boolean .

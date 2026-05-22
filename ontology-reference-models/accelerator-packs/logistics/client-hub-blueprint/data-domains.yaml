@@ -64,17 +64,32 @@ groups:
           - "ISO 20197-1:2024 BSP-RDM"
 
       - id: financial
-        name: "Tariff, Surcharge, Invoice & Settlement"
+        name: "Tariff, Surcharge, Invoice, Settlement & Operational Finance"
         folder: "model/ontologies/financial/"
-        owns: "Tariff structures, surcharges, charge calculation, invoices, credit notes, settlement, and billing status."
-        does_not_own: "Customer contracts, booking lifecycle, emissions methodology, or operational events."
+        owns: "Tariff structures, surcharges (BAF, CAF, THC, PSS), freight charges, demurrage and detention, invoices, credit notes, settlement, payment allocation, trade finance (L/C, documentary collection), cost allocation, cost-to-serve, budget variance, revenue attribution, yield metrics, load factor, and profitability analysis."
+        does_not_own: "Customer contracts, booking lifecycle, emissions methodology, operational events, or general ledger chart-of-accounts."
+        overlaps:
+          - class: FreeTimePeriod
+            candidates: [BSP/Financial, DCSA/Demurrage-Detention]
+            resolved_to: DCSA/Demurrage-Detention
+            rationale: "DCSA D&D standard is authoritative for container free-time definitions."
         imports:
           - uri: "https://www.kairosflow.ai/ont/bsp/financial#"
             module: "BSP / Financial"
-            provides: "Invoice, charge, payment, settlement, credit note"
+            provides: "Invoice, charge, surcharge taxonomy, payment, settlement, tariff schedule, trade finance"
+          - uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#"
+            module: "DCSA / Demurrage & Detention"
+            provides: "Demurrage charge, detention charge, free-time allowance, per-diem rates, D&D disputes"
+          - uri: "https://www.kairosflow.ai/ont/bsp/cost-accounting#"
+            module: "BSP / Cost Accounting"
+            provides: "Cost allocation, cost center, cost-per-unit, cost-to-serve, budget, variance"
+          - uri: "https://www.kairosflow.ai/ont/bsp/revenue-yield#"
+            module: "BSP / Revenue & Yield"
+            provides: "Revenue item, yield per unit, load factor, rate card, contribution margin, profitability"
         standards:
           - "ISO 20197-1:2024 BSP-RDM"
           - "UN/CEFACT CII"
+          - "DCSA Demurrage & Detention API"
 
   - id: transport-cargo
     name: "Transport & Cargo"

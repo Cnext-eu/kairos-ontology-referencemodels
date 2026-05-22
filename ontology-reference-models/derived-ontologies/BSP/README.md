@@ -6,13 +6,15 @@ Modular decomposition of the **ISO 20197-1:2024 Buy-Ship-Pay Reference Data Mode
 
 ```
 BSP/
-├── bsp.ttl                            # Root ontology – imports all 6 domains
+├── bsp.ttl                            # Root ontology – imports all 8 domains
 ├── party/party.ttl                    # Trade party roles and contact information
 ├── commercial/commercial.ttl          # Commercial transactions, shipments, events
-├── financial/financial.ttl            # Invoicing, payment, trade finance
+├── financial/financial.ttl            # Invoicing, charges, surcharges, tariffs, payment, trade finance
 ├── documents/documents.ttl            # Trade, transport, and regulatory documents
 ├── compliance/compliance.ttl          # Regulatory requirements, tariffs, sanctions
-└── reference-data/reference-data.ttl  # Locations, measurements, code lists
+├── reference-data/reference-data.ttl  # Locations, measurements, code lists
+├── cost-accounting/cost-accounting.ttl  # Transport cost allocation, budgets, cost-to-serve
+└── revenue-yield/revenue-yield.ttl    # Revenue attribution, yield metrics, profitability
 ```
 
 ## Domain Modules
@@ -21,10 +23,12 @@ BSP/
 |--------|-----------|-------------|
 | **Party** | `https://www.kairosflow.ai/ont/bsp/party#` | TradeParty, Buyer, Seller, Carrier, Bank, and other party roles |
 | **Commercial** | `https://www.kairosflow.ai/ont/bsp/commercial#` | PurchaseOrder, SalesOrder, Quotation, Shipment, TransportService, BusinessEvent |
-| **Financial** | `https://www.kairosflow.ai/ont/bsp/financial#` | Invoice, Payment, PaymentTerms, LetterOfCredit, TradeFinanceInstrument |
+| **Financial** | `https://www.kairosflow.ai/ont/bsp/financial#` | Invoice, Charge, Surcharge (BAF/CAF/THC), FreightRate, TariffSchedule, Payment, LetterOfCredit |
 | **Documents** | `https://www.kairosflow.ai/ont/bsp/documents#` | Document, BillOfLading, AirWaybill, Certificates, CustomsDeclaration |
 | **Compliance** | `https://www.kairosflow.ai/ont/bsp/compliance#` | RegulatoryRequirement, TariffClassification, DutyTax, TradeSanction |
 | **Reference Data** | `https://www.kairosflow.ai/ont/bsp/reference-data#` | Location, Address, Port, Airport, Country, Measurement, Weight, Volume |
+| **Cost Accounting** | `https://www.kairosflow.ai/ont/bsp/cost-accounting#` | CostAllocation, CostCenter, TransportCostItem, CostPerUnit, BudgetItem, CostVariance, CostToServe |
+| **Revenue & Yield** | `https://www.kairosflow.ai/ont/bsp/revenue-yield#` | RevenueItem, RevenuePerUnit, LoadFactor, RateCard, ContributionMargin, ProfitabilityScope, YieldAnalysis |
 
 ## Design Principles
 

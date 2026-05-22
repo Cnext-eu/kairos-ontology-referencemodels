@@ -15,7 +15,7 @@
     dcterms:description "Silver-layer projection annotations for the BSP Reference Data domain ontology. Controls DDL generation, SCD behaviour, and table structure." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-19"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    owl:versionInfo "1.2.0" ;
     owl:imports <https://www.kairosflow.ai/ont/bsp/reference-data#> ;
     kairos-ext:namingConvention "camel-to-snake" ;
     kairos-ext:includeNaturalKeyColumn "true"^^xsd:boolean ;
