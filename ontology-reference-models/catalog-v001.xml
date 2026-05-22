@@ -30,6 +30,7 @@
     <uri name="https://www.kairosflow.ai/ont/dcsa/equipment#" uri="derived-ontologies/DCSA/current/shared-kernel/equipment/equipment.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/dcsa/party#" uri="derived-ontologies/DCSA/current/shared-kernel/party/party.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/dcsa/locations#" uri="derived-ontologies/DCSA/current/shared-kernel/locations/locations.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/demurrage-detention#" uri="derived-ontologies/DCSA/current/demurrage-detention/demurrage-detention.ttl"/>
     
     <!-- ========== MMT (Multi-Modal Transport) ========== -->
     <uri name="https://www.kairosflow.ai/ont/mmt#" uri="derived-ontologies/MMT/current/mmt.ttl"/>
@@ -50,6 +51,8 @@
     <uri name="https://www.kairosflow.ai/ont/bsp/compliance#" uri="derived-ontologies/BSP/current/compliance/compliance.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/bsp/documents#" uri="derived-ontologies/BSP/current/documents/documents.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/bsp/financial#" uri="derived-ontologies/BSP/current/financial/financial.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/bsp/cost-accounting#" uri="derived-ontologies/BSP/current/cost-accounting/cost-accounting.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/bsp/revenue-yield#" uri="derived-ontologies/BSP/current/revenue-yield/revenue-yield.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/bsp/party#" uri="derived-ontologies/BSP/current/party/party.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/bsp/reference-data#" uri="derived-ontologies/BSP/current/reference-data/reference-data.ttl"/>
     

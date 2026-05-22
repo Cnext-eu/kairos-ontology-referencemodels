@@ -5,7 +5,7 @@ description: >
   session persistence, reference-model workflow, TTL patterns, and extension
   annotations. Covers the full lifecycle from design through validation.
 ---
-<!-- kairos-ontology-toolkit:managed v2.30.2 -->
+<!-- kairos-ontology-toolkit:managed v2.29.1 -->
 
 # Ontology Modeling Skill
 

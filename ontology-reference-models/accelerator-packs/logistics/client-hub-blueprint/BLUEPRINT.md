@@ -64,7 +64,8 @@ client-specific extensions layered on top.
 │   │   ├── documents/
 │   │   │   └── documents.ttl              ← imports bsp:documents, dcsa:transport-documents
 │   │   ├── financial/
-│   │   │   └── financial.ttl              ← imports bsp:financial
+│   │   │   └── financial.ttl              ← imports bsp:financial, dcsa:demurrage-detention,
+│   │   │                                     bsp:cost-accounting, bsp:revenue-yield
 │   │   ├── claims/
 │   │   │   └── claims.ttl                 ← client extension (no reference model)
 │   │   ├── compliance/
@@ -137,7 +138,7 @@ it needs:
 
 | L1 Group | L2 Domains | Primary Ownership Question |
 |----------|-----------|--------------------------|
-| **Party & Commercial** | party, commercial, booking, financial | Who are we doing business with, under what terms, at what price? |
+| **Party & Commercial** | party, commercial, booking, financial | Who are we doing business with, under what terms, at what price, and what does it cost us? |
 | **Transport & Cargo** | consignment, cargo, equipment, route-schedule, intermodal | What is being moved, by which path and asset? |
 | **Maritime & Terminal** | vessel-maritime, terminal-operations, roro, automotive | What happens on vessels, berths, gates, and yards? |
 | **Compliance & Sustainability** | dangerous-goods, customs, compliance, sustainability | What must be reported or restricted? |
@@ -237,6 +238,13 @@ Phase 3: vessel-maritime → terminal-operations → events
 Phase 4: customs → dangerous-goods → sustainability → documents
 Phase 5: financial → claims → compliance → reference-data
 ```
+
+> **Financial domain note:** The `financial` domain now covers the full operational
+> finance lifecycle: charges & surcharges (BSP), demurrage & detention (DCSA),
+> cost allocation & budgeting (Cost Accounting), and revenue/yield analytics
+> (Revenue & Yield). Working capital metrics (DSO, DPO, cash conversion cycle)
+> are recommended as **client extensions** since calculation methods are
+> implementation-specific.
 
 Specialist domains (roro, automotive, intermodal) are added based on the
 client's specific operations.
