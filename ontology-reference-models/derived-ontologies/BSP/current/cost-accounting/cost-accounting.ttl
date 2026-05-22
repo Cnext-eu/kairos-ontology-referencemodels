@@ -127,11 +127,13 @@
 :allocatedTo a owl:ObjectProperty ;
     rdfs:label "allocated to" ;
     rdfs:comment "Relates a cost allocation to its target scope (consignment, route, customer, etc.)." ;
-    rdfs:domain :CostAllocation .
+    rdfs:domain :CostAllocation ;
+    rdfs:range owl:Thing .
 
 :hasCostCenter a owl:ObjectProperty ;
     rdfs:label "has cost center" ;
     rdfs:comment "Relates a cost item or allocation to its cost center." ;
+    rdfs:domain :TransportCostItem ;
     rdfs:range :CostCenter .
 
 :hasCostItem a owl:ObjectProperty ;
@@ -143,6 +145,7 @@
 :hasBudget a owl:ObjectProperty ;
     rdfs:label "has budget" ;
     rdfs:comment "Relates a cost center or scope to its budget item." ;
+    rdfs:domain :CostCenter ;
     rdfs:range :BudgetItem .
 
 :hasVariance a owl:ObjectProperty ;
@@ -160,11 +163,13 @@
 :hasCostPerUnit a owl:ObjectProperty ;
     rdfs:label "has cost per unit" ;
     rdfs:comment "Relates a scope to its calculated cost-per-unit metric." ;
+    rdfs:domain :CostAllocation ;
     rdfs:range :CostPerUnit .
 
 :hasCostToServe a owl:ObjectProperty ;
     rdfs:label "has cost to serve" ;
     rdfs:comment "Relates a customer or lane to its cost-to-serve calculation." ;
+    rdfs:domain :CostCenter ;
     rdfs:range :CostToServe .
 
 #################################################################
@@ -240,11 +245,13 @@
 :period a owl:DatatypeProperty ;
     rdfs:label "period" ;
     rdfs:comment "Time period for the cost, budget, or metric (e.g., 2026-Q1, 2026-03, 2026-W12)." ;
+    rdfs:domain :BudgetItem ;
     rdfs:range xsd:string .
 
 :currency a owl:DatatypeProperty ;
     rdfs:label "currency" ;
     rdfs:comment "ISO 4217 currency code." ;
+    rdfs:domain :TransportCostItem ;
     rdfs:range xsd:string .
 
 :totalCostToServe a owl:DatatypeProperty ;
