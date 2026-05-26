@@ -11,7 +11,7 @@
 @prefix evt: <https://www.kairosflow.ai/ont/dcsa/events#> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/dcsa/booking> a owl:Ontology ;
     dcterms:title "DCSA Booking Domain" ;
     dcterms:description """Booking and shipping instruction concepts for container shipping.
     

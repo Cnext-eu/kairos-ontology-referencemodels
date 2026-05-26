@@ -7,7 +7,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/tic/automotive-services> a owl:Ontology ;
     dcterms:title "TIC 4.0 Automotive Services Ontology" ;
     dcterms:description """Automotive and vehicle processing services domain of the TIC 4.0 ontology.
 

@@ -49,12 +49,11 @@ class CatalogResolver:
                 catalog_dir = self.catalog_path.parent
                 local_path = (catalog_dir / uri_path).resolve()
                 
-                # Normalize URI (ensure trailing slash consistency)
-                normalized_uri = uri_name.rstrip('/') + '/'
-                self.mappings[normalized_uri] = local_path
-                
-                # Also add without trailing slash for flexibility
-                self.mappings[normalized_uri.rstrip('/')] = local_path
+                # Normalize URI (strip trailing # and / for consistent lookup)
+                base_uri = uri_name.rstrip('#').rstrip('/')
+                self.mappings[base_uri] = local_path
+                self.mappings[base_uri + '/'] = local_path
+                self.mappings[base_uri + '#'] = local_path
     
     def resolve(self, uri: str) -> Optional[Path]:
         """
@@ -70,14 +69,16 @@ class CatalogResolver:
         if uri in self.mappings:
             return self.mappings[uri]
         
-        # Try with/without trailing slash
-        uri_with_slash = uri.rstrip('/') + '/'
-        if uri_with_slash in self.mappings:
-            return self.mappings[uri_with_slash]
+        # Normalize: strip trailing # and / then try variants
+        base_uri = uri.rstrip('#').rstrip('/')
+        if base_uri in self.mappings:
+            return self.mappings[base_uri]
         
-        uri_without_slash = uri.rstrip('/')
-        if uri_without_slash in self.mappings:
-            return self.mappings[uri_without_slash]
+        if base_uri + '/' in self.mappings:
+            return self.mappings[base_uri + '/']
+        
+        if base_uri + '#' in self.mappings:
+            return self.mappings[base_uri + '#']
         
         return None
     

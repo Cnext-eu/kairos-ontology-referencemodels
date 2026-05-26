@@ -771,6 +771,9 @@ After every 3-5 classes are confirmed, pause and show:
 - **Properties**: camelCase — `customerName`, `orderDate`, `belongsToCustomer`.
 - **Namespaces**: Use HTTPS URIs matching the hub's namespace base —
   `https://<company-domain>/ont/<domain>#` (e.g., `https://contoso.com/ont/customer#`).
+- **IRI convention**: The `#` is ONLY for the namespace prefix (used by classes/properties).
+  The ontology IRI (subject of `a owl:Ontology`) and `owl:imports` URIs must NOT end with `#`.
+  Catalog `name=` entries must exactly match the `owl:imports` URIs.
 
 ## Common patterns
 
@@ -818,6 +821,11 @@ Every .ttl file MUST start with an ontology declaration:
     rdfs:comment "Description of this domain"@en ;
     owl:versionInfo "1.0.0" .
 ```
+
+**Critical**: Note the difference between the `@prefix : <...#>` (WITH `#`) and the
+ontology IRI `<...>` (WITHOUT `#`). Never use `: a owl:Ontology` shorthand — always
+use the explicit full IRI for the ontology declaration to avoid accidentally including
+`#` in the ontology IRI.
 
 ---
 

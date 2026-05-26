@@ -6,7 +6,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/imo/locations> a owl:Ontology ;
     dcterms:title "IMO Locations Ontology" ;
     dcterms:description """Maritime location and navigational area domain ontology aligned with the IMO Compendium.
 

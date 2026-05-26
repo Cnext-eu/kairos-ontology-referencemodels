@@ -10,13 +10,13 @@
 # Silver Extension — BSP Cost Accounting Domain
 # =============================================================================
 
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/bsp/cost-accounting/silver-ext> a owl:Ontology ;
     dcterms:title "BSP Cost Accounting — Silver Extension" ;
     dcterms:description "Silver-layer projection annotations for the BSP Cost Accounting domain ontology." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-22"^^xsd:date ;
     owl:versionInfo "1.2.0" ;
-    owl:imports <https://www.kairosflow.ai/ont/bsp/cost-accounting#> ;
+    owl:imports <https://www.kairosflow.ai/ont/bsp/cost-accounting> ;
     kairos-ext:namingConvention "camel-to-snake" ;
     kairos-ext:includeNaturalKeyColumn "true"^^xsd:boolean ;
     kairos-ext:inlineRefThreshold "3"^^xsd:integer .

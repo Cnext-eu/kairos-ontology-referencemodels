@@ -33,6 +33,20 @@ scripts/
 
 ## How It Works
 
+### URI Convention (Important!)
+
+The `#` character has a specific role in ontology URIs:
+
+| Context | Example | Has `#`? |
+|---------|---------|----------|
+| Namespace prefix (`@prefix`) | `<https://www.kairosflow.ai/ont/dcsa#>` | YES — used for class/property names |
+| Ontology IRI (`a owl:Ontology`) | `<https://www.kairosflow.ai/ont/dcsa>` | NO — identifies the ontology itself |
+| Import URI (`owl:imports`) | `<https://www.kairosflow.ai/ont/dcsa/booking>` | NO — must match catalog |
+| Catalog entry (`name=`) | `"https://www.kairosflow.ai/ont/dcsa"` | NO — must match imports |
+
+**Rule**: Catalog `name` attributes must exactly match the `owl:imports` URIs used
+in ontology files. Neither should end with `#`.
+
 ### 1. Your Ontology Uses Canonical URIs
 
 [core.ttl](../ontology-hub/ontologies/core.ttl):

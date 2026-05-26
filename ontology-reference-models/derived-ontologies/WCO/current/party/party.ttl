@@ -7,7 +7,7 @@
 @prefix wco-customs: <https://www.kairosflow.ai/ont/wco/customs#> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/wco/party> a owl:Ontology ;
     dcterms:title "WCO Party Domain" ;
     dcterms:description "Party roles in customs processes including declarants, authorities, brokers, and traders based on the WCO Data Model 3.10.0." ;
     dcterms:creator "Kairos Ontology Team" ;

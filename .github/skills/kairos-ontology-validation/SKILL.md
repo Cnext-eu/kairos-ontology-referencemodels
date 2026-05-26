@@ -120,7 +120,9 @@ projection output or downstream issues.
 | `rdfs:label` on ontology | Human-readable name is required |
 | `owl:versionInfo` on ontology | Semantic version string required |
 | Namespace uses `https://` | Never use `http://` — always `https://` |
-| Namespace ends with `#` or `/` | Ensures fragment or path-based local names |
+| Namespace prefix ends with `#` | `@prefix : <...#>` — required for class/property local names |
+| Ontology IRI does NOT end with `#` | 🐛 The ontology IRI (subject of `a owl:Ontology`) must be the base without `#`. Use explicit full IRI, not `: a owl:Ontology` shorthand |
+| `owl:imports` URIs do NOT end with `#` | 🐛 Import URIs must match catalog entries exactly — no trailing `#` |
 
 ### Class design
 

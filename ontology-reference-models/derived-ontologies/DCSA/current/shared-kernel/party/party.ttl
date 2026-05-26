@@ -6,7 +6,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/dcsa/party> a owl:Ontology ;
     dcterms:title "DCSA Party Domain" ;
     dcterms:description """Party role concepts for container shipping.
     

@@ -7,7 +7,7 @@
 @prefix comm: <https://www.kairosflow.ai/ont/bsp/commercial#> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/bsp/financial> a owl:Ontology ;
     dcterms:title "Kairos BSP Financial Domain Ontology" ;
     dcterms:description """Financial and payment domain of the Buy-Ship-Pay Reference Data Model.
 

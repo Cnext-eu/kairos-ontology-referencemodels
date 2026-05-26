@@ -10,13 +10,13 @@
 # Silver Extension — BSP Revenue & Yield Domain
 # =============================================================================
 
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/bsp/revenue-yield/silver-ext> a owl:Ontology ;
     dcterms:title "BSP Revenue & Yield — Silver Extension" ;
     dcterms:description "Silver-layer projection annotations for the BSP Revenue & Yield domain ontology." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-22"^^xsd:date ;
     owl:versionInfo "1.2.0" ;
-    owl:imports <https://www.kairosflow.ai/ont/bsp/revenue-yield#> ;
+    owl:imports <https://www.kairosflow.ai/ont/bsp/revenue-yield> ;
     kairos-ext:namingConvention "camel-to-snake" ;
     kairos-ext:includeNaturalKeyColumn "true"^^xsd:boolean ;
     kairos-ext:inlineRefThreshold "3"^^xsd:integer .

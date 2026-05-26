@@ -117,7 +117,12 @@ corresponding scenario test updates. Run `py -m pytest tests/scenarios/ -v` to v
 
 - All ontology files use Turtle (.ttl) syntax.
 - Every ontology MUST declare an `owl:Ontology` with `rdfs:label` and `owl:versionInfo`.
-- Use HTTP/HTTPS namespaces with `#` or `/` separator.
+- Use HTTP/HTTPS namespaces with `#` separator for class/property namespace prefixes.
+- **IRI convention (critical)**:
+  - `@prefix : <https://example.com/ont/domain#> .` — namespace prefix WITH `#`
+  - `<https://example.com/ont/domain> a owl:Ontology ;` — ontology IRI WITHOUT `#`
+  - `owl:imports <https://example.com/ont/other> ;` — import URIs WITHOUT `#`
+  - Catalog `name=` attributes must exactly match the `owl:imports` URI (no `#`)
 - Every `owl:Class` must have `rdfs:label` and `rdfs:comment`.
 - Every property must have `rdfs:domain`, `rdfs:range`, and `rdfs:label`.
 - Naming: PascalCase for classes, camelCase for properties.

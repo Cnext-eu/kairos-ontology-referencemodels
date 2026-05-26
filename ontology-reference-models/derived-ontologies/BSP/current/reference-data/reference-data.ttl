@@ -8,7 +8,7 @@
 @prefix party: <https://www.kairosflow.ai/ont/bsp/party#> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/bsp/reference-data> a owl:Ontology ;
     dcterms:title "Kairos BSP Reference Data Domain Ontology" ;
     dcterms:description """Reference data domain of the Buy-Ship-Pay Reference Data Model.
 
