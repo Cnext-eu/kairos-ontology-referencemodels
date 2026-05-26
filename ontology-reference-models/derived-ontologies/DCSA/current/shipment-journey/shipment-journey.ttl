@@ -6,7 +6,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/dcsa/shipment-journey> a owl:Ontology ;
     dcterms:title "DCSA Shipment Journey" ;
     dcterms:description """The Shipment Journey covers the lifecycle of cargo from booking through
     transport document issuance. This corresponds to DCSA's Booking (BKG) and
@@ -21,5 +21,5 @@
     owl:versionInfo "1.0.0" ;
     dcterms:source "DCSA Information Model 2024.Q4 — 1. Shipment Journey (BKG v2.0, EBL v3.0)" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> ;
-    owl:imports <https://www.kairosflow.ai/ont/dcsa/booking#> ,
-                <https://www.kairosflow.ai/ont/dcsa/transport-documents#> .
+    owl:imports <https://www.kairosflow.ai/ont/dcsa/booking> ,
+                <https://www.kairosflow.ai/ont/dcsa/transport-documents> .

@@ -6,7 +6,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/dcsa> a owl:Ontology ;
     dcterms:title "Kairos DCSA Container Shipping Ontology" ;
     dcterms:description """Digital Container Shipping Association (DCSA) ontology for standardized
     container shipping operations, organized according to DCSA's journey-based
@@ -25,8 +25,8 @@
     owl:versionInfo "1.0.0" ;
     dcterms:source "DCSA Information Model 2024.Q4 (BKG v2.0, EBL v3.0, TNT v2.2, OVS v3.0)" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> ;
-    owl:imports <https://www.kairosflow.ai/ont/dcsa/shipment-journey#> ,
-                <https://www.kairosflow.ai/ont/dcsa/equipment-journey#> ,
-                <https://www.kairosflow.ai/ont/dcsa/vessel-journey#> ,
-                <https://www.kairosflow.ai/ont/dcsa/track-and-trace#> ,
-                <https://www.kairosflow.ai/ont/dcsa/shared-kernel#> .
+    owl:imports <https://www.kairosflow.ai/ont/dcsa/shipment-journey> ,
+                <https://www.kairosflow.ai/ont/dcsa/equipment-journey> ,
+                <https://www.kairosflow.ai/ont/dcsa/vessel-journey> ,
+                <https://www.kairosflow.ai/ont/dcsa/track-and-trace> ,
+                <https://www.kairosflow.ai/ont/dcsa/shared-kernel> .

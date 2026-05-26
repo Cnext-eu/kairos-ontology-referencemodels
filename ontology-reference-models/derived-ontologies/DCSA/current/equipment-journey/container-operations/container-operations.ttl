@@ -7,7 +7,7 @@
 @prefix equip: <https://www.kairosflow.ai/ont/dcsa/equipment#> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/dcsa/container-operations> a owl:Ontology ;
     dcterms:title "DCSA Container Operations Domain" ;
     dcterms:description """Container lifecycle and operational concepts for container shipping.
     

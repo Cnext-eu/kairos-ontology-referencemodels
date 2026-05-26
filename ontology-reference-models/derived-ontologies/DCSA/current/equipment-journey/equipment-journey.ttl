@@ -6,7 +6,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/dcsa/equipment-journey> a owl:Ontology ;
     dcterms:title "DCSA Equipment Journey" ;
     dcterms:description """The Equipment Journey covers the lifecycle of containers from empty pickup
     through stuffing, transport, stripping, and return. This corresponds to DCSA's
@@ -20,4 +20,4 @@
     owl:versionInfo "1.0.0" ;
     dcterms:source "DCSA Information Model 2024.Q4 — 2. Equipment Journey (TNT v2.2)" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> ;
-    owl:imports <https://www.kairosflow.ai/ont/dcsa/container-operations#> .
+    owl:imports <https://www.kairosflow.ai/ont/dcsa/container-operations> .

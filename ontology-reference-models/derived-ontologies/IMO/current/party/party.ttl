@@ -7,7 +7,7 @@
 @prefix loc: <https://www.kairosflow.ai/ont/imo/locations#> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/imo/party> a owl:Ontology ;
     dcterms:title "IMO Party Ontology" ;
     dcterms:description """Maritime party and stakeholder domain ontology aligned with the IMO Compendium.
 
@@ -21,7 +21,7 @@
     owl:versionInfo "1.0.0" ;
     dcterms:source "IMO Compendium data set, FAL Convention, ISM Code, STCW Convention" ;
     rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> ;
-    owl:imports <https://www.kairosflow.ai/ont/imo/locations#> .
+    owl:imports <https://www.kairosflow.ai/ont/imo/locations> .
 
 #################################################################
 #    Classes

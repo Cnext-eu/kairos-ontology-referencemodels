@@ -6,7 +6,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/dcsa/shared-kernel> a owl:Ontology ;
     dcterms:title "DCSA Shared Kernel (SK)" ;
     dcterms:description """The Shared Kernel contains common entities referenced across all DCSA
     journeys. In DCSA's Information Model this includes Equipment, Party, Location,
@@ -22,6 +22,6 @@
     owl:versionInfo "1.0.0" ;
     dcterms:source "DCSA Information Model 2024.Q4 — SK (Shared Kernel)" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> ;
-    owl:imports <https://www.kairosflow.ai/ont/dcsa/equipment#> ,
-                <https://www.kairosflow.ai/ont/dcsa/party#> ,
-                <https://www.kairosflow.ai/ont/dcsa/locations#> .
+    owl:imports <https://www.kairosflow.ai/ont/dcsa/equipment> ,
+                <https://www.kairosflow.ai/ont/dcsa/party> ,
+                <https://www.kairosflow.ai/ont/dcsa/locations> .

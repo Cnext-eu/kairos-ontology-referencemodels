@@ -8,7 +8,7 @@
 @prefix refdata: <https://www.kairosflow.ai/ont/bsp/reference-data#> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/bsp/compliance> a owl:Ontology ;
     dcterms:title "Kairos BSP Compliance Domain Ontology" ;
     dcterms:description """Regulatory and compliance domain of the Buy-Ship-Pay Reference Data Model.
 

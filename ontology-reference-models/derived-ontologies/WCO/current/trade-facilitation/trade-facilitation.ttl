@@ -8,7 +8,7 @@
 @prefix wco-party: <https://www.kairosflow.ai/ont/wco/party#> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/wco/trade-facilitation> a owl:Ontology ;
     dcterms:title "WCO Trade Facilitation Domain" ;
     dcterms:description "Trade facilitation certificates, permits, and trusted trader programmes based on the WCO Data Model 3.10.0 and eFTI Regulation." ;
     dcterms:creator "Kairos Ontology Team" ;

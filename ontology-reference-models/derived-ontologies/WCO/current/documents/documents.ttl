@@ -7,7 +7,7 @@
 @prefix wco-customs: <https://www.kairosflow.ai/ont/wco/customs#> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/wco/documents> a owl:Ontology ;
     dcterms:title "WCO Documents Domain" ;
     dcterms:description "Customs and trade documents including declarations, permits, transit documents, and international trade carnets based on the WCO Data Model 3.10.0." ;
     dcterms:creator "Kairos Ontology Team" ;

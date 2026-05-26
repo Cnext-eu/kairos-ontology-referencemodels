@@ -7,7 +7,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/tic/terminal-infrastructure> a owl:Ontology ;
     dcterms:title "TIC 4.0 Terminal Infrastructure Ontology" ;
     dcterms:description """Terminal infrastructure and equipment domain of the TIC 4.0 ontology.
 

@@ -5,7 +5,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/accelerator/logistics> a owl:Ontology ;
     dcterms:title "Kairos Logistics Accelerator Pack" ;
     dcterms:description """Pre-composed ontology bundle for logistics companies.
     
@@ -23,11 +23,11 @@
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-05-22"^^xsd:date ;
     owl:versionInfo "1.2.0" ;
-    owl:imports <https://www.kairosflow.ai/ont/dcsa#> ,
-                <https://www.kairosflow.ai/ont/dcsa/demurrage-detention#> ,
-                <https://www.kairosflow.ai/ont/mmt#> ,
-                <https://www.kairosflow.ai/ont/bsp#> ,
-                <https://www.kairosflow.ai/ont/tic#> ,
-                <https://www.kairosflow.ai/ont/imo#> ,
-                <https://www.kairosflow.ai/ont/wco#> ,
-                <https://www.kairosflow.ai/ont/sustainability#> .
+    owl:imports <https://www.kairosflow.ai/ont/dcsa> ,
+                <https://www.kairosflow.ai/ont/dcsa/demurrage-detention> ,
+                <https://www.kairosflow.ai/ont/mmt> ,
+                <https://www.kairosflow.ai/ont/bsp> ,
+                <https://www.kairosflow.ai/ont/tic> ,
+                <https://www.kairosflow.ai/ont/imo> ,
+                <https://www.kairosflow.ai/ont/wco> ,
+                <https://www.kairosflow.ai/ont/sustainability> .

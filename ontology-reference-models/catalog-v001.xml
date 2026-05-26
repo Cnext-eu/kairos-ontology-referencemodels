@@ -16,79 +16,79 @@
                 rewritePrefix="authoritative-ontologies/FIBO/current/fibo/"/>
     
     <!-- ========== DCSA (Digital Container Shipping Association) ========== -->
-    <uri name="https://www.kairosflow.ai/ont/dcsa#" uri="derived-ontologies/DCSA/current/dcsa.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/shipment-journey#" uri="derived-ontologies/DCSA/current/shipment-journey/shipment-journey.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/booking#" uri="derived-ontologies/DCSA/current/shipment-journey/booking/booking.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/transport-documents#" uri="derived-ontologies/DCSA/current/shipment-journey/transport-documents/transport-documents.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/equipment-journey#" uri="derived-ontologies/DCSA/current/equipment-journey/equipment-journey.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/container-operations#" uri="derived-ontologies/DCSA/current/equipment-journey/container-operations/container-operations.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/vessel-journey#" uri="derived-ontologies/DCSA/current/vessel-journey/vessel-journey.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/schedule#" uri="derived-ontologies/DCSA/current/vessel-journey/schedule/schedule.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/track-and-trace#" uri="derived-ontologies/DCSA/current/track-and-trace/track-and-trace.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/events#" uri="derived-ontologies/DCSA/current/track-and-trace/events/events.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/shared-kernel#" uri="derived-ontologies/DCSA/current/shared-kernel/shared-kernel.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/equipment#" uri="derived-ontologies/DCSA/current/shared-kernel/equipment/equipment.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/party#" uri="derived-ontologies/DCSA/current/shared-kernel/party/party.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/locations#" uri="derived-ontologies/DCSA/current/shared-kernel/locations/locations.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/dcsa/demurrage-detention#" uri="derived-ontologies/DCSA/current/demurrage-detention/demurrage-detention.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa" uri="derived-ontologies/DCSA/current/dcsa.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/shipment-journey" uri="derived-ontologies/DCSA/current/shipment-journey/shipment-journey.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/booking" uri="derived-ontologies/DCSA/current/shipment-journey/booking/booking.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/transport-documents" uri="derived-ontologies/DCSA/current/shipment-journey/transport-documents/transport-documents.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/equipment-journey" uri="derived-ontologies/DCSA/current/equipment-journey/equipment-journey.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/container-operations" uri="derived-ontologies/DCSA/current/equipment-journey/container-operations/container-operations.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/vessel-journey" uri="derived-ontologies/DCSA/current/vessel-journey/vessel-journey.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/schedule" uri="derived-ontologies/DCSA/current/vessel-journey/schedule/schedule.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/track-and-trace" uri="derived-ontologies/DCSA/current/track-and-trace/track-and-trace.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/events" uri="derived-ontologies/DCSA/current/track-and-trace/events/events.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/shared-kernel" uri="derived-ontologies/DCSA/current/shared-kernel/shared-kernel.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/equipment" uri="derived-ontologies/DCSA/current/shared-kernel/equipment/equipment.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/party" uri="derived-ontologies/DCSA/current/shared-kernel/party/party.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/locations" uri="derived-ontologies/DCSA/current/shared-kernel/locations/locations.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/demurrage-detention" uri="derived-ontologies/DCSA/current/demurrage-detention/demurrage-detention.ttl"/>
     
     <!-- ========== MMT (Multi-Modal Transport) ========== -->
-    <uri name="https://www.kairosflow.ai/ont/mmt#" uri="derived-ontologies/MMT/current/mmt.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/mmt/cargo#" uri="derived-ontologies/MMT/current/cargo/cargo.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/mmt/consignment#" uri="derived-ontologies/MMT/current/consignment/consignment.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/mmt/documents#" uri="derived-ontologies/MMT/current/documents/documents.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/mmt/equipment#" uri="derived-ontologies/MMT/current/equipment/equipment.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/mmt/events#" uri="derived-ontologies/MMT/current/events/events.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/mmt/inland-transport#" uri="derived-ontologies/MMT/current/inland-transport/inland-transport.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/mmt/locations#" uri="derived-ontologies/MMT/current/locations/locations.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/mmt/party#" uri="derived-ontologies/MMT/current/party/party.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/mmt/route-network#" uri="derived-ontologies/MMT/current/route-network/route-network.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/mmt/transport-means#" uri="derived-ontologies/MMT/current/transport-means/transport-means.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt" uri="derived-ontologies/MMT/current/mmt.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/cargo" uri="derived-ontologies/MMT/current/cargo/cargo.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/consignment" uri="derived-ontologies/MMT/current/consignment/consignment.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/documents" uri="derived-ontologies/MMT/current/documents/documents.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/equipment" uri="derived-ontologies/MMT/current/equipment/equipment.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/events" uri="derived-ontologies/MMT/current/events/events.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/inland-transport" uri="derived-ontologies/MMT/current/inland-transport/inland-transport.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/locations" uri="derived-ontologies/MMT/current/locations/locations.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/party" uri="derived-ontologies/MMT/current/party/party.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/route-network" uri="derived-ontologies/MMT/current/route-network/route-network.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/transport-means" uri="derived-ontologies/MMT/current/transport-means/transport-means.ttl"/>
     
     <!-- ========== BSP (Buy-Ship-Pay) ========== -->
-    <uri name="https://www.kairosflow.ai/ont/bsp#" uri="derived-ontologies/BSP/current/bsp.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/bsp/commercial#" uri="derived-ontologies/BSP/current/commercial/commercial.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/bsp/compliance#" uri="derived-ontologies/BSP/current/compliance/compliance.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/bsp/documents#" uri="derived-ontologies/BSP/current/documents/documents.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/bsp/financial#" uri="derived-ontologies/BSP/current/financial/financial.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/bsp/cost-accounting#" uri="derived-ontologies/BSP/current/cost-accounting/cost-accounting.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/bsp/revenue-yield#" uri="derived-ontologies/BSP/current/revenue-yield/revenue-yield.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/bsp/party#" uri="derived-ontologies/BSP/current/party/party.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/bsp/reference-data#" uri="derived-ontologies/BSP/current/reference-data/reference-data.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/bsp" uri="derived-ontologies/BSP/current/bsp.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/bsp/commercial" uri="derived-ontologies/BSP/current/commercial/commercial.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/bsp/compliance" uri="derived-ontologies/BSP/current/compliance/compliance.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/bsp/documents" uri="derived-ontologies/BSP/current/documents/documents.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/bsp/financial" uri="derived-ontologies/BSP/current/financial/financial.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/bsp/cost-accounting" uri="derived-ontologies/BSP/current/cost-accounting/cost-accounting.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/bsp/revenue-yield" uri="derived-ontologies/BSP/current/revenue-yield/revenue-yield.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/bsp/party" uri="derived-ontologies/BSP/current/party/party.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/bsp/reference-data" uri="derived-ontologies/BSP/current/reference-data/reference-data.ttl"/>
     
     <!-- ========== TIC (Terminal Industry Committee 4.0) ========== -->
-    <uri name="https://www.kairosflow.ai/ont/tic#" uri="derived-ontologies/TIC/current/tic.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/tic/automotive-services#" uri="derived-ontologies/TIC/current/automotive-services/automotive-services.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/tic/events#" uri="derived-ontologies/TIC/current/events/events.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/tic/handling-operations#" uri="derived-ontologies/TIC/current/handling-operations/handling-operations.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/tic/locations#" uri="derived-ontologies/TIC/current/locations/locations.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/tic/party#" uri="derived-ontologies/TIC/current/party/party.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/tic/terminal-infrastructure#" uri="derived-ontologies/TIC/current/terminal-infrastructure/terminal-infrastructure.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/tic" uri="derived-ontologies/TIC/current/tic.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/tic/automotive-services" uri="derived-ontologies/TIC/current/automotive-services/automotive-services.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/tic/events" uri="derived-ontologies/TIC/current/events/events.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/tic/handling-operations" uri="derived-ontologies/TIC/current/handling-operations/handling-operations.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/tic/locations" uri="derived-ontologies/TIC/current/locations/locations.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/tic/party" uri="derived-ontologies/TIC/current/party/party.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/tic/terminal-infrastructure" uri="derived-ontologies/TIC/current/terminal-infrastructure/terminal-infrastructure.ttl"/>
     
     <!-- ========== IMO (International Maritime Organization) ========== -->
-    <uri name="https://www.kairosflow.ai/ont/imo#" uri="derived-ontologies/IMO/current/imo.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/imo/dangerous-goods#" uri="derived-ontologies/IMO/current/dangerous-goods/dangerous-goods.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/imo/locations#" uri="derived-ontologies/IMO/current/locations/locations.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/imo/party#" uri="derived-ontologies/IMO/current/party/party.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/imo/port-call#" uri="derived-ontologies/IMO/current/port-call/port-call.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/imo/vessel-registry#" uri="derived-ontologies/IMO/current/vessel-registry/vessel-registry.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/imo" uri="derived-ontologies/IMO/current/imo.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/imo/dangerous-goods" uri="derived-ontologies/IMO/current/dangerous-goods/dangerous-goods.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/imo/locations" uri="derived-ontologies/IMO/current/locations/locations.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/imo/party" uri="derived-ontologies/IMO/current/party/party.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/imo/port-call" uri="derived-ontologies/IMO/current/port-call/port-call.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/imo/vessel-registry" uri="derived-ontologies/IMO/current/vessel-registry/vessel-registry.ttl"/>
     
     <!-- ========== WCO (World Customs Organization) ========== -->
-    <uri name="https://www.kairosflow.ai/ont/wco#" uri="derived-ontologies/WCO/current/wco.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/wco/customs#" uri="derived-ontologies/WCO/current/customs/customs.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/wco/documents#" uri="derived-ontologies/WCO/current/documents/documents.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/wco/locations#" uri="derived-ontologies/WCO/current/locations/locations.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/wco/party#" uri="derived-ontologies/WCO/current/party/party.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/wco/trade-facilitation#" uri="derived-ontologies/WCO/current/trade-facilitation/trade-facilitation.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/wco" uri="derived-ontologies/WCO/current/wco.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/wco/customs" uri="derived-ontologies/WCO/current/customs/customs.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/wco/documents" uri="derived-ontologies/WCO/current/documents/documents.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/wco/locations" uri="derived-ontologies/WCO/current/locations/locations.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/wco/party" uri="derived-ontologies/WCO/current/party/party.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/wco/trade-facilitation" uri="derived-ontologies/WCO/current/trade-facilitation/trade-facilitation.ttl"/>
     
     <!-- ========== Sustainability ========== -->
-    <uri name="https://www.kairosflow.ai/ont/sustainability#" uri="derived-ontologies/Sustainability/current/sustainability.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/sustainability/carbon#" uri="derived-ontologies/Sustainability/current/carbon/carbon.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/sustainability/energy#" uri="derived-ontologies/Sustainability/current/energy/energy.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/sustainability" uri="derived-ontologies/Sustainability/current/sustainability.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/sustainability/carbon" uri="derived-ontologies/Sustainability/current/carbon/carbon.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/sustainability/energy" uri="derived-ontologies/Sustainability/current/energy/energy.ttl"/>
     
     <!-- ========== Accelerator Packs ========== -->
-    <uri name="https://www.kairosflow.ai/ont/accelerator/logistics#" uri="accelerator-packs/logistics/current/logistics-accelerator.ttl"/>
-    <uri name="https://www.kairosflow.ai/ont/accelerator/financial-services#" uri="accelerator-packs/financial-services/current/financial-services-accelerator.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/accelerator/logistics" uri="accelerator-packs/logistics/current/logistics-accelerator.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/accelerator/financial-services" uri="accelerator-packs/financial-services/current/financial-services-accelerator.ttl"/>
     
 </catalog>
 

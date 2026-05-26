@@ -8,7 +8,7 @@
 @prefix sust-energy: <https://www.kairosflow.ai/ont/sustainability/energy#> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/sustainability> a owl:Ontology ;
     dcterms:title "Kairos Sustainability Ontology" ;
     dcterms:description """Sustainability ontology for carbon emissions, energy consumption, and environmental compliance in transport and logistics.
 
@@ -24,5 +24,5 @@
     dcterms:source "ISO 14083:2023, GLEC Framework, EU MRV Regulation, IMO DCS, EU ETS Maritime" ;
     rdfs:seeAlso <https://www.iso.org/standard/78864.html> ,
                  <https://www.smartfreightcentre.org/en/how-to-implement-glec-framework/> ;
-    owl:imports <https://www.kairosflow.ai/ont/sustainability/carbon#> ,
-                <https://www.kairosflow.ai/ont/sustainability/energy#> .
+    owl:imports <https://www.kairosflow.ai/ont/sustainability/carbon> ,
+                <https://www.kairosflow.ai/ont/sustainability/energy> .

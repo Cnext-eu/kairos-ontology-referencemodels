@@ -8,7 +8,7 @@
 @prefix equip: <https://www.kairosflow.ai/ont/dcsa/equipment#> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/dcsa/events> a owl:Ontology ;
     dcterms:title "DCSA Events Domain" ;
     dcterms:description """Track and trace event concepts for container shipping.
     

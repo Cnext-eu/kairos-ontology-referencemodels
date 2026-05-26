@@ -12,7 +12,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/tic> a owl:Ontology ;
     dcterms:title "Kairos TIC 4.0 Terminal Industry Ontology" ;
     dcterms:description """Terminal Industry Committee (TIC) 4.0 ontology for standardized terminal and port operations.
 
@@ -31,9 +31,9 @@
     owl:versionInfo "1.1.0" ;
     dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
     rdfs:seeAlso <https://tic40.org/standards/> ;
-    owl:imports <https://www.kairosflow.ai/ont/tic/terminal-infrastructure#> ;
-    owl:imports <https://www.kairosflow.ai/ont/tic/handling-operations#> ;
-    owl:imports <https://www.kairosflow.ai/ont/tic/automotive-services#> ;
-    owl:imports <https://www.kairosflow.ai/ont/tic/party#> ;
-    owl:imports <https://www.kairosflow.ai/ont/tic/locations#> ;
-    owl:imports <https://www.kairosflow.ai/ont/tic/events#> .
+    owl:imports <https://www.kairosflow.ai/ont/tic/terminal-infrastructure> ;
+    owl:imports <https://www.kairosflow.ai/ont/tic/handling-operations> ;
+    owl:imports <https://www.kairosflow.ai/ont/tic/automotive-services> ;
+    owl:imports <https://www.kairosflow.ai/ont/tic/party> ;
+    owl:imports <https://www.kairosflow.ai/ont/tic/locations> ;
+    owl:imports <https://www.kairosflow.ai/ont/tic/events> .

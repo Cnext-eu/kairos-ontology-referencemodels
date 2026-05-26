@@ -6,7 +6,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/imo/vessel-registry> a owl:Ontology ;
     dcterms:title "IMO Vessel Registry Ontology" ;
     dcterms:description """Vessel registration and identification domain ontology aligned with the IMO Compendium.
 

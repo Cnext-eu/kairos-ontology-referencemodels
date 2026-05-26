@@ -11,7 +11,7 @@
 @prefix wco-doc: <https://www.kairosflow.ai/ont/wco/documents#> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/wco> a owl:Ontology ;
     dcterms:title "Kairos WCO Customs Ontology" ;
     dcterms:description """World Customs Organization (WCO) ontology for international customs procedures and trade facilitation.
 
@@ -29,8 +29,8 @@
     owl:versionInfo "1.1.0" ;
     dcterms:source "WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056" ;
     rdfs:seeAlso <https://www.wcoomd.org/datamodel> ;
-    owl:imports <https://www.kairosflow.ai/ont/wco/customs#> ,
-                <https://www.kairosflow.ai/ont/wco/trade-facilitation#> ,
-                <https://www.kairosflow.ai/ont/wco/party#> ,
-                <https://www.kairosflow.ai/ont/wco/locations#> ,
-                <https://www.kairosflow.ai/ont/wco/documents#> .
+    owl:imports <https://www.kairosflow.ai/ont/wco/customs> ,
+                <https://www.kairosflow.ai/ont/wco/trade-facilitation> ,
+                <https://www.kairosflow.ai/ont/wco/party> ,
+                <https://www.kairosflow.ai/ont/wco/locations> ,
+                <https://www.kairosflow.ai/ont/wco/documents> .

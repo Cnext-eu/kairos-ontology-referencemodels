@@ -8,7 +8,7 @@
 @prefix refdata: <https://www.kairosflow.ai/ont/bsp/reference-data#> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/bsp/commercial> a owl:Ontology ;
     dcterms:title "Kairos BSP Commercial Domain Ontology" ;
     dcterms:description """Commercial and logistics domain of the Buy-Ship-Pay Reference Data Model.
 

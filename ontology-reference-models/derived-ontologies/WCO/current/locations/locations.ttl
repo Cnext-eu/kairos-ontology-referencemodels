@@ -7,7 +7,7 @@
 @prefix wco-customs: <https://www.kairosflow.ai/ont/wco/customs#> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/wco/locations> a owl:Ontology ;
     dcterms:title "WCO Locations Domain" ;
     dcterms:description "Customs locations, border crossings, bonded facilities, and controlled areas based on the WCO Data Model 3.10.0." ;
     dcterms:creator "Kairos Ontology Team" ;

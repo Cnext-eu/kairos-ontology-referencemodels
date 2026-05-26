@@ -6,7 +6,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/dcsa/track-and-trace> a owl:Ontology ;
     dcterms:title "DCSA Track and Trace" ;
     dcterms:description """Track and Trace covers all shipping event tracking — transport events
     (vessel movements), equipment events (container handling), and document events
@@ -20,4 +20,4 @@
     owl:versionInfo "1.0.0" ;
     dcterms:source "DCSA Information Model 2024.Q4 — Track and Trace (TNT v2.2)" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> ;
-    owl:imports <https://www.kairosflow.ai/ont/dcsa/events#> .
+    owl:imports <https://www.kairosflow.ai/ont/dcsa/events> .

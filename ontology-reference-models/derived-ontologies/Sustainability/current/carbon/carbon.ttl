@@ -9,7 +9,7 @@
 @prefix party: <https://www.kairosflow.ai/ont/imo/party#> .
 
 # Ontology Metadata
-: a owl:Ontology ;
+<https://www.kairosflow.ai/ont/sustainability/carbon> a owl:Ontology ;
     dcterms:title "Sustainability Carbon Domain" ;
     dcterms:description "Carbon emissions, greenhouse gas accounting, and environmental compliance for transport and logistics based on ISO 14083:2023 and the GLEC Framework." ;
     dcterms:creator "Kairos Ontology Team" ;
@@ -19,9 +19,9 @@
     dcterms:source "ISO 14083:2023, GLEC Framework, EU MRV Regulation, IMO DCS, EU ETS Maritime" ;
     rdfs:seeAlso <https://www.iso.org/standard/78864.html> ,
                  <https://www.smartfreightcentre.org/en/how-to-implement-glec-framework/> ;
-    owl:imports <https://www.kairosflow.ai/ont/imo/vessel-registry#> ,
-                <https://www.kairosflow.ai/ont/imo/port-call#> ,
-                <https://www.kairosflow.ai/ont/imo/party#> .
+    owl:imports <https://www.kairosflow.ai/ont/imo/vessel-registry> ,
+                <https://www.kairosflow.ai/ont/imo/port-call> ,
+                <https://www.kairosflow.ai/ont/imo/party> .
 
 #################################################################
 #    Emission Classes
