@@ -1,4 +1,4 @@
-<!-- kairos-ontology-toolkit:managed v2.30.2 -->
+<!-- kairos-ontology-toolkit:managed v2.36.0 -->
 # Kairos Ontology Toolkit — Copilot Instructions
 
 ## Session greeting (MANDATORY)
@@ -117,12 +117,7 @@ corresponding scenario test updates. Run `py -m pytest tests/scenarios/ -v` to v
 
 - All ontology files use Turtle (.ttl) syntax.
 - Every ontology MUST declare an `owl:Ontology` with `rdfs:label` and `owl:versionInfo`.
-- Use HTTP/HTTPS namespaces with `#` separator for class/property namespace prefixes.
-- **IRI convention (critical)**:
-  - `@prefix : <https://example.com/ont/domain#> .` — namespace prefix WITH `#`
-  - `<https://example.com/ont/domain> a owl:Ontology ;` — ontology IRI WITHOUT `#`
-  - `owl:imports <https://example.com/ont/other> ;` — import URIs WITHOUT `#`
-  - Catalog `name=` attributes must exactly match the `owl:imports` URI (no `#`)
+- Use HTTP/HTTPS namespaces with `#` or `/` separator.
 - Every `owl:Class` must have `rdfs:label` and `rdfs:comment`.
 - Every property must have `rdfs:domain`, `rdfs:range`, and `rdfs:label`.
 - Naming: PascalCase for classes, camelCase for properties.
@@ -134,9 +129,27 @@ When designing or modifying ontologies, use the **kairos-ontology-modeling** ski
 It combines core modeling knowledge (class hierarchies, property design, naming
 conventions, reference-model-first workflow, extension annotations) with an
 interactive configurator (business alignment checkpoints, session persistence in
-`ontology-hub/.modeling-sessions/`, and structured validation gates). For minor
+`ontology-hub/.sessions-modeling/`, and structured validation gates). For minor
 edits (adding a property, fixing a label) it supports a quick-edit mode that
 skips checkpoints.
+
+### Skill routing guide
+
+Use this table to pick the correct skill for a user's intent:
+
+| User intent | Correct skill |
+|---|---|
+| "Model / design / create classes / add properties / extend ontology" | **kairos-ontology-modeling** |
+| "Create a new hub repo from scratch" | **kairos-ontology-quickstart** |
+| "Set up folder structure / configure hub" | **kairos-ontology-hub-setup** |
+| "How does Kairos work? / What is this?" | **kairos-ontology-help** |
+| "Run projections / generate dbt / silver / gold" | **kairos-ontology-projection** |
+| "Validate my ontology" | **kairos-ontology-validation** |
+| "Create source/bronze vocabulary" | **kairos-ontology-medallion-source** |
+| "Design silver schema / FK annotations" | **kairos-ontology-medallion-silver** |
+| "Design gold / Power BI model" | **kairos-ontology-medallion-gold** |
+| "Import / extract TMDL or PBIP files" | CLI: `kairos-ontology import-tmdl` |
+| "Release / upgrade / version check" | **kairos-ontology-toolkit-ops** |
 
 ## Validation rules
 

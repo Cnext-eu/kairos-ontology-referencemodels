@@ -4,7 +4,7 @@ description: >
   Knowledge about generating downstream artifacts from ontologies.
   Covers all 7 projection targets and when to use each.
 ---
-<!-- kairos-ontology-toolkit:managed v2.30.2 -->
+<!-- kairos-ontology-toolkit:managed v2.36.0 -->
 
 # Projection Generation Skill
 

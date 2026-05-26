@@ -6,7 +6,7 @@ description: >
   and Mermaid ERD from OWL ontologies annotated with kairos-ext: properties.
   Targets DirectLake on Microsoft Fabric Warehouse.
 ---
-<!-- kairos-ontology-toolkit:managed v2.30.2 -->
+<!-- kairos-ontology-toolkit:managed v2.36.0 -->
 
 # Kairos Medallion Gold Skill
 

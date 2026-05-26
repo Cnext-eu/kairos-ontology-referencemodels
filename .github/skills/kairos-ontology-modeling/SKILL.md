@@ -1,11 +1,13 @@
 ---
 name: kairos-ontology-modeling
 description: >
-  Expert ontology modeling skill with interactive business alignment checkpoints,
-  session persistence, reference-model workflow, TTL patterns, and extension
-  annotations. Covers the full lifecycle from design through validation.
+  Expert skill for designing and editing OWL ontology classes, properties, and
+  relationships in TTL files. Use when the user wants to create, modify, or
+  extend domain ontologies — NOT for repo setup, scaffolding, or infrastructure.
+  Includes business alignment checkpoints, reference-model workflow, source/TMDL
+  analysis, and session persistence.
 ---
-<!-- kairos-ontology-toolkit:managed v2.29.1 -->
+<!-- kairos-ontology-toolkit:managed v2.36.0 -->
 
 # Ontology Modeling Skill
 
@@ -23,7 +25,7 @@ them means the modeling process has failed, regardless of output quality.
 
 ### Gate 1: Session file prerequisite
 
-> **You MUST create a `.modeling-sessions/{domain}-config-*.md` file BEFORE
+> **You MUST create a `.sessions-modeling/modeling-{domain}-*.md` file BEFORE
 > writing any domain `.ttl` file.**
 
 If no session file exists for the domain being modeled, you are NOT permitted
@@ -71,6 +73,38 @@ You must NOT:
 - Generate TTL "for review" without prior checkpoint confirmation
 - Proceed with "reasonable defaults" without asking
 
+### Gate 6: Source-grounded proposals (data-first)
+
+> **You MUST NOT propose class or property names until you have read the
+> relevant bronze vocabulary files AND TMDL table definitions (when present).**
+
+Before proposing ANY classes or properties, you MUST:
+1. Scan `integration/sources/` for bronze vocabulary `.ttl` files relevant to
+   this domain
+2. Extract actual table names and column names from those files
+3. Check `integration/sources/powerbi/` for TMDL files (engineering packs or
+   raw `.tmdl`). **If TMDL files exist, you MUST read them — this is not optional.**
+
+> **Sub-rule 6a:** If `integration/sources/powerbi/` contains TMDL files,
+> you MUST read them in Step 0c.3. The Source Evidence Table MUST include
+> 🟡 TMDL rows. Skipping TMDL when files exist is a Gate 6 violation.
+4. Build a **Source Evidence Table** (see Step 0c below)
+
+Every proposed property MUST cite its evidence source:
+- A specific source column name (e.g., `gooddetails2.MAFINR`)
+- A TMDL column (e.g., `f_LoadDelivery.TransportMediumTypeDescr`)
+- An explicit user statement ("we track X")
+- A reference model property (inherited)
+
+Properties based solely on "general domain knowledge" MUST be:
+- Clearly labelled as `[INFERRED — no source evidence]`
+- Presented in a separate tier BELOW source-evidenced properties
+- Never mixed into the main proposal as if they were facts
+
+**Rationale:** Client data is the ground truth for what properties exist and
+matter. LLM knowledge can suggest useful additions, but must never masquerade
+as fact when source data is available.
+
 ### What to do when the user says "just do it" or "skip checkpoints"
 
 If the user explicitly requests skipping governance:
@@ -91,8 +125,8 @@ If the user explicitly requests skipping governance:
 At the beginning of every modeling session, look for saved configuration files:
 
 ```
-ontology-hub/.modeling-sessions/
-  └── {domain}-config-{YYYY-MM-DD-HHmm}.md    # Saved session state
+ontology-hub/.sessions-modeling/
+  └── modeling-{domain}-{YYYY-MM-DD}.md    # Saved session state
 ```
 
 **Ask the user:**
@@ -107,7 +141,7 @@ If no session exists, start fresh and create one immediately.
 
 ### Session file format
 
-Save progress to `ontology-hub/.modeling-sessions/{domain}-config-{timestamp}.md`:
+Save progress to `ontology-hub/.sessions-modeling/modeling-{domain}-{YYYY-MM-DD}.md`:
 
 ```markdown
 # Modeling Session: {Domain Name}
@@ -124,6 +158,7 @@ Save progress to `ontology-hub/.modeling-sessions/{domain}-config-{timestamp}.md
 | Namespace | {value} | ✅/❓ |
 | Reference model imports | {list} | ✅/❓ |
 | Subclass vs extend strategy | {choice} | ✅/❓ |
+| TMDL consulted | yes / no / not-available | ✅ |
 
 ## Classes Confirmed
 
@@ -142,11 +177,29 @@ Save progress to `ontology-hub/.modeling-sessions/{domain}-config-{timestamp}.md
 - [ ] {question 1}
 - [ ] {question 2}
 
+## Source Evidence Table
+
+| # | Source Column | Source Table | System | Data Type | Candidate Property | Candidate Class | Evidence |
+|---|---|---|---|---|---|---|---|
+| 1 | {column} | {table} | {system} | {type} | {property} | {class} | 🟢/🟡/🔵 |
+
+_Built from actual bronze vocabulary files and TMDL definitions (Gate 6)._
+_Every proposed property must trace back to a row in this table or be marked [INFERRED]._
+
 ## Design Decisions Log
 
 | # | Question | Decision | Rationale |
 |---|----------|----------|-----------|
 | 1 | {question} | {choice made} | {why} |
+
+## Source Alignment Warnings
+
+| # | Issue | TMDL/Source says | Ref model says | Decision | Status |
+|---|-------|-----------------|----------------|----------|--------|
+| 1 | {description} | {what TMDL or source shows} | {what ref model defines} | {follow ref model / create local class / discuss} | ⚠️ Discuss / ✅ Resolved |
+
+_This section captures disagreements between legacy BI (TMDL), source system data,_
+_and the reference model. Reference model has priority unless explicitly overridden._
 ```
 
 ### Saving and pausing
@@ -183,9 +236,9 @@ and Gate 3 — these are non-negotiable.
 
 ## Before you start (full modeling workflow)
 
-> ⚠️ **Reminder:** Gates 1–5 above are BLOCKING. Before creating any `.ttl` file,
+> ⚠️ **Reminder:** Gates 1–6 above are BLOCKING. Before creating any `.ttl` file,
 > verify you have: (1) a session file, (2) confirmed class names, (3) only one
-> domain in scope for this turn.
+> domain in scope for this turn, (4) source evidence table built.
 
 0. **Quick toolkit version check** — run `python -m kairos_ontology update --check` once
    at the start of the session.  If it reports outdated files, run
@@ -241,6 +294,220 @@ At the **very start** of any modeling session, ask:
 
 - If the user says **no reference model** is needed, skip to the standard
   modeling workflow (class design, property design, etc.).
+
+### Step 0b — Inventory available inputs (Source Systems & TMDL)
+
+Before selecting reference models or designing classes, inventory all available
+input signals that can inform the modeling process.
+
+**Check for source system documentation:**
+
+```bash
+ls ontology-hub/integration/sources/
+```
+
+**Check for existing TMDL (Power BI semantic model) files:**
+
+```bash
+ls ontology-hub/integration/sources/powerbi/
+# or ask: "Do you have existing Power BI TMDL files to use as input?"
+```
+
+**TMDL file placement convention:**
+
+```
+integration/
+  sources/
+    powerbi/                              ← TMDL input (one or more semantic models)
+      {model-name}.SemanticModel/
+        definition/
+          model.tmdl                      ← Main model definition
+          tables/*.tmdl                   ← Table/measure definitions
+          relationships/*.tmdl            ← Relationship definitions
+      README.md                           ← Brief description, known issues
+    {source-system}/                      ← Source system docs (DDL, API specs)
+      sql-ddl/
+      api-specs/
+      samples/
+```
+
+> **💡 Tip:** Use `kairos-ontology import-tmdl <path-to-pbip-or-folder>` to
+> automatically extract and inventory TMDL content. It generates an Engineering
+> Pack (markdown) and a Concept Mapping template (YAML) that this skill can
+> use directly during modeling.
+
+**Present the input matrix:**
+
+> "Here are the available inputs for this modeling session:
+>
+> | Input | Location | Trust Level | What it provides |
+> |-------|----------|-------------|-----------------|
+> | Reference model | `ontology-reference-models/` | 🟢 Highest — structural authority | Class hierarchies, standard properties |
+> | Source system DDL | `integration/sources/{system}/` | 🟡 High — reality check | Actual cardinalities, data types, columns |
+> | TMDL (Power BI) | `integration/sources/powerbi/` | 🟠 Medium — legacy/advisory | Business measures, BI naming, hierarchies |
+> | Business knowledge | (from user) | 🟢 High — domain authority | Naming, scope, intent |
+>
+> **Trust hierarchy (ENFORCED — see Step 0d):**
+> Source system columns > TMDL columns > Reference model structure > Domain knowledge
+>
+> Source system data is the ground truth for what properties exist.
+> TMDL files are treated as **legacy input** — they may contain inconsistencies,
+> denormalized structures, or patterns that don't follow best practices.
+> We use them to inform decisions but never override the reference model.
+> General domain knowledge (LLM suggestions) is lowest priority and must always
+> be labelled `[INFERRED]` when source data is available."
+
+**Rules for using inputs during modeling:**
+
+| Situation | Action |
+|-----------|--------|
+| TMDL table matches a reference model class | ✅ Confirms the class is needed; use ref model structure |
+| TMDL table has no reference model equivalent | ⚠️ Flag as potential gap — candidate for local class |
+| TMDL relationship contradicts reference model | ⚠️ Log as warning; follow reference model; discuss with user |
+| Source DDL has M:N where ref model says 1:N | ⚠️ Flag cardinality mismatch; may need junction table |
+| TMDL measure references a concept | 🔵 Informs gold-layer design later; note for gold-ext |
+| TMDL dimension exists but ref model has no class | ⚠️ Candidate for subclass or new local class |
+
+### Step 0c — Build Source Evidence Table (MANDATORY — Gate 6)
+
+**This step is BLOCKING.** You must complete it before proposing any classes
+or properties in Checkpoint 1. The Source Evidence Table drives all proposals.
+
+**Step 0c.1 — Identify relevant source systems:**
+
+Determine which bronze vocabulary files relate to the domain being modeled.
+Use naming heuristics and the user's input to identify relevant systems:
+
+```bash
+# List all bronze vocabulary files
+find ontology-hub/integration/sources/ -name "*.vocabulary.ttl"
+
+# Identify which source systems relate to this domain
+# (ask user if unclear)
+```
+
+**Step 0c.2 — Extract source table and column inventory:**
+
+For each relevant source system, extract the complete column list:
+
+```bash
+# List all tables in a source system
+grep "a kairos-bronze:SourceTable" integration/sources/{system}/*.ttl
+
+# Extract all column names for relevant tables
+grep "kairos-bronze:columnName" integration/sources/{system}/*.ttl
+```
+
+For bronze vocabulary files, extract:
+- All `kairos-bronze:SourceTable` resources → candidate class sources
+- All `kairos-bronze:SourceColumn` resources → candidate property sources
+- All `kairos-bronze:dataType` values → informs `xsd:` range selection
+
+**Step 0c.3 — Read TMDL definitions (MANDATORY when TMDL exists):**
+
+**Check:** Does `integration/sources/powerbi/` contain TMDL files or engineering
+packs? If YES → this step is BLOCKING. If NO → document "No TMDL available" in
+the session file and skip to Step 0c.4.
+
+For each relevant TMDL table:
+- Read the `.tmdl` file to extract column names, data types, and relationships
+- Note dimension tables (potential class candidates)
+- Note fact tables (potential event/transaction class candidates)
+- Note relationship definitions (potential object property candidates)
+- Note measures (for gold-layer annotations later — do NOT model measures as
+  ontology properties)
+
+**Step 0c.4 — Produce the Source Evidence Table:**
+
+Build this table BEFORE proposing any classes or properties:
+
+> "**Source Evidence Table** (extracted from client data):
+>
+> | # | Source Column | Source Table | System | Data Type | Candidate Property | Candidate Class | Evidence Strength |
+> |---|---|---|---|---|---|---|---|
+> | 1 | `MAFINR` | `gooddetails2` | RoRoNet | nvarchar(50) | `mafiNumber` | MafiTrailer | 🟢 Direct |
+> | 2 | `LICENSEPLATE` | `equips` | RoRoNet | nvarchar(50) | `licensePlate` | (shared) | 🟢 Direct |
+> | 3 | `EQUIPMENTCODE` | `gooddetails2` | RoRoNet | nvarchar(50) | _(discriminator)_ | _(subclass selector)_ | 🟢 Direct |
+> | 4 | `TransportMediumTypeDescr` | `d_UnitTypes` | TMDL | string | _(discriminator)_ | _(confirms subclasses)_ | 🟡 TMDL |
+> | … | … | … | … | … | … | … | … |
+>
+> **Evidence strength legend:**
+> - 🟢 Direct — column exists in source system bronze vocabulary
+> - 🟡 TMDL — column exists in Power BI semantic model
+> - 🟠 Cross-validated — appears in both source AND TMDL
+> - ⚪ Inherited — property comes from reference model
+> - 🔵 Inferred — suggested by domain knowledge, no source evidence"
+
+**Step 0c.5 — Detect subclass candidates from source data:**
+
+Scan the Source Evidence Table for **discriminator patterns** — columns that
+indicate type classification and suggest subclasses:
+
+Look for:
+- Columns with names containing `TYPE`, `CODE`, `KIND`, `CATEGORY`, `CLASS`
+- TMDL dimension tables that classify a fact table (e.g., `d_UnitTypes` →
+  `f_LoadDelivery`)
+- Source reference/code tables with few distinct values
+- Foreign keys to small lookup tables
+
+Present discriminator findings:
+
+> "**Subclass candidates from source data:**
+>
+> | # | Discriminator Column | Source | Links to | Distinct Values / Description | Subclass candidate? |
+> |---|---|---|---|---|---|
+> | 1 | `EQUIPMENTCODE` | RoRoNet.gooddetails2 | `equipmentcodes` table | Equipment type codes | ✅ Yes — suggests typed subclasses |
+> | 2 | `TransportMediumTypeDescr` | TMDL.d_UnitTypes | Fact tables | Unit type descriptions | ✅ Confirms #1 |
+> | 3 | `FULLEMPTYIND` | RoRoNet.gooddetails2 | — | Boolean flag | ❌ No — state, not type |
+>
+> Based on discriminator analysis, the source data supports these subclasses: …"
+
+**Rules for the Source Evidence Table:**
+- It MUST be built from actual file reads, not from memory or assumption
+- Every row must cite the exact file and column name
+- The table drives Checkpoint 1 (class proposals) and Checkpoint 3b (property proposals)
+- If no source systems are available for this domain, document that explicitly
+  and note that all proposals will be `[INFERRED]`
+- **Completeness check (Gate 6a):** If TMDL files exist in
+  `integration/sources/powerbi/`, the table MUST contain at least one row with
+  🟡 TMDL evidence. A table with only 🟢 rows when TMDL is available means
+  Step 0c.3 was skipped — go back and read the TMDL files.
+
+### Step 0d — Trust-Priority Rule (ENFORCED)
+
+When proposing classes or properties, sources are consulted and weighted in
+this strict priority order:
+
+| Priority | Source | What it provides | Label |
+|---|---|---|---|
+| 1 (highest) | **Bronze vocabulary columns** | What data actually exists in source systems | 🟢 Direct |
+| 2 | **TMDL columns/relationships** | What the BI team already uses | 🟡 TMDL |
+| 3 | **Reference model properties** | Structural authority (inherited props) | ⚪ Inherited |
+| 4 (lowest) | **General domain knowledge** | LLM suggestions, industry norms | 🔵 Inferred |
+
+**Enforcement rules:**
+
+- A property is proposed WITHOUT an evidence label only if it appears at
+  priority 1 or 2 (source or TMDL evidence).
+- Reference model properties (priority 3) are always listed because they're
+  inherited — but clearly marked as `⚪ Inherited`.
+- Everything else (priority 4) gets the `🔵 [INFERRED]` tag and is presented
+  in a separate section.
+- When source data contradicts LLM assumptions, **source data wins**.
+- When TMDL contradicts source data, **source data wins** (TMDL may be
+  denormalized or outdated).
+- When source data contradicts the reference model **structure**, the reference
+  model wins for hierarchy but source data wins for cardinality and existence
+  of columns.
+
+**Impact on Checkpoints:**
+
+- **Checkpoint 1 (Naming):** Class proposals must cite discriminator evidence
+  from Step 0c.5
+- **Checkpoint 2 (Subclass Justification):** Subclass proposals must cite
+  discriminator columns or TMDL dimension tables as evidence
+- **Checkpoint 3b (Property Design):** Properties are proposed in two tiers
+  (see updated Checkpoint 3b below)
 
 ### Step 1 — Select the accelerator pack
 
@@ -456,6 +723,152 @@ After the reference baseline is imported and validated:
 
 ---
 
+## TMDL Analysis (Legacy BI Input)
+
+When existing TMDL files are available in `integration/sources/powerbi/`, analyze
+them **before** domain modeling to extract business-validated concepts. TMDL is
+treated as **legacy advisory input** — it informs decisions but the reference model
+has structural priority.
+
+### Step 1 — Read TMDL structure
+
+Read the TMDL files and extract:
+
+| TMDL artifact | What to extract | Modeling relevance |
+|---|---|---|
+| **Tables** (fact + dimension) | Table names, columns, data types | Class candidates and properties |
+| **Relationships** | FK directions, cardinality | Object property candidates |
+| **Measures (DAX)** | Measure name, expression, format | Gold-layer annotations (note for later) |
+| **Hierarchies** | Drill paths (e.g., Year → Quarter → Month) | SubClassOf or part-of patterns |
+| **Display folders** | Logical groupings | Domain boundary hints |
+| **Column descriptions** | Business definitions | `rdfs:comment` candidates |
+
+### Step 2 — Produce concept mapping table
+
+Map each TMDL entity to its reference model equivalent:
+
+> "Based on the TMDL files, here is the concept mapping:
+>
+> | # | TMDL Entity | Type | Reference Model Match | Action |
+> |---|---|---|---|---|
+> | 1 | `dim_Customer` | Dimension | `ref:TradeParty` | ✅ Use ref model; subclass if needed |
+> | 2 | `dim_FreightCustomer` | Dimension | `ref:TradeParty` | 🔶 Specialize — create subclass |
+> | 3 | `fact_Shipment` | Fact | `ref:Consignment` | ✅ Use ref model |
+> | 4 | `dim_Route` | Dimension | _(no match)_ | 🆕 New local class needed |
+> | 5 | `fact_Revenue` | Fact | _(no match)_ | 🆕 New local class needed |
+> | 6 | `dim_Date` | Dimension | _(utility)_ | ⏭️ Skip — handled by gold layer |
+>
+> **Actions:**
+> - ✅ = reference model covers this; use as-is
+> - 🔶 = reference model has a parent class; create a subclass specialization
+> - 🆕 = no reference model equivalent; create a new local class
+> - ⏭️ = BI utility (date dim, bridge table); not an ontology class"
+
+### Step 3 — Flag inconsistencies
+
+When TMDL patterns disagree with the reference model, **always flag as a warning**
+and **always follow the reference model**:
+
+> "⚠️ **TMDL inconsistencies detected** (reference model takes priority):
+>
+> | # | Issue | TMDL pattern | Reference model pattern | Impact |
+> |---|---|---|---|---|
+> | 1 | Shipper cardinality | `dim_Shipper` joined M:N to `fact_Shipment` | `ref:hasShipper` is functional (1:N) | Follow ref model; review source data |
+> | 2 | Flattened address | `dim_Customer.City`, `.Country` as columns | `ref:hasAddress → ref:Address` | Follow ref model (structured); flag for BI simplification later |
+> | 3 | Missing relationship | No FK between `dim_Carrier` and `fact_Booking` | `ref:Booking hasCarrier ref:Carrier` | Ref model is correct; TMDL likely has a gap |
+>
+> These are logged in the session file as items to discuss with stakeholders."
+
+**Rules for TMDL inconsistency handling:**
+
+- ❌ Never restructure the ontology to match TMDL denormalization patterns
+- ✅ Log every inconsistency in the session file "Source Alignment Warnings" section
+- ✅ If the TMDL reveals a genuine **missing concept** in the ref model, that IS
+  a valid input — create a local class
+- ✅ TMDL measure expressions can be carried forward as `kairos-ext:measureExpression`
+  in gold-ext.ttl — note them for later, don't let them drive ontology structure
+
+### Step 4 — Tag classes for specialization
+
+Based on the TMDL analysis, tag reference model classes that need subclassing:
+
+> "The TMDL analysis suggests these **specializations** of reference model classes:
+>
+> | Reference class | TMDL evidence | Proposed subclass | Justification |
+> |---|---|---|---|
+> | `ref:TradeParty` | Has separate `dim_FreightCustomer`, `dim_ContractCustomer` | `:FreightCustomer`, `:ContractCustomer` | Different BI grain, different natural key |
+> | `ref:Location` | Has `dim_Port`, `dim_Warehouse` | `:Port`, `:Warehouse` | Different properties, different lifecycle |
+>
+> Do you agree these warrant subclasses, or should some use the parent class directly?"
+
+This feeds directly into [Checkpoint 2: Subclass Justification](#checkpoint-2-subclass-justification-mandatory-when-extending-reference-model).
+
+---
+
+## Source System Analysis (Reality Check)
+
+When source system documentation is available in `integration/sources/`, analyze
+it to confirm cardinalities, discover real data shapes, and identify attributes
+not covered by the reference model.
+
+### Step 1 — Read source system schemas
+
+For each source system in `integration/sources/{system}/`, read:
+
+| Material | What to extract | Priority |
+|---|---|---|
+| SQL DDL (CREATE TABLE) | Table structure, PKs, FKs, constraints | ⭐ Best — exact schema |
+| API specs (OpenAPI/Swagger) | Endpoint resources, relationships, types | ⭐ Good — typed |
+| Sample data (CSV/JSON) | Actual values, NULLability, patterns | 🔶 Useful — infer patterns |
+
+### Step 2 — Map source entities to reference model
+
+> "Source system `{system}` analysis:
+>
+> | # | Source Entity | Reference Model Match | Cardinality Match? | Extra Columns |
+> |---|---|---|---|---|
+> | 1 | `tbl_Customers` | `ref:TradeParty` | ✅ 1:1 | `credit_limit`, `payment_terms` |
+> | 2 | `tbl_Shipments` | `ref:Consignment` | ✅ 1:1 | `internal_ref`, `priority_code` |
+> | 3 | `tbl_ShipmentItems` | `ref:ConsignmentItem` | ⚠️ Source has M:N via junction | `damage_code` |
+> | 4 | `tbl_Routes` | _(no match)_ | — | Full table is a gap |
+>
+> **Cardinality mismatches** require discussion — they may indicate:
+> - The ref model is too restrictive (raise as feedback to ref model maintainers)
+> - The source has denormalized data (common — model the semantic truth, not the source shape)
+> - A junction table is needed (`kairos-ext:junctionTableName`)"
+
+### Step 3 — Identify candidate properties
+
+Extra columns in source systems that have no reference model equivalent are
+candidates for new properties:
+
+> "These source columns are not represented in the reference model:
+>
+> | # | Source column | Source table | Candidate property | Candidate domain |
+> |---|---|---|---|---|
+> | 1 | `credit_limit` | `tbl_Customers` | `:creditLimit` | `:Customer` (subclass of ref:TradeParty) |
+> | 2 | `priority_code` | `tbl_Shipments` | `:priorityCode` | ref:Consignment or local subclass |
+> | 3 | `damage_code` | `tbl_ShipmentItems` | `:damageCode` | ref:ConsignmentItem or local subclass |
+>
+> Should I add these as properties on the reference model class directly (if you
+> control it) or on a local subclass?"
+
+### Step 4 — Cross-validate with TMDL
+
+If both TMDL and source system data are available, cross-validate:
+
+> "Cross-validation: source system vs TMDL:
+>
+> | Concept | Source system | TMDL | Aligned? |
+> |---|---|---|---|
+> | Customer types | Single `tbl_Customers` table | Split into `dim_FreightCustomer`, `dim_ContractCustomer` | ⚠️ TMDL has more specialization |
+> | Routes | `tbl_Routes` exists | `dim_Route` exists | ✅ Both agree — new class needed |
+> | Carrier-Booking | FK exists in source | No relationship in TMDL | ⚠️ TMDL has gap |
+>
+> Where source and TMDL agree on a gap, this strongly confirms a new class is needed."
+
+---
+
 ## Standard model alignment
 
 When a user wants to model a domain based on — or aligned with — an industry
@@ -553,9 +966,17 @@ only in [Quick-edit mode](#quick-edit-mode).
 
 ### Checkpoint 1: Naming Alignment (MANDATORY before creating any class)
 
-For every new class, **explicitly ask**:
+**Prerequisite:** Step 0c (Source Evidence Table) must be complete before
+reaching this checkpoint. Class proposals must be grounded in source evidence.
+
+For every new class, **explicitly cite the source evidence and ask**:
 
 > "I'm proposing the OWL class name `:{ProposedName}`.
+>
+> **Source evidence for this class:**
+> - Discriminator: `{column}` in `{table}` ({system}) — values suggest this type
+> - TMDL confirmation: `{tmdl_table}` dimension exists (if applicable)
+> - Reference model parent: `{ref:ParentClass}`
 >
 > **Business context check:**
 > - What do your users/business call this? (e.g., 'cargo line', 'shipment item', 'goods entry')
@@ -574,6 +995,13 @@ For every new class, **explicitly ask**:
 >
 > Proposed name: `:{ProposedName}` — would you like to keep this or rename?"
 
+If a class has **no source evidence** (no discriminator column, no TMDL
+dimension, no source table), it must be explicitly marked:
+
+> "⚠️ `:{ProposedName}` — **[INFERRED]** — No source evidence found for this
+> class. It is suggested based on domain knowledge / reference model structure.
+> Do you confirm this class exists in your business?"
+
 **Naming decision table** (present for each class):
 
 | Consideration | Guideline |
@@ -582,6 +1010,36 @@ For every new class, **explicitly ask**:
 | **Distinct from reference model parent?** | Only subclass if there's real semantic difference |
 | **Clear in BI/reports?** | Would a business user understand `dim_{snake_case_name}`? |
 | **Consistent across domains?** | Same pattern as other domain classes |
+
+**Multi-source naming context** (when source/TMDL inputs are available):
+
+> | Source | Name for this concept | Notes |
+> |--------|----------------------|-------|
+> | Reference model | `ref:{ClassName}` | Canonical structural name |
+> | TMDL | `dim_{tmdl_name}` / `fact_{tmdl_name}` | Legacy BI name — may differ |
+> | Source system | `tbl_{source_name}` | Technical source name |
+> | Business term | _{what stakeholders say}_ | From user |
+> | **Proposed** | `:{ProposedName}` | Aligned with reference model |
+>
+> If TMDL/source names differ significantly from the reference model, note this
+> in the session file — it may indicate a naming gap or a specialization need.
+
+**TMDL cross-reference** (MANDATORY when TMDL inputs exist — Gate 6a):
+
+After proposing all classes for the domain, present a summary cross-reference:
+
+> "**TMDL cross-reference for this domain:**
+>
+> | Proposed class | Matching TMDL table | Notes |
+> |---|---|---|
+> | `:FreightCustomer` | `dim_FreightCustomer` | Direct match — confirms class |
+> | `:Route` | `dim_Route` | Confirms new local class |
+> | `:BookingEvent` | _(none)_ | New concept not in legacy BI |
+>
+> Classes with no TMDL match are fine — they may be new concepts or ref model
+> structures not yet in the BI layer."
+
+If TMDL files exist but this table is missing, it's a Gate 6 violation.
 
 ### Checkpoint 2: Subclass Justification (MANDATORY when extending reference model)
 
@@ -606,6 +1064,22 @@ If the user cannot justify the subclass, suggest:
 :myNewProperty rdfs:domain ref:ParentClass ;
     rdfs:range xsd:string .
 ```
+
+**TMDL/Source evidence for subclassing** (when available):
+
+When TMDL or source system data suggests specialization, present the evidence:
+
+> "**Evidence from available inputs:**
+>
+> | Input | What it shows | Supports subclass? |
+> |-------|--------------|-------------------|
+> | TMDL | Separate `dim_FreightCustomer` table with extra columns | ✅ Yes — distinct grain |
+> | Source | Single `tbl_Customers` with `customer_type` discriminator column | ✅ Yes — discriminator exists |
+> | Reference model | `ref:TradeParty` as general parent | ✅ Yes — designed for specialization |
+>
+> ⚠️ **Caution:** TMDL having separate tables does NOT automatically justify a
+> subclass. The TMDL may be denormalized for performance. Always validate
+> against the 'create subclass' criteria above."
 
 ### Checkpoint 3: Property Design — Flat vs. Structured
 
@@ -632,6 +1106,36 @@ Before defining **any** new datatype or object property on a class that extends
 a reference model class, you MUST resolve the full inheritance chain and present
 all available inherited properties. This check also applies to **named
 individuals** (enumerations) and **sub-property relationships**.
+
+**IMPORTANT: Two-tier property presentation (Gate 6 enforcement)**
+
+When presenting new property proposals, you MUST separate them into two tiers:
+
+> **Tier 1 — Source-evidenced properties** (from Source Evidence Table):
+>
+> | # | Proposed Property | Source Column | Source Table | System | Data Type | Confidence |
+> |---|---|---|---|---|---|---|
+> | 1 | `mafiNumber` | `MAFINR` | `gooddetails2` | RoRoNet | nvarchar(50) → xsd:string | 🟢 Direct |
+> | 2 | `licensePlate` | `LICENSEPLATE` | `equips` | RoRoNet | nvarchar(50) → xsd:string | 🟢 Direct |
+> | 3 | `verifiedGrossMass` | `VGM` | `gooddetails2` | RoRoNet | decimal → xsd:decimal | 🟢 Direct |
+>
+> **Tier 2 — Inferred properties** (domain knowledge, no source evidence):
+>
+> | # | Proposed Property | Reasoning | Confidence |
+> |---|---|---|---|
+> | 1 | `isAccompanied` | Standard RoRo concept; not found in source columns | 🔵 Inferred |
+> | 2 | `requiresSpecialPermit` | Common for oversized cargo; no source column found | 🔵 Inferred |
+>
+> ⚠️ **Tier 2 properties** may already exist under different names in the
+> source, or may not be relevant to this client. Discuss before including.
+
+**Rules for tiered presentation:**
+- Tier 1 is always presented FIRST and forms the default proposal
+- Tier 2 is presented SECOND and clearly separated
+- The user must explicitly opt-in to Tier 2 properties
+- If a Tier 2 property is confirmed by the user, record their statement as the
+  evidence source in the session file
+- Never mix Tier 1 and Tier 2 properties in a single undifferentiated list
 
 **Step 1 — Resolve the inheritance chain:**
 
@@ -748,6 +1252,24 @@ After every 3-5 classes are confirmed, pause and show:
 >
 > Does this structure make sense from a data warehouse perspective?"
 
+**Source/TMDL cross-check** (when available):
+
+After showing the inheritance summary, cross-reference with source/TMDL inputs:
+
+> "**Cross-check against available inputs:**
+>
+> | Your class | Source system | TMDL | Alignment |
+> |---|---|---|---|
+> | `:FreightCustomer` | `tbl_Customers` (filtered by type) | `dim_FreightCustomer` | ✅ All agree |
+> | `:Route` | `tbl_Routes` | `dim_Route` | ✅ All agree (new local class) |
+> | `:Booking` | `tbl_Bookings` | — (not in TMDL) | ⚠️ TMDL gap — class is still valid per ref model |
+>
+> **Cardinality notes from source:**
+> - `tbl_Bookings` → `tbl_Customers`: FK exists (1:N confirmed)
+> - `tbl_Shipments` → `tbl_Routes`: FK exists but nullable (optional relationship)
+>
+> Any cardinality surprises to discuss?"
+
 ---
 
 ## Class design
@@ -771,9 +1293,6 @@ After every 3-5 classes are confirmed, pause and show:
 - **Properties**: camelCase — `customerName`, `orderDate`, `belongsToCustomer`.
 - **Namespaces**: Use HTTPS URIs matching the hub's namespace base —
   `https://<company-domain>/ont/<domain>#` (e.g., `https://contoso.com/ont/customer#`).
-- **IRI convention**: The `#` is ONLY for the namespace prefix (used by classes/properties).
-  The ontology IRI (subject of `a owl:Ontology`) and `owl:imports` URIs must NOT end with `#`.
-  Catalog `name=` entries must exactly match the `owl:imports` URIs.
 
 ## Common patterns
 
@@ -821,11 +1340,6 @@ Every .ttl file MUST start with an ontology declaration:
     rdfs:comment "Description of this domain"@en ;
     owl:versionInfo "1.0.0" .
 ```
-
-**Critical**: Note the difference between the `@prefix : <...#>` (WITH `#`) and the
-ontology IRI `<...>` (WITHOUT `#`). Never use `: a owl:Ontology` shorthand — always
-use the explicit full IRI for the ontology declaration to avoid accidentally including
-`#` in the ontology IRI.
 
 ---
 
@@ -985,7 +1499,7 @@ These go in `model/mappings/<source>-to-<domain>.ttl` alongside SKOS mappings.
 ## Completion: Final Configuration Report
 
 When the user confirms all classes and properties for a domain, generate a final
-report. Save to `ontology-hub/.modeling-sessions/{domain}-config-FINAL-{timestamp}.md`:
+report. Save to `ontology-hub/.sessions-modeling/modeling-{domain}-FINAL-{YYYY-MM-DD}.md`:
 
 ```markdown
 # Modeling Configuration Report: {Domain Name}
@@ -1054,6 +1568,8 @@ report. Save to `ontology-hub/.modeling-sessions/{domain}-config-FINAL-{timestam
 | Unnecessary subclassing | Checkpoint 2 requires justification |
 | Flat vs structured confusion | Checkpoint 3 shows trade-offs explicitly |
 | Redundant property (e.g., `customerName` when `partyName` is inherited) | Checkpoint 3b forces property reuse check before defining new properties |
+| **Invented properties from LLM knowledge** | **Gate 6 + Tier system requires source evidence before proposals** |
+| **Subclasses without discriminator evidence** | **Step 0c.5 requires discriminator column citation** |
 | Same concept imported from two reference models | Step 2b overlap resolution picks one canonical source |
 | Modeling concepts outside domain boundary | Checkpoint 4 verifies ownership |
 | Silver layer surprises | Checkpoint 5 previews projection impact |

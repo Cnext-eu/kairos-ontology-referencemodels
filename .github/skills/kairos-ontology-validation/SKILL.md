@@ -5,7 +5,7 @@ description: >
   and extension/mapping correctness. Produces a structured report with
   what's good, what's broken, and what can be improved.
 ---
-<!-- kairos-ontology-toolkit:managed v2.30.2 -->
+<!-- kairos-ontology-toolkit:managed v2.36.0 -->
 
 # Ontology Validation & Review Skill
 
@@ -120,9 +120,7 @@ projection output or downstream issues.
 | `rdfs:label` on ontology | Human-readable name is required |
 | `owl:versionInfo` on ontology | Semantic version string required |
 | Namespace uses `https://` | Never use `http://` — always `https://` |
-| Namespace prefix ends with `#` | `@prefix : <...#>` — required for class/property local names |
-| Ontology IRI does NOT end with `#` | 🐛 The ontology IRI (subject of `a owl:Ontology`) must be the base without `#`. Use explicit full IRI, not `: a owl:Ontology` shorthand |
-| `owl:imports` URIs do NOT end with `#` | 🐛 Import URIs must match catalog entries exactly — no trailing `#` |
+| Namespace ends with `#` or `/` | Ensures fragment or path-based local names |
 
 ### Class design
 

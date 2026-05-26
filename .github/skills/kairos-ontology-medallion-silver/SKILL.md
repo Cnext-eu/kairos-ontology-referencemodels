@@ -6,6 +6,7 @@ description: >
   Covers R1-R16 annotation vocabulary, S1-S8 Silver Fabric Warehouse
   behaviours, and the full bronze-to-silver dbt pipeline.
 ---
+<!-- kairos-ontology-toolkit:managed v2.36.0 -->
 
 # Kairos Medallion Silver Skill
 

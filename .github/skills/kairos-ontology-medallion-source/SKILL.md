@@ -5,7 +5,7 @@ description: >
   reference documentation. Reads API specs, SQL DDL, sample data from the
   sources/ folder and generates kairos-bronze: TTL files alongside the source docs.
 ---
-<!-- kairos-ontology-toolkit:managed v2.30.2 -->
+<!-- kairos-ontology-toolkit:managed v2.36.0 -->
 
 # Kairos Medallion Staging Skill
 
