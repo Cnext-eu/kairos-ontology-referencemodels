@@ -86,6 +86,9 @@
     <uri name="https://www.kairosflow.ai/ont/sustainability/carbon" uri="derived-ontologies/Sustainability/current/carbon/carbon.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/sustainability/energy" uri="derived-ontologies/Sustainability/current/energy/energy.ttl"/>
     
+    <!-- ========== Supply Chain Integration ========== -->
+    <uri name="https://www.kairosflow.ai/ont/supply-chain" uri="derived-ontologies/SupplyChain/current/supply-chain.ttl"/>
+    
     <!-- ========== Accelerator Packs ========== -->
     <uri name="https://www.kairosflow.ai/ont/accelerator/logistics" uri="accelerator-packs/logistics/current/logistics-accelerator.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/accelerator/financial-services" uri="accelerator-packs/financial-services/current/financial-services-accelerator.ttl"/>
