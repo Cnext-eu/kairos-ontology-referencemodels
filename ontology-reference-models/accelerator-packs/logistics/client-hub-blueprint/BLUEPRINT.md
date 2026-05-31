@@ -272,6 +272,51 @@ classes.
 
 ---
 
+## Cross-Domain Relationships
+
+The **Supply Chain Integration** module provides cross-standard object properties
+that bridge classes from different ontology standards (e.g., linking a DCSA
+Booking to an MMT Consignment, or an IMO PortCall to a TIC Terminal).
+
+### When to use
+
+- Within a single standard, cross-module properties already exist
+  (e.g., MMT consignment → MMT equipment via `hasTransportEquipment`)
+- The Supply Chain module covers relationships that **span different standards**
+- Import it when your client domain needs to link entities across
+  booking, transport, finance, terminal, and customs boundaries
+
+### Import pattern
+
+```turtle
+# In your domain ontology
+owl:imports <https://www.kairosflow.ai/ont/supply-chain> .
+
+# Or import the full logistics accelerator (which includes it)
+owl:imports <https://www.kairosflow.ai/ont/accelerator/logistics#> .
+```
+
+### Key bridge properties
+
+| Property | From | To | Purpose |
+|----------|------|----|---------|
+| `sc:bookedConsignment` | DCSA Booking | MMT Consignment | Booking creates consignment |
+| `sc:underAgreement` | DCSA Booking | BSP SalesContract | Commercial terms governing booking |
+| `sc:invoicedVia` / `sc:chargesForConsignment` | MMT Consignment ↔ BSP Invoice | Bidirectional finance link |
+| `sc:scheduledVia` | MMT TransportService | DCSA ServiceLoop | Transport schedule assignment |
+| `sc:handledAtTerminal` | DCSA Container | TIC CargoVisit | Terminal handling of equipment |
+| `sc:callsAtTerminal` | IMO PortCall | TIC Terminal | Vessel-terminal relationship |
+| `sc:berthsAt` | IMO BerthStay | TIC Berth | Mooring location |
+| `sc:classifiedAsDangerousGoods` | MMT CargoItem | IMO DangerousGoodsItem | DG classification |
+| `sc:requiresCustomsDeclaration` | MMT Consignment | WCO CustomsDeclaration | Customs requirement |
+| `sc:eventRelatesToConsignment` | DCSA Event | MMT Consignment | Event subject (consignment) |
+| `sc:eventRelatesToVessel` | DCSA Event | IMO Vessel | Event subject (vessel) |
+| `sc:eventRelatesToEquipment` | TIC TerminalEvent | DCSA Container | Event subject (equipment) |
+
+The full registry is in `data-domains.yaml` → `cross_domain_relationships`.
+
+---
+
 ## Reference
 
 - Domain registry with full import mappings: [`data-domains.yaml`](data-domains.yaml)
