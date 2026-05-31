@@ -131,7 +131,7 @@
 :classifiedAsDangerousGoods a owl:ObjectProperty ;
     rdfs:label "classified as dangerous goods" ;
     rdfs:comment "Links an MMT CargoItem to its IMO dangerous goods classification." ;
-    rdfs:domain cargo:CargoItem ;
+    rdfs:domain cargo:CargoItem ;`
     rdfs:range dg:DangerousGoodsItem .
 
 #################################################################
