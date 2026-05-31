@@ -1,4 +1,4 @@
-<!-- kairos-ontology-toolkit:managed v2.36.0 -->
+<!-- kairos-ontology-toolkit:managed v3.8.1 -->
 # Kairos Ontology Toolkit — Copilot Instructions
 
 ## Session greeting (MANDATORY)
@@ -14,9 +14,12 @@ then answer.
 > generates data pipelines, BI models, search indexes, and more from OWL/Turtle
 > domain models.
 >
-> **New here?** Invoke the **kairos-ontology-help** skill for a full orientation — it covers
+> **New here?** Invoke the **kairos-help** skill for a full orientation — it covers
 > the shift-left design philosophy, hub folder structure, available projections,
 > CLI commands, and best practices.
+>
+> **Returning?** Would you like me to run a **hub status check** to see where things
+> stand? _(invokes the kairos-diagnose-status skill)_
 
 ## Project overview
 
@@ -78,12 +81,12 @@ When reviewing or creating a pull request, verify:
 
 ## Dev toolchain
 
-- **Poetry** manages dependencies and builds the package. It must be installed separately
-  on the developer's machine — it is NOT a pip dependency.
-  Install: `(Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | python -`
-  or `pipx install poetry`.
-- Run tests with `py -m pytest` (Windows) — Poetry's venv is not required for tests if
-  dependencies are already installed via pip.
+- **[uv](https://docs.astral.sh/uv/)** manages the virtual environment and dependencies.
+  Install: `irm https://astral.sh/uv/install.ps1 | iex` (Windows) or
+  `curl -LsSf https://astral.sh/uv/install.sh | sh` (Linux/macOS).
+- Run `uv sync` to create/refresh the `.venv` and install all dependencies.
+- Run toolkit commands with `uv run kairos-ontology <command>`.
+- Run tests with `uv run pytest` or activate the venv and run `py -m pytest`.
 
 ## Testing rules
 
@@ -125,11 +128,11 @@ corresponding scenario test updates. Run `py -m pytest tests/scenarios/ -v` to v
 
 ### Modeling skill
 
-When designing or modifying ontologies, use the **kairos-ontology-modeling** skill.
+When designing or modifying ontologies, use the **kairos-design-domain** skill.
 It combines core modeling knowledge (class hierarchies, property design, naming
 conventions, reference-model-first workflow, extension annotations) with an
 interactive configurator (business alignment checkpoints, session persistence in
-`ontology-hub/.sessions-modeling/`, and structured validation gates). For minor
+`ontology-hub/.sessions-design/`, and structured validation gates). For minor
 edits (adding a property, fixing a label) it supports a quick-edit mode that
 skips checkpoints.
 
@@ -137,19 +140,68 @@ skips checkpoints.
 
 Use this table to pick the correct skill for a user's intent:
 
+> **Design vs Execute:** The design skills (`kairos-design-source`,
+> `kairos-design-silver`, `kairos-design-gold`,
+> `kairos-design-mapping`, `kairos-design-domain`) create/modify source files
+> interactively. The **kairos-execute-project** skill **executes generation**
+> from those files — it's the single entry point for producing output artifacts.
+> Design first, then project. See DD-033 for the full lifecycle architecture.
+
 | User intent | Correct skill |
 |---|---|
-| "Model / design / create classes / add properties / extend ontology" | **kairos-ontology-modeling** |
-| "Create a new hub repo from scratch" | **kairos-ontology-quickstart** |
-| "Set up folder structure / configure hub" | **kairos-ontology-hub-setup** |
-| "How does Kairos work? / What is this?" | **kairos-ontology-help** |
-| "Run projections / generate dbt / silver / gold" | **kairos-ontology-projection** |
-| "Validate my ontology" | **kairos-ontology-validation** |
-| "Create source/bronze vocabulary" | **kairos-ontology-medallion-source** |
-| "Design silver schema / FK annotations" | **kairos-ontology-medallion-silver** |
-| "Design gold / Power BI model" | **kairos-ontology-medallion-gold** |
+| "Model / design / create classes / add properties / extend ontology" | **kairos-design-domain** |
+| "Create a new hub repo from scratch" | **kairos-setup-init** |
+| "Set up folder structure / configure hub" | **kairos-setup-config** |
+| "How does Kairos work? / What is this?" | **kairos-help** |
+| "Run projections / generate dbt / silver / gold" | **kairos-execute-project** |
+| "Validate my ontology" | **kairos-execute-validate** |
+| "Create source/bronze vocabulary" | **kairos-design-source** |
+| "Design silver schema / FK annotations" | **kairos-design-silver** |
+| "Design gold / Power BI model" | **kairos-design-gold** |
 | "Import / extract TMDL or PBIP files" | CLI: `kairos-ontology import-tmdl` |
-| "Release / upgrade / version check" | **kairos-ontology-toolkit-ops** |
+| "Release / upgrade / version check / update reference models" | **kairos-toolkit-ops** |
+| "Map source columns to domain / create SKOS mappings" | **kairos-design-mapping** |
+| "Status / progress / what's missing / where are we" | **kairos-diagnose-status** |
+
+### Skill-first enforcement (MANDATORY)
+
+**NEVER run `kairos-ontology` CLI commands directly** when the action is covered by
+a skill in the routing table above. Always invoke the corresponding skill instead.
+
+Why: Skills contain pre-flight checks (file existence, annotation completeness),
+interactive validation gates, and contextual guidance that raw CLI commands bypass.
+Running CLI directly can produce incomplete or incorrect output without warning.
+
+**Prohibited patterns:**
+- ❌ `python -m kairos_ontology project --target silver` → use **kairos-execute-project** skill
+- ❌ `python -m kairos_ontology project --target dbt` → use **kairos-execute-project** skill
+- ❌ `python -m kairos_ontology project --target powerbi` → use **kairos-execute-project** skill
+- ❌ `python -m kairos_ontology validate` → use **kairos-execute-validate** skill
+- ❌ `python -m kairos_ontology new-repo` → use **kairos-setup-init** skill
+- ❌ Directly editing `.ttl` files without invoking the modeling/mapping skill
+
+**Only exception:** The `import-tmdl` command has no corresponding skill and may be
+run directly via CLI.
+
+**If you are unsure which skill to use**, invoke **kairos-help** for guidance.
+
+### No-autopilot for design skills (MANDATORY)
+
+The following skills are **interactive by design** — they require explicit user
+confirmation at multiple checkpoints (naming alignment, mapping confirmation,
+annotation review). They MUST NEVER be run in autopilot or autopilot-fleet mode:
+
+| Skill | Reason |
+|-------|--------|
+| **kairos-design-domain** | Hard gates require user naming confirmation before TTL generation |
+| **kairos-design-mapping** | Every table→entity and column→property mapping needs explicit user approval |
+| **kairos-design-silver** | Extension annotations (SCD types, natural keys, FK) need design review |
+| **kairos-design-gold** | Gold measure definitions and star-schema design need stakeholder sign-off |
+| **kairos-design-source** | Source vocabulary descriptions need verification against source docs |
+
+When these skills are invoked, always use **interactive mode** — present proposals,
+wait for user confirmation, and proceed step-by-step. Never batch or auto-approve
+design decisions.
 
 ## Validation rules
 
@@ -166,7 +218,7 @@ Each ontology domain produces separate output artifacts per target.
 > `owl:imports`, imported object properties lack cardinality restrictions and will
 > not generate FK columns automatically.  Use `kairos-ext:silverForeignKey` /
 > `silverForeignKeyOn` in the silver extension file to declare FK relationships.
-> See the **kairos-ontology-medallion-silver** skill §3e for details.
+> See the **kairos-design-silver** skill §3e for details.
 
 ## Scaffold packaging rules
 
@@ -179,7 +231,7 @@ also be applied to the corresponding scaffold location:
 | New or updated Copilot skill in `.github/skills/` | `src/kairos_ontology/scaffold/skills/<skill-name>/SKILL.md` |
 | New output target directory | Add to the `for d in [...]` directory lists in `cli/main.py` |
 | New scaffold template / config file | `src/kairos_ontology/scaffold/ontology-hub/` or `src/kairos_ontology/scaffold/` |
-| New core functionality (projections, annotations, CLI commands) | Update `kairos-ontology-help` skill in `.github/skills/kairos-ontology-help/` + scaffold copy |
+| New core functionality (projections, annotations, CLI commands) | Update `kairos-help` skill in `.github/skills/kairos-help/` + scaffold copy |
 
 **Rule**: After adding or modifying a skill in `.github/skills/`, always copy it to
 `src/kairos_ontology/scaffold/skills/` before committing. Run `py -m pytest` to confirm

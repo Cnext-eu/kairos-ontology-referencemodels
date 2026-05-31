@@ -411,3 +411,200 @@ groups:
         note: "MDM does not import domain ontologies. Instead, domain entities reference MDM via mastersEntity. This keeps MDM decoupled and reusable across any domain."
         standards:
           - "Gartner MDM Implementation Styles"
+
+# ────────────────────────────────────────────────────────────────────────────
+# Cross-Domain Relationships
+# ────────────────────────────────────────────────────────────────────────────
+#
+# These relationships connect classes across different ontology standards.
+# Within a single standard (e.g., MMT consignment → MMT equipment), cross-module
+# properties already exist. The entries below cover genuine cross-standard
+# bridges defined in the Supply-Chain Integration module.
+#
+# Status values:
+#   new-bridge    — a brand-new property in the supply-chain integration module
+#   existing      — already defined in a standard module (listed for reference)
+
+cross_domain_relationships:
+
+  # ── Booking ↔ Transport ────────────────────────────────────────────────
+
+  - id: booking-to-consignment
+    source_domain: booking
+    target_domain: consignment
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#bookedConsignment"
+    domain_class_uri: "https://www.kairosflow.ai/ont/dcsa/booking#Booking"
+    range_class_uri: "https://www.kairosflow.ai/ont/mmt/consignment#Consignment"
+    description: "Links a DCSA Booking to the MMT Consignment it creates."
+    status: new-bridge
+
+  - id: booking-to-commercial
+    source_domain: booking
+    target_domain: commercial
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#underAgreement"
+    domain_class_uri: "https://www.kairosflow.ai/ont/dcsa/booking#Booking"
+    range_class_uri: "https://www.kairosflow.ai/ont/bsp/commercial#SalesContract"
+    description: "Links a DCSA Booking to the BSP commercial agreement that governs it."
+    status: new-bridge
+
+  # ── Transport ↔ Finance ────────────────────────────────────────────────
+
+  - id: consignment-to-invoice
+    source_domain: consignment
+    target_domain: financial
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#invoicedVia"
+    domain_class_uri: "https://www.kairosflow.ai/ont/mmt/consignment#Consignment"
+    range_class_uri: "https://www.kairosflow.ai/ont/bsp/financial#Invoice"
+    description: "Links an MMT Consignment to the BSP Invoice for settlement."
+    status: new-bridge
+    inverse_of: "https://www.kairosflow.ai/ont/supply-chain#chargesForConsignment"
+
+  - id: invoice-to-consignment
+    source_domain: financial
+    target_domain: consignment
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#chargesForConsignment"
+    domain_class_uri: "https://www.kairosflow.ai/ont/bsp/financial#Invoice"
+    range_class_uri: "https://www.kairosflow.ai/ont/mmt/consignment#Consignment"
+    description: "Links a BSP Invoice to the MMT Consignment it charges for."
+    status: new-bridge
+    inverse_of: "https://www.kairosflow.ai/ont/supply-chain#invoicedVia"
+
+  # ── Transport ↔ Schedule ───────────────────────────────────────────────
+
+  - id: consignment-to-schedule
+    source_domain: consignment
+    target_domain: route-schedule
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#scheduledVia"
+    domain_class_uri: "https://www.kairosflow.ai/ont/mmt/consignment#TransportService"
+    range_class_uri: "https://www.kairosflow.ai/ont/dcsa/schedule#ServiceLoop"
+    description: "Links an MMT TransportService to a DCSA ServiceLoop."
+    status: new-bridge
+
+  # ── Equipment ↔ Terminal ───────────────────────────────────────────────
+
+  - id: equipment-to-terminal
+    source_domain: equipment
+    target_domain: terminal-operations
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#handledAtTerminal"
+    domain_class_uri: "https://www.kairosflow.ai/ont/dcsa/equipment#Container"
+    range_class_uri: "https://www.kairosflow.ai/ont/tic/handling-operations#CargoVisit"
+    description: "Links a DCSA Container to a TIC terminal handling visit."
+    status: new-bridge
+
+  # ── Vessel ↔ Terminal ──────────────────────────────────────────────────
+
+  - id: portcall-to-terminal
+    source_domain: vessel-maritime
+    target_domain: terminal-operations
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#callsAtTerminal"
+    domain_class_uri: "https://www.kairosflow.ai/ont/imo/port-call#PortCall"
+    range_class_uri: "https://www.kairosflow.ai/ont/tic/terminal-infrastructure#Terminal"
+    description: "Links an IMO PortCall to the TIC Terminal where it occurs."
+    status: new-bridge
+
+  - id: berthstay-to-berth
+    source_domain: vessel-maritime
+    target_domain: terminal-operations
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#berthsAt"
+    domain_class_uri: "https://www.kairosflow.ai/ont/imo/port-call#BerthStay"
+    range_class_uri: "https://www.kairosflow.ai/ont/tic/terminal-infrastructure#Berth"
+    description: "Links an IMO BerthStay to the TIC Berth where the vessel is moored."
+    status: new-bridge
+
+  # ── Cargo ↔ Dangerous Goods ────────────────────────────────────────────
+
+  - id: cargo-to-dangerous-goods
+    source_domain: cargo
+    target_domain: dangerous-goods
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#classifiedAsDangerousGoods"
+    domain_class_uri: "https://www.kairosflow.ai/ont/mmt/cargo#CargoItem"
+    range_class_uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#DangerousGoodsItem"
+    description: "Links an MMT CargoItem to its IMO dangerous goods classification."
+    status: new-bridge
+
+  # ── Consignment ↔ Customs ──────────────────────────────────────────────
+
+  - id: consignment-to-customs
+    source_domain: consignment
+    target_domain: customs
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#requiresCustomsDeclaration"
+    domain_class_uri: "https://www.kairosflow.ai/ont/mmt/consignment#Consignment"
+    range_class_uri: "https://www.kairosflow.ai/ont/wco/customs#CustomsDeclaration"
+    description: "Links an MMT Consignment to a WCO CustomsDeclaration."
+    status: new-bridge
+
+  # ── Events ↔ Transport Entities ────────────────────────────────────────
+
+  - id: event-to-consignment
+    source_domain: events
+    target_domain: consignment
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#eventRelatesToConsignment"
+    domain_class_uri: "https://www.kairosflow.ai/ont/dcsa/events#Event"
+    range_class_uri: "https://www.kairosflow.ai/ont/mmt/consignment#Consignment"
+    description: "Links a DCSA Event to the MMT Consignment it relates to."
+    status: new-bridge
+
+  - id: event-to-vessel
+    source_domain: events
+    target_domain: vessel-maritime
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#eventRelatesToVessel"
+    domain_class_uri: "https://www.kairosflow.ai/ont/dcsa/events#Event"
+    range_class_uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#Vessel"
+    description: "Links a DCSA Event to the IMO Vessel it relates to."
+    status: new-bridge
+
+  - id: terminal-event-to-equipment
+    source_domain: events
+    target_domain: equipment
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#eventRelatesToEquipment"
+    domain_class_uri: "https://www.kairosflow.ai/ont/tic/events#TerminalEvent"
+    range_class_uri: "https://www.kairosflow.ai/ont/dcsa/equipment#Container"
+    description: "Links a TIC TerminalEvent to the DCSA Container it involves."
+    status: new-bridge
+
+  # ── Existing within-standard relationships (for reference) ─────────────
+
+  - id: consignment-to-equipment-existing
+    source_domain: consignment
+    target_domain: equipment
+    property_uri: "https://www.kairosflow.ai/ont/mmt/consignment#hasTransportEquipment"
+    domain_class_uri: "https://www.kairosflow.ai/ont/mmt/consignment#Consignment"
+    range_class_uri: "https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment"
+    description: "Already defined in MMT: links Consignment to TransportEquipment."
+    status: existing
+
+  - id: consignment-to-documents-existing
+    source_domain: consignment
+    target_domain: documents
+    property_uri: "https://www.kairosflow.ai/ont/mmt/consignment#hasTransportDocument"
+    domain_class_uri: "https://www.kairosflow.ai/ont/mmt/consignment#Consignment"
+    range_class_uri: "https://www.kairosflow.ai/ont/mmt/documents#TransportDocument"
+    description: "Already defined in MMT: links Consignment to TransportDocument."
+    status: existing
+
+  - id: consignment-to-events-existing
+    source_domain: consignment
+    target_domain: events
+    property_uri: "https://www.kairosflow.ai/ont/mmt/consignment#hasEvent"
+    domain_class_uri: "https://www.kairosflow.ai/ont/mmt/consignment#Consignment"
+    range_class_uri: "https://www.kairosflow.ai/ont/mmt/events#TransportEvent"
+    description: "Already defined in MMT: links Consignment to TransportEvent."
+    status: existing
+
+  - id: vessel-to-sustainability-existing
+    source_domain: vessel-maritime
+    target_domain: sustainability
+    property_uri: "https://www.kairosflow.ai/ont/sustainability/carbon#hasCIIRating"
+    domain_class_uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#Vessel"
+    range_class_uri: "https://www.kairosflow.ai/ont/sustainability/carbon#CIIRating"
+    description: "Already defined in Sustainability: links Vessel to CIIRating."
+    status: existing
+
+  - id: booking-to-party-existing
+    source_domain: booking
+    target_domain: party
+    property_uri: "https://www.kairosflow.ai/ont/dcsa/booking#hasBookingParty"
+    domain_class_uri: "https://www.kairosflow.ai/ont/dcsa/booking#Booking"
+    range_class_uri: "https://www.kairosflow.ai/ont/dcsa/party#BookingParty"
+    description: "Already defined in DCSA: links Booking to BookingParty."
+    status: existing

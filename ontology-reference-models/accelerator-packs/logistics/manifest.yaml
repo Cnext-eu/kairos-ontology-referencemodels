@@ -46,7 +46,7 @@ package:
     - id: supply-chain
       name: "Supply Chain"
       uri: "https://www.kairosflow.ai/ont/supply-chain#"
-      focus: "Integration layer"
+      focus: "Cross-standard bridge properties linking DCSA, MMT, BSP, TIC, IMO, and WCO"
 
   excludes:
     - id: FIBO
