@@ -1,22 +1,25 @@
 ---
-name: kairos-ontology-medallion-silver
+name: kairos-design-silver
 description: >
-  Expert guide for designing the silver-layer schema (DDL, ERD, FK scripts)
-  AND generating dbt Core silver models from source-to-domain mappings.
-  Covers R1-R16 annotation vocabulary, S1-S8 Silver Fabric Warehouse
-  behaviours, and the full bronze-to-silver dbt pipeline.
+  Expert guide for designing silver-layer extension annotations (SCD types,
+  natural keys, FK declarations, schema names) and understanding silver
+  projection output. Covers R1-R16 annotation vocabulary and S1-S8 Silver
+  Fabric Warehouse behaviours.
 ---
-<!-- kairos-ontology-toolkit:managed v2.36.0 -->
+<!-- kairos-ontology-toolkit:managed v3.8.1 -->
 
 # Kairos Medallion Silver Skill
 
-You are helping the user with the **silver layer** of the medallion architecture.
-This skill covers two complementary workflows:
+You are helping the user **design** the silver layer of the medallion architecture.
+This skill covers annotation design and output interpretation:
 
-1. **Schema design** — Generate MS Fabric / Delta Lake silver schema (DDL, ERD,
-   FK constraints) from OWL ontology + `kairos-ext:` annotations.
-2. **dbt model generation** — Generate dbt Core models that transform bronze data
-   into silver tables using SKOS mappings + `kairos-map:` annotations.
+1. **Schema design** — Create and configure `kairos-ext:` annotations in
+   `*-silver-ext.ttl` extension files that control silver DDL generation.
+2. **Output interpretation** — Understand the DDL, ERD, and dbt model outputs
+   produced when the **kairos-execute-project** skill runs the silver/dbt targets.
+
+> **Design/Execute separation (DD-033):** This skill creates annotation files.
+> To generate output, invoke the **kairos-execute-project** skill.
 
 ---
 
@@ -244,9 +247,29 @@ This eliminates the need for redundant explicit FK mappings. The auto-inference
 only activates when exactly one unambiguous candidate exists per NK component.
 
 > **Tip**: If the FK join shows `CAST(NULL ...)`, check that:
-> - The target class has `kairos-ext:naturalKey`
+> - The target class has `kairos-ext:naturalKey` in its own domain's silver ext file
 > - A source column from the current table maps to the NK property of the target
 > - Or add an explicit `skos:exactMatch` targeting the ObjectProperty URI
+>
+> Cross-domain resolution: The projector automatically loads peer domain extension files
+> to resolve naturalKey for FK targets in other domains (DD-027). You do NOT need to
+> duplicate naturalKey declarations across extension files.
+
+> **Anti-pattern — discriminator columns in naturalKey:**
+>
+> If your entity is populated from multiple source tables via UNION ALL (e.g.,
+> `sales_invoices` + `purchase_invoices` → `Invoice`), you may be tempted to add a
+> discriminator column (like `invoiceDirection`) to the naturalKey to ensure uniqueness.
+>
+> **Don't do this.** A discriminator is derived from *which source table* the row came
+> from — it has no SKOS mapping from the source columns. The FK join logic requires every
+> NK column to be resolvable via mappings. An unmapped discriminator makes the FK join
+> incomplete (partial NULL).
+>
+> **Instead:** Use the actual business key that uniquely identifies the entity across all
+> source tables (e.g., `invoiceId`). If the same ID can appear in both source tables with
+> different meaning, the source data needs deduplication or the model needs rethinking —
+> the discriminator belongs in a separate descriptive column, not in the naturalKey.
 
 ### 3c — Nullability overrides (R11)
 
@@ -331,17 +354,15 @@ ref:hasConsignmentItem
 
 ---
 
-## Phase 4 — Run the projection
+## Phase 4 — Generate output (handoff to projection skill)
 
-```bash
-# Project a single ontology file + extension
-python -m kairos_ontology project \
-    --ontology ontology-hub/model/ontologies/{DOMAIN}.ttl \
-    --target silver
+Once your silver extension annotations are complete, generate the artifacts by
+invoking the **kairos-execute-project** skill with target `silver` (for DDL + ERD)
+or `dbt` (for dbt models — requires SKOS mappings).
 
-# Project all domains in a hub
-python -m kairos_ontology project --target silver
-```
+> **Design/Execute separation (DD-033):** This skill handles annotation *design*.
+> The **kairos-execute-project** skill handles *generation*. If you need to
+> iterate on outputs, edit the extension file here, then invoke projection again.
 
 Artifacts are written to the dbt project tree under `output/medallion/dbt/`:
 
@@ -424,10 +445,8 @@ erDiagram
 
 ### Fix and iterate
 
-If adjustments are needed, edit `{DOMAIN}-silver-ext.ttl` and re-run:
-```bash
-python -m kairos_ontology project --target silver
-```
+If adjustments are needed, edit `{DOMAIN}-silver-ext.ttl` and re-run the projection
+via the **kairos-execute-project** skill (target `silver` or `dbt`).
 The master ERD is regenerated automatically on every run.
 
 ---
@@ -616,16 +635,44 @@ ref:hasConsignmentItem
 ### Working with imported classes (DD-021)
 
 When a domain ontology uses `owl:imports` to reference external models (e.g.,
-reference models), imported classes are **NOT projected** to silver by default.
-Hub authors must explicitly claim them.
+reference models), imported classes are **NOT projected as separate tables** by
+default. However, **properties from imported parents are always inherited
+automatically** via ancestor traversal.
 
-**Per-class claiming:**
+#### Architectural decision matrix
+
+| Your goal | Action | Result |
+|-----------|--------|--------|
+| Inherit parent properties into child table | **None — automatic** | Child table includes all datatype + FK properties from the full `rdfs:subClassOf` chain |
+| Project the parent as its own separate table | Add `silverInclude "true"` on the parent class | Parent gets its own table; child is **folded into it** via S3 (discriminator column) — child loses its own table |
+| Project all imported classes as tables | Add `silverIncludeImports "true"` on ontology | All first-level imports get tables (use sparingly — can create many unwanted tables) |
+
+> **Key insight:** `silverInclude` does NOT mean "inherit properties" — inheritance
+> always works regardless. It means "project this class as its own table". When a
+> parent IS claimed, S3 single-table inheritance activates: the child is folded into
+> the parent table with a discriminator column.
+
+#### When to ignore the DD-021 notice
+
+The DD-021 message is **informational** (not a warning). You can safely ignore it when:
+- Your domain class extends a reference model parent via `rdfs:subClassOf`
+- You want your domain class as its **own** table (not folded into the parent)
+- You want inherited parent properties in that table
+- → All of this works by default. The notice confirms you have an unclaimed parent.
+
+#### Per-class claiming (when you DO want a parent table)
+
 ```turtle
 @prefix ref: <https://referencemodels.kairos.cnext.eu/party#> .
 ref:TradeParty kairos-ext:silverInclude "true"^^xsd:boolean .
 ```
 
-**Bulk claiming (all first-level imported classes):**
+⚠️ **Impact:** If your domain has `hub:Customer rdfs:subClassOf ref:TradeParty`,
+adding `silverInclude` on `TradeParty` means Customer will be **folded into** the
+TradeParty table (S3 single-table inheritance). Customer will NOT get its own table.
+
+#### Bulk claiming (all first-level imported classes)
+
 ```turtle
 <https://contoso.com/ont/customer> kairos-ext:silverIncludeImports "true"^^xsd:boolean .
 ```
@@ -638,6 +685,7 @@ ref:TradeParty kairos-ext:silverInclude "true"^^xsd:boolean .
 - The silver schema comes from the **hub domain name** (e.g., `silver_customer`),
   not from the reference model namespace.
 - Per-class `silverInclude` overrides bulk mode for individual classes.
+- `silverInclude` on a parent triggers S3 — subtypes are folded into the parent table.
 
 **Example extension file** (`customer-silver-ext.ttl`):
 ```turtle
@@ -645,12 +693,12 @@ ref:TradeParty kairos-ext:silverInclude "true"^^xsd:boolean .
 @prefix ref: <https://referencemodels.kairos.cnext.eu/party#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-# Bulk-claim all imported reference model classes
+# Bulk-claim all imported reference model classes (each gets its own table)
 <https://contoso.com/ont/customer>
     kairos-ext:silverSchema "silver_customer" ;
     kairos-ext:silverIncludeImports "true"^^xsd:boolean .
 
-# Or claim individual classes
+# Or claim individual classes (this parent becomes a table; subtypes fold into it)
 ref:TradeParty
     kairos-ext:silverInclude "true"^^xsd:boolean ;
     kairos-ext:scdType "2" .
@@ -661,7 +709,11 @@ ref:TradeParty
 When a projected class has a parent that is **not** in the projected set (i.e.,
 not claimed via `silverInclude` or `silverIncludeImports`), the projector
 automatically inherits datatype properties and FK object properties from the full
-`rdfs:subClassOf` chain.
+`rdfs:subClassOf` chain. **No action is required** — this is the default behavior.
+
+The `_get_class_and_ancestors()` function traverses all ancestors, stopping at:
+- W3C vocabulary URIs (`owl:Thing`, `rdfs:Resource`)
+- Ancestors that ARE separately projected (S3 handles those via the parent table)
 
 ### Reference model extension defaults (DD-023)
 
@@ -748,7 +800,7 @@ Before running the dbt projection, ensure these artifacts exist in the hub:
 
 - **Source vocabulary** in `integration/sources/{system-name}/{system-name}.vocabulary.ttl`
 - **Silver schema** — domain ontologies with `kairos-ext:` annotations (Part A above)
-- **SKOS mappings** in `model/mappings/{system-name}/`
+- **SKOS mappings** in `model/mappings/{system}-to-{domain}.ttl`
 
 ### Architecture
 
@@ -838,5 +890,79 @@ dbt test       # Run SHACL-derived tests
 ### Downstream consumption
 
 The generated dbt project is designed to be consumed as a **dbt package** in a
-data platform repository. See the `kairos-ontology-dataplatform` skill for
+data platform repository. See the `kairos-package-dataplatform` skill for
 setup instructions on adding it as a dependency via `packages.yml`.
+
+---
+
+## Session Management
+
+> **MANDATORY:** Every silver design session MUST produce a session file that
+> captures decisions made, items deferred, and design rationale. This enables
+> traceability from projection warnings back to design decisions.
+
+### On start — Check for existing session
+
+```
+ontology-hub/.sessions-design/
+  └── silver-{domain}-{YYYY-MM-DD}.md
+```
+
+If a previous session exists, ask the user whether to continue or start fresh.
+
+### Session file format
+
+Save to `ontology-hub/.sessions-design/silver-{domain}-{YYYY-MM-DD}.md`:
+
+```markdown
+# Silver Design Session: {Domain}
+
+**Started:** {ISO-8601}
+**Last updated:** {ISO-8601}
+**Status:** Complete | In Progress
+**Toolkit version:** {version}
+
+## Decisions Made
+
+| Class | SCD Type | Natural Key | Inheritance | FK Relations | Schema | Status |
+|---|---|---|---|---|---|---|
+| {ClassName} | {1/2} | {key or —} | {discriminator/—} | {fk list or —} | {schema} | ✅/⚠️ |
+
+## Deferred / TODO
+
+| # | Class | Item | Reason | Resolve via |
+|---|---|---|---|---|
+| 1 | {ClassName} | {what is missing} | {why deferred} | kairos-design-silver |
+
+## Design Rationale
+
+| # | Question | Decision | Rationale |
+|---|---|---|---|
+| 1 | {question} | {choice made} | {why} |
+
+## Warnings Acknowledged
+
+| # | Warning | Classification | Action |
+|---|---|---|---|
+| 1 | No naturalKey for {Class} | Deferred — FK-child | Will derive from parent |
+```
+
+### Saving rules
+
+- **Auto-save** after each class annotation is confirmed
+- Record **every** deferred item with a reason
+- When a class is skipped or left incomplete, record it as a deferred item
+- On pause/completion, list remaining open items and confirm with user
+
+---
+
+## Related skills
+
+| When you need | Invoke |
+|---|---|
+| Design/modify domain ontology classes and properties | **kairos-design-domain** |
+| Design gold layer (Power BI star schema, measures) | **kairos-design-gold** |
+| Create bronze vocabulary from source docs | **kairos-design-source** |
+| Map source columns to domain properties | **kairos-design-mapping** |
+| Run projections (generate dbt/DDL/TMDL output) | **kairos-execute-project** |
+| Consume dbt package in data platform repo | **kairos-package-dataplatform** |

@@ -1,11 +1,11 @@
 ---
-name: kairos-ontology-hub-setup
+name: kairos-setup-config
 description: >
   Guide for setting up the folder structure and configuration of a new ontology
   hub repository. Covers scaffold files, SHACL shapes, and projection config.
-  NOT for ontology design or modeling — use kairos-ontology-modeling for that.
+  NOT for ontology design or modeling — use kairos-design-domain for that.
 ---
-<!-- kairos-ontology-toolkit:managed v2.36.0 -->
+<!-- kairos-ontology-toolkit:managed v3.8.1 -->
 
 # Hub Setup Skill
 
@@ -18,7 +18,7 @@ You guide users through setting up a new Kairos ontology hub.
 ## How hubs are created
 
 Hub repos are created using `kairos-ontology new-repo` (see the
-kairos-ontology-quickstart skill).  The `init` command then scaffolds the hub
+kairos-setup-init skill).  The `init` command then scaffolds the hub
 structure and adds domains inside an existing repo.
 
 ## Standard hub structure
@@ -40,7 +40,7 @@ structure and adds domains inside an existing repo.
 │   │   │   └── README.md
 │   │   ├── extensions/                  # *-silver-ext.ttl projection annotations
 │   │   └── mappings/                    # Source-to-domain SKOS + kairos-map: mappings
-│   │       └── README.md                #   (also ontology alignment to external standards)
+│   │       └── README.md
 │   ├── integration/                     # Source system integration
 │   │   └── sources/                     # Source system reference docs + bronze vocab
 │   │       ├── README.md
@@ -54,7 +54,7 @@ structure and adds domains inside an existing repo.
 │       ├── azure-search/
 │       ├── a2ui/
 │       └── prompt/
-├── ontology-reference-models/           # Git submodule (sparse checkout)
+├── ontology-reference-models/           # Committed reference models (updated via CLI)
 │   ├── authoritative-ontologies/
 │   ├── derived-ontologies/
 │   └── catalog-v001.xml
@@ -100,7 +100,7 @@ The filename becomes the domain identifier:
 - [ ] Validate: `python -m kairos_ontology validate`
 - [ ] Generate projections: `python -m kairos_ontology project --target prompt`
 - [ ] (Optional) Generate silver layer: add `*-silver-ext.ttl` in `ontology-hub/model/extensions/`, then `python -m kairos_ontology project --target silver`
-- [ ] (Optional) Add source system docs in `ontology-hub/integration/sources/` and generate bronze vocab with **kairos-ontology-medallion-source** skill
-- [ ] (Optional) Create source-to-domain mappings in `ontology-hub/model/mappings/{system-name}/` (SKOS + `kairos-map:`) and run **kairos-ontology-medallion-silver** skill for dbt models
+- [ ] (Optional) Add source system docs in `ontology-hub/integration/sources/` and generate bronze vocab with **kairos-design-source** skill
+- [ ] (Optional) Create source-to-domain mappings in `ontology-hub/model/mappings/` (SKOS + `kairos-map:`) — invoke **kairos-design-mapping** skill, then **kairos-execute-project** for dbt models
 - [ ] Optionally add SHACL shapes in `ontology-hub/model/shapes/`
 - [ ] Commit, push, and open PR to merge into main

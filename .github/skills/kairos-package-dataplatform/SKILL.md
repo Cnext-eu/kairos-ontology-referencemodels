@@ -1,11 +1,11 @@
 ---
-name: kairos-ontology-dataplatform
+name: kairos-package-dataplatform
 description: >
   Guide for consuming ontology-hub projection outputs in a downstream dataplatform
   repository. Covers dbt package consumption (via dbt deps), Power BI semantic model
   deployment, version pinning, release pipeline, and the feedback loop for gap requests.
 ---
-<!-- kairos-ontology-toolkit:managed v2.36.0 -->
+<!-- kairos-ontology-toolkit:managed v3.8.1 -->
 
 # Kairos Dataplatform Integration Skill
 
@@ -172,8 +172,8 @@ The ontology-hub uses semantic versioning tracked in `VERSION.json`:
 
 A **tag push** (`v*`) triggers the release pipeline (`.github/workflows/release-projections.yml`):
 
-1. Checkout repo (with submodules)
-2. Install toolkit (`pip install kairos-ontology-toolkit`)
+1. Checkout repo
+2. Install toolkit (`uv sync`)
 3. Run all projections (`kairos-ontology project --target all`)
 4. Validate ontologies (`kairos-ontology validate`)
 5. Package Power BI output as zip

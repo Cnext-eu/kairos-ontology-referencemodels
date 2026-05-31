@@ -1,12 +1,12 @@
 ---
-name: kairos-ontology-help
+name: kairos-help
 description: >
   Orientation guide to the Kairos Ontology Toolkit — explains design philosophy,
   hub structure, projections, CLI commands, and best practices. Use when users ask
   "how does Kairos work?" or need a conceptual overview. NOT for performing
   actual work (setup, modeling, projections).
 ---
-<!-- kairos-ontology-toolkit:managed v2.36.0 -->
+<!-- kairos-ontology-toolkit:managed v3.8.1 -->
 
 # Kairos Ontology Toolkit — Help & Reference
 
@@ -269,4 +269,4 @@ patterns. The PR checklist in `SC-merge-pr` includes a reminder to verify this.
 ---
 
 *This skill is auto-distributed to hub repositories via the scaffold system.
-Changes here are mirrored to `src/kairos_ontology/scaffold/skills/kairos-ontology-help/`.*
+Changes here are mirrored to `src/kairos_ontology/scaffold/skills/kairos-help/`.*

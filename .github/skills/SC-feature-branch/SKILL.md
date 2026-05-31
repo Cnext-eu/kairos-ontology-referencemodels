@@ -4,7 +4,7 @@ description: >
   Create a feature branch from main for a new piece of work.
   Ensures clean working tree, up-to-date main, and consistent branch naming.
 ---
-<!-- kairos-ontology-toolkit:managed v2.36.0 -->
+<!-- kairos-ontology-toolkit:managed v3.8.1 -->
 
 # SC — Create Feature Branch
 
@@ -82,3 +82,12 @@ Next steps:
 | Not a git repo | Tell user to run `git init` or check they're in the right directory |
 | Remote is ahead | `git pull --rebase origin main` before branching |
 | Detached HEAD | `git checkout main` first |
+
+---
+
+## Related skills
+
+| When you need | Invoke |
+|---|---|
+| Create a pull request to merge branch into main | **SC-merge-pr** |
+| Model ontology classes and properties | **kairos-design-domain** |

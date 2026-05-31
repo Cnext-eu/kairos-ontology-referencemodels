@@ -1,11 +1,11 @@
 ---
-name: kairos-ontology-medallion-source
+name: kairos-design-source
 description: >
   Expert guide for creating bronze vocabulary descriptions from source system
   reference documentation. Reads API specs, SQL DDL, sample data from the
   sources/ folder and generates kairos-bronze: TTL files alongside the source docs.
 ---
-<!-- kairos-ontology-toolkit:managed v2.36.0 -->
+<!-- kairos-ontology-toolkit:managed v3.8.1 -->
 
 # Kairos Medallion Staging Skill
 
@@ -192,13 +192,14 @@ Verify:
 
 After the bronze vocabulary is complete:
 
-1. **Create SKOS mappings** in `model/mappings/{system-name}/` to link source columns to domain ontology properties
-2. **Run the medallion projection** to generate dbt silver models:
-   ```bash
-   python -m kairos_ontology project --target dbt
-   ```
+1. **Create SKOS mappings** — invoke the **kairos-design-mapping** skill to interactively
+   map source columns to domain ontology properties in `model/mappings/`
+2. **Design silver annotations** — invoke the **kairos-design-silver** skill
+   to create extension annotations for the silver layer
+3. **Generate output** — invoke the **kairos-execute-project** skill to produce
+   dbt models, silver DDL, and ERDs
 
-See the **kairos-ontology-medallion-silver** skill for the full bronze-to-silver pipeline.
+See the **kairos-design-silver** skill for annotation design guidance.
 
 ---
 
@@ -214,3 +215,74 @@ ontology-hub/integration/sources/{system-name}/
   docs/                            # Additional documentation (ERD, data dictionary)
   notes.md                         # Free-form observations and notes
 ```
+
+---
+
+## Session Management
+
+> **MANDATORY:** Every source design session MUST produce a session file that
+> captures what was documented, what gaps remain, and design decisions.
+
+### On start — Check for existing session
+
+```
+ontology-hub/.sessions-design/
+  └── source-{system-name}-{YYYY-MM-DD}.md
+```
+
+If a previous session exists, ask the user whether to continue or start fresh.
+
+### Session file format
+
+Save to `ontology-hub/.sessions-design/source-{system-name}-{YYYY-MM-DD}.md`:
+
+```markdown
+# Source Design Session: {system-name}
+
+**Started:** {ISO-8601}
+**Last updated:** {ISO-8601}
+**Status:** Complete | In Progress
+**Toolkit version:** {version}
+
+## Tables Documented
+
+| # | Table | Columns | Data Types Verified | Notes |
+|---|---|---|---|---|
+| 1 | {table_name} | {count} | ✅/❌ | {any notes} |
+
+## Deferred / TODO
+
+| # | Table/Column | Item | Reason | Resolve via |
+|---|---|---|---|---|
+| 1 | {name} | {what is missing} | {why deferred} | kairos-design-source |
+
+## Design Decisions
+
+| # | Question | Decision | Rationale |
+|---|---|---|---|
+| 1 | {question} | {choice made} | {why} |
+
+## Source Evidence Gaps
+
+| # | Gap | Impact | Resolution |
+|---|---|---|---|
+| 1 | {what documentation is missing} | {which mappings/projections are blocked} | {how to resolve} |
+```
+
+### Saving rules
+
+- **Auto-save** after each table vocabulary is confirmed
+- Record tables that could not be fully documented with reasons
+- On pause/completion, list remaining gaps and their downstream impact
+
+---
+
+## Related skills
+
+| When you need | Invoke |
+|---|---|
+| Design/modify domain ontology classes and properties | **kairos-design-domain** |
+| Design silver layer (DDL, SCD, FK annotations) | **kairos-design-silver** |
+| Design gold layer (Power BI star schema, measures) | **kairos-design-gold** |
+| Map source columns to domain properties | **kairos-design-mapping** |
+| Run projections after source vocab is complete | **kairos-execute-project** |

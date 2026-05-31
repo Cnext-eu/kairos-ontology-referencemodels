@@ -1,11 +1,11 @@
 ---
-name: kairos-ontology-validation
+name: kairos-execute-validate
 description: >
   Comprehensive ontology review — syntax, SHACL, modeling best practices,
   and extension/mapping correctness. Produces a structured report with
   what's good, what's broken, and what can be improved.
 ---
-<!-- kairos-ontology-toolkit:managed v2.36.0 -->
+<!-- kairos-ontology-toolkit:managed v3.8.1 -->
 
 # Ontology Validation & Review Skill
 
@@ -103,7 +103,7 @@ sh:property [
 ## Level 3 — Modeling best practices
 
 > **Reference**: The full modeling rule set is defined in the
-> **kairos-ontology-modeling** skill.  Invoke that skill for detailed
+> **kairos-design-domain** skill.  Invoke that skill for detailed
 > guidance on class design, property design, naming conventions, and
 > common patterns.  This level provides a **summary checklist** — do
 > NOT duplicate the modeling skill's full content here.
@@ -366,3 +366,15 @@ End with a summary:
 3. Re-run validation: `python -m kairos_ontology validate`
 4. Run projection: `python -m kairos_ontology project --target all`
 5. Inspect generated output to confirm annotations took effect.
+
+---
+
+## Related skills
+
+| When you need | Invoke |
+|---|---|
+| Design/modify domain ontology classes and properties | **kairos-design-domain** |
+| Design silver layer (DDL, SCD, FK annotations) | **kairos-design-silver** |
+| Run projections (generate artifacts after validation) | **kairos-execute-project** |
+| Map source columns to domain properties | **kairos-design-mapping** |
+| Check hub status and completeness | **kairos-diagnose-status** |

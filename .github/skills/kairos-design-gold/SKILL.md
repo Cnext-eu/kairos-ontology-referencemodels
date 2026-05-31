@@ -1,12 +1,11 @@
 ---
-name: kairos-ontology-medallion-gold
+name: kairos-design-gold
 description: >
-  Expert guide for designing and running the gold-layer projection.
-  Generates Power BI star-schema DDL, TMDL semantic model, DAX measures,
-  and Mermaid ERD from OWL ontologies annotated with kairos-ext: properties.
-  Targets DirectLake on Microsoft Fabric Warehouse.
+  Expert guide for designing gold-layer extension annotations (fact/dimension
+  types, DAX measures, hierarchies, RLS) and understanding Power BI projection
+  output. Targets DirectLake on Microsoft Fabric Warehouse.
 ---
-<!-- kairos-ontology-toolkit:managed v2.36.0 -->
+<!-- kairos-ontology-toolkit:managed v3.8.1 -->
 
 # Kairos Medallion Gold Skill
 
@@ -65,18 +64,14 @@ facts (detected via the ≥2 FK heuristic) still use the standard cardinality fi
 | STRING | VARCHAR(256) | Bounded length for VertiPaq |
 | DOUBLE | FLOAT | Fabric Warehouse type |
 
-## Running the Projection
+## Running the Projection (handoff)
 
-```bash
-# Generate gold artifacts for all domains
-python -m kairos_ontology project --target powerbi
+Once your gold extension annotations are complete, generate the artifacts by
+invoking the **kairos-execute-project** skill with target `powerbi`.
 
-# With explicit paths
-python -m kairos_ontology project \
-  --ontologies ontology-hub/model/ontologies \
-  --output ontology-hub/output \
-  --target powerbi
-```
+> **Design/Execute separation (DD-033):** This skill handles annotation *design*.
+> The **kairos-execute-project** skill handles *generation*. If you need to
+> iterate on outputs, edit the extension file here, then invoke projection again.
 
 ## Extension File
 
@@ -262,8 +257,73 @@ with `@mermaid-js/mermaid-cli` as a dev dependency — just run `npm install`.
 - [ ] Annotate each class with `goldTableType` (or rely on auto-classification)
 - [ ] Add `measureExpression` for DAX measures on numeric properties
 - [ ] Add `hierarchyName` / `hierarchyLevel` for drill-down hierarchies
-- [ ] Run `python -m kairos_ontology project --target powerbi`
+- [ ] Invoke **kairos-execute-project** with `--target powerbi`
 - [ ] Review star schema ERD in `output/medallion/powerbi/{domain}/`
 - [ ] Check SVG renders were created (requires `mmdc` — see SVG export setup)
 - [ ] Import TMDL into Power BI Desktop or deploy to Fabric workspace
 - [ ] Configure RLS roles in Power BI service (if GDPR dimensions exist)
+
+---
+
+## Session Management
+
+> **MANDATORY:** Every gold design session MUST produce a session file that
+> captures decisions made, items deferred, and design rationale.
+
+### On start — Check for existing session
+
+```
+ontology-hub/.sessions-design/
+  └── gold-{domain}-{YYYY-MM-DD}.md
+```
+
+If a previous session exists, ask the user whether to continue or start fresh.
+
+### Session file format
+
+Save to `ontology-hub/.sessions-design/gold-{domain}-{YYYY-MM-DD}.md`:
+
+```markdown
+# Gold Design Session: {Domain}
+
+**Started:** {ISO-8601}
+**Last updated:** {ISO-8601}
+**Status:** Complete | In Progress
+**Toolkit version:** {version}
+
+## Decisions Made
+
+| Class | Gold Role | Measures | Hierarchies | RLS | Status |
+|---|---|---|---|---|---|
+| {ClassName} | fact/dimension/bridge | {count} | {list or —} | {yes/no} | ✅/⚠️ |
+
+## Deferred / TODO
+
+| # | Class | Item | Reason | Resolve via |
+|---|---|---|---|---|
+| 1 | {ClassName} | {what is missing} | {why deferred} | kairos-design-gold |
+
+## Design Rationale
+
+| # | Question | Decision | Rationale |
+|---|---|---|---|
+| 1 | {question} | {choice made} | {why} |
+```
+
+### Saving rules
+
+- **Auto-save** after each class gold annotation is confirmed
+- Record **every** deferred item with a reason
+- On pause/completion, list remaining open items and confirm with user
+
+---
+
+## Related skills
+
+| When you need | Invoke |
+|---|---|
+| Design/modify domain ontology classes and properties | **kairos-design-domain** |
+| Design silver layer (DDL, SCD, FK annotations) | **kairos-design-silver** |
+| Create bronze vocabulary from source docs | **kairos-design-source** |
+| Map source columns to domain properties | **kairos-design-mapping** |
+| Run projections (generate dbt/DDL/TMDL output) | **kairos-execute-project** |

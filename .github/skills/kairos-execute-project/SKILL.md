@@ -1,21 +1,74 @@
 ---
-name: kairos-ontology-projection
+name: kairos-execute-project
 description: >
   Knowledge about generating downstream artifacts from ontologies.
   Covers all 7 projection targets and when to use each.
 ---
-<!-- kairos-ontology-toolkit:managed v2.36.0 -->
+<!-- kairos-ontology-toolkit:managed v3.8.1 -->
 
 # Projection Generation Skill
 
 You help users generate and understand projection artifacts.
+
+> **When to use this skill vs design skills (DD-033):**
+> - Use **this skill** when the user wants to **generate output** — run projections,
+>   produce DDL, dbt models, TMDL, ERDs, JSON artifacts, or reports.
+> - Use **medallion-silver** when the user needs to **design** silver extension
+>   annotations (SCD types, natural keys, FK declarations) — the design phase.
+> - Use **medallion-gold** when the user needs to **design** gold extension
+>   annotations (fact/dimension types, measures, hierarchies) — the design phase.
+> - Use **medallion-source** when the user needs to **create** bronze vocabulary
+>   descriptions from source system documentation — the design phase.
+>
+> **Rule of thumb:** Design skills create/modify annotation files.
+> This skill generates output FROM those files. Design first, then project.
 
 ## Before you start
 
 0. **Quick toolkit version check** — run `python -m kairos_ontology update --check` once
    at the start of the session.  If it reports outdated files, run
    `python -m kairos_ontology update` and commit the refresh before doing any other work.
-   See the kairos-ontology-toolkit-ops skill for full upgrade steps.
+   See the kairos-toolkit-ops skill for full upgrade steps.
+
+## Pre-flight checks (medallion targets)
+
+Before running a **medallion target** (`silver`, `dbt`, or `powerbi`), you MUST check
+that prerequisite files exist. Non-medallion targets (`prompt`, `neo4j`, `azure-search`,
+`a2ui`, `report`) need no pre-flight — run them immediately.
+
+### Check matrix
+
+| Target | Required files | Design skill |
+|--------|---------------|--------------|
+| **silver** | `model/extensions/<domain>-silver-ext.ttl` | `kairos-design-silver` |
+| **dbt** | Silver ext (above) + at least one `integration/sources/<system>/*.vocabulary.ttl` + at least one `model/mappings/<system>-to-<domain>.ttl` | Extensions: `kairos-design-silver`; Mappings: `kairos-design-mapping` |
+| **powerbi** | `model/extensions/<domain>-gold-ext.ttl` | `kairos-design-gold` |
+
+### Procedure
+
+1. Identify which medallion targets the user requested (explicit `--target` or implied via bare `project`).
+2. For each medallion target, check whether the required files exist in the hub.
+3. **If files are missing:**
+   - List what is missing (e.g. "No `*-silver-ext.ttl` found in `model/extensions/`").
+   - Explain what the extension file provides (annotation decisions: natural keys, SCD types, FK declarations, schema names).
+   - Offer the user a choice:
+     - **(Recommended)** Invoke the design skill to create the extensions first.
+     - Run anyway with defaults (all columns SCD Type 1, no natural keys, no FK — produces valid but incomplete output).
+4. **If files are present:** proceed with projection normally.
+5. **For bare `project` (all targets):** run non-medallion targets immediately; apply the pre-flight check only for the medallion subset.
+
+### Example interaction
+
+```
+User: "project to silver"
+
+You:
+  1. Check model/extensions/*-silver-ext.ttl → NOT FOUND
+  2. "The silver target requires a silver extension file with kairos-ext: annotations
+     (naturalKey, silverSchema, scdType, etc.). None found in model/extensions/.
+     Would you like me to invoke kairos-design-silver to create it,
+     or run the projection with defaults?"
+```
 
 ## Available targets
 
@@ -32,12 +85,12 @@ You help users generate and understand projection artifacts.
 
 ## When to use each target
 
-- **dbt**: When the ontology drives a data warehouse using dbt Core. Generates a complete dbt project with silver entity models (from source systems via SKOS mappings), schema YAML with SHACL-derived tests, and project config. Requires source vocabulary files (`*.vocabulary.ttl`) in `integration/sources/{system-name}/` for source system descriptions and `model/mappings/{system-name}/*.ttl` for SKOS column mappings to domain ontology properties. The dbt projector scans `integration/sources/` recursively for `*.ttl` files with the `kairos-bronze:` namespace. See the **kairos-ontology-medallion-silver** skill.
+- **dbt**: When the ontology drives a data warehouse using dbt Core. Generates a complete dbt project with silver entity models (from source systems via SKOS mappings), schema YAML with SHACL-derived tests, and project config. Requires source vocabulary files (`*.vocabulary.ttl`) in `integration/sources/{system-name}/` for source system descriptions and `model/mappings/{system}-to-{domain}.ttl` for SKOS column mappings to domain ontology properties. The dbt projector scans `integration/sources/` recursively for `*.ttl` files with the `kairos-bronze:` namespace. See the **kairos-design-silver** skill.
 - **neo4j**: When building a knowledge graph. Generates `CREATE CONSTRAINT` statements and relationship patterns.
 - **azure-search**: When building a search index. Maps ontology properties to Azure Search field types with filters and facets.
 - **a2ui**: When generating UI forms. Creates JSON schemas that describe the data structure for automatic UI rendering.
 - **prompt**: When using the ontology as LLM context. Generates a compact version (entity→fields map) and a detailed version (with types, descriptions, relationships).
-- **silver**: When building the silver layer of a medallion data platform (e.g. MS Fabric warehouse). Generates T-SQL DDL (`CREATE TABLE`), FK/UNIQUE constraints (`ALTER TABLE`), and a Mermaid ERD. Requires a `*-silver-ext.ttl` annotation file in `model/extensions/`. Imported classes (via `owl:imports`) are not projected by default — use `silverInclude` or `silverIncludeImports` to claim them (DD-021). See the **kairos-medallion-silver** skill.
+- **silver**: When building the silver layer of a medallion data platform (e.g. MS Fabric warehouse). Generates T-SQL DDL (`CREATE TABLE`), FK/UNIQUE constraints (`ALTER TABLE`), and a Mermaid ERD. Requires a `*-silver-ext.ttl` annotation file in `model/extensions/`. Imported classes (via `owl:imports`) are not projected by default — use `silverInclude` or `silverIncludeImports` to claim them (DD-021). See the **kairos-design-silver** skill.
 
 ## CLI commands
 
@@ -110,9 +163,9 @@ python -m kairos_ontology project --target powerbi
 
 | Target | Required files | Skill for guidance |
 |--------|---------------|-------------------|
-| **silver** | `model/extensions/<domain>-silver-ext.ttl` with `kairos-ext:` annotations (naturalKey, silverSchema, scdType, etc.) | `kairos-ontology-medallion-silver` |
-| **dbt** | All silver prerequisites PLUS `integration/sources/<system>/*.vocabulary.ttl` (bronze) AND `model/mappings/<system>-to-<domain>.ttl` (SKOS mappings) | `kairos-ontology-medallion-silver` |
-| **powerbi** | `model/extensions/<domain>-gold-ext.ttl` with gold annotations (goldTableType, goldSchema, measureExpression, etc.) | `kairos-ontology-medallion-gold` |
+| **silver** | `model/extensions/<domain>-silver-ext.ttl` with `kairos-ext:` annotations (naturalKey, silverSchema, scdType, etc.) | `kairos-design-silver` |
+| **dbt** | All silver prerequisites PLUS `integration/sources/<system>/*.vocabulary.ttl` (bronze) AND `model/mappings/<system>-to-<domain>.ttl` (SKOS mappings) | `kairos-design-silver` |
+| **powerbi** | `model/extensions/<domain>-gold-ext.ttl` with gold annotations (goldTableType, goldSchema, measureExpression, etc.) | `kairos-design-gold` |
 
 ### What gets generated in detail
 
@@ -223,7 +276,7 @@ You can also check `summary.warnings` or inspect `projections` entries with
 - Generate `prompt` projection first to quickly verify the ontology structure is correct.
 - Use `dbt` projection when you want to see the full property extraction including SHACL tests.
 - Run all targets at once to catch issues specific to certain mappings.
-- For `silver`: run the **kairos-medallion-silver** skill first to set up `kairos-ext:` annotations in `model/extensions/` before projecting.
+- For `silver`: run the **kairos-design-silver** skill first to set up `kairos-ext:` annotations in `model/extensions/` before projecting.
 
 ## Common warnings
 
@@ -231,3 +284,16 @@ You can also check `summary.warnings` or inspect `projections` entries with
 |---------|---------|--------|
 | **DD-021: Unclaimed parent** | A projected class has a parent NOT in the projection set. Properties are auto-inherited from unprojected parents. | Review whether the parent should be a separate table (`silverInclude`) or if inheritance is sufficient. |
 | **PII detected** | A property name matches PII keywords but the class lacks `kairos-ext:gdprClassification`. | Add GDPR annotations or confirm the property is not sensitive. |
+
+---
+
+## Related skills
+
+| When you need | Invoke |
+|---|---|
+| Design/modify domain ontology classes and properties | **kairos-design-domain** |
+| Design silver layer (DDL, SCD, FK annotations) | **kairos-design-silver** |
+| Design gold layer (Power BI star schema, measures) | **kairos-design-gold** |
+| Map source columns to domain properties | **kairos-design-mapping** |
+| Validate ontology syntax + SHACL | **kairos-execute-validate** |
+| Consume dbt package in data platform repo | **kairos-package-dataplatform** |

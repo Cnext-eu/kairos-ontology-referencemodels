@@ -1,11 +1,11 @@
 ---
-name: kairos-ontology-mapping-report
+name: kairos-execute-report
 description: >
   Generate advanced HTML mapping reports showing how source systems map to
   the domain ontology. Combines source-centric and entity-centric views with
   data flow diagrams, transform expressions, coverage dashboards, and action items.
 ---
-<!-- kairos-ontology-toolkit:managed v2.36.0 -->
+<!-- kairos-ontology-toolkit:managed v3.8.1 -->
 
 # Mapping Report Skill
 
@@ -17,7 +17,7 @@ source system concepts align with the domain ontology.
 0. **Quick toolkit version check** — run `python -m kairos_ontology update --check` once
    at the start of the session.  If it reports outdated files, run
    `python -m kairos_ontology update` and commit the refresh before doing any other work.
-   See the kairos-ontology-toolkit-ops skill for full upgrade steps.
+   See the kairos-toolkit-ops skill for full upgrade steps.
 
 ## What this report is
 
@@ -76,7 +76,7 @@ Before generating a report, ensure:
 2. **Domain ontology exists** — `model/ontologies/{domain}.ttl` defines the target
    classes and properties.
 
-3. **SKOS mappings exist** — `model/mappings/{system}/*.ttl` contains SKOS alignment
+3. **SKOS mappings exist** — `model/mappings/{system}-to-{domain}.ttl` contains SKOS alignment
    between source column/table URIs and domain ontology URIs.
 
 4. **kairos-map: annotations** (optional) — enrich mappings with transform expressions,
@@ -136,7 +136,7 @@ Sorted by severity:
 ## When to regenerate
 
 Run the report after:
-- Adding or modifying SKOS mappings in `model/mappings/{system}/`
+- Adding or modifying SKOS mappings in `model/mappings/`
 - Adding `kairos-map:` annotations (transforms, filters) to mapping files
 - Adding new source tables/columns to vocabulary files
 - Updating domain ontology classes or properties
@@ -144,9 +144,10 @@ Run the report after:
 
 ## Workflow with other skills
 
-1. **kairos-ontology-modeling** — defines the domain ontology (report target)
-2. **kairos-ontology-medallion-source** — creates source vocabulary (report source)
-3. **kairos-ontology-mapping-report** — generates coverage report (this skill)
-4. **kairos-ontology-medallion-silver** — uses mappings for dbt transforms (technical layer)
+1. **kairos-design-domain** — defines the domain ontology (report target)
+2. **kairos-design-source** — creates source vocabulary (report source)
+3. **kairos-design-mapping** — guides interactive mapping creation with checkpoints
+4. **kairos-execute-report** — generates coverage report (this skill)
+5. **kairos-design-silver** — uses mappings for dbt transforms (technical layer)
 
 The mapping report helps identify gaps *before* investing in dbt transform work.

@@ -1,12 +1,12 @@
 ---
-name: kairos-ontology-quickstart
+name: kairos-setup-init
 description: >
   Step-by-step guide for creating a brand-new Kairos ontology hub repository
   from scratch using the CLI. Covers repo naming, bootstrapping, and initial
   validation. Only for new repo creation — NOT for ontology design or domain
   modeling.
 ---
-<!-- kairos-ontology-toolkit:managed v2.36.0 -->
+<!-- kairos-ontology-toolkit:managed v3.8.1 -->
 
 # Quickstart — New Ontology Hub
 
@@ -21,15 +21,17 @@ or project using the **kairos-ontology-toolkit** CLI.
 
 ## Prerequisites
 
-- **Python 3.12+** with `pip`
+- **Python 3.12+**
+- **[uv](https://docs.astral.sh/uv/)** — Python package manager
+  (`irm https://astral.sh/uv/install.ps1 | iex` on Windows,
+  `curl -LsSf https://astral.sh/uv/install.sh | sh` on Linux/macOS)
 - **Git** — installed and configured
 - **[GitHub CLI (`gh`)](https://cli.github.com/)** — installed and authenticated
   (`gh auth login`)
-- **kairos-ontology-toolkit** — `pip install kairos-ontology-toolkit`
+- **kairos-ontology-toolkit** — installed automatically by `uv sync`
 
-> **Tip:** In hub repos, always invoke the toolkit as `python -m kairos_ontology` rather than
-> `kairos-ontology`. This works in any virtual environment without needing the Python `Scripts/`
-> directory on PATH.
+> **Tip:** In hub repos, run toolkit commands with `uv run kairos-ontology <command>`.
+> This automatically uses the repo's isolated `.venv` without manual activation.
 
 ---
 
@@ -130,26 +132,42 @@ contoso-ontology-hub/
 | `--private / --public` | private | Repo visibility |
 | `--company-domain TEXT` | `<name>.com` | Company domain for namespaces |
 | `--template TEXT` | `kairos-app-template` | GitHub template. Keep default for Cnext-eu |
-| `--ref-models-version` | latest | Git ref for reference-models submodule |
+| `--ref-models-version` | latest | Git ref for reference models |
 
 ---
 
-## 3. Install the hub's dependencies
+## 3. Set up the development environment
 
 ```bash
 cd contoso-ontology-hub
-pip install -e .
+.\setup-env.ps1          # Windows (PowerShell)
+# or
+./setup-env.sh           # Linux / macOS / CI
 ```
 
-This installs the `kairos-ontology-toolkit` from GitHub (pinned to the
-toolkit version tag) and makes the `kairos-ontology` CLI available.
+This uses `uv sync` to create an isolated `.venv` and install the
+`kairos-ontology-toolkit` (from the `.whl` pinned in `pyproject.toml`).
+
+Run toolkit commands without manual activation:
+
+```bash
+uv run kairos-ontology validate
+uv run kairos-ontology project --target dbt
+```
+
+Or activate the venv for interactive work:
+
+```bash
+.\.venv\Scripts\Activate.ps1   # Windows
+source .venv/bin/activate       # Linux / macOS
+```
 
 The hub's `pyproject.toml` includes a `[tool.kairos]` section with a
 `channel` setting (default `"stable"`). To test pre-release toolkit
-versions, change it to `"preview"` and run `python -m kairos_ontology update --upgrade`.
+versions, change it to `"preview"` and run `uv run kairos-ontology update --upgrade`.
 
-> **If pip fails:** Ensure you have `git` installed and can access
-> `github.com/Cnext-eu/kairos-ontology-toolkit`.
+> **Why venvs?** Each hub repo gets its own isolated Python environment,
+> preventing toolkit version conflicts between hub repos on the same machine.
 
 ---
 
@@ -189,7 +207,7 @@ git checkout -b ontology/customer-domain
 ```
 
 Edit `ontology-hub/model/ontologies/customer.ttl` — see the
-kairos-ontology-modeling skill for design guidance.  At minimum ensure:
+kairos-design-domain skill for design guidance.  At minimum ensure:
 
 - `owl:Ontology` with `rdfs:label` and `owl:versionInfo`
 - At least one `owl:Class` with `rdfs:label` and `rdfs:comment`

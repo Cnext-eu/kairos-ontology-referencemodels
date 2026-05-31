@@ -1,5 +1,5 @@
 ---
-name: kairos-ontology-modeling
+name: kairos-design-domain
 description: >
   Expert skill for designing and editing OWL ontology classes, properties, and
   relationships in TTL files. Use when the user wants to create, modify, or
@@ -7,7 +7,7 @@ description: >
   Includes business alignment checkpoints, reference-model workflow, source/TMDL
   analysis, and session persistence.
 ---
-<!-- kairos-ontology-toolkit:managed v2.36.0 -->
+<!-- kairos-ontology-toolkit:managed v3.8.1 -->
 
 # Ontology Modeling Skill
 
@@ -25,7 +25,7 @@ them means the modeling process has failed, regardless of output quality.
 
 ### Gate 1: Session file prerequisite
 
-> **You MUST create a `.sessions-modeling/modeling-{domain}-*.md` file BEFORE
+> **You MUST create a `.sessions-design/modeling-{domain}-*.md` file BEFORE
 > writing any domain `.ttl` file.**
 
 If no session file exists for the domain being modeled, you are NOT permitted
@@ -118,6 +118,28 @@ If the user explicitly requests skipping governance:
 
 ---
 
+## Decision Tree (route within this skill)
+
+Use this quick-reference to determine which section applies:
+
+| User's intent | Go to |
+|---|---|
+| "Add a property" / "fix a label" / minor tweak (≤ 3 props, no new classes) | [Quick-edit mode](#quick-edit-mode) |
+| "Model a new domain" / "create classes for X" | [Before you start](#before-you-start-full-modeling-workflow) → full workflow |
+| "Use FIBO / DCSA / reference model" | [Reference-model-first workflow](#reference-model-first-workflow) |
+| "Here's a TMDL / PBIP file" | [TMDL Analysis](#tmdl-analysis-legacy-bi-input) (then return to modeling) |
+| "Align with industry standard" | [Standard model alignment](#standard-model-alignment) |
+| "What annotations do I need?" | **Delegate:** invoke `kairos-design-silver` or `kairos-design-gold` skill |
+| "Generate dbt / silver DDL / projection" | **Delegate:** invoke `kairos-execute-project` skill |
+| "Validate my ontology" | **Delegate:** invoke `kairos-execute-validate` skill |
+| "Map source columns to domain" | **Delegate:** invoke `kairos-design-mapping` skill |
+
+> **Default path:** For any new modeling work, always start at
+> [Before you start](#before-you-start-full-modeling-workflow) and follow
+> Step 0 → Step 0b → Step 0c (Source Evidence Table) → Checkpoints.
+
+---
+
 ## Session Management
 
 ### On start — Check for existing session
@@ -125,7 +147,7 @@ If the user explicitly requests skipping governance:
 At the beginning of every modeling session, look for saved configuration files:
 
 ```
-ontology-hub/.sessions-modeling/
+ontology-hub/.sessions-design/
   └── modeling-{domain}-{YYYY-MM-DD}.md    # Saved session state
 ```
 
@@ -141,7 +163,7 @@ If no session exists, start fresh and create one immediately.
 
 ### Session file format
 
-Save progress to `ontology-hub/.sessions-modeling/modeling-{domain}-{YYYY-MM-DD}.md`:
+Save progress to `ontology-hub/.sessions-design/modeling-{domain}-{YYYY-MM-DD}.md`:
 
 ```markdown
 # Modeling Session: {Domain Name}
@@ -205,6 +227,7 @@ _and the reference model. Reference model has priority unless explicitly overrid
 ### Saving and pausing
 
 - **Auto-save** the session file after each confirmed decision
+- Mark resolved Open Questions as `[x]` with the decision outcome
 - When the user says "pause", "stop", "save", or "continue later":
   1. Update the session file with current state
   2. List remaining open questions
@@ -243,7 +266,7 @@ and Gate 3 — these are non-negotiable.
 0. **Quick toolkit version check** — run `python -m kairos_ontology update --check` once
    at the start of the session.  If it reports outdated files, run
    `python -m kairos_ontology update` and commit the refresh before doing any other work.
-   See the kairos-ontology-toolkit-ops skill for full upgrade steps.
+   See the kairos-toolkit-ops skill for full upgrade steps.
 1. **Create a feature branch** — never work directly on `main`.  Use the
    SC-feature-branch skill (e.g., `ontology/add-order-domain`).
 2. **Read the hub README** — open `ontology-hub/README.md` and note the company
@@ -273,6 +296,12 @@ models** rather than inventing entities from scratch.  Reference models are
 curated, industry-aligned OWL ontologies bundled into **accelerator packs** —
 sector-specific collections of ontologies (e.g., Financial Services, Supply
 Chain, Healthcare) that provide a proven starting point.
+
+> **Two alignment strategies:** The default strategy is **Reference Model Inspired**
+> — model locally with selective pattern adoption and a SKOS alignment file. If the
+> user's domain uses a Kairos-managed reference model (small, projection-ready, ships
+> defaults), they can override to **Reference Model Enforced** which uses `owl:imports`.
+> See [Standard model alignment](#standard-model-alignment) for details.
 
 ### Step 0 — Ask the user
 
@@ -667,11 +696,16 @@ domain mapping with business stakeholders**:
 This is a critical governance step — getting business sign-off on which
 reference domains are in scope prevents scope creep and misalignment.
 
-### Step 4 — Import via OWL catalog (do NOT copy TTL)
+### Step 4 — Import via OWL catalog (Reference Model Enforced ONLY)
 
-When incorporating reference model ontologies into the hub, **always use
+When incorporating **Kairos reference model** ontologies into the hub, **use
 `owl:imports` via the catalog** — never copy or recreate the reference model
 TTL files inside the hub.
+
+> **Important:** This applies only to the **Reference Model Enforced** strategy
+> (Kairos-managed reference models: small, < 50 classes, include `-defaults.ttl`).
+> For large **external standards** (FIBO, DCSA, GS1, schema.org), use the default
+> [Reference Model Inspired](#reference-model-inspired-default-strategy) strategy below.
 
 The reference models ship with a `catalog-v001.xml` that maps logical URIs to
 local file paths.  Your domain ontology imports the reference model by URI:
@@ -686,10 +720,10 @@ local file paths.  Your domain ontology imports the reference model by URI:
     owl:imports <https://referencemodels.kairos.cnext.eu/party> .
 ```
 
-**Rules:**
+**Rules (Reference Model Enforced — Kairos reference models):**
 
-- ✅ **DO** use `owl:imports` referencing the catalog URI for the reference
-  ontology.
+- ✅ **DO** use `owl:imports` referencing the catalog URI for Kairos reference
+  ontologies (BSP, MMT, and other accelerator pack models).
 - ✅ **DO** extend reference classes via `rdfs:subClassOf` when specialization
   is needed.
 - ❌ **DO NOT** copy reference model `.ttl` files into `model/ontologies/`.
@@ -697,6 +731,10 @@ local file paths.  Your domain ontology imports the reference model by URI:
   files — reference them, don't duplicate them.
 - ❌ **DO NOT** add new entities that aren't in the reference model until the
   reference baseline is validated and the user explicitly requests additions.
+- ❌ **DO NOT** use `owl:imports` for large external standards (FIBO, DCSA, GS1,
+  PROV-O, schema.org) — they are not projection-optimized and cause slow loading,
+  unresolvable transitive imports, and whitelisting complexity. Use the Reference
+  Model Inspired strategy instead.
 
 ### Step 5 — Trim and specialize
 
@@ -878,60 +916,87 @@ standard ontology (FIBO, DCSA, GS1, PROV-O, schema.org, etc.):
 
 Ask the user to confirm:
 - The exact standard or vocabulary (name + version/edition if relevant).
-- Whether they want **full alignment** (extend standard classes directly) or
-  **loose alignment** (model independently, use `owl:equivalentClass` /
-  `rdfs:seeAlso` mappings).
+- Whether the standard is available as a **Kairos reference model** (Enforced-eligible)
+  or is an **external standard** (Inspired — the default).
 
-### Step 2 — Check ontology-reference-models/
+### Step 2 — Determine the strategy
 
-Look inside `ontology-reference-models/` for the standard:
+| Strategy | When to use | Approach |
+|----------|-------------|----------|
+| **Reference Model Inspired** (default) | All external standards AND any reference model where you want selective adoption. This is the default — use unless overridden. | Model locally + selective pattern adoption + SKOS alignment file |
+| **Reference Model Enforced** (override) | Kairos-managed reference models in `ontology-reference-models/`. Small (< 50 classes), projection-optimized, ships `-defaults.ttl`. | `owl:imports` + `rdfs:subClassOf` + DD-021 whitelist + DD-023 defaults |
 
-```bash
-ls ontology-reference-models/
-```
+> **Default rule:** Always start with **Reference Model Inspired** unless the user
+> explicitly requests Enforced and the reference model meets all eligibility criteria.
 
-- If a folder or catalog entry for the standard **exists** → use it as the
-  alignment target.  Import it via the catalog in your domain TTL:
-  ```turtle
-  owl:imports <catalog-uri-for-the-standard> ;
-  ```
-- If the standard is **not present**, do NOT download or inline it manually.
-  Instead, inform the user:
+**Enforced eligibility** (ALL must be true):
+- Found in `ontology-reference-models/accelerator-packs/`
+- Has a catalog entry mapping its URI to a local `.ttl` file
+- Typically < 50 classes, focused on a specific domain
+- Ships `*-silver-defaults.ttl` (DD-023 compatible)
+- No transitive imports pulling in unrequested concepts
+- Examples: BSP-Party, BSP-Billing, MMT modules
 
-  > "The `<standard>` reference model is not yet in `ontology-reference-models/`.
-  > If you plan to reuse this standard across multiple projects, the recommended
-  > approach is to add it to the reference models repo first
-  > (`Cnext-eu/kairos-ontology-referencemodels`) so it becomes available to all
-  > hubs via `update-referencemodels.ps1`.  Alternatively, for a one-off
-  > alignment you can reference the public URI directly without importing the
-  > full model."
+**Inspired indicators** (anything not meeting Enforced criteria):
+- Large (100+ classes) or depends on large transitive imports
+- Externally maintained — versioned independently of your hub
+- Not projection-optimized (no `kairos-ext:` annotations, no `-defaults.ttl`)
+- Examples: FIBO, DCSA, GS1, PROV-O, schema.org
 
-  Then ask: **"Should we add it to the reference models first, or proceed with
-  a direct URI reference for now?"**
+> **Rule of thumb:** If importing the standard would add > 50 classes to the
+> merged graph that you'll never project, use Reference Model Inspired (the default).
 
 ### Step 3 — Alignment patterns
 
-#### Extend a standard class (full alignment)
+#### Reference Model Enforced: Extend a Kairos reference class
 
 ```turtle
-@prefix fibo-be: <https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/> .
+@prefix ref-party: <https://referencemodels.kairos.cnext.eu/party#> .
 
-:LegalEntity rdfs:subClassOf fibo-be:LegalEntity ;
-    rdfs:label "Legal Entity"@en ;
-    rdfs:comment "A legal entity as defined in FIBO, specialised for this domain."@en .
+<https://contoso.com/ont/customer> a owl:Ontology ;
+    owl:imports <https://referencemodels.kairos.cnext.eu/party> .
+
+:PremiumCustomer rdfs:subClassOf ref-party:Customer ;
+    rdfs:label "Premium Customer"@en ;
+    rdfs:comment "A high-value customer — extends the reference model."@en .
 ```
 
-#### Map to a standard class (loose alignment)
+#### Reference Model Inspired (default strategy)
 
-```turtle
-:Customer a owl:Class ;
-    rdfs:label "Customer"@en ;
-    rdfs:comment "A party that purchases goods or services."@en ;
-    owl:equivalentClass schema:Person ;    # or rdfs:seeAlso
-    rdfs:seeAlso <https://spec.edmcouncil.org/fibo/...> .
-```
+**Do NOT import the external standard.** Instead:
 
-#### Reuse a standard property by reference
+1. Model your classes locally (self-contained, projection-ready) and add
+   `rdfs:seeAlso` pointing to the reference model class URI for traceability:
+   ```turtle
+   :LegalEntity a owl:Class ;
+       rdfs:subClassOf :Party ;
+       rdfs:label "Legal Entity"@en ;
+       rdfs:comment "A legal entity / company."@en ;
+       rdfs:seeAlso <https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/LegalPerson> .
+   ```
+
+2. Selectively adopt patterns from the reference model when they create a
+   **structurally different silver schema** (new table or new FK relationship).
+   Always include `rdfs:seeAlso` linking back to the source pattern:
+   ```turtle
+   :Identifier a owl:Class ;
+       rdfs:label "Identifier"@en ;
+       rdfs:comment "Multi-identifier support — separate silver table."@en ;
+       rdfs:seeAlso <https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Identifiers/Identifier> .
+   ```
+
+**Why `rdfs:seeAlso`:**
+- Part of core RDFS — no extra imports needed
+- Non-committal — no logical entailments (unlike `owl:equivalentClass`)
+- Machine-readable — tooling can resolve the URI to check reference model alignment
+- Loaded with the domain ontology — visible during silver/gold design sessions
+
+**Silver structural difference criterion (DD-032):** Only adopt a reference model
+pattern as a local class when it produces a structurally different silver output
+(new table or new FK relationship). If a pattern merely renames or reclassifies
+without changing the silver schema, do not create a local class for it.
+
+#### Reuse a standard property by reference (documentation-only)
 
 ```turtle
 :carrierSCAC a owl:DatatypeProperty ;
@@ -942,19 +1007,23 @@ ls ontology-reference-models/
     rdfs:seeAlso <https://dcsa.org/standards/> .
 ```
 
-### Known standards and their reference model status
+### Known standards and their recommended strategy
 
-| Standard | Domain | In reference models? | Notes |
-|----------|--------|---------------------|-------|
-| FIBO | Financial / legal entities | Check folder | Large; import selectively |
-| DCSA | Shipping / container logistics | Check folder | eBL, Track & Trace |
-| GS1 | Supply chain / product IDs | Check folder | GLN, GTIN, EPCIS |
-| PROV-O | Data provenance | Check folder | W3C standard |
-| schema.org | General-purpose web semantics | Check folder | Broad vocabulary |
-| Dublin Core (DC) | Metadata | Usually included | Small; safe to import |
+| Standard | Domain | Strategy | Rationale |
+|----------|--------|----------|-----------|
+| BSP-Party | Party / customer | Enforced | Kairos-managed, small, has defaults |
+| BSP-Billing | Invoicing | Enforced | Kairos-managed, small, has defaults |
+| MMT | Maritime / logistics | Enforced | Kairos-managed, small, has defaults |
+| FIBO | Financial / legal entities | **Inspired** | Large (1000+ classes), deep transitive imports |
+| DCSA | Shipping / container logistics | **Inspired** | Large, externally maintained |
+| GS1 | Supply chain / product IDs | **Inspired** | Large, externally maintained |
+| PROV-O | Data provenance | **Inspired** | W3C standard, small but no projection value |
+| schema.org | General-purpose web semantics | **Inspired** | Very broad vocabulary |
+| Dublin Core (DC) | Metadata | Enforced or Inspired | Small enough to import safely if needed |
 
 > **Rule:** Never hardcode a downloaded copy of a standard model inside the hub
-> repo.  Always reference it via the catalog or a public URI.
+> repo.  For Enforced, reference it via the catalog. For Inspired, model locally
+> and add `rdfs:seeAlso` on each inspired class.
 
 ---
 
@@ -1345,16 +1414,14 @@ Every .ttl file MUST start with an ontology declaration:
 
 ## Extension annotations reference
 
-The Kairos toolkit uses two custom annotation vocabularies that **drive code
-generation** for the silver, gold, and dbt projections.  These annotations live
-in **extension files** (`model/extensions/<domain>-silver-ext.ttl`,
-`<domain>-gold-ext.ttl`) and **mapping files** (`model/mappings/<source>-to-<domain>.ttl`),
-**never** inside the core domain `.ttl` files.
+> **Full reference:** The complete annotation tables for `kairos-ext:` (silver and
+> gold) and `kairos-map:` (mapping) annotations are maintained in the
+> **kairos-design-silver** and **kairos-design-gold** skills.
+> Invoke those skills when you need the detailed annotation reference.
 
-When modeling a domain, you MUST be aware of these annotations because they
-determine how your ontology translates into DDL, dbt models, and Power BI
-artifacts.  If an annotation is missing, the projector falls back to defaults —
-which may not match the intended behavior.
+**Key principle:** Domain ontology files (`.ttl`) define the *what* (classes,
+properties, relationships). Extension files define the *how* (projection behavior).
+Never mix `kairos-ext:` annotations into domain ontology files.
 
 ### File layout
 
@@ -1369,129 +1436,26 @@ model/
     adminpulse-to-client.ttl ← source-to-domain SKOS mappings + kairos-map: annotations
 ```
 
-### `kairos-ext:` — Silver annotations (on ontology or class or property)
+### Quick annotation checklist (for modeling awareness)
 
-These go in `<domain>-silver-ext.ttl`.
+When finishing a domain model, remind the user that extension files will need:
 
-#### Ontology-level (applied to the `owl:Ontology` resource)
-
-| Annotation | Type | Default | Purpose |
-|---|---|---|---|
-| `silverSchema` | string | `silver_<domain>` | Warehouse schema name for silver tables |
-| `namingConvention` | string | `camel-to-snake` | How OWL names become SQL names |
-| `includeNaturalKeyColumn` | boolean | `true` | Include NK columns alongside SK |
-| `auditEnvelope` | boolean | `true` | Add `_loaded_at`, `_source_file` audit columns |
-| `inlineRefThreshold` | integer | `5` | Max enum members before creating a separate ref table |
-| `silverIncludeImports` | boolean | `false` | Bulk-claim all first-level imported classes for silver projection (DD-021) |
-
-#### Class-level (applied to an `owl:Class`)
-
-| Annotation | Type | Default | Purpose |
-|---|---|---|---|
-| `silverTableName` | string | auto (snake_case of class name) | Override the generated table name |
-| `silverInclude` | boolean | `false` | Claim an imported class for silver projection (DD-021) |
-| `scdType` | `"1"` or `"2"` | `"1"` | Slowly Changing Dimension type |
-| `isReferenceData` | boolean | `false` | Mark as reference/enum table |
-| `gdprSatelliteOf` | URI | — | Link a GDPR satellite to its parent class |
-| `discriminatorColumn` | string | — | Column used for class-per-table inheritance splits |
-| `partitionBy` | string | — | Fabric Warehouse partition column |
-| `clusterBy` | string | — | Fabric Warehouse cluster column |
-| `naturalKey` | string | — | Space-separated property names forming the natural key |
-| `junctionTableName` | string | — | Physical M:N junction table name |
-| `conditionalOnType` | string | — | Discriminator value that selects this subclass |
-
-#### Property-level (applied to `owl:DatatypeProperty` or `owl:ObjectProperty`)
-
-| Annotation | Type | Default | Purpose |
-|---|---|---|---|
-| `silverColumnName` | string | auto (snake_case) | Override column name in DDL/dbt |
-| `silverDataType` | string | auto from `xsd:` range | Override SQL data type |
-| `nullable` | boolean | `true` | Whether column allows NULL |
-| `derivationFormula` | string | — | SQL expression for a computed column |
-| `populationRequirement` | `"required"` / `"optional"` | `"optional"` | Maps to NOT NULL constraint |
-| `silverForeignKey` | boolean | `false` | Mark object property as FK column (DD-022) |
-| `silverForeignKeyOn` | class URI | — | Override FK placement to specified class (DD-022) |
-
-### `kairos-ext:` — Gold annotations (on ontology or class or property)
-
-These go in `<domain>-gold-ext.ttl`.
-
-#### Ontology-level
-
-| Annotation | Type | Default | Purpose |
-|---|---|---|---|
-| `goldSchema` | string | `gold_<domain>` | Warehouse schema for gold tables |
-| `goldInheritanceStrategy` | `"class-per-table"` / `"single-table"` | `"single-table"` | How subclasses map to gold tables |
-| `generateDateDimension` | boolean | `true` | Auto-generate `dim_date` |
-| `generateTimeIntelligence` | boolean | `false` | Add DAX time-intelligence measures |
-| `goldIncludeImports` | boolean | `false` | Bulk-claim all first-level imported classes for gold projection (DD-021) |
-
-#### Class-level
-
-| Annotation | Type | Default | Purpose |
-|---|---|---|---|
-| `goldTableType` | `"dimension"` / `"fact"` / `"bridge"` | auto-detected | Force table type |
-| `goldInclude` | boolean | `false` | Claim an imported class for gold projection (DD-021) |
-| `goldTableName` | string | auto (`dim_` / `fact_` prefix) | Override gold table name |
-| `goldExclude` | boolean | `false` | Exclude class from gold layer |
-| `perspective` | string | — | Power BI perspective membership |
-| `incrementalColumn` | string | — | Column for incremental materialization |
-
-#### Property-level
-
-| Annotation | Type | Default | Purpose |
-|---|---|---|---|
-| `goldColumnName` | string | auto | Override column name in gold |
-| `goldDataType` | string | auto | Override SQL type in gold |
-| `measureExpression` | string | — | DAX measure formula |
-| `measureFormatString` | string | — | DAX format string for measure |
-| `hierarchyName` | string | — | Power BI hierarchy group name |
-| `hierarchyLevel` | integer | — | Position in hierarchy |
-| `degenerateDimension` | boolean | `false` | Embed as degenerate dim in fact table |
-| `olsRestricted` | boolean | `false` | Mark for Object-Level Security |
-| `rolePlayingAs` | string | — | Role-playing dimension alias |
-
-### `kairos-map:` — Mapping annotations (in mapping files)
-
-These go in `model/mappings/<source>-to-<domain>.ttl` alongside SKOS mappings.
-
-#### Table-level (on `skos:narrowMatch` or `skos:exactMatch` between source table and domain class)
-
-| Annotation | Type | Purpose |
-|---|---|---|
-| `mappingType` | `"direct"` / `"split"` / `"merge"` | How source table(s) map to domain class |
-| `filterCondition` | string | SQL WHERE clause for split patterns (e.g., `"source.type = 0"`) |
-| `deduplicationKey` | string | Column(s) for dedup in merge patterns |
-| `deduplicationOrder` | string | ORDER BY expression for dedup |
-
-#### Column-level (on `skos:exactMatch` between source column and domain property)
-
-| Annotation | Type | Purpose |
-|---|---|---|
-| `transform` | string | SQL expression (e.g., `"CAST(source.id AS STRING)"`) |
-| `sourceColumns` | string | Space-separated source columns for composite mappings |
-| `defaultValue` | string | Fallback value → generates `COALESCE(expr, default)` |
+| Layer | What to annotate | Key annotations |
+|-------|-----------------|-----------------|
+| Silver | SCD type, natural keys, FK relationships | `scdType`, `naturalKey`, `silverForeignKey` |
+| Gold | Fact vs dimension, measures, hierarchies | `goldTableType`, `measureExpression`, `hierarchyName` |
+| Mapping | Source-to-domain column transforms | `transform`, `mappingType`, `filterCondition` |
 
 ### Design rules for extensions
 
-1. **Separate concerns**: domain ontology defines the *what* (classes, properties,
-   relationships); extension files define the *how* (projection behavior).
+1. **Separate concerns**: domain ontology defines the *what*; extension files define the *how*.
 2. **One extension file per layer per domain**: `client-silver-ext.ttl`,
-   `client-gold-ext.ttl`.  Never mix silver and gold annotations in one file.
+   `client-gold-ext.ttl`. Never mix silver and gold annotations in one file.
 3. **Re-import the domain namespace**: extension files must `@prefix` and reference
    the same domain namespace as the ontology they extend.
-4. **Annotate the ontology URI for ontology-level settings**: e.g.,
-   ```turtle
-   <https://acme.example/ontology/client> kairos-ext:silverSchema "silver_client" .
-   ```
-5. **Annotate class or property URIs for entity-level settings**: e.g.,
-   ```turtle
-   client:Client kairos-ext:scdType "2" ;
-       kairos-ext:partitionBy "country" .
-   ```
-6. **Validate after editing**: run `kairos-ontology validate` to ensure the
+4. **Validate after editing**: run `kairos-ontology validate` to ensure the
    extension file parses correctly.
-7. **Test the projection**: run `kairos-ontology project --target silver` (or `dbt`,
+5. **Test the projection**: run `kairos-ontology project --target silver` (or `dbt`,
    `gold`) and inspect the generated output to verify annotations took effect.
 
 ---
@@ -1499,7 +1463,7 @@ These go in `model/mappings/<source>-to-<domain>.ttl` alongside SKOS mappings.
 ## Completion: Final Configuration Report
 
 When the user confirms all classes and properties for a domain, generate a final
-report. Save to `ontology-hub/.sessions-modeling/modeling-{domain}-FINAL-{YYYY-MM-DD}.md`:
+report. Save to `ontology-hub/.sessions-design/modeling-{domain}-FINAL-{YYYY-MM-DD}.md`:
 
 ```markdown
 # Modeling Configuration Report: {Domain Name}
@@ -1542,7 +1506,8 @@ report. Save to `ontology-hub/.sessions-modeling/modeling-{domain}-FINAL-{YYYY-M
 ## Next Steps
 
 - [ ] Create silver extension (`model/extensions/{domain}-silver-ext.ttl`)
-- [ ] Create source mappings (`model/mappings/{source}/{source}-to-{domain}.ttl`)
+- [ ] Create source mappings — invoke **kairos-design-mapping** skill to interactively
+  map source columns to domain properties (`model/mappings/{source}-to-{domain}.ttl`)
 - [ ] Run `python -m kairos_ontology validate`
 - [ ] Run `python -m kairos_ontology project --target silver`
 ```
@@ -1575,3 +1540,16 @@ report. Save to `ontology-hub/.sessions-modeling/modeling-{domain}-FINAL-{YYYY-M
 | Silver layer surprises | Checkpoint 5 previews projection impact |
 | Lost context between sessions | Session files persist all decisions |
 | No audit trail for design choices | Final report captures everything |
+
+---
+
+## Related skills
+
+| When you need | Invoke |
+|---|---|
+| Silver/gold extension annotations (full reference tables) | **kairos-design-silver** / **kairos-design-gold** |
+| Source-to-domain column mapping | **kairos-design-mapping** |
+| Run projections (dbt, silver DDL, Power BI) | **kairos-execute-project** |
+| Validate ontology syntax + SHACL | **kairos-execute-validate** |
+| Create bronze vocabulary from source docs | **kairos-design-source** |
+| Hub status / what's missing | **kairos-diagnose-status** |
