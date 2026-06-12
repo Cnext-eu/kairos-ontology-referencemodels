@@ -18,7 +18,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
+    owl:versionInfo "1.1.0" ;
     dcterms:source "IMO Compendium data set, FAL Convention, ISM Code, STCW Convention" ;
     rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> ;
     owl:imports <https://www.kairosflow.ai/ont/imo/locations> .
@@ -112,6 +112,44 @@
     rdfs:label "Towage Provider" ;
     rdfs:comment """An organization providing tug-assisted towage services for vessels during
     port entry, departure, shifting, and emergency situations.""" ;
+    rdfs:subClassOf :MaritimeParty .
+
+#################################################################
+#    Security Officer Roles (ISPS Code)
+#################################################################
+
+:CompanySecurityOfficer a owl:Class ;
+    rdfs:label "Company Security Officer" ;
+    rdfs:comment """The person designated by a shipping company to ensure the ship security
+    assessment is carried out and the ship security plan is developed, submitted
+    for approval, and implemented (ISPS Code Part A, Section 11).
+
+    The CSO also ensures coordination between the SSO and relevant port
+    facility security officers.""" ;
+    rdfs:subClassOf :MaritimeParty .
+
+:ShipSecurityOfficer a owl:Class ;
+    rdfs:label "Ship Security Officer" ;
+    rdfs:comment """A person on board the ship, accountable to the master, designated by the
+    company as responsible for the security of the ship (ISPS Code Part A,
+    Section 12). Must hold a Certificate of Proficiency for SSO (STCW VI/5).""" ;
+    rdfs:subClassOf :MaritimeParty .
+
+:PortFacilitySecurityOfficer a owl:Class ;
+    rdfs:label "Port Facility Security Officer" ;
+    rdfs:comment """The person designated as responsible for the development, implementation,
+    revision, and maintenance of the port facility security plan and for
+    liaison with ship security officers and company security officers
+    (ISPS Code Part A, Section 17).""" ;
+    rdfs:subClassOf :MaritimeParty .
+
+:PortStateControlOfficer a owl:Class ;
+    rdfs:label "Port State Control Officer" ;
+    rdfs:comment """A qualified inspector authorized by a port state to conduct inspections
+    on foreign-flag ships to verify compliance with international conventions
+    (SOLAS, MARPOL, STCW, MLC, LL, COLREG).
+
+    Operates under regional MoU frameworks (Paris MoU, Tokyo MoU, etc.).""" ;
     rdfs:subClassOf :MaritimeParty .
 
 #################################################################

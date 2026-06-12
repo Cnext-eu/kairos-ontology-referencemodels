@@ -17,7 +17,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
+    owl:versionInfo "1.1.0" ;
     dcterms:source "IMO Compendium data set, FAL Convention (2023 amendments)" ;
     rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
 
@@ -53,7 +53,8 @@
         a owl:Restriction ;
         owl:onProperty :hasPortCallStatus ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger
-    ] .
+    ] ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/transport-call#TransportCall> .
 
 :BerthStay a owl:Class ;
     rdfs:label "Berth Stay" ;
@@ -118,6 +119,55 @@
 
     Subject to port state immigration requirements and FAL Convention provisions
     for facilitating crew transit.""" .
+
+#################################################################
+#    Port Call Document Classes (FAL Convention & SOLAS)
+#################################################################
+
+:PreArrivalNotification a owl:Class ;
+    rdfs:label "Pre-Arrival Notification" ;
+    rdfs:comment """Advance notification submitted by or on behalf of a vessel prior to arrival
+    at a port. Required under the FAL Convention and various national port
+    regulations (typically 24-96 hours before ETA).
+
+    Contains vessel identification, voyage details, cargo summary, crew/passenger
+    lists, health and security declarations, and waste notification.""" .
+
+:PortHealthDeclaration a owl:Class ;
+    rdfs:label "Port Health Declaration" ;
+    rdfs:comment """The Maritime Declaration of Health submitted by the master before arrival,
+    declaring the health status of persons on board.
+
+    IHR (2005) Article 37 / FAL Convention: Required to be submitted to health
+    authorities before the first port of call in the territory of the state and
+    at subsequent ports when coming from an affected area.""" .
+
+:WastePreNotification a owl:Class ;
+    rdfs:label "Waste Pre-Notification" ;
+    rdfs:comment """Advance notification of waste to be delivered to port reception facilities.
+
+    EU Directive 2019/883 (and similar national regulations): Ships must notify
+    the port of the types and quantities of ship-generated waste and cargo residues
+    to be delivered, at least 24 hours before arrival.""" .
+
+:VoyagePlan a owl:Class ;
+    rdfs:label "Voyage Plan" ;
+    rdfs:comment """A planned route for a vessel's voyage, required under SOLAS Chapter V
+    Regulation 34. Must cover berth-to-berth including port approach, ocean passage,
+    and coastal navigation.
+
+    Includes waypoints, course lines, safe water boundaries, no-go areas, and
+    contingency planning for weather and emergencies.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :hasWaypoint ;
+        owl:minCardinality "2"^^xsd:nonNegativeInteger
+    ] .
+
+:RouteWaypoint a owl:Class ;
+    rdfs:label "Route Waypoint" ;
+    rdfs:comment """A geographic point on a voyage plan route. Defined by latitude/longitude,
+    with optional course to next waypoint, planned speed, and ETA.""" .
 
 #################################################################
 #    Object Properties
@@ -205,6 +255,36 @@
     rdfs:range :Voyage ;
     owl:inverseOf :hasPortCall .
 
+:hasPreArrivalNotification a owl:ObjectProperty ;
+    rdfs:label "has pre-arrival notification" ;
+    rdfs:comment "Associates a port call with its pre-arrival notification." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :PreArrivalNotification .
+
+:hasPortHealthDeclaration a owl:ObjectProperty ;
+    rdfs:label "has port health declaration" ;
+    rdfs:comment "Associates a port call with a maritime declaration of health." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :PortHealthDeclaration .
+
+:hasWastePreNotification a owl:ObjectProperty ;
+    rdfs:label "has waste pre-notification" ;
+    rdfs:comment "Associates a port call with a waste delivery pre-notification." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :WastePreNotification .
+
+:hasVoyagePlan a owl:ObjectProperty ;
+    rdfs:label "has voyage plan" ;
+    rdfs:comment "Associates a voyage with its approved voyage plan." ;
+    rdfs:domain :Voyage ;
+    rdfs:range :VoyagePlan .
+
+:hasWaypoint a owl:ObjectProperty ;
+    rdfs:label "has waypoint" ;
+    rdfs:comment "Associates a voyage plan with a route waypoint." ;
+    rdfs:domain :VoyagePlan ;
+    rdfs:range :RouteWaypoint .
+
 #################################################################
 #    Datatype Properties
 #################################################################
@@ -289,3 +369,79 @@
     rdfs:comment "Number of crew members embarking or disembarking." ;
     rdfs:domain :CrewChange ;
     rdfs:range xsd:integer .
+
+#################################################################
+#    Datatype Properties — New Classes (v1.1.0)
+#################################################################
+
+:falFormType a owl:DatatypeProperty ;
+    rdfs:label "FAL form type" ;
+    rdfs:comment "The type of FAL form as code (GENERAL_DECLARATION, CARGO_DECLARATION, STORES_DECLARATION, CREW_LIST, PASSENGER_LIST, DANGEROUS_GOODS_MANIFEST, HEALTH_DECLARATION)." ;
+    rdfs:domain :FALForm ;
+    rdfs:range xsd:string .
+
+:preArrivalSubmittedDate a owl:DatatypeProperty ;
+    rdfs:label "pre-arrival submitted date" ;
+    rdfs:comment "Date and time when the pre-arrival notification was submitted." ;
+    rdfs:domain :PreArrivalNotification ;
+    rdfs:range xsd:dateTime .
+
+:preArrivalStatus a owl:DatatypeProperty ;
+    rdfs:label "pre-arrival status" ;
+    rdfs:comment "Status of the pre-arrival notification (SUBMITTED, ACCEPTED, REJECTED, AMENDED)." ;
+    rdfs:domain :PreArrivalNotification ;
+    rdfs:range xsd:string .
+
+:healthDeclarationDate a owl:DatatypeProperty ;
+    rdfs:label "health declaration date" ;
+    rdfs:comment "Date the Maritime Declaration of Health was signed by the master." ;
+    rdfs:domain :PortHealthDeclaration ;
+    rdfs:range xsd:date .
+
+:healthIssuesReported a owl:DatatypeProperty ;
+    rdfs:label "health issues reported" ;
+    rdfs:comment "Whether any health issues are reported on board (true/false)." ;
+    rdfs:domain :PortHealthDeclaration ;
+    rdfs:range xsd:boolean .
+
+:wasteNotificationDate a owl:DatatypeProperty ;
+    rdfs:label "waste notification date" ;
+    rdfs:comment "Date the waste pre-notification was submitted to the port." ;
+    rdfs:domain :WastePreNotification ;
+    rdfs:range xsd:dateTime .
+
+:estimatedWasteVolume a owl:DatatypeProperty ;
+    rdfs:label "estimated waste volume" ;
+    rdfs:comment "Total estimated volume of waste to be delivered, in cubic metres." ;
+    rdfs:domain :WastePreNotification ;
+    rdfs:range xsd:decimal .
+
+:voyagePlanApprovalDate a owl:DatatypeProperty ;
+    rdfs:label "voyage plan approval date" ;
+    rdfs:comment "Date and time the voyage plan was approved by the master." ;
+    rdfs:domain :VoyagePlan ;
+    rdfs:range xsd:dateTime .
+
+:waypointLatitude a owl:DatatypeProperty ;
+    rdfs:label "waypoint latitude" ;
+    rdfs:comment "Latitude of the route waypoint in decimal degrees." ;
+    rdfs:domain :RouteWaypoint ;
+    rdfs:range xsd:decimal .
+
+:waypointLongitude a owl:DatatypeProperty ;
+    rdfs:label "waypoint longitude" ;
+    rdfs:comment "Longitude of the route waypoint in decimal degrees." ;
+    rdfs:domain :RouteWaypoint ;
+    rdfs:range xsd:decimal .
+
+:waypointSequence a owl:DatatypeProperty ;
+    rdfs:label "waypoint sequence" ;
+    rdfs:comment "Sequential position of this waypoint in the voyage plan route." ;
+    rdfs:domain :RouteWaypoint ;
+    rdfs:range xsd:integer .
+
+:plannedSpeed a owl:DatatypeProperty ;
+    rdfs:label "planned speed" ;
+    rdfs:comment "Planned vessel speed from this waypoint to the next, in knots." ;
+    rdfs:domain :RouteWaypoint ;
+    rdfs:range xsd:decimal .
