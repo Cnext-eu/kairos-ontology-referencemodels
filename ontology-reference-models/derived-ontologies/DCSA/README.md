@@ -20,11 +20,14 @@ DCSA/
 ├── track-and-trace/
 │   ├── track-and-trace.ttl                                     # Track & Trace
 │   └── events/events.ttl                                       # Shipping events
+├── demurrage-detention/
+│   └── demurrage-detention.ttl                                 # D&D charges & tariffs
 ├── shared-kernel/
 │   ├── shared-kernel.ttl                                       # SK (Shared Kernel)
 │   ├── equipment/equipment.ttl                                 # Container equipment types
 │   ├── party/party.ttl                                         # Shipping party roles
-│   └── locations/locations.ttl                                 # Ports & terminals
+│   ├── locations/locations.ttl                                 # Ports, terminals & inland facilities
+│   └── transport-call/transport-call.ttl                       # Transport call (vessel/barge/rail/truck)
 ├── VERSION
 └── README.md
 ```
@@ -58,7 +61,7 @@ Vessel operations, schedules, and port rotations:
 **Source:** DCSA TNT v2.2
 
 Shipping event tracking across all journeys:
-- **events/** — `Event`, `TransportEvent`, `EquipmentEvent`, `DocumentEvent`, `VesselDepartureEvent`, `VesselArrivalEvent`, `GateInEvent`, `GateOutEvent`, `LoadedOnVesselEvent`, `DischargedFromVesselEvent`, `EmptyContainerPickupEvent`, `EmptyContainerReturnEvent`, `DocumentIssuedEvent`, `DocumentSurrenderedEvent`
+- **events/** — `Event`, `TransportEvent`, `EquipmentEvent`, `DocumentEvent`, `VesselDepartureEvent`, `VesselArrivalEvent`, `GateInEvent`, `GateOutEvent`, `LoadedOnVesselEvent`, `DischargedFromVesselEvent`, `EmptyContainerPickupEvent`, `EmptyContainerReturnEvent`, `DocumentIssuedEvent`, `DocumentSurrenderedEvent`, `BorderCrossingEvent`, `AvailableForPickupEvent`, `AvailableForDropoffEvent`, `PickedUpEvent`, `DroppedOffEvent`, `CustomsEvent`, `InspectionEvent`, `SealEvent`
 
 ### Shared Kernel (SK) — `shared-kernel/`
 **Namespace:** `https://www.kairosflow.ai/ont/dcsa/shared-kernel#`
@@ -67,18 +70,19 @@ Shipping event tracking across all journeys:
 Common entities referenced across all journeys:
 - **equipment/** — `Container`, `DryContainer`, `ReeferContainer`, `TankContainer`, `FlatRackContainer`, `OpenTopContainer`, `PlatformContainer`
 - **party/** — `ShippingParty`, `Shipper`, `Consignee`, `Carrier`, `BookingParty`, `NotifyParty`, `FreightForwarder`
-- **locations/** — `Location`, `Port`, `Terminal`, `PlaceOfReceipt`, `PortOfLoading`, `PortOfDischarge`, `PlaceOfDelivery`, `TransshipmentPort`
+- **locations/** — `Location`, `Port`, `Terminal`, `PlaceOfReceipt`, `PortOfLoading`, `PortOfDischarge`, `PlaceOfDelivery`, `TransshipmentPort`, `InlandTerminal`, `RailRamp`, `BorderCrossing`, `Depot`, `ContainerFreightStation`, `PreCarriageFromLocation`, `OnwardInlandRoutingLocation`, `DepotReleaseLocation`
+- **transport-call/** — `TransportCall`, `VesselTransportCall`, `BargeTransportCall`, `RailTransportCall`, `TruckTransportCall`
 
 ## Design Principles
 
 1. **Journey-based grouping** — Follows DCSA Information Model 2024.Q4 decomposition by journey type
 2. **Stable namespaces** — Module IRIs remain entity-based (`dcsa/booking#`, `dcsa/events#`) for backwards compatibility
-3. **No cross-imports** — Each leaf module is standalone. Journey-level .ttl files handle composition via `owl:imports`
+3. **Cross-domain references** — Leaf modules use prefixes to reference shared-kernel entities (equipment, party, locations, transport-call). Journey-level .ttl files handle composition via `owl:imports`
 4. **Import hierarchy** — `dcsa.ttl` → journey .ttl → leaf module .ttl
 5. **Consistent metadata** — All modules use `dcterms:` for metadata; `owl:versionInfo` for versioning
 
 ## Version
-- **Ontology version:** 1.0.0
+- **Ontology version:** 1.1.0
 - **Based on:** DCSA Information Model 2024.Q4
 
 ## Usage

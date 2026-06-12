@@ -1,0 +1,196 @@
+@prefix : <https://www.kairosflow.ai/ont/tic/reefer-monitoring#> .
+@prefix tic-loc: <https://www.kairosflow.ai/ont/tic/locations#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22/rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/tic/reefer-monitoring> a owl:Ontology ;
+    dcterms:title "TIC 4.0 Reefer Monitoring Ontology" ;
+    dcterms:description """Reefer (refrigerated container) monitoring domain of the TIC 4.0 ontology.
+
+    Covers the terminal's monitoring of reefer containers including temperature tracking,
+    power state management, alarm handling, and reefer yard infrastructure (racks and slots).
+
+    Based on TIC 4.0 Releases 2024.012 (Reefer Temperature), 2024.013 (Reefer Atmosphere),
+    and 2025.014 (Reefer additional data).""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-07-15"^^xsd:date ;
+    dcterms:modified "2026-07-15"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
+    dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
+    rdfs:seeAlso <https://tic40.org/standards/> .
+
+#################################################################
+#    Monitoring Classes
+#################################################################
+
+:ReeferMonitoring a owl:Class ;
+    rdfs:label "Reefer Monitoring" ;
+    rdfs:comment """A monitoring record for a reefer container's environmental conditions at the terminal.
+
+    TIC 4.0 subject: reefermonitoring. Captures set-point temperatures, actual readings,
+    supply/return temperatures, power state, and alarm status. Recorded periodically by
+    the terminal's reefer monitoring system or at gate-in/gate-out checkpoints.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :monitoringTimestamp ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Infrastructure Classes
+#################################################################
+
+:ReeferRack a owl:Class ;
+    rdfs:label "Reefer Rack" ;
+    rdfs:comment """A frame or structure in the terminal yard holding multiple reefer containers with power connections.
+
+    TIC 4.0: Reefer racks provide organized storage with centralized power distribution
+    and monitoring. Each rack has a defined capacity and total power supply.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :rackId ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:ReeferSlot a owl:Class ;
+    rdfs:label "Reefer Slot" ;
+    rdfs:comment """An individual position within a reefer rack or yard equipped with a power connection
+    for a single reefer container.
+
+    TIC 4.0: Each slot has its own plug, power capacity, and occupancy status.
+    Slots are assigned to reefer containers for the duration of their yard stay.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :slotNumber ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasSlot a owl:ObjectProperty ;
+    rdfs:label "has slot" ;
+    rdfs:comment "Links a reefer rack to one of its individual reefer slots." ;
+    rdfs:domain :ReeferRack ;
+    rdfs:range :ReeferSlot .
+
+:atLocation a owl:ObjectProperty ;
+    rdfs:label "at location" ;
+    rdfs:comment "Links a reefer rack to its physical location within the terminal." ;
+    rdfs:domain :ReeferRack ;
+    rdfs:range tic-loc:TerminalLocation .
+
+:monitoredAtSlot a owl:ObjectProperty ;
+    rdfs:label "monitored at slot" ;
+    rdfs:comment "Links a reefer monitoring record to the slot where the container is plugged in." ;
+    rdfs:domain :ReeferMonitoring ;
+    rdfs:range :ReeferSlot .
+
+#################################################################
+#    Datatype Properties — Monitoring
+#################################################################
+
+:monitoringTimestamp a owl:DatatypeProperty ;
+    rdfs:label "monitoring timestamp" ;
+    rdfs:comment "Date and time when the reefer monitoring reading was recorded." ;
+    rdfs:domain :ReeferMonitoring ;
+    rdfs:range xsd:dateTime .
+
+:setTemperature a owl:DatatypeProperty ;
+    rdfs:label "set temperature" ;
+    rdfs:comment "Target temperature set-point for the reefer unit in degrees Celsius." ;
+    rdfs:domain :ReeferMonitoring ;
+    rdfs:range xsd:decimal .
+
+:actualTemperature a owl:DatatypeProperty ;
+    rdfs:label "actual temperature" ;
+    rdfs:comment "Measured cargo temperature inside the reefer container in degrees Celsius." ;
+    rdfs:domain :ReeferMonitoring ;
+    rdfs:range xsd:decimal .
+
+:supplyTemperature a owl:DatatypeProperty ;
+    rdfs:label "supply temperature" ;
+    rdfs:comment "Temperature of air being supplied into the reefer container in degrees Celsius." ;
+    rdfs:domain :ReeferMonitoring ;
+    rdfs:range xsd:decimal .
+
+:returnTemperature a owl:DatatypeProperty ;
+    rdfs:label "return temperature" ;
+    rdfs:comment "Temperature of air returning from the reefer container in degrees Celsius." ;
+    rdfs:domain :ReeferMonitoring ;
+    rdfs:range xsd:decimal .
+
+:powerState a owl:DatatypeProperty ;
+    rdfs:label "power state" ;
+    rdfs:comment "Current power state of the reefer unit (ON, OFF, STANDBY, FAULT)." ;
+    rdfs:domain :ReeferMonitoring ;
+    rdfs:range xsd:string .
+
+:alarmStatus a owl:DatatypeProperty ;
+    rdfs:label "alarm status" ;
+    rdfs:comment "Current alarm status (NONE, ACTIVE, ACKNOWLEDGED, CLEARED)." ;
+    rdfs:domain :ReeferMonitoring ;
+    rdfs:range xsd:string .
+
+:oxygenLevel a owl:DatatypeProperty ;
+    rdfs:label "oxygen level" ;
+    rdfs:comment "Oxygen concentration level in controlled atmosphere reefer, as percentage." ;
+    rdfs:domain :ReeferMonitoring ;
+    rdfs:range xsd:decimal .
+
+:co2Level a owl:DatatypeProperty ;
+    rdfs:label "CO2 level" ;
+    rdfs:comment "Carbon dioxide concentration in controlled atmosphere reefer, as percentage." ;
+    rdfs:domain :ReeferMonitoring ;
+    rdfs:range xsd:decimal .
+
+:containerReference a owl:DatatypeProperty ;
+    rdfs:label "container reference" ;
+    rdfs:comment "ISO 6346 container number of the reefer being monitored." ;
+    rdfs:domain :ReeferMonitoring ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Datatype Properties — Infrastructure
+#################################################################
+
+:rackId a owl:DatatypeProperty ;
+    rdfs:label "rack ID" ;
+    rdfs:comment "Unique identifier of the reefer rack within the terminal." ;
+    rdfs:domain :ReeferRack ;
+    rdfs:range xsd:string .
+
+:rackCapacity a owl:DatatypeProperty ;
+    rdfs:label "rack capacity" ;
+    rdfs:comment "Maximum number of reefer containers the rack can accommodate." ;
+    rdfs:domain :ReeferRack ;
+    rdfs:range xsd:integer .
+
+:powerSupplyCapacityKW a owl:DatatypeProperty ;
+    rdfs:label "power supply capacity (kW)" ;
+    rdfs:comment "Total electrical power capacity available at the rack in kilowatts." ;
+    rdfs:domain :ReeferRack ;
+    rdfs:range xsd:decimal .
+
+:slotNumber a owl:DatatypeProperty ;
+    rdfs:label "slot number" ;
+    rdfs:comment "Identifier of the individual slot within a reefer rack." ;
+    rdfs:domain :ReeferSlot ;
+    rdfs:range xsd:string .
+
+:plugCapacityKW a owl:DatatypeProperty ;
+    rdfs:label "plug capacity (kW)" ;
+    rdfs:comment "Power capacity of the individual plug connection in kilowatts." ;
+    rdfs:domain :ReeferSlot ;
+    rdfs:range xsd:decimal .
+
+:slotPowerStatus a owl:DatatypeProperty ;
+    rdfs:label "slot power status" ;
+    rdfs:comment "Power status of the slot (AVAILABLE, OCCUPIED, FAULT, MAINTENANCE)." ;
+    rdfs:domain :ReeferSlot ;
+    rdfs:range xsd:string .

@@ -17,7 +17,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
     rdfs:seeAlso <https://tic40.org/standards/> .
 
@@ -31,6 +31,8 @@
 
     TIC 4.0 subject: carriervisit. Encompasses the full lifecycle from arrival through
     mooring/positioning to departure. The primary operational planning unit for vessel operations.""" ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/imo/vessel-registry> ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/imo/port-call> ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :visitArrivalTime ;
@@ -43,6 +45,7 @@
 
     TIC 4.0 subject: cargovisit. Tracks a container or cargo unit through its entire stay
     at the terminal, linking gate-in, yard storage, vessel operations, and gate-out.""" ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/equipment> ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :cargoArrivalTime ;
@@ -255,4 +258,314 @@
     rdfs:label "instruction priority" ;
     rdfs:comment "Priority level of the job instruction (e.g., 1=urgent, 5=normal)." ;
     rdfs:domain :JobInstruction ;
+    rdfs:range xsd:integer .
+
+:unitReference a owl:DatatypeProperty ;
+    rdfs:label "unit reference" ;
+    rdfs:comment "Identifier of the cargo unit (e.g., container number) associated with the job instruction." ;
+    rdfs:domain :JobInstruction ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Phase 1.1: Seal Class + Cargo Visit Properties
+#################################################################
+
+:Seal a owl:Class ;
+    rdfs:label "Seal" ;
+    rdfs:comment """A physical security seal affixed to a cargo unit to detect unauthorized access.
+
+    TIC 4.0: Seals are verified at gate-in/gate-out and during inspections.
+    Seal types include bolt seals, cable seals, and electronic seals (C-TPAT/ISO 17712).""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :sealNumber ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:hasSeal a owl:ObjectProperty ;
+    rdfs:label "has seal" ;
+    rdfs:comment "Links a cargo visit to the seal(s) verified for the cargo unit." ;
+    rdfs:domain :CargoVisit ;
+    rdfs:range :Seal .
+
+:sealNumber a owl:DatatypeProperty ;
+    rdfs:label "seal number" ;
+    rdfs:comment "Unique identifier of the seal." ;
+    rdfs:domain :Seal ;
+    rdfs:range xsd:string .
+
+:sealType a owl:DatatypeProperty ;
+    rdfs:label "seal type" ;
+    rdfs:comment "Type of seal (BOLT, CABLE, ELECTRONIC, WIRE, PADLOCK)." ;
+    rdfs:domain :Seal ;
+    rdfs:range xsd:string .
+
+:sealStatus a owl:DatatypeProperty ;
+    rdfs:label "seal status" ;
+    rdfs:comment "Condition of the seal (INTACT, BROKEN, MISSING, TAMPERED)." ;
+    rdfs:domain :Seal ;
+    rdfs:range xsd:string .
+
+# Cargo Visit terminal-specific properties
+
+:containerNumber a owl:DatatypeProperty ;
+    rdfs:label "container number" ;
+    rdfs:comment """ISO 6346 container identification number (owner code + serial + check digit).
+
+    The terminal tracks this per cargo visit; the canonical Container entity resides
+    in the DCSA equipment ontology.""" ;
+    rdfs:domain :CargoVisit ;
+    rdfs:range xsd:string .
+
+:isoTypeCode a owl:DatatypeProperty ;
+    rdfs:label "ISO type code" ;
+    rdfs:comment "ISO 6346 size/type code of the cargo unit (e.g., 22G1, 42R1, 45P1)." ;
+    rdfs:domain :CargoVisit ;
+    rdfs:range xsd:string .
+
+:conditionCode a owl:DatatypeProperty ;
+    rdfs:label "condition code" ;
+    rdfs:comment "Physical condition of the cargo unit at the terminal (GOOD, DAMAGED, DIRTY, NEEDS_REPAIR)." ;
+    rdfs:domain :CargoVisit ;
+    rdfs:range xsd:string .
+
+:weightClass a owl:DatatypeProperty ;
+    rdfs:label "weight class" ;
+    rdfs:comment "Weight classification used for yard planning (LIGHT, MEDIUM, HEAVY, SUPER_HEAVY)." ;
+    rdfs:domain :CargoVisit ;
+    rdfs:range xsd:string .
+
+:holdStatus a owl:DatatypeProperty ;
+    rdfs:label "hold status" ;
+    rdfs:comment "Operational hold status preventing release (CUSTOMS, TERMINAL, LINE, NONE)." ;
+    rdfs:domain :CargoVisit ;
+    rdfs:range xsd:string .
+
+:cargoGrossWeightKg a owl:DatatypeProperty ;
+    rdfs:label "cargo gross weight (kg)" ;
+    rdfs:comment "Verified gross mass (VGM) of the cargo unit in kilograms per SOLAS VI/2." ;
+    rdfs:domain :CargoVisit ;
+    rdfs:range xsd:decimal .
+
+#################################################################
+#    Phase 1.2: Vessel Identity on CarrierVisit
+#################################################################
+
+:vesselIMONumber a owl:DatatypeProperty ;
+    rdfs:label "vessel IMO number" ;
+    rdfs:comment """IMO ship identification number per SOLAS XI-1/3 and Resolution A.1117(30).
+
+    The canonical Vessel entity with full registration details resides in the
+    IMO vessel-registry ontology.""" ;
+    rdfs:domain :CarrierVisit ;
+    rdfs:range xsd:string .
+
+:vesselName a owl:DatatypeProperty ;
+    rdfs:label "vessel name" ;
+    rdfs:comment "Registered name of the vessel visiting the terminal." ;
+    rdfs:domain :CarrierVisit ;
+    rdfs:range xsd:string .
+
+:mmsiNumber a owl:DatatypeProperty ;
+    rdfs:label "MMSI number" ;
+    rdfs:comment "Maritime Mobile Service Identity number for AIS identification." ;
+    rdfs:domain :CarrierVisit ;
+    rdfs:range xsd:string .
+
+:vesselCallSign a owl:DatatypeProperty ;
+    rdfs:label "vessel call sign" ;
+    rdfs:comment "International radio call sign of the vessel." ;
+    rdfs:domain :CarrierVisit ;
+    rdfs:range xsd:string .
+
+:voyageNumber a owl:DatatypeProperty ;
+    rdfs:label "voyage number" ;
+    rdfs:comment "Carrier-assigned voyage number for the inbound or outbound leg." ;
+    rdfs:domain :CarrierVisit ;
+    rdfs:range xsd:string .
+
+:vesselMaxDraft a owl:DatatypeProperty ;
+    rdfs:label "vessel maximum draft" ;
+    rdfs:comment "Maximum draft of the vessel in metres, relevant for berth assignment." ;
+    rdfs:domain :CarrierVisit ;
+    rdfs:range xsd:decimal .
+
+:vesselLOA a owl:DatatypeProperty ;
+    rdfs:label "vessel length overall" ;
+    rdfs:comment "Length overall (LOA) of the vessel in metres." ;
+    rdfs:domain :CarrierVisit ;
+    rdfs:range xsd:decimal .
+
+#################################################################
+#    Phase 1.3: CarrierTrip and Order
+#################################################################
+
+:CarrierTrip a owl:Class ;
+    rdfs:label "Carrier Trip" ;
+    rdfs:comment """The journey context of a carrier before and after its terminal visit.
+
+    TIC 4.0 concept: carriertrip. Captures the origin, destination, and schedule
+    of the carrier's voyage, enabling ETA/ETD predictions and berth planning.""" .
+
+:Order a owl:Class ;
+    rdfs:label "Order" ;
+    rdfs:comment """An atomic handling directive within a job instruction, specifying a single
+    collect, move, or deliver action for a cargo unit.
+
+    TIC 4.0: Orders decompose a job instruction into executable steps that can be
+    individually dispatched and tracked.""" ;
+    rdfs:subClassOf :Move .
+
+:hasCarrierTrip a owl:ObjectProperty ;
+    rdfs:label "has carrier trip" ;
+    rdfs:comment "Links a carrier visit to the carrier's trip/voyage context." ;
+    rdfs:domain :CarrierVisit ;
+    rdfs:range :CarrierTrip .
+
+:tripId a owl:DatatypeProperty ;
+    rdfs:label "trip ID" ;
+    rdfs:comment "Unique identifier for the carrier trip." ;
+    rdfs:domain :CarrierTrip ;
+    rdfs:range xsd:string .
+
+:departurePort a owl:DatatypeProperty ;
+    rdfs:label "departure port" ;
+    rdfs:comment "UN/LOCODE of the port from which the carrier departed on this trip." ;
+    rdfs:domain :CarrierTrip ;
+    rdfs:range xsd:string .
+
+:nextPort a owl:DatatypeProperty ;
+    rdfs:label "next port" ;
+    rdfs:comment "UN/LOCODE of the next port of call after the terminal visit." ;
+    rdfs:domain :CarrierTrip ;
+    rdfs:range xsd:string .
+
+:estimatedArrival a owl:DatatypeProperty ;
+    rdfs:label "estimated arrival" ;
+    rdfs:comment "Estimated time of arrival at the terminal." ;
+    rdfs:domain :CarrierTrip ;
+    rdfs:range xsd:dateTime .
+
+:estimatedDeparture a owl:DatatypeProperty ;
+    rdfs:label "estimated departure" ;
+    rdfs:comment "Estimated time of departure from the terminal." ;
+    rdfs:domain :CarrierTrip ;
+    rdfs:range xsd:dateTime .
+
+:orderType a owl:DatatypeProperty ;
+    rdfs:label "order type" ;
+    rdfs:comment "Type of handling order (COLLECT, MOVE, DELIVER)." ;
+    rdfs:domain :Order ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Phase 1.4: StowagePlan
+#################################################################
+
+:StowagePlan a owl:Class ;
+    rdfs:label "Stowage Plan" ;
+    rdfs:comment """A plan describing the arrangement of cargo units on a vessel for a carrier visit.
+
+    TIC 4.0: Derived from BAPLIE messages; essential for discharge sequencing, crane
+    split planning, and bay-by-bay work instruction generation.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :hasStowagePlan ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:hasStowagePlan a owl:ObjectProperty ;
+    rdfs:label "has stowage plan" ;
+    rdfs:comment "Links a carrier visit to its stowage plan." ;
+    rdfs:domain :CarrierVisit ;
+    rdfs:range :StowagePlan .
+
+:planVersion a owl:DatatypeProperty ;
+    rdfs:label "plan version" ;
+    rdfs:comment "Version identifier of the stowage plan (e.g., PRELIMINARY, FINAL, UPDATED)." ;
+    rdfs:domain :StowagePlan ;
+    rdfs:range xsd:string .
+
+:planDate a owl:DatatypeProperty ;
+    rdfs:label "plan date" ;
+    rdfs:comment "Date when the stowage plan was created or last updated." ;
+    rdfs:domain :StowagePlan ;
+    rdfs:range xsd:dateTime .
+
+:totalUnitsPlanned a owl:DatatypeProperty ;
+    rdfs:label "total units planned" ;
+    rdfs:comment "Total number of cargo units in the stowage plan." ;
+    rdfs:domain :StowagePlan ;
+    rdfs:range xsd:integer .
+
+#################################################################
+#    Phase 4.1: Rail Intermodal
+#################################################################
+
+:RailVisit a owl:Class ;
+    rdfs:label "Rail Visit" ;
+    rdfs:comment """The visit of a train to the terminal for loading and discharging cargo units.
+
+    TIC 4.0 (Release 2025.017): A specialized CarrierVisit for rail intermodal operations.
+    Tracks train composition, arrival/departure times, and assigned track.""" ;
+    rdfs:subClassOf :CarrierVisit .
+
+:RailWagon a owl:Class ;
+    rdfs:label "Rail Wagon" ;
+    rdfs:comment """An individual wagon within a train visiting the terminal.
+
+    TIC 4.0 (Release 2025.017): Wagons are identified by number and type, with defined
+    slot positions for container placement.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :wagonNumber ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:hasWagon a owl:ObjectProperty ;
+    rdfs:label "has wagon" ;
+    rdfs:comment "Links a rail visit to the individual wagons in the train." ;
+    rdfs:domain :RailVisit ;
+    rdfs:range :RailWagon .
+
+:trainId a owl:DatatypeProperty ;
+    rdfs:label "train ID" ;
+    rdfs:comment "Unique identifier of the train service." ;
+    rdfs:domain :RailVisit ;
+    rdfs:range xsd:string .
+
+:trackId a owl:DatatypeProperty ;
+    rdfs:label "track ID" ;
+    rdfs:comment "Identifier of the rail track assigned for the train visit." ;
+    rdfs:domain :RailVisit ;
+    rdfs:range xsd:string .
+
+:wagonCount a owl:DatatypeProperty ;
+    rdfs:label "wagon count" ;
+    rdfs:comment "Total number of wagons in the train." ;
+    rdfs:domain :RailVisit ;
+    rdfs:range xsd:integer .
+
+:wagonNumber a owl:DatatypeProperty ;
+    rdfs:label "wagon number" ;
+    rdfs:comment "Unique registration number of the rail wagon (UIC format)." ;
+    rdfs:domain :RailWagon ;
+    rdfs:range xsd:string .
+
+:wagonType a owl:DatatypeProperty ;
+    rdfs:label "wagon type" ;
+    rdfs:comment "Type of rail wagon (FLAT, WELL, SPINE, INTERMODAL_POCKET)." ;
+    rdfs:domain :RailWagon ;
+    rdfs:range xsd:string .
+
+:wagonSlotCount a owl:DatatypeProperty ;
+    rdfs:label "wagon slot count" ;
+    rdfs:comment "Number of container slot positions on the wagon." ;
+    rdfs:domain :RailWagon ;
+    rdfs:range xsd:integer .
+
+:wagonPositionInTrain a owl:DatatypeProperty ;
+    rdfs:label "wagon position in train" ;
+    rdfs:comment "Ordinal position of the wagon within the train (1 = first wagon from locomotive)." ;
+    rdfs:domain :RailWagon ;
     rdfs:range xsd:integer .

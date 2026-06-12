@@ -9,6 +9,7 @@
 @prefix party: <https://www.kairosflow.ai/ont/dcsa/party#> .
 @prefix loc: <https://www.kairosflow.ai/ont/dcsa/locations#> .
 @prefix evt: <https://www.kairosflow.ai/ont/dcsa/events#> .
+@prefix tc: <https://www.kairosflow.ai/ont/dcsa/transport-call#> .
 
 # Ontology Metadata
 <https://www.kairosflow.ai/ont/dcsa/booking> a owl:Ontology ;
@@ -20,9 +21,9 @@
     utilized transport equipment.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
-    dcterms:source "DCSA Booking API (BKG) v2.0" ;
+    dcterms:modified "2026-06-12"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
+    dcterms:source "DCSA Booking API (BKG) v2.0, BKG v2.0.2" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
 
 #################################################################
@@ -345,3 +346,106 @@
     rdfs:comment "SCAC (Standard Carrier Alpha Code) or other carrier identifier." ;
     rdfs:domain :Booking ;
     rdfs:range xsd:string .
+
+#################################################################
+#    Inland & Intermodal Booking Properties
+#################################################################
+
+:receiptTypeAtOrigin a owl:DatatypeProperty ;
+    rdfs:label "receipt type at origin" ;
+    rdfs:comment """How cargo is received at origin.
+    DCSA BKG formal enum: CY (Container Yard), SD (Store Door),
+    CFS (Container Freight Station).""" ;
+    rdfs:domain :Booking ;
+    rdfs:range xsd:string .
+
+:deliveryTypeAtDestination a owl:DatatypeProperty ;
+    rdfs:label "delivery type at destination" ;
+    rdfs:comment """How cargo is delivered at destination.
+    DCSA BKG formal enum: CY (Container Yard), SD (Store Door),
+    CFS (Container Freight Station).""" ;
+    rdfs:domain :Booking ;
+    rdfs:range xsd:string .
+
+:requestedPreCarriageModeOfTransport a owl:DatatypeProperty ;
+    rdfs:label "requested pre-carriage mode of transport" ;
+    rdfs:comment """Requested transport mode for pre-carriage (origin to port of loading).
+    DCSA BKG v2.0.2 values: VESSEL, RAIL, TRUCK, BARGE, RAIL_TRUCK,
+    BARGE_TRUCK, BARGE_RAIL, MULTIMODAL.""" ;
+    rdfs:domain :Booking ;
+    rdfs:range xsd:string .
+
+:requestedOnCarriageModeOfTransport a owl:DatatypeProperty ;
+    rdfs:label "requested on-carriage mode of transport" ;
+    rdfs:comment """Requested transport mode for on-carriage (port of discharge to destination).
+    DCSA BKG v2.0.2 values: VESSEL, RAIL, TRUCK, BARGE, RAIL_TRUCK,
+    BARGE_TRUCK, BARGE_RAIL, MULTIMODAL.""" ;
+    rdfs:domain :Booking ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Transport Plan Leg
+#################################################################
+
+:TransportPlanLeg a owl:Class ;
+    rdfs:label "Transport Plan Leg" ;
+    rdfs:comment """A single leg in the confirmed booking's transport plan.
+
+    DCSA BKG 'Transport' schema: represents one segment of the planned
+    transport chain, classified by stage (pre-carriage, main-carriage,
+    or on-carriage) and mode of transport.""" .
+
+:hasTransportPlan a owl:ObjectProperty ;
+    rdfs:label "has transport plan" ;
+    rdfs:comment "Relates a confirmed booking to its transport plan legs." ;
+    rdfs:domain :ConfirmedBooking ;
+    rdfs:range :TransportPlanLeg .
+
+:hasLoadLocation a owl:ObjectProperty ;
+    rdfs:label "has load location" ;
+    rdfs:comment "The location where cargo is loaded for this transport leg." ;
+    rdfs:domain :TransportPlanLeg ;
+    rdfs:range loc:Location .
+
+:hasDischargeLocation a owl:ObjectProperty ;
+    rdfs:label "has discharge location" ;
+    rdfs:comment "The location where cargo is discharged for this transport leg." ;
+    rdfs:domain :TransportPlanLeg ;
+    rdfs:range loc:Location .
+
+:legHasTransportCall a owl:ObjectProperty ;
+    rdfs:label "has transport call" ;
+    rdfs:comment "The transport call associated with this plan leg." ;
+    rdfs:domain :TransportPlanLeg ;
+    rdfs:range tc:TransportCall .
+
+:legTransportPlanStage a owl:DatatypeProperty ;
+    rdfs:label "transport plan stage" ;
+    rdfs:comment """The stage of transport for this leg.
+    DCSA formal enum: PRC (Pre-Carriage), MNC (Main Carriage), ONC (On-Carriage).""" ;
+    rdfs:domain :TransportPlanLeg ;
+    rdfs:range xsd:string .
+
+:legTransportPlanStageSequenceNumber a owl:DatatypeProperty ;
+    rdfs:label "transport plan stage sequence number" ;
+    rdfs:comment "Sequence number within the transport plan stage." ;
+    rdfs:domain :TransportPlanLeg ;
+    rdfs:range xsd:integer .
+
+:legModeOfTransport a owl:DatatypeProperty ;
+    rdfs:label "mode of transport" ;
+    rdfs:comment "Transport mode for this leg (VESSEL, RAIL, TRUCK, BARGE)." ;
+    rdfs:domain :TransportPlanLeg ;
+    rdfs:range xsd:string .
+
+:plannedDepartureDate a owl:DatatypeProperty ;
+    rdfs:label "planned departure date" ;
+    rdfs:comment "Planned departure date for this transport leg." ;
+    rdfs:domain :TransportPlanLeg ;
+    rdfs:range xsd:dateTime .
+
+:plannedArrivalDate a owl:DatatypeProperty ;
+    rdfs:label "planned arrival date" ;
+    rdfs:comment "Planned arrival date for this transport leg." ;
+    rdfs:domain :TransportPlanLeg ;
+    rdfs:range xsd:dateTime .

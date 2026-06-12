@@ -4,6 +4,8 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix loc: <https://www.kairosflow.ai/ont/dcsa/locations#> .
+@prefix tc: <https://www.kairosflow.ai/ont/dcsa/transport-call#> .
 
 # Ontology Metadata
 <https://www.kairosflow.ai/ont/dcsa/schedule> a owl:Ontology ;
@@ -15,8 +17,8 @@
     defined in DCSA's Operational Vessel Schedules (OVS) API standard.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
+    dcterms:modified "2026-06-12"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
     dcterms:source "DCSA Operational Vessel Schedules (OVS) API" ;
     rdfs:seeAlso <https://dcsa.org/standards/operational-vessel-schedules/> .
 
@@ -69,6 +71,18 @@
     rdfs:comment "Relates a service loop to expected transit times." ;
     rdfs:domain :ServiceLoop ;
     rdfs:range :TransitTime .
+
+:hasPortOfCall a owl:ObjectProperty ;
+    rdfs:label "has port of call" ;
+    rdfs:comment "A port included in this sailing schedule's rotation." ;
+    rdfs:domain :SailingSchedule ;
+    rdfs:range loc:Port .
+
+:hasTransportCall a owl:ObjectProperty ;
+    rdfs:label "has transport call" ;
+    rdfs:comment "A vessel transport call in this sailing schedule." ;
+    rdfs:domain :SailingSchedule ;
+    rdfs:range tc:VesselTransportCall .
 
 #################################################################
 #    Datatype Properties

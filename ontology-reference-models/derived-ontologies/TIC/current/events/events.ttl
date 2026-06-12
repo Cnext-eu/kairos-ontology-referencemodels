@@ -20,7 +20,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
     rdfs:seeAlso <https://tic40.org/standards/> .
 
@@ -50,14 +50,16 @@
     rdfs:comment """An event recording the arrival and processing of a truck or cargo unit through the terminal gate.
 
     TIC 4.0: Captures unit identification, truck details, seal verification, and condition at entry.""" ;
-    rdfs:subClassOf :TerminalEvent .
+    rdfs:subClassOf :TerminalEvent ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/events#GateInEvent> .
 
 :GateOutEvent a owl:Class ;
     rdfs:label "Gate Out Event" ;
     rdfs:comment """An event recording the departure of a truck or cargo unit through the terminal gate.
 
     TIC 4.0: Captures unit identification, delivery order reference, and condition at exit.""" ;
-    rdfs:subClassOf :TerminalEvent .
+    rdfs:subClassOf :TerminalEvent ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/events#GateOutEvent> .
 
 :YardMoveEvent a owl:Class ;
     rdfs:label "Yard Move Event" ;
@@ -81,14 +83,16 @@
     rdfs:comment """An event recording the loading of a cargo unit onto a vessel.
 
     TIC 4.0: Captures vessel call reference, stowage position, quay crane, and lift timestamp.""" ;
-    rdfs:subClassOf :TerminalEvent .
+    rdfs:subClassOf :TerminalEvent ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/events#LoadedOnVesselEvent> .
 
 :VesselDischargeEvent a owl:Class ;
     rdfs:label "Vessel Discharge Event" ;
     rdfs:comment """An event recording the discharging of a cargo unit from a vessel.
 
     TIC 4.0: Captures vessel call reference, origin stowage position, and landing position.""" ;
-    rdfs:subClassOf :TerminalEvent .
+    rdfs:subClassOf :TerminalEvent ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/events#DischargedFromVesselEvent> .
 
 :StackEvent a owl:Class ;
     rdfs:label "Stack Event" ;
@@ -243,4 +247,102 @@
     rdfs:label "move reason" ;
     rdfs:comment "Reason code for a yard move (e.g., HOUSEKEEPING, DELIVERY, RESTOW)." ;
     rdfs:domain :YardMoveEvent ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Phase 3.2: Reefer Events
+#################################################################
+
+:ReeferPlugInEvent a owl:Class ;
+    rdfs:label "Reefer Plug In Event" ;
+    rdfs:comment """An event recording the connection of a reefer container to a power supply.
+
+    TIC 4.0: Captures plug timestamp, plug/slot number, and container reference.
+    Critical for reefer monitoring SLA tracking (time-to-plug after discharge).""" ;
+    rdfs:subClassOf :TerminalEvent .
+
+:ReeferPlugOutEvent a owl:Class ;
+    rdfs:label "Reefer Plug Out Event" ;
+    rdfs:comment """An event recording the disconnection of a reefer container from a power supply.
+
+    TIC 4.0: Occurs before vessel loading, gate-out, or yard relocation of reefer units.""" ;
+    rdfs:subClassOf :TerminalEvent .
+
+:ReeferAlarmEvent a owl:Class ;
+    rdfs:label "Reefer Alarm Event" ;
+    rdfs:comment """An event recording an alarm condition on a reefer container (temperature deviation, power fault, etc.).
+
+    TIC 4.0: Triggers inspection workflows and may require immediate operational response.""" ;
+    rdfs:subClassOf :TerminalEvent .
+
+:reeferAlarmCode a owl:DatatypeProperty ;
+    rdfs:label "reefer alarm code" ;
+    rdfs:comment "Code identifying the type of reefer alarm (e.g., TEMP_HIGH, TEMP_LOW, POWER_FAIL, DEFROST)." ;
+    rdfs:domain :ReeferAlarmEvent ;
+    rdfs:range xsd:string .
+
+:reeferAlarmSeverity a owl:DatatypeProperty ;
+    rdfs:label "reefer alarm severity" ;
+    rdfs:comment "Severity level of the reefer alarm (CRITICAL, WARNING, INFO)." ;
+    rdfs:domain :ReeferAlarmEvent ;
+    rdfs:range xsd:string .
+
+:plugEventTimestamp a owl:DatatypeProperty ;
+    rdfs:label "plug event timestamp" ;
+    rdfs:comment "Exact timestamp of the plug-in or plug-out action." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :ReeferPlugInEvent :ReeferPlugOutEvent )
+    ] ;
+    rdfs:range xsd:dateTime .
+
+:reeferPlugNumber a owl:DatatypeProperty ;
+    rdfs:label "reefer plug number" ;
+    rdfs:comment "Identifier of the reefer plug or slot used in the plug event." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :ReeferPlugInEvent :ReeferPlugOutEvent )
+    ] ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Phase 3.3: Electric CHE Events
+#################################################################
+
+:ChargingSessionEvent a owl:Class ;
+    rdfs:label "Charging Session Event" ;
+    rdfs:comment """An event recording a battery charging session for electric terminal equipment.
+
+    TIC 4.0 (Release 2025.017/2026.018): Captures the charging of electric CHE
+    (terminal tractors, AGVs, straddle carriers) at charging stations.""" ;
+    rdfs:subClassOf :TerminalEvent .
+
+:chargingStartTime a owl:DatatypeProperty ;
+    rdfs:label "charging start time" ;
+    rdfs:comment "Timestamp when the charging session began." ;
+    rdfs:domain :ChargingSessionEvent ;
+    rdfs:range xsd:dateTime .
+
+:chargingEndTime a owl:DatatypeProperty ;
+    rdfs:label "charging end time" ;
+    rdfs:comment "Timestamp when the charging session ended." ;
+    rdfs:domain :ChargingSessionEvent ;
+    rdfs:range xsd:dateTime .
+
+:energyDeliveredKWh a owl:DatatypeProperty ;
+    rdfs:label "energy delivered (kWh)" ;
+    rdfs:comment "Total energy delivered during the charging session in kilowatt-hours." ;
+    rdfs:domain :ChargingSessionEvent ;
+    rdfs:range xsd:decimal .
+
+:chargingStationRef a owl:DatatypeProperty ;
+    rdfs:label "charging station reference" ;
+    rdfs:comment "Identifier of the charging station used for the session." ;
+    rdfs:domain :ChargingSessionEvent ;
+    rdfs:range xsd:string .
+
+:vehicleRef a owl:DatatypeProperty ;
+    rdfs:label "vehicle reference" ;
+    rdfs:comment "Identifier of the electric CHE that was charged." ;
+    rdfs:domain :ChargingSessionEvent ;
     rdfs:range xsd:string .

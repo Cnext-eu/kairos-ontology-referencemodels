@@ -5,6 +5,8 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix equip: <https://www.kairosflow.ai/ont/dcsa/equipment#> .
+@prefix loc: <https://www.kairosflow.ai/ont/dcsa/locations#> .
+@prefix evt: <https://www.kairosflow.ai/ont/dcsa/events#> .
 
 # Ontology Metadata
 <https://www.kairosflow.ai/ont/dcsa/container-operations> a owl:Ontology ;
@@ -19,8 +21,8 @@
     stuffing/stripping operations, and Lift-on/Lift-off (LoLo) handling.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
+    dcterms:modified "2026-06-12"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
     dcterms:source "DCSA Track & Trace API v2.2 (equipment event types)" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
 
@@ -144,3 +146,19 @@
     rdfs:comment "Date and time when the lift-on/lift-off operation occurred." ;
     rdfs:domain :LiftOnLiftOff ;
     rdfs:range xsd:dateTime .
+
+#################################################################
+#    Cross-Domain Object Properties
+#################################################################
+
+:atLocation a owl:ObjectProperty ;
+    rdfs:label "at location" ;
+    rdfs:comment "The location where this container operation takes place." ;
+    rdfs:domain :ContainerStuffing ;
+    rdfs:range loc:Location .
+
+:triggeredByEvent a owl:ObjectProperty ;
+    rdfs:label "triggered by event" ;
+    rdfs:comment "The equipment event that triggered or recorded this container operation." ;
+    rdfs:domain :ContainerStuffing ;
+    rdfs:range evt:EquipmentEvent .
