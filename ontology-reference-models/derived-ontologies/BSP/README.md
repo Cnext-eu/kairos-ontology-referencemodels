@@ -15,7 +15,6 @@ BSP/
 ├── reference-data/reference-data.ttl    # Locations, measurements, code lists
 ├── cost-accounting/cost-accounting.ttl  # Transport cost allocation, budgets, cost-to-serve
 ├── revenue-yield/revenue-yield.ttl      # Revenue attribution, yield metrics, profitability
-└── extensions/                          # Silver-layer extension annotations for each module
 ```
 
 ## Domain Modules
@@ -88,7 +87,7 @@ Derived from the monolithic `buy-ship-pay.ttl` ontology based on:
 
 ### v1.2.0 (2026-05-16)
 - Added cost-accounting and revenue-yield modules
-- Added silver extension files for all modules
+- Silver extension templates moved to logistics accelerator blueprint (`client-hub-blueprint/examples/extensions/`)
 
 ### v1.0.0 (2026-01-06)
 - Initial release with 6 core modules: Party, Commercial, Financial, Documents, Compliance, Reference Data
