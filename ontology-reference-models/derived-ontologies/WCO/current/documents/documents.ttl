@@ -12,8 +12,8 @@
     dcterms:description "Customs and trade documents including declarations, permits, transit documents, and international trade carnets based on the WCO Data Model 3.10.0." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    dcterms:modified "2026-06-13"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056" ;
     rdfs:seeAlso <https://www.wcoomd.org/datamodel> .
 
@@ -26,6 +26,8 @@
     rdfs:comment """Official document submitted to customs authorities declaring goods for import, export, or transit.
 
     WCO: Official document submitted to customs authorities declaring goods for import, export, or transit.""" ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/bsp/documents#BillOfLading> ,
+                 <https://www.kairosflow.ai/ont/dcsa/transport-documents#TransportDocument> ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :documentNumber ;

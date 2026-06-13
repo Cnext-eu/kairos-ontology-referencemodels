@@ -13,8 +13,8 @@
     dcterms:description "Trade facilitation certificates, permits, and trusted trader programmes based on the WCO Data Model 3.10.0 and eFTI Regulation." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    dcterms:modified "2026-06-13"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056" ;
     rdfs:seeAlso <https://www.wcoomd.org/datamodel> .
 
@@ -38,6 +38,8 @@
     rdfs:comment """A certificate attesting the country of origin of goods.
 
     WCO: Proof of origin for preferential trade treatment.""" ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/bsp/compliance#CertificateOfOrigin> ,
+                 <https://www.kairosflow.ai/ont/bsp/documents#CertificateOfOrigin> ;
     rdfs:subClassOf :Certificate .
 
 :SPSCertificate a owl:Class ;
@@ -77,6 +79,7 @@
     rdfs:comment """Electronic Freight Transport Information record per EU Regulation 2020/1056.
 
     WCO: Digital record for regulatory freight information exchange.""" ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/mmt/documents#TransportDocument> ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :eFTIPlatformIdentifier ;
@@ -88,6 +91,7 @@
     rdfs:comment """Authorised Economic Operator certification under WCO SAFE Framework.
 
     WCO: Recognition of a reliable and secure supply chain participant.""" ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/bsp/compliance#ComplianceCertification> ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :aeoStatus ;

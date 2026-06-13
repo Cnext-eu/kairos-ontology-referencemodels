@@ -19,7 +19,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-05-22"^^xsd:date ;
-    owl:versionInfo "1.2.0" ;
+    owl:versionInfo "1.3.0" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
@@ -68,7 +68,8 @@
     rdfs:comment """The party providing transport services.
     
     UN/CEFACT BSP: A TradeParty role (carrierTradeParty context).""" ;
-    rdfs:subClassOf :TradeParty .
+    rdfs:subClassOf :TradeParty ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/party#Carrier> .
 
 :FreightForwarder a owl:Class ;
     rdfs:label "Freight Forwarder" ;
@@ -82,7 +83,8 @@
     rdfs:comment """A party handling customs clearance.
     
     UN/CEFACT BSP: A TradeParty role (customsBrokerTradeParty context).""" ;
-    rdfs:subClassOf :TradeParty .
+    rdfs:subClassOf :TradeParty ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/wco/party#CustomsBroker> .
 
 :Bank a owl:Class ;
     rdfs:label "Bank" ;
@@ -112,6 +114,30 @@
     rdfs:comment """A party to be notified of shipment arrival.
     
     ISO BSP: Often consignee or their agent.""" ;
+    rdfs:subClassOf :TradeParty .
+
+#################################################################
+#    Additional Party Roles (v1.3.0)
+#################################################################
+
+:InsuranceProvider a owl:Class ;
+    rdfs:label "Insurance Provider" ;
+    rdfs:comment """A party providing cargo, marine, or trade credit insurance.
+
+    Covers hull and machinery (H&M), protection and indemnity (P&I),
+    and cargo insurance underwriters.""" ;
+    rdfs:subClassOf :TradeParty .
+
+:TerminalOperator a owl:Class ;
+    rdfs:label "Terminal Operator" ;
+    rdfs:comment """A party operating a port terminal, inland terminal, or container
+    depot. Responsible for cargo handling, storage, and gate operations.""" ;
+    rdfs:subClassOf :TradeParty .
+
+:WarehouseKeeper a owl:Class ;
+    rdfs:label "Warehouse Keeper" ;
+    rdfs:comment """A party providing warehousing and storage services. May operate
+    bonded warehouses, free zone warehouses, or general distribution centers.""" ;
     rdfs:subClassOf :TradeParty .
 
 #################################################################
@@ -179,5 +205,39 @@
 :contactPhone a owl:DatatypeProperty ;
     rdfs:label "contact phone" ;
     rdfs:comment "Phone number for contact." ;
+    rdfs:domain :TradeParty ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Datatype Properties — Party Identity (v1.3.0)
+#################################################################
+
+:legalEntityIdentifier a owl:DatatypeProperty ;
+    rdfs:label "legal entity identifier" ;
+    rdfs:comment "Legal Entity Identifier (LEI) per ISO 17442 — a 20-character alphanumeric code uniquely identifying the legal entity." ;
+    rdfs:domain :TradeParty ;
+    rdfs:range xsd:string .
+
+:taxIdentificationNumber a owl:DatatypeProperty ;
+    rdfs:label "tax identification number" ;
+    rdfs:comment "Tax identification number assigned by the country of registration (VAT number, EIN, etc.)." ;
+    rdfs:domain :TradeParty ;
+    rdfs:range xsd:string .
+
+:registrationCountry a owl:DatatypeProperty ;
+    rdfs:label "registration country" ;
+    rdfs:comment "ISO 3166-1 alpha-2 country code of the party's country of legal registration." ;
+    rdfs:domain :TradeParty ;
+    rdfs:range xsd:string .
+
+:registrationNumber a owl:DatatypeProperty ;
+    rdfs:label "registration number" ;
+    rdfs:comment "Company registration number in the country of registration (e.g., Companies House number, KVK number)." ;
+    rdfs:domain :TradeParty ;
+    rdfs:range xsd:string .
+
+:dunsNumber a owl:DatatypeProperty ;
+    rdfs:label "DUNS number" ;
+    rdfs:comment "Dun & Bradstreet D-U-N-S number — a 9-digit identifier for business entities." ;
     rdfs:domain :TradeParty ;
     rdfs:range xsd:string .

@@ -5,6 +5,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix comm: <https://www.kairosflow.ai/ont/bsp/commercial#> .
+@prefix party: <https://www.kairosflow.ai/ont/bsp/party#> .
 
 # Ontology Metadata
 <https://www.kairosflow.ai/ont/bsp/financial> a owl:Ontology ;
@@ -22,7 +23,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-05-22"^^xsd:date ;
-    owl:versionInfo "1.2.0" ;
+    owl:versionInfo "1.3.0" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
@@ -378,14 +379,39 @@
     presentation of conforming documents.
 
     UN/CEFACT BSP: Maps to FinancialInstitutionIdentity-related instruments —
-    a promise to pay used extensively in international trade.""" ;
+    a promise to pay used extensively in international trade.
+
+    Types (via lcType property): IRREVOCABLE, STANDBY, REVOLVING,
+    BACK_TO_BACK, RED_CLAUSE, GREEN_CLAUSE, TRANSFERABLE.""" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/FinancialInstitutionIdentity> .
 
 :DocumentaryCollection a owl:Class ;
     rdfs:label "Documentary Collection" ;
     rdfs:comment """A trade finance arrangement where the seller's bank collects payment
     from the buyer through the buyer's bank, releasing documents upon payment
-    (D/P) or acceptance (D/A).""" .
+    (D/P) or acceptance (D/A).
+
+    Types (via collectionType property): DOCUMENTS_AGAINST_PAYMENT,
+    DOCUMENTS_AGAINST_ACCEPTANCE.""" .
+
+:FinancingArrangement a owl:Class ;
+    rdfs:label "Financing Arrangement" ;
+    rdfs:comment """A supply chain finance arrangement between a buyer, seller, and financial
+    institution for the early payment or financing of trade receivables.
+
+    UN/CEFACT BSP: Maps to FinancingRequestDocument — covers purchase order
+    financing, factoring, forfaiting, and reverse factoring.
+
+    Types (via financingType property): FACTORING, REVERSE_FACTORING,
+    FORFAITING, PURCHASE_ORDER_FINANCING, INVOICE_DISCOUNTING.""" .
+
+:RemittanceAdvice a owl:Class ;
+    rdfs:label "Remittance Advice" ;
+    rdfs:comment """A document sent by a buyer to a seller advising that payment has been
+    or will be made, detailing which invoices the payment covers.
+
+    UN/CEFACT BSP: Maps to CrossIndustryRemittanceAdvice — a document
+    providing payment reconciliation information.""" .
 
 #################################################################
 #    SETTLEMENT - Allocation and Reconciliation
@@ -457,6 +483,36 @@
     rdfs:comment "Relates a commercial transaction to a letter of credit." ;
     rdfs:domain :Invoice ;
     rdfs:range :LetterOfCredit .
+
+:issuingBank a owl:ObjectProperty ;
+    rdfs:label "issuing bank" ;
+    rdfs:comment "The bank that issues the letter of credit on behalf of the buyer." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range party:Bank .
+
+:advisingBank a owl:ObjectProperty ;
+    rdfs:label "advising bank" ;
+    rdfs:comment "The bank in the seller's country that advises the L/C to the beneficiary." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range party:Bank .
+
+:confirmingBank a owl:ObjectProperty ;
+    rdfs:label "confirming bank" ;
+    rdfs:comment "The bank that adds its confirmation (guarantee) to the L/C." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range party:Bank .
+
+:hasFinancingArrangement a owl:ObjectProperty ;
+    rdfs:label "has financing arrangement" ;
+    rdfs:comment "Relates a commercial transaction or invoice to a financing arrangement." ;
+    rdfs:domain :Invoice ;
+    rdfs:range :FinancingArrangement .
+
+:hasRemittanceAdvice a owl:ObjectProperty ;
+    rdfs:label "has remittance advice" ;
+    rdfs:comment "Relates a payment to its remittance advice." ;
+    rdfs:domain :Payment ;
+    rdfs:range :RemittanceAdvice .
 
 #################################################################
 #    Additional Datatype Properties - Charges & Tariffs
@@ -539,3 +595,85 @@
     rdfs:comment "Expiration date of a financial instrument or rate." ;
     rdfs:domain :LetterOfCredit ;
     rdfs:range xsd:date .
+
+#################################################################
+#    Datatype Properties — Trade Finance Enrichment (v1.3.0)
+#################################################################
+
+:lcType a owl:DatatypeProperty ;
+    rdfs:label "L/C type" ;
+    rdfs:comment "Type of letter of credit (IRREVOCABLE, STANDBY, REVOLVING, BACK_TO_BACK, RED_CLAUSE, GREEN_CLAUSE, TRANSFERABLE)." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range xsd:string .
+
+:lcStatus a owl:DatatypeProperty ;
+    rdfs:label "L/C status" ;
+    rdfs:comment "Lifecycle status of the letter of credit (ISSUED, AMENDED, DRAWN, EXPIRED, CANCELLED)." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range xsd:string .
+
+:lcIssueDate a owl:DatatypeProperty ;
+    rdfs:label "L/C issue date" ;
+    rdfs:comment "Date the letter of credit was issued." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range xsd:date .
+
+:collectionType a owl:DatatypeProperty ;
+    rdfs:label "collection type" ;
+    rdfs:comment "Type of documentary collection (DOCUMENTS_AGAINST_PAYMENT, DOCUMENTS_AGAINST_ACCEPTANCE)." ;
+    rdfs:domain :DocumentaryCollection ;
+    rdfs:range xsd:string .
+
+:guaranteeType a owl:DatatypeProperty ;
+    rdfs:label "guarantee type" ;
+    rdfs:comment "Type of bank guarantee (PERFORMANCE_BOND, ADVANCE_PAYMENT, BID_BOND, PAYMENT_GUARANTEE, RETENTION_GUARANTEE)." ;
+    rdfs:domain :BankGuarantee ;
+    rdfs:range xsd:string .
+
+:guaranteeAmount a owl:DatatypeProperty ;
+    rdfs:label "guarantee amount" ;
+    rdfs:comment "Monetary value of the bank guarantee." ;
+    rdfs:domain :BankGuarantee ;
+    rdfs:range xsd:decimal .
+
+:financingType a owl:DatatypeProperty ;
+    rdfs:label "financing type" ;
+    rdfs:comment "Type of financing arrangement (FACTORING, REVERSE_FACTORING, FORFAITING, PURCHASE_ORDER_FINANCING, INVOICE_DISCOUNTING)." ;
+    rdfs:domain :FinancingArrangement ;
+    rdfs:range xsd:string .
+
+:financingAmount a owl:DatatypeProperty ;
+    rdfs:label "financing amount" ;
+    rdfs:comment "Total amount being financed." ;
+    rdfs:domain :FinancingArrangement ;
+    rdfs:range xsd:decimal .
+
+:financingStatus a owl:DatatypeProperty ;
+    rdfs:label "financing status" ;
+    rdfs:comment "Status of the financing arrangement (REQUESTED, APPROVED, ACTIVE, SETTLED, CANCELLED)." ;
+    rdfs:domain :FinancingArrangement ;
+    rdfs:range xsd:string .
+
+:discountRate a owl:DatatypeProperty ;
+    rdfs:label "discount rate" ;
+    rdfs:comment "The discount rate applied to the financed amount, as a percentage." ;
+    rdfs:domain :FinancingArrangement ;
+    rdfs:range xsd:decimal .
+
+:remittanceDate a owl:DatatypeProperty ;
+    rdfs:label "remittance date" ;
+    rdfs:comment "Date of the remittance advice." ;
+    rdfs:domain :RemittanceAdvice ;
+    rdfs:range xsd:date .
+
+:remittanceAmount a owl:DatatypeProperty ;
+    rdfs:label "remittance amount" ;
+    rdfs:comment "Total amount covered by the remittance advice." ;
+    rdfs:domain :RemittanceAdvice ;
+    rdfs:range xsd:decimal .
+
+:remittanceReference a owl:DatatypeProperty ;
+    rdfs:label "remittance reference" ;
+    rdfs:comment "Payment reference number associated with the remittance." ;
+    rdfs:domain :RemittanceAdvice ;
+    rdfs:range xsd:string .
