@@ -4,6 +4,9 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix equip: <https://www.kairosflow.ai/ont/dcsa/equipment#> .
+@prefix loc: <https://www.kairosflow.ai/ont/dcsa/locations#> .
+@prefix party: <https://www.kairosflow.ai/ont/dcsa/party#> .
 
 # Ontology Metadata
 <https://www.kairosflow.ai/ont/dcsa/demurrage-detention> a owl:Ontology ;
@@ -24,8 +27,8 @@
     - D&D invoice disputes and waivers""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-22"^^xsd:date ;
-    dcterms:modified "2026-05-22"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
+    dcterms:modified "2026-06-12"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
     dcterms:source "DCSA Demurrage & Detention API v1.0" ;
     rdfs:seeAlso <https://dcsa.org/standards/> .
 
@@ -195,6 +198,28 @@
     rdfs:comment "Relates a dispute to a granted waiver." ;
     rdfs:domain :DisputeRecord ;
     rdfs:range :Waiver .
+
+#################################################################
+#    Cross-Domain Object Properties
+#################################################################
+
+:chargedForContainer a owl:ObjectProperty ;
+    rdfs:label "charged for container" ;
+    rdfs:comment "The container for which this D&D charge applies." ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range equip:Container .
+
+:chargedAtFacility a owl:ObjectProperty ;
+    rdfs:label "charged at facility" ;
+    rdfs:comment "The port or terminal where demurrage accrued." ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range loc:Location .
+
+:chargedToParty a owl:ObjectProperty ;
+    rdfs:label "charged to party" ;
+    rdfs:comment "The shipping party responsible for paying this charge." ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range party:ShippingParty .
 
 #################################################################
 #    Datatype Properties

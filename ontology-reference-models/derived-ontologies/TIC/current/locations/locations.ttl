@@ -15,7 +15,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
     rdfs:seeAlso <https://tic40.org/standards/> .
 
@@ -36,6 +36,7 @@
 
     TIC 4.0: Identified by UN/LOCODE and terminal-specific facility code.""" ;
     rdfs:subClassOf :TerminalLocation ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/locations#Terminal> ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :facilityCode ;

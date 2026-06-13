@@ -16,17 +16,21 @@
     dcterms:description """World Customs Organization (WCO) ontology for international customs procedures and trade facilitation.
 
     This ontology provides a semantic framework for customs operations, covering:
-    - Customs declarations and filing procedures
-    - Trade facilitation certificates and permits
-    - Party roles in customs processes
-    - Customs locations and controlled areas
-    - Customs and trade documents
+    - Customs declarations, goods items, and filing procedures
+    - Customs procedure codes (CPC) including special procedures
+    - Tariff classification, customs valuation with adjustments, and duty calculations
+    - Trade facilitation certificates, permits, and AEO programmes
+    - Party roles including declarant, consignee, consignor, and guarantee providers
+    - Customs locations, border crossings, and controlled areas
+    - Customs and trade documents including transit and carnets
+    - Risk-based inspection and selectivity channels
+    - Cross-domain alignment with DCSA, MMT, BSP, and IMO ontologies
 
-    Fully aligned with WCO Data Model 3.10.0 and eFTI Regulation (EU) 2020/1056.""" ;
+    Fully aligned with WCO Data Model 3.10.0, WTO Customs Valuation Agreement, and eFTI Regulation (EU) 2020/1056.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    dcterms:modified "2026-06-13"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056" ;
     rdfs:seeAlso <https://www.wcoomd.org/datamodel> ;
     owl:imports <https://www.kairosflow.ai/ont/wco/customs> ,

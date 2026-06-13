@@ -20,7 +20,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-05-22"^^xsd:date ;
-    owl:versionInfo "1.2.0" ;
+    owl:versionInfo "1.3.0" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
@@ -57,7 +57,9 @@
     rdfs:comment """A maritime facility for vessel operations.
     
     ISO BSP: Seaport identified by UN/LOCODE.""" ;
-    rdfs:subClassOf :Facility .
+    rdfs:subClassOf :Facility ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/imo/locations#Port> ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/locations#Location> .
 
 :Airport a owl:Class ;
     rdfs:label "Airport" ;

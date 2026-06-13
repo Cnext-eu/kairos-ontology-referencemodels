@@ -21,7 +21,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-05-22"^^xsd:date ;
-    owl:versionInfo "1.2.0" ;
+    owl:versionInfo "1.3.0" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
@@ -42,14 +42,16 @@
     rdfs:comment """The classification of goods for customs purposes using the Harmonized System.
     
     UN/CEFACT BSP: Maps to Classification and CustomsValuation.""" ;
-    rdfs:seeAlso <https://vocabulary.uncefact.org/Classification> .
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Classification> ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/wco/customs#TariffClassification> .
 
 :DutyTax a owl:Class ;
     rdfs:label "Duty/Tax" ;
     rdfs:comment """A customs duty or tax on imported/exported goods.
     
     UN/CEFACT BSP: Maps to TradeTax — a trade related fiscal levy or duty.""" ;
-    rdfs:seeAlso <https://vocabulary.uncefact.org/TradeTax> .
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TradeTax> ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/wco/customs#DutyCalculation> .
 
 :TradeAgreement a owl:Class ;
     rdfs:label "Trade Agreement" ;
@@ -57,7 +59,8 @@
     
     UN/CEFACT BSP: Maps to HeaderTradeAgreement — covers Incoterms, pricing,
     delivery terms, and conditions between trading parties.""" ;
-    rdfs:seeAlso <https://vocabulary.uncefact.org/HeaderTradeAgreement> .
+    rdfs:seeAlso <https://vocabulary.uncefact.org/HeaderTradeAgreement> ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/wco/trade-facilitation#TradeAgreementReference> .
 
 #################################################################
 #    Event Classes
@@ -108,3 +111,67 @@
     rdfs:comment "Amount of customs duty owed." ;
     rdfs:domain :DutyTax ;
     rdfs:range xsd:decimal .
+
+#################################################################
+#    Datatype Properties — Compliance Enrichment (v1.3.0)
+#################################################################
+
+:procedureType a owl:DatatypeProperty ;
+    rdfs:label "procedure type" ;
+    rdfs:comment "Type of regulatory procedure (IMPORT, EXPORT, TRANSIT, TEMPORARY_ADMISSION, INWARD_PROCESSING, OUTWARD_PROCESSING)." ;
+    rdfs:domain :RegulatoryRequirement ;
+    rdfs:range xsd:string .
+
+:governmentAction a owl:DatatypeProperty ;
+    rdfs:label "government action" ;
+    rdfs:comment "Action taken by the government authority (EXAMINATION, RELEASE, SEIZURE, RE_EXPORT, DETENTION)." ;
+    rdfs:domain :RegulatoryRequirement ;
+    rdfs:range xsd:string .
+
+:regulatoryAuthority a owl:DatatypeProperty ;
+    rdfs:label "regulatory authority" ;
+    rdfs:comment "Name of the regulatory authority imposing the requirement." ;
+    rdfs:domain :RegulatoryRequirement ;
+    rdfs:range xsd:string .
+
+:agreementName a owl:DatatypeProperty ;
+    rdfs:label "agreement name" ;
+    rdfs:comment "Name of the trade agreement (e.g., EU_GSP, CPTPP, RCEP, USMCA, EU_UK_TCA)." ;
+    rdfs:domain :TradeAgreement ;
+    rdfs:range xsd:string .
+
+:preferentialRate a owl:DatatypeProperty ;
+    rdfs:label "preferential rate" ;
+    rdfs:comment "The preferential duty rate applicable under the trade agreement, as a percentage." ;
+    rdfs:domain :TradeAgreement ;
+    rdfs:range xsd:decimal .
+
+:agreementEffectiveDate a owl:DatatypeProperty ;
+    rdfs:label "agreement effective date" ;
+    rdfs:comment "Date when the trade agreement came into force." ;
+    rdfs:domain :TradeAgreement ;
+    rdfs:range xsd:date .
+
+:hsDescription a owl:DatatypeProperty ;
+    rdfs:label "HS description" ;
+    rdfs:comment "Text description of the HS code classification for the goods." ;
+    rdfs:domain :TariffClassification ;
+    rdfs:range xsd:string .
+
+:hsChapter a owl:DatatypeProperty ;
+    rdfs:label "HS chapter" ;
+    rdfs:comment "HS chapter number (2-digit heading, e.g., '87' for vehicles)." ;
+    rdfs:domain :TariffClassification ;
+    rdfs:range xsd:string .
+
+:dutyType a owl:DatatypeProperty ;
+    rdfs:label "duty type" ;
+    rdfs:comment "Type of duty or tax (AD_VALOREM, SPECIFIC, COMPOUND, ANTI_DUMPING, COUNTERVAILING, EXCISE, VAT)." ;
+    rdfs:domain :DutyTax ;
+    rdfs:range xsd:string .
+
+:dutyCurrency a owl:DatatypeProperty ;
+    rdfs:label "duty currency" ;
+    rdfs:comment "ISO 4217 currency code for the duty amount." ;
+    rdfs:domain :DutyTax ;
+    rdfs:range xsd:string .

@@ -16,7 +16,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
+    owl:versionInfo "1.1.0" ;
     dcterms:source "IMO Compendium data set, FAL Convention, COLREG Rule 10, Resolution A.857(20)" ;
     rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
 
@@ -41,7 +41,8 @@
         owl:onProperty :unlocode ;
         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
         owl:onDataRange xsd:string
-    ] .
+    ] ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/locations#Location> .
 
 :Anchorage a owl:Class ;
     rdfs:label "Anchorage" ;
@@ -235,3 +236,73 @@
     rdfs:comment "The maximum vessel draft permitted in this location, in metres." ;
     rdfs:domain :MaritimeLocation ;
     rdfs:range xsd:decimal .
+
+#################################################################
+#    Environmental Zone Classes
+#################################################################
+
+:EmissionControlArea a owl:Class ;
+    rdfs:label "Emission Control Area" ;
+    rdfs:comment """A designated sea area where stricter controls on emissions from ships apply.
+
+    MARPOL Annex VI Regulation 14: ECAs currently designated for SOx include the
+    Baltic Sea, North Sea, North American, and US Caribbean areas. NOx ECAs include
+    the North American and US Caribbean areas.
+
+    Within ECAs, fuel sulphur content must not exceed 0.10% (vs. 0.50% globally).""" ;
+    rdfs:subClassOf :MaritimeLocation ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :ecaDesignation ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:MARPOLSpecialArea a owl:Class ;
+    rdfs:label "MARPOL Special Area" ;
+    rdfs:comment """A sea area designated under MARPOL where the adoption of special mandatory
+    methods for the prevention of sea pollution is required.
+
+    Special areas exist under MARPOL Annexes I (oil), II (NLS), IV (sewage),
+    V (garbage), and VI (SOx). Examples include the Mediterranean Sea,
+    Baltic Sea, Black Sea, Red Sea, and Antarctic area.""" ;
+    rdfs:subClassOf :MaritimeLocation .
+
+:PortReceptionFacility a owl:Class ;
+    rdfs:label "Port Reception Facility" ;
+    rdfs:comment """A shore-based facility for receiving ship-generated waste and cargo residues.
+
+    MARPOL requires all ports to provide adequate reception facilities for the wastes
+    covered by its annexes. Ships must be able to deliver waste before departing.""" ;
+    rdfs:subClassOf :MaritimeLocation .
+
+# Environmental zone properties
+
+:ecaDesignation a owl:DatatypeProperty ;
+    rdfs:label "ECA designation" ;
+    rdfs:comment "Designation type of the emission control area (SOX, NOX, SOX_NOX, PARTICULATE)." ;
+    rdfs:domain :EmissionControlArea ;
+    rdfs:range xsd:string .
+
+:ecaName a owl:DatatypeProperty ;
+    rdfs:label "ECA name" ;
+    rdfs:comment "Name of the emission control area (e.g., BALTIC_SEA, NORTH_SEA, NORTH_AMERICAN, US_CARIBBEAN)." ;
+    rdfs:domain :EmissionControlArea ;
+    rdfs:range xsd:string .
+
+:specialAreaAnnex a owl:DatatypeProperty ;
+    rdfs:label "special area MARPOL annex" ;
+    rdfs:comment "The MARPOL annex under which the special area is designated (I, II, IV, V, VI)." ;
+    rdfs:domain :MARPOLSpecialArea ;
+    rdfs:range xsd:string .
+
+:specialAreaName a owl:DatatypeProperty ;
+    rdfs:label "special area name" ;
+    rdfs:comment "Name of the MARPOL special area (e.g., MEDITERRANEAN, BALTIC, BLACK_SEA, RED_SEA, ANTARCTIC)." ;
+    rdfs:domain :MARPOLSpecialArea ;
+    rdfs:range xsd:string .
+
+:wasteTypesAccepted a owl:DatatypeProperty ;
+    rdfs:label "waste types accepted" ;
+    rdfs:comment "Types of ship-generated waste the port reception facility accepts (OIL, GARBAGE, SEWAGE, NLS, EXHAUST)." ;
+    rdfs:domain :PortReceptionFacility ;
+    rdfs:range xsd:string .

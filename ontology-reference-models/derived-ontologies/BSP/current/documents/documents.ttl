@@ -20,7 +20,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-05-22"^^xsd:date ;
-    owl:versionInfo "1.2.0" ;
+    owl:versionInfo "1.3.0" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
@@ -48,7 +48,8 @@
     rdfs:comment """A transport document for ocean freight.
     
     ISO BSP: Receipt, contract, and document of title.""" ;
-    rdfs:subClassOf :TransportDocument .
+    rdfs:subClassOf :TransportDocument ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/transport-documents#TransportDocument> .
 
 :AirWaybill a owl:Class ;
     rdfs:label "Air Waybill (AWB)" ;
@@ -76,7 +77,8 @@
     rdfs:comment """A document declaring goods to customs authorities.
     
     ISO BSP: Import/export declaration.""" ;
-    rdfs:subClassOf :Document .
+    rdfs:subClassOf :Document ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/wco/customs#CustomsDeclaration> .
 
 :ImportLicense a owl:Class ;
     rdfs:label "Import License" ;
@@ -199,3 +201,143 @@
     rdfs:comment "AWB number (11 digits)." ;
     rdfs:domain :AirWaybill ;
     rdfs:range xsd:string .
+
+#################################################################
+#    Datatype Properties — Document Lifecycle (shared)
+#################################################################
+
+:documentStatus a owl:DatatypeProperty ;
+    rdfs:label "document status" ;
+    rdfs:comment "Lifecycle status of the document (DRAFT, ISSUED, AMENDED, SURRENDERED, ACCOMPLISHED, CANCELLED)." ;
+    rdfs:domain :Document ;
+    rdfs:range xsd:string .
+
+:issuingParty a owl:DatatypeProperty ;
+    rdfs:label "issuing party" ;
+    rdfs:comment "Name or identifier of the party that issued the document." ;
+    rdfs:domain :Document ;
+    rdfs:range xsd:string .
+
+:signatoryName a owl:DatatypeProperty ;
+    rdfs:label "signatory name" ;
+    rdfs:comment "Name of the person who signed the document." ;
+    rdfs:domain :Document ;
+    rdfs:range xsd:string .
+
+:issuingDate a owl:DatatypeProperty ;
+    rdfs:label "issuing date" ;
+    rdfs:comment "Date and time the document was formally issued (may differ from documentDate)." ;
+    rdfs:domain :Document ;
+    rdfs:range xsd:dateTime .
+
+#################################################################
+#    Datatype Properties — Bill of Lading
+#################################################################
+
+:placeOfIssue a owl:DatatypeProperty ;
+    rdfs:label "place of issue" ;
+    rdfs:comment "Location (city or UN/LOCODE) where the bill of lading was issued." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:string .
+
+:numberOfOriginals a owl:DatatypeProperty ;
+    rdfs:label "number of originals" ;
+    rdfs:comment "Number of original B/L copies issued (typically 3)." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:integer .
+
+:onBoardDate a owl:DatatypeProperty ;
+    rdfs:label "on board date" ;
+    rdfs:comment "Date when the cargo was loaded on board the vessel (shipped on board notation)." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:date .
+
+:negotiable a owl:DatatypeProperty ;
+    rdfs:label "negotiable" ;
+    rdfs:comment "Whether this B/L is negotiable (true) or a non-negotiable sea waybill (false)." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:boolean .
+
+:freightPayableAt a owl:DatatypeProperty ;
+    rdfs:label "freight payable at" ;
+    rdfs:comment "Location where freight charges are payable (ORIGIN, DESTINATION)." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Datatype Properties — Air Waybill
+#################################################################
+
+:originAirport a owl:DatatypeProperty ;
+    rdfs:label "origin airport" ;
+    rdfs:comment "IATA 3-letter code of the airport of departure." ;
+    rdfs:domain :AirWaybill ;
+    rdfs:range xsd:string .
+
+:destinationAirport a owl:DatatypeProperty ;
+    rdfs:label "destination airport" ;
+    rdfs:comment "IATA 3-letter code of the airport of destination." ;
+    rdfs:domain :AirWaybill ;
+    rdfs:range xsd:string .
+
+:executingCarrier a owl:DatatypeProperty ;
+    rdfs:label "executing carrier" ;
+    rdfs:comment "IATA 2-letter code of the airline operating the first flight." ;
+    rdfs:domain :AirWaybill ;
+    rdfs:range xsd:string .
+
+:chargeableWeight a owl:DatatypeProperty ;
+    rdfs:label "chargeable weight" ;
+    rdfs:comment "The weight used for freight charges, in kilograms (greater of actual or volumetric weight)." ;
+    rdfs:domain :AirWaybill ;
+    rdfs:range xsd:decimal .
+
+#################################################################
+#    Datatype Properties — Certificate of Origin
+#################################################################
+
+:preferentialIndicator a owl:DatatypeProperty ;
+    rdfs:label "preferential indicator" ;
+    rdfs:comment "Whether this certificate claims preferential tariff treatment under a trade agreement." ;
+    rdfs:domain :CertificateOfOrigin ;
+    rdfs:range xsd:boolean .
+
+:issuingAuthority a owl:DatatypeProperty ;
+    rdfs:label "issuing authority" ;
+    rdfs:comment "Name of the chamber of commerce or authority that issued the certificate." ;
+    rdfs:domain :CertificateOfOrigin ;
+    rdfs:range xsd:string .
+
+:originCriterion a owl:DatatypeProperty ;
+    rdfs:label "origin criterion" ;
+    rdfs:comment "The origin criterion met (WHOLLY_OBTAINED, SUBSTANTIAL_TRANSFORMATION, CHANGE_IN_TARIFF, VALUE_ADDED)." ;
+    rdfs:domain :CertificateOfOrigin ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Datatype Properties — Customs Declaration
+#################################################################
+
+:declarationType a owl:DatatypeProperty ;
+    rdfs:label "declaration type" ;
+    rdfs:comment "Type of customs declaration (IMPORT, EXPORT, TRANSIT, TEMPORARY_ADMISSION, RE_EXPORT)." ;
+    rdfs:domain :CustomsDeclaration ;
+    rdfs:range xsd:string .
+
+:customsOffice a owl:DatatypeProperty ;
+    rdfs:label "customs office" ;
+    rdfs:comment "Identifier of the customs office where the declaration is lodged." ;
+    rdfs:domain :CustomsDeclaration ;
+    rdfs:range xsd:string .
+
+:procedureCode a owl:DatatypeProperty ;
+    rdfs:label "procedure code" ;
+    rdfs:comment "Customs procedure code (CPC) indicating the customs treatment applied to the goods." ;
+    rdfs:domain :CustomsDeclaration ;
+    rdfs:range xsd:string .
+
+:releaseDate a owl:DatatypeProperty ;
+    rdfs:label "release date" ;
+    rdfs:comment "Date when customs released the goods for import/export." ;
+    rdfs:domain :CustomsDeclaration ;
+    rdfs:range xsd:date .

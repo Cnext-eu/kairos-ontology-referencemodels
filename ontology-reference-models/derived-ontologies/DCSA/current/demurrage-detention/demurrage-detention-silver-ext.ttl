@@ -15,7 +15,7 @@
     dcterms:description "Silver-layer projection annotations for the DCSA Demurrage & Detention domain ontology." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-22"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
+    owl:versionInfo "1.1.0" ;
     owl:imports <https://www.kairosflow.ai/ont/dcsa/demurrage-detention> ;
     kairos-ext:namingConvention "camel-to-snake" ;
     kairos-ext:includeNaturalKeyColumn "true"^^xsd:boolean ;

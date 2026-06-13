@@ -12,8 +12,8 @@
     dcterms:description "Party roles in customs processes including declarants, authorities, brokers, and traders based on the WCO Data Model 3.10.0." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    dcterms:modified "2026-06-13"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056" ;
     rdfs:seeAlso <https://www.wcoomd.org/datamodel> .
 
@@ -26,6 +26,8 @@
     rdfs:comment """The party making or on whose behalf a customs declaration is made.
 
     WCO: Party making or on whose behalf a customs declaration is made.""" ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/bsp/party#Buyer> ,
+                 <https://www.kairosflow.ai/ont/bsp/party#Seller> ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :declarantIdentifier ;
@@ -59,6 +61,7 @@
     rdfs:comment """The party responsible for importing goods into a customs territory.
 
     WCO: Party responsible for importing goods into a customs territory.""" ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/bsp/party#Buyer> ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :importerEORI ;
@@ -70,6 +73,7 @@
     rdfs:comment """The party responsible for exporting goods from a customs territory.
 
     WCO: Party responsible for exporting goods from a customs territory.""" ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/bsp/party#Seller> ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :exporterEORI ;
@@ -81,6 +85,7 @@
     rdfs:comment """A party holding Authorised Economic Operator status under the SAFE Framework.
 
     WCO: Party holding Authorised Economic Operator status under the SAFE Framework.""" ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/bsp/compliance#ComplianceCertification> ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :aeoNumber ;
@@ -91,7 +96,8 @@
     rdfs:label "Freight Agent" ;
     rdfs:comment """An agent arranging freight transport and customs formalities on behalf of principals.
 
-    WCO: Agent arranging freight transport and customs formalities on behalf of principals.""" .
+    WCO: Agent arranging freight transport and customs formalities on behalf of principals.""" ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/mmt/party#FreightForwarder> .
 
 :GuaranteeProvider a owl:Class ;
     rdfs:label "Guarantee Provider" ;
@@ -228,3 +234,119 @@
     rdfs:comment "Monetary amount of the financial guarantee." ;
     rdfs:domain :GuaranteeProvider ;
     rdfs:range xsd:decimal .
+
+:guaranteeType a owl:DatatypeProperty ;
+    rdfs:label "guarantee type" ;
+    rdfs:comment "Type of customs guarantee: individual, comprehensive, transit, waiver, flat-rate, fixed." ;
+    rdfs:domain :GuaranteeProvider ;
+    rdfs:range xsd:string .
+
+:guaranteeValidFrom a owl:DatatypeProperty ;
+    rdfs:label "guarantee valid from" ;
+    rdfs:comment "Start date of the guarantee validity period." ;
+    rdfs:domain :GuaranteeProvider ;
+    rdfs:range xsd:date .
+
+:guaranteeValidTo a owl:DatatypeProperty ;
+    rdfs:label "guarantee valid to" ;
+    rdfs:comment "End date of the guarantee validity period." ;
+    rdfs:domain :GuaranteeProvider ;
+    rdfs:range xsd:date .
+
+:guaranteeCurrency a owl:DatatypeProperty ;
+    rdfs:label "guarantee currency" ;
+    rdfs:comment "ISO 4217 currency code of the guarantee amount." ;
+    rdfs:domain :GuaranteeProvider ;
+    rdfs:range xsd:string .
+
+:guaranteeReferenceNumber a owl:DatatypeProperty ;
+    rdfs:label "guarantee reference number" ;
+    rdfs:comment "Guarantee Reference Number (GRN) assigned by the customs authority." ;
+    rdfs:domain :GuaranteeProvider ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Consignee / Consignor Classes
+#################################################################
+
+:Consignee a owl:Class ;
+    rdfs:label "Consignee" ;
+    rdfs:comment """The party to whom goods are consigned (receiver of goods at destination).
+
+    WCO: Aligns with WCO Data Model elements R014/R015. Distinct from Importer in triangular trade
+    and third-party logistics scenarios where the consignee is not the importing party.""" ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/bsp/party#Buyer> ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :consigneeIdentifier ;
+        owl:minCardinality 1
+    ] .
+
+:Consignor a owl:Class ;
+    rdfs:label "Consignor" ;
+    rdfs:comment """The party consigning goods (sender/shipper of goods).
+
+    WCO: Aligns with WCO Data Model elements R020/R021. Distinct from Exporter in triangular trade
+    where the consignor may not be the party responsible for export formalities.""" ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/bsp/party#Seller> ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :consignorIdentifier ;
+        owl:minCardinality 1
+    ] .
+
+#################################################################
+#    Consignee / Consignor Object Properties
+#################################################################
+
+:hasConsignee a owl:ObjectProperty ;
+    rdfs:label "has consignee" ;
+    rdfs:comment "Relates a customs declaration to the consignee (receiver) of the goods." ;
+    rdfs:domain wco-customs:CustomsDeclaration ;
+    rdfs:range :Consignee .
+
+:hasConsignor a owl:ObjectProperty ;
+    rdfs:label "has consignor" ;
+    rdfs:comment "Relates a customs declaration to the consignor (sender/shipper) of the goods." ;
+    rdfs:domain wco-customs:CustomsDeclaration ;
+    rdfs:range :Consignor .
+
+#################################################################
+#    Consignee / Consignor Datatype Properties
+#################################################################
+
+:consigneeName a owl:DatatypeProperty ;
+    rdfs:label "consignee name" ;
+    rdfs:comment "Full legal name of the consignee." ;
+    rdfs:domain :Consignee ;
+    rdfs:range xsd:string .
+
+:consigneeIdentifier a owl:DatatypeProperty ;
+    rdfs:label "consignee identifier" ;
+    rdfs:comment "Unique identifier of the consignee (e.g. EORI number, WCO R015)." ;
+    rdfs:domain :Consignee ;
+    rdfs:range xsd:string .
+
+:consigneeAddress a owl:DatatypeProperty ;
+    rdfs:label "consignee address" ;
+    rdfs:comment "Full address of the consignee." ;
+    rdfs:domain :Consignee ;
+    rdfs:range xsd:string .
+
+:consignorName a owl:DatatypeProperty ;
+    rdfs:label "consignor name" ;
+    rdfs:comment "Full legal name of the consignor." ;
+    rdfs:domain :Consignor ;
+    rdfs:range xsd:string .
+
+:consignorIdentifier a owl:DatatypeProperty ;
+    rdfs:label "consignor identifier" ;
+    rdfs:comment "Unique identifier of the consignor (e.g. EORI number, WCO R021)." ;
+    rdfs:domain :Consignor ;
+    rdfs:range xsd:string .
+
+:consignorAddress a owl:DatatypeProperty ;
+    rdfs:label "consignor address" ;
+    rdfs:comment "Full address of the consignor." ;
+    rdfs:domain :Consignor ;
+    rdfs:range xsd:string .

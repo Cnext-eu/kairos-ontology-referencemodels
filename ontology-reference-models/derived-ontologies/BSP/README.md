@@ -1,41 +1,64 @@
 # BSP – Buy-Ship-Pay Domain Modules
 
-Modular decomposition of the **ISO 20197-1:2024 Buy-Ship-Pay Reference Data Model** ontology into six domain-specific OWL modules.
+Modular decomposition of the **ISO 20197-1:2024 Buy-Ship-Pay Reference Data Model** ontology into eight domain-specific OWL modules.
 
 ## Structure
 
 ```
 BSP/
-├── bsp.ttl                            # Root ontology – imports all 8 domains
-├── party/party.ttl                    # Trade party roles and contact information
-├── commercial/commercial.ttl          # Commercial transactions, shipments, events
-├── financial/financial.ttl            # Invoicing, charges, surcharges, tariffs, payment, trade finance
-├── documents/documents.ttl            # Trade, transport, and regulatory documents
-├── compliance/compliance.ttl          # Regulatory requirements, tariffs, sanctions
-├── reference-data/reference-data.ttl  # Locations, measurements, code lists
+├── bsp.ttl                              # Root ontology – imports all 8 domains
+├── party/party.ttl                      # Trade party roles, identity, and contact information
+├── commercial/commercial.ttl            # Commercial transactions, procurement lifecycle, shipments
+├── financial/financial.ttl              # Invoicing, charges, surcharges, tariffs, trade finance
+├── documents/documents.ttl              # Trade, transport, and regulatory documents
+├── compliance/compliance.ttl            # Regulatory requirements, tariffs, trade agreements
+├── reference-data/reference-data.ttl    # Locations, measurements, code lists
 ├── cost-accounting/cost-accounting.ttl  # Transport cost allocation, budgets, cost-to-serve
-└── revenue-yield/revenue-yield.ttl    # Revenue attribution, yield metrics, profitability
+├── revenue-yield/revenue-yield.ttl      # Revenue attribution, yield metrics, profitability
+└── extensions/                          # Silver-layer extension annotations for each module
 ```
 
 ## Domain Modules
 
 | Module | Namespace | Description |
 |--------|-----------|-------------|
-| **Party** | `https://www.kairosflow.ai/ont/bsp/party#` | TradeParty, Buyer, Seller, Carrier, Bank, and other party roles |
-| **Commercial** | `https://www.kairosflow.ai/ont/bsp/commercial#` | PurchaseOrder, SalesOrder, Quotation, Shipment, TransportService, BusinessEvent |
-| **Financial** | `https://www.kairosflow.ai/ont/bsp/financial#` | Invoice, Charge, Surcharge (BAF/CAF/THC), FreightRate, TariffSchedule, Payment, LetterOfCredit |
-| **Documents** | `https://www.kairosflow.ai/ont/bsp/documents#` | Document, BillOfLading, AirWaybill, Certificates, CustomsDeclaration |
-| **Compliance** | `https://www.kairosflow.ai/ont/bsp/compliance#` | RegulatoryRequirement, TariffClassification, DutyTax, TradeSanction |
-| **Reference Data** | `https://www.kairosflow.ai/ont/bsp/reference-data#` | Location, Address, Port, Airport, Country, Measurement, Weight, Volume |
+| **Party** | `https://www.kairosflow.ai/ont/bsp/party#` | TradeParty, Buyer, Seller, Carrier, Bank, FreightForwarder, CustomsBroker, InsuranceProvider, TerminalOperator, WarehouseKeeper + LEI/tax identity |
+| **Commercial** | `https://www.kairosflow.ai/ont/bsp/commercial#` | PurchaseOrder, SalesOrder, Quotation, RequestForQuotation, OrderChange, OrderResponse, SalesContract, Shipment, Consignment, TransportService, BusinessEvent |
+| **Financial** | `https://www.kairosflow.ai/ont/bsp/financial#` | Invoice, Charge, Surcharge (BAF/CAF/THC), FreightRate, TariffSchedule, Payment, LetterOfCredit (with L/C types), BankGuarantee, DocumentaryCollection, FinancingArrangement, RemittanceAdvice |
+| **Documents** | `https://www.kairosflow.ai/ont/bsp/documents#` | Document, BillOfLading (with B/L properties), AirWaybill, CertificateOfOrigin, CustomsDeclaration, ImportLicense, ExportLicense, InspectionCertificate + document lifecycle |
+| **Compliance** | `https://www.kairosflow.ai/ont/bsp/compliance#` | RegulatoryRequirement (with procedure types), TariffClassification, DutyTax (with duty types), TradeAgreement (with preferential rates) |
+| **Reference Data** | `https://www.kairosflow.ai/ont/bsp/reference-data#` | Location, Address, Port, Airport, Warehouse, ManufacturingPlant, Country, Measurement, Weight, Volume |
 | **Cost Accounting** | `https://www.kairosflow.ai/ont/bsp/cost-accounting#` | CostAllocation, CostCenter, TransportCostItem, CostPerUnit, BudgetItem, CostVariance, CostToServe |
-| **Revenue & Yield** | `https://www.kairosflow.ai/ont/bsp/revenue-yield#` | RevenueItem, RevenuePerUnit, LoadFactor, RateCard, ContributionMargin, ProfitabilityScope, YieldAnalysis |
+| **Revenue & Yield** | `https://www.kairosflow.ai/ont/bsp/revenue-yield#` | RevenueItem, FreightRevenue, SurchargeRevenue, AncillaryRevenue, RevenuePerUnit, LoadFactor, RateCard, ContributionMargin, ProfitabilityScope, YieldAnalysis |
+
+## Cross-Domain Alignment
+
+The BSP ontology uses `rdfs:seeAlso` annotations to reference equivalent concepts in other Kairos reference models:
+
+| BSP Concept | Related Concept | Relationship |
+|-------------|----------------|-------------|
+| `commercial:Shipment` | `dcsa/booking#Shipment` | Same concept (commercial vs. maritime view) |
+| `commercial:Consignment` | `mmt/consignment#Consignment` | Identical concept |
+| `commercial:TransportEquipment` | `dcsa/equipment#Container` | Container as transport equipment |
+| `commercial:TransportService` | `mmt/consignment#TransportService` | Same concept |
+| `commercial:TransportLeg` | `mmt/consignment#TransportLeg` | Same concept |
+| `commercial:Product` | `sustainability/carbon#CarbonEmission` | Product carbon footprint |
+| `commercial:Shipment` | `sustainability/carbon#CarbonFootprint` | Shipment carbon footprint |
+| `documents:BillOfLading` | `dcsa/transport-documents#TransportDocument` | B/L is transport document |
+| `documents:CustomsDeclaration` | `wco/customs#CustomsDeclaration` | Same concept |
+| `reference-data:Port` | `imo/locations#Port`, `dcsa/locations#Location` | Port/location alignment |
+| `party:Carrier` | `dcsa/party#Carrier` | Same party role |
+| `party:CustomsBroker` | `wco/party#CustomsBroker` | Same party role |
+| `compliance:TariffClassification` | `wco/customs#TariffClassification` | HS code alignment |
+| `compliance:DutyTax` | `wco/customs#DutyCalculation` | Customs duty |
+| `compliance:TradeAgreement` | `wco/trade-facilitation#TradeAgreementReference` | Trade agreement alignment |
 
 ## Design Principles
 
 - **No cross-imports** between domain modules — each module is self-contained
-- The **root `bsp.ttl`** imports all six domains via `owl:imports`
+- The **root `bsp.ttl`** imports all eight domains via `owl:imports`
 - Each module uses its own namespace: `https://www.kairosflow.ai/ont/bsp/<domain>#`
-- All original comments and annotations from the monolithic source are preserved
+- Cross-domain alignment via `rdfs:seeAlso` — hub ontologies compose via `owl:imports`
 - Properties are distributed to the domain of their primary class
 
 ## Source
@@ -44,10 +67,28 @@ Derived from the monolithic `buy-ship-pay.ttl` ontology based on:
 
 - **ISO 20197-1:2024** Buy-Ship-Pay Reference Data Model
 - **UN/CEFACT** Multi-Modal Transport Reference Data Model
+- **UN/CEFACT** Core Component Library D23B
 
 ## Versioning
 
-- **Version:** 1.0.0
+- **Version:** 1.3.0
 - **Created:** 2026-01-06
-- **Last Modified:** 2026-05-16
+- **Last Modified:** 2026-06-13
 - **Creator:** Kairos Ontology Team
+
+## Changelog
+
+### v1.3.0 (2026-06-13)
+- **Cross-domain alignment**: Added ~16 `rdfs:seeAlso` annotations linking BSP to DCSA, MMT, IMO, WCO, and Sustainability ontologies
+- **Documents enriched**: Added ~20 properties — shared lifecycle (documentStatus, issuingParty, signatoryName), B/L (placeOfIssue, numberOfOriginals, onBoardDate, negotiable), AWB (originAirport, destinationAirport, chargeableWeight), CoO (preferentialIndicator, originCriterion), CustomsDeclaration (declarationType, procedureCode, releaseDate)
+- **Trade finance**: Added FinancingArrangement and RemittanceAdvice classes. Enriched LetterOfCredit with lcType, lcStatus, bank role properties (issuingBank, advisingBank, confirmingBank). Added collectionType to DocumentaryCollection, guaranteeType to BankGuarantee.
+- **Procurement lifecycle**: Added RequestForQuotation, OrderChange, OrderResponse classes with linking properties
+- **Compliance enriched**: Added procedureType, governmentAction to RegulatoryRequirement. Added agreementName, preferentialRate to TradeAgreement. Added hsDescription, hsChapter to TariffClassification. Added dutyType to DutyTax.
+- **Party enriched**: Added InsuranceProvider, TerminalOperator, WarehouseKeeper subclasses. Added identity properties: legalEntityIdentifier (LEI), taxIdentificationNumber, registrationCountry, registrationNumber, dunsNumber.
+
+### v1.2.0 (2026-05-16)
+- Added cost-accounting and revenue-yield modules
+- Added silver extension files for all modules
+
+### v1.0.0 (2026-01-06)
+- Initial release with 6 core modules: Party, Commercial, Financial, Documents, Compliance, Reference Data

@@ -21,8 +21,8 @@
     Does NOT include FIBO (use Financial Services Accelerator for capital-markets ontologies).""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-22"^^xsd:date ;
-    owl:versionInfo "1.2.0" ;
+    dcterms:modified "2026-06-13"^^xsd:date ;
+    owl:versionInfo "1.3.0" ;
     owl:imports <https://www.kairosflow.ai/ont/dcsa> ,
                 <https://www.kairosflow.ai/ont/dcsa/demurrage-detention> ,
                 <https://www.kairosflow.ai/ont/mmt> ,
