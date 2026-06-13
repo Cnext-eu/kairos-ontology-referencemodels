@@ -24,8 +24,8 @@ The Logistics Accelerator imports **8 ontologies** covering the full logistics v
 | MMT | UN/CEFACT MMT-RDM | Consignment, movement, cargo, equipment |
 | BSP | ISO 20197-1:2024 | Party, contract, invoice, settlement |
 | TIC | TIC 4.0 | Terminal operations, handling, automotive |
-| IMO | IMO Compendium / FAL / IMDG | Vessel registry, dangerous goods, port-call |
-| WCO | WCO Data Model 3.0 | Customs declarations, trade facilitation |
+| IMO | IMO Compendium / FAL / IMDG | Vessel registry, dangerous goods, port-call, crew, environmental, maritime security |
+| WCO | WCO Data Model 3.10.0 | Customs declarations, goods items, procedures, trade facilitation |
 | Sustainability | ISO 14083:2023 / GLEC | Emissions, energy, ESG reporting |
 | Supply Chain | — | Integration layer |
 
@@ -52,4 +52,16 @@ ontology-reference-models/accelerator-packs/logistics/logistics-accelerator.ttl
 
 ## Version
 
-See [VERSION](VERSION) — currently **1.0.0**.
+See [VERSION](VERSION) — currently **1.3.0**.
+
+## Changelog
+
+### v1.3.0 (2026-06-13)
+- Updated SupplyChain bridge to v1.1.0: added Sustainability, WCO GoodsItem, and document bridges
+- Updated WCO focus to reflect v1.2.0 (goods items, customs procedures)
+- Updated IMO focus to reflect v1.1.0 (crew, environmental, maritime security)
+- Fixed WCO Data Model version reference (3.0 → 3.10.0)
+
+### v1.2.0 (2026-05-22)
+- Added SupplyChain integration ontology
+- Version alignment updates

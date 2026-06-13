@@ -30,9 +30,13 @@ groups:
           - uri: "https://www.kairosflow.ai/ont/mmt/party#"
             module: "MMT / Party"
             provides: "Carrier, transport service provider, consignee, consignor"
+          - uri: "https://www.kairosflow.ai/ont/imo/party#"
+            module: "IMO / Party"
+            provides: "Classification society, CSO, SSO, PFSO, PSCO (maritime security roles)"
         standards:
           - "UN/CEFACT CCL"
           - "ISO 20197-1:2024 BSP-RDM"
+          - "IMO Compendium"
 
       - id: commercial
         name: "Customer, Contract & Commercial Agreement"
@@ -162,6 +166,9 @@ groups:
           - uri: "https://www.kairosflow.ai/ont/mmt/route-network#"
             module: "MMT / Route Network"
             provides: "Route, corridor, network connection, transit time"
+          - uri: "https://www.kairosflow.ai/ont/dcsa/transport-call#"
+            module: "DCSA / Transport Call"
+            provides: "Transport call, vessel-location linkage, schedule-to-location"
         standards:
           - "DCSA Operational Vessel Schedules"
           - "UN/CEFACT MMT-RDM"
@@ -186,7 +193,7 @@ groups:
       - id: vessel-maritime
         name: "Vessel, Fleet & Maritime Operations"
         folder: "model/ontologies/vessel-maritime/"
-        owns: "Vessels, vessel characteristics, voyages, sea legs, port calls, berthing, and fleet capabilities."
+        owns: "Vessels, vessel characteristics, voyages, sea legs, port calls, berthing, fleet capabilities, statutory certificates, crew management, environmental compliance (SEEMP, BWMP, SOPEP), and maritime security (ISPS, ship security plans)."
         does_not_own: "Terminal yard moves, customer bookings, cargo commercial terms, or emissions formulas."
         overlaps:
           - class: ClassificationSociety
@@ -203,6 +210,21 @@ groups:
           - uri: "https://www.kairosflow.ai/ont/imo/port-call#"
             module: "IMO / Port Call"
             provides: "Port call, arrival, departure, berth stay"
+          - uri: "https://www.kairosflow.ai/ont/imo/certificates-surveys#"
+            module: "IMO / Certificates & Surveys"
+            provides: "Statutory certificate, flag state survey, class survey, classification society"
+          - uri: "https://www.kairosflow.ai/ont/imo/crew-seafarer#"
+            module: "IMO / Crew & Seafarer"
+            provides: "Seafarer, crew member, crew list, certificate of competency"
+          - uri: "https://www.kairosflow.ai/ont/imo/environmental#"
+            module: "IMO / Environmental"
+            provides: "SEEMP, BWMP, SOPEP, garbage management plan, emission control areas"
+          - uri: "https://www.kairosflow.ai/ont/imo/maritime-security#"
+            module: "IMO / Maritime Security"
+            provides: "Ship security plan, PFSP, ISPS code compliance, DoS"
+          - uri: "https://www.kairosflow.ai/ont/imo/locations#"
+            module: "IMO / Locations"
+            provides: "Port, emission control area, MARPOL special area, port reception facility"
         standards:
           - "IMO Compendium / FAL"
           - "DCSA API Standards"
@@ -222,6 +244,9 @@ groups:
           - uri: "https://www.kairosflow.ai/ont/tic/locations#"
             module: "TIC / Locations"
             provides: "Terminal location, yard position, berth position"
+          - uri: "https://www.kairosflow.ai/ont/tic/kpi#"
+            module: "TIC / KPI"
+            provides: "KPI definitions, berth productivity, crane productivity, dwell time, yard utilization"
         standards:
           - "TIC 4.0"
           - "BSI PAS 4000:2026"
@@ -276,7 +301,7 @@ groups:
       - id: customs
         name: "Customs, Border & Regulatory Declarations"
         folder: "model/ontologies/customs/"
-        owns: "Customs declarations, border filings, regulatory declarations, authority messages, and regulatory status."
+        owns: "Customs declarations, goods items, packaging, customs procedures, border filings, regulatory declarations, declarants, brokers, consignees/consignors, customs documents (SAD, carnets), customs offices, border crossings, bonded warehouses, free zones, and regulatory status."
         does_not_own: "Transport execution, cargo operations, commercial contracts, or DG acceptance rules."
         overlaps:
           - class: TariffClassification
@@ -286,10 +311,19 @@ groups:
         imports:
           - uri: "https://www.kairosflow.ai/ont/wco/customs#"
             module: "WCO / Customs"
-            provides: "Customs declaration, filing, inspection, import/export reference"
+            provides: "Customs declaration, goods item, packaging, customs procedure, duty calculation, customs value, inspection"
           - uri: "https://www.kairosflow.ai/ont/wco/trade-facilitation#"
             module: "WCO / Trade Facilitation"
-            provides: "AEO, single window, risk assessment"
+            provides: "AEO, single window, advance ruling, mutual recognition"
+          - uri: "https://www.kairosflow.ai/ont/wco/party#"
+            module: "WCO / Party"
+            provides: "Declarant, broker, importer, exporter, consignee, consignor, AEO holder, guarantee provider"
+          - uri: "https://www.kairosflow.ai/ont/wco/documents#"
+            module: "WCO / Documents"
+            provides: "SAD, T1/T2 transit, ATA/TIR carnets, certificate of origin"
+          - uri: "https://www.kairosflow.ai/ont/wco/locations#"
+            module: "WCO / Locations"
+            provides: "Customs office, border crossing, bonded warehouse, free zone"
         standards:
           - "WCO Data Model 3.10.0"
           - "UN/CEFACT Cross-Border Management"
@@ -331,7 +365,7 @@ groups:
       - id: events
         name: "Track & Trace / Operational Events"
         folder: "model/ontologies/events/"
-        owns: "Normalised event model across cargo, equipment, vessel, terminal, gate, and handover events."
+        owns: "Normalised event model across cargo, equipment, vessel, terminal, gate, handover, and multimodal transport events."
         does_not_own: "Master definitions of cargo, vessel, equipment, terminal, route, or customer."
         overlaps:
           - class: ShipmentEvent
@@ -352,6 +386,9 @@ groups:
           - uri: "https://www.kairosflow.ai/ont/tic/events#"
             module: "TIC / Events"
             provides: "Terminal operational events, gate events"
+          - uri: "https://www.kairosflow.ai/ont/mmt/events#"
+            module: "MMT / Events"
+            provides: "Multimodal transport events, handover events, inland transport events"
         standards:
           - "DCSA Track & Trace"
           - "TIC 4.0"
@@ -378,6 +415,9 @@ groups:
           - uri: "https://www.kairosflow.ai/ont/dcsa/transport-documents#"
             module: "DCSA / Transport Documents"
             provides: "Bill of lading, waybill, shipping instruction document"
+          - uri: "https://www.kairosflow.ai/ont/mmt/documents#"
+            module: "MMT / Documents"
+            provides: "Transport document types, multimodal waybill, delivery note"
         standards:
           - "ISO 20197-1:2024 BSP-RDM"
           - "DCSA eBL"
@@ -391,6 +431,9 @@ groups:
           - uri: "https://www.kairosflow.ai/ont/bsp/reference-data#"
             module: "BSP / Reference Data"
             provides: "Code list, location, country, currency, UoM"
+          - uri: "https://www.kairosflow.ai/ont/dcsa/locations#"
+            module: "DCSA / Locations"
+            provides: "Facility, UN location code, address"
         note: "Cross-cutting domain consumed by all other domains."
         standards:
           - "UN/LOCODE"
@@ -591,14 +634,63 @@ cross_domain_relationships:
     description: "Already defined in MMT: links Consignment to TransportEvent."
     status: existing
 
-  - id: vessel-to-sustainability-existing
+  - id: vessel-to-sustainability
     source_domain: vessel-maritime
     target_domain: sustainability
-    property_uri: "https://www.kairosflow.ai/ont/sustainability/carbon#hasCIIRating"
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#hasCIIRating"
     domain_class_uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#Vessel"
     range_class_uri: "https://www.kairosflow.ai/ont/sustainability/carbon#CIIRating"
-    description: "Already defined in Sustainability: links Vessel to CIIRating."
-    status: existing
+    description: "Links a Vessel to its CII Rating — defined in Supply Chain integration module."
+    status: new-bridge
+
+  - id: vessel-to-emission-report
+    source_domain: vessel-maritime
+    target_domain: sustainability
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#hasEmissionReport"
+    domain_class_uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#Vessel"
+    range_class_uri: "https://www.kairosflow.ai/ont/sustainability/carbon#EmissionReport"
+    description: "Links a Vessel to its Emission Report."
+    status: new-bridge
+
+  - id: transport-to-energy
+    source_domain: consignment
+    target_domain: sustainability
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#hasEnergyConsumption"
+    domain_class_uri: "https://www.kairosflow.ai/ont/mmt/consignment#TransportService"
+    range_class_uri: "https://www.kairosflow.ai/ont/sustainability/energy#EnergyConsumption"
+    description: "Links a TransportService to its Energy Consumption record."
+    status: new-bridge
+
+  - id: consignment-to-carbon
+    source_domain: consignment
+    target_domain: sustainability
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#hasCarbonFootprint"
+    domain_class_uri: "https://www.kairosflow.ai/ont/mmt/consignment#Consignment"
+    range_class_uri: "https://www.kairosflow.ai/ont/sustainability/carbon#CarbonFootprint"
+    description: "Links an MMT Consignment to its Carbon Footprint calculation."
+    status: new-bridge
+
+  # ── Cargo ↔ Customs Goods ──────────────────────────────────────────────
+
+  - id: cargo-to-goods-item
+    source_domain: cargo
+    target_domain: customs
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#declaredAsGoodsItem"
+    domain_class_uri: "https://www.kairosflow.ai/ont/mmt/cargo#CargoItem"
+    range_class_uri: "https://www.kairosflow.ai/ont/wco/customs#GoodsItem"
+    description: "Links an MMT CargoItem to a WCO GoodsItem for customs declaration."
+    status: new-bridge
+
+  # ── Documents ↔ Documents ──────────────────────────────────────────────
+
+  - id: transport-doc-to-bol
+    source_domain: documents
+    target_domain: documents
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#correspondsToBillOfLading"
+    domain_class_uri: "https://www.kairosflow.ai/ont/dcsa/transport-documents#TransportDocument"
+    range_class_uri: "https://www.kairosflow.ai/ont/bsp/documents#BillOfLading"
+    description: "Links a DCSA TransportDocument to the corresponding BSP BillOfLading."
+    status: new-bridge
 
   - id: booking-to-party-existing
     source_domain: booking

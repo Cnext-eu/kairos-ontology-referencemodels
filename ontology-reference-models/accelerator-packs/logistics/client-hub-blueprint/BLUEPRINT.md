@@ -30,7 +30,7 @@ client-specific extensions layered on top.
 ├── model/
 │   ├── ontologies/                        ← One subfolder per data domain
 │   │   ├── party/
-│   │   │   └── party.ttl                  ← imports bsp:party, mmt:party + client classes
+│   │   │   └── party.ttl                  ← imports bsp:party, mmt:party, imo:party + client classes
 │   │   ├── commercial/
 │   │   │   └── commercial.ttl             ← imports bsp:commercial + client classes
 │   │   ├── booking/
@@ -42,11 +42,15 @@ client-specific extensions layered on top.
 │   │   ├── equipment/
 │   │   │   └── equipment.ttl              ← imports mmt:equipment, dcsa:equipment
 │   │   ├── route-schedule/
-│   │   │   └── route-schedule.ttl         ← imports dcsa:schedule, mmt:route-network
+│   │   │   └── route-schedule.ttl         ← imports dcsa:schedule, mmt:route-network, dcsa:transport-call
 │   │   ├── vessel-maritime/
-│   │   │   └── vessel-maritime.ttl        ← imports imo:vessel-registry, dcsa:vessel-journey
+│   │   │   └── vessel-maritime.ttl        ← imports imo:vessel-registry, dcsa:vessel-journey,
+│   │   │                                     imo:port-call, imo:certificates-surveys,
+│   │   │                                     imo:crew-seafarer, imo:environmental,
+│   │   │                                     imo:maritime-security, imo:locations
 │   │   ├── terminal-operations/
-│   │   │   └── terminal-operations.ttl    ← imports tic:terminal-infrastructure, tic:handling
+│   │   │   └── terminal-operations.ttl    ← imports tic:terminal-infrastructure, tic:handling,
+│   │   │                                     tic:locations, tic:kpi
 │   │   ├── intermodal/
 │   │   │   └── intermodal.ttl             ← imports mmt:inland-transport
 │   │   ├── roro/
@@ -56,13 +60,15 @@ client-specific extensions layered on top.
 │   │   ├── dangerous-goods/
 │   │   │   └── dangerous-goods.ttl        ← imports imo:dangerous-goods
 │   │   ├── customs/
-│   │   │   └── customs.ttl                ← imports wco:customs, wco:trade-facilitation
+│   │   │   └── customs.ttl                ← imports wco:customs, wco:trade-facilitation,
+│   │   │                                     wco:party, wco:documents, wco:locations
 │   │   ├── sustainability/
 │   │   │   └── sustainability.ttl         ← imports sustainability:carbon, :energy
 │   │   ├── events/
-│   │   │   └── events.ttl                 ← imports dcsa:track-and-trace, tic:events
+│   │   │   └── events.ttl                 ← imports dcsa:track-and-trace, tic:events, mmt:events
 │   │   ├── documents/
-│   │   │   └── documents.ttl              ← imports bsp:documents, dcsa:transport-documents
+│   │   │   └── documents.ttl              ← imports bsp:documents, dcsa:transport-documents,
+│   │   │                                     mmt:documents
 │   │   ├── financial/
 │   │   │   └── financial.ttl              ← imports bsp:financial, dcsa:demurrage-detention,
 │   │   │                                     bsp:cost-accounting, bsp:revenue-yield
@@ -71,7 +77,7 @@ client-specific extensions layered on top.
 │   │   ├── compliance/
 │   │   │   └── compliance.ttl             ← imports bsp:compliance
 │   │   ├── reference-data/
-│   │   │   └── reference-data.ttl         ← imports bsp:reference-data
+│   │   │   └── reference-data.ttl         ← imports bsp:reference-data, dcsa:locations
 │   │   └── mdm/
 │   │       └── mdm.ttl                    ← golden records, crosswalks, match/merge
 │   │
@@ -312,6 +318,12 @@ owl:imports <https://www.kairosflow.ai/ont/accelerator/logistics#> .
 | `sc:eventRelatesToConsignment` | DCSA Event | MMT Consignment | Event subject (consignment) |
 | `sc:eventRelatesToVessel` | DCSA Event | IMO Vessel | Event subject (vessel) |
 | `sc:eventRelatesToEquipment` | TIC TerminalEvent | DCSA Container | Event subject (equipment) |
+| `sc:hasCIIRating` | IMO Vessel | Sustainability CIIRating | Vessel carbon intensity |
+| `sc:hasEmissionReport` | IMO Vessel | Sustainability EmissionReport | Vessel emission reporting |
+| `sc:hasEnergyConsumption` | MMT TransportService | Sustainability EnergyConsumption | Transport energy tracking |
+| `sc:hasCarbonFootprint` | MMT Consignment | Sustainability CarbonFootprint | Consignment carbon footprint |
+| `sc:declaredAsGoodsItem` | MMT CargoItem | WCO GoodsItem | Customs goods declaration |
+| `sc:correspondsToBillOfLading` | DCSA TransportDocument | BSP BillOfLading | Document correspondence |
 
 The full registry is in `data-domains.yaml` → `cross_domain_relationships`.
 

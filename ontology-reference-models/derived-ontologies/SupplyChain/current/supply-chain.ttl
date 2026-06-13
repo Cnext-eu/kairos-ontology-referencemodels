@@ -20,7 +20,11 @@
 @prefix dg: <https://www.kairosflow.ai/ont/imo/dangerous-goods#> .
 @prefix commercial: <https://www.kairosflow.ai/ont/bsp/commercial#> .
 @prefix financial: <https://www.kairosflow.ai/ont/bsp/financial#> .
+@prefix bsp-doc: <https://www.kairosflow.ai/ont/bsp/documents#> .
 @prefix wco-customs: <https://www.kairosflow.ai/ont/wco/customs#> .
+@prefix tdoc: <https://www.kairosflow.ai/ont/dcsa/transport-documents#> .
+@prefix sust-carbon: <https://www.kairosflow.ai/ont/sustainability/carbon#> .
+@prefix sust-energy: <https://www.kairosflow.ai/ont/sustainability/energy#> .
 
 # Ontology Metadata
 <https://www.kairosflow.ai/ont/supply-chain> a owl:Ontology ;
@@ -36,12 +40,13 @@
     gaps between standards.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-31"^^xsd:date ;
-    dcterms:modified "2026-05-31"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
+    dcterms:modified "2026-06-13"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
     owl:imports <https://www.kairosflow.ai/ont/dcsa/booking> ,
                 <https://www.kairosflow.ai/ont/dcsa/equipment> ,
                 <https://www.kairosflow.ai/ont/dcsa/schedule> ,
                 <https://www.kairosflow.ai/ont/dcsa/events> ,
+                <https://www.kairosflow.ai/ont/dcsa/transport-documents> ,
                 <https://www.kairosflow.ai/ont/mmt/consignment> ,
                 <https://www.kairosflow.ai/ont/mmt/cargo> ,
                 <https://www.kairosflow.ai/ont/imo/port-call> ,
@@ -52,7 +57,10 @@
                 <https://www.kairosflow.ai/ont/tic/events> ,
                 <https://www.kairosflow.ai/ont/bsp/commercial> ,
                 <https://www.kairosflow.ai/ont/bsp/financial> ,
-                <https://www.kairosflow.ai/ont/wco/customs> .
+                <https://www.kairosflow.ai/ont/bsp/documents> ,
+                <https://www.kairosflow.ai/ont/wco/customs> ,
+                <https://www.kairosflow.ai/ont/sustainability/carbon> ,
+                <https://www.kairosflow.ai/ont/sustainability/energy> .
 
 #################################################################
 #    Booking ↔ Transport
@@ -131,7 +139,7 @@
 :classifiedAsDangerousGoods a owl:ObjectProperty ;
     rdfs:label "classified as dangerous goods" ;
     rdfs:comment "Links an MMT CargoItem to its IMO dangerous goods classification." ;
-    rdfs:domain cargo:CargoItem ;`
+    rdfs:domain cargo:CargoItem ;
     rdfs:range dg:DangerousGoodsItem .
 
 #################################################################
@@ -165,3 +173,55 @@
     rdfs:comment "Links a TIC TerminalEvent to the DCSA Container it involves." ;
     rdfs:domain tic-events:TerminalEvent ;
     rdfs:range equip:Container .
+
+#################################################################
+#    Vessel ↔ Sustainability
+#################################################################
+
+:hasCIIRating a owl:ObjectProperty ;
+    rdfs:label "has CII rating" ;
+    rdfs:comment "Links an IMO Vessel to its Carbon Intensity Indicator rating for operational efficiency." ;
+    rdfs:domain vessel:Vessel ;
+    rdfs:range sust-carbon:CIIRating .
+
+:hasEmissionReport a owl:ObjectProperty ;
+    rdfs:label "has emission report" ;
+    rdfs:comment "Links an IMO Vessel to a formal emission report covering a reporting period." ;
+    rdfs:domain vessel:Vessel ;
+    rdfs:range sust-carbon:EmissionReport .
+
+#################################################################
+#    Transport ↔ Sustainability
+#################################################################
+
+:hasEnergyConsumption a owl:ObjectProperty ;
+    rdfs:label "has energy consumption" ;
+    rdfs:comment "Links an MMT TransportService to its measured energy consumption." ;
+    rdfs:domain consignment:TransportService ;
+    rdfs:range sust-energy:EnergyConsumption .
+
+:hasCarbonFootprint a owl:ObjectProperty ;
+    rdfs:label "has carbon footprint" ;
+    rdfs:comment "Links an MMT Consignment to the total carbon footprint of its transport chain." ;
+    rdfs:domain consignment:Consignment ;
+    rdfs:range sust-carbon:CarbonFootprint .
+
+#################################################################
+#    Cargo ↔ Customs Goods
+#################################################################
+
+:declaredAsGoodsItem a owl:ObjectProperty ;
+    rdfs:label "declared as goods item" ;
+    rdfs:comment "Links an MMT CargoItem to the WCO GoodsItem that declares it for customs purposes." ;
+    rdfs:domain cargo:CargoItem ;
+    rdfs:range wco-customs:GoodsItem .
+
+#################################################################
+#    Transport Documents ↔ Trade Documents
+#################################################################
+
+:correspondsToBillOfLading a owl:ObjectProperty ;
+    rdfs:label "corresponds to bill of lading" ;
+    rdfs:comment "Links a DCSA TransportDocument to the BSP BillOfLading representing the same document from a trade perspective." ;
+    rdfs:domain tdoc:TransportDocument ;
+    rdfs:range bsp-doc:BillOfLading .

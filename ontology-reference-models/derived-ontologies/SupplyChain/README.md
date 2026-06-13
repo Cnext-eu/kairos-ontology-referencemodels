@@ -5,8 +5,8 @@
 ## Purpose
 
 This module provides **cross-standard object properties** that link classes
-from different ontology standards (DCSA, MMT, BSP, TIC, IMO, WCO). It does
-not define new classes — it only bridges existing classes across standards.
+from different ontology standards (DCSA, MMT, BSP, TIC, IMO, WCO, Sustainability).
+It does not define new classes — it only bridges existing classes across standards.
 
 Within a single standard, cross-module properties already exist (e.g., MMT
 consignment → MMT equipment). This module covers relationships that span
@@ -28,6 +28,12 @@ consignment → MMT equipment). This module covers relationships that span
 | DCSA Event | MMT Consignment | `eventRelatesToConsignment` |
 | DCSA Event | IMO Vessel | `eventRelatesToVessel` |
 | TIC TerminalEvent | DCSA Container | `eventRelatesToEquipment` |
+| IMO Vessel | Sustainability Carbon | `hasCIIRating` |
+| IMO Vessel | Sustainability Carbon | `hasEmissionReport` |
+| MMT TransportService | Sustainability Energy | `hasEnergyConsumption` |
+| MMT Consignment | Sustainability Carbon | `hasCarbonFootprint` |
+| MMT CargoItem | WCO Customs | `declaredAsGoodsItem` |
+| DCSA TransportDocument | BSP Documents | `correspondsToBillOfLading` |
 
 ## Design principles
 
@@ -39,6 +45,18 @@ consignment → MMT equipment). This module covers relationships that span
 4. **Neutral namespace** — `https://www.kairosflow.ai/ont/supply-chain#` is
    standard-agnostic.
 
+## Changelog
+
+### v1.1.0 (2026-06-13)
+- Added Sustainability bridges: CIIRating, EmissionReport, EnergyConsumption, CarbonFootprint
+- Added WCO GoodsItem bridge: declaredAsGoodsItem (CargoItem → GoodsItem)
+- Added document bridge: correspondsToBillOfLading (TransportDocument → BillOfLading)
+- Added missing imports: transport-documents, bsp/documents, sustainability/carbon, sustainability/energy
+- Fixed syntax error (stray backtick on classifiedAsDangerousGoods)
+
+### v1.0.0 (2026-05-31)
+- Initial release with 12 cross-standard bridge properties
+
 ## Version
 
-See [VERSION](VERSION) — currently **1.0.0**.
+See [VERSION](VERSION) — currently **1.1.0**.
