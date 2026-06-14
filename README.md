@@ -2,9 +2,11 @@
 
 **Centralized repository for Kairos platform canonical ontologies and reference models**
 
+_Part of the [Kairos Community Edition](https://github.com/Cnext-eu) by Cnext.eu_
+
 [![Validation Status](https://img.shields.io/badge/validation-passing-brightgreen.svg)](https://github.com/Cnext-eu/kairos-ontology-referencemodels/actions)
-[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](VERSION)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](VERSION)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 ---
 
@@ -394,7 +396,14 @@ See [examples/](examples/) for more detailed usage patterns.
 
 ## 📄 License
 
-MIT License - See [LICENSE](LICENSE) for details
+Licensed under the [Apache License 2.0](LICENSE). Part of the **Kairos Community
+Edition** by [Cnext.eu](https://cnext.eu). See [NOTICE](NOTICE) for attribution.
+
+This repository also bundles third-party authoritative ontologies (e.g. FIBO)
+under their own licenses; those terms continue to apply to the respective files.
+
+See also [CONTRIBUTING](CONTRIBUTING.md), [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md),
+and [SECURITY](SECURITY.md).
 
 ---
 
