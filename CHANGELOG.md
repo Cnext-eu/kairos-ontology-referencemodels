@@ -5,6 +5,48 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-06-14
+
+### Added
+- **Open-source governance** — repository is now released under the **Apache
+  License 2.0** as part of the Kairos Community Edition:
+  - `LICENSE` (Apache 2.0), `NOTICE`, `CONTRIBUTING.md` (DCO workflow),
+    `CODE_OF_CONDUCT.md` (Contributor Covenant v2.1), `SECURITY.md`
+  - `.github/PULL_REQUEST_TEMPLATE.md` and issue templates (bug / feature)
+  - `.gitignore` (Python, venv, build artifacts, OS/editor noise)
+- **IMO v1.1.0** — 6 new modules: certificates-surveys, crew-seafarer,
+  environmental, maritime-security, plus enriched party and locations (#11)
+- **TIC v1.2.0** — new KPI and reefer-monitoring modules; enriched party,
+  locations, events, automotive-services, handling-operations (#11)
+- **DCSA v1.1.0** — new shared-kernel transport-call module; cross-domain
+  `rdfs:seeAlso` annotations and declaration headers (#11)
+- **WCO v1.2.0** — GoodsItem, Packaging, CustomsProcedure, Consignee/Consignor
+  and 50+ new properties (#11)
+- **SupplyChain v1.1.0** — 6 new bridge properties (sustainability, WCO goods,
+  documents); added to the XML catalog
+- Logistics accelerator v1.3.0 — refreshed metadata (WCO 3.0 → 3.10.0),
+  blueprint imports and cross-domain bridge table
+
+### Changed
+- Relocated 9 `*-silver-ext.ttl` files from the derived ontologies to
+  `accelerator-packs/logistics/client-hub-blueprint/examples/extensions/` as
+  client starter templates — reference models now hold pure domain semantics
+  only (#12)
+- README: license badge MIT → Apache 2.0, version badge → 1.5.0, added Kairos
+  Community Edition attribution and rewrote the License section
+- Updated `ontology-reference-models/catalog-v001.xml` for the new modules
+
+### Removed
+- Stale `.github/info/.sparse-checkout` template (referenced directories that no
+  longer exist and was never wired into git)
+- Untracked an accidentally committed `scripts/__pycache__/*.pyc` artifact
+
+## [1.4.0] - 2026-05-31
+
+### Added
+- Version bump release establishing the 1.4.x line (see git history for the
+  detailed ontology changes folded into 1.5.0).
+
 ## [1.3.0] - 2026-05-19
 
 ### Added
