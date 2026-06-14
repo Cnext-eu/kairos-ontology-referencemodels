@@ -57,13 +57,12 @@ jobs:
         run: |
           tar -czf kairos-reference-models-${{ steps.get_version.outputs.version }}.tar.gz \
             ontology-reference-models/ \
-            shapes/ \
-            mappings/ \
             scripts/ \
             VERSION \
             CHANGELOG.md \
             README.md \
-            LICENSE
+            LICENSE \
+            NOTICE
       
       - name: Generate release notes from CHANGELOG
         id: changelog
