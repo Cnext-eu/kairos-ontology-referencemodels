@@ -2,7 +2,7 @@
 
 > **Document Control**  
 > **Framework:** Kairos Ontology Toolkit  
-> **Document date:** 2026-06-11
+> **Document date:** 2026-06-15
 
 The logistics blueprint defines a practical way to build a client ontology hub for freight forwarding and logistics operations using reusable reference ontologies plus client-specific extensions.
 

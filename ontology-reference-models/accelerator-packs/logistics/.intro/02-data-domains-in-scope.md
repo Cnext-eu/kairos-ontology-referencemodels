@@ -2,7 +2,7 @@
 
 > **Document Control**  
 > **Framework:** Kairos Ontology Toolkit  
-> **Document date:** 2026-06-11
+> **Document date:** 2026-06-15
 
 The blueprint groups domain ontologies by business ownership question (L1 group) and concrete domain modules (L2).
 

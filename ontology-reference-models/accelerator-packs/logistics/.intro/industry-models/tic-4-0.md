@@ -2,7 +2,7 @@
 
 > **Document Control**  
 > **Framework:** Kairos Ontology Toolkit  
-> **Document date:** 2026-06-11
+> **Document date:** 2026-06-15
 
 | Item | Details |
 |---|---|

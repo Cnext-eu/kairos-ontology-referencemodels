@@ -2,7 +2,7 @@
 
 > **Document Control**  
 > **Framework:** Kairos Ontology Toolkit  
-> **Document date:** 2026-06-11
+> **Document date:** 2026-06-15
 
 This folder contains a business-and-architecture oriented documentation set for the logistics client hub blueprint.
 
@@ -10,6 +10,20 @@ This folder contains a business-and-architecture oriented documentation set for 
 - Data architects
 - Logistics business analysts
 - Domain architects
+
+## Version snapshot (current)
+
+| Component | Version |
+|---|---|
+| Logistics accelerator pack | 1.3.0 |
+| BSP | 1.3.0 |
+| DCSA | 1.1.0 |
+| IMO | 1.1.0 |
+| MMT | 1.0.0 |
+| SupplyChain | 1.1.0 |
+| Sustainability | 1.1.0 |
+| TIC | 1.2.0 |
+| WCO | 1.2.0 |
 
 ## Documents
 
