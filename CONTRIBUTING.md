@@ -59,6 +59,14 @@ The same check runs automatically in CI on every push and pull request via
   `owl:versionInfo`.
 - Every `owl:Class` must have `rdfs:label` and `rdfs:comment`.
 - Every property must have `rdfs:domain`, `rdfs:range`, and `rdfs:label`.
+- **Make relationships explicit.** Typed party/location roles declare a generic
+  navigable parent via `rdfs:subPropertyOf` (e.g.
+  `:hasConsignor rdfs:subPropertyOf :hasParty`, range a party/location
+  supertype). When a referenced entity exists as an `owl:Class` in the model,
+  model the link as an `owl:ObjectProperty` rather than a bare `*Ref` / `*Id`
+  string scalar (keep the scalar only as a denormalised passthrough if needed).
+  See the BSP `party` → `:hasAddress` pattern. The structure validator emits
+  advisory `⚠` hints for likely implicit relationships.
 - Naming: PascalCase for classes, camelCase for properties.
 - When changing ontology content, bump the version and archive the previous
   version (see `scripts/version_manager.py` and `scripts/archive_version.py`).

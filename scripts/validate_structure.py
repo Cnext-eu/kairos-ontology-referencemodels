@@ -11,6 +11,13 @@ Checks:
   5. Each domain subfolder has a .ttl file
   6. Each .ttl file has owl:versionInfo
   7. VERSION file matches owl:versionInfo in the root .ttl
+
+Advisory (warnings only, never fail the build):
+  8. Relationship explicitness — flags likely *implicit* relationships:
+       a. a *Ref/*Id string scalar whose stem matches an existing owl:Class
+          (and is not a self-identifier / already navigable)
+       b. >= 3 sibling object properties sharing a range with no generic
+          rdfs:subPropertyOf parent
 """
 
 import argparse
@@ -44,6 +51,15 @@ PROPERTY_START_RE = re.compile(
 BLOCK_END_RE = re.compile(r'\s\.\s*$')
 RDFS_DOMAIN_RE = re.compile(r'\brdfs:domain\b')
 RDFS_RANGE_RE = re.compile(r'\brdfs:range\b')
+CLASS_DECL_RE = re.compile(r'^\s*(?P<cls>:[A-Za-z][\w-]*)\s+a\s+owl:Class\b')
+RANGE_SIMPLE_RE = re.compile(
+    r'rdfs:range\s+(?P<range>[A-Za-z][\w-]*:[A-Za-z][\w-]*|:[A-Za-z][\w-]*)\s*[;.]'
+)
+SUBPROPERTY_RE = re.compile(r'\brdfs:subPropertyOf\b')
+REF_SUFFIX_RE = re.compile(r'^(?P<stem>.+?)(Ref|Reference|Id|Identifier)$')
+DOMAIN_SIMPLE_RE = re.compile(
+    r'rdfs:domain\s+(?P<domain>[A-Za-z][\w-]*:[A-Za-z][\w-]*|:[A-Za-z][\w-]*)\s*[;.]'
+)
 
 
 class ValidationResult:
@@ -283,28 +299,7 @@ def validate_property_completeness(folder: Path, verbose: bool) -> ValidationRes
             continue
 
         content = ttl_file.read_text(encoding="utf-8")
-        lines = content.splitlines()
-        property_blocks = []
-        index = 0
-
-        while index < len(lines):
-            match = PROPERTY_START_RE.match(lines[index])
-            if not match:
-                index += 1
-                continue
-
-            block_lines = [lines[index]]
-            index += 1
-            while index < len(lines):
-                block_lines.append(lines[index])
-                if BLOCK_END_RE.search(lines[index]):
-                    break
-                index += 1
-
-            property_blocks.append(
-                (match.group("property"), match.group("property_type"), "\n".join(block_lines))
-            )
-            index += 1
+        property_blocks = _extract_property_blocks(content.splitlines())
 
         if not property_blocks:
             continue
@@ -334,6 +329,124 @@ def validate_property_completeness(folder: Path, verbose: bool) -> ValidationRes
                 )
             else:
                 r.fail(f"{ttl_rel}: {property_name} ({property_type}) missing rdfs:range")
+
+    return r
+
+
+def _extract_property_blocks(lines):
+    """Extract (name, type, block_text) tuples for each property definition."""
+    blocks = []
+    index = 0
+    while index < len(lines):
+        match = PROPERTY_START_RE.match(lines[index])
+        if not match:
+            index += 1
+            continue
+        block_lines = [lines[index]]
+        index += 1
+        while index < len(lines):
+            block_lines.append(lines[index])
+            if BLOCK_END_RE.search(lines[index]):
+                break
+            index += 1
+        blocks.append(
+            (match.group("property"), match.group("property_type"), "\n".join(block_lines))
+        )
+        index += 1
+    return blocks
+
+
+def validate_relationship_explicitness(folder: Path, verbose: bool) -> ValidationResult:
+    """Advisory checks (warnings only) that surface likely *implicit* relationships.
+
+    Encourages the "make relationships explicit" convention (CONTRIBUTING.md):
+      A. A ``*Ref`` / ``*Id`` string scalar whose stem matches an existing
+         ``owl:Class`` in the same ontology probably hides a navigable
+         ``owl:ObjectProperty``.
+      B. A group of >= 3 sibling object properties that share the same range and
+         none of which declares ``rdfs:subPropertyOf`` probably warrants a generic
+         parent property (e.g. ``:hasParty`` / ``:hasLocation``).
+
+    These never fail the build; they emit ``⚠`` hints for reviewer attention.
+    """
+    r = ValidationResult()
+    content_dir = get_content_dir(folder)
+    ttl_files = [
+        f for f in sorted(content_dir.rglob("*.ttl"))
+        if "archive" not in f.relative_to(folder).parts
+    ]
+
+    r.messages.append("\n── Relationship Explicitness (advisory) ──")
+
+    # Collect all class local names declared anywhere in the ontology.
+    class_names = set()
+    for ttl_file in ttl_files:
+        for line in ttl_file.read_text(encoding="utf-8").splitlines():
+            m = CLASS_DECL_RE.match(line)
+            if m:
+                class_names.add(m.group("cls").lstrip(":").lower())
+
+    for ttl_file in ttl_files:
+        content = ttl_file.read_text(encoding="utf-8")
+        blocks = _extract_property_blocks(content.splitlines())
+        if not blocks:
+            continue
+        ttl_rel = ttl_file.relative_to(ONTOLOGY_ROOT)
+
+        # Classes already reachable via an object property in this file are
+        # considered navigable; a parallel scalar reference is acceptable passthrough.
+        linked_classes = set()
+        for name, ptype, block in blocks:
+            if ptype != "ObjectProperty":
+                continue
+            rng_m = RANGE_SIMPLE_RE.search(block)
+            if rng_m:
+                linked_classes.add(rng_m.group("range").split(":")[-1].lower())
+
+        # Heuristic A: scalar reference shadowing an existing class.
+        for name, ptype, block in blocks:
+            if ptype != "DatatypeProperty":
+                continue
+            local = name.lstrip(":")
+            ref_m = REF_SUFFIX_RE.match(local)
+            if not (ref_m and ref_m.group("stem").lower() in class_names):
+                continue
+            stem = ref_m.group("stem")
+            # Skip self-identifiers: a *Reference/*Id on the same class it names.
+            dom_m = DOMAIN_SIMPLE_RE.search(block)
+            if dom_m and dom_m.group("domain").split(":")[-1].lower() == stem.lower():
+                continue
+            # Skip when an object property already links to that class.
+            if stem.lower() in linked_classes:
+                continue
+            r.warn(
+                f"{ttl_rel}: {name} is a string reference to existing class "
+                f"':{stem[:1].upper()}{stem[1:]}' "
+                f"— consider an owl:ObjectProperty to make the link navigable"
+            )
+
+        # Heuristic B: sibling object properties sharing a range, no generic parent.
+        range_groups = {}
+        for name, ptype, block in blocks:
+            if ptype != "ObjectProperty":
+                continue
+            rng_m = RANGE_SIMPLE_RE.search(block)
+            if not rng_m:
+                continue
+            has_parent = bool(SUBPROPERTY_RE.search(block))
+            range_groups.setdefault(rng_m.group("range"), []).append((name, has_parent))
+
+        for rng, members in range_groups.items():
+            if len(members) >= 3 and not any(has_parent for _, has_parent in members):
+                names = ", ".join(n for n, _ in members)
+                r.warn(
+                    f"{ttl_rel}: {len(members)} object properties share range {rng} "
+                    f"with no rdfs:subPropertyOf parent ({names}) "
+                    f"— consider a generic parent property"
+                )
+
+    if not any("⚠" in m for m in r.messages):
+        r.ok("No likely implicit relationships detected", verbose, is_verbose=True)
 
     return r
 
@@ -369,6 +482,12 @@ def main():
                 print(msg)
             total_pass += property_result.passes
             total_fail += property_result.failures
+
+            relationship_result = validate_relationship_explicitness(folder, args.verbose)
+            for msg in relationship_result.messages:
+                print(msg)
+            total_pass += relationship_result.passes
+            total_fail += relationship_result.failures
 
     print(f"\n{'─' * 50}")
     if total_fail:
