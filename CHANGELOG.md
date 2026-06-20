@@ -5,6 +5,27 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2026-06-20
+
+### Added
+- **BSP v1.4.0 — party master-data** (#17, #13):
+  - `reference-data`: generic `:hasAddress` (1:n) with `:hasBillingAddress` /
+    `:hasShippingAddress` now declared as `rdfs:subPropertyOf :hasAddress`
+    (typed roles 0..1, documented cardinality).
+  - `party`: new `:Contact` person entity (`rdfs:seeAlso` UN/CEFACT
+    `TradeContact`) with `:hasContact` (1:n) and `:contactName` / `:jobTitle` /
+    `:contactRole`; `:contactEmail` / `:contactPhone` broadened to cover both
+    `TradeParty` and `Contact` (single canonical coordinate).
+  - `financial`: new `:BankAccount` entity (1:n via `:hasBankAccount`) with
+    `:iban` / `:bic` / `:accountNumber` / `:accountHolderName`; party-level
+    `:hasPartyPaymentTerms`; currency-scoped `:creditLimit` +
+    `:creditLimitCurrency`. FIBO used as design inspiration only (not imported).
+- Logistics accelerator blueprint: surfaced contact persons, address, and
+  bank account / credit limit in the party-commercial domain `provides` lists.
+
+### Changed
+- BSP reference model bumped to **1.4.0** (all modules) for the additions above.
+
 ## [1.5.0] - 2026-06-14
 
 ### Added

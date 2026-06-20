@@ -22,8 +22,8 @@
     - Events: Payment lifecycle events""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-05-22"^^xsd:date ;
-    owl:versionInfo "1.3.0" ;
+    dcterms:modified "2026-06-20"^^xsd:date ;
+    owl:versionInfo "1.4.0" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
@@ -107,6 +107,19 @@
     UN/CEFACT BSP: Maps to Guarantee — an official promise or assurance
     to fulfil a financial obligation.""" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/Guarantee> .
+
+:BankAccount a owl:Class ;
+    rdfs:label "Bank Account" ;
+    rdfs:comment """A financial account held by a trade party, identified by IBAN and BIC/SWIFT.
+
+    Modeled as a first-class entity (not scalar party attributes) because a
+    party commonly holds multiple accounts (e.g., per currency or per bank).
+    Linked to a party via :hasBankAccount (1:n).
+
+    UN/CEFACT BSP: Aligns to FinancialAccount (Creditor/Debtor financial
+    account). Entity shape inspired by FIBO FBC ClientsAndAccounts — provided
+    here as design inspiration only; FIBO is not imported.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/FinancialAccount> .
 
 #################################################################
 #    Event Classes
@@ -515,6 +528,24 @@
     rdfs:range :RemittanceAdvice .
 
 #################################################################
+#    Party-Account Object Properties (v1.4.0)
+#################################################################
+
+:hasBankAccount a owl:ObjectProperty ;
+    rdfs:label "has bank account" ;
+    rdfs:comment "Relates a trade party to its bank accounts. Cardinality: 1:n." ;
+    rdfs:domain party:TradeParty ;
+    rdfs:range :BankAccount .
+
+:hasPartyPaymentTerms a owl:ObjectProperty ;
+    rdfs:label "has party payment terms" ;
+    rdfs:comment """Relates a trade party to its default/agreed payment terms.
+    Cardinality: 0..1 (the standing terms for the party). Distinct from
+    :hasPaymentTerms, which links an individual invoice to its terms.""" ;
+    rdfs:domain party:TradeParty ;
+    rdfs:range :PaymentTerms .
+
+#################################################################
 #    Additional Datatype Properties - Charges & Tariffs
 #################################################################
 
@@ -676,4 +707,46 @@
     rdfs:label "remittance reference" ;
     rdfs:comment "Payment reference number associated with the remittance." ;
     rdfs:domain :RemittanceAdvice ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Party-Account Datatype Properties (v1.4.0)
+#################################################################
+
+:iban a owl:DatatypeProperty ;
+    rdfs:label "IBAN" ;
+    rdfs:comment "International Bank Account Number (ISO 13616) of the bank account." ;
+    rdfs:domain :BankAccount ;
+    rdfs:range xsd:string .
+
+:bic a owl:DatatypeProperty ;
+    rdfs:label "BIC/SWIFT" ;
+    rdfs:comment "Business Identifier Code / SWIFT code (ISO 9362) of the account's bank." ;
+    rdfs:domain :BankAccount ;
+    rdfs:range xsd:string .
+
+:accountNumber a owl:DatatypeProperty ;
+    rdfs:label "account number" ;
+    rdfs:comment "Local/domestic bank account number (where IBAN is not used)." ;
+    rdfs:domain :BankAccount ;
+    rdfs:range xsd:string .
+
+:accountHolderName a owl:DatatypeProperty ;
+    rdfs:label "account holder name" ;
+    rdfs:comment "Name in which the bank account is held." ;
+    rdfs:domain :BankAccount ;
+    rdfs:range xsd:string .
+
+:creditLimit a owl:DatatypeProperty ;
+    rdfs:label "credit limit" ;
+    rdfs:comment """Maximum outstanding credit extended to the party. Pair with
+    :creditLimitCurrency for the monetary context. Note: in source systems this
+    is often role/relationship-scoped rather than a single party-wide value.""" ;
+    rdfs:domain party:TradeParty ;
+    rdfs:range xsd:decimal .
+
+:creditLimitCurrency a owl:DatatypeProperty ;
+    rdfs:label "credit limit currency" ;
+    rdfs:comment "ISO 4217 currency code qualifying :creditLimit." ;
+    rdfs:domain party:TradeParty ;
     rdfs:range xsd:string .

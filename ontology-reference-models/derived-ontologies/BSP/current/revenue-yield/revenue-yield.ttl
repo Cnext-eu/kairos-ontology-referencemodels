@@ -25,7 +25,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-22"^^xsd:date ;
     dcterms:modified "2026-05-22"^^xsd:date ;
-    owl:versionInfo "1.3.0" ;
+    owl:versionInfo "1.4.0" ;
     dcterms:source "Industry Practice, UN/CEFACT CCL" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
