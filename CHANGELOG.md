@@ -5,6 +5,23 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2026-06-20
+
+### Changed
+- **BSP v1.5.0 — relocate the party→address relationship.** The
+  `:hasAddress` / `:hasBillingAddress` / `:hasShippingAddress` object properties
+  moved from the `reference-data` module into the `party` module, where their
+  `rdfs:domain` (`:TradeParty`) lives. `party` now `owl:imports` `reference-data`
+  for the `Address` range. This makes the party module self-contained for address
+  navigation — any consumer importing `bsp/party#` gets the relationship without
+  separately importing reference-data. The `Address` class stays in
+  `reference-data` as shared master data; the unused `party:` prefix was removed
+  from `reference-data`.
+  - Property IRIs changed from `…/bsp/reference-data#hasAddress…` to
+    `…/bsp/party#hasAddress…`. These properties were introduced in BSP 1.4.0 with
+    no downstream consumers, so impact is minimal.
+  - BSP 1.4.0 snapshot archived under `BSP/archive/1.4.0/`.
+
 ## [1.7.0] - 2026-06-20
 
 ### Added
