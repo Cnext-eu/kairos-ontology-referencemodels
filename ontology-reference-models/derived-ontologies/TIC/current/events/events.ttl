@@ -19,8 +19,8 @@
     vessel loading and discharging, stacking, service completion, damage detection, and inspections.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "1.2.0" ;
+    dcterms:modified "2026-06-20"^^xsd:date ;
+    owl:versionInfo "1.3.0" ;
     dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
     rdfs:seeAlso <https://tic40.org/standards/> .
 
@@ -175,6 +175,24 @@
     rdfs:comment "Links a vessel load/discharge event to its vessel call reference." ;
     rdfs:domain :TerminalEvent ;
     rdfs:range tic-ops:CarrierVisit .
+
+:atChargingStation a owl:ObjectProperty ;
+    rdfs:label "at charging station" ;
+    rdfs:comment """Links a charging session event to the charging station where it took place.
+
+    Each charging session occurs at exactly one charging station (0..1 per event).
+    Makes explicit the relationship denormalized by the :chargingStationRef identifier.""" ;
+    rdfs:domain :ChargingSessionEvent ;
+    rdfs:range tic-infra:ChargingStation .
+
+:chargedEquipment a owl:ObjectProperty ;
+    rdfs:label "charged equipment" ;
+    rdfs:comment """Links a charging session event to the electric terminal equipment (CHE) that was charged.
+
+    Each charging session charges exactly one piece of equipment (0..1 per event).
+    Makes explicit the relationship denormalized by the :vehicleRef identifier.""" ;
+    rdfs:domain :ChargingSessionEvent ;
+    rdfs:range tic-infra:TerminalEquipment .
 
 #################################################################
 #    Datatype Properties

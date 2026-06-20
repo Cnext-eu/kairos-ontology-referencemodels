@@ -21,8 +21,8 @@
     transport routes, legs, and movements. Based on UN/CEFACT MMT Reference Data Model.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
+    dcterms:modified "2026-06-20"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
 
@@ -187,43 +187,66 @@
     rdfs:domain :TransportLeg ;
     rdfs:range mmt-tm:LogisticsMeansOfTransport .
 
+:hasLocation a owl:ObjectProperty ;
+    rdfs:label "has location" ;
+    rdfs:comment """Relates a transport leg to one of its locations. Cardinality: 1:n.
+    The typed roles :departureLocation and :arrivalLocation are specialisations
+    of this generic relationship.""" ;
+    rdfs:domain :TransportLeg ;
+    rdfs:range mmt-loc:TransportLocation .
+
 :departureLocation a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasLocation ;
     rdfs:label "departure location" ;
-    rdfs:comment "Identifies the departure location." ;
+    rdfs:comment "Identifies the departure location. Cardinality: 0..1." ;
     rdfs:domain :TransportLeg ;
     rdfs:range mmt-loc:TransportLocation .
 
 :arrivalLocation a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasLocation ;
     rdfs:label "arrival location" ;
-    rdfs:comment "Identifies the arrival location." ;
+    rdfs:comment "Identifies the arrival location. Cardinality: 0..1." ;
     rdfs:domain :TransportLeg ;
     rdfs:range mmt-loc:TransportLocation .
 
+:hasParty a owl:ObjectProperty ;
+    rdfs:label "has party" ;
+    rdfs:comment """Relates a consignment to one of its transport parties. Cardinality: 1:n.
+    The typed roles :hasConsignor, :hasConsignee, :hasCarrier, :hasFreightForwarder
+    and :hasNotifyParty are specialisations of this generic relationship.""" ;
+    rdfs:domain :Consignment ;
+    rdfs:range mmt-party:TransportParty .
+
 :hasConsignor a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
     rdfs:label "has consignor" ;
     rdfs:comment "Identifies the consignor (shipper)." ;
     rdfs:domain :Consignment ;
     rdfs:range mmt-party:Consignor .
 
 :hasConsignee a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
     rdfs:label "has consignee" ;
     rdfs:comment "Identifies the consignee (receiver)." ;
     rdfs:domain :Consignment ;
     rdfs:range mmt-party:Consignee .
 
 :hasCarrier a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
     rdfs:label "has carrier" ;
     rdfs:comment "Identifies the carrier." ;
     rdfs:domain :Consignment ;
     rdfs:range mmt-party:Carrier .
 
 :hasFreightForwarder a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
     rdfs:label "has freight forwarder" ;
     rdfs:comment "Identifies the freight forwarder." ;
     rdfs:domain :Consignment ;
     rdfs:range mmt-party:FreightForwarder .
 
 :hasNotifyParty a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
     rdfs:label "has notify party" ;
     rdfs:comment "Identifies a notify party." ;
     rdfs:domain :Consignment ;

@@ -17,8 +17,8 @@
     and reference numbers.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-06-12"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    dcterms:modified "2026-06-20"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "DCSA Electronic Bill of Lading (EBL) API v3.0" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
 
@@ -102,43 +102,66 @@
 #    Cross-Domain Object Properties
 #################################################################
 
+:hasDocumentParty a owl:ObjectProperty ;
+    rdfs:label "has document party" ;
+    rdfs:comment """A party named on this transport document. Cardinality: 1:n.
+    :hasDocumentShipper, :hasDocumentConsignee and :hasDocumentNotifyParty are
+    specialisations of this generic relationship.""" ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range party:ShippingParty .
+
 :hasDocumentShipper a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasDocumentParty ;
     rdfs:label "has document shipper" ;
     rdfs:comment "The shipper named on this transport document." ;
     rdfs:domain :TransportDocument ;
     rdfs:range party:Shipper .
 
 :hasDocumentConsignee a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasDocumentParty ;
     rdfs:label "has document consignee" ;
     rdfs:comment "The consignee named on this transport document." ;
     rdfs:domain :TransportDocument ;
     rdfs:range party:Consignee .
 
 :hasDocumentNotifyParty a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasDocumentParty ;
     rdfs:label "has document notify party" ;
     rdfs:comment "A notify party named on this transport document." ;
     rdfs:domain :TransportDocument ;
     rdfs:range party:NotifyParty .
 
+:hasDocumentLocation a owl:ObjectProperty ;
+    rdfs:label "has document location" ;
+    rdfs:comment """A routing location stated on this transport document. Cardinality: 1:n.
+    :hasPortOfLoading, :hasPortOfDischarge, :hasPlaceOfReceipt and
+    :hasPlaceOfDelivery are specialisations of this generic relationship.""" ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range loc:Location .
+
 :hasPortOfLoading a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasDocumentLocation ;
     rdfs:label "has port of loading" ;
     rdfs:comment "Port of loading stated on the transport document." ;
     rdfs:domain :TransportDocument ;
     rdfs:range loc:PortOfLoading .
 
 :hasPortOfDischarge a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasDocumentLocation ;
     rdfs:label "has port of discharge" ;
     rdfs:comment "Port of discharge stated on the transport document." ;
     rdfs:domain :TransportDocument ;
     rdfs:range loc:PortOfDischarge .
 
 :hasPlaceOfReceipt a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasDocumentLocation ;
     rdfs:label "has place of receipt" ;
     rdfs:comment "Place of receipt stated on the transport document." ;
     rdfs:domain :TransportDocument ;
     rdfs:range loc:PlaceOfReceipt .
 
 :hasPlaceOfDelivery a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasDocumentLocation ;
     rdfs:label "has place of delivery" ;
     rdfs:comment "Place of delivery stated on the transport document." ;
     rdfs:domain :TransportDocument ;

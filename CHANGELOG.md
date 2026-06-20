@@ -5,6 +5,39 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2026-06-20
+
+### Added
+- **Explicit relationships across logistics reference models** — generic parent
+  object properties that make implicit party/location links navigable (the same
+  pattern as BSP `party` → `:hasAddress`). Typed roles are retained as
+  `rdfs:subPropertyOf` the new generics:
+  - **MMT v1.1.0** (`consignment`): `:hasParty` (→ `mmt-party:TransportParty`)
+    over consignor/consignee/carrier/freight-forwarder/notify-party; `:hasLocation`
+    (→ `mmt-loc:TransportLocation`) over departure/arrival.
+  - **DCSA v1.2.0** (`booking`): `:hasParty` (→ `party:ShippingParty`) over
+    shipper/consignee/carrier/booking-party/notify-party; `:hasLocation`
+    (→ `loc:Location`) over place-of-receipt/port-of-loading/port-of-discharge/
+    place-of-delivery/transshipment. (`transport-documents`):
+    `:hasDocumentParty` and `:hasDocumentLocation` over the document-level roles.
+  - **TIC v1.3.0** (`events`): `:atChargingStation` (→ `tic-infra:ChargingStation`)
+    and `:chargedEquipment` (→ `tic-infra:TerminalEquipment`) make the charging
+    session's `:chargingStationRef` / `:vehicleRef` identifiers navigable.
+    (`party`): `:stevedoresCarrierVisit` (→ `tic-ops:CarrierVisit`) links a
+    stevedore to the carrier visits it services.
+
+### Changed
+- Logistics accelerator bundle bumped to **1.4.0** to signal the refreshed
+  constituent models (BSP 1.4.0, MMT 1.1.0, DCSA 1.2.0, TIC 1.3.0). Imports
+  remain version-less ontology IRIs, so the bundle always composes each model's
+  `current/` version.
+
+### Removed
+- Logistics client-hub-blueprint `examples/extensions/` starter templates
+  (9 `*-silver-ext.ttl` + README). Silver extensions are authored per hub via the
+  `kairos-design-silver` skill; the static examples were illustrative-only,
+  unvalidated, and prone to drift.
+
 ## [1.6.0] - 2026-06-20
 
 ### Added

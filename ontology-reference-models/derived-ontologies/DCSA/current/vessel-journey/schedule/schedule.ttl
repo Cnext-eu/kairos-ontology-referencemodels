@@ -18,7 +18,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-06-12"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "DCSA Operational Vessel Schedules (OVS) API" ;
     rdfs:seeAlso <https://dcsa.org/standards/operational-vessel-schedules/> .
 
