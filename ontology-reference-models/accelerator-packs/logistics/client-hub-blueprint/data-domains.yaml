@@ -26,7 +26,7 @@ groups:
         imports:
           - uri: "https://www.kairosflow.ai/ont/bsp/party#"
             module: "BSP / Party"
-            provides: "Party, Organisation, Customer, Supplier, role assignments"
+            provides: "Party, Organisation, Customer, Supplier, role assignments, contact persons"
           - uri: "https://www.kairosflow.ai/ont/mmt/party#"
             module: "MMT / Party"
             provides: "Carrier, transport service provider, consignee, consignor"
@@ -80,7 +80,7 @@ groups:
         imports:
           - uri: "https://www.kairosflow.ai/ont/bsp/financial#"
             module: "BSP / Financial"
-            provides: "Invoice, charge, surcharge taxonomy, payment, settlement, tariff schedule, trade finance"
+            provides: "Invoice, charge, surcharge taxonomy, payment, settlement, tariff schedule, trade finance, bank account, credit limit"
           - uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#"
             module: "DCSA / Demurrage & Detention"
             provides: "Demurrage charge, detention charge, free-time allowance, per-diem rates, D&D disputes"
@@ -430,7 +430,7 @@ groups:
         imports:
           - uri: "https://www.kairosflow.ai/ont/bsp/reference-data#"
             module: "BSP / Reference Data"
-            provides: "Code list, location, country, currency, UoM"
+            provides: "Code list, location, country, currency, UoM, address"
           - uri: "https://www.kairosflow.ai/ont/dcsa/locations#"
             module: "DCSA / Locations"
             provides: "Facility, UN location code, address"
