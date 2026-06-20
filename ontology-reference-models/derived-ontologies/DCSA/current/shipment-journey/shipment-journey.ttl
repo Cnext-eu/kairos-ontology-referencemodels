@@ -18,7 +18,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "DCSA Information Model 2024.Q4 — 1. Shipment Journey (BKG v2.0, EBL v3.0)" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> ;
     owl:imports <https://www.kairosflow.ai/ont/dcsa/booking> ,

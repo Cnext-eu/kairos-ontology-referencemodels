@@ -21,8 +21,8 @@
     utilized transport equipment.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-06-12"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    dcterms:modified "2026-06-20"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "DCSA Booking API (BKG) v2.0, BKG v2.0.2" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
 
@@ -163,61 +163,87 @@
     rdfs:domain :UtilizedTransportEquipment ;
     rdfs:range equip:Container .
 
+:hasParty a owl:ObjectProperty ;
+    rdfs:label "has party" ;
+    rdfs:comment """Relates a shipment or booking to one of its shipping parties.
+    Cardinality: 1:n. The typed roles :hasShipper, :hasConsignee, :hasCarrier,
+    :hasBookingParty and :hasNotifyParty are specialisations of this relationship.""" ;
+    rdfs:domain [ a owl:Class ; owl:unionOf ( :Shipment :Booking ) ] ;
+    rdfs:range party:ShippingParty .
+
 :hasShipper a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
     rdfs:label "has shipper" ;
     rdfs:comment "Identifies the shipper." ;
     rdfs:domain :Shipment ;
     rdfs:range party:Shipper .
 
 :hasConsignee a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
     rdfs:label "has consignee" ;
     rdfs:comment "Identifies the consignee." ;
     rdfs:domain :Shipment ;
     rdfs:range party:Consignee .
 
 :hasCarrier a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
     rdfs:label "has carrier" ;
     rdfs:comment "Identifies the ocean carrier." ;
     rdfs:domain :Shipment ;
     rdfs:range party:Carrier .
 
 :hasBookingParty a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
     rdfs:label "has booking party" ;
     rdfs:comment "Identifies the booking party." ;
     rdfs:domain :Booking ;
     rdfs:range party:BookingParty .
 
 :hasNotifyParty a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
     rdfs:label "has notify party" ;
     rdfs:comment "Identifies a notify party." ;
     rdfs:domain :Shipment ;
     rdfs:range party:NotifyParty .
 
+:hasLocation a owl:ObjectProperty ;
+    rdfs:label "has location" ;
+    rdfs:comment """Relates a booking to one of its routing locations. Cardinality: 1:n.
+    The typed roles :hasPlaceOfReceipt, :hasPortOfLoading, :hasPortOfDischarge,
+    :hasPlaceOfDelivery and :hasTransshipmentPort are specialisations of it.""" ;
+    rdfs:domain :Booking ;
+    rdfs:range loc:Location .
+
 :hasPlaceOfReceipt a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasLocation ;
     rdfs:label "has place of receipt" ;
     rdfs:comment "Identifies place where cargo is received." ;
     rdfs:domain :Booking ;
     rdfs:range loc:PlaceOfReceipt .
 
 :hasPortOfLoading a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasLocation ;
     rdfs:label "has port of loading" ;
     rdfs:comment "Identifies port of loading." ;
     rdfs:domain :Booking ;
     rdfs:range loc:PortOfLoading .
 
 :hasPortOfDischarge a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasLocation ;
     rdfs:label "has port of discharge" ;
     rdfs:comment "Identifies port of discharge." ;
     rdfs:domain :Booking ;
     rdfs:range loc:PortOfDischarge .
 
 :hasPlaceOfDelivery a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasLocation ;
     rdfs:label "has place of delivery" ;
     rdfs:comment "Identifies place of final delivery." ;
     rdfs:domain :Booking ;
     rdfs:range loc:PlaceOfDelivery .
 
 :hasTransshipmentPort a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasLocation ;
     rdfs:label "has transshipment port" ;
     rdfs:comment "Identifies a transshipment port." ;
     rdfs:domain :Booking ;
