@@ -15,16 +15,12 @@
     
     Covers all shipping events including transport events (vessel departure/arrival),
     equipment events (gate-in/out, loading, discharge, empty pickup/return),
-    and document events (issuance, surrender).
-
-    v1.3.0: Added the DCSA Domain v3.1.0 operations-specific facility type
-    code variant. Additional DCSA Domain v3.1.0 fields may be mapped through
-    full domain discovery using the documented fit-gap analysis.""" ;
+    and document events (issuance, surrender).""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-06-21"^^xsd:date ;
-    owl:versionInfo "1.3.0" ;
-    dcterms:source "DCSA Track & Trace (TNT) API v2.2, Event Domain v3.2.0, DCSA Domain v3.1.0" ;
+    dcterms:modified "2026-06-12"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
+    dcterms:source "DCSA Track & Trace (TNT) API v2.2, Event Domain v3.2.0" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
 
 #################################################################
@@ -293,13 +289,6 @@
     rdfs:label "facility type code" ;
     rdfs:comment """DCSA facility type code where this event occurred.
     Values: BORD, CLOC, COFS, OFFD, DEPO, INTE, POTE, RAMP, WAYP.""" ;
-    rdfs:domain :Event ;
-    rdfs:range xsd:string .
-
-:facilityTypeCodeOPR a owl:DatatypeProperty ;
-    rdfs:label "facility type code OPR" ;
-    rdfs:comment """DCSA operations-event facility type code variant.
-    Values: PBPL (Pilot Boarding Place), BRTH (Berth), ANCH (Anchorage).""" ;
     rdfs:domain :Event ;
     rdfs:range xsd:string .
 

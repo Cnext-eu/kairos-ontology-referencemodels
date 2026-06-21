@@ -5,6 +5,20 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.9.0] - 2026-06-21
+
+### Added
+- **DCSA v1.3.0 — DCSA Domain v3.1.0 fit-gap alignment.** Added 14 selected
+  high-value terms from the DCSA Domain v3.1.0 fit-gap:
+  `bookingRequestDateTime`, `bookingUpdatedDateTime`,
+  `bargeOperatorCarrierCodeListProvider`, `facilityTypeCodeTRN`,
+  `facilityTypeCodeOPR`, and dangerous-goods commodity properties
+  (`unNumber`, `imoClass`, `properShippingName`, `technicalName`,
+  `packingGroup`, `flashPoint`, `isMarinePollutant`, `isLimitedQuantity`,
+  `isReportableQuantity`). The full parsed DCSA Domain v3.1.0 model and
+  fit-gap artifacts are available under `.docs/refmodels/DCSA/` for future
+  domain discovery.
+
 ## [1.8.0] - 2026-06-20
 
 ### Changed
