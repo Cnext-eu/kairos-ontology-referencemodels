@@ -82,8 +82,16 @@ Common entities referenced across all journeys:
 5. **Consistent metadata** — All modules use `dcterms:` for metadata; `owl:versionInfo` for versioning
 
 ## Version
-- **Ontology version:** 1.1.0
-- **Based on:** DCSA Information Model 2024.Q4
+- **Ontology version:** 1.3.0
+- **Based on:** DCSA Information Model 2024.Q4, DCSA Booking API v2.0.4, and DCSA Domain v3.1.0
+
+### v1.3.0 DCSA Domain v3.1 fit-gap alignment
+
+This release adds 14 selected high-value DCSA Domain v3.1.0 terms across
+booking lifecycle timestamps, transport-call/facility qualifiers, and
+dangerous-goods commodity details. The full DCSA Domain v3.1.0 fit-gap is
+documented under `.docs/refmodels/DCSA/`; additional DCSA Domain fields may be
+mapped through a future full domain discovery pass.
 
 ## Usage
 

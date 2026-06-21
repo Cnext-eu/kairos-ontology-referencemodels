@@ -18,17 +18,12 @@
     
     Covers booking requests, confirmed bookings, shipping instructions,
     shipments, cargo items, commodities, requested equipment, and
-    utilized transport equipment.
-
-    v1.3.0: Added selected high-value DCSA Domain v3.1.0 fit-gap properties
-    for booking lifecycle timestamps and dangerous-goods commodity details.
-    Additional DCSA Domain v3.1.0 fields may be mapped through full domain
-    discovery using the documented fit-gap analysis.""" ;
+    utilized transport equipment.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-06-21"^^xsd:date ;
-    owl:versionInfo "1.3.0" ;
-    dcterms:source "DCSA Booking API (BKG) v2.0.4, DCSA Domain v3.1.0" ;
+    dcterms:modified "2026-06-20"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
+    dcterms:source "DCSA Booking API (BKG) v2.0, BKG v2.0.2" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
 
 #################################################################
@@ -282,24 +277,6 @@
     rdfs:domain :Booking ;
     rdfs:range xsd:string .
 
-:bookingRequestDateTime a owl:DatatypeProperty ;
-    rdfs:label "booking request date time" ;
-    rdfs:comment """The date and time when the booking was created.
-    Source: DCSA Domain v3.1.0 `bookingRequestDateTime`.
-    Note: this shared DCSA Domain field is not exposed in the latest released
-    BKG v2.0.4 API payload.""" ;
-    rdfs:domain :Booking ;
-    rdfs:range xsd:dateTime .
-
-:bookingUpdatedDateTime a owl:DatatypeProperty ;
-    rdfs:label "booking updated date time" ;
-    rdfs:comment """Last date and time when the booking was updated.
-    Source: DCSA Domain v3.1.0 `bookingUpdatedDateTime`.
-    Note: this shared DCSA Domain field is not exposed in the latest released
-    BKG v2.0.4 API payload.""" ;
-    rdfs:domain :Booking ;
-    rdfs:range xsd:dateTime .
-
 :cargoLineItemNumber a owl:DatatypeProperty ;
     rdfs:label "cargo line item number" ;
     rdfs:comment "Sequential number of cargo item." ;
@@ -347,66 +324,6 @@
     rdfs:comment "Description of the goods." ;
     rdfs:domain :Commodity ;
     rdfs:range xsd:string .
-
-#################################################################
-#    Dangerous Goods Commodity Properties
-#################################################################
-
-:unNumber a owl:DatatypeProperty ;
-    rdfs:label "UN number" ;
-    rdfs:comment """United Nations Dangerous Goods Identifier assigned by the
-    UN Sub-Committee of Experts on the Transport of Dangerous Goods and shown
-    in the IMO IMDG Code.""" ;
-    rdfs:domain :Commodity ;
-    rdfs:range xsd:string .
-
-:imoClass a owl:DatatypeProperty ;
-    rdfs:label "IMO class" ;
-    rdfs:comment "Hazard class code of the referenced dangerous goods according to the specified regulation." ;
-    rdfs:domain :Commodity ;
-    rdfs:range xsd:string .
-
-:properShippingName a owl:DatatypeProperty ;
-    rdfs:label "proper shipping name" ;
-    rdfs:comment "Proper shipping name for dangerous goods under the applicable maritime code." ;
-    rdfs:domain :Commodity ;
-    rdfs:range xsd:string .
-
-:technicalName a owl:DatatypeProperty ;
-    rdfs:label "technical name" ;
-    rdfs:comment "Recognized chemical, biological, or other technical name for the referenced dangerous goods." ;
-    rdfs:domain :Commodity ;
-    rdfs:range xsd:string .
-
-:packingGroup a owl:DatatypeProperty ;
-    rdfs:label "packing group" ;
-    rdfs:comment "Packing group according to the UN Recommendations on the Transport of Dangerous Goods and IMO IMDG Code." ;
-    rdfs:domain :Commodity ;
-    rdfs:range xsd:integer .
-
-:flashPoint a owl:DatatypeProperty ;
-    rdfs:label "flash point" ;
-    rdfs:comment "Lowest temperature at which a chemical can vaporize to form an ignitable mixture in air." ;
-    rdfs:domain :Commodity ;
-    rdfs:range xsd:decimal .
-
-:isMarinePollutant a owl:DatatypeProperty ;
-    rdfs:label "is marine pollutant" ;
-    rdfs:comment "Indicates whether the goods belong to the classification of Marine Pollutant." ;
-    rdfs:domain :Commodity ;
-    rdfs:range xsd:boolean .
-
-:isLimitedQuantity a owl:DatatypeProperty ;
-    rdfs:label "is limited quantity" ;
-    rdfs:comment "Indicates whether the dangerous goods can be transported as limited quantity in accordance with Chapter 3.4 of the IMO IMDG Code." ;
-    rdfs:domain :Commodity ;
-    rdfs:range xsd:boolean .
-
-:isReportableQuantity a owl:DatatypeProperty ;
-    rdfs:label "is reportable quantity" ;
-    rdfs:comment "Indicates whether hazardous material is at the reportable quantity level requiring authority reporting in case of spill." ;
-    rdfs:domain :Commodity ;
-    rdfs:range xsd:boolean .
 
 :cargoGrossWeight a owl:DatatypeProperty ;
     rdfs:label "cargo gross weight" ;

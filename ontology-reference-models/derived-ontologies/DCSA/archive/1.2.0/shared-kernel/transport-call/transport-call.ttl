@@ -20,16 +20,12 @@
     truck licence plate).
 
     Based on DCSA Event Domain v3.2.0 transportCall schema with oneOf
-    discriminator on modeOfTransport.
-
-    v1.3.0: Added selected DCSA Domain v3.1.0 facility and barge operator
-    code-list properties from the documented fit-gap analysis. Additional
-    DCSA Domain v3.1.0 fields may be mapped through full domain discovery.""" ;
+    discriminator on modeOfTransport.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-06-12"^^xsd:date ;
-    dcterms:modified "2026-06-21"^^xsd:date ;
-    owl:versionInfo "1.3.0" ;
-    dcterms:source "DCSA Event Domain v3.2.0, DCSA Domain v3.1.0" ;
+    dcterms:modified "2026-06-12"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
+    dcterms:source "DCSA Event Domain v3.2.0, DCSA Domain v3.1.1" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
 
 #################################################################
@@ -124,14 +120,6 @@
     rdfs:domain :TransportCall ;
     rdfs:range xsd:string .
 
-:facilityTypeCodeTRN a owl:DatatypeProperty ;
-    rdfs:label "facility type code TRN" ;
-    rdfs:comment """DCSA facility type code variant for transport calls and stuffing or
-    stripping contexts. Values include BORD, CLOC, COFS, OFFD, DEPO, INTE,
-    POTE, RAMP, and WAYP.""" ;
-    rdfs:domain :TransportCall ;
-    rdfs:range xsd:string .
-
 #################################################################
 #    Datatype Properties — Vessel
 #################################################################
@@ -179,13 +167,6 @@
 :bargeOperatorCarrierCode a owl:DatatypeProperty ;
     rdfs:label "barge operator carrier code" ;
     rdfs:comment "SCAC or NMFTA code of the barge operator." ;
-    rdfs:domain :BargeTransportCall ;
-    rdfs:range xsd:string .
-
-:bargeOperatorCarrierCodeListProvider a owl:DatatypeProperty ;
-    rdfs:label "barge operator carrier code list provider" ;
-    rdfs:comment """Code-list provider used for the barge operator carrier code.
-    DCSA Domain v3.1.0 values include SMDG and NMFTA.""" ;
     rdfs:domain :BargeTransportCall ;
     rdfs:range xsd:string .
 
