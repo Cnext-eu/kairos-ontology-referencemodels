@@ -51,6 +51,8 @@ kairos-ontology-referencemodels/
 │   ├── accelerator-packs/             # Pre-composed bundles
 │   │   ├── logistics/                 # 8 ontologies for logistics companies
 │   │   └── financial-services/        # FIBO + BSP for financial services
+│   ├── blueprints/                    # Opinionated Kairos guidance (not standards)
+│   │   └── archetypes/                # Per-archetype YAML catalogs (e.g. shipping-carrier)
 │   └── catalog-v001.xml               # XML catalog for import resolution
 ├── scripts/                           # Tooling (validation, version management)
 ├── examples/                          # Usage examples
@@ -98,6 +100,20 @@ Accelerator Packs are **pre-composed bundles** that let you import an entire ver
 ```
 
 See [`ontology-reference-models/accelerator-packs/`](ontology-reference-models/accelerator-packs/) for details.
+
+---
+
+## 🧭 Blueprints (opinionated guidance)
+
+The repository ships a **third content tier** alongside the authoritative and derived ontologies:
+
+| Tier | Folder | What it is |
+|------|--------|------------|
+| Authoritative | `authoritative-ontologies/` | Official RDF/OWL published by standards bodies (e.g. FIBO). Verbatim. |
+| Derived | `derived-ontologies/` | Kairos RDF interpretations of non-RDF standards (DCSA, MMT, BSP, …). Faithful to the source. |
+| **Blueprint** | **`blueprints/`** | **Opinionated Kairos guidance** layered on top of the ref models — not a standard. Versioned independently. |
+
+The first blueprint shipping today is the **archetype catalog** under [`blueprints/archetypes/`](ontology-reference-models/blueprints/archetypes/). Each YAML file describes the ref-model modules and core concepts a given business archetype is expected to support, and is consumed by the `kairos-design-discovery` skill in the [`kairos-ontology-toolkit`](https://github.com/Cnext-eu/kairos-ontology-toolkit) repository to drive discovery-time conformance checks. v0 ships a single `shipping-carrier` archetype.
 
 ---
 

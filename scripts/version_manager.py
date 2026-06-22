@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Cnext.eu
 """Version manager for Kairos ontology reference models.
 
 Commands:
@@ -26,6 +28,7 @@ ONTOLOGY_ROOT = REPO_ROOT / "ontology-reference-models"
 SCAN_DIRS = [
     ONTOLOGY_ROOT / "derived-ontologies",
     ONTOLOGY_ROOT / "accelerator-packs",
+    ONTOLOGY_ROOT / "blueprints",
 ]
 
 VERSION_INFO_PATTERN = re.compile(r'(owl:versionInfo\s+)"([^"]*)"')

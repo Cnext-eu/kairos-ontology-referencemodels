@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.kairosflow.ai/ont/blueprints/archetype.schema.json",
+  "title": "Kairos Archetype Catalog (v1)",
+  "description": "Schema for opinionated Kairos archetype catalog files under ontology-reference-models/blueprints/archetypes/. v0 schema (schema_version: 1).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "label",
+    "description",
+    "compatible_with",
+    "ref_model_modules",
+    "core_concepts"
+  ],
+  "properties": {
+    "schema_version": {
+      "description": "Catalog schema version. v0 is fixed at 1; a hard fail is expected on mismatch.",
+      "const": 1
+    },
+    "id": {
+      "description": "Stable kebab-case archetype identifier. MUST equal the YAML filename stem (enforced by scripts/validate_structure.py).",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+      "minLength": 2,
+      "maxLength": 64
+    },
+    "label": {
+      "description": "Human-readable archetype label (single line, English in v0).",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "description": {
+      "description": "Short paragraph describing what kinds of companies match this archetype. Prose only, no UX/interview content.",
+      "type": "string",
+      "minLength": 1
+    },
+    "compatible_with": {
+      "description": "Declaration of which ref-model versions this archetype was authored against. The toolkit loader warns on drift.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repo_tag_range"],
+      "properties": {
+        "repo_tag_range": {
+          "description": "SemVer range against this repo's tags (e.g. '>=1.4.0,<2.0.0').",
+          "type": "string",
+          "minLength": 1
+        },
+        "ontology_versions": {
+          "description": "Optional per-ontology SemVer pins. Keys are ontology folder names under derived-ontologies/ (e.g. DCSA, MMT, BSP). Values are SemVer ranges.",
+          "type": "object",
+          "patternProperties": {
+            "^[A-Za-z][A-Za-z0-9_-]*$": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "ref_model_modules": {
+      "description": "Ref-model ontology modules the archetype expects, identified by their owl:Ontology IRI.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["iri", "tier"],
+        "properties": {
+          "iri": {
+            "description": "Canonical owl:Ontology IRI of the module (e.g. https://www.kairosflow.ai/ont/dcsa/booking). Not a filesystem path.",
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://"
+          },
+          "tier": { "$ref": "#/$defs/tier" }
+        }
+      }
+    },
+    "core_concepts": {
+      "description": "Specific classes the archetype expects to find in the ref-model graph. Each URI must resolve to an owl:Class declared in one of the referenced ontologies.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["uri", "tier", "label"],
+        "properties": {
+          "uri": {
+            "description": "Class IRI (e.g. https://www.kairosflow.ai/ont/dcsa/booking#Booking).",
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://"
+          },
+          "tier": { "$ref": "#/$defs/tier" },
+          "label": {
+            "description": "Short human-readable label for the concept (used by the toolkit skill for display).",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "tier": {
+      "description": "Conformance tier for a module or concept.",
+      "type": "string",
+      "enum": ["required", "recommended", "optional"]
+    }
+  }
+}

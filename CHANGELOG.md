@@ -5,6 +5,40 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.0] - 2026-06-22
+
+### Added
+- **Blueprints (opinionated) module** — new third content tier at
+  `ontology-reference-models/blueprints/` distinct from authoritative and
+  derived ontologies. Initial content: archetype catalog
+  (`blueprints/archetypes/`, `schema_version: 1`) with a single
+  `shipping-carrier.yaml` referencing DCSA + MMT modules and ~30 core
+  concepts. Consumed by the `kairos-design-discovery` skill in
+  `kairos-ontology-toolkit` (see issue #23 and toolkit CR #203).
+- **`scripts/validate_archetypes.py`** — validates archetype YAML files
+  against `_schema/archetype.schema.json` and resolves every
+  `ref_model_modules.iri` and `core_concepts.uri` against the local
+  `catalog-v001.xml` (rdflib, local-only — no remote dereference).
+- **Archetype validation step** in `.github/workflows/validate.yml`.
+- **Catalog mapping** for the `dcsa/transport-call` module (previously
+  missing from `catalog-v001.xml`), surfaced while wiring up archetype URI
+  resolution.
+
+### Changed
+- **`scripts/version_manager.py`** — `SCAN_DIRS` now includes
+  `ontology-reference-models/blueprints/` so the new `archetypes/VERSION`
+  file is reported by `list` and considered by `check`.
+- **`scripts/validate_structure.py`** — new `validate_blueprints()` check
+  asserts blueprints README, archetypes README + SemVer VERSION + schema
+  exist, parses every `*.yaml` with `yaml.safe_load`, and enforces the
+  filename-equals-`id` invariant.
+- **`README.md`** — added blueprints to the repository-structure tree and
+  introduced a new "Blueprints (opinionated guidance)" section explaining
+  the three-tier model.
+- **`NOTICE`** — added paragraph clarifying that `blueprints/` is
+  opinionated Kairos content (Apache-2.0), distinct from authoritative
+  third-party material.
+
 ## [1.9.0] - 2026-06-21
 
 ### Added

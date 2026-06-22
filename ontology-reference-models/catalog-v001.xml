@@ -30,6 +30,7 @@
     <uri name="https://www.kairosflow.ai/ont/dcsa/equipment" uri="derived-ontologies/DCSA/current/shared-kernel/equipment/equipment.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/dcsa/party" uri="derived-ontologies/DCSA/current/shared-kernel/party/party.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/dcsa/locations" uri="derived-ontologies/DCSA/current/shared-kernel/locations/locations.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/dcsa/transport-call" uri="derived-ontologies/DCSA/current/shared-kernel/transport-call/transport-call.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/dcsa/demurrage-detention" uri="derived-ontologies/DCSA/current/demurrage-detention/demurrage-detention.ttl"/>
     
     <!-- ========== MMT (Multi-Modal Transport) ========== -->

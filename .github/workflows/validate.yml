@@ -60,6 +60,12 @@ jobs:
       - name: Check per-ontology versions
         run: |
           python scripts/version_manager.py check
+
+      - name: Install archetype-validator dependencies
+        run: pip install --quiet jsonschema pyyaml rdflib
+
+      - name: Validate archetype blueprints
+        run: python scripts/validate_archetypes.py
       
       - name: Upload validation results
         if: always()

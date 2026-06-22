@@ -1,0 +1,13 @@
+# Shared conformance-outcome enum codes (v0).
+#
+# These identifiers are the contract between the archetype catalog and the
+# discovery skill in kairos-ontology-toolkit (CR #203). The catalog ships
+# the *codes only*; prose descriptions live in the toolkit skill so they
+# can change independently of ref-model releases.
+schema_version: 1
+codes:
+  - conforms
+  - conforms-with-rename
+  - partial
+  - deviates
+  - not-applicable
