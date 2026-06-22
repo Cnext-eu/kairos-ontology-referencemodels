@@ -14,8 +14,34 @@ Blueprints are versioned independently of the ref models they reference (see `ar
 
 ## Contents
 
-- [`archetypes/`](archetypes/) — Per-archetype YAML catalogs (one file per archetype) describing the ref-model modules and core concepts an archetype is expected to support.
+- [`archetypes/`](archetypes/) — Per-archetype YAML catalogs (one file per archetype) describing the ref-model modules and core concepts an archetype is expected to support. **Structure only** — no interview prose.
+
+## Companion: sector discovery materials (in accelerator-packs)
+
+Each archetype `archetypes/<id>.yaml` may be paired with a human-readable
+**discovery script** at `accelerator-packs/<pack>/discovery/<id>.md`
+(same filename stem). The discovery script holds the SME interview
+questions, per-question outcome guidance, and the structural / lifecycle
+relationship questions that the ontology itself cannot answer
+(cardinality, aggregation, lifecycle timing).
+
+Pairing is **convention-based** (filename stem match) and **soft** — an
+archetype without a discovery doc is still valid; the toolkit skill
+falls back to a generic concept-confirmation flow. `scripts/validate_archetypes.py`
+emits a warning for unpaired archetypes.
+
+Today's discovery materials:
+- [`accelerator-packs/logistics/discovery/shipping-carrier.md`](../accelerator-packs/logistics/discovery/shipping-carrier.md)
 
 ## Consumer
 
-The primary consumer of the archetype catalog is the **`kairos-design-discovery`** skill in [`Cnext-eu/kairos-ontology-toolkit`](https://github.com/Cnext-eu/kairos-ontology-toolkit) (CR #203). The cross-repo contract is documented in the comment thread on [issue #23](https://github.com/Cnext-eu/kairos-ontology-referencemodels/issues/23).
+The primary consumer of the archetype catalog + discovery scripts is the
+**`kairos-design-discovery`** skill in
+[`Cnext-eu/kairos-ontology-toolkit`](https://github.com/Cnext-eu/kairos-ontology-toolkit)
+(CR #203). The cross-repo contract is documented in the comment thread
+on [issue #23](https://github.com/Cnext-eu/kairos-ontology-referencemodels/issues/23).
+
+> **Contract note (v0.2, supersedes v0).** The earlier v0 contract
+> placed discovery prose inside the toolkit skill. v0.2 moves it into
+> the accelerator-pack so each pack ships its own sector interview
+> materials. The toolkit skill becomes a pure consumer / orchestrator.

@@ -113,7 +113,16 @@ The repository ships a **third content tier** alongside the authoritative and de
 | Derived | `derived-ontologies/` | Kairos RDF interpretations of non-RDF standards (DCSA, MMT, BSP, …). Faithful to the source. |
 | **Blueprint** | **`blueprints/`** | **Opinionated Kairos guidance** layered on top of the ref models — not a standard. Versioned independently. |
 
-The first blueprint shipping today is the **archetype catalog** under [`blueprints/archetypes/`](ontology-reference-models/blueprints/archetypes/). Each YAML file describes the ref-model modules and core concepts a given business archetype is expected to support, and is consumed by the `kairos-design-discovery` skill in the [`kairos-ontology-toolkit`](https://github.com/Cnext-eu/kairos-ontology-toolkit) repository to drive discovery-time conformance checks. v0 ships a single `shipping-carrier` archetype.
+The first blueprint shipping today is the **archetype catalog** under [`blueprints/archetypes/`](ontology-reference-models/blueprints/archetypes/). Each YAML file describes the ref-model modules and core concepts a given business archetype is expected to support. v0.2 ships a `shipping-carrier` archetype with ~140 core concepts across 21 business areas.
+
+Each archetype may be paired with a **sector discovery script** under
+`accelerator-packs/<pack>/discovery/<archetype-id>.md` holding the SME
+interview questions and lifecycle / cardinality guidance the ontology
+itself cannot infer. The shipping-carrier discovery script lives at
+[`accelerator-packs/logistics/discovery/shipping-carrier.md`](ontology-reference-models/accelerator-packs/logistics/discovery/shipping-carrier.md).
+
+Both are consumed by the `kairos-design-discovery` skill in the
+[`kairos-ontology-toolkit`](https://github.com/Cnext-eu/kairos-ontology-toolkit) repository.
 
 ---
 

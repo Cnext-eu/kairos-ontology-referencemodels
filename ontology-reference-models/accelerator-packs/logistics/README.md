@@ -52,9 +52,27 @@ ontology-reference-models/accelerator-packs/logistics/logistics-accelerator.ttl
 
 ## Version
 
-See [VERSION](VERSION) — currently **1.3.0**.
+See [VERSION](VERSION) — currently **1.5.0**.
+
+## Sector discovery materials
+
+This pack ships SME interview scripts for each target sector under
+[`discovery/`](discovery/), keyed by archetype id from
+[`blueprints/archetypes/`](../../blueprints/archetypes/). See
+[`discovery/README.md`](discovery/README.md) for the convention.
+
+Available today:
+
+| Sector | Archetype | Discovery script |
+|--------|-----------|------------------|
+| Ocean carrier / short-sea / ro-ro / barge | [`shipping-carrier`](../../blueprints/archetypes/shipping-carrier.yaml) | [`discovery/shipping-carrier.md`](discovery/shipping-carrier.md) |
 
 ## Changelog
+
+### v1.5.0 (2026-06-22)
+- **New `discovery/` folder** holding per-sector SME interview scripts paired by filename stem with archetype catalogs in `blueprints/archetypes/`.
+- Added `discovery/shipping-carrier.md` — 21 business-area sections + structural & lifecycle relationship questions covering booking ↔ shipment ↔ voyage, B/L grain, equipment assignment timing, T&T event grain, TransportCall vs PortCall, D&D billing grain, and customs declaration grain.
+- Implements the v0.2 archetype-catalog ↔ discovery-script contract (see `blueprints/README.md`).
 
 ### v1.3.0 (2026-06-13)
 - Updated SupplyChain bridge to v1.1.0: added Sustainability, WCO GoodsItem, and document bridges

@@ -73,6 +73,10 @@
     <uri name="https://www.kairosflow.ai/ont/imo/party" uri="derived-ontologies/IMO/current/party/party.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/imo/port-call" uri="derived-ontologies/IMO/current/port-call/port-call.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/imo/vessel-registry" uri="derived-ontologies/IMO/current/vessel-registry/vessel-registry.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/imo/certificates-surveys" uri="derived-ontologies/IMO/current/certificates-surveys/certificates-surveys.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/imo/environmental" uri="derived-ontologies/IMO/current/environmental/environmental.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/imo/maritime-security" uri="derived-ontologies/IMO/current/maritime-security/maritime-security.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/imo/crew-seafarer" uri="derived-ontologies/IMO/current/crew-seafarer/crew-seafarer.ttl"/>
     
     <!-- ========== WCO (World Customs Organization) ========== -->
     <uri name="https://www.kairosflow.ai/ont/wco" uri="derived-ontologies/WCO/current/wco.ttl"/>

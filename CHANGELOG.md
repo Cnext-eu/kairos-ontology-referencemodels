@@ -5,6 +5,47 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.11.0] - 2026-06-22
+
+### Added
+- **Expanded `shipping-carrier` archetype** (`blueprints/archetypes/shipping-carrier.yaml`,
+  bumped to `0.2.0`) — grew from ~30 to ~140 core concepts and from 9 to 26
+  ref-model modules, organised into 21 commented business areas covering the
+  full liner shipment lifecycle: commercial cycle (booking → B/L), transport
+  documents (B/L, eBL, sea waybill, master/house), consignment, cargo, parties,
+  locations, transport calls, vessels & fleet (IMO registry), schedule /
+  voyage, port-call execution, equipment & container operations, track-and-trace
+  events, demurrage & detention, dangerous goods (IMDG), vessel certificates,
+  maritime security (ISPS), environmental compliance, customs filing, trade
+  facilitation, and sustainability (CII / EEXI / EU ETS).
+- **Sector discovery materials in the logistics accelerator-pack**
+  (`accelerator-packs/logistics/discovery/`) — new `README.md` documenting the
+  archetype-id ↔ discovery-script pairing convention, plus
+  `shipping-carrier.md`: 21 business-area interview sections + a dedicated
+  *Structural & lifecycle relationships* section (~16 questions covering
+  Booking↔Shipment↔Voyage cardinality, SI↔B/L grain, container-assignment
+  timing, T&T event grain, TransportCall vs PortCall granularity, D&D billing
+  grain, customs declaration grain) + naming & identifier conventions section.
+  Implements the **v0.2 contract**: machine catalog in `blueprints/archetypes/`,
+  human discovery prose in `accelerator-packs/<pack>/discovery/<id>.md`,
+  toolkit skill as pure consumer.
+- **Soft archetype ↔ discovery pairing check** in
+  `scripts/validate_archetypes.py` — warns (not errors) when an archetype YAML
+  has no matching `discovery/<id>.md` in any accelerator-pack.
+- **Catalog mappings** for `imo/certificates-surveys`, `imo/environmental`,
+  `imo/maritime-security`, and `imo/crew-seafarer` (previously missing from
+  `catalog-v001.xml`), surfaced while resolving the expanded archetype's URIs.
+
+### Changed
+- **`accelerator-packs/logistics`** bumped 1.4.0 → **1.5.0** (additive
+  `discovery/` subfolder). Pack `manifest.yaml` `package.version` aligned to
+  1.5.0 (previously drifted at 1.3.0 — cleaned up in this release).
+- `compatible_with.repo_tag_range` on `shipping-carrier.yaml` updated to
+  `>=1.10.0,<2.0.0`; `compatible_with.ontology_versions` now also pins IMO,
+  WCO, and Sustainability ranges.
+- **`blueprints/README.md`** documents the revised v0.2 contract (discovery
+  prose lives in accelerator-packs, not in the toolkit skill).
+
 ## [1.10.0] - 2026-06-22
 
 ### Added
