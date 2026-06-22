@@ -42,6 +42,7 @@ ONTOLOGY_ROOT = REPO_ROOT / "ontology-reference-models"
 ARCHETYPES_DIR = ONTOLOGY_ROOT / "blueprints" / "archetypes"
 SCHEMA_PATH = ARCHETYPES_DIR / "_schema" / "archetype.schema.json"
 CATALOG_PATH = ONTOLOGY_ROOT / "catalog-v001.xml"
+ACCELERATOR_PACKS_DIR = ONTOLOGY_ROOT / "accelerator-packs"
 
 # Allow importing sibling modules.
 sys.path.insert(0, str(SCRIPT_DIR))
@@ -155,6 +156,24 @@ def _validate_uris(
             )
 
 
+def _check_discovery_doc(archetype_id: str, rel: Path, warnings: list[str]) -> None:
+    """Soft check: warn if no accelerator-pack ships a discovery/<id>.md for this archetype.
+
+    The pairing is convention-based (filename stem) and intentionally non-fatal:
+    archetypes without a discovery doc are still valid — consumers fall back to
+    a generic concept-confirmation flow.
+    """
+    if not ACCELERATOR_PACKS_DIR.is_dir():
+        return
+    matches = sorted(ACCELERATOR_PACKS_DIR.glob(f"*/discovery/{archetype_id}.md"))
+    if not matches:
+        warnings.append(
+            f"{rel}: no matching discovery script found at "
+            f"accelerator-packs/*/discovery/{archetype_id}.md "
+            f"(consumers will fall back to a generic concept-confirmation flow)"
+        )
+
+
 def main() -> int:
     try:
         import jsonschema  # noqa: F401
@@ -191,6 +210,10 @@ def main() -> int:
         # Only attempt URI resolution if schema didn't reject the structure.
         if not any(str(rel) in e for e in errors):
             _validate_uris(data, rel, errors, warnings)
+        # Soft pairing check: archetype id ↔ accelerator-pack discovery doc.
+        archetype_id = data.get("id") if isinstance(data, dict) else None
+        if archetype_id:
+            _check_discovery_doc(archetype_id, rel, warnings)
         print(f"  • {rel}")
 
     print()

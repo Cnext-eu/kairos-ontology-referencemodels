@@ -1,7 +1,7 @@
 package:
   id: logistics
   name: "Kairos Logistics Accelerator Pack"
-  version: "1.3.0"
+  version: "1.5.0"
   description: "Pre-composed ontology bundle for logistics companies"
   namespace: "https://www.kairosflow.ai/ont/accelerator/logistics#"
   

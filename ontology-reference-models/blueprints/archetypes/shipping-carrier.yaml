@@ -2,71 +2,311 @@ schema_version: 1
 id: shipping-carrier
 label: "Shipping line / ocean or short-sea carrier"
 description: >
-  Companies that operate vessels and offer cargo transport services to shippers,
-  typically issuing bills of lading and managing voyages, port calls, equipment,
-  and shipment lifecycle from booking through delivery.
+  Companies that operate vessels (owned or chartered) and offer cargo transport
+  services to shippers under their own bill of lading. Typical scope covers the
+  full liner shipment lifecycle — from booking through transport-document
+  issuance, vessel operations, equipment management, port-call execution,
+  customs filing, demurrage & detention billing, dangerous-goods compliance,
+  vessel statutory certification, and emissions reporting (CII / EU ETS).
+  Sub-flavours include deep-sea container lines, short-sea / feeder operators,
+  ro-ro and breakbulk carriers, and barge / inland-waterway operators; the
+  required tier represents the common backbone, while recommended/optional
+  tiers cover the variation across these sub-flavours.
 
 compatible_with:
-  repo_tag_range: ">=1.4.0,<2.0.0"
+  repo_tag_range: ">=1.10.0,<2.0.0"
   ontology_versions:
-    DCSA: ">=1.3.0,<2"
-    MMT:  ">=1.1.0,<2"
+    DCSA:           ">=1.3.0,<2"
+    MMT:            ">=1.1.0,<2"
+    IMO:            ">=1.0.0,<2"
+    WCO:            ">=1.2.0,<2"
+    Sustainability: ">=1.0.0,<2"
 
+# ─── Ref-model modules ─────────────────────────────────────────────────────────
+# Tier reflects whether the *module* is expected to be touched by a typical
+# carrier's data model. Specific class-level expectations are in core_concepts.
 ref_model_modules:
-  # Booking & shipment lifecycle (core for any carrier).
-  - { iri: "https://www.kairosflow.ai/ont/dcsa/booking",          tier: required }
-  # Parties involved in the carriage relationship.
-  - { iri: "https://www.kairosflow.ai/ont/dcsa/party",            tier: required }
-  # Origin/destination/transit locations.
-  - { iri: "https://www.kairosflow.ai/ont/dcsa/locations",        tier: required }
-  # Vessel calls at ports / terminals.
-  - { iri: "https://www.kairosflow.ai/ont/dcsa/transport-call",   tier: required }
-  # Vessel journeys (root module — schedule lives in its child schedule module).
-  - { iri: "https://www.kairosflow.ai/ont/dcsa/vessel-journey",   tier: required }
-  # Vessel as a means of transport.
-  - { iri: "https://www.kairosflow.ai/ont/mmt/transport-means",   tier: required }
-  # Sailing schedules / service loops / cut-off times.
-  - { iri: "https://www.kairosflow.ai/ont/dcsa/schedule",         tier: recommended }
-  # Equipment journey (container moves).
-  - { iri: "https://www.kairosflow.ai/ont/dcsa/equipment-journey", tier: recommended }
-  # Track-and-trace events.
-  - { iri: "https://www.kairosflow.ai/ont/dcsa/track-and-trace",  tier: optional }
+  # Commercial cycle (booking → B/L → shipment).
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/booking",             tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/shipment-journey",    tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/transport-documents", tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/mmt/documents",            tier: recommended }
+  - { iri: "https://www.kairosflow.ai/ont/mmt/consignment",          tier: recommended }
+  - { iri: "https://www.kairosflow.ai/ont/mmt/cargo",                tier: recommended }
 
+  # Parties, locations, transport calls.
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/party",               tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/locations",           tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/transport-call",      tier: required }
+
+  # Vessels and means of transport.
+  - { iri: "https://www.kairosflow.ai/ont/mmt/transport-means",      tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/imo/vessel-registry",      tier: recommended }
+
+  # Schedule & vessel journey.
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/vessel-journey",      tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/schedule",            tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/imo/port-call",            tier: recommended }
+
+  # Equipment / container operations.
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/equipment",           tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/equipment-journey",   tier: recommended }
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/container-operations", tier: recommended }
+
+  # Track and trace.
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/track-and-trace",     tier: recommended }
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/events",              tier: recommended }
+
+  # Demurrage and detention.
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention", tier: recommended }
+
+  # Dangerous goods & regulatory compliance.
+  - { iri: "https://www.kairosflow.ai/ont/imo/dangerous-goods",      tier: recommended }
+  - { iri: "https://www.kairosflow.ai/ont/imo/certificates-surveys", tier: optional }
+  - { iri: "https://www.kairosflow.ai/ont/imo/maritime-security",    tier: optional }
+  - { iri: "https://www.kairosflow.ai/ont/imo/environmental",        tier: optional }
+
+  # Customs and trade facilitation.
+  - { iri: "https://www.kairosflow.ai/ont/wco/customs",              tier: recommended }
+  - { iri: "https://www.kairosflow.ai/ont/wco/trade-facilitation",   tier: optional }
+
+  # Sustainability — CII, EEXI, EU ETS, carbon footprint reporting.
+  - { iri: "https://www.kairosflow.ai/ont/sustainability/carbon",    tier: optional }
+
+# ─── Core concepts ─────────────────────────────────────────────────────────────
+# Grouped by business area. Tiers:
+#   required    — every shipping carrier is expected to model this
+#   recommended — most carriers have it; sub-flavours may legitimately omit
+#   optional    — present only when the carrier is in scope for that regulation
+#                 / sub-flavour / capability
 core_concepts:
-  # --- Booking & shipment lifecycle (required) ---
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#Booking",              tier: required,    label: "Booking" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#ConfirmedBooking",     tier: required,    label: "Confirmed Booking" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#Shipment",             tier: required,    label: "Shipment" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#ShippingInstruction",  tier: required,    label: "Shipping Instruction" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#CargoItem",            tier: required,    label: "Cargo Item" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#BookingRequest",       tier: recommended, label: "Booking Request" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#Commodity",            tier: recommended, label: "Commodity" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#RequestedEquipment",   tier: recommended, label: "Requested Equipment" }
 
-  # --- Parties (required) ---
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/party#Carrier",                tier: required,    label: "Carrier" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/party#Shipper",                tier: required,    label: "Shipper" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/party#Consignee",              tier: required,    label: "Consignee" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/party#BookingParty",           tier: recommended, label: "Booking Party" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/party#NotifyParty",            tier: recommended, label: "Notify Party" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/party#FreightForwarder",       tier: optional,    label: "Freight Forwarder" }
+  # ─── 1. Commercial cycle (Booking → B/L) ───────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#Booking",                tier: required,    label: "Booking" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#BookingRequest",         tier: required,    label: "Booking Request" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#ConfirmedBooking",       tier: required,    label: "Confirmed Booking" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#Shipment",               tier: required,    label: "Shipment" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#ShippingInstruction",    tier: required,    label: "Shipping Instruction" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#CargoItem",              tier: required,    label: "Cargo Item" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#Commodity",              tier: required,    label: "Commodity" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#RequestedEquipment",     tier: required,    label: "Requested Equipment" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#UtilizedTransportEquipment", tier: recommended, label: "Utilized Transport Equipment" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#TransportPlanLeg",       tier: recommended, label: "Transport Plan Leg" }
 
-  # --- Locations (required) ---
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#Port",               tier: required,    label: "Port" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#PortOfLoading",      tier: required,    label: "Port of Loading" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#PortOfDischarge",    tier: required,    label: "Port of Discharge" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#Terminal",           tier: recommended, label: "Terminal" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#PlaceOfReceipt",     tier: recommended, label: "Place of Receipt" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#PlaceOfDelivery",    tier: recommended, label: "Place of Delivery" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#TransshipmentPort",  tier: optional,    label: "Transshipment Port" }
+  # ─── 2. Transport documents (B/L variants) ────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/transport-documents#TransportDocument",     tier: required,    label: "Transport Document" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/transport-documents#BillOfLading",          tier: required,    label: "Bill of Lading" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/transport-documents#ElectronicBillOfLading", tier: recommended, label: "Electronic Bill of Lading (eBL)" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/transport-documents#SeaWaybill",            tier: recommended, label: "Sea Waybill" }
 
-  # --- Vessel / transport call / transport means (required) ---
-  - { uri: "https://www.kairosflow.ai/ont/mmt/transport-means#Vessel",        tier: required,    label: "Vessel" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/transport-call#TransportCall", tier: required,    label: "Transport Call" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/transport-call#VesselTransportCall", tier: required, label: "Vessel Transport Call" }
+  # Multi-modal / master vs house documents (for carriers that act under or alongside forwarders).
+  - { uri: "https://www.kairosflow.ai/ont/mmt/documents#TransportDocument",      tier: recommended, label: "Transport Document (MMT)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/documents#MasterWaybill",          tier: recommended, label: "Master Waybill" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/documents#HouseWaybill",           tier: optional,    label: "House Waybill" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/documents#CargoManifest",          tier: recommended, label: "Cargo Manifest" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/documents#DangerousGoodsDeclaration", tier: recommended, label: "Dangerous Goods Declaration" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/documents#CertificateOfOrigin",    tier: optional,    label: "Certificate of Origin" }
 
-  # --- Schedule (recommended) ---
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/schedule#SailingSchedule",     tier: recommended, label: "Sailing Schedule" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/schedule#ServiceLoop",         tier: recommended, label: "Service Loop" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/schedule#CutOffTime",          tier: recommended, label: "Cut-off Time" }
-  - { uri: "https://www.kairosflow.ai/ont/dcsa/schedule#TransitTime",         tier: optional,    label: "Transit Time" }
+  # ─── 3. Consignment (master/house split) ──────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#Consignment",          tier: recommended, label: "Consignment" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#MasterConsignment",    tier: recommended, label: "Master Consignment" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#HouseConsignment",     tier: optional,    label: "House Consignment" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#ConsignmentItem",      tier: recommended, label: "Consignment Item" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#TransportService",     tier: recommended, label: "Transport Service" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#TransportRoute",       tier: recommended, label: "Transport Route" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#TransportLeg",         tier: recommended, label: "Transport Leg" }
+
+  # ─── 4. Cargo characteristics ──────────────────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#Goods",                      tier: recommended, label: "Goods" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#PackageSpecification",       tier: recommended, label: "Package Specification" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#Weight",                     tier: required,    label: "Weight" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#Dimension",                  tier: recommended, label: "Dimension" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#CargoMeasurement",           tier: recommended, label: "Cargo Measurement" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#HandlingInstructions",       tier: recommended, label: "Handling Instructions" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#ShippingMarks",              tier: optional,    label: "Shipping Marks" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#CargoInsurance",             tier: optional,    label: "Cargo Insurance" }
+
+  # ─── 5. Parties & roles ────────────────────────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/party#Carrier",                   tier: required,    label: "Carrier" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/party#Shipper",                   tier: required,    label: "Shipper" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/party#Consignee",                 tier: required,    label: "Consignee" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/party#BookingParty",              tier: required,    label: "Booking Party" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/party#NotifyParty",               tier: recommended, label: "Notify Party" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/party#FreightForwarder",          tier: recommended, label: "Freight Forwarder" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/party#ShippingParty",             tier: required,    label: "Shipping Party (abstract role)" }
+
+  # ─── 6. Locations & geographic network ─────────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#Port",                  tier: required,    label: "Port" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#Terminal",              tier: required,    label: "Terminal" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#PortOfLoading",         tier: required,    label: "Port of Loading" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#PortOfDischarge",       tier: required,    label: "Port of Discharge" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#PlaceOfReceipt",        tier: required,    label: "Place of Receipt" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#PlaceOfDelivery",       tier: required,    label: "Place of Delivery" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#TransshipmentPort",     tier: recommended, label: "Transshipment Port" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#Depot",                 tier: recommended, label: "Depot" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#ContainerFreightStation", tier: recommended, label: "Container Freight Station" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#InlandTerminal",        tier: optional,    label: "Inland Terminal" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#RailRamp",              tier: optional,    label: "Rail Ramp" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#BorderCrossing",        tier: optional,    label: "Border Crossing" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#PreCarriageFromLocation", tier: optional, label: "Pre-Carriage From Location" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#OnwardInlandRoutingLocation", tier: optional, label: "Onward Inland Routing Location" }
+
+  # ─── 7. Transport calls ────────────────────────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/transport-call#TransportCall",        tier: required,    label: "Transport Call" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/transport-call#VesselTransportCall",  tier: required,    label: "Vessel Transport Call" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/transport-call#BargeTransportCall",   tier: optional,    label: "Barge Transport Call" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/transport-call#RailTransportCall",    tier: optional,    label: "Rail Transport Call" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/transport-call#TruckTransportCall",   tier: optional,    label: "Truck Transport Call" }
+
+  # ─── 8. Vessels & fleet ────────────────────────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/mmt/transport-means#Vessel",            tier: required,    label: "Vessel (MMT)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/transport-means#BargeVessel",       tier: optional,    label: "Barge Vessel" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#Vessel",            tier: recommended, label: "Vessel (IMO registry)" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#Fleet",             tier: recommended, label: "Fleet" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#IMONumber",         tier: recommended, label: "IMO Number" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#MMSI",              tier: recommended, label: "MMSI" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#CallSign",          tier: recommended, label: "Call Sign" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#FlagState",         tier: recommended, label: "Flag State" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#ClassSociety",      tier: optional,    label: "Class Society" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#VesselType",        tier: recommended, label: "Vessel Type" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#VesselCapacity",    tier: recommended, label: "Vessel Capacity" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#GrossTonnage",      tier: optional,    label: "Gross Tonnage" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#DeadweightTonnage", tier: optional,    label: "Deadweight Tonnage" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#VesselOperationalStatus", tier: recommended, label: "Vessel Operational Status" }
+
+  # ─── 9. Schedule / service / voyage ────────────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/schedule#SailingSchedule",         tier: required,    label: "Sailing Schedule" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/schedule#ServiceLoop",             tier: required,    label: "Service Loop" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/schedule#CutOffTime",              tier: required,    label: "Cut-off Time" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/schedule#TransitTime",             tier: recommended, label: "Transit Time" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#Voyage",                  tier: recommended, label: "Voyage" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#SeaLeg",                  tier: recommended, label: "Sea Leg" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#VoyagePlan",              tier: optional,    label: "Voyage Plan" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#RouteWaypoint",           tier: optional,    label: "Route Waypoint" }
+
+  # ─── 10. Port call execution & operational regulatory ──────────────────
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#PortCall",                tier: recommended, label: "Port Call" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#BerthStay",               tier: recommended, label: "Berth Stay" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#ArrivalNotice",           tier: recommended, label: "Arrival Notice" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#DepartureNotice",         tier: recommended, label: "Departure Notice" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#FALForm",                 tier: recommended, label: "FAL Form" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#PortCallStatus",          tier: recommended, label: "Port Call Status" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#PilotageRequest",         tier: optional,    label: "Pilotage Request" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#TowageRequest",           tier: optional,    label: "Towage Request" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#BunkeringOperation",      tier: optional,    label: "Bunkering Operation" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#WasteDisposal",           tier: optional,    label: "Waste Disposal" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#CrewChange",              tier: optional,    label: "Crew Change" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#PreArrivalNotification",  tier: recommended, label: "Pre-Arrival Notification" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#PortHealthDeclaration",   tier: optional,    label: "Port Health Declaration" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#WastePreNotification",    tier: optional,    label: "Waste Pre-Notification" }
+
+  # ─── 11. Equipment / container fleet ───────────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/equipment#Container",              tier: required,    label: "Container" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/equipment#DryContainer",           tier: required,    label: "Dry Container" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/equipment#ReeferContainer",        tier: recommended, label: "Reefer Container" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/equipment#TankContainer",          tier: optional,    label: "Tank Container" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/equipment#FlatRackContainer",      tier: optional,    label: "Flat Rack Container" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/equipment#OpenTopContainer",       tier: optional,    label: "Open-Top Container" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/equipment#PlatformContainer",      tier: optional,    label: "Platform Container" }
+
+  # ─── 12. Container operations (stuffing, stripping, lift-on/off) ───────
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/container-operations#ContainerJourney",            tier: recommended, label: "Container Journey" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/container-operations#ContainerOperationalStatus", tier: recommended, label: "Container Operational Status" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/container-operations#ContainerStuffing",          tier: recommended, label: "Container Stuffing" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/container-operations#ContainerStripping",         tier: recommended, label: "Container Stripping" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/container-operations#LiftOnLiftOff",              tier: recommended, label: "Lift-On / Lift-Off (LOLO)" }
+
+  # ─── 13. Track & trace events ──────────────────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#Event",                     tier: recommended, label: "Event (abstract)" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#TransportEvent",            tier: recommended, label: "Transport Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#EquipmentEvent",            tier: recommended, label: "Equipment Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#DocumentEvent",             tier: recommended, label: "Document Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#VesselDepartureEvent",      tier: recommended, label: "Vessel Departure Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#VesselArrivalEvent",        tier: recommended, label: "Vessel Arrival Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#LoadedOnVesselEvent",       tier: recommended, label: "Loaded on Vessel" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#DischargedFromVesselEvent", tier: recommended, label: "Discharged from Vessel" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#GateInEvent",               tier: recommended, label: "Gate-In Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#GateOutEvent",              tier: recommended, label: "Gate-Out Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#EmptyContainerPickupEvent", tier: recommended, label: "Empty Container Pickup" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#EmptyContainerReturnEvent", tier: recommended, label: "Empty Container Return" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#DocumentIssuedEvent",       tier: recommended, label: "Document Issued" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#DocumentSurrenderedEvent",  tier: optional,    label: "Document Surrendered" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#BorderCrossingEvent",       tier: optional,    label: "Border Crossing Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#CustomsEvent",              tier: optional,    label: "Customs Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#InspectionEvent",           tier: optional,    label: "Inspection Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#SealEvent",                 tier: optional,    label: "Seal Event" }
+
+  # ─── 14. Demurrage & detention ─────────────────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#DemurrageCharge",            tier: recommended, label: "Demurrage Charge" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#DetentionCharge",            tier: recommended, label: "Detention Charge" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#CombinedDemurrageDetention", tier: optional,    label: "Combined D&D" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#StorageCharge",              tier: optional,    label: "Storage Charge" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#FreeTimeAllowance",          tier: recommended, label: "Free-Time Allowance" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#PerDiemRate",                tier: recommended, label: "Per-Diem Rate" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#RateTier",                   tier: recommended, label: "Rate Tier" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#DemurrageDetentionTariff",   tier: recommended, label: "D&D Tariff" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#DemurrageEvent",             tier: recommended, label: "Demurrage Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#DetentionEvent",             tier: recommended, label: "Detention Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#DisputeRecord",              tier: optional,    label: "Dispute Record" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#Waiver",                     tier: optional,    label: "Waiver" }
+
+  # ─── 15. Dangerous goods (IMDG) ────────────────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#DangerousGoodsItem", tier: recommended, label: "Dangerous Goods Item" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#HazardClass",        tier: recommended, label: "Hazard Class" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#UNNumber",           tier: recommended, label: "UN Number" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#PackingGroup",       tier: recommended, label: "Packing Group" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#FlashPoint",         tier: optional,    label: "Flash Point" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#EmergencySchedule",  tier: optional,    label: "Emergency Schedule (EmS)" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#SegregationRule",    tier: optional,    label: "Segregation Rule" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#StowageCategory",    tier: optional,    label: "Stowage Category" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#EmergencyContact",   tier: optional,    label: "Emergency Contact" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#DGDeclaration",      tier: recommended, label: "DG Declaration" }
+
+  # ─── 16. Vessel certificates & ISM/ISPS/MLC compliance ─────────────────
+  - { uri: "https://www.kairosflow.ai/ont/imo/certificates-surveys#StatutoryCertificate",                   tier: optional, label: "Statutory Certificate" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/certificates-surveys#DocumentOfCompliance",                   tier: optional, label: "Document of Compliance (ISM)" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/certificates-surveys#SafetyManagementCertificate",            tier: optional, label: "Safety Management Certificate" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/certificates-surveys#InternationalShipSecurityCertificate",   tier: optional, label: "International Ship Security Certificate" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/certificates-surveys#MaritimeLabourCertificate",              tier: optional, label: "Maritime Labour Certificate" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/certificates-surveys#InternationalEnergyEfficiencyCertificate", tier: optional, label: "IEEC Certificate" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/certificates-surveys#StatutorySurvey",                        tier: optional, label: "Statutory Survey" }
+
+  # ─── 17. Maritime security (ISPS) ──────────────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/imo/maritime-security#ShipSecurityPlan",         tier: optional, label: "Ship Security Plan" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/maritime-security#DeclarationOfSecurity",    tier: optional, label: "Declaration of Security" }
+
+  # ─── 18. Environmental compliance ──────────────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/imo/environmental#BallastWaterManagementPlan",        tier: optional, label: "Ballast Water Management Plan" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/environmental#GarbageManagementPlan",             tier: optional, label: "Garbage Management Plan" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/environmental#ShipboardOilPollutionEmergencyPlan", tier: optional, label: "SOPEP" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/environmental#ShipEnergyEfficiencyManagementPlan", tier: optional, label: "SEEMP" }
+
+  # ─── 19. Customs filing ────────────────────────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#CustomsDeclaration",       tier: recommended, label: "Customs Declaration" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#EntryExitSummary",         tier: recommended, label: "Entry/Exit Summary Declaration" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#ImportDeclaration",        tier: recommended, label: "Import Declaration" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#ExportDeclaration",        tier: recommended, label: "Export Declaration" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#TransitDeclaration",       tier: optional,    label: "Transit Declaration" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#Filing",                   tier: recommended, label: "Customs Filing" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#DeclarationStatus",        tier: recommended, label: "Declaration Status" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#TariffClassification",     tier: optional,    label: "Tariff Classification (HS code)" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#CustomsValue",             tier: optional,    label: "Customs Value" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#PreferenceClaim",          tier: optional,    label: "Preference Claim" }
+
+  # ─── 20. Trade facilitation (AEO, Single Window) ───────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/wco/trade-facilitation#CertificateOfOrigin",      tier: optional, label: "Certificate of Origin (WCO)" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/trade-facilitation#AEOCertification",         tier: optional, label: "AEO Certification" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/trade-facilitation#SingleWindow",             tier: optional, label: "Single Window" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/trade-facilitation#TradeAgreementReference",  tier: optional, label: "Trade Agreement Reference" }
+
+  # ─── 21. Sustainability — CII / EEXI / EU ETS / carbon reporting ───────
+  - { uri: "https://www.kairosflow.ai/ont/sustainability/carbon#CarbonEmission",  tier: optional, label: "Carbon Emission" }
+  - { uri: "https://www.kairosflow.ai/ont/sustainability/carbon#WellToWake",      tier: optional, label: "Well-to-Wake Emission" }
+  - { uri: "https://www.kairosflow.ai/ont/sustainability/carbon#TankToWake",      tier: optional, label: "Tank-to-Wake Emission" }
+  - { uri: "https://www.kairosflow.ai/ont/sustainability/carbon#EmissionFactor",  tier: optional, label: "Emission Factor" }
+  - { uri: "https://www.kairosflow.ai/ont/sustainability/carbon#CarbonFootprint", tier: optional, label: "Carbon Footprint" }
+  - { uri: "https://www.kairosflow.ai/ont/sustainability/carbon#EmissionReport",  tier: optional, label: "Emission Report" }
+  - { uri: "https://www.kairosflow.ai/ont/sustainability/carbon#CIIRating",       tier: optional, label: "CII Rating" }
+  - { uri: "https://www.kairosflow.ai/ont/sustainability/carbon#EEXICompliance",  tier: optional, label: "EEXI Compliance" }
+  - { uri: "https://www.kairosflow.ai/ont/sustainability/carbon#EUETSAllowance",  tier: optional, label: "EU ETS Allowance" }
+  - { uri: "https://www.kairosflow.ai/ont/sustainability/carbon#CarbonOffset",    tier: optional, label: "Carbon Offset" }
