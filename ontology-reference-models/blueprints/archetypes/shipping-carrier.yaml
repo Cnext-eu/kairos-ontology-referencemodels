@@ -1,0 +1,72 @@
+schema_version: 1
+id: shipping-carrier
+label: "Shipping line / ocean or short-sea carrier"
+description: >
+  Companies that operate vessels and offer cargo transport services to shippers,
+  typically issuing bills of lading and managing voyages, port calls, equipment,
+  and shipment lifecycle from booking through delivery.
+
+compatible_with:
+  repo_tag_range: ">=1.4.0,<2.0.0"
+  ontology_versions:
+    DCSA: ">=1.3.0,<2"
+    MMT:  ">=1.1.0,<2"
+
+ref_model_modules:
+  # Booking & shipment lifecycle (core for any carrier).
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/booking",          tier: required }
+  # Parties involved in the carriage relationship.
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/party",            tier: required }
+  # Origin/destination/transit locations.
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/locations",        tier: required }
+  # Vessel calls at ports / terminals.
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/transport-call",   tier: required }
+  # Vessel journeys (root module — schedule lives in its child schedule module).
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/vessel-journey",   tier: required }
+  # Vessel as a means of transport.
+  - { iri: "https://www.kairosflow.ai/ont/mmt/transport-means",   tier: required }
+  # Sailing schedules / service loops / cut-off times.
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/schedule",         tier: recommended }
+  # Equipment journey (container moves).
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/equipment-journey", tier: recommended }
+  # Track-and-trace events.
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/track-and-trace",  tier: optional }
+
+core_concepts:
+  # --- Booking & shipment lifecycle (required) ---
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#Booking",              tier: required,    label: "Booking" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#ConfirmedBooking",     tier: required,    label: "Confirmed Booking" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#Shipment",             tier: required,    label: "Shipment" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#ShippingInstruction",  tier: required,    label: "Shipping Instruction" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#CargoItem",            tier: required,    label: "Cargo Item" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#BookingRequest",       tier: recommended, label: "Booking Request" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#Commodity",            tier: recommended, label: "Commodity" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#RequestedEquipment",   tier: recommended, label: "Requested Equipment" }
+
+  # --- Parties (required) ---
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/party#Carrier",                tier: required,    label: "Carrier" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/party#Shipper",                tier: required,    label: "Shipper" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/party#Consignee",              tier: required,    label: "Consignee" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/party#BookingParty",           tier: recommended, label: "Booking Party" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/party#NotifyParty",            tier: recommended, label: "Notify Party" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/party#FreightForwarder",       tier: optional,    label: "Freight Forwarder" }
+
+  # --- Locations (required) ---
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#Port",               tier: required,    label: "Port" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#PortOfLoading",      tier: required,    label: "Port of Loading" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#PortOfDischarge",    tier: required,    label: "Port of Discharge" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#Terminal",           tier: recommended, label: "Terminal" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#PlaceOfReceipt",     tier: recommended, label: "Place of Receipt" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#PlaceOfDelivery",    tier: recommended, label: "Place of Delivery" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#TransshipmentPort",  tier: optional,    label: "Transshipment Port" }
+
+  # --- Vessel / transport call / transport means (required) ---
+  - { uri: "https://www.kairosflow.ai/ont/mmt/transport-means#Vessel",        tier: required,    label: "Vessel" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/transport-call#TransportCall", tier: required,    label: "Transport Call" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/transport-call#VesselTransportCall", tier: required, label: "Vessel Transport Call" }
+
+  # --- Schedule (recommended) ---
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/schedule#SailingSchedule",     tier: recommended, label: "Sailing Schedule" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/schedule#ServiceLoop",         tier: recommended, label: "Service Loop" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/schedule#CutOffTime",          tier: recommended, label: "Cut-off Time" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/schedule#TransitTime",         tier: optional,    label: "Transit Time" }

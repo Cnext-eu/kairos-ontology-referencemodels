@@ -6,4 +6,11 @@ maintained by Cnext.eu (https://cnext.eu).
 
 This product includes ontologies and reference models developed at Cnext.eu.
 
+The ``ontology-reference-models/blueprints/`` folder contains opinionated
+Kairos guidance (archetypes and related catalogs) layered on top of the
+reference models. Blueprints are not standards content and are released
+under the same Apache License, Version 2.0; see
+``ontology-reference-models/blueprints/README.md`` for the distinction
+between authoritative, derived, and blueprint tiers.
+
 Licensed under the Apache License, Version 2.0.

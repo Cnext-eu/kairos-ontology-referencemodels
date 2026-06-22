@@ -40,6 +40,12 @@ SCAN_DIRS = [
     ONTOLOGY_ROOT / "accelerator-packs",
 ]
 
+BLUEPRINTS_DIR = ONTOLOGY_ROOT / "blueprints"
+ARCHETYPES_DIR = BLUEPRINTS_DIR / "archetypes"
+ARCHETYPE_SCHEMA = ARCHETYPES_DIR / "_schema" / "archetype.schema.json"
+SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+$")
+ARCHETYPE_ID_RE = re.compile(r"^[a-z][a-z0-9]*(-[a-z0-9]+)*$")
+
 VERSION_INFO_RE = re.compile(r'owl:versionInfo\s+"([^"]*)"')
 OWL_ONTOLOGY_RE = re.compile(r'\ba\s+owl:Ontology\b')
 OWL_IMPORTS_RE = re.compile(r'owl:imports\s')
@@ -451,6 +457,96 @@ def validate_relationship_explicitness(folder: Path, verbose: bool) -> Validatio
     return r
 
 
+def validate_blueprints(verbose: bool) -> ValidationResult:
+    """Validate the opinionated blueprints/ module structure.
+
+    Distinct from the ontology-folder validation: blueprints carry YAML
+    catalogs (no .ttl, no owl:Ontology). This check enforces:
+
+      1. blueprints/README.md exists.
+      2. blueprints/archetypes/VERSION exists and is SemVer.
+      3. blueprints/archetypes/README.md exists.
+      4. blueprints/archetypes/_schema/archetype.schema.json exists.
+      5. Every *.yaml directly under archetypes/ (excluding _schema/ and dotfiles)
+         loads with yaml.safe_load and its top-level ``id`` equals the filename stem.
+    """
+    r = ValidationResult()
+    r.messages.append("\n── blueprints/ (opinionated module) ──")
+
+    if not BLUEPRINTS_DIR.is_dir():
+        r.warn("blueprints/ directory not present — skipping")
+        return r
+
+    readme = BLUEPRINTS_DIR / "README.md"
+    if readme.is_file():
+        r.ok("blueprints/README.md exists", verbose, is_verbose=True)
+    else:
+        r.fail("blueprints/README.md missing")
+
+    if not ARCHETYPES_DIR.is_dir():
+        r.fail("blueprints/archetypes/ directory missing")
+        return r
+
+    arch_readme = ARCHETYPES_DIR / "README.md"
+    if arch_readme.is_file():
+        r.ok("blueprints/archetypes/README.md exists", verbose, is_verbose=True)
+    else:
+        r.fail("blueprints/archetypes/README.md missing")
+
+    version_file = ARCHETYPES_DIR / "VERSION"
+    if version_file.is_file():
+        ver = version_file.read_text(encoding="utf-8").strip()
+        if SEMVER_RE.match(ver):
+            r.ok(f"blueprints/archetypes/VERSION = {ver}", verbose, is_verbose=True)
+        else:
+            r.fail(f"blueprints/archetypes/VERSION '{ver}' is not SemVer (MAJOR.MINOR.PATCH)")
+    else:
+        r.fail("blueprints/archetypes/VERSION missing")
+
+    if ARCHETYPE_SCHEMA.is_file():
+        r.ok("blueprints/archetypes/_schema/archetype.schema.json exists", verbose, is_verbose=True)
+    else:
+        r.fail("blueprints/archetypes/_schema/archetype.schema.json missing")
+
+    # Per-archetype YAML files
+    try:
+        import yaml  # PyYAML; required for blueprints validation
+    except ImportError:
+        r.warn("PyYAML not installed — skipping archetype YAML parse checks")
+        return r
+
+    archetype_files = sorted(
+        f for f in ARCHETYPES_DIR.glob("*.yaml")
+        if not f.name.startswith(".")
+    )
+    if not archetype_files:
+        r.warn("No archetype YAML files found under blueprints/archetypes/")
+        return r
+
+    for yaml_file in archetype_files:
+        rel = yaml_file.relative_to(ONTOLOGY_ROOT)
+        try:
+            data = yaml.safe_load(yaml_file.read_text(encoding="utf-8"))
+        except yaml.YAMLError as e:
+            r.fail(f"{rel}: invalid YAML — {e}")
+            continue
+        if not isinstance(data, dict):
+            r.fail(f"{rel}: top-level YAML must be a mapping")
+            continue
+        archetype_id = data.get("id")
+        stem = yaml_file.stem
+        if archetype_id is None:
+            r.fail(f"{rel}: missing top-level 'id'")
+        elif archetype_id != stem:
+            r.fail(f"{rel}: id '{archetype_id}' does not match filename stem '{stem}'")
+        elif not ARCHETYPE_ID_RE.match(archetype_id):
+            r.fail(f"{rel}: id '{archetype_id}' is not kebab-case")
+        else:
+            r.ok(f"{rel}: id '{archetype_id}' matches filename", verbose, is_verbose=True)
+
+    return r
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Validate Kairos ontology repository structure conventions."
@@ -488,6 +584,12 @@ def main():
                 print(msg)
             total_pass += relationship_result.passes
             total_fail += relationship_result.failures
+
+    blueprint_result = validate_blueprints(args.verbose)
+    for msg in blueprint_result.messages:
+        print(msg)
+    total_pass += blueprint_result.passes
+    total_fail += blueprint_result.failures
 
     print(f"\n{'─' * 50}")
     if total_fail:
