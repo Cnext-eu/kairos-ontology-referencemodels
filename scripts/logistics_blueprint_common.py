@@ -255,7 +255,12 @@ def load_import_closure(entry_path: Path, catalog_path: Path) -> list[RdfDocumen
 
 
 def _literal_values(graph: Graph, subject: URIRef, predicate: URIRef) -> list[str]:
-    return sorted({str(value) for value in graph.objects(subject, predicate)})
+    return sorted(
+        {
+            str(value).replace("\r\n", "\n").replace("\r", "\n")
+            for value in graph.objects(subject, predicate)
+        }
+    )
 
 
 def _uri_values(graph: Graph, subject: URIRef, predicate: URIRef) -> list[str]:

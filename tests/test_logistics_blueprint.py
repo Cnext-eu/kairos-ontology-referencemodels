@@ -11,6 +11,7 @@ from pathlib import Path
 
 import pytest
 from jsonschema import Draft202012Validator
+from rdflib import Graph, Literal, RDFS, URIRef
 
 from scripts.generate_logistics_contract import generate_contract
 from scripts.generate_logistics_inventory import (
@@ -22,6 +23,7 @@ from scripts.generate_logistics_inventory import (
 )
 from scripts.logistics_blueprint_common import (
     BlueprintError,
+    _literal_values,
     dump_yaml,
     load_import_closure,
     load_yaml,
@@ -37,6 +39,14 @@ from scripts.validate_logistics_blueprint import (
 
 EX = "https://example.test/logistics#"
 VERSION = "1.5.0"
+
+
+def test_literal_values_normalise_platform_line_endings() -> None:
+    graph = Graph()
+    subject = URIRef(f"{EX}Party")
+    graph.add((subject, RDFS.comment, Literal("first\r\nsecond\rthird")))
+
+    assert _literal_values(graph, subject, RDFS.comment) == ["first\nsecond\nthird"]
 
 
 def _write_rdf_fixture(root: Path) -> tuple[Path, Path]:
