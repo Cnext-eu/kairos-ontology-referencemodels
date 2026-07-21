@@ -2,11 +2,33 @@
 name: kairos-execute-project
 description: >
   Knowledge about generating downstream artifacts from ontologies.
-  Covers all 7 projection targets and when to use each.
+  Covers all projection targets (including the opt-in mdm-profile) and when to use each.
 ---
-<!-- kairos-ontology-toolkit:managed v3.8.1 -->
+<!-- kairos-ontology-toolkit:managed v4.5.0rc4 -->
 
 # Projection Generation Skill
+
+## Lifecycle state (DD-080)
+
+> The **kairos-flow** skill is the lifecycle orchestrator and the **only** writer of
+> `ontology-hub/.kairos-state/status.md`. This skill plugs into that shared state; it
+> does not maintain the global status file.
+
+**On start (pre-flight):** read `ontology-hub/.kairos-state/` — the `status.md`
+continuation region and the project log at `phases/project.md` — to resume open
+questions. Ignore `_archive/`. (`kairos-ontology status` gives the objective view.)
+
+**On pause or finish:** append a *State update proposal* to `phases/project.md` with OKF
+frontmatter (`type: kairos-phase-log`, `phase: project`, `instance: <target>`, `status:`,
+`last_updated:`). Record decisions made and an **Open questions** list as the resume
+anchor. Do **not** edit `status.md` directly — kairos-flow folds your proposal in.
+
+
+> **🔒 Skill context:** Before running any `kairos-ontology` /
+> `python -m kairos_ontology` command in this skill, set the sentinel env var so
+> the CLI knows it runs inside a skill and suppresses its skill-gate warning:
+> - PowerShell: `$env:KAIROS_SKILL_CONTEXT = "1"`
+> - bash/zsh: `export KAIROS_SKILL_CONTEXT=1`
 
 You help users generate and understand projection artifacts.
 
@@ -57,6 +79,71 @@ that prerequisite files exist. Non-medallion targets (`prompt`, `neo4j`, `azure-
 4. **If files are present:** proceed with projection normally.
 5. **For bare `project` (all targets):** run non-medallion targets immediately; apply the pre-flight check only for the medallion subset.
 
+### Source-coverage gate (silver / dbt — MANDATORY, DD-061)
+
+When the hub has affinity reports (`integration/sources/_analysis/*-affinity.yaml`),
+**also** run the deterministic claims gate before projecting `silver` or
+`dbt`, so the silver layer is built against a **complete** ontology rather than a
+partial one (the gate includes the pre-silver mapping-coverage check):
+
+```bash
+kairos-ontology check-claims
+```
+
+- **Exit 0** → every affinity-assigned source table is mapped to a domain entity.
+  Proceed with projection.
+- **Exit 1** → STOP. The listed `(system.table)` pairs have domain affinity but no
+  source-to-domain mapping. Hand off to **kairos-design-mapping** (and
+  **kairos-design-domain** if classes are missing) to close the gaps, then re-run
+  the gate. Override only deliberately with `--warn-only`.
+
+`check-claims` is read-only and deterministic (no AI). Skip it only when
+no affinity reports exist yet (the hub hasn't run `analyse-sources`).
+
+#### Claim-driven extension sync (Slice 2)
+
+When a domain has an **approved** Claim Registry (`model/claims/{domain}-claims.yaml`),
+approved imported-class claims deterministically drive that domain's external
+`owl:imports` and silver-extension `silverInclude` annotations. `check-claims`
+includes a **sync gate** that flags drift between the approved claims and the
+generated projection surfaces; materialize the surfaces with:
+
+```bash
+kairos-ontology claims-to-silver-ext
+```
+
+This rewrites the domain ontology's external `owl:imports` and the
+`*-silver-ext.ttl` `silverInclude` set to exactly match the approved imported
+claims (A1). The generated TTL stays human-reviewable (A2-lite). The
+`silver`, `dbt`, and `powerbi` projectors enforce an **authority gate**: if a
+claims file exists and the surfaces are out of sync, projection fails with a
+pointer to run `claims-to-silver-ext`. Use `check-claims --no-extension-sync`
+to skip only the sync portion of the gate.
+
+#### MDM / reference-data + ownership gates (Slice 4)
+
+`check-claims` also enforces four MDM/ownership rules over the registry's curated
+governance fields (`reference_data`, `mdm_anchor`, `deviation`, `ownership_override`,
+`passthrough_reviewed`):
+
+- **MDM-anchor gate (§5.4)** — broad domain claims (approved class claims with
+  disposition claim/specialize) block with `anchor_pending` when declared
+  `mdm_anchor` reference-data claims are still `proposed`, and warn `anchor_missing`
+  (pragmatic — anchors must be *known*, not fully implemented) when no anchors are
+  declared at all.
+- **deviation-log (§12/§14)** — approved `gap` (client-native) claims without a
+  `deviation` (owner + reason) block with `deviation_missing`.
+- **ownership-boundary (§14)** — approved claims crossing another data-domain's
+  `data-domains.yaml` `uris` prefix block with `ownership_conflicts` unless an
+  `ownership_override` (owner + rationale) is present; that override also downgrades
+  a cross-file same-URI duplicate from `duplicate_approved` to a `shared_dimensions`
+  warning (conformed-dimension share).
+- **passthrough-review (§11.2)** — high-use passthrough claims not yet
+  `passthrough_reviewed` warn with `passthrough_review`.
+
+Skip those gates with `check-claims --no-mdm-anchor` / `--no-ownership`.
+
+
 ### Example interaction
 
 ```
@@ -82,15 +169,23 @@ You:
 | **silver** | DDL + ALTER + Mermaid ERD | MS Fabric / Delta Lake silver layer |
 | **powerbi** | Star schema DDL + TMDL + DAX + ERD | Power BI / MS Fabric gold layer |
 | **report** | HTML mapping reports | Business analyst mapping coverage review |
+| **mdm-profile** | Immutable MDM policy profile (JSON + review MD) | Master Data Management — consumed by `kairos-mdm-runtime` (opt-in; requires `*-mdm-ext.ttl`) |
 
 ## When to use each target
 
 - **dbt**: When the ontology drives a data warehouse using dbt Core. Generates a complete dbt project with silver entity models (from source systems via SKOS mappings), schema YAML with SHACL-derived tests, and project config. Requires source vocabulary files (`*.vocabulary.ttl`) in `integration/sources/{system-name}/` for source system descriptions and `model/mappings/{system}-to-{domain}.ttl` for SKOS column mappings to domain ontology properties. The dbt projector scans `integration/sources/` recursively for `*.ttl` files with the `kairos-bronze:` namespace. See the **kairos-design-silver** skill.
+- **dbt with advanced transformations**: Handwritten, contracted intermediate models live
+  under `integration/transforms/dbt/`; their generated Bronze-compatible vocabularies live
+  under `integration/sources/custom-transformations/`. Before projection, invoke
+  **kairos-develop-dbt-transformation** and require `sync-dbt-contracts --check` to pass.
+  Map the generated virtual source with **kairos-design-mapping** and route Silver with
+  `silverSourceRef`; never hand-edit the generated vocabulary or projected dbt output.
 - **neo4j**: When building a knowledge graph. Generates `CREATE CONSTRAINT` statements and relationship patterns.
 - **azure-search**: When building a search index. Maps ontology properties to Azure Search field types with filters and facets.
 - **a2ui**: When generating UI forms. Creates JSON schemas that describe the data structure for automatic UI rendering.
 - **prompt**: When using the ontology as LLM context. Generates a compact version (entity→fields map) and a detailed version (with types, descriptions, relationships).
 - **silver**: When building the silver layer of a medallion data platform (e.g. MS Fabric warehouse). Generates T-SQL DDL (`CREATE TABLE`), FK/UNIQUE constraints (`ALTER TABLE`), and a Mermaid ERD. Requires a `*-silver-ext.ttl` annotation file in `model/extensions/`. Imported classes (via `owl:imports`) are not projected by default — use `silverInclude` or `silverIncludeImports` to claim them (DD-021). See the **kairos-design-silver** skill.
+- **mdm-profile**: When a domain has Master Data Management policy. Projects an **immutable, content-addressed** MDM profile (`output/mdm/{domain}-mdm-profile.json` + `.md` review summary) from a `*-mdm-ext.ttl` extension (`kairos-mdm:` vocabulary). **Opt-in** — not part of bare `project`/`--target all`; run it explicitly. Author policy with the **kairos-design-mdm** skill; validate with `mdm-validate`. The profile is consumed by the separate `kairos-mdm-runtime` repo (design-time only here).
 
 ## CLI commands
 
@@ -104,8 +199,51 @@ python -m kairos_ontology project --target prompt
 # Generate silver layer (requires *-silver-ext.ttl in model/extensions/)
 python -m kairos_ontology project --target silver
 
-# Available targets: dbt, neo4j, azure-search, a2ui, prompt, silver, powerbi, report
+# Generate the dbt package for one adapter (Fabric is the default)
+python -m kairos_ontology project --target dbt --platform fabric
+python -m kairos_ontology project --target dbt --platform databricks
+
+# Generate one domain only
+python -m kairos_ontology project --ontology model/ontologies/party.ttl --target silver
+
+# Available targets: dbt, neo4j, azure-search, a2ui, prompt, silver, powerbi, report, mdm-profile
 ```
+
+## Target-first aspirational Silver stubs (DD-096)
+
+By default the dbt projector **skips** any approved class that has no bronze mapping
+yet (no broken placeholders). The **target-first stub → bind loop** lets an approved,
+materialization-eligible claim project a **stub** Silver model so downstream models
+have a stable target *before* mappings exist — then it transparently **binds** once a
+mapping arrives, via plain re-projection (no hand-editing).
+
+```bash
+# Emit aspirational Silver stubs for approved-but-unbound claims (dbt / all only)
+python -m kairos_ontology project --target dbt --emit-aspirational-stubs
+```
+
+- **Off by default.** Feature-off output is byte-identical to today. The flag is also
+  honoured via the `KAIROS_EMIT_ASPIRATIONAL_STUBS` env var.
+- **What stubs.** Only approved claims with disposition `claim`/`specialize` and type
+  `class`/`reference_data` whose physical Silver model is unbound (no source, not a
+  folded discriminator subtype). `aspirational` is **derived** at projection time from
+  the Claim Registry + mappings — it is never a persisted field.
+- **What a stub looks like.** A `materialized='view'` model tagged
+  `kairos_aspirational_stub` with `meta.is_aspirational=true`, selecting typed
+  `cast(null as <type>) as <col>` columns guarded by `where 1 = 0` (zero rows, so
+  tests can't false-green). Types come from `kairos-ext:silverDataType` →
+  `rdfs:range` → the `VARCHAR(255)` fallback.
+- **Binding.** Add a SKOS source mapping (via **kairos-design-mapping**) and re-project;
+  the stub is transparently replaced by the real, populated model. Incremental/SCD
+  models use `on_schema_change='sync_all_columns'` and the first bound run is a full
+  refresh (safe — the stub had zero rows).
+- **Release gating.** A stub is **not** release-eligible merely by existing. Under the
+  strict release gate, all approved, materialization-eligible, *unbound* claims block
+  release until bound. Gold/Power BI is still generated over a stub dependency but is
+  marked non-release-eligible while a release-blocking stub is in its closure.
+- **OKF capture.** Record stub-emission runs and any release-gate blockers in
+  `phases/project.md` as *State update proposals* (aspirational stubs pending binding).
+
 
 ## Medallion pipeline
 
@@ -159,6 +297,45 @@ python -m kairos_ontology project --target dbt
 python -m kairos_ontology project --target powerbi
 ```
 
+### Offline dbt validation after dbt projection
+
+When the requested target is `dbt` or `all`, validate the generated dbt package
+before reporting success.
+
+1. Generate the dbt output for the selected adapter:
+   ```bash
+   python -m kairos_ontology project --target dbt --platform <fabric|databricks>
+   ```
+2. Install the matching hub-side validation extra if needed:
+   ```bash
+   uv sync --extra dbt-validate-<fabric|databricks>
+   ```
+3. Invoke **kairos-execute-validate** and run the skill-managed validator:
+   ```bash
+   kairos-ontology validate-dbt --platform <fabric|databricks>
+   ```
+
+`validate-dbt` runs dependencies, parse, manifest graph checks, and compile with a
+temporary credential-free profile unless `--profiles-dir` is supplied. Treat contract,
+YAML, macro, dependency, or graph failures as defects. Report credential, driver,
+network, or warehouse-introspection failures as environment-blocked; never commit a
+profile or credentials.
+
+### Offline silver sample audit after dbt projection
+
+After `dbt parse`/`compile` validation, run the advisory offline sample audit to
+check mapping quality without a warehouse connection:
+
+```bash
+kairos-ontology audit-silver-samples
+```
+
+This reads source vocabulary samples, SKOS mappings, silver annotations, and the
+generated dbt SQL. It catches missing sample evidence, transform/type risks,
+cross-source sample-shape mismatches, and generated SQL traceability issues. It
+does **not** replace dataplatform dbt runs against real bronze data; treat it as
+pre-handoff QA.
+
 ### Prerequisites for each medallion target
 
 | Target | Required files | Skill for guidance |
@@ -183,6 +360,8 @@ python -m kairos_ontology project --target powerbi
 - Handles split patterns (one source → multiple entity subtypes)
 - Handles merge patterns (multiple sources → one entity)
 - Cross-domain FK joins via surrogate keys
+- Contracted intermediate models copied from `integration/transforms/dbt/` when their
+  synchronized virtual-source mappings and Silver routing are valid
 
 **Power BI target** — analytical layer:
 - Star-schema DDL (dimension + fact + bridge tables)
@@ -295,5 +474,6 @@ You can also check `summary.warnings` or inspect `projections` entries with
 | Design silver layer (DDL, SCD, FK annotations) | **kairos-design-silver** |
 | Design gold layer (Power BI star schema, measures) | **kairos-design-gold** |
 | Map source columns to domain properties | **kairos-design-mapping** |
+| Develop contracted custom dbt intermediates | **kairos-develop-dbt-transformation** |
 | Validate ontology syntax + SHACL | **kairos-execute-validate** |
 | Consume dbt package in data platform repo | **kairos-package-dataplatform** |

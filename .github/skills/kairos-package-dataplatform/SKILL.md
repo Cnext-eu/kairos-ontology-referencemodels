@@ -5,7 +5,7 @@ description: >
   repository. Covers dbt package consumption (via dbt deps), Power BI semantic model
   deployment, version pinning, release pipeline, and the feedback loop for gap requests.
 ---
-<!-- kairos-ontology-toolkit:managed v3.8.1 -->
+<!-- kairos-ontology-toolkit:managed v4.5.0rc4 -->
 
 # Kairos Dataplatform Integration Skill
 
@@ -18,6 +18,13 @@ You help users set up and manage the integration between an **ontology-hub** rep
 0. **Quick toolkit version check** — run `python -m kairos_ontology update --check` once
    at the start of the session. If it reports outdated files, run
    `python -m kairos_ontology update` and commit the refresh before doing any other work.
+
+1. **Hub-side offline QA check** — ask whether the producer hub ran
+   `kairos-ontology audit-silver-samples` after dbt projection. This advisory
+   audit validates source samples, mappings, transforms, and generated dbt SQL
+   before the dataplatform runs against real bronze data. Treat unresolved
+   warnings as hub pre-handoff issues; treat actual dbt run/data-test failures as
+   dataplatform validation findings.
 
 ## Key Principle: Ontology-Hub is the Producer
 
@@ -149,12 +156,16 @@ gh release download v1.3.0 --pattern "powerbi-semantic-model.zip" \
 unzip powerbi-semantic-model.zip -d semantic-model/
 ```
 
-Deployment options:
-- **fabric-cicd** Python package (Microsoft's official CI/CD tool)
-- **Fabric REST API** / Power BI ALM Toolkit (programmatic)
-- **Power BI Desktop** import (local development)
+Phase 1 default deployment path:
+- In the dataplatform repo, run the scaffolded workflow:
+  `.github/workflows/deploy-powerbi-semantic-model.yml`
+- It downloads `powerbi-semantic-model.zip` from the selected hub release and
+  runs `scripts/package_fabric_semantic_model.py` (adds `.platform` +
+  `definition.pbism`), then publishes `SemanticModel` items via **fabric-cicd**.
 
-> **Status:** This deliverable's packaging and deployment mechanism is being refined.
+Alternative options:
+- **Fabric REST API** / Power BI ALM Toolkit (programmatic custom path)
+- **Power BI Desktop** import (local development)
 
 ---
 

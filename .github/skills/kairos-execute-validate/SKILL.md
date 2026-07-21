@@ -5,9 +5,31 @@ description: >
   and extension/mapping correctness. Produces a structured report with
   what's good, what's broken, and what can be improved.
 ---
-<!-- kairos-ontology-toolkit:managed v3.8.1 -->
+<!-- kairos-ontology-toolkit:managed v4.5.0rc4 -->
 
 # Ontology Validation & Review Skill
+
+## Lifecycle state (DD-080)
+
+> The **kairos-flow** skill is the lifecycle orchestrator and the **only** writer of
+> `ontology-hub/.kairos-state/status.md`. This skill plugs into that shared state; it
+> does not maintain the global status file.
+
+**On start (pre-flight):** read `ontology-hub/.kairos-state/` — the `status.md`
+continuation region and the validate log at `phases/validate.md` — to resume open
+questions. Ignore `_archive/`. (`kairos-ontology status` gives the objective view.)
+
+**On pause or finish:** append a *State update proposal* to `phases/validate.md` with OKF
+frontmatter (`type: kairos-phase-log`, `phase: validate`, `instance: hub`, `status:`,
+`last_updated:`). Record decisions made and an **Open questions** list as the resume
+anchor. Do **not** edit `status.md` directly — kairos-flow folds your proposal in.
+
+
+> **🔒 Skill context:** Before running any `kairos-ontology` /
+> `python -m kairos_ontology` command in this skill, set the sentinel env var so
+> the CLI knows it runs inside a skill and suppresses its skill-gate warning:
+> - PowerShell: `$env:KAIROS_SKILL_CONTEXT = "1"`
+> - bash/zsh: `export KAIROS_SKILL_CONTEXT=1`
 
 You help users validate and review their ontology hub for correctness,
 completeness, and projection readiness.  Go beyond syntax checking — apply
@@ -34,6 +56,8 @@ mapping best practices.
 
 4. For **Quick** mode: report Level 1 + 2 results and stop.
    For **Detailed** mode: continue through all 4 levels below.
+5. If `integration/transforms/dbt/` contains contracted custom models, also run the
+   advanced dbt checks below after projection; ontology validation does not compile dbt.
 
 ---
 
@@ -97,6 +121,51 @@ sh:property [
     sh:minCount 0 ;
 ] .
 ```
+
+---
+
+## Draft SHACL from source samples (`suggest-shapes`, DD-076)
+
+Hand-writing shapes from scratch is tedious. `suggest-shapes` generates a
+**DRAFT** SHACL file from bronze source profiling metadata (datatype, format
+patterns, nullability, and `distinctCount`-backed enums) to give you a starting
+point you then review and edit.
+
+> **Skill context.** This command is skill-gated. Set the sentinel before
+> running so the soft-gate stays quiet:
+> - PowerShell: `$env:KAIROS_SKILL_CONTEXT = "1"`
+> - bash/zsh: `export KAIROS_SKILL_CONTEXT=1`
+
+```bash
+kairos-ontology suggest-shapes --source integration/sources/crm/crm.vocabulary.ttl
+```
+
+| Option | Purpose |
+|--------|---------|
+| `--source` | Bronze vocabulary TTL (auto-detected if a single one exists) |
+| `--out` | Output path (default `output/shapes-draft/<name>.ttl`) |
+| `--enum-distinct-max` | Max distinct values to emit an `sh:in` enum (default 12) |
+| `--no-sample-values` | Suppress masked example values in comments |
+| `--force` | Overwrite an existing draft |
+
+**What it emits (all advisory, `rdfs:comment`-annotated):**
+- `sh:datatype` — always, from the logical type.
+- `sh:pattern` — only when a single format pattern matches all samples.
+- `sh:minCount 1` — only from `nullable:false` metadata.
+- `sh:in (...)` — only when a reliable `distinctCount` ≤ `enum-distinct-max`
+  fully matches the sampled distinct values, **and never for PII columns**.
+- No sample-derived `sh:minInclusive`/`sh:maxInclusive` (5 rows are not a range).
+
+**Important constraints:**
+- Output goes to `output/shapes-draft/` — **outside** `model/shapes/` — and uses
+  the `.ttl` suffix (not `.shacl.ttl`), so the validator does **not** load it
+  automatically. You must review and move shapes into `model/shapes/` yourself.
+- PII values are never enumerated into `sh:in` and are always masked in comments.
+- The command refuses to overwrite an existing file unless `--force`.
+
+**Workflow:** run `suggest-shapes` → open the draft → keep/edit the constraints
+you trust → move the curated shape into `model/shapes/<name>.shacl.ttl` → re-run
+Level 2 SHACL validation.
 
 ---
 
@@ -173,6 +242,14 @@ projection output or downstream issues.
 | `owl:imports` for cross-domain references | If class A references class B from another domain, the ontology must import B's namespace |
 | `_master.ttl` includes all domains | Every domain `.ttl` must be listed in `_master.ttl` via `owl:imports` |
 
+### Reference model strategy consistency (DD-032)
+
+| Check | Rule |
+|-------|------|
+| Enforced domains have `silverInclude` or `silverIncludeImports` | 🐛 If a domain uses `owl:imports` of external ref models (Enforced strategy), imported classes need explicit whitelisting via `silverInclude` / `silverIncludeImports` in the silver-ext file — otherwise imported classes are silently excluded from projection |
+| Inspired domains have `rdfs:seeAlso` back-references | 💡 If a domain uses locally-adopted patterns from a reference model (Inspired strategy), classes should have `rdfs:seeAlso` pointing to the reference model URI for traceability |
+| No mixed strategy for same reference model | 💡 A domain should not both `owl:imports` a ref model AND locally re-declare the same classes — pick one strategy per reference model |
+
 ---
 
 ## Level 4 — Extension & mapping review
@@ -212,6 +289,15 @@ This is where most "it generated wrong output" bugs originate.
 | `gdprSatelliteOf` points to valid class | 🐛 URI must match an existing `owl:Class` in the domain |
 | `partitionBy` / `clusterBy` reference valid properties | 💡 Column name must exist in the class |
 | `junctionTableName` on M:N object properties | 💡 Required for bridge table generation |
+| `silverForeignKey` points to valid object property | 🐛 Must be set on an `owl:ObjectProperty` — silently ignored on datatype properties (DD-022) |
+| `silverForeignKeyOn` is domain or range of the property | 🐛 Must reference either the domain or range class of the annotated object property — other values are silently ignored (DD-022) |
+| `inheritanceStrategy` has valid value | 🐛 Must be `"class-per-table"` or `"discriminator"` — invalid values silently fall back to default |
+| `silverTableName` is snake_case | 💡 Should follow SQL naming convention |
+| `silverSourceRef` references a plausible model name | 💡 Hard to validate statically — flag for review (DD-039) |
+| `inlineRefThreshold` is positive integer | 💡 Ontology-level setting; non-integer values cause parse errors |
+| `populationRequirement` has valid value | 🐛 Must be `"required"`, `"optional"`, `"derived"`, or `"unmapped"` — invalid values silently treated as optional |
+| `derived` properties have `derivationFormula` | 🐛 A property with `populationRequirement "derived"` MUST have a `derivationFormula` — otherwise column is always NULL |
+| `required` properties have source mapping | 🐛 A property with `populationRequirement "required"` should have a corresponding `skos:exactMatch` source mapping — missing mapping = required column is always NULL |
 
 #### Property-level
 
@@ -243,6 +329,15 @@ This is where most "it generated wrong output" bugs originate.
 | `measureExpression` on properties of fact classes | 💡 Facts without measures have no aggregatable columns |
 | `hierarchyName` + `hierarchyLevel` are paired | 🐛 One without the other is incomplete |
 | `perspective` references consistent group name | 💡 Typos create orphan perspectives |
+| `goldTableName` is snake_case (without dim_/fact_ prefix) | 💡 Prefix is auto-added by G2 — don't include it in the override |
+| `goldColumnName` is snake_case | 💡 Should follow SQL naming convention |
+| `goldDataType` is valid SQL type | 🐛 Must be a recognized Fabric Warehouse type (INT, DECIMAL, NVARCHAR, etc.) |
+| `measureFormatString` is paired with `measureExpression` | 🐛 A format string without a measure expression is meaningless — flag if orphaned |
+| `degenerateDimension` only on properties of fact classes | 💡 Only meaningful on properties whose owning class is a fact table — on dimension properties it has no effect |
+| `olsRestricted` on sensitive columns | 💡 Verify property is on a fact or dimension class — OLS only applies to columns visible in the semantic model |
+| RESERVED: `rolePlayingAs` used but not yet consumed | ⚠️ If set, warn that the gold projector does not yet render role-playing dimensions — annotation is declared but inactive |
+| RESERVED: `incrementalColumn` used but not yet consumed | ⚠️ If set, warn that the gold projector does not yet render incremental refresh policies — annotation is declared but inactive |
+| RESERVED: `surrogateKeyStrategy` used but not yet consumed | ⚠️ If set, warn that surrogate keys are currently generated unconditionally — annotation is declared but inactive |
 
 ### Mapping file review (`kairos-map:`)
 
@@ -257,6 +352,9 @@ This is where most "it generated wrong output" bugs originate.
 | Column mappings: `skos:exactMatch` per property | Each domain property has a source column mapping | 💡 Unmapped properties become NULL |
 | Column `transform` expressions are valid SQL | `"CAST(source.id AS STRING)"` etc. | 💡 Hard to validate statically — flag for review |
 | `defaultValue` is appropriate type | String default for string column, numeric for numeric | 💡 Type mismatch may cause runtime cast errors |
+| `deduplicationKey` references valid source column(s) | Space-separated column names for ROW_NUMBER dedup — columns must exist in the source table | 🐛 Invalid column names cause dbt compilation errors |
+| `deduplicationOrder` is valid SQL ORDER BY expression | Expression for dedup window function ordering (e.g. `"modified_date DESC"`) | 🐛 Invalid expression causes dbt compilation errors |
+| `deduplicationKey` and `deduplicationOrder` are paired | If one is set, the other should be too — dedup key without order produces non-deterministic results | 💡 Warn if only one is present |
 | `sourceColumns` count matches target NK | For composite FK joins, source column count must match | 🐛 Mismatch = incomplete join |
 | Bronze vocabulary exists for referenced source | `integration/sources/<system>/<system>.vocabulary.ttl` | 🐛 Missing bronze = column lookups fail |
 | Mapped column URIs match bronze vocabulary | Column URIs in mapping must exist in bronze `.ttl` | 🐛 Typo in URI = silently unmapped |
@@ -284,7 +382,25 @@ These checks require analysing **all domains together**, not independently.
 |-------|---------------|----------|
 | Property name collisions across namespaces | If two domains define properties with the same local name (e.g., `client:status` and `invoice:status`), flag for review — may cause confusion in downstream SQL where snake_case names collide | 💡 Not always a bug, but worth flagging for explicit acknowledgement |
 | Cross-domain FK targets are importable | If an `owl:ObjectProperty` range points to a class in another domain, that domain's ontology must be importable (present in `_master.ttl` or `owl:imports`) | 🐛 Broken cross-domain FK = NULL placeholder in dbt model |
+| Cross-domain FK peer extension available | If a cross-domain FK references another domain, that domain's `*-silver-ext.ttl` must exist with a `naturalKey` on the target class — otherwise the FK join cannot resolve the target's surrogate key | 🐛 Missing peer ext = FK column generated but join produces NULL |
 | Cross-domain `skos:exactMatch` targets resolve | If a mapping targets a property in a different domain namespace, that property must exist in the other domain's ontology | 🐛 Same as target-URI issue but across domain boundaries |
+
+### Population coverage cross-check
+
+These checks combine extension and mapping data to identify data quality risks.
+
+| Check | What to verify | Severity |
+|-------|---------------|----------|
+| `required` properties have source mappings | For every property with `populationRequirement "required"`, verify at least one source mapping exists (`skos:exactMatch` target) | 🐛 Required column always NULL = data quality blocker |
+| `derived` properties have formulas | For every property with `populationRequirement "derived"`, verify `derivationFormula` is set | 🐛 Derived column without formula = always NULL |
+| High NULL-column ratio per entity | If > 50% of an entity's properties have no source mapping and no derivation formula, flag the entity | 💡 May indicate incomplete mapping or over-modeled entity |
+
+### DD-023 shared defaults validation
+
+| Check | What to verify | Severity |
+|-------|---------------|----------|
+| Default extension files parse successfully | If `*-silver-defaults.ttl` or `*-gold-defaults.ttl` exist in a reference model, verify they parse | 🐛 Syntax errors in defaults silently break projection |
+| No conflicting annotations between defaults and hub ext | If a hub extension and a ref-model default both annotate the same class/property, the hub extension wins — flag the overlap for awareness | 💡 Unintentional overlap may indicate stale defaults |
 
 ### CLI output incorporation
 
@@ -295,6 +411,28 @@ that was run in the "Before you start" step.
 |-------|--------------------|----------|
 | GDPR/PII warnings | If the CLI reports unprotected PII properties (names, emails, addresses, phone numbers), list them with count | 💡 Flag properties that should have `gdprSatelliteOf` protection or `olsRestricted` annotation |
 | Projection warnings | If the CLI emits projection warnings (missing NK, unsupported FK, etc.), include them in the report | 🐛 Projection warnings indicate generation issues |
+
+### Advanced dbt contract and project validation
+
+For hubs with `integration/transforms/dbt/`:
+
+1. Invoke **kairos-develop-dbt-transformation** for contract/SQL/test remediation; this
+   validation skill must not rewrite authoritative custom dbt files.
+2. Check synchronization without writing:
+   `kairos-ontology sync-dbt-contracts --check`. Drift is blocking; regenerate through
+   the development skill, never edit
+   `integration/sources/custom-transformations/*.vocabulary.ttl`.
+3. After `project --target dbt --platform <fabric|databricks>`, run:
+
+   ```bash
+   kairos-ontology validate-dbt --platform <fabric|databricks>
+   ```
+
+   This validates approved dependencies, parse, manifest resources/dependencies,
+   implementing models, declared verifying tests, and compile. Use `--project-dir` or
+   `--profiles-dir` only when the hub layout or environment requires it.
+4. Report contract/parse/graph failures as blocking defects. Report missing credentials,
+   drivers, network, or warehouse introspection as environment-blocked, not passed.
 
 ### Hub documentation completeness
 
@@ -359,6 +497,25 @@ End with a summary:
 
 ---
 
+## Report persistence (MANDATORY)
+
+After displaying the validation report in chat, **always** save it as a Markdown file:
+
+- **Path:** `output/reports/validation-{YYYY-MM-DD-HHmmss}.md` (relative to the hub root).
+  Use the current UTC timestamp for `{YYYY-MM-DD-HHmmss}` (e.g. `validation-2026-06-10-205500.md`).
+- **Content:** The full rendered report (all levels + summary table) exactly as
+  displayed in chat.
+- **History:** Each run creates a new file — previous reports are preserved for
+  comparison and audit trail.
+- **Git:** Do NOT commit the file automatically. The user decides when to commit.
+
+**Steps:**
+1. After assembling the full report, write it to `output/reports/validation-{ts}.md`
+   using the `create` or `edit` tool.
+2. Tell the user: "📄 Report saved to `output/reports/validation-{ts}.md`."
+
+---
+
 ## Remediation workflow
 
 1. Fix all 🐛 **Issues** first — these will cause projection failures.
@@ -377,4 +534,6 @@ End with a summary:
 | Design silver layer (DDL, SCD, FK annotations) | **kairos-design-silver** |
 | Run projections (generate artifacts after validation) | **kairos-execute-project** |
 | Map source columns to domain properties | **kairos-design-mapping** |
+| Develop or fix contracted custom dbt SQL/contracts/tests | **kairos-develop-dbt-transformation** |
+| Design/validate MDM policy (`*-mdm-ext.ttl`, `mdm-validate`) | **kairos-design-mdm** |
 | Check hub status and completeness | **kairos-diagnose-status** |

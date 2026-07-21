@@ -1,4 +1,4 @@
-<!-- kairos-ontology-toolkit:managed v3.8.1 -->
+<!-- kairos-ontology-toolkit:managed v4.5.0rc4 -->
 # Kairos Ontology Toolkit — Copilot Instructions
 
 ## Session greeting (MANDATORY)
@@ -23,18 +23,23 @@ then answer.
 
 ## Project overview
 
-This is a Python toolkit + FastAPI service for managing OWL/Turtle ontologies.
+This is a Python toolkit for managing OWL/Turtle ontologies.
 It provides validation (syntax + SHACL), multi-target projections (dbt, neo4j,
-azure-search, a2ui, prompt), and an AI chat interface via the GitHub Models API.
+azure-search, a2ui, prompt), and CLI-based ontology management.
 
 ## Code conventions
 
 - Python 3.12+, src-layout (`src/kairos_ontology/`).
+- **Package split (MDM-DD-002):** ontology functionality lives in
+  `kairos_ontology.core` (validator, projector, `core/projections/`, etc.); the
+  design-time MDM layer lives in `kairos_ontology.mdm`. The boundary is **one-way** —
+  `mdm` may import `core`, but `core` must **never** import `mdm` (enforced by
+  `tests/test_layering.py`; MDM is wired via the projector registry, not a direct
+  import). `cli/` depends on both. Public API is re-exported from top-level
+  `kairos_ontology/__init__.py`.
 - Line length: 100 characters (black + ruff).
 - Use `rdflib.Graph` for all RDF operations. Never serialize RDF by string concatenation.
-- Async endpoints in FastAPI routers; sync helpers in the core toolkit.
-- Service code lives under `service/app/`.
-- Tests live under `tests/` (toolkit) and `tests/service/` (API endpoints).
+- Tests live under `tests/`.
 
 ## Open-source & licensing
 
@@ -60,6 +65,7 @@ When reviewing or creating a pull request, verify:
 | Check | What to look for |
 |-------|-----------------|
 | **SPDX headers** | Every new or modified `.py` file has the `SPDX-License-Identifier` + `Copyright` header |
+| **Issue auto-close** | Every issue the PR **fully fixes** is referenced with a GitHub closing keyword (`Closes`/`Fixes`/`Resolves #NNN`) in the PR **body** (not just the title) so it auto-closes on merge; follow-up issues that should stay open are referenced as plain `#NNN` |
 | **No secrets** | No API keys, tokens, passwords, or internal URLs in code, config, or comments |
 | **No PII** | No personal data (names, emails, addresses) in ontology labels, test fixtures, or comments |
 | **Design decisions** | If the PR introduces an architectural choice, update `docs/design/toolkit-design-decisions.md` |
@@ -90,12 +96,12 @@ When reviewing or creating a pull request, verify:
 
 ## Testing rules
 
-- **Every new function, service, or endpoint MUST have unit tests.**
-- Toolkit tests go in `tests/`, service/API tests go in `tests/service/`.
+- **Every new function or feature MUST have unit tests.**
+- Tests live under `tests/`.
 - Mock external calls (GitHub API, OpenAI client) with `unittest.mock` — never hit real APIs in tests.
 - Use `pytest-asyncio` with `asyncio_mode = "auto"` for async test functions.
 - Run tests with `py -m pytest` (Windows) or `python -m pytest` (Unix).
-- Aim for coverage of: happy path, auth failure (401), and at least one edge/error case per endpoint.
+- Aim for coverage of: happy path and at least one edge/error case per feature.
 
 ### Scenario testing rules
 
@@ -132,36 +138,79 @@ When designing or modifying ontologies, use the **kairos-design-domain** skill.
 It combines core modeling knowledge (class hierarchies, property design, naming
 conventions, reference-model-first workflow, extension annotations) with an
 interactive configurator (business alignment checkpoints, session persistence in
-`ontology-hub/.sessions-design/`, and structured validation gates). For minor
+`ontology-hub/.kairos-state/phases/`, and structured validation gates). For minor
 edits (adding a property, fixing a label) it supports a quick-edit mode that
 skips checkpoints.
+
+> **Modeling is a mid-lifecycle step, not the start.** The canonical lifecycle is
+> `discovery → source → domain → mapping → silver → gold → validate → project`.
+> `kairos-design-domain` is **data-first**: it needs imported, analysed sources as
+> evidence (Gate 6 / Source Evidence Table). Treat **"start modeling"** as
+> **"begin the modeling lifecycle"**:
+> - **Fresh hub / no sources yet (`integration/sources/` empty)** → **auto-hand off
+>   to the start of the lifecycle**: invoke **kairos-design-source** first (and offer
+>   **kairos-design-discovery**) to import + `analyse-sources`, *then* return to
+>   `kairos-design-domain`. Don't model classes against an empty
+>   `integration/sources/`.
+> - **Sources already exist** → before modeling, **always run an explicit
+>   source-completeness check** (the modeling skill's mandatory pre-flight): list the
+>   imported/analysed sources and ask whether *additional/other* sources need
+>   importing first. This fires on the **first modeling pass too**, not only on
+>   restart/extension. If more are needed → back to **kairos-design-source**, then
+>   resume. Gate 6 remains the hard evidence constraint.
 
 ### Skill routing guide
 
 Use this table to pick the correct skill for a user's intent:
 
-> **Design vs Execute:** The design skills (`kairos-design-source`,
+> **Design vs Execute:** The design skills (`kairos-design-discovery`,
+> `kairos-design-source`,
 > `kairos-design-silver`, `kairos-design-gold`,
 > `kairos-design-mapping`, `kairos-design-domain`) create/modify source files
 > interactively. The **kairos-execute-project** skill **executes generation**
 > from those files — it's the single entry point for producing output artifacts.
 > Design first, then project. See DD-033 for the full lifecycle architecture.
 
+> **Start of lifecycle:** the canonical order is
+> `discovery → source → domain → mapping → silver → gold → validate → project →
+> diagnose → consume` (see kairos-help §2). `kairos-design-domain` sits **after**
+> discovery + source — it consumes imported, analysed source evidence. Treat
+> "start modeling" as **entering the lifecycle**: on a fresh hub, **auto-hand off**
+> to **kairos-design-source** (offer **kairos-design-discovery**) first; when
+> sources already exist, run the modeling skill's mandatory **source-completeness
+> check** (every time, including the first pass) before proposing classes.
+>
+> **Advanced dbt branch:** When a mapped Silver entity needs joins, windows,
+> aggregations, fallback rules, JSON expansion, or a grain change that cannot be
+> expressed safely as normal column mappings, insert
+> **kairos-develop-dbt-transformation** between domain design and the final
+> virtual-source mapping/Silver review. Simple mappings remain on the canonical path.
+
 | User intent | Correct skill |
 |---|---|
-| "Model / design / create classes / add properties / extend ontology" | **kairos-design-domain** |
+| "Start / where are we / what's next / continue / resume" | **kairos-flow** (single entry point — reads deterministic status + continuation state, then hands off) |
+| "Explore company / business model / capture business terminology" | **kairos-design-discovery** |
+| "Model / design / create classes / add properties / extend ontology" | **kairos-design-domain** (= begin the modeling lifecycle: fresh hub → auto-hand off to kairos-design-source/discovery first; sources exist → mandatory source-completeness check, first pass included) |
 | "Create a new hub repo from scratch" | **kairos-setup-init** |
 | "Set up folder structure / configure hub" | **kairos-setup-config** |
 | "How does Kairos work? / What is this?" | **kairos-help** |
 | "Run projections / generate dbt / silver / gold" | **kairos-execute-project** |
+| "Develop advanced dbt transformation / custom intermediate model / complex Bronze-to-Silver SQL" | **kairos-develop-dbt-transformation** |
 | "Validate my ontology" | **kairos-execute-validate** |
 | "Create source/bronze vocabulary" | **kairos-design-source** |
 | "Design silver schema / FK annotations" | **kairos-design-silver** |
 | "Design gold / Power BI model" | **kairos-design-gold** |
+| "Design MDM policy / mastered concepts / match rules / survivorship" | **kairos-design-mdm** |
 | "Import / extract TMDL or PBIP files" | CLI: `kairos-ontology import-tmdl` |
+| "Analyse sources / pre-model domain contributions" | **kairos-design-source** (Phase 4) |
+| "Import CSV/Excel flat files as source" | **kairos-design-source** (Phase 1) |
 | "Release / upgrade / version check / update reference models" | **kairos-toolkit-ops** |
 | "Map source columns to domain / create SKOS mappings" | **kairos-design-mapping** |
-| "Status / progress / what's missing / where are we" | **kairos-diagnose-status** |
+| "Status / progress / what's missing / where are we" | **kairos-flow** (start/continue) or **kairos-diagnose-status** (detailed read-only diagnostic). Both build on the deterministic `kairos-ontology status` CLI. |
+| "Set up / scaffold a dataplatform dbt repo" | **kairos-setup-dataplatform** |
+| "Import source schema / refresh vocabulary from bronze" | **kairos-design-source** (Phase 2) |
+| "Generate coverage report" | CLI: `kairos-ontology coverage-report` |
+| "Propose column-to-property alignment" | CLI: `kairos-ontology propose-alignment` |
 
 ### Skill-first enforcement (MANDATORY)
 
@@ -176,32 +225,69 @@ Running CLI directly can produce incomplete or incorrect output without warning.
 - ❌ `python -m kairos_ontology project --target silver` → use **kairos-execute-project** skill
 - ❌ `python -m kairos_ontology project --target dbt` → use **kairos-execute-project** skill
 - ❌ `python -m kairos_ontology project --target powerbi` → use **kairos-execute-project** skill
+- ❌ `python -m kairos_ontology project --target mdm-profile` → use **kairos-execute-project** skill (author policy with **kairos-design-mdm**)
+- ❌ `python -m kairos_ontology mdm-validate` → use **kairos-design-mdm** skill
 - ❌ `python -m kairos_ontology validate` → use **kairos-execute-validate** skill
+- ❌ `python -m kairos_ontology sync-dbt-contracts` → use **kairos-develop-dbt-transformation** skill
+- ❌ `python -m kairos_ontology validate-dbt` → use **kairos-execute-validate** skill
 - ❌ `python -m kairos_ontology new-repo` → use **kairos-setup-init** skill
 - ❌ Directly editing `.ttl` files without invoking the modeling/mapping skill
 
-**Only exception:** The `import-tmdl` command has no corresponding skill and may be
-run directly via CLI.
+**Only exceptions:** The `import-tmdl` and `coverage-report`
+commands have no corresponding skill and may be run directly via CLI.
+
+**CLI soft skill-gate:** Skill-managed commands (`validate`, `project`, `init`,
+`new-repo`, `migrate`, `update`, `update-refmodels`, `import-source`,
+`import-flatfile`, `generate-staging`, `analyse-sources`, `sync-dbt-contracts`,
+`validate-dbt`, `mdm-validate`,
+`init-dataplatform`)
+emit a loud stderr warning when run directly, redirecting to the owning skill,
+then still run (soft gate — see DD entry in the design-decisions log). When a
+skill legitimately wraps one of these commands, it sets `KAIROS_SKILL_CONTEXT=1`
+to silence the warning. If you see this warning, you bypassed a skill — stop and
+invoke the named skill instead.
 
 **If you are unsure which skill to use**, invoke **kairos-help** for guidance.
 
-### No-autopilot for design skills (MANDATORY)
+### Design mode policy (MANDATORY)
 
-The following skills are **interactive by design** — they require explicit user
-confirmation at multiple checkpoints (naming alignment, mapping confirmation,
-annotation review). They MUST NEVER be run in autopilot or autopilot-fleet mode:
+Design skills are **interactive by default** and lifecycle-wide autopilot is
+prohibited. They require explicit stakeholder confirmation at checkpoints
+(naming alignment, mapping confirmation, annotation review) unless the user
+grants a fleet-mode override for one specific active skill invocation.
 
 | Skill | Reason |
 |-------|--------|
+| **kairos-design-discovery** | Company facts and glossary terms must be confirmed by the user; web findings stay inferred until approved |
 | **kairos-design-domain** | Hard gates require user naming confirmation before TTL generation |
 | **kairos-design-mapping** | Every table→entity and column→property mapping needs explicit user approval |
 | **kairos-design-silver** | Extension annotations (SCD types, natural keys, FK) need design review |
 | **kairos-design-gold** | Gold measure definitions and star-schema design need stakeholder sign-off |
+| **kairos-design-mdm** | MDM policy (match keys, survivorship, auto-action bounds, reference-data licensing) is governance-owned and reviewed before the profile is trusted |
 | **kairos-design-source** | Source vocabulary descriptions need verification against source docs |
+| **kairos-develop-dbt-transformation** | Grain, identity, fallback rules, contract decisions, mappings, and Silver policy require evidence and approval |
 
-When these skills are invoked, always use **interactive mode** — present proposals,
-wait for user confirmation, and proceed step-by-step. Never batch or auto-approve
-design decisions.
+**Default:** when these skills are invoked, use **interactive mode** — present
+proposals, wait for user confirmation, and proceed step-by-step.
+
+**Skill-scoped fleet override:** a design skill may offer this choice at startup,
+or accept an explicit request for fleet/autopilot/AI-approved decisions while it
+is active. The override applies only to that skill invocation. It expires when
+the skill ends or pauses and MUST NOT carry into another skill, a handoff, or a
+later resume. Without a current override, no design skill may run in autopilot.
+In an authorized invocation:
+
+- Announce that design fleet mode is active and AI will make checkpoint decisions.
+- If the skill offers the choice, explain the implications first and make
+  interactive mode the recommended default.
+- Execute the same phases, pre-flight checks, evidence gates, validations, and
+  skill routing as interactive mode; never skip quality gates to go faster.
+- Record each AI-made checkpoint decision in the phase log or generated review
+  output with rationale, confidence, and evidence references.
+- Mark AI-approved business facts, glossary terms, mappings, ontology choices,
+  silver annotations, and gold model choices as AI-approved, not user-confirmed.
+- Stop and ask the user for ambiguity, low confidence, policy-sensitive choices,
+  destructive/irreversible actions, or proprietary/PII risk.
 
 ## Validation rules
 
@@ -211,8 +297,16 @@ design decisions.
 
 ## Projection targets
 
-Available targets: `dbt`, `neo4j`, `azure-search`, `a2ui`, `prompt`, `silver`, `powerbi`, `report`.
+Available targets: `dbt`, `neo4j`, `azure-search`, `a2ui`, `prompt`, `silver`, `powerbi`, `report`, `mdm-profile`.
 Each ontology domain produces separate output artifacts per target.
+
+> **Design-time MDM (`mdm-profile`):** an additive, opt-in projection target
+> (not part of `--target all`) owned by the `kairos_ontology.mdm` package. It reads
+> `model/extensions/{domain}-mdm-ext.ttl` (`kairos-mdm:` vocabulary) and emits an
+> immutable, runtime-neutral MDM profile to `output/mdm/`. Author policy with the
+> **kairos-design-mdm** skill; runtime matching/stewardship lives in the separate
+> `kairos-mdm-runtime` repo. `core` never imports `mdm` (registry pattern,
+> MDM-DD-002). See `docs/mdm/`.
 
 > **Silver FK annotations:** When a domain ontology imports reference models via
 > `owl:imports`, imported object properties lack cardinality restrictions and will

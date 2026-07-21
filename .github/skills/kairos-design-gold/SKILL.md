@@ -5,12 +5,58 @@ description: >
   types, DAX measures, hierarchies, RLS) and understanding Power BI projection
   output. Targets DirectLake on Microsoft Fabric Warehouse.
 ---
-<!-- kairos-ontology-toolkit:managed v3.8.1 -->
+<!-- kairos-ontology-toolkit:managed v4.5.0rc4 -->
 
 # Kairos Medallion Gold Skill
 
+## Design fleet mode (DD-088)
+
+Default is interactive: ask the user to confirm fact/dimension choices, measures,
+hierarchies, RLS, star-schema design, and semantic-model review checkpoints. If
+the user explicitly requests design fleet mode, make those checkpoint decisions
+with AI judgment for testing speed, but mark them as **AI-approved** rather than
+user-confirmed. Record rationale, confidence, silver/source evidence, and BI
+impact in `phases/gold/<model>.md`; stop for ambiguous metric definitions,
+security/RLS risk, PII/proprietary exposure, or low-confidence business logic.
+
+Any fleet override applies only to this skill invocation. It expires when the
+skill ends or pauses and is never inherited by another skill or a later resume.
+
+## Lifecycle state (DD-080)
+
+> The **kairos-flow** skill is the lifecycle orchestrator and the **only** writer of
+> `ontology-hub/.kairos-state/status.md`. This skill plugs into that shared state; it
+> does not maintain the global status file.
+
+**On start (pre-flight):** read `ontology-hub/.kairos-state/` — the `status.md`
+continuation region and this phase's log(s) at `phases/gold/<model>.md` — to resume open
+questions. Ignore `_archive/`. (`kairos-ontology status` gives the objective view.)
+
+**On pause or finish:** append a *State update proposal* to `phases/gold/<model>.md` with
+OKF frontmatter (`type: kairos-phase-log`, `phase: gold`, `instance: <model>`, `status:`,
+`last_updated:`). Record decisions made and an **Open questions** list as the resume
+anchor. Do **not** edit `status.md` directly — kairos-flow folds your proposal in.
+
+
 You are an expert at generating Power BI star-schema models from OWL ontologies
 using the Kairos gold-layer projection.
+
+> **Draft model input (DD-086):** If
+> `model/planning/draft-model/draft-model-report.md` or
+> `draft-model-erd.mmd` exists, read it during pre-flight. Use measure,
+> fact/dimension, hierarchy, and TMDL relationship entries as candidate gold-design
+> prompts only. Do not turn report measures into gold annotations without explicit
+> user confirmation.
+>
+> **Data-product vertical slice:** If
+> `model/planning/data-products/<product>/data-product-plan.yaml` or
+> `gold-candidates.yaml` exists, treat it as a scoped planning view for one report
+> pack/data product. It is not projection authority. Only convert
+> `gold-annotation-needed` candidates into `goldTableType`, `measureExpression`,
+> hierarchy, or `perspective` annotations when the item is already claim-backed or
+> mapping-backed and the user confirms the decision in this skill. Prefer a gold
+> `perspective` for report-pack scoping rather than creating a competing grouping
+> mechanism.
 
 ## Architecture Context
 
@@ -273,15 +319,21 @@ with `@mermaid-js/mermaid-cli` as a dev dependency — just run `npm install`.
 ### On start — Check for existing session
 
 ```
-ontology-hub/.sessions-design/
-  └── gold-{domain}-{YYYY-MM-DD}.md
+ontology-hub/.kairos-state/phases/gold/
+  └── {domain}.md
 ```
 
 If a previous session exists, ask the user whether to continue or start fresh.
 
+> **Starting fresh — archive, don't overwrite (DD-071).** When the user chooses to
+> start a new session instead of resuming, first move any existing
+> `ontology-hub/.kairos-state/phases/gold/{domain}.md` log for this domain into
+> `ontology-hub/.kairos-state/_archive/` (create it if missing; use a
+> collision-safe filename). Never delete a previous log. Then create the new phase log.
+
 ### Session file format
 
-Save to `ontology-hub/.sessions-design/gold-{domain}-{YYYY-MM-DD}.md`:
+Save to `ontology-hub/.kairos-state/phases/gold/{domain}.md`:
 
 ```markdown
 # Gold Design Session: {Domain}

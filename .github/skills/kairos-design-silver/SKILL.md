@@ -6,9 +6,46 @@ description: >
   projection output. Covers R1-R16 annotation vocabulary and S1-S8 Silver
   Fabric Warehouse behaviours.
 ---
-<!-- kairos-ontology-toolkit:managed v3.8.1 -->
+<!-- kairos-ontology-toolkit:managed v4.5.0rc4 -->
 
 # Kairos Medallion Silver Skill
+
+## Design fleet mode (DD-088)
+
+Default is interactive: ask the user to confirm SCD type, natural key, foreign
+key, schema, inheritance, and passthrough annotation choices. If the user
+explicitly requests design fleet mode, make those checkpoint decisions with AI
+judgment for testing speed, but mark them as **AI-approved** rather than
+user-confirmed. Record rationale, confidence, mapping/source evidence, and
+projection implications in `phases/silver/<domain>.md`; stop for low-confidence
+keys/FKs, destructive history choices, PII/proprietary risk, or annotations that
+could break downstream joins.
+
+Any fleet override applies only to this skill invocation. It expires when the
+skill ends or pauses and is never inherited by another skill or a later resume.
+
+## Offline sample audit feedback (DD-089)
+
+After dbt/silver projection, `kairos-ontology audit-silver-samples` provides
+offline advisory QA for silver design choices. Review findings about missing
+natural-key samples, FK-vs-target key shape mismatches, transform/type risks, and
+generated SQL traceability before handing the package to the dataplatform.
+
+## Lifecycle state (DD-080)
+
+> The **kairos-flow** skill is the lifecycle orchestrator and the **only** writer of
+> `ontology-hub/.kairos-state/status.md`. This skill plugs into that shared state; it
+> does not maintain the global status file.
+
+**On start (pre-flight):** read `ontology-hub/.kairos-state/` — the `status.md`
+continuation region and this phase's log(s) at `phases/silver/<domain>.md` — to resume
+open questions. Ignore `_archive/`. (`kairos-ontology status` gives the objective view.)
+
+**On pause or finish:** append a *State update proposal* to `phases/silver/<domain>.md`
+with OKF frontmatter (`type: kairos-phase-log`, `phase: silver`, `instance: <domain>`,
+`status:`, `last_updated:`). Record decisions made and an **Open questions** list as the
+resume anchor. Do **not** edit `status.md` directly — kairos-flow folds your proposal in.
+
 
 You are helping the user **design** the silver layer of the medallion architecture.
 This skill covers annotation design and output interpretation:
@@ -21,7 +58,41 @@ This skill covers annotation design and output interpretation:
 > **Design/Execute separation (DD-033):** This skill creates annotation files.
 > To generate output, invoke the **kairos-execute-project** skill.
 
+> **Draft model input (DD-086):** If
+> `model/planning/draft-model/draft-model-report.md` or
+> `draft-model-erd.mmd` exists, read it during pre-flight. Use natural-key and
+> FK entries as review prompts only. A draft-report relationship or TMDL join is
+> not an approved `silverForeignKey` / `silverForeignKeyOn` annotation until the
+> user confirms it in this skill.
+>
+> **Data-product vertical slice:** If
+> `model/planning/data-products/<product>/data-product-plan.yaml` exists, read it
+> as a scoped agenda for one report pack/data product. Use `silver-question`
+> entries to focus natural-key, FK, SCD, and reference-data review. The plan is
+> advisory (`projection_authority: false`) and must never write silver TTL or
+> bypass claim/mapping approval.
+
 ---
+
+## Target-first aspirational stubs (DD-096)
+
+Silver design is normally **binding-first**: a class gets a real Silver model once a
+bronze source is mapped to it. The **target-first stub → bind loop** (opt-in, DD-096)
+lets an *approved but not-yet-mapped* claim project a **stub** Silver target first, so
+downstream Silver/Gold can be designed against a stable contract before mappings exist.
+
+- **Derived, not annotated.** `aspirational` is **not** a silver-ext annotation you
+  author — it is derived at projection time (approved, materialization-eligible claim
+  ∧ unbound physical model). Do not add a field for it.
+- **Typability caveat.** Stub columns are typed where typable
+  (`kairos-ext:silverDataType` → `rdfs:range` → `VARCHAR(255)` fallback). Declaring
+  `silverDataType` on properties makes stub columns precise before binding.
+- **Clearing it.** A stub is cleared by **binding a mapping** (kairos-design-mapping),
+  not by editing silver-ext. Re-projection replaces the stub with the real model.
+- **OKF capture.** Record any target-first stub decisions in
+  `phases/silver/<domain>.md`.
+
+See the **kairos-execute-project** skill for the `--emit-aspirational-stubs` flag.
 
 ## Part A — Silver Schema Design
 
@@ -143,7 +214,30 @@ ex:{ClassName}
 > become nullable columns with a `-- from {SubtypeName}` comment. The annotation is
 > preserved in the extension file for future Gold-layer projections.
 
-### 2d — SCD type (R5)
+> **Transitive folding (issue #172):** discriminator folding is **transitive through
+> unclaimed intermediate classes**. A subtype that reaches a claimed discriminator
+> ancestor only via *unclaimed* (not separately projected) intermediates is still
+> folded into that ancestor's table — and the intermediates' properties fold in too,
+> labelled `-- from {SubtypeName}`. The walk stops at the **first claimed ancestor**,
+> so single-level folding is unchanged.
+
+### 2c-bis — Exclude a class from silver (`silverExclude`)
+
+> "Should `{ClassName}` be kept in the ontology for inheritance/semantics but **not**
+> materialised as its own silver table?" (e.g. an abstract role-marker class.)
+
+```turtle
+ex:{ClassName}    kairos-ext:silverExclude "true"^^xsd:boolean .
+```
+
+- The class emits **no** table.
+- `silverExclude` **overrides** `silverInclude` / `silverIncludeImports`.
+- Descendants still **inherit** the excluded class's properties; it is treated as an
+  unclaimed (cross-domain) FK target.
+- The projector emits a warning if a materialised class depends on the excluded class
+  (subclasses it, or FK/junctions to it) so you can confirm the dropped table is
+  intentional.
+
 
 > "Should `{ClassName}` maintain full history (SCD Type 2, default) or just the current
 > record (SCD Type 1, overwrite)?"
@@ -174,11 +268,13 @@ class in the domain MUST have at minimum:
 | `kairos-ext:scdType` | ✅ Always | `"2"` |
 | `kairos-ext:isReferenceData` | ✅ Always | `"false"` |
 | `kairos-ext:inheritanceStrategy` | Only if has subclasses | `"class-per-table"` |
+| `kairos-ext:silverSourceRef` | If sourcing from bronze_expanded or a contracted model (DD-039/DD-093) | _(none — uses source())_ |
 | `kairos-ext:namingConvention` | Ontology-level | `"camel-to-snake"` |
 | `kairos-ext:includeNaturalKeyColumn` | Ontology-level | `"true"` |
 | `kairos-ext:inlineRefThreshold` | Ontology-level | `"3"` |
 | `kairos-ext:silverIncludeImports` | Ontology-level (only if uses `owl:imports`) | `"false"` |
 | `kairos-ext:silverInclude` | Only on imported classes | `"false"` |
+| `kairos-ext:silverExclude` | Only if a class must NOT get its own table | `"false"` |
 | `kairos-ext:silverForeignKey` | On ObjectProperty (imported props lacking cardinality) | `"false"` |
 | `kairos-ext:silverForeignKeyOn` | On ObjectProperty (reversal pattern) | _(none)_ |
 
@@ -356,13 +452,51 @@ ref:hasConsignmentItem
 
 ## Phase 4 — Generate output (handoff to projection skill)
 
-Once your silver extension annotations are complete, generate the artifacts by
-invoking the **kairos-execute-project** skill with target `silver` (for DDL + ERD)
-or `dbt` (for dbt models — requires SKOS mappings).
+> **Pre-silver claims gate (MANDATORY — DD-EL-1).** Before generating the
+> silver layer, verify that the ontology + mappings actually cover every source
+> table the affinity reports assign to the in-scope domains — so silver is built
+> against a **complete** ontology, not a partial one (`check-claims` includes the
+> pre-silver mapping-coverage check):
+>
+> ```bash
+> kairos-ontology check-claims
+> # or scope to a single domain:
+> kairos-ontology check-claims --domains <domain>
+> ```
+>
+> - **Exit 0** → every affinity-assigned source table is mapped to a domain entity.
+>   Proceed to projection.
+> - **Exit 1** → STOP. The listed `(system.table)` pairs have domain affinity but
+>   no source-to-domain mapping (no SKOS match on the bronze table or its columns).
+>   Complete the mappings via the **kairos-design-mapping** skill (and, if classes
+>   are missing, the **kairos-design-domain** skill), then re-check.
+>
+> `check-claims` is read-only and deterministic (no AI). Use `--warn-only`
+> only as a deliberate, documented override (e.g. a domain you intentionally defer).
+
+Once your silver extension annotations are complete **and the claims gate
+is green**, generate the artifacts by invoking the **kairos-execute-project** skill
+with target `silver` (for DDL + ERD) or `dbt` (for dbt models — requires SKOS
+mappings).
+
+For a contracted custom intermediate, first hand off to
+**kairos-develop-dbt-transformation**. After `sync-dbt-contracts` and virtual-source
+mapping, this skill remains authoritative for semantic natural-key properties, SK/IRI,
+SCD/FK policy, and `kairos-ext:silverSourceRef`. The dbt contract owns physical output
+columns/types and key columns; custom SQL owns relational logic. Confirm
+`silverSourceRef` names the contracted model, then project separately for each required
+adapter with `project --target dbt --platform <fabric|databricks>`.
+For `meta.kairos.replaces_sources`, this annotation is a blocking part of governed
+replacement coverage: it must be on the approved target class and equal the declaring
+contract model name.
 
 > **Design/Execute separation (DD-033):** This skill handles annotation *design*.
 > The **kairos-execute-project** skill handles *generation*. If you need to
 > iterate on outputs, edit the extension file here, then invoke projection again.
+
+> **Next design step (optional):** if this domain also feeds a Power BI semantic
+> model, design the gold annotations next via the **kairos-design-gold** skill
+> before projecting the `powerbi` target.
 
 Artifacts are written to the dbt project tree under `output/medallion/dbt/`:
 
@@ -799,6 +933,9 @@ is driven by:
 Before running the dbt projection, ensure these artifacts exist in the hub:
 
 - **Source vocabulary** in `integration/sources/{system-name}/{system-name}.vocabulary.ttl`
+- **Optional custom source vocabulary** in
+  `integration/sources/custom-transformations/{model}.vocabulary.ttl`, generated from
+  `integration/transforms/dbt/models/**/*.yml` by `sync-dbt-contracts`
 - **Silver schema** — domain ontologies with `kairos-ext:` annotations (Part A above)
 - **SKOS mappings** in `model/mappings/{system}-to-{domain}.ttl`
 
@@ -819,7 +956,7 @@ Bronze (source systems)          Silver (domain model)
 
 ```bash
 # Generate dbt project for all domains
-python -m kairos_ontology project --target dbt
+python -m kairos_ontology project --target dbt --platform <fabric|databricks>
 
 # Generate for a specific ontology
 python -m kairos_ontology project --ontology ontology-hub/model/ontologies/client.ttl --target dbt
@@ -904,15 +1041,21 @@ setup instructions on adding it as a dependency via `packages.yml`.
 ### On start — Check for existing session
 
 ```
-ontology-hub/.sessions-design/
-  └── silver-{domain}-{YYYY-MM-DD}.md
+ontology-hub/.kairos-state/phases/silver/
+  └── {domain}.md
 ```
 
 If a previous session exists, ask the user whether to continue or start fresh.
 
+> **Starting fresh — archive, don't overwrite (DD-071).** When the user chooses to
+> start a new session instead of resuming, first move any existing
+> `ontology-hub/.kairos-state/phases/silver/{domain}.md` log for this domain into
+> `ontology-hub/.kairos-state/_archive/` (create it if missing; use a
+> collision-safe filename). Never delete a previous log. Then create the new phase log.
+
 ### Session file format
 
-Save to `ontology-hub/.sessions-design/silver-{domain}-{YYYY-MM-DD}.md`:
+Save to `ontology-hub/.kairos-state/phases/silver/{domain}.md`:
 
 ```markdown
 # Silver Design Session: {Domain}

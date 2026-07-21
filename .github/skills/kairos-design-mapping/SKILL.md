@@ -6,21 +6,80 @@ description: >
   confidence levels, and coverage validation. NOT for running projections —
   use kairos-execute-project for that.
 ---
-<!-- kairos-ontology-toolkit:managed v3.8.1 -->
+<!-- kairos-ontology-toolkit:managed v4.5.0rc4 -->
 
 # Source-to-Domain Mapping Skill
+
+## Design fleet mode (DD-088)
+
+Default is interactive: ask the user to confirm every table→entity and
+column→property mapping, confidence level, transform, and coverage checkpoint. If
+the user explicitly requests design fleet mode, make those checkpoint decisions
+with AI judgment for testing speed, but mark them as **AI-approved** rather than
+user-confirmed. Record rationale, confidence, examples/transform warnings, and
+evidence references in `phases/mapping/<source>-to-<domain>.md`; stop for
+low-confidence mappings, lossy transforms, PII/proprietary risk, or unmapped
+business-critical columns.
+
+Any fleet override applies only to this skill invocation. It expires when the
+skill ends or pauses and is never inherited by another skill or a later resume.
+
+## Offline sample audit feedback (DD-089)
+
+After dbt/silver projection, `kairos-ontology audit-silver-samples` can review
+the generated dbt SQL against source samples and mappings without a warehouse.
+Use its findings as mapping feedback: missing mapped samples, transform/type
+risks, cross-source sample-shape mismatches, and target aliases missing from SQL
+should be corrected here before dataplatform handoff.
+
+## Lifecycle state (DD-080)
+
+> The **kairos-flow** skill is the lifecycle orchestrator and the **only** writer of
+> `ontology-hub/.kairos-state/status.md`. This skill plugs into that shared state; it
+> does not maintain the global status file.
+
+**On start (pre-flight):** read `ontology-hub/.kairos-state/` — the `status.md`
+continuation region and this phase's log(s) at `phases/mapping/<source>-to-<domain>.md`
+— to resume open questions. Ignore `_archive/`. (`kairos-ontology status` gives the
+objective view.)
+
+**On pause or finish:** append a *State update proposal* to
+`phases/mapping/<source>-to-<domain>.md` with OKF frontmatter (`type: kairos-phase-log`,
+`phase: mapping`, `instance: <source>-to-<domain>`, `status:`, `last_updated:`). Record
+decisions made and an **Open questions** list as the resume anchor. Do **not** edit
+`status.md` directly — kairos-flow folds your proposal in.
+
 
 You guide the user through creating SKOS mapping files that link source system
 columns to domain ontology properties. This is a **structured, interactive**
 process — never guess mappings without evidence and user confirmation.
 
+> **Data-product vertical slice:** If
+> `model/planning/data-products/<product>/data-product-plan.yaml` or
+> `mapping-plan.yaml` exists, use it only as a scoped backlog for the report pack
+> or data product. It is advisory (`projection_authority: false`) and must not be
+> treated as mapping authority. Every table→entity and column→property mapping
+> still requires this skill's evidence review and user confirmation before writing
+> SKOS TTL.
+
 ---
+
+## Binding clears aspirational stubs (DD-096)
+
+When the target-first stub → bind loop is enabled (`project --emit-aspirational-stubs`,
+DD-096), an approved-but-unmapped claim projects a **zero-row aspirational Silver stub**
+so downstream models have a stable target. **Adding a source mapping here is exactly
+what binds that stub**: on the next projection the stub is transparently replaced by the
+real, populated Silver model (stub → bound transition). No hand-editing of generated SQL
+is ever required. So a mapping you confirm in this skill may flip a class from
+*aspirational/unbound* to *bound* (and release-eligible). See the
+**kairos-execute-project** skill for stub semantics.
 
 ## Hard Gates (BLOCKING — must not be bypassed)
 
 ### Gate 1: Session file prerequisite
 
-> **You MUST create a `ontology-hub/.sessions-design/mapping-{source}-to-{domain}-{date}.md`
+> **You MUST create a `ontology-hub/.kairos-state/phases/mapping/{source}-to-{domain}.md`
 > file BEFORE writing any mapping TTL.**
 
 If no session file exists for the source→domain pair being mapped, you are NOT
@@ -41,7 +100,11 @@ interleave tables from different sources.
 ### Gate 4: Source-grounded proposals (data-first)
 
 > **You MUST read the bronze vocabulary AND domain ontology BEFORE proposing
-> any mappings. Present evidence (column names, types) with every proposal.**
+> any mappings. Present evidence (column names, types, AND masked example
+> values) with every proposal.** Real sample values are the strongest evidence
+> for a mapping — surface them by default (see Phase 2 Examples column). PII
+> columns are always masked; never paste raw sample values into committed TTL or
+> comments.
 
 ### Gate 5: Explicit user confirmation required
 
@@ -63,9 +126,33 @@ The user can override any auto-approved mapping.
 ### Phase 0 — Discover & Scope
 
 1. List source systems in `integration/sources/` that have a `*.vocabulary.ttl`
+   - Include generated virtual sources under
+     `integration/sources/custom-transformations/`.
+   - Never edit those generated vocabularies. If missing or stale, hand off to
+     **kairos-develop-dbt-transformation** to run `sync-dbt-contracts`.
+   - When a contract declares `meta.kairos.replaces_sources`, map its virtual table to
+     `target_class` with table-level `skos:exactMatch`. Do not add a direct mapping from
+     the replaced Bronze table to the same domain merely to satisfy source coverage; that
+     creates a blocking source-authority conflict.
 2. Ask user which source system to map
 3. Ask user which domain(s) to target (list available from `model/ontologies/`)
-4. Create session file: `ontology-hub/.sessions-design/mapping-{source}-to-{domain}-{YYYY-MM-DD}.md`
+4. Create phase log: `ontology-hub/.kairos-state/phases/mapping/{source}-to-{domain}.md`
+   > **Starting fresh — archive, don't overwrite (DD-071).** When the user chooses to
+   > start a new session instead of resuming, first move any existing
+   > `ontology-hub/.kairos-state/phases/mapping/{source}-to-{domain}.md` log for
+   > this source→domain pair into `ontology-hub/.kairos-state/_archive/` (create it
+   > if missing; use a collision-safe filename). Never delete a previous log. Then
+   > create the new phase log.
+5. **Load the business glossary (if present):** check
+   `ontology-hub/businessdiscovery/*.ttl` (produced by the **kairos-design-discovery**
+   skill). Index each `skos:Concept`'s `skos:altLabel`s and the domain IRI it links
+   to via `rdfs:seeAlso`. These are **advisory** alternative names used to match
+   source columns whose names use the company's own vocabulary — see Phase 2.
+6. **Check for mapping hints (DD-045):** if a `*-alignment.yaml` produced with
+   `propose-alignment --include-mapping-hints` exists for the domain, load it. Its
+   `transform_hint` / `structural_hints` fields give you a richer starting point.
+   They are **advisory** — see "Consuming Mapping Hints (DD-045)" below. If no hint
+   file exists, proceed exactly as before (hints are optional).
 
 ### Phase 1 — Table-to-Entity Alignment
 
@@ -87,27 +174,77 @@ The user can override any auto-approved mapping.
    - `out-of-scope` — valid data, not in current domain model
    - `gap` — should be in domain → feed back to modeling skill
 
+> **If DD-045 hints are loaded:** surface any table-level `structural_hints`
+> (`split_candidate`, `dedup_candidate`, `merge_candidate`,
+> `multi_target_candidate`) as *proposals* during alignment — e.g. a
+> `split_candidate` on a `Type` discriminator suggests mapping one source table to
+> several subclasses. These are candidates only; all carry
+> `requires_human_confirmation: true` and MUST be confirmed before you encode any
+> split/dedup/multi-target mapping.
+
+> **Advanced transformation boundary:** ordinary row/column alignment and supported
+> `kairos-map:transform` expressions belong here. If correct grain requires joins,
+> windows, ranking, aggregation, fallback across relations, JSON expansion, or
+> survivorship, stop and hand off to **kairos-develop-dbt-transformation**. Return here
+> after synchronization to map the generated virtual table and columns; SKOS remains
+> the authority for virtual-source-to-domain meaning.
+
 ### Phase 2 — Column-to-Property Mapping (per confirmed table)
 
 For each confirmed table→entity pair:
 
-1. Read all columns from the bronze vocabulary
+1. Read all columns from the bronze vocabulary (including `kairos-bronze:sampleValues`)
 2. Read all properties from the target entity (including inherited)
 3. Present columns in **chunks of max 15**, grouped by prefix or data type
-4. For each chunk, show a **Column Mapping Proposal**:
+4. For each chunk, show a **Column Mapping Proposal**. The **Examples** column is
+   **mandatory** — populate it from the bronze `sampleValues`, **masking PII**
+   (see Privacy note below):
 
-| Source Column | Target Property | Match Type | Transform | Confidence |
-|---|---|---|---|---|
-| `customer_name` | `name` | exact | — | High ✓ |
-| `cust_email` | `email` | exact | — | High ✓ |
-| `WEIGHT_KG` | `weight` | close | `CAST(... AS DECIMAL)` | Medium |
-| `INTERNAL_FLAG` | — | operational | — | — |
-| `LEGACY_CODE` | — | deprecated | — | — |
+| Source Column | Examples | Target Property | Match Type | Transform | Confidence |
+|---|---|---|---|---|---|
+| `customer_name` | `Acme NV`, `Globex` | `name` | exact | — | High ✓ |
+| `cust_email` | `jo***@***.com` | `email` | exact | — | High ✓ |
+| `WEIGHT_KG` | `12.5`, `8.0` | `weight` | close | `CAST(... AS DECIMAL)` | Medium |
+| `INTERNAL_FLAG` | `Y`, `N` | — | operational | — | — |
+| `LEGACY_CODE` | `A1`, `B7` | — | deprecated | — | — |
 
 5. Rows marked ✓ are auto-approved (exact name + type match)
 6. Wait for user to confirm/correct remaining rows
 7. Only generate TTL after full chunk confirmation
 8. Proceed to next chunk
+
+> **Privacy (mandatory).** The **Examples** column is for *transient display
+> only* to ground the user's decision. **Never** copy real sample values into the
+> committed mapping TTL, `rdfs:comment`, or the session log. PII columns (name,
+> email, IBAN, phone, national ID, etc. — by column name, mapped property, or
+> value shape) are **always masked** (e.g. `jo***@***.com`). When in doubt, mask.
+> If `propose-alignment` produced an `*-alignment.yaml`, reuse its already-masked
+> `example_values` rather than re-reading raw bronze values.
+
+> **Transform compatibility (`transform_compat`).** When an `*-alignment.yaml`
+> carries a `transform_compat` note on a column (e.g. *"2/5 sample values are
+> non-numeric — CAST may NULL/fail"*), surface it as a **warning** next to that
+> row's Transform. It is advisory: it never blocks and never changes confidence,
+> but the user should confirm the cast/cleaning policy before you write a
+> `CAST(...)` transform.
+
+> **If a business glossary is loaded (Phase 0, step 5):** when a source column name
+> or description matches a concept's `skos:altLabel`, surface the concept's linked
+> domain property (`rdfs:seeAlso` IRI) as a **candidate** target — this is how the
+> company's own jargon (e.g. logistics terms) gets resolved to the canonical
+> property. Glossary matches are **advisory only**: present them with the evidence
+> ("matched altLabel 'House Bill'"), and require explicit user confirmation before
+> writing TTL (never auto-approve a glossary-derived mapping). Record glossary-based
+> decisions in the session file.
+
+> **If DD-045 hints are loaded:** pre-fill the *Transform* column from each
+> column's `transform_hint`, and mark the row's source as machine-suggested. A
+> hint with `requires_human_confirmation: false` (exact-name + same-logical-type
+> passthrough) may use the auto-approve fast-track; **every** hint with
+> `requires_human_confirmation: true` MUST be confirmed by the user before TTL.
+> Always derive the SKOS predicate yourself from the `alignment` category (hints do
+> not carry a SKOS predicate — see below). Never paste a `CAST(...)` hint into TTL
+> without confirming the encoding with the user.
 
 ### Phase 3 — Validation & Report
 
@@ -124,6 +261,112 @@ For each confirmed table→entity pair:
    - Map another table from same source
    - Start new mapping session for different source
    - Proceed to projection (`kairos-execute-project`)
+
+---
+
+## Consuming Mapping Hints (DD-045)
+
+`propose-alignment --include-mapping-hints` can enrich `*-alignment.yaml` with
+**advisory, non-authoritative hints**. They give you a richer starting point but
+**never replace** your reasoning or the user-confirmation gates.
+
+**What the hints contain:**
+
+| Field (column-level) | Meaning | How to use |
+|---|---|---|
+| `transform_hint` | Suggested SQL transform (`source.Col` passthrough or `CAST(...)`) | Pre-fill the Transform column; confirm unless trivial passthrough |
+| `transform_confidence` | 0.0–1.0 deterministic confidence | Show as evidence; do not treat as approval |
+| `requires_human_confirmation` | `false` only for exact-name + same-logical-type passthrough | If `true`, you MUST confirm with the user before TTL |
+| `transform_rationale` | Why the hint was generated | Show to the user as evidence |
+| `example_values` (DD-075) | Masked sample values from bronze (default-on) | Populate the Phase 2 Examples column; never copy into TTL |
+| `transform_compat` (DD-075) | Advisory "N/M samples incompatible with CAST target" | Show as a Transform warning; confirm cast/cleaning policy |
+
+| Field (table-level) | Meaning | How to use |
+|---|---|---|
+| `structural_hints[]` | `split_candidate` / `dedup_candidate` / `merge_candidate` / `multi_target_candidate` | Surface as proposals in Phase 1; all require confirmation |
+
+**Rules when hints are present:**
+
+1. **No SKOS predicate is provided.** Derive it yourself from the `alignment`
+   category (`exact`→`exactMatch`, `semantic`/`partial`→`closeMatch`/`narrowMatch`,
+   `custom`→needs a new property first). The hint generator deliberately omits the
+   SKOS predicate because it is a trivial relabel of `alignment`.
+2. **Hints accelerate, never decide.** Still read the bronze vocabulary and domain
+   ontology independently (Gate 4). Still confirm every non-trivial transform and
+   every structural hint (Gate 5).
+3. **Honor `requires_human_confirmation`.** A polished `CAST(...)` hint is a
+   *candidate* — confirm the source encoding/business policy before writing it.
+4. **Hints are optional.** If no hint file exists, run the workflow exactly as
+   before.
+
+See `docs/instruction-guides/context-engineer-methodology-guide.md` for the
+deterministic / promptable / judgment tiering behind this design.
+
+---
+
+## Review-flagged maps (DD-069, issues #167/#168)
+
+`propose-alignment` runs a deterministic plausibility/address review pass. A
+column in `*-alignment.yaml` that looks structurally implausible is **kept
+mapped** but annotated:
+
+| Field (column-level) | Meaning | How to use |
+|---|---|---|
+| `review` | `true` when a deterministic rule flagged this map | Treat the map as **unconfirmed** — re-read the bronze column and the domain property before accepting it |
+| `review_reason` | Why it was flagged (address-part on a non-address scalar; boolean/financial → identity; no name-token overlap + low confidence) | Show to the user as evidence; correct the mapping or confirm it is intentional |
+
+**Rules:**
+
+1. **Review flags never block.** The `check-claims` gate surfaces them in a
+   report-only section; they are independent of the `--strict` curation gate.
+2. **Address-part columns** (`SHIPPER_STREET`, `billing_zip`, …) flagged onto a
+   party scalar usually belong on a shared `Address` concept via an address
+   relationship. With **cross-module alignment** (DD-070, see below) the shared
+   `Address` class becomes a real candidate and these columns can be matched
+   directly; otherwise model the relationship locally or confirm the scalar map
+   deliberately.
+3. **Always reconcile every `review: true` column** before completing the
+   mapping — either fix the target property or note the confirmation in the
+   Column Mapping Table.
+
+---
+
+## Cross-module candidates (DD-070, issue #166)
+
+By default `propose-alignment` only considers the **home domain's** reference
+classes, so a column whose true match lives in a sibling / shared accelerator
+module (a shared `Address`, `PaymentTerms`, `currency`, …) gets force-fit onto an
+unrelated home scalar. Run with `--cross-module --accelerator <name>` to widen the
+**property** candidate pool to the whole accelerator while still classifying the
+**table** against home classes only:
+
+```bash
+kairos-ontology propose-alignment --cross-module --accelerator logistics
+```
+
+When a column matches a sibling/shared-module class, its entry in
+`*-alignment.yaml` gains:
+
+| Field (column-level) | Meaning | How to use |
+|---|---|---|
+| `ref_module` | The owning module of the matched non-home class (e.g. `reference-data`) | Tells you **which module to `owl:imports`** to use this class |
+| `ref_module_uri` | The module's namespace URI | Resolve/import the module |
+| `belongs_to_domain` / `belongs_to_domains` | Data-domain(s) that import the module | Context only — prefer `ref_module` as the actionable signal |
+
+A separate top-level **`cross_module_matches`** section rolls these up per
+class, listing the `ref_module` and the contributing `source_columns` — your
+checklist of which shared/sibling modules the domain needs to import. The home
+`reference_rollup` is unchanged.
+
+**Rules:**
+
+- `--cross-module` **requires** `--accelerator`; without a resolvable accelerator
+  it errors (no silent fallback — table-less shared modules are invisible to
+  affinity reports).
+- Default output (no `--cross-module`) is **byte-identical** — none of the new
+  fields appear.
+- A cross-module run is never skipped by the freshness cache after a prior
+  home-only run (params are part of the freshness signature).
 
 ---
 
@@ -244,8 +487,10 @@ bronze:{transformedColumn}
 
 | Skill | Relationship |
 |---|---|
+| `kairos-design-discovery` | **Upstream** — creates the business glossary of alternative names (consumed in Phase 0/2) |
 | `kairos-design-source` | **Upstream** — creates bronze vocabulary (input to this skill) |
 | `kairos-design-domain` | **Upstream** — creates domain ontology (target for mappings) |
+| `kairos-develop-dbt-transformation` | **Optional upstream/handoff** — owns complex dbt SQL and contract; generates the virtual source mapped here |
 | **`kairos-design-mapping`** (this) | Creates SKOS mapping files interactively |
 | `kairos-execute-report` | **Downstream** — generates HTML coverage reports from mappings |
 | `kairos-design-silver` | **Downstream** — uses mappings for extension annotations |
@@ -254,12 +499,50 @@ bronze:{transformedColumn}
 ### Typical pipeline order
 
 ```
-1. kairos-design-domain        → domain ontology (.ttl)
-2. kairos-design-source → bronze vocabulary (.vocabulary.ttl)
-3. kairos-design-mapping          → SKOS mapping files (model/mappings/)
-4. kairos-design-silver → silver extension annotations
-5. kairos-execute-project       → dbt/silver/powerbi output
+0. kairos-design-discovery → company context + business glossary (businessdiscovery/)
+1. kairos-design-source   → bronze vocabulary (.vocabulary.ttl)
+2. kairos-design-domain   → domain ontology (.ttl)
+2b. kairos-develop-dbt-transformation → optional contracted intermediate + virtual source
+3. kairos-design-mapping  → SKOS mapping files (including virtual-source mappings)
+4. kairos-design-silver   → silver extension annotations
+5. kairos-design-gold     → gold extension annotations (for Power BI)
+6. kairos-execute-project → dbt/silver/powerbi output
 ```
+
+> This matches the canonical **Fresh Hub Lifecycle** in the **kairos-help** skill.
+
+---
+
+## JSON-Expanded Columns (DD-039)
+
+When the bronze vocabulary contains columns with `kairos-bronze:derivedFromJson`
+(created by `import-source` from `extract-schema` v1.1 output), these represent
+flattened JSON fields available in the `bronze_expanded` schema.
+
+### Mapping to expanded columns
+
+Map domain properties to expanded column URIs the same way as regular columns:
+
+```turtle
+bronze-sys:tblOrders_details__firstName skos:exactMatch domain:firstName ;
+    kairos-map:transform "source.firstName" .
+```
+
+### Recommending silverSourceRef
+
+**After mapping** to any `derivedFromJson` column, suggest adding
+`kairos-ext:silverSourceRef` to the silver extension file:
+
+```turtle
+domain:Order kairos-ext:silverSourceRef "stg_erp_orders_details" .
+```
+
+This tells the dbt projector to use `{{ ref('stg_erp_orders_details') }}`
+instead of `{{ source('erp', 'tblOrders') }}`, routing the model through
+the `bronze_expanded` staging layer that flattens JSON.
+
+**Without this annotation**, the projector uses raw bronze — which won't have
+the expanded columns available.
 
 ---
 

@@ -6,9 +6,15 @@ description: >
   validation. Only for new repo creation — NOT for ontology design or domain
   modeling.
 ---
-<!-- kairos-ontology-toolkit:managed v3.8.1 -->
+<!-- kairos-ontology-toolkit:managed v4.5.0rc4 -->
 
 # Quickstart — New Ontology Hub
+
+> **🔒 Skill context:** Before running any `kairos-ontology` /
+> `python -m kairos_ontology` command in this skill, set the sentinel env var so
+> the CLI knows it runs inside a skill and suppresses its skill-gate warning:
+> - PowerShell: `$env:KAIROS_SKILL_CONTEXT = "1"`
+> - bash/zsh: `export KAIROS_SKILL_CONTEXT=1`
 
 This guide walks through creating a brand-new ontology hub repo for a client
 or project using the **kairos-ontology-toolkit** CLI.
@@ -249,6 +255,38 @@ gh pr create --base main --fill
 ```
 
 Or use the SC-merge-pr skill.  Never push directly to `main`.
+
+---
+
+## 9. Next steps — the design→execute lifecycle
+
+Creating the repo and a first domain is just the **Setup** phase. From here,
+follow the recommended **Fresh Hub Lifecycle** (DD-040). Invoke the skill for
+each phase rather than running raw CLI commands — the design skills add
+interactive checkpoints and pre-flight checks.
+
+```
+discovery → source → domain → mapping → silver → gold → validate → project → diagnose → consume
+```
+
+| Phase | Invoke skill | Produces |
+|-------|--------------|----------|
+| Design — discovery | **kairos-design-discovery** | Company context + business glossary (`businessdiscovery/`) |
+| Design — source | **kairos-design-source** | Bronze vocabulary (`*.vocabulary.ttl`) |
+| Design — domain | **kairos-design-domain** | OWL classes + properties |
+| Design — mapping | **kairos-design-mapping** | SKOS source→domain mappings |
+| Design — silver | **kairos-design-silver** | `*-silver-ext.ttl` annotations |
+| Design — gold | **kairos-design-gold** | `*-gold-ext.ttl` annotations |
+| Execute — validate | **kairos-execute-validate** | Syntax + SHACL check |
+| Execute — project | **kairos-execute-project** | All output artifacts |
+| Diagnose | **kairos-diagnose-status** | Completeness / gap report |
+
+> **Minimal first pass:** model a domain (**kairos-design-domain**), validate
+> (**kairos-execute-validate**), then project the `prompt` / `neo4j` / `a2ui`
+> targets (**kairos-execute-project**) — these need no extensions or mappings.
+> Layer on source/mapping/silver/gold for the `dbt`, `silver`, and `powerbi`
+> targets. See the **kairos-help** skill's *Fresh Hub Lifecycle* section for the
+> full walkthrough.
 
 ---
 

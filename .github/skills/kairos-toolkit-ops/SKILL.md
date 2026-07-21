@@ -6,9 +6,15 @@ description: >
   via channels (update --upgrade), refreshing managed files, version diagnostics,
   and updating reference models from the upstream repo.
 ---
-<!-- kairos-ontology-toolkit:managed v3.8.1 -->
+<!-- kairos-ontology-toolkit:managed v4.5.0rc4 -->
 
 # Toolkit Operations Skill
+
+> **🔒 Skill context:** Before running any `kairos-ontology` /
+> `python -m kairos_ontology` command in this skill, set the sentinel env var so
+> the CLI knows it runs inside a skill and suppresses its skill-gate warning:
+> - PowerShell: `$env:KAIROS_SKILL_CONTEXT = "1"`
+> - bash/zsh: `export KAIROS_SKILL_CONTEXT=1`
 
 You are helping a user with **kairos-ontology-toolkit operations** — releasing,
 upgrading, diagnosing versions, or updating reference models.
@@ -40,16 +46,27 @@ Release steps (all done manually or by Copilot):
 # 1. Bump version in __init__.py (single source of truth)
 #    Edit src/kairos_ontology/__init__.py: __version__ = "X.Y.Z"
 
-# 2. Update lock and build
+# 2. Update CHANGELOG.md — promote the [Unreleased] section to a dated
+#    release heading so it ships with the tag (enforced by CI, see below):
+#      ## [X.Y.Z] — YYYY-MM-DD
+#    Leave a fresh, empty [Unreleased] section above it for the next cycle.
+
+# 3. Update lock and build
 uv lock
 uv build
 
-# 3. Commit, tag, and push
-git add uv.lock src/kairos_ontology/__init__.py
+# 4. Commit, tag, and push
+git add uv.lock src/kairos_ontology/__init__.py CHANGELOG.md
 git commit -m "chore: bump version to X.Y.Z"
 git tag -a vX.Y.Z -m "Release vX.Y.Z"
 git push && git push --tags
 ```
+
+> **CHANGELOG is enforced, not optional.** `version-check.yml` fails a PR that
+> bumps `__version__` without a matching `## [X.Y.Z]` CHANGELOG entry, and
+> `release.yml` fails the tagged release itself if `CHANGELOG.md` has no
+> `## [X.Y.Z]` section. Pre-releases (`rc`/`beta`/`alpha`) are exempt. This keeps
+> CHANGELOG.md in lock-step with every GA release.
 
 #### Release levels explained
 
@@ -71,12 +88,14 @@ git push && git push --tags
 
 ### What happens after push
 
-The `.github/workflows/release.yml` workflow triggers on `v*` tags:
+The `.github/workflows/release.yml` workflow triggers on `v*` tags and produces a
+**GitHub Release with the built wheel + sdist attached** (no PyPI publishing — see
+DD-066; hubs install via git-tag / wheel-URL pins):
 
-| Tag type | GitHub Release | PyPI publish |
-|----------|---------------|--------------|
-| Stable (`v2.17.0`) | ✅ Latest | ✅ Published |
-| Pre-release (`v2.18.0-rc.1`) | ✅ Pre-release | ❌ Skipped |
+| Tag type | GitHub Release | Built assets (wheel + sdist) |
+|----------|---------------|------------------------------|
+| Stable (`v2.17.0`) | ✅ Latest | ✅ Attached |
+| Pre-release (`v2.18.0-rc.1`) | ✅ Pre-release | ✅ Attached |
 
 ### Verifying the release
 
@@ -90,6 +109,30 @@ gh release list --limit 5
 # Check workflow status
 gh run list --workflow release.yml --limit 3
 ```
+
+### Release lines & hotfixes (bugfix vs feature release)
+
+> **Full policy:** [`docs/RELEASING.md`](https://github.com/Cnext-eu/kairos-ontology-toolkit/blob/main/docs/RELEASING.md) (DD-067).
+
+We support **only the latest release line** and keep bugfixes out of feature
+releases. SemVer: `fix:` → **patch**, `feat:` → **minor**, breaking → **major**.
+
+When a bug is found in the released `vX.Y.Z`, check whether `main` already has
+unreleased features:
+
+```bash
+git fetch --tags origin
+git log --oneline vX.Y.Z..origin/main
+```
+
+- **`main` is clean** → fix on `main` via a `fix/*` PR, bump **patch**, tag `main`.
+- **`main` has unreleased features** → don't tag `main`. Cut `hotfix/x.y.(z+1)` from
+  the **tag** `vX.Y.Z`, fix + patch-bump, tag from that branch (becomes the new
+  *Latest* release), then **back-merge to `main`** (keep `main`'s in-progress version
+  on conflict; add the **`skip-version`** label to the back-merge PR).
+
+Feature releases stay as in §1 (minor bump + tag on `main`); pre-release validation
+uses the `preview` channel (§2).
 
 ---
 
@@ -182,10 +225,39 @@ This will:
 3. Update the `pyproject.toml` dependency pin to the `.whl` URL
 4. Run `uv lock` to update the lock file
 5. Run `uv sync` to install the new version
+6. **Automatically refresh managed files under the new version** — when the
+   version actually changes, `--upgrade` re-execs the refresh in a fresh
+   `uv run` so skills/instructions are stamped against the *new* toolkit (no
+   manual second `update` needed). (DD-049)
+
+> **Windows (DD-057):** the running `kairos-ontology.exe` locks its own
+> executable, so it cannot `uv sync` to the new version in-process. On Windows
+> `--upgrade` instead schedules a **detached** helper that waits for the current
+> process to exit, then runs `uv sync` + `kairos-ontology update` automatically.
+> The refresh opens in a new console window moments after the command returns and
+> writes a transcript to `.kairos/upgrade-refresh.log`. No manual second step is
+> needed; if you ever see a "could not schedule" message, just run
+> `uv run kairos-ontology update` in a fresh shell.
+
+> **Always run via `uv run`.** Invoking `python -m kairos_ontology` or a
+> globally-installed `kairos-ontology` may use a different (often older) toolkit
+> than the version pinned in this hub. The CLI now warns when the running version
+> differs from the `pyproject.toml` pin — if you see that warning, re-run the
+> command with `uv run kairos-ontology …` (or `uv sync`). (DD-049)
+
+> **Run from anywhere in the hub (DD-062).** `update`/`--upgrade` resolves the
+> real hub root by walking **up** from the current directory (anchored on the
+> `[tool.kairos]` / toolkit pin or the managed `.github/copilot-instructions.md`
+> marker). If you run it from a content subdirectory (e.g. `ontology-hub/`), it
+> prints `↪ Detected hub root at … — operating there.` and re-roots automatically —
+> it will **not** scaffold a second hub. In a directory that is not a hub (no pin /
+> managed `.github` anywhere up the tree) it hard-errors instead of fabricating one.
 
 ### Refreshing managed files
 
-After upgrading, refresh toolkit-owned files:
+`update --upgrade` already refreshes managed files automatically (step 6 above).
+You only need to run `update` on its own to refresh without upgrading, e.g. after
+pulling someone else's pin bump:
 
 ```bash
 # Preview what would change
@@ -259,7 +331,7 @@ kairos-ontology update-refmodels --ref v1.2.1
 
 1. Performs a sparse shallow clone of `Cnext-eu/kairos-ontology-referencemodels`
 2. Extracts only the `ontology-reference-models/` subfolder
-3. Replaces the local `model/reference-models/` folder with the fetched version
+3. Replaces the local `ontology-reference-models/` folder with the fetched version
 4. Reports the commit SHA and version (if a VERSION file is present)
 5. Cleans up the temporary clone (no git history left behind)
 
@@ -274,7 +346,7 @@ After updating reference models:
 4. **Commit** — commit the updated reference models
 
 ```bash
-git add model/reference-models/
+git add ontology-reference-models/
 git commit -m "chore: update reference models to <version/sha>"
 ```
 
@@ -374,3 +446,4 @@ gh release list --repo Cnext-eu/kairos-ontology-toolkit --limit 1
 | `uv` not found | uv not installed | `irm https://astral.sh/uv/install.ps1 \| iex` (Windows) |
 | Tag already exists | Duplicate release attempt | Delete with `git tag -d vX.Y.Z` and retry |
 | Release workflow didn't trigger | Tag not pushed | `git push --tags` |
+| `update` created a second hub (`.github/`, `pyproject.toml`, `.venv`) in a subdir | Pre-DD-062 toolkit, run from a content subdir | Upgrade the toolkit; DD-062 now re-roots to the real hub. Delete the spurious untracked files and re-run from the hub root |

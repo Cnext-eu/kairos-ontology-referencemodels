@@ -125,7 +125,7 @@ Toolkit-owned files (copilot-instructions.md, SKILL.md files) carry a version
 marker so `kairos-ontology update` can detect and refresh them.
 
 ```
-<!-- kairos-ontology-toolkit:managed v3.8.1 -->
+<!-- kairos-ontology-toolkit:managed v4.5.0rc4 -->
 ```
 
 Key functions:
