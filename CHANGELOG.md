@@ -5,6 +5,27 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [1.12.0] - 2026-07-21
+
+### Added
+- **Logistics Accelerator 1.6.0 Blueprint foundation** with deterministic RDF inventory,
+  JSON Schemas, semantic validators, generated-contract tooling, and focused tests.
+- **Evidence-backed convergence dossier and unresolved registries** for Party, Location,
+  Booking, Shipment/Consignment, equipment, transport topology, events, documents,
+  identifiers, measurements, and status. Unreviewed candidates are excluded from the
+  first Silver slice.
+- **Freight-forwarder archetype and discovery guide**, complementing the existing
+  shipping-carrier archetype; archetype catalog version bumped to 0.3.0.
+- **Synthetic freight-forwarder and carrier/terminal source shapes** plus a
+  cross-archetype assessment and capability-oriented blueprint documentation.
+
+### Changed
+- **Logistics Accelerator** opened at 1.6.0 after archiving the complete 1.5.0 baseline.
+- Repository validation recognizes versioned accelerator support folders and runs the
+  Logistics Blueprint test suite through `python -m pytest`.
+
 ## [1.11.0] - 2026-06-22
 
 ### Added

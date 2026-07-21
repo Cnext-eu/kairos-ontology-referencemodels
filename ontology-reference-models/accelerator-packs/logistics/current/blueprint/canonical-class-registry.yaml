@@ -1,0 +1,227 @@
+format_version: "1.0"
+accelerator_version: "1.6.0"
+concepts:
+  - id: party
+    class_uri: https://www.kairosflow.ai/ont/bsp/party#TradeParty
+    authority: "Candidate only: UN/CEFACT BSP / ISO 20197-1"
+    grain: "One durable party identity, independent of contextual roles"
+    identity: "Issuer-scoped party identifier"
+    lifecycle: "Creation, merge, activation, and retirement"
+    disposition: unresolved
+    evidence:
+      - "BSP party.ttl defines TradeParty and shared party identifiers"
+      - "convergence-analysis.md Session A and explicit Party gap"
+    confidence: medium
+    maturity: experimental
+    first_slice: false
+    standards: ["UN/CEFACT BSP", "ISO 20197-1:2024"]
+  - id: location
+    class_uri: https://www.kairosflow.ai/ont/dcsa/locations#Location
+    authority: "Candidate only: DCSA location model"
+    grain: "One durable physical place or facility"
+    identity: "UN/LOCODE plus facility code where applicable"
+    lifecycle: "Independent place/facility master lifecycle"
+    disposition: unresolved
+    evidence:
+      - "DCSA locations.ttl defines Location and contextual location specialisations"
+      - "convergence-analysis.md Session A"
+    confidence: medium
+    maturity: experimental
+    first_slice: false
+    standards: ["DCSA"]
+  - id: booking
+    class_uri: https://www.kairosflow.ai/ont/dcsa/booking#Booking
+    authority: "Candidate only: DCSA booking model"
+    grain: "One carrier capacity and equipment reservation"
+    identity: "Carrier booking reference scoped to the carrier"
+    lifecycle: "Request through confirmation, rejection, or cancellation"
+    disposition: unresolved
+    evidence:
+      - "DCSA booking.ttl defines Booking, BookingRequest, and ConfirmedBooking"
+      - "convergence-analysis.md Sessions A and B"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+    standards: ["DCSA"]
+  - id: shipment
+    class_uri: https://www.kairosflow.ai/ont/dcsa/booking#Shipment
+    authority: "Candidate only: DCSA booking model"
+    grain: "One carrier-side transport transaction"
+    identity: "Issuer-scoped shipment reference"
+    lifecycle: "Booking handoff through delivery and closure"
+    disposition: unresolved
+    evidence:
+      - "DCSA booking.ttl defines Shipment as a complete transport transaction"
+      - "convergence-analysis.md Shipment and consignment analysis"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+    standards: ["DCSA"]
+  - id: consignment
+    class_uri: https://www.kairosflow.ai/ont/mmt/consignment#Consignment
+    authority: "Candidate only: UN/CEFACT MMT"
+    grain: "One identifiable goods collection from one consignor to one consignee"
+    identity: "Issuer-scoped consignment reference"
+    lifecycle: "Acceptance through completion across one or more legs"
+    disposition: unresolved
+    evidence:
+      - "MMT consignment.ttl defines Consignment and master/house specialisations"
+      - "convergence-analysis.md Shipment and consignment analysis"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+    standards: ["UN/CEFACT MMT-RDM"]
+  - id: consignment-item
+    class_uri: https://www.kairosflow.ai/ont/mmt/consignment#ConsignmentItem
+    authority: "Candidate only: UN/CEFACT MMT"
+    grain: "One separately identifiable line within a consignment"
+    identity: "Consignment-scoped item identifier"
+    lifecycle: "Bound to consignment composition"
+    disposition: unresolved
+    evidence:
+      - "MMT consignment.ttl defines ConsignmentItem"
+      - "convergence-analysis.md Session B"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+    standards: ["UN/CEFACT MMT-RDM"]
+  - id: equipment-asset
+    class_uri: https://www.kairosflow.ai/ont/dcsa/equipment#Container
+    authority: "Candidate only: DCSA equipment model for container scope"
+    grain: "One durable physical container"
+    identity: "ISO 6346 container number"
+    lifecycle: "Registration through retirement"
+    disposition: unresolved
+    evidence:
+      - "DCSA equipment.ttl defines Container and containerNumber"
+      - "convergence-analysis.md Equipment analysis"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+    standards: ["DCSA", "ISO 6346"]
+  - id: equipment-request
+    class_uri: https://www.kairosflow.ai/ont/dcsa/booking#RequestedEquipment
+    authority: "Candidate only: DCSA booking model"
+    grain: "One requested equipment type and quantity line"
+    identity: "Booking-scoped request line"
+    lifecycle: "Request through fulfilment or cancellation"
+    disposition: unresolved
+    evidence:
+      - "DCSA booking.ttl defines RequestedEquipment"
+      - "convergence-analysis.md Equipment analysis"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+    standards: ["DCSA"]
+  - id: equipment-utilisation
+    class_uri: https://www.kairosflow.ai/ont/dcsa/booking#UtilizedTransportEquipment
+    authority: "Candidate only: DCSA booking model"
+    grain: "One allocation of physical equipment to a shipment"
+    identity: "Shipment-scoped allocation identifier"
+    lifecycle: "Allocation through release"
+    disposition: unresolved
+    evidence:
+      - "DCSA booking.ttl defines UtilizedTransportEquipment"
+      - "convergence-analysis.md Equipment analysis"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+    standards: ["DCSA"]
+  - id: container-journey
+    class_uri: https://www.kairosflow.ai/ont/dcsa/container-operations#ContainerJourney
+    authority: "Candidate only: DCSA container operations"
+    grain: "One container operational cycle within a booking or shipment"
+    identity: "Container plus journey identifier"
+    lifecycle: "Pickup through return or completion"
+    disposition: unresolved
+    evidence:
+      - "DCSA container-operations.ttl defines ContainerJourney"
+      - "convergence-analysis.md Equipment analysis"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+    standards: ["DCSA"]
+  - id: transport-route
+    class_uri: https://www.kairosflow.ai/ont/mmt/consignment#TransportRoute
+    authority: "Candidate only: UN/CEFACT MMT"
+    grain: "One reusable or consignment-specific ordered transport path"
+    identity: "Route identifier and version"
+    lifecycle: "Authored, revised, and retired"
+    disposition: unresolved
+    evidence:
+      - "MMT consignment.ttl defines TransportRoute"
+      - "convergence-analysis.md Movement analysis"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+    standards: ["UN/CEFACT MMT-RDM"]
+  - id: transport-leg
+    class_uri: https://www.kairosflow.ai/ont/mmt/consignment#TransportLeg
+    authority: "Candidate only: UN/CEFACT MMT"
+    grain: "One planned route segment using one mode"
+    identity: "Route or plan plus leg sequence"
+    lifecycle: "Planned and revised before execution"
+    disposition: unresolved
+    evidence:
+      - "MMT consignment.ttl defines TransportLeg"
+      - "convergence-analysis.md Movement analysis"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+    standards: ["UN/CEFACT MMT-RDM"]
+  - id: transport-movement
+    class_uri: https://www.kairosflow.ai/ont/mmt/consignment#TransportMovement
+    authority: "Candidate only: UN/CEFACT MMT"
+    grain: "One actual traversal of a transport means between locations"
+    identity: "Movement execution identifier"
+    lifecycle: "Dispatch through completion"
+    disposition: unresolved
+    evidence:
+      - "MMT consignment.ttl defines TransportMovement"
+      - "convergence-analysis.md Movement analysis"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+    standards: ["UN/CEFACT MMT-RDM"]
+  - id: transport-call
+    class_uri: https://www.kairosflow.ai/ont/dcsa/transport-call#TransportCall
+    authority: "Candidate only: DCSA transport-call model"
+    grain: "One transport-means interaction at one facility"
+    identity: "Transport call reference"
+    lifecycle: "Arrival through departure"
+    disposition: unresolved
+    evidence:
+      - "DCSA transport-call.ttl defines TransportCall"
+      - "convergence-analysis.md Movement analysis"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+    standards: ["DCSA"]
+  - id: event
+    class_uri: https://www.kairosflow.ai/ont/dcsa/events#Event
+    authority: "Candidate only: DCSA event envelope for carrier scope"
+    grain: "One observed, estimated, or planned occurrence"
+    identity: "Source system plus event identifier"
+    lifecycle: "Append, correct, or supersede"
+    disposition: unresolved
+    evidence:
+      - "DCSA events.ttl defines Event and event categories"
+      - "convergence-analysis.md Event analysis"
+    confidence: medium
+    maturity: experimental
+    first_slice: false
+    standards: ["DCSA"]
+  - id: transport-document
+    class_uri: https://www.kairosflow.ai/ont/dcsa/transport-documents#TransportDocument
+    authority: "Candidate only: DCSA transport-document model for carrier scope"
+    grain: "One transport document identity, separate from versions and states"
+    identity: "Issuer plus document number"
+    lifecycle: "Draft, issue, amend, surrender, or cancel"
+    disposition: unresolved
+    evidence:
+      - "DCSA transport-documents.ttl defines TransportDocument"
+      - "convergence-analysis.md Document analysis"
+    confidence: medium
+    maturity: experimental
+    first_slice: false
+    standards: ["DCSA"]

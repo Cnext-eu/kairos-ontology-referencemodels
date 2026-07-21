@@ -62,8 +62,10 @@
     <uri name="https://www.kairosflow.ai/ont/tic/automotive-services" uri="derived-ontologies/TIC/current/automotive-services/automotive-services.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/tic/events" uri="derived-ontologies/TIC/current/events/events.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/tic/handling-operations" uri="derived-ontologies/TIC/current/handling-operations/handling-operations.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/tic/kpi" uri="derived-ontologies/TIC/current/kpi/kpi.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/tic/locations" uri="derived-ontologies/TIC/current/locations/locations.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/tic/party" uri="derived-ontologies/TIC/current/party/party.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/tic/reefer-monitoring" uri="derived-ontologies/TIC/current/reefer-monitoring/reefer-monitoring.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/tic/terminal-infrastructure" uri="derived-ontologies/TIC/current/terminal-infrastructure/terminal-infrastructure.ttl"/>
     
     <!-- ========== IMO (International Maritime Organization) ========== -->
@@ -99,4 +101,3 @@
     <uri name="https://www.kairosflow.ai/ont/accelerator/financial-services" uri="accelerator-packs/financial-services/current/financial-services-accelerator.ttl"/>
     
 </catalog>
-

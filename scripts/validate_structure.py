@@ -40,6 +40,7 @@ SCAN_DIRS = [
     ONTOLOGY_ROOT / "accelerator-packs",
 ]
 
+ACCELERATOR_SUPPORT_DIRS = {"blueprint", "profiles", "contracts", "examples", "docs"}
 BLUEPRINTS_DIR = ONTOLOGY_ROOT / "blueprints"
 ARCHETYPES_DIR = BLUEPRINTS_DIR / "archetypes"
 ARCHETYPE_SCHEMA = ARCHETYPES_DIR / "_schema" / "archetype.schema.json"
@@ -139,9 +140,16 @@ def find_root_ttl(folder: Path) -> Path | None:
 def find_domain_subfolders(folder: Path):
     """Find immediate subfolders that look like domain modules."""
     content_dir = get_content_dir(folder)
+    excluded = {"archive", "extensions"}
+    if folder.parent.name == "accelerator-packs":
+        excluded.update(ACCELERATOR_SUPPORT_DIRS)
     return sorted(
         d for d in content_dir.iterdir()
-        if d.is_dir() and not d.name.startswith(".") and d.name not in ("archive", "extensions")
+        if (
+            d.is_dir()
+            and not d.name.startswith(".")
+            and d.name not in excluded
+        )
     )
 
 

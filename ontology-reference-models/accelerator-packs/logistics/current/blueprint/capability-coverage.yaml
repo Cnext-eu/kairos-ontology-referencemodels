@@ -1,0 +1,86 @@
+format_version: "1.0"
+accelerator_version: "1.6.0"
+capabilities:
+  - id: party-and-role-management
+    status: deferred
+    concept_ids: [party]
+    extension_points:
+      - "Neutral durable Party identity"
+      - "Qualified contextual Party role assignment"
+    evidence:
+      - "convergence-analysis.md Party and contextual roles"
+    confidence: medium
+    maturity: experimental
+  - id: location-and-itinerary-roles
+    status: deferred
+    concept_ids: [location]
+    extension_points:
+      - "Qualified location role assignment"
+    evidence:
+      - "convergence-analysis.md Location and contextual location roles"
+    confidence: medium
+    maturity: experimental
+  - id: booking-lifecycle
+    status: deferred
+    concept_ids: [booking]
+    extension_points:
+      - "Booking amendment and version history"
+    evidence:
+      - "convergence-analysis.md Booking and order"
+    confidence: high
+    maturity: experimental
+  - id: shipment-and-consignment
+    status: deferred
+    concept_ids: [shipment, consignment, consignment-item]
+    extension_points:
+      - "Split and consolidation cardinalities"
+    evidence:
+      - "convergence-analysis.md Consignment and shipment"
+    confidence: high
+    maturity: experimental
+  - id: equipment-planning-and-execution
+    status: deferred
+    concept_ids:
+      - equipment-asset
+      - equipment-request
+      - equipment-utilisation
+      - container-journey
+    extension_points:
+      - "General multimodal equipment allocation"
+    evidence:
+      - "convergence-analysis.md Equipment analysis"
+    confidence: high
+    maturity: experimental
+  - id: route-plan-and-execution
+    status: deferred
+    concept_ids:
+      - transport-route
+      - transport-leg
+      - transport-movement
+      - transport-call
+    extension_points:
+      - "Ordered stop pattern"
+      - "Plan-to-execution realization"
+    evidence:
+      - "convergence-analysis.md Movement, leg, stop and call"
+    confidence: high
+    maturity: experimental
+  - id: event-history
+    status: deferred
+    concept_ids: [event]
+    extension_points:
+      - "Source-neutral event envelope"
+      - "Subject roles and correction or supersession"
+    evidence:
+      - "convergence-analysis.md Transport event"
+    confidence: medium
+    maturity: experimental
+  - id: transport-document-lifecycle
+    status: deferred
+    concept_ids: [transport-document]
+    extension_points:
+      - "Document version, issuance, and surrender history"
+    evidence:
+      - "convergence-analysis.md Document pattern"
+    confidence: medium
+    maturity: experimental
