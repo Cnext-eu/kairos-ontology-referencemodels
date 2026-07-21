@@ -1,0 +1,121 @@
+format_version: "1.0"
+accelerator_version: "1.6.0"
+entries:
+  - id: party-role-parents
+    concept_id: party
+    class_uris:
+      - https://www.kairosflow.ai/ont/bsp/party#TradeParty
+      - https://www.kairosflow.ai/ont/dcsa/party#ShippingParty
+      - https://www.kairosflow.ai/ont/mmt/party#TransportParty
+      - https://www.kairosflow.ai/ont/imo/party#MaritimeParty
+    disposition: reference_model_gap
+    rationale: "Stakeholder-approved architecture requires a neutral durable Party identity and qualified contextual role assignment. Existing classes remain standards overlays pending audit and proven mappings."
+    evidence:
+      - "Stakeholder confirmation 2026-07-21"
+      - "convergence-analysis.md Party and contextual roles"
+      - "evidence/cross-archetype-assessment.md"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+  - id: location-authority
+    concept_id: location
+    class_uris:
+      - https://www.kairosflow.ai/ont/dcsa/locations#Location
+      - https://www.kairosflow.ai/ont/mmt/locations#Location
+      - https://www.kairosflow.ai/ont/mmt/locations#TransportLocation
+    disposition: unresolved
+    rationale: "DCSA carrier and MMT multimodal scopes overlap, while itinerary-role subclasses must not duplicate physical locations."
+    evidence:
+      - "convergence-analysis.md Location and contextual location roles"
+    confidence: medium
+    maturity: experimental
+    first_slice: false
+  - id: booking-order-terms
+    concept_id: booking
+    class_uris:
+      - https://www.kairosflow.ai/ont/dcsa/booking#Booking
+      - https://www.kairosflow.ai/ont/bsp/commercial#PurchaseOrder
+      - https://www.kairosflow.ai/ont/bsp/commercial#SalesOrder
+      - https://www.kairosflow.ai/ont/tic/handling-operations#Order
+    disposition: unresolved
+    rationale: "Carrier reservation, buyer/seller commercial order, and terminal move directive are explicitly different grains."
+    evidence:
+      - "convergence-analysis.md Booking and order"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+  - id: shipment-grains
+    concept_id: shipment
+    class_uris:
+      - https://www.kairosflow.ai/ont/dcsa/booking#Shipment
+      - https://www.kairosflow.ai/ont/bsp/commercial#Shipment
+      - https://www.kairosflow.ai/ont/bsp/commercial#Consignment
+      - https://www.kairosflow.ai/ont/mmt/consignment#Consignment
+    disposition: unresolved
+    rationale: "Carrier transaction, physical delivery, and identifiable goods collection are related but not equivalent."
+    evidence:
+      - "convergence-analysis.md Consignment and shipment"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+  - id: equipment-grains
+    concept_id: equipment-asset
+    class_uris:
+      - https://www.kairosflow.ai/ont/dcsa/equipment#Container
+      - https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment
+      - https://www.kairosflow.ai/ont/mmt/equipment#FreightContainer
+      - https://www.kairosflow.ai/ont/dcsa/booking#RequestedEquipment
+      - https://www.kairosflow.ai/ont/dcsa/booking#UtilizedTransportEquipment
+      - https://www.kairosflow.ai/ont/dcsa/container-operations#ContainerJourney
+    disposition: unresolved
+    rationale: "Durable asset, demand line, allocation, and operational journey require separate identities and lifecycles."
+    evidence:
+      - "convergence-analysis.md Equipment analysis"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+  - id: route-execution-grains
+    concept_id: transport-movement
+    class_uris:
+      - https://www.kairosflow.ai/ont/mmt/consignment#TransportRoute
+      - https://www.kairosflow.ai/ont/mmt/consignment#TransportLeg
+      - https://www.kairosflow.ai/ont/mmt/consignment#TransportMovement
+      - https://www.kairosflow.ai/ont/dcsa/booking#TransportPlanLeg
+      - https://www.kairosflow.ai/ont/dcsa/transport-call#TransportCall
+      - https://www.kairosflow.ai/ont/imo/port-call#PortCall
+      - https://www.kairosflow.ai/ont/tic/handling-operations#Move
+    disposition: unresolved
+    rationale: "Route, plan, execution, call, regulatory visit, and terminal handling are complementary grains."
+    evidence:
+      - "convergence-analysis.md Movement, leg, stop and call"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+  - id: event-authority
+    concept_id: event
+    class_uris:
+      - https://www.kairosflow.ai/ont/dcsa/events#Event
+      - https://www.kairosflow.ai/ont/dcsa/events#TransportEvent
+      - https://www.kairosflow.ai/ont/mmt/events#TransportEvent
+      - https://www.kairosflow.ai/ont/bsp/commercial#ShipmentEvent
+      - https://www.kairosflow.ai/ont/tic/events#TerminalEvent
+    disposition: unresolved
+    rationale: "Event scopes and subjects differ; a neutral envelope needs correction, subject-role, and time-classifier semantics."
+    evidence:
+      - "convergence-analysis.md Transport event"
+    confidence: medium
+    maturity: experimental
+    first_slice: false
+  - id: transport-document-authority
+    concept_id: transport-document
+    class_uris:
+      - https://www.kairosflow.ai/ont/dcsa/transport-documents#TransportDocument
+      - https://www.kairosflow.ai/ont/mmt/documents#TransportDocument
+      - https://www.kairosflow.ai/ont/bsp/documents#TransportDocument
+    disposition: unresolved
+    rationale: "Carrier, multimodal, and BSP document scopes overlap but equivalence and version/issuance semantics are not proven."
+    evidence:
+      - "convergence-analysis.md Document pattern"
+    confidence: medium
+    maturity: experimental
+    first_slice: false

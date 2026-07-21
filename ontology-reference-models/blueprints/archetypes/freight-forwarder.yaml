@@ -1,0 +1,77 @@
+schema_version: 1
+id: freight-forwarder
+label: "Freight forwarder / multimodal logistics service provider"
+description: >
+  Companies that arrange transport across one or more carriers and modes on behalf of
+  shippers, commonly consolidating house consignments into master consignments and
+  issuing or managing transport documents. Typical scope includes quotation and booking,
+  party coordination, pickup and delivery planning, cargo and equipment handling,
+  milestone visibility, customs coordination, and exception management. The archetype
+  does not assume that the forwarder owns transport equipment, terminals, or vessels.
+
+compatible_with:
+  repo_tag_range: ">=1.11.0,<2.0.0"
+  ontology_versions:
+    BSP: ">=1.5.0,<2"
+    DCSA: ">=1.3.0,<2"
+    MMT: ">=1.1.0,<2"
+    WCO: ">=1.2.0,<2"
+
+ref_model_modules:
+  - { iri: "https://www.kairosflow.ai/ont/bsp/party", tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/booking", tier: recommended }
+  - { iri: "https://www.kairosflow.ai/ont/mmt/party", tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/mmt/consignment", tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/mmt/documents", tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/mmt/cargo", tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/mmt/equipment", tier: recommended }
+  - { iri: "https://www.kairosflow.ai/ont/mmt/locations", tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/events", tier: recommended }
+  - { iri: "https://www.kairosflow.ai/ont/wco/customs", tier: optional }
+
+core_concepts:
+  # Party identity and transport roles.
+  - { uri: "https://www.kairosflow.ai/ont/bsp/party#TradeParty", tier: required, label: "Trade Party" }
+  - { uri: "https://www.kairosflow.ai/ont/bsp/party#FreightForwarder", tier: required, label: "Freight Forwarder (trade role)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#TransportParty", tier: required, label: "Transport Party (abstract role)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#FreightForwarder", tier: required, label: "Freight Forwarder (transport role)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#Carrier", tier: required, label: "Carrier" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#Consignor", tier: required, label: "Consignor" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#Consignee", tier: required, label: "Consignee" }
+
+  # Booking and carrier-facing instructions.
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#Booking", tier: recommended, label: "Carrier Booking" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#Shipment", tier: recommended, label: "Carrier Shipment" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#ShippingInstruction", tier: recommended, label: "Shipping Instruction" }
+
+  # Forwarder consolidation and execution backbone.
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#Consignment", tier: required, label: "Consignment" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#MasterConsignment", tier: required, label: "Master Consignment" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#HouseConsignment", tier: required, label: "House Consignment" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#ConsignmentItem", tier: required, label: "Consignment Item" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#TransportRoute", tier: required, label: "Transport Route" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#TransportLeg", tier: required, label: "Transport Leg" }
+
+  # Forwarder and carrier documents.
+  - { uri: "https://www.kairosflow.ai/ont/mmt/documents#TransportDocument", tier: required, label: "Transport Document" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/documents#MasterWaybill", tier: required, label: "Master Waybill" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/documents#HouseWaybill", tier: required, label: "House Waybill" }
+
+  # Cargo, equipment, and locations.
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#Goods", tier: required, label: "Goods" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#Weight", tier: required, label: "Weight" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#Dimension", tier: recommended, label: "Dimension" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment", tier: recommended, label: "Transport Equipment" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#FreightContainer", tier: recommended, label: "Freight Container" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/locations#Location", tier: required, label: "Location" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/locations#TransportLocation", tier: required, label: "Transport Location" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/locations#Warehouse", tier: recommended, label: "Warehouse" }
+
+  # Visibility and regulatory coordination.
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#Event", tier: recommended, label: "Event (abstract)" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#TransportEvent", tier: recommended, label: "Transport Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#EquipmentEvent", tier: recommended, label: "Equipment Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#DocumentEvent", tier: recommended, label: "Document Event" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#CustomsDeclaration", tier: optional, label: "Customs Declaration" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#ImportDeclaration", tier: optional, label: "Import Declaration" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#ExportDeclaration", tier: optional, label: "Export Declaration" }

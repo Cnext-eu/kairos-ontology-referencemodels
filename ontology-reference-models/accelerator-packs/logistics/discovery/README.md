@@ -61,6 +61,7 @@ between catalog and interview script.
 
 | Archetype id | Discovery doc | Target sector |
 |---|---|---|
+| `freight-forwarder` | [`freight-forwarder.md`](./freight-forwarder.md) | Freight forwarder, NVOCC, multimodal logistics service provider |
 | `shipping-carrier` | [`shipping-carrier.md`](./shipping-carrier.md) | Ocean carrier (vessel operators), short-sea, ro-ro, barge |
 
 ## Adding a new sector

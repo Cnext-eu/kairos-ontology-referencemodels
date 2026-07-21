@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.kairosflow.ai/schema/logistics/inventory.schema.json",
+  "title": "Logistics RDF evidence inventory",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format_version",
+    "accelerator_uri",
+    "accelerator_version",
+    "modules",
+    "records"
+  ],
+  "properties": {
+    "format_version": {"const": "1.0"},
+    "accelerator_uri": {"type": "string", "minLength": 1},
+    "accelerator_version": {"$ref": "#/$defs/semver"},
+    "modules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["ontology_uri", "source_file"],
+        "properties": {
+          "ontology_uri": {"type": "string", "minLength": 1},
+          "source_file": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "records": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/record"}
+    }
+  },
+  "$defs": {
+    "semver": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-(?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*)(?:\\.(?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "strings": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "uri",
+        "kind",
+        "module_uri",
+        "source_file",
+        "labels",
+        "comments",
+        "superclasses",
+        "domains",
+        "ranges"
+      ],
+      "properties": {
+        "uri": {"type": "string", "minLength": 1},
+        "kind": {
+          "enum": ["class", "object_property", "datatype_property"]
+        },
+        "module_uri": {"type": "string", "minLength": 1},
+        "source_file": {"type": "string", "minLength": 1},
+        "labels": {"$ref": "#/$defs/strings"},
+        "comments": {"$ref": "#/$defs/strings"},
+        "superclasses": {"$ref": "#/$defs/strings"},
+        "domains": {"$ref": "#/$defs/strings"},
+        "ranges": {"$ref": "#/$defs/strings"},
+        "sources": {"$ref": "#/$defs/strings"},
+        "citations": {"$ref": "#/$defs/strings"}
+      }
+    }
+  }
+}

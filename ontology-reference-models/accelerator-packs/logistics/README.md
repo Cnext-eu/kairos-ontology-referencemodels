@@ -52,7 +52,7 @@ ontology-reference-models/accelerator-packs/logistics/logistics-accelerator.ttl
 
 ## Version
 
-See [VERSION](VERSION) — currently **1.5.0**.
+See [VERSION](VERSION) — currently **1.6.0**.
 
 ## Sector discovery materials
 
@@ -68,6 +68,12 @@ Available today:
 | Ocean carrier / short-sea / ro-ro / barge | [`shipping-carrier`](../../blueprints/archetypes/shipping-carrier.yaml) | [`discovery/shipping-carrier.md`](discovery/shipping-carrier.md) |
 
 ## Changelog
+
+### v1.6.0 (in progress)
+- Added the versioned foundation for the source-neutral Logistics Blueprint.
+- Added deterministic cross-standard RDF inventory generation and validation schemas.
+- Reserved explicit, opt-in locations for the Silver Starter profile, generated
+  contract, and synthetic reference examples.
 
 ### v1.5.0 (2026-06-22)
 - **New `discovery/` folder** holding per-sector SME interview scripts paired by filename stem with archetype catalogs in `blueprints/archetypes/`.

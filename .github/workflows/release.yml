@@ -34,9 +34,17 @@ jobs:
       #     kairos-ontology validate --all --ontologies ontologies --shapes shapes
       #     kairos-ontology catalog-test --catalog catalog-v001.xml
       
-      - name: Basic validation
+      - name: Install validation dependencies
+        run: pip install --quiet pytest jsonschema pyyaml rdflib
+
+      - name: Validate release candidate
         run: |
-          echo "✅ Basic validation passed (detailed validation will be added when toolkit is available)"
+          python -m pytest -q
+          python scripts/generate_logistics_inventory.py --check
+          python scripts/validate_logistics_blueprint.py
+          python scripts/validate_archetypes.py
+          python scripts/validate_structure.py
+          python scripts/version_manager.py check
       
       - name: Extract version from tag
         id: get_version
@@ -63,6 +71,8 @@ jobs:
             VERSION \
             CHANGELOG.md \
             README.md \
+            pyproject.toml \
+            uv.lock \
             LICENSE \
             NOTICE
       

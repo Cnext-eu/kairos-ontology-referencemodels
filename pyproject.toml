@@ -1,0 +1,23 @@
+[project]
+name = "kairos-ontology-referencemodels"
+version = "0.1.0"
+description = "Kairos ontology hub — kairos-ontology-referencemodels"
+requires-python = ">=3.12"
+dependencies = [
+    "kairos-ontology-toolkit @ https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v4.5.0rc4/kairos_ontology_toolkit-4.5.0rc4-py3-none-any.whl",
+]
+
+[project.optional-dependencies]
+dev = [
+    "jsonschema>=4.0",
+    "pyyaml>=6.0",
+    "pytest>=8.0",
+    "rdflib>=7.4",
+]
+
+[tool.kairos]
+# Channel controls which toolkit version is installed on `kairos-ontology update --upgrade`.
+#   "stable"  — latest GA release (default)
+#   "preview" — latest pre-release (rc/beta/alpha) for testing new features
+#   "v2.16.0" — explicit pinned version
+channel = "preview"
