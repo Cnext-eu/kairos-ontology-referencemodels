@@ -5,7 +5,7 @@
 _Part of the [Kairos Community Edition](https://github.com/Cnext-eu) by Cnext.eu_
 
 [![Validation Status](https://img.shields.io/badge/validation-passing-brightgreen.svg)](https://github.com/Cnext-eu/kairos-ontology-referencemodels/actions)
-[![Version](https://img.shields.io/badge/version-1.12.0-blue.svg)](VERSION)
+[![Version](https://img.shields.io/badge/version-1.12.1-blue.svg)](VERSION)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 ---
@@ -450,4 +450,4 @@ For questions about using these models in customer projects, contact the Ontolog
 
 ---
 
-**Current Version:** 1.12.0 | **Last Updated:** 2026-07-21
+**Current Version:** 1.12.1 | **Last Updated:** 2026-07-22

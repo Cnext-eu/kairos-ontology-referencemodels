@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.12.1] - 2026-07-22
+
+### Fixed
+- Removed the duplicated shipping-carrier discovery guide from the financial-services
+  accelerator pack and added structural regression coverage to prevent cross-sector
+  discovery guides from being misplaced (#26).
+
 ## [1.12.0] - 2026-07-21
 
 ### Added
