@@ -5,7 +5,7 @@ description: >
   Use when the user wants to manage documentation stored in the
   configured Outline workspace.
 ---
-<!-- kairos-ontology-toolkit:managed v4.5.0rc4 -->
+<!-- kairos-ontology-toolkit:managed v5.1.0rc2 -->
 
 # SC — Document (Outline Wiki)
 

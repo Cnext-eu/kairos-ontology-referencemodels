@@ -1,255 +1,67 @@
 ---
 name: kairos-flow
 description: >
-  Single entry point for the ontology-hub lifecycle. Reads the deterministic
-  status of the hub and the saved continuation state, then proposes a clean
-  start or a continuation and hands off to the right phase skill. Use when the
-  user says "start", "where are we", "what's next", "continue", "resume", or
-  asks for a lifecycle status overview. Owns the .kairos-state/ state bundle.
-  Orchestrates the phase skills — it does NOT itself model, map, or project.
+  Stateless v5 router that inspects authored hub inputs and selects the next
+  inspect, design, bind, validate, or compile action.
 ---
-<!-- kairos-ontology-toolkit:managed v4.5.0rc4 -->
+<!-- kairos-ontology-toolkit:managed v5.1.0rc2 -->
 
-# Kairos Flow — lifecycle orchestrator & state owner
+# Kairos Flow
 
-You are the **single starting point** for working in an ontology hub. Your job is
-to tell the user *where they are* in the lifecycle and *what to do next*, then
-**hand off** to the correct phase skill. You own the shared state bundle at
-`ontology-hub/.kairos-state/`.
+Use this skill as the stateless entry point. Read the current hub; never create a
+continuation record or infer progress from generated files.
 
-> **Interactive only — never autopilot.** You orchestrate design skills, which
-> require user confirmation. Present the overview, ask, then hand off. Do not
-> batch or auto-approve decisions.
+## Inspect
 
-> **You hand off, you do not execute.** Skills are instructions, not a runtime.
-> When a phase is chosen, tell the user/agent to **use skill X next** and stop —
-> do not attempt to perform the modeling/mapping/projection yourself.
+The deterministic next-action authority is the toolkit, not this skill. Recompute
+the advisory proposal instead of inventorying or ordering inputs yourself
+(DD-137):
 
----
-
-## 1  Two-layer state model (DD-080)
-
-The hub's lifecycle state has two clearly separated layers. **Never conflate them.**
-
-| Layer | Authority over | Produced by | Editable by hand |
-|-------|----------------|-------------|------------------|
-| **Objective** (scan) | *What exists* — phase/instance `not-started \| in-progress \| done` | `kairos-ontology status` (deterministic, AI-free) | ❌ No |
-| **Continuation** (markdown) | *Intent* — open questions, decisions, next actions, `blocked` / `open-questions` | This skill + phase skills | ✅ Yes |
-
-**Reconciliation rule of thumb:** the **scan wins for objective facts**; the
-**continuation state wins for intent and open questions**.
-
----
-
-## 2  The state bundle — `ontology-hub/.kairos-state/`
-
-```text
-.kairos-state/
-  status.md                 # OKF index (THREE regions, see below)
-  phases/
-    discovery.md
-    source/      index.md + <system>.md
-    domain/      index.md + <domain>.md
-    mapping/     index.md + <source>-to-<domain>.md
-    silver/      index.md + <domain>.md
-    gold/        index.md + <model>.md
-  _archive/                 # superseded logs (ignored for current status — DD-071)
+```powershell
+$env:KAIROS_SKILL_CONTEXT = "1"
+uv run kairos-ontology next --format json
 ```
 
-This bundle follows the **Open Knowledge Format (OKF v0.1)** as a *storage
-convention*: a directory of markdown files, each carrying YAML frontmatter, with
-the **file path as the concept's identity** and cross-links via `xrefs`. (We use
-OKF only as a file convention — not for cross-org interoperability claims.)
+`next` reports authored inputs as present, missing, or unreadable, derives domains
+from ontology filenames and binding `metadata.domain`, runs the canonical compile
+check per bound domain, and returns ordered advisory actions. It is recomputed
+every run and never stored. For a fuller read-only narration, invoke
+**kairos-diagnose-status**. Never treat file presence as completeness; stages the
+proposal marks `human_decision_required` need a human decision.
 
-### 2.1  OKF frontmatter schema
+Reference-model freshness is separate; the only freshness authority for the
+installed/current local reference-model version is:
 
-Every file in the bundle starts with frontmatter:
-
-```yaml
----
-okf_version: "0.1"
-type: kairos-status | kairos-phase-log | kairos-phase-index
-title: "..."
-description: "..."
-phase: discovery | source | domain | mapping | claims | silver | gold | validate | project
-instance: "<system|domain|pair>"     # phase logs only
-status: not-started | in-progress | open-questions | blocked | done
-status_source: scan | user | phase-log | flow
-last_updated: "<ISO-8601>"
-tags: []
-xrefs: []                            # hub-relative paths to related files
----
+```powershell
+$env:KAIROS_SKILL_CONTEXT = "1"
+uv run kairos-ontology check-inventory --domains <active-domain> --explain-scope
 ```
 
-### 2.2  `status.md` — three regions
+Missing optional modules outside the selected scope are non-blocking. Never update
+reference models silently; route explicit changes to **kairos-toolkit-ops**.
 
-```markdown
----
-okf_version: "0.1"
-type: kairos-status
-title: "Hub lifecycle status"
-last_updated: "<ISO-8601>"
----
+## Route
 
-## 1. Scan-derived status
-<!-- AUTO-GENERATED by `kairos-ontology status` — do not edit by hand. -->
-<paste the `kairos-ontology status --format markdown` output here>
+Do not re-derive the order. Take the proposal's actions in the order returned and
+map each action `kind` (and its `skill` field) to the owning skill:
 
-## 2. Continuation state
-- current focus: <phase/instance>
-- open questions:
-  - ...
-- decisions:
-  - ...
-- next actions:
-  - ...
+- **Design:** `design-discovery` → **kairos-design-discovery**; `design-source` →
+  **kairos-design-source**; `design-domain` → **kairos-design-domain**;
+  `develop-dbt` → **kairos-develop-dbt-transformation**.
+- **Bind:** `author-binding` → create or revise a closed `EntityBinding` with
+  **kairos-design-mapping**.
+- **Validate:** `run-check`, `fix-diagnostic`, or `validate` →
+  **kairos-execute-validate**.
+- **Compile:** `compile-emit` → check, explain, or emit with
+  **kairos-execute-project**.
 
-## 3. Phase index
-- discovery -> phases/discovery.md
-- source/crm -> phases/source/crm.md
-- ...
-```
+Optional `review-gold`/`review-mdm` actions are non-recommended capabilities; act
+on them only when a Gold or MDM product is explicitly requested.
 
-### 2.3  Phase log — `phases/<phase>/<instance>.md`
+When bindings exist, the compiler result inside the proposal is the only build
+signal. A returned `compile-emit` action means only that the current authored
+inputs compile — not a runtime or release guarantee. Report ordered diagnostics
+without storing them.
 
-```markdown
----
-okf_version: "0.1"
-type: kairos-phase-log
-phase: mapping
-instance: crm-to-client
-status: open-questions
-status_source: phase-log
-last_updated: "<ISO-8601>"
-xrefs:
-  - model/mappings/crm-to-client.ttl
----
-
-## Summary
-...
-
-## Decisions made
-...
-
-## Open questions      <!-- the resume anchor -->
-- [ ] ...
-
-## Next actions
-- ...
-
-## Evidence / links
-- model/mappings/crm-to-client.ttl
-```
-
----
-
-## 3  Write rules (who may touch what)
-
-- **`kairos-ontology status` (CLI)** computes the objective scan block. It writes
-  nothing into the bundle — *you* paste its `--format markdown` output into
-  region 1 of `status.md`.
-- **This skill (`kairos-flow`)** is the **only writer of `status.md`**. You
-  refresh region 1 from the CLI, reconcile, and maintain regions 2 and 3.
-- **Phase skills** never edit `status.md`. They only **read** the bundle at start
-  and **append a "State update proposal"** to their own
-  `phases/<phase>/<instance>.md`. You fold those proposals into `status.md` on the
-  next run.
-
----
-
-## 4  The flow (run every time the user starts / asks "where are we")
-
-1. **Locate the hub root** (`model/ontologies/` or `catalog-v001.xml`; else ask).
-2. **Run the deterministic scan:**
-   ```bash
-   kairos-ontology status --format markdown   # objective block for status.md
-   kairos-ontology status --format json       # machine-readable, for your reasoning
-   ```
-3. **Load continuation state** — read `.kairos-state/status.md` regions 2 & 3 and
-   any `phases/**/*.md` with `status: in-progress | open-questions | blocked`.
-   Ignore `_archive/`.
-4. **Reconcile** scan vs continuation (see §5) and refresh `status.md` region 1.
-5. **Present a compact overview**: per-phase state + the first incomplete phase
-   (`next_phase` from the scan) + any open questions / blockers from continuation.
-6. **Offer a decision:**
-   - **Clean start** -> begin the first `not-started` phase (or `next_phase`).
-   - **Continue** -> resume the `in-progress` / `open-questions` instance, opening
-     its phase log's **Open questions** as the agenda.
-   - **Data-product vertical slice** -> when `next_phase` is `domain`, or the user
-     asks for a quick report pack / semantic model / data product, keep the lifecycle
-     gates but scope the next domain pass to that product (see §6).
-7. **Hand off** to the matching phase skill (§6). After it returns, update
-   `status.md` regions 2 & 3 and the phase index.
-
-> If `.kairos-state/` does not exist yet (fresh hub), create it and seed
-> `status.md` from the scan, with empty continuation/phase-index regions.
-
----
-
-## 5  Reconciliation rules
-
-| Situation | Resolution |
-|-----------|-----------|
-| Scan says `done` but a phase log says `not-started`/`in-progress` | Phase **exists** (scan wins for facts); keep the log's open questions as follow-ups. |
-| Phase log says `done` but scan says artifacts missing | **Scan wins** — mark `in-progress`; surface as a conflict to the user. |
-| Multiple open logs for one instance | Newest by `last_updated` is active; archive the rest to `_archive/`. |
-| Scan older than artifact mtime (stale) | Re-run `kairos-ontology status` before presenting. |
-| Continuation has `blocked`/`open-questions` but scan says `done` | Respect the block — surface it; objective completeness does not clear intent. |
-| Silver `done` but eligible claims are unbound **aspirational stubs** (DD-096) | Silver is **not** fully done — the stub is a target, not a bound model. Fold "aspirational stubs pending binding" into `status.md` regions 2–3 (open questions / next actions) and route to `kairos-design-mapping` to bind. Classify via `BindingAnalysis` over authorities, not generated `meta.is_aspirational`. |
-
----
-
-## 6  Phase → skill routing
-
-| Phase | Hand off to | Lifecycle precondition |
-|-------|-------------|------------------------|
-| discovery | `kairos-design-discovery` | — (recommended first) |
-| source | `kairos-design-source` | discovery done/skipped |
-| domain | `kairos-design-domain` | sources imported + analysed |
-| mapping | `kairos-design-mapping` | domain + source vocab exist |
-| claims | `kairos-design-domain` (claim governance) | mappings + evidence |
-| silver | `kairos-design-silver` | domain + mappings |
-| gold | `kairos-design-gold` | silver |
-| mdm (optional) | `kairos-design-mdm` | domain present; runs independently of medallion |
-| validate | `kairos-execute-validate` | model present |
-| project | `kairos-execute-project` | validate passed |
-
-Follow the canonical order `discovery → source → domain → mapping → claims →
-silver → gold → validate → project`. Respect each target skill's own pre-flight
-(it runs after the hand-off).
-
-**Optional evidence-planning report (DD-086):** When source analysis exists and
-`integration/sources/powerbi/` or `businessdiscovery/*.ttl` is present, surface
-`kairos-ontology draft-model-report` as an optional step before handing off to
-domain design. This does **not** change the canonical order; it creates advisory
-draft evidence packs and one cross-domain ERD under `model/planning/draft-model/`.
-After mapping/claims work, the same report may be re-run as a post-mapping
-fit-gap view.
-
-**Optional data-product vertical slice (DD-087):** When `next_phase` is `domain`
-and the user wants a quick reporting slice for a specific report pack, Power BI
-semantic model, or data product, offer it as an explicit decision option before
-the domain hand-off:
-
-> "**Data-product vertical slice** — keep the canonical lifecycle gates, but
-> narrow the next domain-modeling agenda to one report pack/data product."
-
-Capture demand under `model/planning/data-products/<product>/contract.yaml` with
-`projection_authority: false`, then have **kairos-design-domain** run
-`kairos-ontology draft-model-report --contract <contract>` (or
-`--data-product <product>` once the contract exists) to produce
-`data-product-plan.yaml`, `data-product-report.md`, and `data-product-erd.mmd`.
-These files are planning views only: projectors ignore them, claims remain the
-approval gate, and phase skills must confirm any domain, mapping, silver, or gold
-TTL changes. You only route and hand off; do not create the contract, run the
-report, model classes, or approve decisions inside `kairos-flow`.
-
----
-
-## 7  Guardrails
-
-- Interactive only; never autopilot.
-- Never edit generated projection output (shift-left).
-- `kairos-ontology status` is read-only and deterministic — safe to re-run anytime.
-- Keep chat concise: show the overview + decision options; the bundle is the record.
-- Do not duplicate a phase skill's work — hand off and let it own its scope.
+Design handoffs are interactive by default. A fleet override belongs only to the
+active design skill invocation and never transfers through this router.
