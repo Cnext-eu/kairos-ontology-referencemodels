@@ -30,6 +30,7 @@
         "lifecycle",
         "disposition",
         "evidence",
+        "evidence_basis",
         "confidence",
         "maturity",
         "first_slice"
@@ -49,10 +50,20 @@
           "minItems": 1,
           "items": {"type": "string", "minLength": 1}
         },
+        "evidence_basis": {
+          "description": "What kind of evidence justifies this concept, independent of its disposition. 'implementation' evidence (a client hub attestation) may raise, corroborate, or force re-review of a concept, but per validate_logistics_blueprint.py it can never by itself justify disposition: approved — that requires standard, pack-consistency, or analysis evidence.",
+          "enum": ["standard", "pack-consistency", "implementation", "analysis"]
+        },
         "confidence": {"enum": ["low", "medium", "high"]},
         "maturity": {"enum": ["experimental", "preview", "stable"]},
         "first_slice": {"type": "boolean"},
         "standards": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "implementations": {
+          "description": "Ids of implementation attestations (evidence/attestations/<id>.yaml) that bear on this concept. Informational only — see evidence_basis.",
           "type": "array",
           "items": {"type": "string", "minLength": 1},
           "uniqueItems": true
