@@ -322,6 +322,7 @@ owl:imports <https://www.kairosflow.ai/ont/accelerator/logistics#> .
 | `sc:hasEmissionReport` | IMO Vessel | Sustainability EmissionReport | Vessel emission reporting |
 | `sc:hasEnergyConsumption` | MMT TransportService | Sustainability EnergyConsumption | Transport energy tracking |
 | `sc:hasCarbonFootprint` | MMT Consignment | Sustainability CarbonFootprint | Consignment carbon footprint |
+| `sc:hasMovementEmission` | MMT TransportMovement | Sustainability CarbonFootprint | Movement/trip-grain operational emissions |
 | `sc:declaredAsGoodsItem` | MMT CargoItem | WCO GoodsItem | Customs goods declaration |
 | `sc:correspondsToBillOfLading` | DCSA TransportDocument | BSP BillOfLading | Document correspondence |
 

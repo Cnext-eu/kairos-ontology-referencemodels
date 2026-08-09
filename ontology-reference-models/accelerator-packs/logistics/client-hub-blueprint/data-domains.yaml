@@ -670,6 +670,15 @@ cross_domain_relationships:
     description: "Links an MMT Consignment to its Carbon Footprint calculation."
     status: new-bridge
 
+  - id: movement-to-carbon
+    source_domain: consignment
+    target_domain: sustainability
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#hasMovementEmission"
+    domain_class_uri: "https://www.kairosflow.ai/ont/mmt/consignment#TransportMovement"
+    range_class_uri: "https://www.kairosflow.ai/ont/sustainability/carbon#CarbonFootprint"
+    description: "Links an MMT TransportMovement to the Carbon Footprint of that specific movement leg — operational emissions data commonly lands at movement/trip grain, not consignment grain."
+    status: new-bridge
+
   # ── Cargo ↔ Customs Goods ──────────────────────────────────────────────
 
   - id: cargo-to-goods-item

@@ -40,8 +40,8 @@
     gaps between standards.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-31"^^xsd:date ;
-    dcterms:modified "2026-06-13"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    dcterms:modified "2026-08-09"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
     owl:imports <https://www.kairosflow.ai/ont/dcsa/booking> ,
                 <https://www.kairosflow.ai/ont/dcsa/equipment> ,
                 <https://www.kairosflow.ai/ont/dcsa/schedule> ,
@@ -204,6 +204,12 @@
     rdfs:label "has carbon footprint" ;
     rdfs:comment "Links an MMT Consignment to the total carbon footprint of its transport chain." ;
     rdfs:domain consignment:Consignment ;
+    rdfs:range sust-carbon:CarbonFootprint .
+
+:hasMovementEmission a owl:ObjectProperty ;
+    rdfs:label "has movement emission" ;
+    rdfs:comment "Links an MMT TransportMovement to the carbon footprint of that specific movement leg. Operational emissions data is commonly captured at movement/trip grain rather than at the consignment or transport-service grain that hasCarbonFootprint and hasEnergyConsumption attach to; this property closes that attachment gap." ;
+    rdfs:domain consignment:TransportMovement ;
     rdfs:range sust-carbon:CarbonFootprint .
 
 #################################################################
