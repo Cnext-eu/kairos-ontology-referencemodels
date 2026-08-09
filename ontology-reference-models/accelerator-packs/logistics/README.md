@@ -47,7 +47,7 @@ Import the root Turtle file to pull in every logistics ontology at once:
 Or, if working locally, point your tool at:
 
 ```
-ontology-reference-models/accelerator-packs/logistics/logistics-accelerator.ttl
+ontology-reference-models/accelerator-packs/logistics/current/logistics-accelerator.ttl
 ```
 
 ## Version
@@ -65,27 +65,11 @@ Available today:
 
 | Sector | Archetype | Discovery script |
 |--------|-----------|------------------|
-| Ocean carrier / short-sea / ro-ro / barge | [`shipping-carrier`](../../blueprints/archetypes/shipping-carrier.yaml) | [`discovery/shipping-carrier.md`](discovery/shipping-carrier.md) |
+| Ocean carrier / short-sea / ro-ro / barge (containerised) | [`shipping-carrier`](../../blueprints/archetypes/shipping-carrier.yaml) | [`discovery/shipping-carrier.md`](discovery/shipping-carrier.md) |
+| Freight forwarder / NVOCC / multimodal logistics service provider | [`freight-forwarder`](../../blueprints/archetypes/freight-forwarder.yaml) | [`discovery/freight-forwarder.md`](discovery/freight-forwarder.md) |
+| Unit-load / ro-ro / short-sea carrier (non-containerised, own-account + subcontracted road haulage) | [`unit-load-carrier`](../../blueprints/archetypes/unit-load-carrier.yaml) | [`discovery/unit-load-carrier.md`](discovery/unit-load-carrier.md) |
 
 ## Changelog
 
-### v1.6.0 (in progress)
-- Added the versioned foundation for the source-neutral Logistics Blueprint.
-- Added deterministic cross-standard RDF inventory generation and validation schemas.
-- Reserved explicit, opt-in locations for the Silver Starter profile, generated
-  contract, and synthetic reference examples.
-
-### v1.5.0 (2026-06-22)
-- **New `discovery/` folder** holding per-sector SME interview scripts paired by filename stem with archetype catalogs in `blueprints/archetypes/`.
-- Added `discovery/shipping-carrier.md` — 21 business-area sections + structural & lifecycle relationship questions covering booking ↔ shipment ↔ voyage, B/L grain, equipment assignment timing, T&T event grain, TransportCall vs PortCall, D&D billing grain, and customs declaration grain.
-- Implements the v0.2 archetype-catalog ↔ discovery-script contract (see `blueprints/README.md`).
-
-### v1.3.0 (2026-06-13)
-- Updated SupplyChain bridge to v1.1.0: added Sustainability, WCO GoodsItem, and document bridges
-- Updated WCO focus to reflect v1.2.0 (goods items, customs procedures)
-- Updated IMO focus to reflect v1.1.0 (crew, environmental, maritime security)
-- Fixed WCO Data Model version reference (3.0 → 3.10.0)
-
-### v1.2.0 (2026-05-22)
-- Added SupplyChain integration ontology
-- Version alignment updates
+Pack-level changes are recorded in the root [`CHANGELOG.md`](../../../CHANGELOG.md) alongside
+every other pack and ontology, not duplicated here.
