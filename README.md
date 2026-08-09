@@ -5,7 +5,7 @@
 _Part of the [Kairos Community Edition](https://github.com/Cnext-eu) by Cnext.eu_
 
 [![Validation Status](https://img.shields.io/badge/validation-passing-brightgreen.svg)](https://github.com/Cnext-eu/kairos-ontology-referencemodels/actions)
-[![Version](https://img.shields.io/badge/version-1.12.1-blue.svg)](VERSION)
+[![Version](https://img.shields.io/badge/version-1.13.0-blue.svg)](VERSION)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 ---
@@ -113,7 +113,9 @@ The repository ships a **third content tier** alongside the authoritative and de
 | Derived | `derived-ontologies/` | Kairos RDF interpretations of non-RDF standards (DCSA, MMT, BSP, …). Faithful to the source. |
 | **Blueprint** | **`blueprints/`** | **Opinionated Kairos guidance** layered on top of the ref models — not a standard. Versioned independently. |
 
-The first blueprint shipping today is the **archetype catalog** under [`blueprints/archetypes/`](ontology-reference-models/blueprints/archetypes/). Each YAML file describes the ref-model modules and core concepts a given business archetype is expected to support. v0.2 ships a `shipping-carrier` archetype with ~140 core concepts across 21 business areas.
+The first blueprint shipping today is the **archetype catalog** under [`blueprints/archetypes/`](ontology-reference-models/blueprints/archetypes/). Each YAML file describes the ref-model modules and core concepts a given business archetype is expected to support. Three archetypes ship today: `shipping-carrier` (186 core concepts across 21 business areas), `freight-forwarder` (34 core concepts), and `unit-load-carrier` (170 core concepts across 19 business areas, covering non-containerised ro-ro / short-sea operations).
+
+The repository also ships a **pattern library** under [`blueprints/patterns/`](ontology-reference-models/blueprints/patterns/) — sector-neutral modelling craft (shapes and naming conventions) harvested from client hub implementations, distinct from the archetype catalog and not yet part of its cross-repo contract.
 
 Each archetype may be paired with a **sector discovery script** under
 `accelerator-packs/<pack>/discovery/<archetype-id>.md` holding the SME
@@ -170,82 +172,6 @@ kairos-ontology validate \
 # Test catalog resolution
 kairos-ontology catalog-test --catalog reference-models/catalog-v001.xml
 ```
-
----
-
-## 📚 Core Ontologies
-
-### core.ttl - Kairos Core Model
-
-Defines fundamental business entities for the Kairos platform:
-
-**Classes:**
-- `Customer` - Customer entity with properties (name, email, phone)
-- `Order` - Order transaction with orderDate, totalAmount, status
-- `Product` - Product catalog item with SKU, price, category
-- `Service` - Service offering (abstract class)
-  - `ConsultingService` - Professional consulting services
-  - `TechnicalService` - Technical implementation services
-  - `TrainingService` - Training and education services
-- `Supplier` - Supplier entity with contact information
-
-**Object Properties:**
-- `hasCustomer` - Links Order to Customer
-- `hasProduct` - Links Order to Product
-- `hasSupplier` - Links Product to Supplier
-
-**Data Properties:**
-- Customer: `name`, `email`, `phone`
-- Order: `orderDate`, `totalAmount`, `status`
-- Product: `sku`, `price`, `category`
-- Service: `duration`, `deliveryMode`
-
-See [ontologies/core.ttl](ontologies/core.ttl) for full specification.
-
----
-
-## 🔒 Validation
-
-### SHACL Shapes
-
-SHACL constraints enforce data quality:
-
-**shapes/core.shacl.ttl**
-- Customer must have exactly one `name` (string, max 200 chars)
-- Customer email must match email pattern
-- Order `totalAmount` must be >= 0
-- Product SKU must be unique and non-empty
-
-### 3-Level Validation
-
-CI/CD enforces:
-1. **Syntax**: Valid Turtle/RDF syntax
-2. **SHACL**: All SHACL constraints pass
-3. **Consistency**: No logical contradictions
-
----
-
-## 🌐 SKOS Mappings
-
-### Schema.org Alignment
-
-[mappings/schema-org.ttl](mappings/schema-org.ttl) provides concept alignments:
-
-```turtle
-kairos:Customer owl:sameAs schema:Customer ;
-    skos:closeMatch schema:Person, schema:Organization .
-
-kairos:Order owl:sameAs schema:Order ;
-    skos:relatedMatch schema:Invoice .
-
-kairos:Product owl:sameAs schema:Product ;
-    skos:relatedMatch schema:Offer .
-```
-
-**Benefits:**
-- Enables integration with Schema.org-based systems
-- Supports semantic search and reasoning
-- Facilitates data exchange with external platforms
 
 ---
 
@@ -450,4 +376,4 @@ For questions about using these models in customer projects, contact the Ontolog
 
 ---
 
-**Current Version:** 1.12.1 | **Last Updated:** 2026-07-22
+**Current Version:** 1.13.0 | **Last Updated:** 2026-08-09

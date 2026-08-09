@@ -7,12 +7,73 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.13.0] - 2026-08-09
+
+Harvests learnings from a client hub implementation back into the Logistics Accelerator, per
+`.docs/wip/refmodelchange.md`, while keeping the pack aligned to the industry models rather than
+to any single implementation — see "Added" for the mechanism that enforces that boundary.
+
+### Added
+- **Evidence provenance and a bias firewall.** `canonical-class-registry.yaml` concepts now
+  carry `evidence_basis` (`standard | pack-consistency | implementation | analysis`);
+  `validate_logistics_blueprint.py` rejects `disposition: approved` on a concept whose
+  `evidence_basis` is `implementation` — client implementation evidence may raise,
+  corroborate, or force re-review of a concept, but never authorises it alone.
+- **Implementation attestations** at `current/blueprint/evidence/attestations/`
+  (`_schema/attestation.schema.json`), source-neutral by schema. First attestation
+  (`att-001`) committed.
+- **Pattern library** at `blueprints/patterns/` (v0.1.0) — `deferred-relationship`,
+  `qualified-role-assignment`, `temporal-quartet`, `governed-code-list`. Naming conventions
+  are normative; structural guidance is advisory. `capability-coverage.yaml` gained an
+  optional `pattern_ids` field linking capabilities to patterns. Markdown-first: no JSON
+  Schema yet, since there is no toolkit consumer for this folder today.
+- **`unit-load-carrier` archetype** (`blueprints/archetypes/`, bumped to 0.4.0) — non-
+  containerised ro-ro / short-sea carrier with own-account and subcontracted road haulage,
+  170 core concepts across 19 business areas, plus its paired
+  `discovery/unit-load-carrier.md`. Two declared capability gaps (empty equipment
+  repositioning, trade-lane/market-segment) are called out explicitly rather than papered
+  over with invented classes.
+- **Anchor-generality and orphaned-discovery-doc checks** in `validate_archetypes.py`
+  (advisory, never fail the build). The anchor check retroactively delivers the "structural
+  regression coverage" the [1.12.1] entry below claimed but did not actually ship.
+- **SupplyChain 1.2.0 — `hasMovementEmission` bridge property** (MMT `TransportMovement` →
+  Sustainability `CarbonFootprint`), closing the movement/trip-grain emissions attachment gap
+  (CR-RM-07 §9.5): operational emissions data commonly lands at movement grain, but the
+  existing bridges (`hasCarbonFootprint`, `hasEnergyConsumption`) only attach at consignment
+  and transport-service grain. Standards-grounded (ISO 14083 / GLEC, already claimed in
+  `manifest.yaml`), not client-evidence-driven. `data-domains.yaml` and `BLUEPRINT.md` updated
+  with the new bridge.
+
+### Changed
+- **`equipment-asset` re-anchored** from `dcsa/equipment#Container` to the general
+  `mmt/equipment#TransportEquipment`, correcting an anchor narrower than the pack's own
+  `manifest.yaml` `target_sectors` (road carrier, 3PL, NVOCC are not containers-only).
+  Container is recorded as a scope-specific overlay in `overlap-register.yaml`, not the
+  anchor. Basis: `pack-consistency`, corroborated but not authorised by `att-001`.
+- Two capability gaps added: empty equipment repositioning, trade-lane/market-segment.
+- **Logistics Accelerator opened at 1.7.0** (`VERSION`, `manifest.yaml`, the four blueprint
+  registries' `accelerator_version`, the accelerator `.ttl`'s `owl:versionInfo`, and the
+  regenerated `class-inventory.yaml`, all kept in lockstep — `validate_logistics_blueprint.py`
+  fails the build on any one of them drifting from the others).
+- Fixed a stale `logistics/README.md` path (missing `current/` segment) and its discovery
+  table (missing `freight-forwarder`, then missing `unit-load-carrier`); its inline
+  changelog now points at this file instead of duplicating it.
+- Replaced `accelerator-packs/financial-services/discovery/README.md` — it was an
+  uncorrected verbatim copy of the logistics pack's README, still indexing a
+  `shipping-carrier.md` that was never part of this pack (see [1.12.1] below).
+- Removed root `README.md` sections describing `ontologies/core.ttl`,
+  `shapes/core.shacl.ttl`, and `mappings/schema-org.ttl` — none of these files exist in
+  this repository.
+
 ## [1.12.1] - 2026-07-22
 
 ### Fixed
 - Removed the duplicated shipping-carrier discovery guide from the financial-services
-  accelerator pack and added structural regression coverage to prevent cross-sector
-  discovery guides from being misplaced (#26).
+  accelerator pack (#26). *Correction (see [Unreleased] above): this entry originally also
+  claimed "added structural regression coverage to prevent cross-sector discovery guides
+  from being misplaced" — no such coverage was actually added at the time; the
+  financial-services `discovery/README.md` remained an uncorrected copy of the logistics
+  README until this was caught in review. The coverage now exists.*
 
 ## [1.12.0] - 2026-07-21
 

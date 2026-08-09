@@ -4,9 +4,9 @@ Per-archetype YAML files describing the ref-model modules and core concepts a gi
 
 ## Status
 
-**v0 — `schema_version: 1`.** Two archetypes ship in v0:
-`shipping-carrier.yaml` and `freight-forwarder.yaml`. Additional seed archetypes
-(terminal operator, b2b-credit-seller, multi-entity-group) require SME / ontology-team
+**v0 — `schema_version: 1`.** Three archetypes ship in v0:
+`shipping-carrier.yaml`, `freight-forwarder.yaml`, and `unit-load-carrier.yaml`. Additional seed
+archetypes (terminal operator, b2b-credit-seller, multi-entity-group) require SME / ontology-team
 review per `CONTRIBUTING.md` before being added.
 
 ## Layout
@@ -16,7 +16,8 @@ archetypes/
   VERSION                      # SemVer for this module, independent of repo VERSION
   README.md                    # this file
   freight-forwarder.yaml       # multimodal forwarder / logistics service provider
-  shipping-carrier.yaml        # one archetype = one YAML
+  shipping-carrier.yaml        # containerised ocean / short-sea vessel operator
+  unit-load-carrier.yaml       # non-containerised ro-ro / short-sea + road haulage
   _schema/
     archetype.schema.json      # JSON Schema (draft 2020-12) for archetype files
     outcome-codes.yaml         # shared conformance-outcome enum codes

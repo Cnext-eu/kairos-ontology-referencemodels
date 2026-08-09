@@ -32,6 +32,7 @@ consignment → MMT equipment). This module covers relationships that span
 | IMO Vessel | Sustainability Carbon | `hasEmissionReport` |
 | MMT TransportService | Sustainability Energy | `hasEnergyConsumption` |
 | MMT Consignment | Sustainability Carbon | `hasCarbonFootprint` |
+| MMT TransportMovement | Sustainability Carbon | `hasMovementEmission` |
 | MMT CargoItem | WCO Customs | `declaredAsGoodsItem` |
 | DCSA TransportDocument | BSP Documents | `correspondsToBillOfLading` |
 
@@ -47,6 +48,12 @@ consignment → MMT equipment). This module covers relationships that span
 
 ## Changelog
 
+### v1.2.0 (2026-08-09)
+- Added movement-grain Sustainability bridge: `hasMovementEmission` (TransportMovement →
+  CarbonFootprint), closing the attachment gap where operational emissions data lands at
+  movement/trip grain rather than at the consignment or transport-service grain that
+  `hasCarbonFootprint` and `hasEnergyConsumption` already cover.
+
 ### v1.1.0 (2026-06-13)
 - Added Sustainability bridges: CIIRating, EmissionReport, EnergyConsumption, CarbonFootprint
 - Added WCO GoodsItem bridge: declaredAsGoodsItem (CargoItem → GoodsItem)
@@ -59,4 +66,4 @@ consignment → MMT equipment). This module covers relationships that span
 
 ## Version
 
-See [VERSION](VERSION) — currently **1.1.0**.
+See [VERSION](VERSION) — currently **1.2.0**.

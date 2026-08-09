@@ -15,6 +15,7 @@ Blueprints are versioned independently of the ref models they reference (see `ar
 ## Contents
 
 - [`archetypes/`](archetypes/) — Per-archetype YAML catalogs (one file per archetype) describing the ref-model modules and core concepts an archetype is expected to support. **Structure only** — no interview prose.
+- [`patterns/`](patterns/) — Sector-neutral modelling craft (shapes and naming conventions) harvested from client hub implementations. Naming conventions are normative; structural guidance is advisory. See `patterns/README.md`. Not part of the `archetypes/` cross-repo contract — there is currently no toolkit consumer for this folder.
 
 ## Companion: sector discovery materials (in accelerator-packs)
 

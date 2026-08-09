@@ -1,0 +1,382 @@
+schema_version: 1
+id: unit-load-carrier
+label: "Unit-load / ro-ro / short-sea carrier (non-containerised)"
+description: >
+  Companies that move non-containerised unit loads — trailers, swap bodies, and
+  cassettes — rather than ISO containers, typically across a ro-ro / short-sea
+  ferry leg bookended by road haulage. Both accompanied traffic (the driver
+  travels with the trailer, e.g. an unaccompanied-crossing ferry) and
+  unaccompanied traffic (the trailer crosses without its driver) occur on the
+  same network. The operator runs own-account road haulage alongside
+  subcontracted hauliers, and that own-vs-subcontracted split is itself a
+  first-order modelling concern for this archetype — it is largely absent from
+  the `shipping-carrier` and `freight-forwarder` archetypes. Ro-ro / short-sea
+  vessel capacity is measured in lane metres, not TEU, and the operator manages
+  a trailer/swap-body/cassette equipment fleet that requires empty
+  repositioning across its network. The archetype covers trade-lane
+  profitability reporting, dangerous goods carried on trailers, and short-sea
+  border/customs formalities (e.g. the post-Brexit UK-EU customs burden that
+  drives much of this sector's data model, referenced here generically without
+  naming a specific carrier). Two capability gaps are intentionally NOT
+  papered over with invented classes — see the "declared gap" comments below
+  and `accelerator-packs/logistics/current/blueprint/capability-coverage.yaml`
+  (ids `empty-equipment-repositioning`, `trade-lane-and-market-segment`).
+
+compatible_with:
+  repo_tag_range: ">=1.13.0,<2.0.0"
+  ontology_versions:
+    DCSA:           ">=1.3.0,<2"
+    MMT:            ">=1.1.0,<2"
+    BSP:            ">=1.5.0,<2"
+    TIC:            ">=1.3.0,<2"
+    IMO:            ">=1.1.0,<2"
+    WCO:            ">=1.2.0,<2"
+    Sustainability: ">=1.1.0,<2"
+
+# ─── Ref-model modules ─────────────────────────────────────────────────────────
+# Tier reflects whether the *module* is expected to be touched by a typical
+# unit-load / ro-ro / short-sea carrier's data model. Specific class-level
+# expectations are in core_concepts.
+ref_model_modules:
+  # Commercial cycle (booking → transport document). CMR/road waybill is the
+  # primary transport document for this archetype, not an ocean B/L.
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/booking",             tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/mmt/documents",            tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/mmt/consignment",          tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/mmt/cargo",                tier: required }
+
+  # Parties & roles — mode-neutral MMT party module, not the ocean-specific
+  # DCSA party module, because own-account vs subcontracted haulier and
+  # inland-carrier roles are first-class here.
+  - { iri: "https://www.kairosflow.ai/ont/mmt/party",                tier: required }
+
+  # Locations & geographic network — ro-ro terminal, border crossing, depot.
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/locations",           tier: recommended }
+  - { iri: "https://www.kairosflow.ai/ont/mmt/locations",            tier: required }
+
+  # Transport calls — truck call is a first-class citizen for this archetype.
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/transport-call",      tier: required }
+
+  # Vessels / ferry and the short-sea leg's schedule.
+  - { iri: "https://www.kairosflow.ai/ont/mmt/transport-means",      tier: recommended }
+  - { iri: "https://www.kairosflow.ai/ont/imo/vessel-registry",      tier: recommended }
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/schedule",            tier: recommended }
+  - { iri: "https://www.kairosflow.ai/ont/imo/port-call",            tier: recommended }
+
+  # Road / inland leg and haulage — own-account vs subcontracted, accompanied
+  # vs unaccompanied handover.
+  - { iri: "https://www.kairosflow.ai/ont/mmt/inland-transport",     tier: required }
+
+  # Equipment fleet — non-containerised. Deliberately anchored on the general
+  # multimodal equipment module, not the DCSA container-family module (see
+  # §10 comment in core_concepts).
+  - { iri: "https://www.kairosflow.ai/ont/mmt/equipment",            tier: required }
+
+  # Terminal / ro-ro handling (roll-on/roll-off is a horizontal move, not a
+  # lift, which is why the TIC handling-operations module is in scope here
+  # in a way it typically isn't for a container-terminal-only archetype).
+  - { iri: "https://www.kairosflow.ai/ont/tic/terminal-infrastructure", tier: optional }
+  - { iri: "https://www.kairosflow.ai/ont/tic/handling-operations",     tier: optional }
+  - { iri: "https://www.kairosflow.ai/ont/tic/locations",                tier: optional }
+
+  # Track and trace.
+  - { iri: "https://www.kairosflow.ai/ont/mmt/events",               tier: recommended }
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/events",              tier: recommended }
+
+  # Detention and equivalent delay charges — reused from the DCSA module;
+  # this archetype's centre of gravity is equipment detention, not cargo
+  # demurrage (see §14 comment in core_concepts).
+  - { iri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention", tier: recommended }
+
+  # Dangerous goods carried on trailers.
+  - { iri: "https://www.kairosflow.ai/ont/mmt",                      tier: recommended }
+  - { iri: "https://www.kairosflow.ai/ont/imo/dangerous-goods",      tier: recommended }
+
+  # Customs and trade facilitation — real exposure at short-sea borders.
+  - { iri: "https://www.kairosflow.ai/ont/wco/customs",              tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/wco/trade-facilitation",   tier: optional }
+
+  # Sustainability — tonne-km, modal-shift, fuel/energy for the road fleet
+  # and the ferry leg.
+  - { iri: "https://www.kairosflow.ai/ont/sustainability/carbon",    tier: optional }
+  - { iri: "https://www.kairosflow.ai/ont/sustainability/energy",    tier: optional }
+
+  # Financial settlement, revenue/yield, and cost allocation — trade-lane
+  # profitability and own-vs-subcontracted cost allocation live here.
+  - { iri: "https://www.kairosflow.ai/ont/bsp/financial",            tier: optional }
+  - { iri: "https://www.kairosflow.ai/ont/bsp/revenue-yield",        tier: optional }
+  - { iri: "https://www.kairosflow.ai/ont/bsp/cost-accounting",      tier: optional }
+
+# ─── Core concepts ─────────────────────────────────────────────────────────────
+# Grouped by business area. Tiers:
+#   required    — every unit-load / ro-ro / short-sea carrier is expected to
+#                 model this
+#   recommended — most carriers have it; sub-flavours may legitimately omit
+#   optional    — present only when the carrier is in scope for that
+#                 regulation / sub-flavour / capability
+core_concepts:
+
+  # ─── 1. Booking / order intake ─────────────────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#Booking",                tier: required,    label: "Booking" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#BookingRequest",         tier: required,    label: "Booking Request" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#ConfirmedBooking",       tier: required,    label: "Confirmed Booking" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#Shipment",               tier: required,    label: "Shipment" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#ShippingInstruction",    tier: recommended, label: "Shipping Instruction" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#CargoItem",              tier: required,    label: "Cargo Item" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#Commodity",              tier: recommended, label: "Commodity" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#RequestedEquipment",     tier: required,    label: "Requested Equipment" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#UtilizedTransportEquipment", tier: required, label: "Utilized Transport Equipment" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#TransportPlanLeg",       tier: recommended, label: "Transport Plan Leg" }
+
+  # ─── 2. Transport document (CMR / road waybill, not ocean B/L) ────────
+  - { uri: "https://www.kairosflow.ai/ont/mmt/documents#TransportDocument",      tier: required,    label: "Transport Document" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/documents#RoadConsignmentNote",    tier: required,    label: "Road Consignment Note (CMR)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/documents#RailConsignmentNote",    tier: optional,    label: "Rail Consignment Note (CIM)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/documents#TransportInstructions",  tier: recommended, label: "Transport Instructions" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/documents#DeliveryInstructions",   tier: recommended, label: "Delivery Instructions" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/documents#CargoManifest",          tier: recommended, label: "Cargo Manifest" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/documents#DangerousGoodsDeclaration", tier: recommended, label: "Dangerous Goods Declaration" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/documents#CustomsDeclaration",     tier: recommended, label: "Customs Declaration (MMT)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/documents#CertificateOfOrigin",    tier: optional,    label: "Certificate of Origin" }
+
+  # ─── 3. Consignment & movement ─────────────────────────────────────────
+  # TransportMovement is also the natural home for the "physical trip" grain
+  # (distance, toll, emissions, predecessor/successor chaining) referenced by
+  # CR-RM-07 §9.3 as a third shipment grain beyond carrier-transaction and
+  # goods-collection.
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#Consignment",          tier: required,    label: "Consignment" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#ConsignmentItem",      tier: required,    label: "Consignment Item" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#GoodsItem",            tier: required,    label: "Goods Item" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#TransportLeg",         tier: required,    label: "Transport Leg" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#TransportRoute",       tier: recommended, label: "Transport Route" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#TransportService",     tier: recommended, label: "Transport Service" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#TransportServiceExecution", tier: optional, label: "Transport Service Execution" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#TransportMovement",    tier: recommended, label: "Transport Movement (physical trip grain)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#MasterConsignment",    tier: optional,    label: "Master Consignment" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#HouseConsignment",     tier: optional,    label: "House Consignment" }
+
+  # ─── 4. Cargo characteristics ──────────────────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#Goods",                      tier: required,    label: "Goods" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#PackageSpecification",       tier: recommended, label: "Package Specification" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#Weight",                     tier: required,    label: "Weight" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#Dimension",                  tier: recommended, label: "Dimension" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#CargoMeasurement",           tier: recommended, label: "Cargo Measurement" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#HandlingInstructions",       tier: recommended, label: "Handling Instructions" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#ShippingMarks",              tier: optional,    label: "Shipping Marks" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#CargoInsurance",             tier: optional,    label: "Cargo Insurance" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#QuarantineInstructions",     tier: optional,    label: "Quarantine Instructions" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#DisposalInstructions",       tier: optional,    label: "Disposal Instructions" }
+
+  # ─── 5. Parties & roles ────────────────────────────────────────────────
+  # Own-account vs subcontracted haulier is NOT modelled as two subclasses —
+  # both are the same real class (Carrier / InlandCarrier, §9 below) with the
+  # own-vs-subcontracted split carried as an attribute/qualified-role
+  # distinction (see the `qualified-role-assignment` pattern candidate in the
+  # CR-RM-01 pattern library proposal). That is a deliberate design decision,
+  # not a class gap — it does not appear in capability-coverage.yaml.
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#Carrier",                    tier: required,    label: "Carrier" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#Consignor",                  tier: required,    label: "Consignor" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#Consignee",                  tier: required,    label: "Consignee" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#TransportParty",             tier: required,    label: "Transport Party (abstract role)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#FreightForwarder",           tier: recommended, label: "Freight Forwarder" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#NotifyParty",                tier: optional,    label: "Notify Party" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#CustomsBroker",              tier: recommended, label: "Customs Broker" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#TerminalOperator",           tier: recommended, label: "Terminal Operator" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#WarehouseOperator",          tier: optional,    label: "Warehouse Operator" }
+
+  # ─── 6. Locations & geographic network ─────────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#Port",                  tier: required,    label: "Port (ro-ro / ferry terminal)" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#Terminal",              tier: required,    label: "Terminal" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#BorderCrossing",        tier: required,    label: "Border Crossing" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#Depot",                 tier: recommended, label: "Depot" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/locations#Location",               tier: required,    label: "Location" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/locations#TransportLocation",      tier: required,    label: "Transport Location" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/locations#RoadTerminal",           tier: required,    label: "Road Terminal" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/locations#Warehouse",              tier: optional,    label: "Warehouse" }
+
+  # ─── 7. Transport calls ────────────────────────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/transport-call#TransportCall",        tier: required,    label: "Transport Call" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/transport-call#TruckTransportCall",   tier: required,    label: "Truck Transport Call" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/transport-call#VesselTransportCall",  tier: required,    label: "Vessel Transport Call (ferry)" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/transport-call#RailTransportCall",    tier: optional,    label: "Rail Transport Call" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/transport-call#BargeTransportCall",   tier: optional,    label: "Barge Transport Call" }
+
+  # ─── 8. Vessel / ferry operation (short-sea ro-ro leg) ─────────────────
+  # DECLARED GAP: lane-metre capacity has no dedicated class anywhere in this
+  # pack's ontologies. `imo/vessel-registry#VesselCapacity` is the closest
+  # real class and is used below, but it is a generic capacity holder with no
+  # lane-metre-specific structure — the discovery doc covers the lane-metre
+  # measurement model in prose instead of a fabricated
+  # "LaneMetreCapacity" class.
+  - { uri: "https://www.kairosflow.ai/ont/mmt/transport-means#Vessel",           tier: recommended, label: "Vessel (MMT, ferry)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/transport-means#RoadVehicle",      tier: required,    label: "Road Vehicle (tractor unit)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/transport-means#LogisticsConvoy",  tier: recommended, label: "Logistics Convoy (trailers grouped on one ferry crossing)" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#Vessel",          tier: recommended, label: "Vessel (IMO registry)" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#VesselType",      tier: recommended, label: "Vessel Type" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#VesselCapacity",  tier: recommended, label: "Vessel Capacity (generic — see lane-metre gap note above)" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#Fleet",           tier: recommended, label: "Fleet" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#FlagState",       tier: optional,    label: "Flag State" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#VesselOperationalStatus", tier: recommended, label: "Vessel Operational Status" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#IMONumber",       tier: optional,    label: "IMO Number" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#MMSI",            tier: optional,    label: "MMSI" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/schedule#SailingSchedule",       tier: recommended, label: "Sailing Schedule (frequent fixed ferry departures)" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/schedule#CutOffTime",           tier: recommended, label: "Cut-off Time" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#PortCall",              tier: recommended, label: "Port Call" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#BerthStay",             tier: optional,    label: "Berth Stay" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/port-call#SeaLeg",                tier: recommended, label: "Sea Leg (the ferry crossing itself)" }
+
+  # ─── 9. Road / inland leg & haulage (own-account vs subcontracted) ─────
+  # InlandCarrier is the anchor for BOTH own-account and subcontracted
+  # haulage; the distinction is attribute-level (see §5 comment). No class
+  # gap here — the pack already models this leg via mmt/inland-transport.
+  - { uri: "https://www.kairosflow.ai/ont/mmt/inland-transport#InlandCarrier",   tier: required,    label: "Inland Carrier (own-account or subcontracted haulier)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/inland-transport#RoadLeg",         tier: required,    label: "Road Leg" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/inland-transport#InlandLeg",       tier: recommended, label: "Inland Leg" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/inland-transport#InlandTerminal",  tier: recommended, label: "Inland Terminal" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/inland-transport#HaulageInstructions", tier: required, label: "Haulage Instructions" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/inland-transport#HandoverEvent",   tier: required,    label: "Handover Event (driver/trailer handover — accompanied vs unaccompanied)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/inland-transport#RailLeg",         tier: optional,    label: "Rail Leg" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/inland-transport#BargeLeg",        tier: optional,    label: "Barge Leg" }
+
+  # ─── 10. Equipment fleet (non-containerised) ───────────────────────────
+  # Anchor is `mmt/equipment#TransportEquipment`, NOT `dcsa/equipment#Container`
+  # — per CR-RM-07 §9.2's correction to the equipment-asset canonical anchor,
+  # this archetype's primary units are trailers, swap bodies, and cassettes,
+  # which cannot be modelled on a container-shaped anchor (ISO 6346 identity,
+  # TEU capacity). Container/reefer/tank equipment stays present at optional
+  # tier only, for carriers whose fleet is genuinely mixed.
+  - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment",     tier: required,    label: "Transport Equipment (fleet anchor)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#TrailerUnit",           tier: required,    label: "Trailer Unit" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#SwapBody",              tier: required,    label: "Swap Body" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#Pallet",                tier: optional,    label: "Pallet" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#Seal",                  tier: recommended, label: "Seal" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#TemperatureSettingInstructions", tier: optional, label: "Temperature Setting Instructions (reefer trailer)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#FreightContainer",      tier: optional,    label: "Freight Container (mixed-fleet operators only)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#ReeferContainer",       tier: optional,    label: "Reefer Container (mixed-fleet operators only)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#TankContainer",         tier: optional,    label: "Tank Container (mixed-fleet operators only)" }
+
+  # ─── 11. Empty equipment availability & repositioning (DECLARED GAP) ───
+  # No parent class for "empty equipment availability / repositioning" exists
+  # anywhere in this pack's ontologies (capability-coverage.yaml id:
+  # `empty-equipment-repositioning`; confirmed also absent for
+  # shipping-carrier's container fleet). `mmt/events#TransferEvent` is the
+  # closest real class — a repositioning move is, structurally, a transfer of
+  # an equipment unit between two locations with no revenue cargo attached —
+  # but it carries none of the network-optimisation or availability-forecast
+  # semantics this sector needs. The discovery doc covers this gap in prose;
+  # do not invent a "TrailerAllocation" or "EmptyEquipmentPool" class here.
+  - { uri: "https://www.kairosflow.ai/ont/mmt/events#TransferEvent",            tier: recommended, label: "Transfer Event (closest proxy for an empty reposition move — see gap note above)" }
+
+  # ─── 12. Terminal / ro-ro handling ──────────────────────────────────────
+  # Roll-on/roll-off is a horizontal move (the unit is driven or towed on and
+  # off), not a lift — HorizontalMove is the structurally correct TIC class
+  # for this, in contrast to a container terminal's LiftOnLiftOff.
+  - { uri: "https://www.kairosflow.ai/ont/tic/terminal-infrastructure#TerminalTractor", tier: recommended, label: "Terminal Tractor (trailer shunting)" }
+  - { uri: "https://www.kairosflow.ai/ont/tic/handling-operations#CarrierVisit",  tier: recommended, label: "Carrier Visit" }
+  - { uri: "https://www.kairosflow.ai/ont/tic/handling-operations#HorizontalMove", tier: recommended, label: "Horizontal Move (roll-on/roll-off)" }
+  - { uri: "https://www.kairosflow.ai/ont/tic/handling-operations#Move",          tier: optional,    label: "Move (abstract)" }
+  - { uri: "https://www.kairosflow.ai/ont/tic/locations#Berth",                   tier: optional,    label: "Berth" }
+  - { uri: "https://www.kairosflow.ai/ont/tic/locations#QuaySide",                tier: optional,    label: "Quay Side" }
+
+  # ─── 13. Track & trace events ──────────────────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/mmt/events#ArrivalEvent",              tier: recommended, label: "Arrival Event" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/events#DepartureEvent",            tier: recommended, label: "Departure Event" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/events#PickupEvent",               tier: recommended, label: "Pickup Event" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/events#DeliveryEvent",             tier: recommended, label: "Delivery Event" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/events#LoadingEvent",              tier: recommended, label: "Loading Event (driving onto the ferry)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/events#DischargeEvent",            tier: recommended, label: "Discharge Event (driving off the ferry)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/events#CustomsClearanceEvent",     tier: recommended, label: "Customs Clearance Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#TransportEvent",           tier: recommended, label: "Transport Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#EquipmentEvent",           tier: recommended, label: "Equipment Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#GateInEvent",              tier: recommended, label: "Gate-In Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#GateOutEvent",             tier: recommended, label: "Gate-Out Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#BorderCrossingEvent",      tier: required,    label: "Border Crossing Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/events#CustomsEvent",             tier: required,    label: "Customs Event" }
+
+  # ─── 14. Detention & equivalent delay charges ──────────────────────────
+  # This archetype's centre of gravity is equipment (trailer) detention, not
+  # cargo demurrage — the tiers below deliberately invert shipping-carrier's
+  # (where DemurrageCharge is recommended and DetentionCharge is recommended
+  # but cargo-centric); here DetentionCharge is required and DemurrageCharge
+  # drops to optional.
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#DetentionCharge",            tier: required,    label: "Detention Charge (trailer)" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#FreeTimeAllowance",          tier: recommended, label: "Free-Time Allowance" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#PerDiemRate",                tier: recommended, label: "Per-Diem Rate" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#DemurrageDetentionTariff",   tier: recommended, label: "Detention Tariff" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#DetentionEvent",             tier: recommended, label: "Detention Event" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#DemurrageCharge",            tier: optional,    label: "Demurrage Charge (cargo held at ro-ro terminal — less central than trailer detention)" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#DisputeRecord",              tier: optional,    label: "Dispute Record" }
+
+  # ─── 15. Dangerous goods on trailers ────────────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/mmt#DangerousGoods",                   tier: recommended, label: "Dangerous Goods" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt#FlammableLiquid",                  tier: optional,    label: "Flammable Liquid (Class 3)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt#FlammableGas",                     tier: optional,    label: "Flammable Gas (Class 2.1)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt#CorrosiveSubstance",               tier: optional,    label: "Corrosive Substance (Class 8)" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#DangerousGoodsItem", tier: recommended, label: "Dangerous Goods Item" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#HazardClass",       tier: recommended, label: "Hazard Class (ADR/IMDG)" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#UNNumber",          tier: recommended, label: "UN Number" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#PackingGroup",      tier: recommended, label: "Packing Group" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#FlashPoint",        tier: optional,    label: "Flash Point" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#EmergencySchedule", tier: optional,    label: "Emergency Schedule (EmS / Tremcard)" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#SegregationRule",   tier: optional,    label: "Segregation Rule (vessel stowage for ferry crossing)" }
+  - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#DGDeclaration",     tier: recommended, label: "DG Declaration" }
+
+  # ─── 16. Customs & border formalities (short-sea exposure) ─────────────
+  # This sector has real, recurring customs exposure at short-sea borders
+  # (e.g. the post-Brexit UK-EU customs burden). TransitDeclaration and
+  # ICS2Reference are weighted up relative to shipping-carrier because transit
+  # (NCTS-style) movements and pre-arrival safety/security filings are routine
+  # for short-sea road+ferry crossings, not an edge case.
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#CustomsDeclaration",       tier: required,    label: "Customs Declaration" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#TransitDeclaration",       tier: required,    label: "Transit Declaration (NCTS-style transit)" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#ImportDeclaration",        tier: required,    label: "Import Declaration" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#ExportDeclaration",        tier: required,    label: "Export Declaration" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#EntryExitSummary",         tier: recommended, label: "Entry/Exit Summary Declaration" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#ICS2Reference",            tier: recommended, label: "ICS2 Reference (pre-arrival safety & security filing)" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#Filing",                   tier: recommended, label: "Customs Filing" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#DeclarationStatus",        tier: recommended, label: "Declaration Status" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#CustomsProcedure",         tier: recommended, label: "Customs Procedure" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#GoodsItem",                tier: recommended, label: "Goods Item (customs)" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#TariffClassification",     tier: optional,    label: "Tariff Classification (HS code)" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#CustomsValue",             tier: optional,    label: "Customs Value" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/customs#PreferenceClaim",          tier: optional,    label: "Preference Claim (origin-based tariff preference)" }
+
+  # ─── 17. Trade facilitation ─────────────────────────────────────────────
+  - { uri: "https://www.kairosflow.ai/ont/wco/trade-facilitation#AEOCertification",        tier: recommended, label: "AEO Certification" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/trade-facilitation#SingleWindow",             tier: optional,    label: "Single Window" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/trade-facilitation#eFTIRecord",               tier: recommended, label: "eFTI Record (EU electronic freight transport information)" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/trade-facilitation#CertificateOfOrigin",      tier: optional,    label: "Certificate of Origin (WCO)" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/trade-facilitation#TradeAgreementReference",  tier: optional,    label: "Trade Agreement Reference" }
+  - { uri: "https://www.kairosflow.ai/ont/wco/trade-facilitation#TrustedTrader",            tier: optional,    label: "Trusted Trader" }
+
+  # ─── 18. Sustainability — road fleet & ferry leg emissions ─────────────
+  - { uri: "https://www.kairosflow.ai/ont/sustainability/carbon#CarbonEmission",  tier: optional, label: "Carbon Emission" }
+  - { uri: "https://www.kairosflow.ai/ont/sustainability/carbon#TonneKilometre",  tier: recommended, label: "Tonne-Kilometre (road fleet carbon intensity metric)" }
+  - { uri: "https://www.kairosflow.ai/ont/sustainability/carbon#ModalShiftMetric", tier: recommended, label: "Modal Shift Metric (road-to-ferry mode shift)" }
+  - { uri: "https://www.kairosflow.ai/ont/sustainability/carbon#EmissionFactor",   tier: optional, label: "Emission Factor" }
+  - { uri: "https://www.kairosflow.ai/ont/sustainability/carbon#CarbonFootprint",  tier: optional, label: "Carbon Footprint" }
+  - { uri: "https://www.kairosflow.ai/ont/sustainability/energy#FuelType",         tier: optional, label: "Fuel Type" }
+  - { uri: "https://www.kairosflow.ai/ont/sustainability/energy#EnergyConsumption", tier: optional, label: "Energy Consumption" }
+  - { uri: "https://www.kairosflow.ai/ont/sustainability/energy#Electric",         tier: optional, label: "Electric (own-account electric tractor units)" }
+
+  # ─── 19. Financial settlement, revenue/yield & cost allocation ─────────
+  # DECLARED GAP: trade lane / market segment has no class in the commercial
+  # ontology (capability-coverage.yaml id: `trade-lane-and-market-segment`).
+  # `bsp/revenue-yield#ProfitabilityScope` is the closest real class — it
+  # names *that* a profitability boundary exists but not the specific
+  # trade-lane / segment dimension this sector reports against. The
+  # discovery doc covers trade-lane profitability reporting in prose; do not
+  # invent a "TradeLane" class here. CostAllocation / AllocationBasis are the
+  # anchors for the own-vs-subcontracted allocation grain flagged in
+  # CR-RM-07 §9.2 (one source allocation relation commonly mixes equipment,
+  # driver, operator and subcontractor rows).
+  - { uri: "https://www.kairosflow.ai/ont/bsp/financial#FreightCharge",          tier: recommended, label: "Freight Charge" }
+  - { uri: "https://www.kairosflow.ai/ont/bsp/financial#FreightRate",            tier: recommended, label: "Freight Rate" }
+  - { uri: "https://www.kairosflow.ai/ont/bsp/financial#Invoice",                tier: recommended, label: "Invoice" }
+  - { uri: "https://www.kairosflow.ai/ont/bsp/financial#PaymentTerms",           tier: optional,    label: "Payment Terms" }
+  - { uri: "https://www.kairosflow.ai/ont/bsp/revenue-yield#FreightRevenue",     tier: recommended, label: "Freight Revenue" }
+  - { uri: "https://www.kairosflow.ai/ont/bsp/revenue-yield#ProfitabilityScope", tier: recommended, label: "Profitability Scope (closest proxy for trade-lane profitability — see gap note above)" }
+  - { uri: "https://www.kairosflow.ai/ont/bsp/revenue-yield#ContractRate",       tier: optional,    label: "Contract Rate" }
+  - { uri: "https://www.kairosflow.ai/ont/bsp/cost-accounting#TransportCostItem", tier: recommended, label: "Transport Cost Item" }
+  - { uri: "https://www.kairosflow.ai/ont/bsp/cost-accounting#CostAllocation",   tier: recommended, label: "Cost Allocation (own-vs-subcontracted resource-type discriminator)" }
+  - { uri: "https://www.kairosflow.ai/ont/bsp/cost-accounting#AllocationBasis",  tier: optional,    label: "Allocation Basis" }
