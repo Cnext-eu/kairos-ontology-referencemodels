@@ -1,0 +1,18 @@
+@prefix : <https://example.org/hub/pattern/deferred-relationship#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Copyable OWL fragment. Replace the `:` prefix with your hub's own namespace before use.
+# Deliberately carries NO owl:versionInfo — this is a pattern template, not a versioned
+# ontology module. See ../README.md before adding one.
+
+:hasEquipmentAllocation a owl:ObjectProperty ;
+    rdfs:label "has equipment allocation"@en ;
+    rdfs:comment "Eventual object property. Declared even though its range concept has not yet conformed."@en .
+    # rdfs:domain / rdfs:range — set once both endpoints are concrete classes in your hub.
+
+:equipmentAllocationReference a owl:DatatypeProperty ;
+    rdfs:label "equipment allocation reference"@en ;
+    rdfs:comment "Interim scalar carrying the same foreign-key value :hasEquipmentAllocation will eventually connect. Name is derived from the object property by appending 'Reference' — see pattern.md Naming."@en ;
+    rdfs:range xsd:string .

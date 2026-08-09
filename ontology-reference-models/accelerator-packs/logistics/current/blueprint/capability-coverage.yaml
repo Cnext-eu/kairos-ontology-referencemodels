@@ -1,5 +1,5 @@
 format_version: "1.0"
-accelerator_version: "1.6.0"
+accelerator_version: "1.7.0"
 capabilities:
   - id: party-and-role-management
     status: deferred
@@ -11,6 +11,7 @@ capabilities:
       - "convergence-analysis.md Party and contextual roles"
     confidence: medium
     maturity: experimental
+    pattern_ids: [qualified-role-assignment]
   - id: location-and-itinerary-roles
     status: deferred
     concept_ids: [location]
@@ -20,6 +21,7 @@ capabilities:
       - "convergence-analysis.md Location and contextual location roles"
     confidence: medium
     maturity: experimental
+    pattern_ids: [qualified-role-assignment]
   - id: booking-lifecycle
     status: deferred
     concept_ids: [booking]
@@ -82,5 +84,24 @@ capabilities:
       - "Document version, issuance, and surrender history"
     evidence:
       - "convergence-analysis.md Document pattern"
+    confidence: medium
+    maturity: experimental
+  - id: empty-equipment-repositioning
+    status: deferred
+    concept_ids: []
+    extension_points:
+      - "Empty equipment availability and repositioning, universal for carriers and lessors managing owned or leased fleets; no parent class exists anywhere in the pack today"
+    evidence:
+      - "manifest.yaml target_sectors include Ocean carrier, Road carrier, and 3PL, all of which reposition empty equipment; no standard cited in this pack's derived ontologies models it yet"
+      - "att-001: corroborating implementation evidence for a fleet operator"
+    confidence: medium
+    maturity: experimental
+  - id: trade-lane-and-market-segment
+    status: deferred
+    concept_ids: []
+    extension_points:
+      - "Trade lane and market-segment classification for lane profitability, a first-order carrier capability with no class in the commercial ontology today"
+    evidence:
+      - "manifest.yaml target_sectors include Ocean carrier and Road carrier, both of which report profitability by lane; no class exists in BSP commercial or DCSA today"
     confidence: medium
     maturity: experimental

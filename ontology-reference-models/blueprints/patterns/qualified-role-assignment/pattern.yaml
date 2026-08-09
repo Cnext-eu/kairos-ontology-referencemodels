@@ -1,0 +1,42 @@
+id: qualified-role-assignment
+problem: >
+  A durable identity plays different roles in different contexts over time. Modelling the role
+  directly onto the identity conflates identity with a transient, context-dependent usage and
+  duplicates identity records the moment one identity holds two roles concurrently.
+applicability: >
+  The role is contextual, temporally bounded independent of the identity's own lifecycle, or held
+  concurrently across several contexts.
+closes_gap: [1, 2, 7]
+normativity:
+  naming: normative
+  participants: advisory
+  cardinality_rules: advisory
+naming_conventions:
+  - element: role_assignment_class
+    convention: "<Identity>RoleAssignment"
+    example: PartyRoleAssignment
+  - element: link_to_identity
+    convention: "assignedTo<Identity>"
+    example: assignedToParty
+  - element: link_to_context
+    convention: "inContextOf<Context>"
+    example: inContextOfBooking
+  - element: role_value_property
+    convention: hasRole
+    example: hasRole
+physical_simplification:
+  allowed_when:
+    - "the first slice does not need role history"
+    - "one identity never holds a role concurrently with a conflicting one"
+    - "the flags are documented as a denormalised projection of the role-assignment link entity, never as the semantic model itself"
+  shape: "boolean flag per role directly on the identity, e.g. isCarrier, isForwarder"
+anti_patterns:
+  - id: subclass-identity-by-role
+    description: "Identity is subclassed by role, e.g. Shipper subClassOf Party."
+    rejection_reason: "Breaks the moment one organisation plays two roles; requires re-typing on role change."
+  - id: equal-labels-treated-as-equivalent
+    description: "BSP TradeParty, DCSA ShippingParty, and MMT TransportParty treated as owl:equivalentClass without checking grain."
+    rejection_reason: "Similar labels do not establish equivalence; each may be a role overlay on the same identity or a distinct grain."
+grain_collisions:
+  - "Party: BSP, DCSA, MMT, and IMO each define a role-bearing party parent with a different context; none is the durable identity on its own."
+  - "Location: DCSA specialises Location by shipment role (Port of Loading, Port of Discharge); materialising those as separate physical places duplicates one port playing several roles."

@@ -18,8 +18,27 @@ Two checks:
           the graph reachable from its module (the prefix of the URI must match
           one of the catalogued module IRIs).
 
+Also runs three advisory-only checks that never fail the build:
+
+  3. Discovery-doc pairing: warn if an archetype has no matching
+     ``accelerator-packs/*/discovery/<id>.md`` (filename-stem convention).
+
+  4. Anchor-generality: for every accelerator pack that ships a canonical class
+     registry, warn when a concept's ``authority`` text admits a scope qualifier
+     (e.g. "for container scope") that has no counterpart in the pack's own
+     ``manifest.yaml`` ``target_sectors``. This is a lexical proxy for the
+     anchor-selection invariant in ``blueprints/README.md`` — it cannot reason
+     about cross-standard class generality (the derived ontologies do not
+     declare ``rdfs:subClassOf`` edges across standards), so it only catches a
+     concept admitting, in its own words, a narrower scope than the pack claims.
+
+  5. Orphaned discovery docs: warn about any ``accelerator-packs/*/discovery/<id>.md``
+     whose ``<id>`` does not match a known archetype id — the symmetric complement
+     of check 3.
+
 Network policy: local-only. No remote IRI dereference. YAML loaded with
-``yaml.safe_load``. The script exits non-zero on any hard failure.
+``yaml.safe_load``. The script exits non-zero on any hard failure; checks 3-5
+only ever emit warnings.
 
 Usage:
     python scripts/validate_archetypes.py
@@ -28,6 +47,7 @@ Usage:
 from __future__ import annotations
 
 import io
+import re
 import sys
 from pathlib import Path
 from typing import Iterable
@@ -174,6 +194,68 @@ def _check_discovery_doc(archetype_id: str, rel: Path, warnings: list[str]) -> N
         )
 
 
+_SCOPE_QUALIFIER_RE = re.compile(r"for ([\w\s]+?) scope", re.IGNORECASE)
+
+
+def _check_anchor_generality(warnings: list[str]) -> None:
+    """Advisory-only: warn when a concept's authority admits a scope qualifier
+    unsupported by the pack's own declared target_sectors.
+
+    See the module docstring, check 3. Loops every accelerator pack; packs with
+    no canonical class registry (e.g. financial-services today) are skipped.
+    """
+    if not ACCELERATOR_PACKS_DIR.is_dir():
+        return
+    for pack_dir in sorted(ACCELERATOR_PACKS_DIR.iterdir()):
+        if not pack_dir.is_dir():
+            continue
+        manifest_path = pack_dir / "manifest.yaml"
+        registry_path = pack_dir / "current" / "blueprint" / "canonical-class-registry.yaml"
+        if not manifest_path.exists() or not registry_path.exists():
+            continue
+        manifest = _load_yaml(manifest_path) or {}
+        registry = _load_yaml(registry_path) or {}
+        target_sectors = " ".join(
+            manifest.get("package", {}).get("target_sectors", []) or []
+        ).lower()
+        registry_rel = registry_path.relative_to(REPO_ROOT)
+        for concept in registry.get("concepts", []) or []:
+            match = _SCOPE_QUALIFIER_RE.search(concept.get("authority", "") or "")
+            if not match:
+                continue
+            scope = match.group(1).strip().lower()
+            if scope not in target_sectors:
+                warnings.append(
+                    f"{registry_rel}:{concept.get('id', '?')}: authority declares a "
+                    f"'{scope} scope' restriction with no counterpart in "
+                    f"{pack_dir.name}/manifest.yaml target_sectors — confirm the anchor "
+                    "is the most general class covering every declared target sector "
+                    "(blueprints/README.md anchor-selection invariant)"
+                )
+
+
+def _check_orphaned_discovery_docs(known_archetype_ids: set[str], warnings: list[str]) -> None:
+    """Advisory-only: warn about a discovery/<id>.md with no matching archetype id.
+
+    Symmetric complement to _check_discovery_doc (check 3 in the module docstring).
+    This is the check CHANGELOG.md [1.12.1] described as "structural regression
+    coverage to prevent cross-sector discovery guides from being misplaced" — that
+    coverage did not exist until this function; see CHANGELOG.md [Unreleased].
+    """
+    if not ACCELERATOR_PACKS_DIR.is_dir():
+        return
+    for doc_path in sorted(ACCELERATOR_PACKS_DIR.glob("*/discovery/*.md")):
+        if doc_path.stem == "README":
+            continue
+        if doc_path.stem not in known_archetype_ids:
+            rel = doc_path.relative_to(REPO_ROOT)
+            warnings.append(
+                f"{rel}: no archetype '{doc_path.stem}' found under blueprints/archetypes/ "
+                "— this discovery doc is orphaned (misplaced, or its archetype was renamed "
+                "or removed)"
+            )
+
+
 def main() -> int:
     try:
         import jsonschema  # noqa: F401
@@ -215,6 +297,10 @@ def main() -> int:
         if archetype_id:
             _check_discovery_doc(archetype_id, rel, warnings)
         print(f"  • {rel}")
+
+    # Pack-level advisory checks: not tied to any single archetype file.
+    _check_anchor_generality(warnings)
+    _check_orphaned_discovery_docs({f.stem for f in files}, warnings)
 
     print()
     for w in warnings:

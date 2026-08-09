@@ -1,0 +1,29 @@
+id: deferred-relationship
+problem: >
+  A relationship's target class is not yet conformant, but the foreign-key value is already
+  stable in the source. Declare the eventual object property now and carry the foreign key as
+  an interim scalar property, instead of blocking the slice or silently dropping the link.
+applicability: >
+  The target concept's canonical registry entry is unresolved or its module is not yet
+  onboarded, and the foreign-key value is already observed and stable in the source.
+closes_gap: []
+normativity:
+  naming: normative
+  participants: advisory
+  cardinality_rules: advisory
+naming_conventions:
+  - element: eventual_object_property
+    convention: "<relationship>"
+    example: hasEquipmentAllocation
+  - element: interim_scalar_property
+    convention: "<target>Reference"
+    example: equipmentAllocationReference
+    rule: "MUST be derivable from the eventual object property name by appending 'Reference'."
+anti_patterns:
+  - id: silently-dropped-relationship
+    description: "The relationship existed in the source but is omitted because its target is unresolved."
+    rejection_reason: "Data loss, not simplification — the relationship was observed in the source."
+  - id: source-column-named-interim-property
+    description: "Interim scalar property is named after the source column rather than the eventual relationship."
+    rejection_reason: "Source-noun is not canonical grain; breaks the naming pairing this pattern depends on."
+grain_collisions: []

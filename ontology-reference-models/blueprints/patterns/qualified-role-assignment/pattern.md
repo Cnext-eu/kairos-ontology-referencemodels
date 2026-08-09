@@ -1,0 +1,90 @@
+# Qualified Role Assignment
+
+**Normativity:** naming — normative. Participants and cardinality rules — advisory.
+
+## Problem
+
+A durable identity (a party, a location) plays different roles in different contexts over time
+— the same organisation is a Shipper on one booking and a Carrier on another; the same physical
+port is a Port of Loading on one itinerary and a Port of Discharge on another. Modelling the role
+directly onto the identity (subclassing `Party` into `Shipper`, `Carrier`, ...) conflates identity
+with a transient, context-dependent usage and produces duplicate identity records the moment one
+organisation plays two roles concurrently.
+
+This is the pattern behind CR-RM's declared gaps #1 (Party), #2 (Location), and #7 (cross-domain
+Identifier Assignment) — three instances of the same shape, not three separate problems.
+
+## Applicability
+
+Use this pattern whenever a durable identity's role is: contextual (depends on the transaction or
+itinerary it appears in), temporally bounded (starts and ends independently of the identity's own
+lifecycle), or multiply-held (one identity holds several roles concurrently). Do not use it for a
+role that is a permanent, definitional attribute of the identity itself.
+
+## Participants (advisory)
+
+- **Durable identity** — the party or location record, independent of any role it plays.
+- **Role** — a controlled vocabulary term (Shipper, Consignee, Carrier, Port of Loading, ...).
+- **Context** — the transaction, booking, or itinerary the role assignment is scoped to.
+- **Validity** — the period the assignment holds, independent of the identity's own lifecycle.
+- **Role assignment link entity** — `(identity, role, context, validity)`, the thing that actually
+  varies over time; never merge this into the identity record.
+
+## Naming (normative)
+
+| Element | Convention |
+|---|---|
+| Role assignment class | `<Identity>RoleAssignment`, e.g. `PartyRoleAssignment`, `LocationRoleAssignment` |
+| Link to identity | `assignedTo<Identity>`, e.g. `assignedToParty` |
+| Link to context | `inContextOf<Context>`, e.g. `inContextOfBooking` |
+| Role value property | `hasRole`, ranging over the pack's controlled role vocabulary |
+
+## Cardinality rules (advisory)
+
+One durable identity may have `0..n` role assignments, each scoped to exactly one context. A
+context may require `1..n` role assignments (e.g. a booking requires at least a Shipper and a
+Carrier) — the minimum cardinality is a pack-level business rule, not part of this pattern.
+
+## When NOT to use — flattened boolean role flags as a physical simplification
+
+A boolean flag per role directly on the identity (`isCarrier`, `isForwarder`) is an **acceptable
+physical simplification** when: the pack's first slice does not need role history, one identity
+never holds a role concurrently with a conflicting one, and the flags are documented as a
+denormalised projection of the role-assignment link entity — never as the semantic model itself.
+If any of those three conditions stops holding, materialise the full link entity.
+
+## Worked example
+
+```turtle
+:PartyRoleAssignment a owl:Class .
+
+:assignedToParty a owl:ObjectProperty ;
+    rdfs:domain :PartyRoleAssignment ;
+    rdfs:range :Party .
+
+:inContextOfBooking a owl:ObjectProperty ;
+    rdfs:domain :PartyRoleAssignment ;
+    rdfs:range :Booking .
+
+:hasRole a owl:DatatypeProperty ;
+    rdfs:domain :PartyRoleAssignment ;
+    rdfs:range xsd:string .   # constrained to the pack's role vocabulary
+```
+
+One `Party` record; one `PartyRoleAssignment` per (party, role, booking) triple — the same party
+can be Shipper on one assignment and Consignee on another without duplicating the party.
+
+## Anti-patterns
+
+- **Subclassing the identity by role** (`Shipper subClassOf Party`) — breaks the moment one
+  organisation plays two roles, and requires re-typing the record when its role changes.
+- **Treating equal role labels as equivalent classes** across standards (BSP `TradeParty`, DCSA
+  `ShippingParty`, MMT `TransportParty`) without checking whether each is genuinely a role overlay
+  on the same durable identity or a distinct grain.
+
+## Grain collisions
+
+- **Party.** BSP, DCSA, MMT, and IMO each define a role-bearing party parent with a different
+  context. None of them is the durable identity on its own — each is evidence for a role overlay.
+- **Location.** DCSA specialises `Location` by shipment role (Port of Loading, Port of Discharge).
+  Materialising those as separate physical places duplicates one port that plays several roles.
