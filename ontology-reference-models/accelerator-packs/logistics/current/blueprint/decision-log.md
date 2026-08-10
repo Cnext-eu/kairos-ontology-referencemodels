@@ -22,6 +22,52 @@ than silently accepted.
 | LOG-BP-012 | Transport order grain | Investigate | Author the demand-side order as a blueprint-tier class (`blueprint/transport-order#TransportOrder`) rather than force-fitting DCSA `Booking`; procure carrier capacity through `CarrierReservation` attached to the leg. | The issue #29 standards audit found every installed candidate expresses a different grain, and one order may procure several carrier reservations. Blueprint tier because no standard defines the grain, so `derived-ontologies/` would misstate provenance. | High | Issue #29 standards audit; `blueprints/patterns/multimodal-order-leg/pattern.md`; overlap `transport-order-grain` |
 | LOG-BP-013 | Transport mode axis | Investigate | Specialise the leg by mode, never the order. Bind mode-specific standards at the leg's carrier reservation. | An order is multimodal by construction; MMT already reifies mode onto the leg. Binding at the reservation is what makes subclassing DCSA feasible for ocean scope without imposing it on road-only hubs. | High | Issue #33; `MMT/README.md` reification note; overlap `transport-order-mode-axis` |
 
+## Resolved challenge: transport order / forwarding job
+
+> **Outcome (LOG-BP-012, LOG-BP-013).** The standards audit below stands in full — every
+> installed candidate expresses a different grain. What changed is the *conclusion drawn
+> from it*. The audit's guidance was "do not add a shared class", on the reasoning that
+> repository policy permits only classes backed by a cited standard. That reasoning was
+> sound for `derived-ontologies/`, which is bound to be faithful to its source, and it is
+> why the class was **not** added there. It does not apply to a tier that makes no
+> standards claim: `blueprints/ontology/` was created for exactly this case and now holds
+> `blueprint/transport-order#TransportOrder`, with the admission bar documented in that
+> folder's README.
+>
+> The audit table is retained below because it is the evidence for the new class, not an
+> argument against it — it is what proves the grain is distinct from every alternative.
+
+Issue #29 challenged whether the Booking domain needs a shared `TransportOrder`
+class. The review distinguished an **installed-model gap** from a
+**standards-authorized reference-model gap**:
+
+| Candidate | Verified grain | Challenge outcome |
+|---|---|---|
+| DCSA `Booking` | One carrier capacity/equipment reservation, identified by a carrier booking reference | Retain for carrier reservations; not the upstream forwarder job |
+| DCSA `Shipment` | One carrier-side transport transaction | Reject as an order/job substitute |
+| BSP `PurchaseOrder` / `SalesOrder` | Buyer/seller commercial order documents | Reject as freight-forwarding orchestration |
+| MMT `TransportInstructions` | Transport instruction content in the documents module | Useful related evidence, but not a durable job aggregate |
+| TIC `Order` | Atomic terminal handling directive and subclass of `Move` | Reject; terminal execution has a different grain |
+| Forwarding job / customer instruction | One forwarder-owned instruction or job that may create several carrier bookings | Preserve as an extension point; shared-class authority remains unproven |
+
+The evidence supports the **semantic distinctness** of the upstream forwarding job, and
+does not support its promotion into a standards-derived reference ontology. Both remain
+true. The resolution was to place the class in a tier that claims no standards
+provenance, rather than to choose between them.
+
+Standing guidance:
+
+1. do not force-fit an upstream forwarding job to DCSA `Booking` or `Shipment` — they are
+   a carrier capacity reservation and a carrier-side transaction respectively;
+2. do not add a `TransportOrder` to `derived-ontologies/` — no standard defines this
+   grain, so that tier would misstate its provenance. It lives in `blueprints/ontology/`;
+3. hubs specialise `blueprint/transport-order#CarrierReservation` per mode where they have
+   source feasibility — that is the legitimate place to subclass `dcsa:Booking`, and is
+   scoped to an ocean leg rather than to the order (LOG-BP-013); and
+4. the Booking-domain ownership phrase "transport orders" now has a class behind it; see
+   the `grain_note` in `client-hub-blueprint/data-domains.yaml` for the order-versus-booking
+   distinction it must not collapse.
+
 ## Rejected shortcuts
 
 | Shortcut | Rejection reason |
