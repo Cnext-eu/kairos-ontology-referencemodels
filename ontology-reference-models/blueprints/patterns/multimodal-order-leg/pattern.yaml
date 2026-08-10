@@ -1,0 +1,117 @@
+id: multimodal-order-leg
+problem: >
+  A transport order is multimodal by construction, but the useful external standards are all
+  mode-bound (DCSA ocean, IATA air, TAF TSI rail). Hubs either subclass a mode-specific standard
+  at the order grain — inheriting obligations no source can populate, and breaking outright on
+  the first intermodal order — or import the standard without subclassing it, leaving the
+  alignment decorative. Both failures come from attaching mode one grain too high.
+applicability: >
+  Any party that accepts transport demand and arranges its execution across one or more carriers
+  and modes. The leg and movement grains alone also apply to carrier-side execution modelling
+  with no upstream order.
+closes_gap: [5]
+normativity:
+  naming: normative
+  participants: advisory
+  cardinality_rules: advisory
+participants:
+  - grain: order
+    class_uri: https://www.kairosflow.ai/ont/blueprint/transport-order#TransportOrder
+    carries_mode: false
+  - grain: leg
+    class_uri: https://www.kairosflow.ai/ont/mmt/consignment#TransportLeg
+    carries_mode: true
+  - grain: reservation
+    class_uri: https://www.kairosflow.ai/ont/blueprint/transport-order#CarrierReservation
+    carries_mode: by-binding
+  - grain: movement
+    class_uri: https://www.kairosflow.ai/ont/mmt/consignment#TransportMovement
+    carries_mode: inherited
+naming_conventions:
+  - link: order-identity
+    property: transportOrderReference
+  - link: order-to-ordering-party
+    property: hasOrderingParty
+  - link: order-to-leg
+    property: hasPlannedLeg
+  - link: order-to-consignment
+    property: coversConsignment
+  - link: leg-to-reservation
+    property: hasCarrierReservation
+  - link: leg-to-movement
+    property: realizedByMovement
+naming_rule: >
+  Aggregate identity follows the repo-wide <aggregate>Reference convention. Requested service
+  windows follow the temporal-quartet pattern (requestedStart / requestedEnd). Never name a
+  property or class on the order after a transport mode, and never declare a direct
+  order-to-reservation link — reservations attach to legs.
+mode_bindings:
+  - mode: ocean
+    grain: reservation
+    target: https://www.kairosflow.ai/ont/dcsa/booking#Booking
+    status: modelled
+    binding: hub-local
+  - mode: air
+    grain: reservation
+    target: "IATA ONE Record cargo data model (Booking, BookingRequest, BookingOption)"
+    status: extension-point
+    note: >
+      Published as RDF/OWL, so it would enter authoritative-ontologies/, not derived-ontologies/.
+      Not IATA Cargo-XML — XFWB/XFZB are waybill messages at document grain, already covered by
+      mmt/documents#AirWaybill.
+  - mode: rail
+    grain: reservation
+    target: "TAF TSI — Path Request / Consignment Order"
+    status: extension-point
+    note: >
+      Not RailML, which is infrastructure and timetable. The CIM consignment note is document
+      grain and is already modelled as mmt/documents#RailConsignmentNote.
+  - mode: road
+    grain: reservation
+    target: null
+    status: pattern-only
+    note: "No standard forces a reservation shape. CMR covers the document grain only."
+  - mode: barge
+    grain: reservation
+    target: null
+    status: pattern-only
+anti_patterns:
+  - id: mode-subclass-on-order
+    description: "OceanOrder / RoadOrder / AirOrder subclasses, or an orderTransportMode scalar."
+    rejection_reason: >
+      An intermodal order would need two incompatible types at once, or a single mode value it
+      does not have. Mode belongs on the leg, which MMT already reifies.
+  - id: order-subclasses-mode-standard
+    description: "The order class declared rdfs:subClassOf a mode-specific standard class."
+    rejection_reason: >
+      Inherits obligations no source can populate (dcsa:Booking carries carrierBookingReference
+      minCardinality 1) and misstates the grain. Bind at the reservation grain instead.
+  - id: order-to-reservation-shortcut
+    description: "A hasBooking or equivalent property directly on the order."
+    rejection_reason: >
+      Works for one leg, then silently loses which leg a reservation covers as soon as there
+      are two.
+  - id: order-absorbs-domain-properties
+    description: "Cargo, customs, document, or financial properties declared on the order class."
+    rejection_reason: >
+      The order is an aggregate root, not a report. Wide source order records fan out to the
+      owning domains by traversal.
+  - id: document-as-reservation
+    description: "An AWB, Bill of Lading, or CMR used as the carrier reservation."
+    rejection_reason: >
+      Transport documents are their own grain, already modelled in mmt/documents. A document
+      evidences a leg; it does not reserve it.
+  - id: project-cargo-as-mode
+    description: "Project Cargo modelled as a branch of the mode axis."
+    rejection_reason: >
+      Project cargo is cargo characteristics plus service scope, cutting across every mode. It
+      is not a mode and does not belong on the leg or the order.
+grain_collisions:
+  - against: https://www.kairosflow.ai/ont/dcsa/booking#Booking
+    reason: "One order may procure several bookings across several carriers."
+  - against: https://www.kairosflow.ai/ont/bsp/commercial#SalesOrder
+    reason: "Commercial buy/sell of goods versus purchase of a transport service."
+  - against: https://www.kairosflow.ai/ont/tic/handling-operations#Order
+    reason: "Atomic terminal handling directive subclassing Move — different scope and owner."
+  - against: https://www.kairosflow.ai/ont/mmt/documents#TransportInstructions
+    reason: "Instruction content without durable job identity or lifecycle."

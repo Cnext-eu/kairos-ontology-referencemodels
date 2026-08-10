@@ -1,5 +1,5 @@
 format_version: "1.0"
-accelerator_version: "1.7.0"
+accelerator_version: "1.8.0"
 entries:
   - id: party-role-parents
     concept_id: party
@@ -118,5 +118,42 @@ entries:
     evidence:
       - "convergence-analysis.md Document pattern"
     confidence: medium
+    maturity: experimental
+    first_slice: false
+  - id: transport-order-grain
+    concept_id: transport-order
+    class_uris:
+      - https://www.kairosflow.ai/ont/blueprint/transport-order#TransportOrder
+      - https://www.kairosflow.ai/ont/dcsa/booking#Booking
+      - https://www.kairosflow.ai/ont/dcsa/booking#Shipment
+      - https://www.kairosflow.ai/ont/bsp/commercial#PurchaseOrder
+      - https://www.kairosflow.ai/ont/bsp/commercial#SalesOrder
+      - https://www.kairosflow.ai/ont/tic/handling-operations#Order
+      - https://www.kairosflow.ai/ont/mmt/documents#TransportInstructions
+    disposition: unresolved
+    rationale: "Audit finding is distinct_grain, held at unresolved pending stakeholder review per LOG-BP-012 — only a stakeholder-confirmed entry may carry a resolved disposition (see party-role-parents). The arranging party's own order, a carrier's capacity reservation, a commercial buy/sell of goods, a terminal handling directive, and instruction content are five different grains. One order may procure several carrier reservations across several carriers and modes, which alone rules out equivalence with DCSA Booking. Supersedes the workaround of force-fitting the order onto the nearest standard class; refines but does not replace `booking-order-terms`, which stays scoped to the booking concept."
+    evidence:
+      - "issue #29 standards audit"
+      - "convergence-analysis.md Booking and order"
+      - "blueprints/patterns/multimodal-order-leg/pattern.md grain collisions"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+  - id: transport-order-mode-axis
+    concept_id: transport-order
+    class_uris:
+      - https://www.kairosflow.ai/ont/blueprint/transport-order#TransportOrder
+      - https://www.kairosflow.ai/ont/blueprint/transport-order#CarrierReservation
+      - https://www.kairosflow.ai/ont/mmt/consignment#TransportLeg
+      - https://www.kairosflow.ai/ont/mmt/inland-transport#RoadLeg
+      - https://www.kairosflow.ai/ont/mmt/inland-transport#RailLeg
+      - https://www.kairosflow.ai/ont/mmt/inland-transport#BargeLeg
+    disposition: unresolved
+    rationale: "Audit finding is specialisation, held at unresolved pending stakeholder review per LOG-BP-013. Transport mode specialises the leg, never the order. An order is multimodal by construction, so a mode subclass axis on the order breaks on the first intermodal order. MMT already reifies mode onto the leg; a mode-bound external standard attaches at the leg's carrier reservation, which is the grain at which that standard's own semantics hold."
+    evidence:
+      - "MMT/README.md reification of TransportMovement modeCode into RoadLeg, RailLeg, BargeLeg"
+      - "issue #33 and the road-versus-DCSA subclassing question that raised it"
+      - "blueprints/patterns/multimodal-order-leg/pattern.md anti-patterns"
+    confidence: high
     maturity: experimental
     first_slice: false

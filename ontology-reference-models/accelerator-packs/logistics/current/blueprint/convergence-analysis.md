@@ -102,7 +102,9 @@ These are audit candidates, not authorization to add classes:
 2. Qualified Location Role Assignment for itinerary and shipment context.
 3. Booking amendment/version history.
 4. General equipment allocation/utilisation outside the container-specific model.
-5. Ordered stop and plan-to-execution realization pattern.
+5. Ordered stop and plan-to-execution realization pattern. — *addressed by
+   `blueprints/patterns/multimodal-order-leg`; the order/leg/reservation/movement grain split and
+   `realizedByMovement` naming are published, the ordered-stop sub-shape is not yet.*
 6. Source-neutral event envelope with subject roles and correction/supersession.
 7. Cross-domain structured Identifier Assignment.
 8. Temporal Status Observation and governed code-list pattern.

@@ -52,7 +52,9 @@ kairos-ontology-referencemodels/
 │   │   ├── logistics/                 # 8 ontologies for logistics companies
 │   │   └── financial-services/        # FIBO + BSP for financial services
 │   ├── blueprints/                    # Opinionated Kairos guidance (not standards)
-│   │   └── archetypes/                # Per-archetype YAML catalogs (e.g. shipping-carrier)
+│   │   ├── archetypes/                # Per-archetype YAML catalogs (e.g. shipping-carrier)
+│   │   ├── patterns/                  # Sector-neutral shapes and naming conventions
+│   │   └── ontology/                  # Kairos-authored classes where no standard defines the grain
 │   └── catalog-v001.xml               # XML catalog for import resolution
 ├── scripts/                           # Tooling (validation, version management)
 ├── examples/                          # Usage examples
@@ -116,6 +118,8 @@ The repository ships a **third content tier** alongside the authoritative and de
 The first blueprint shipping today is the **archetype catalog** under [`blueprints/archetypes/`](ontology-reference-models/blueprints/archetypes/). Each YAML file describes the ref-model modules and core concepts a given business archetype is expected to support. Three archetypes ship today: `shipping-carrier` (186 core concepts across 21 business areas), `freight-forwarder` (34 core concepts), and `unit-load-carrier` (170 core concepts across 19 business areas, covering non-containerised ro-ro / short-sea operations).
 
 The repository also ships a **pattern library** under [`blueprints/patterns/`](ontology-reference-models/blueprints/patterns/) — sector-neutral modelling craft (shapes and naming conventions) harvested from client hub implementations, distinct from the archetype catalog and not yet part of its cross-repo contract.
+
+A third blueprint module, [`blueprints/ontology/`](ontology-reference-models/blueprints/ontology/), holds **Kairos-authored OWL classes** for business grains that a standards audit has shown no installed standard expresses. It has the highest bar of the three — see that folder's README for the admission criteria. It ships `TransportOrder` and `CarrierReservation` today.
 
 Each archetype may be paired with a **sector discovery script** under
 `accelerator-packs/<pack>/discovery/<archetype-id>.md` holding the SME

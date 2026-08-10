@@ -7,6 +7,107 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.14.0] - 2026-08-10
+
+Closes the transport-order gap ([#29](https://github.com/Cnext-eu/kairos-ontology-referencemodels/issues/29))
+and the mode-specialisation question ([#33](https://github.com/Cnext-eu/kairos-ontology-referencemodels/issues/33)).
+Both turned out to be the same gap seen from opposite ends: the missing thing was a **grain**
+(demand-side order), not a generic mode-agnostic supertype — MMT already supplies that.
+
+### Added
+- **Blueprint ontology tier** at `blueprints/ontology/` (v0.1.0) — Kairos-authored OWL classes
+  for grains no installed standard expresses. Ships `TransportOrder` (demand-side order owned by
+  the arranging party) and `CarrierReservation` (the slot at which a mode-bound standard
+  attaches). Separate tier because `derived-ontologies/` is bound to be faithful to its source
+  standard, and the issue #29 audit found no standard behind this grain. The folder README
+  states a four-point admission bar so the tier does not become a dumping ground.
+- **`multimodal-order-leg` pattern** (`blueprints/patterns/`, bumped to 0.2.0) — the four-grain
+  shape order → leg → reservation → movement, closing declared convergence gap 5. Records the
+  per-mode alignment targets for the reservation grain: DCSA (ocean, modelled), IATA ONE Record
+  (air, extension point — *not* Cargo-XML, which is document grain), TAF TSI (rail, extension
+  point — *not* RailML, which is infrastructure grain). Project cargo is documented as **not a
+  mode** — it cuts across all of them.
+- **`transport-order` and `carrier-reservation` concepts** in
+  `canonical-class-registry.yaml`, plus overlap entries `transport-order-grain`
+  (`distinct_grain`) and `transport-order-mode-axis` (`specialisation`).
+- Decision-log entries `LOG-BP-012` (transport order grain) and `LOG-BP-013` (transport mode
+  axis), and three new rejected shortcuts.
+- **Anchor-selection invariant** documented in `blueprints/README.md`. `validate_archetypes.py`
+  has cited this section in its warning text since 1.13.0, but the section did not exist — the
+  warning pointed readers at nothing.
+- **Archetype authoring guidance** in `blueprints/archetypes/README.md`: anchor generality,
+  expressing archetype variation through `tier` rather than forked catalogs, commenting
+  deliberate omissions, and a companion-pattern table.
+- `transport-order-orchestration` capability in `capability-coverage.yaml`, linked to the new
+  pattern via `pattern_ids`, with air and rail alignment recorded as extension points.
+
+### Changed
+- **Mode specialises the leg, never the order.** An order is multimodal by construction, so a
+  mode subclass axis on the order breaks on the first intermodal order. Mode-specific standards
+  bind at the leg's carrier reservation, where their semantics actually hold — which is what
+  makes subclassing `dcsa:Booking` legitimate for ocean scope without imposing
+  `carrierBookingReference` on road-only hubs. The binding stays hub-local pending the
+  cross-model-axiom decision (`convergence-analysis.md` stakeholder decision #9).
+- **Logistics Accelerator** bumped to 1.8.0 — now imports `blueprint/transport-order`, its only
+  non-standards-derived import, called out explicitly in the pack's `dcterms:description` so
+  consumers can see which classes carry no standard provenance. `class-inventory.yaml`
+  regenerated.
+- **Archetype catalog** bumped to 0.5.0 — `TransportOrder` is `required` for `freight-forwarder`,
+  `recommended` for `unit-load-carrier`, and **deliberately absent** for `shipping-carrier`,
+  which is supply side and whose incoming demand already *is* the booking. The absence is
+  commented in the file so it does not read as unreviewed. Per-archetype tiering is the
+  mechanism for this variation — no archetype-flavoured blueprints were added.
+- `client-hub-blueprint/data-domains.yaml` Booking domain gained a `grain_note` stating that
+  "transport order" and "booking" are distinct grains with a 1..N fan-out, resolving the #29
+  finding that the blueprint claimed ownership of a class that did not exist.
+- **Freight-forwarder discovery guide §3 corrected.** It told interviewers to "record it as a
+  potential gap until its grain is proven" — stale now that the audit is complete and the class
+  exists. Rewritten to point at `TransportOrder`, to make the 1..N fan-out the thing discovery
+  must still confirm from source data, and to flag mode-typed orders as a known anti-pattern to
+  redirect.
+
+### Fixed
+- **`temporal-quartet/pattern.yaml` was invalid YAML** from the day it shipped (1.13.0). A stray
+  `rule:` mapping key inside a block sequence parses as an error but reads fine to a human, so
+  review missed it. `kairos-ontology-toolkit`'s `pattern_loader` skips a malformed pattern
+  silently during bulk listing — so the library's only *normative* naming pattern was never
+  visible to the `kairos-design-domain` flow, and no check in either repo failed. Found by
+  running the toolkit's own loader against this branch.
+- **The stale claim that caused it.** `patterns/README.md` and `blueprints/README.md` both stated
+  there was no toolkit consumer for the pattern library. There is one, and its loader was written
+  lenient *because* this repo said the library had no schema — each repo relying on the other's
+  assumption. Both statements corrected.
+- **`validate_structure.py` now parses every `blueprints/patterns/<id>/pattern.yaml`** and checks
+  `id` against the directory name. Parse-only floor, not the owed JSON Schema.
+- **Cross-repo contract tests** at `tests/test_toolkit_contract.py`, loading this working tree
+  through the toolkit's *real* loaders rather than a local guess at what they do. Skipped when
+  the toolkit is not on the machine (set `KAIROS_TOOLKIT_SRC`, or keep a sibling checkout), so CI
+  here needs no cross-repo dependency. Asserts every pattern loads via the fail-fast path, bulk
+  loading emits no warnings, `VALID_TIERS` still matches our schema enum, every archetype
+  resolves, and the three-way `TransportOrder` tiering is visible to the consumer. A mirror ships
+  in the toolkit. Neither repo's CI could previously see the other, which is the whole reason the
+  `temporal-quartet` defect survived two minor versions.
+- `naming_conventions` is documented as a list-only block; whole-block prose belongs in a sibling
+  `naming_rule` key. Applied to `temporal-quartet` and `multimodal-order-leg`.
+
+### Known gaps (not addressed here)
+- **No `not_applicable` tier** in `archetype.schema.json`, so `shipping-carrier` omitting
+  `TransportOrder` on purpose is machine-indistinguishable from nobody having reviewed it. The
+  intent is currently carried by a YAML comment only.
+- **No archetype-to-pattern link.** `capability-coverage.yaml` has `pattern_ids`; archetype files
+  have no equivalent, so the pattern that governs a concept's shape is reachable only through
+  the discovery guide's prose. Changing this touches the cross-repo contract.
+- Convergence gaps **3** (booking amendment/version history), **4** (equipment
+  allocation/utilisation), and **6** (source-neutral event envelope) remain unclaimed by any
+  pattern.
+- **`patterns/_schema/pattern.schema.json` is still owed.** Both triggers the v0.1 README set for
+  writing it have now fired. The parse guard added here catches malformed YAML, not a
+  wrong-but-parseable pattern.
+- **`VALID_TIERS` is duplicated across repos** — `archetype.schema.json` here and
+  `archetype_loader.py` in the toolkit, which comments that it mirrors ours. Adding a
+  `not_applicable` tier requires a coordinated pair of PRs; a schema-first change would break the
+  consumer on the next ref-model bump.
+
 ## [1.13.0] - 2026-08-09
 
 Harvests learnings from a client hub implementation back into the Logistics Accelerator, per

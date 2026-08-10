@@ -55,8 +55,18 @@ groups:
         name: "Booking, Quote & Order Management"
         folder: "model/ontologies/booking/"
         owns: "Booking requests, quotes, transport orders, customer instructions, booking confirmation, and booking lifecycle."
-        does_not_own: "Transport execution events, invoices, vessel schedules, or terminal handling."
+        does_not_own: "Transport execution events, invoices, vessel schedules, terminal handling, or the transport mode of any individual leg."
+        grain_note: >
+          "Transport orders" and "bookings" are distinct grains, not synonyms. The demand-side
+          order is one commercial request owned by the arranging party
+          (blueprint/transport-order#TransportOrder); a booking is one carrier's capacity
+          reservation (dcsa/booking#Booking). One order may procure several bookings across
+          several carriers and modes. Mode belongs to the leg, never to either of these — see
+          blueprints/patterns/multimodal-order-leg.
         imports:
+          - uri: "https://www.kairosflow.ai/ont/blueprint/transport-order#"
+            module: "Blueprint / Transport Order"
+            provides: "Transport order aggregate root, carrier reservation extension point"
           - uri: "https://www.kairosflow.ai/ont/dcsa/booking#"
             module: "DCSA / Booking"
             provides: "Booking, shipping instruction, confirmation, amendment"

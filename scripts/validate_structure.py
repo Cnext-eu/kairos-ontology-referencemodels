@@ -44,6 +44,7 @@ ACCELERATOR_SUPPORT_DIRS = {"blueprint", "profiles", "contracts", "examples", "d
 BLUEPRINTS_DIR = ONTOLOGY_ROOT / "blueprints"
 ARCHETYPES_DIR = BLUEPRINTS_DIR / "archetypes"
 ARCHETYPE_SCHEMA = ARCHETYPES_DIR / "_schema" / "archetype.schema.json"
+PATTERNS_DIR = BLUEPRINTS_DIR / "patterns"
 SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+$")
 ARCHETYPE_ID_RE = re.compile(r"^[a-z][a-z0-9]*(-[a-z0-9]+)*$")
 
@@ -475,6 +476,9 @@ def validate_blueprints(verbose: bool) -> ValidationResult:
       2. blueprints/archetypes/VERSION exists and is SemVer.
       3. blueprints/archetypes/README.md exists.
       4. blueprints/archetypes/_schema/archetype.schema.json exists.
+      5. Every blueprints/patterns/<id>/pattern.yaml parses and its id matches
+         its directory name (parse-only — the library is markdown-first, but it
+         has a downstream parser in kairos-ontology-toolkit).
       5. Every *.yaml directly under archetypes/ (excluding _schema/ and dotfiles)
          loads with yaml.safe_load and its top-level ``id`` equals the filename stem.
     """
@@ -551,6 +555,34 @@ def validate_blueprints(verbose: bool) -> ValidationResult:
             r.fail(f"{rel}: id '{archetype_id}' is not kebab-case")
         else:
             r.ok(f"{rel}: id '{archetype_id}' matches filename", verbose, is_verbose=True)
+
+    # Per-pattern YAML files. Parse-only, not schema validation: the pattern library is
+    # markdown-first by design, but it IS parsed by a downstream consumer
+    # (kairos-ontology-toolkit core/pattern_loader.py, which raises on a malformed
+    # pattern.yaml when one is requested by id and silently skips it in bulk listing).
+    # temporal-quartet shipped unparseable in v1.13.0 and nothing caught it, because a
+    # stray `rule:` key inside a block sequence is invalid YAML but reads fine to a human.
+    for pattern_dir in sorted(p for p in PATTERNS_DIR.glob("*") if p.is_dir()):
+        if pattern_dir.name.startswith(".") or pattern_dir.name == "_schema":
+            continue
+        pattern_file = pattern_dir / "pattern.yaml"
+        rel = pattern_file.relative_to(ONTOLOGY_ROOT)
+        if not pattern_file.is_file():
+            r.fail(f"{rel}: missing (every pattern directory needs a pattern.yaml)")
+            continue
+        try:
+            data = yaml.safe_load(pattern_file.read_text(encoding="utf-8"))
+        except yaml.YAMLError as e:
+            r.fail(f"{rel}: invalid YAML — {e}")
+            continue
+        if not isinstance(data, dict):
+            r.fail(f"{rel}: top-level YAML must be a mapping")
+            continue
+        pattern_id = data.get("id")
+        if pattern_id != pattern_dir.name:
+            r.fail(f"{rel}: id '{pattern_id}' does not match directory '{pattern_dir.name}'")
+        else:
+            r.ok(f"{rel}: parses, id matches directory", verbose, is_verbose=True)
 
     return r
 

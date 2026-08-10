@@ -19,6 +19,7 @@ compatible_with:
 
 ref_model_modules:
   - { iri: "https://www.kairosflow.ai/ont/bsp/party", tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/blueprint/transport-order", tier: required }
   - { iri: "https://www.kairosflow.ai/ont/dcsa/booking", tier: recommended }
   - { iri: "https://www.kairosflow.ai/ont/mmt/party", tier: required }
   - { iri: "https://www.kairosflow.ai/ont/mmt/consignment", tier: required }
@@ -38,6 +39,11 @@ core_concepts:
   - { uri: "https://www.kairosflow.ai/ont/mmt/party#Carrier", tier: required, label: "Carrier" }
   - { uri: "https://www.kairosflow.ai/ont/mmt/party#Consignor", tier: required, label: "Consignor" }
   - { uri: "https://www.kairosflow.ai/ont/mmt/party#Consignee", tier: required, label: "Consignee" }
+
+  # Demand-side order the forwarder owns, and the reservation slot it procures against.
+  # Mode never appears here — it is carried by the leg. See patterns/multimodal-order-leg.
+  - { uri: "https://www.kairosflow.ai/ont/blueprint/transport-order#TransportOrder", tier: required, label: "Transport Order" }
+  - { uri: "https://www.kairosflow.ai/ont/blueprint/transport-order#CarrierReservation", tier: recommended, label: "Carrier Reservation" }
 
   # Booking and carrier-facing instructions.
   - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#Booking", tier: recommended, label: "Carrier Booking" }

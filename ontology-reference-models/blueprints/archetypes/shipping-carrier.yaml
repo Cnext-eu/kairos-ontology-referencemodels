@@ -82,6 +82,10 @@ ref_model_modules:
 core_concepts:
 
   # ─── 1. Commercial cycle (Booking → B/L) ───────────────────────────────
+  # blueprint/transport-order#TransportOrder is DELIBERATELY ABSENT, not unreviewed. This
+  # archetype is the supply side: its incoming demand IS the Booking below, so an order grain
+  # above it would only duplicate the booking under a synonym. See
+  # patterns/multimodal-order-leg/pattern.md "When NOT to use".
   - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#Booking",                tier: required,    label: "Booking" }
   - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#BookingRequest",         tier: required,    label: "Booking Request" }
   - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#ConfirmedBooking",       tier: required,    label: "Confirmed Booking" }

@@ -15,11 +15,29 @@ to copy. This library is the shared copy.
 
 ## Status
 
-**v0.1 — markdown-first, no JSON Schema.** There is no toolkit consumer for this folder yet (see
-`../archetypes/README.md`'s cross-repo contract — patterns are not part of it). Four files
-authored by one person in one PR will not drift without a schema enforcing it. Add
-`_schema/pattern.schema.json` and a `validate_structure.py` check when either stops being true:
-the toolkit gains a consumer for patterns, or more than one person is authoring them.
+**v0.2 — markdown-first, parse-guarded, no JSON Schema yet.**
+
+The v0.1 statement here — "there is no toolkit consumer for this folder yet" — was **wrong by the
+time anyone checked**. `kairos-ontology-toolkit` ships
+`src/kairos_ontology/core/pattern_loader.py`, which reads every `pattern.yaml` in this folder for
+the `kairos-design-domain` authoring flow. Its loader is deliberately lenient *because this README
+told it the library has no schema*, so the two repos were each relying on the other's assumption.
+
+That cost a real defect: `temporal-quartet/pattern.yaml` shipped in v1.13.0 with a stray `rule:`
+key inside a block sequence — **invalid YAML**, which reads perfectly fine to a human. The toolkit
+skips a malformed pattern silently during bulk listing, so the one pattern in this library that
+ships *normative* naming was invisible to the design flow for its entire life, and nothing in
+either repo failed. `multimodal-order-leg` then copied the same shape.
+
+`scripts/validate_structure.py` now parses every `pattern.yaml` and checks its `id` against its
+directory name. That is a floor, not the schema: a full `_schema/pattern.schema.json` is still
+owed, and both original triggers for writing it have now fired (a consumer exists; more than one
+person is authoring). See the CHANGELOG "Known gaps".
+
+**Structural rule that follows from the defect:** `naming_conventions` is a **list of entries and
+nothing else**. Prose that applies to the whole block goes in a sibling top-level `naming_rule`
+key — never as a trailing mapping key inside the list. Custom top-level keys are fine (the loader
+preserves unknown keys in an `extra` dict), so there is no reason to smuggle one into a sequence.
 
 ## Normativity
 
@@ -62,6 +80,7 @@ placeholder's. Do not add one "for consistency" with the derived ontologies.
 | [`qualified-role-assignment`](qualified-role-assignment/pattern.md) | 1, 2, 7 |
 | [`temporal-quartet`](temporal-quartet/pattern.md) | 8 (partly) |
 | [`governed-code-list`](governed-code-list/pattern.md) | 8 |
+| [`multimodal-order-leg`](multimodal-order-leg/pattern.md) | 5 |
 
 Gap numbers refer to `accelerator-packs/logistics/current/blueprint/convergence-analysis.md`
 §"Explicit reference-model gaps".

@@ -1,0 +1,24 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/blueprint> a owl:Ontology ;
+    dcterms:title "Kairos Blueprint Ontology" ;
+    dcterms:description """Root module for the blueprint tier — Kairos-authored classes that
+    close a proven grain gap no standards-derived ontology fills.
+
+    This tier exists because `derived-ontologies/` is bound to be faithful to its source
+    standard, so a grain with no standard behind it cannot live there. Membership is
+    deliberately hard to earn: a class belongs here only when a standards audit has recorded
+    that every candidate in the installed models expresses a different grain.
+
+    Domains:
+      - transport-order/ — demand-side transport order and the carrier reservation slot.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-08-10"^^xsd:date ;
+    dcterms:modified "2026-08-10"^^xsd:date ;
+    owl:versionInfo "0.1.0" ;
+    owl:imports <https://www.kairosflow.ai/ont/blueprint/transport-order> ;
+    rdfs:seeAlso <https://github.com/Cnext-eu/kairos-ontology-referencemodels/issues/29> .

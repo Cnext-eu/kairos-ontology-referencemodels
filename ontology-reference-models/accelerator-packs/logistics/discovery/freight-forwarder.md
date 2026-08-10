@@ -55,11 +55,25 @@ may create several carrier bookings for one customer instruction.
 2. Can one forwarding job create multiple carrier bookings?
 3. Are carrier booking changes versioned or overwritten?
 4. Is a DCSA Shipment represented directly, or only through carrier references?
+5. Which legs does the forwarder subcontract, and which does it execute itself? A leg with no
+   carrier reservation is normal — it means the forwarder ran it.
+6. Does any order span more than one mode? If yes, confirm the customer is quoted one
+   door-to-door price against one order, not one order per mode.
 
-**Maps to.** `dcsa/booking#Booking`, `Shipment`, `ShippingInstruction`.
+**Maps to.** `blueprint/transport-order#TransportOrder` (the forwarding job),
+`blueprint/transport-order#CarrierReservation` (per leg), `dcsa/booking#Booking` (the ocean
+reservation), `Shipment`, `ShippingInstruction`, `mmt/consignment#TransportLeg`.
 
-**Outcome guidance.** An internal forwarding job is not automatically equivalent to a
-DCSA Booking; record it as a potential gap until its grain is proven.
+**Outcome guidance.** The grain question is now settled — an internal forwarding job is **not**
+equivalent to a DCSA Booking, and `TransportOrder` exists for it (issue #29 audit, `LOG-BP-012`).
+What discovery must still establish is the **1..N fan-out**: confirm from source data that one
+job can carry several carrier reservations, since a source that can only ever produce one may
+not need the order grain separated at all.
+
+If the answer to Q6 is yes, do **not** let the hub type the order by mode. Mode belongs on the
+leg — see [`multimodal-order-leg`](../../../blueprints/patterns/multimodal-order-leg/pattern.md).
+A hub proposing `OceanOrder`/`RoadOrder` subclasses, or a single `transportMode` field on the
+order, has hit a known anti-pattern and should be redirected to the leg.
 
 ## 4. Master and house consolidation
 
