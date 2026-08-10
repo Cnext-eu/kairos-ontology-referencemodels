@@ -79,6 +79,14 @@ Both turned out to be the same gap seen from opposite ends: the missing thing wa
   assumption. Both statements corrected.
 - **`validate_structure.py` now parses every `blueprints/patterns/<id>/pattern.yaml`** and checks
   `id` against the directory name. Parse-only floor, not the owed JSON Schema.
+- **Cross-repo contract tests** at `tests/test_toolkit_contract.py`, loading this working tree
+  through the toolkit's *real* loaders rather than a local guess at what they do. Skipped when
+  the toolkit is not on the machine (set `KAIROS_TOOLKIT_SRC`, or keep a sibling checkout), so CI
+  here needs no cross-repo dependency. Asserts every pattern loads via the fail-fast path, bulk
+  loading emits no warnings, `VALID_TIERS` still matches our schema enum, every archetype
+  resolves, and the three-way `TransportOrder` tiering is visible to the consumer. A mirror ships
+  in the toolkit. Neither repo's CI could previously see the other, which is the whole reason the
+  `temporal-quartet` defect survived two minor versions.
 - `naming_conventions` is documented as a list-only block; whole-block prose belongs in a sibling
   `naming_rule` key. Applied to `temporal-quartet` and `multimodal-order-leg`.
 
