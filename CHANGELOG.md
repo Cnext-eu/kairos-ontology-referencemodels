@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.15.0] - 2026-08-10
+
+Closes the transport-mode specialisation gap opened in [1.14.0](#1140---2026-08-10):
+the `multimodal-order-leg` pattern named IATA ONE Record (air) and TAF TSI (rail) as
+reservation-grain extension points — this release authors both, vendors the IATA
+ontology, and re-mediates the FIBO license. Project cargo is documented as **not a
+mode**; nothing is authored for it. The release also lands the logistics discovery
+scope switchboard and repairs the broken archetype/fixed-evidence surface.
+
 ### Added
 - **Scope switchboard in the logistics SME discovery guides** — each guide now opens with a
   `§0 Scope profile` answered before the business-area sections. Three axes (`modes-served`,

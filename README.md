@@ -5,7 +5,7 @@
 _Part of the [Kairos Community Edition](https://github.com/Cnext-eu) by Cnext.eu_
 
 [![Validation Status](https://img.shields.io/badge/validation-passing-brightgreen.svg)](https://github.com/Cnext-eu/kairos-ontology-referencemodels/actions)
-[![Version](https://img.shields.io/badge/version-1.13.0-blue.svg)](VERSION)
+[![Version](https://img.shields.io/badge/version-1.15.0-blue.svg)](VERSION)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 ---
