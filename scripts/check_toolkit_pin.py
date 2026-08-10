@@ -160,7 +160,10 @@ def main(argv: list[str] | None = None) -> int:
         print("  Run: python scripts/check_toolkit_pin.py --update")
         return 1 if args.check else 0
 
-    PYPROJECT.write_text(_PIN_RE.sub(rf"\g<1>{latest}\g<3>{latest}\g<5>", text), encoding="utf-8")
+    # Groups are 1, <version>, 3, 4 — the trailing suffix is group 4, not 5. Both occurrences of
+    # the version (URL path and wheel filename) must be rewritten, which is why the version is
+    # substituted twice rather than back-referenced.
+    PYPROJECT.write_text(_PIN_RE.sub(rf"\g<1>{latest}\g<3>{latest}\g<4>", text), encoding="utf-8")
     print(f"  ✎ pyproject.toml → {latest}")
     lock = subprocess.run(["uv", "lock"], cwd=REPO_ROOT, capture_output=True, text=True)
     if lock.returncode != 0:
