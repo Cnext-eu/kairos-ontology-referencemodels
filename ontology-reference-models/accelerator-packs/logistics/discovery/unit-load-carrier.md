@@ -68,6 +68,62 @@ it for the blueprint layer's gap-closure backlog instead. Inventing a class
 during a live discovery session produces exactly the kind of untracked,
 divergent local extension the archetype catalog exists to prevent.
 
+### Scope profile (ask before §1)
+
+The axes, their allowed values and the **resolution rules** (promote never
+demote; out-of-scope ⇒ pre-seeded `not-applicable` with
+`needs_confirmation: true`) are defined once in
+[`README.md`](./README.md#scope-axes). Only the unit-load-specific
+consequences are below.
+
+This archetype starts from a narrower position than the other two: the
+ferry/ro-ro leg bookended by road haulage is constitutive of it, so
+`mmt/inland-transport` is already **required** and the door-to-door answer
+is effectively fixed. The axes here mostly decide the *edges* — rail
+intermodal, terminal depth, and whether haulage is own-account.
+
+#### `modes-served` (multi-valued)
+
+Mode targets are cited from
+[`pattern.yaml` `mode_bindings`](../../../blueprints/patterns/multimodal-order-leg/pattern.yaml).
+
+| Answer | Modules promoted / added | Pre-seed `not-applicable` |
+|---|---|---|
+| `ocean` + `road` (the archetype baseline) | defaults apply unchanged | — |
+| `rail` — swap-bodies or trailers moving on rail wagons | `https://www.kairosflow.ai/ont/mmt/transport-means` → **required** (`RailVehicle`); grain 3 target is **TAF TSI**, catalogued as `https://www.kairosflow.ai/ont/rail/path-request`, `https://www.kairosflow.ai/ont/rail/consignment` | — |
+| no rail intermodal | — | `mmt/inland-transport#RailLeg`, `mmt/transport-means#RailVehicle` |
+| `barge` | `https://www.kairosflow.ai/ont/mmt/transport-means` → **required** (`BargeVessel`) | — |
+| no barge | — | `mmt/inland-transport#BargeLeg`, `mmt/transport-means#BargeVessel` |
+| `air` | — **not applicable to this archetype**; if the client genuinely sells air, it is forwarding, not unit-load carriage — see `freight-forwarder` | — |
+
+The accompanied / unaccompanied distinction (§1, §20) is **not** a mode.
+It is a property of how the trailer travels on the ferry leg, and belongs
+on the leg and the equipment — never as a fourth branch of a mode axis.
+Same category error the pattern rejects for project cargo.
+
+#### `geographic-scope`
+
+| Answer | Modules promoted / added | Pre-seed `not-applicable` |
+|---|---|---|
+| `door-to-door` (the baseline) | defaults apply unchanged | — |
+| `port-to-port` only — quay-to-quay ferry slot sales, no haulage | `https://www.kairosflow.ai/ont/mmt/inland-transport` **stays required** (rule 2 — the archetype floor cannot be demoted) | `mmt/inland-transport#HaulageInstructions`, `InlandCarrier` |
+
+A client answering `port-to-port` here is worth challenging: if it really
+sells only quay-to-quay ferry slots with no road leg at any point, then
+`shipping-carrier` (ro-ro scope) is the better archetype and this session
+should be restarted against it.
+
+#### `service-model` (multi-valued)
+
+| Answer | Modules promoted / added | Pre-seed `not-applicable` |
+|---|---|---|
+| `2pl`, own-account haulage | `https://www.kairosflow.ai/ont/mmt/equipment` **required** (already); `mmt/transport-means` → **required** (`RoadVehicle`) | — |
+| `2pl`, fully subcontracted haulage | defaults apply unchanged — a leg with no own vehicle is normal | `mmt/transport-means#RoadVehicle` |
+| also `3pl` (selling arranged transport beyond own network) | `https://www.kairosflow.ai/ont/blueprint/transport-order` → **required** (declared `recommended` in this archetype) | — |
+
+Own-account versus subcontracted is asked again in §5 in business terms; if
+the answers differ, the Scope profile is wrong and must be corrected first.
+
 ---
 
 ## §1 Booking / order intake

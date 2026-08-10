@@ -43,6 +43,12 @@ ref_model_modules:
   - { iri: "https://www.kairosflow.ai/ont/mmt/transport-means",      tier: required }
   - { iri: "https://www.kairosflow.ai/ont/imo/vessel-registry",      tier: recommended }
 
+  # Inland legs under carrier haulage. Optional because a port-to-port carrier has none; the
+  # `geographic-scope` / `modes-served` axes in discovery/shipping-carrier.md promote it when
+  # the carrier sells door-to-door. Declared here so an axis never selects an undeclared
+  # module — see accelerator-packs/logistics/discovery/README.md resolution rule 1.
+  - { iri: "https://www.kairosflow.ai/ont/mmt/inland-transport",     tier: optional }
+
   # Schedule & vessel journey.
   - { iri: "https://www.kairosflow.ai/ont/dcsa/vessel-journey",      tier: required }
   - { iri: "https://www.kairosflow.ai/ont/dcsa/schedule",            tier: required }
@@ -314,3 +320,11 @@ core_concepts:
   - { uri: "https://www.kairosflow.ai/ont/sustainability/carbon#EEXICompliance",  tier: optional, label: "EEXI Compliance" }
   - { uri: "https://www.kairosflow.ai/ont/sustainability/carbon#EUETSAllowance",  tier: optional, label: "EU ETS Allowance" }
   - { uri: "https://www.kairosflow.ai/ont/sustainability/carbon#CarbonOffset",    tier: optional, label: "Carbon Offset" }
+
+  # ─── 22. Inland legs under carrier haulage ────────────────────────────
+  # Optional: a port-to-port carrier has none. Promoted by the `geographic-scope` axis when
+  # the carrier sells door-to-door. Mode is stated on the leg, never on the booking.
+  - { uri: "https://www.kairosflow.ai/ont/mmt/inland-transport#InlandLeg", tier: optional, label: "Inland Leg (abstract)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/inland-transport#RoadLeg",   tier: optional, label: "Road Leg (carrier haulage)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/inland-transport#RailLeg",   tier: optional, label: "Rail Leg (carrier haulage)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/inland-transport#BargeLeg",  tier: optional, label: "Barge Leg" }

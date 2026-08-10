@@ -18,7 +18,7 @@ Two checks:
           the graph reachable from its module (the prefix of the URI must match
           one of the catalogued module IRIs).
 
-Also runs three advisory-only checks that never fail the build:
+Also runs four advisory-only checks that never fail the build:
 
   3. Discovery-doc pairing: warn if an archetype has no matching
      ``accelerator-packs/*/discovery/<id>.md`` (filename-stem convention).
@@ -35,6 +35,18 @@ Also runs three advisory-only checks that never fail the build:
   5. Orphaned discovery docs: warn about any ``accelerator-packs/*/discovery/<id>.md``
      whose ``<id>`` does not match a known archetype id — the symmetric complement
      of check 3.
+
+  6. Scope-profile integrity: the discovery guides carry a prose "scope switchboard"
+     that tunes an archetype's module set from the SME's answers (modes served,
+     geographic scope, service model). It is prose because the consumer is an LLM
+     skill reading the markdown — the toolkit's ``archetype_loader`` hands it the doc
+     path and never parses it. Unwatched prose drifts, so two invariants are checked:
+     every module IRI a Scope profile names is declared in that archetype's
+     ``ref_model_modules`` (or is a grain-3 mode target from ``multimodal-order-leg``
+     ``pattern.yaml``), and ``pattern.md``'s per-mode table agrees with that file's
+     ``mode_bindings`` statuses. The second targets a drift that really occurred: air
+     and rail stayed ``extension-point`` in the YAML for two releases after the models
+     landed, because nothing read it.
 
 Network policy: local-only. No remote IRI dereference. YAML loaded with
 ``yaml.safe_load``. The script exits non-zero on any hard failure; checks 3-5
@@ -194,7 +206,140 @@ def _check_discovery_doc(archetype_id: str, rel: Path, warnings: list[str]) -> N
         )
 
 
+#: Heading that opens a discovery guide's scope switchboard, and the heading level that ends it.
+_SCOPE_HEADING_RE = re.compile(r"^###\s+Scope profile\b.*$", re.MULTILINE)
+#: Any absolute IRI written inside backticks in a scope-profile table.
+_SCOPE_IRI_RE = re.compile(r"`(https?://[^`\s]+)`")
+#: A pattern.md mode-table row: | **Ocean** | ... | **Modelled** (...) | ... |
+_MODE_ROW_RE = re.compile(r"^\|\s*\*\*(\w[\w\s/]*?)\*\*\s*\|(.*)$", re.MULTILINE)
+
 _SCOPE_QUALIFIER_RE = re.compile(r"for ([\w\s]+?) scope", re.IGNORECASE)
+
+
+def _scope_profile_section(text: str) -> str | None:
+    """Return the text of a guide's '### Scope profile' section, or None if absent."""
+    match = _SCOPE_HEADING_RE.search(text)
+    if match is None:
+        return None
+    rest = text[match.end():]
+    # The section ends at the next heading of the same or higher level.
+    end = re.search(r"^(###\s|##\s|#\s)", rest, re.MULTILINE)
+    return rest[: end.start()] if end else rest
+
+
+def _check_scope_profiles(
+    archetype_modules: dict[str, set[str]], warnings: list[str]
+) -> None:
+    """Advisory-only: keep each guide's Scope profile honest against the machine catalog.
+
+    The scope switchboard is prose because the consumer is an LLM skill reading the discovery
+    markdown — ``archetype_loader`` hands it the doc path and never parses it. Prose with no
+    guard is how ``pattern.yaml``'s ``mode_bindings`` and ``capability-coverage.yaml`` went
+    stale, so the two invariants that make the prose trustworthy are checked here:
+
+      a. Every module IRI a Scope profile names must be declared in that archetype's
+         ``ref_model_modules`` (resolution rule 1 — an axis promotes a tier, it never invents
+         a module the loader cannot deliver). Grain-3 mode targets are the documented
+         exception and are matched against ``pattern.yaml`` ``mode_bindings`` instead.
+      b. A guide for an archetype must actually carry a Scope profile once its siblings do.
+
+    See accelerator-packs/logistics/discovery/README.md, "Resolution rules".
+    """
+    if not ACCELERATOR_PACKS_DIR.is_dir():
+        return
+
+    mode_target_iris = _mode_binding_iris()
+
+    for doc_path in sorted(ACCELERATOR_PACKS_DIR.glob("*/discovery/*.md")):
+        if doc_path.stem == "README":
+            continue
+        declared = archetype_modules.get(doc_path.stem)
+        if declared is None:
+            continue  # orphaned doc — already reported by _check_orphaned_discovery_docs
+        rel = doc_path.relative_to(REPO_ROOT)
+        section = _scope_profile_section(doc_path.read_text(encoding="utf-8"))
+        if section is None:
+            warnings.append(
+                f"{rel}: no '### Scope profile' section — the archetype's module set cannot "
+                "be tuned from the interview (see discovery/README.md, 'Scope axes')"
+            )
+            continue
+        for iri in sorted(set(_SCOPE_IRI_RE.findall(section))):
+            if iri in declared or iri in mode_target_iris:
+                continue
+            warnings.append(
+                f"{rel}: Scope profile names module '{iri}' which is not in "
+                f"{doc_path.stem}.yaml ref_model_modules, nor a mode target in "
+                "multimodal-order-leg/pattern.yaml — an axis may only promote a module the "
+                "archetype already declares (discovery/README.md resolution rule 1)"
+            )
+
+
+def _mode_binding_iris() -> set[str]:
+    """Every module IRI reachable from ``multimodal-order-leg`` ``mode_bindings``."""
+    path = (
+        ONTOLOGY_ROOT / "blueprints" / "patterns" / "multimodal-order-leg" / "pattern.yaml"
+    )
+    if not path.exists():
+        return set()
+    data = _load_yaml(path) or {}
+    iris: set[str] = set()
+    for binding in data.get("mode_bindings", []) or []:
+        for key in ("module_iris", "leg_module_iris"):
+            iris.update(binding.get(key) or [])
+        target = binding.get("target")
+        if isinstance(target, str) and target.startswith("http"):
+            iris.add(target)
+    return iris
+
+
+def _check_mode_binding_drift(warnings: list[str]) -> None:
+    """Advisory-only: ``pattern.md``'s mode table must agree with ``pattern.yaml``.
+
+    This is the drift that actually happened: the air and rail mode specialisations landed in
+    the models and in ``pattern.md``, but ``pattern.yaml`` kept saying ``extension-point`` for
+    two releases because nothing read it. Cheap lexical check, aimed squarely at that failure.
+    """
+    base = ONTOLOGY_ROOT / "blueprints" / "patterns" / "multimodal-order-leg"
+    yaml_path, md_path = base / "pattern.yaml", base / "pattern.md"
+    if not yaml_path.exists() or not md_path.exists():
+        return
+    data = _load_yaml(yaml_path) or {}
+    md_text = md_path.read_text(encoding="utf-8")
+    rel = yaml_path.relative_to(REPO_ROOT)
+
+    md_status = {
+        mode.strip().lower(): row.lower()
+        for mode, row in _MODE_ROW_RE.findall(md_text)
+    }
+    for binding in data.get("mode_bindings", []) or []:
+        mode = str(binding.get("mode", "")).lower()
+        status = str(binding.get("status", "")).lower()
+        row = next((r for m, r in md_status.items() if m.startswith(mode)), None)
+        if row is None:
+            warnings.append(
+                f"{rel}: mode '{mode}' has no row in pattern.md's per-mode alignment table"
+            )
+        elif status.replace("-", " ") not in row.replace("-", " "):
+            warnings.append(
+                f"{rel}: mode '{mode}' is '{status}' in pattern.yaml but pattern.md's table "
+                "does not say so — the prose and the machine twin have drifted"
+            )
+
+    resolver_targets = _mode_binding_iris()
+    if not CATALOG_PATH.exists() or not resolver_targets:
+        return
+    from catalog_utils import CatalogResolver  # type: ignore[import-not-found]
+
+    resolver = CatalogResolver(CATALOG_PATH)
+    for iri in sorted(resolver_targets):
+        base_iri = iri.split("#", 1)[0]
+        local_path = resolver.resolve(base_iri)
+        if local_path is None or not Path(local_path).exists():
+            warnings.append(
+                f"{rel}: mode_bindings IRI '{base_iri}' has no catalog mapping "
+                "(or the file is missing) — the mode target is not resolvable"
+            )
 
 
 def _check_anchor_generality(warnings: list[str]) -> None:
@@ -281,6 +426,8 @@ def main() -> int:
 
     errors: list[str] = []
     warnings: list[str] = []
+    #: archetype id -> declared ref_model_modules IRIs, for the scope-profile check.
+    archetype_modules: dict[str, set[str]] = {}
 
     for yaml_file in files:
         rel = yaml_file.relative_to(REPO_ROOT)
@@ -296,11 +443,16 @@ def main() -> int:
         archetype_id = data.get("id") if isinstance(data, dict) else None
         if archetype_id:
             _check_discovery_doc(archetype_id, rel, warnings)
+            archetype_modules[archetype_id] = {
+                m["iri"] for m in data.get("ref_model_modules", []) or [] if "iri" in m
+            }
         print(f"  • {rel}")
 
     # Pack-level advisory checks: not tied to any single archetype file.
     _check_anchor_generality(warnings)
     _check_orphaned_discovery_docs({f.stem for f in files}, warnings)
+    _check_scope_profiles(archetype_modules, warnings)
+    _check_mode_binding_drift(warnings)
 
     print()
     for w in warnings:

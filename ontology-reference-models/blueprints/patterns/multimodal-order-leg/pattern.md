@@ -68,6 +68,12 @@ the hub.
 dominant reservation-grain standard, so they remain pattern-only. Each mode binds at grain 3
 in the hub, never at the order grain.
 
+The machine-readable form of this table is [`pattern.yaml`](./pattern.yaml) `mode_bindings`,
+which additionally carries the module IRIs per mode (`module_iris` at grain 3,
+`leg_module_iris` at grain 2). That block is the single source consumed by the `modes-served`
+scope axis in the accelerator-pack discovery guides; `scripts/validate_archetypes.py` check 6
+asserts the two stay in agreement.
+
 | Mode | Reservation-grain target (grain 3) | Status | Note |
 |---|---|---|---|
 | **Ocean** | DCSA Booking (BKG API) — `dcsa/booking#Booking` | **Modelled** (derived, `DCSA/`) | Bind hub-local, per above. |

@@ -45,36 +45,72 @@ naming_rule: >
   windows follow the temporal-quartet pattern (requestedStart / requestedEnd). Never name a
   property or class on the order after a transport mode, and never declare a direct
   order-to-reservation link — reservations attach to legs.
+# Single source of truth for the mode -> reservation-target -> module mapping. The prose table
+# in pattern.md and the `modes-served` scope axis in the accelerator-pack discovery guides both
+# cite this block rather than restating it; validate_archetypes.py check 6 asserts pattern.md
+# agrees with the `status` values here.
+#
+# `leg_module_iris` is grain 2 (where mode is stated, always MMT). `module_iris` is grain 3 (the
+# reservation-grain standard), empty where no standard exists. `import_policy: reference-only`
+# means catalogue the IRI but never add it to an accelerator pack's includes.
 mode_bindings:
   - mode: ocean
     grain: reservation
     target: https://www.kairosflow.ai/ont/dcsa/booking#Booking
     status: modelled
     binding: hub-local
+    leg_module_iris: []
+    module_iris:
+      - https://www.kairosflow.ai/ont/dcsa/booking
   - mode: air
     grain: reservation
     target: "IATA ONE Record cargo data model (Booking, BookingRequest, BookingOption)"
-    status: extension-point
+    status: modelled
+    binding: hub-local
+    import_policy: reference-only
+    leg_module_iris:
+      - https://www.kairosflow.ai/ont/mmt/transport-means
+    module_iris:
+      - https://onerecord.iata.org/ns/cargo
     note: >
-      Published as RDF/OWL, so it would enter authoritative-ontologies/, not derived-ontologies/.
-      Not IATA Cargo-XML — XFWB/XFZB are waybill messages at document grain, already covered by
-      mmt/documents#AirWaybill.
+      Published natively as RDF/OWL, so it is vendored FIBO-style under
+      authoritative-ontologies/IATA/ rather than hand-authored as a derived ontology. Resolve it
+      through catalog-v001.xml; never bulk-import it into an accelerator pack (mirrors the FIBO
+      exclusion — see authoritative-ontologies/IATA/README.md). Not IATA Cargo-XML — XFWB/XFZB
+      are waybill messages at document grain, already covered by mmt/documents#AirWaybill.
   - mode: rail
     grain: reservation
     target: "TAF TSI — Path Request / Consignment Order"
-    status: extension-point
+    status: modelled
+    binding: hub-local
+    leg_module_iris:
+      - https://www.kairosflow.ai/ont/mmt/inland-transport
+    module_iris:
+      - https://www.kairosflow.ai/ont/rail/path-request
+      - https://www.kairosflow.ai/ont/rail/consignment
+      - https://www.kairosflow.ai/ont/rail/party
     note: >
-      Not RailML, which is infrastructure and timetable. The CIM consignment note is document
-      grain and is already modelled as mmt/documents#RailConsignmentNote.
+      Hand-authored derived ontology grounded in the TAF TSI data catalogue (taf_cat_complete.xsd,
+      EU Regulation 1305/2012 Annex D.2 Appendix F); every class carries a cited TAF TSI element.
+      path-request/consignment/party bind at grain 3; train-running and rolling-stock are grain 4
+      (movement) and are selected by execution scope, not by the reservation. Not RailML, which is
+      infrastructure and timetable. The CIM consignment note is document grain and is already
+      modelled as mmt/documents#RailConsignmentNote.
   - mode: road
     grain: reservation
     target: null
     status: pattern-only
+    leg_module_iris:
+      - https://www.kairosflow.ai/ont/mmt/inland-transport
+    module_iris: []
     note: "No standard forces a reservation shape. CMR covers the document grain only."
   - mode: barge
     grain: reservation
     target: null
     status: pattern-only
+    leg_module_iris:
+      - https://www.kairosflow.ai/ont/mmt/inland-transport
+    module_iris: []
 anti_patterns:
   - id: mode-subclass-on-order
     description: "OceanOrder / RoadOrder / AirOrder subclasses, or an orderTransportMode scalar."

@@ -8,6 +8,86 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Scope switchboard in the logistics SME discovery guides** — each guide now opens with a
+  `§0 Scope profile` answered before the business-area sections. Three axes (`modes-served`,
+  `geographic-scope`, `service-model`) turn an SME's answers into a tuned module set, so a
+  two-mode port-to-port agent and a five-mode door-to-door 4PL no longer resolve to the same
+  ontology. The axes and their **resolution rules** are defined once in
+  `accelerator-packs/logistics/discovery/README.md`; each guide carries only its own
+  consequence tables, because the same answer implies different modules for a forwarder than
+  for a carrier. Mode targets are cited from `multimodal-order-leg` `pattern.yaml`
+  `mode_bindings` rather than restated.
+- **Resolution rule 1** — an axis may only *promote* the tier of a module the archetype
+  already declares, never invent one. `ref_model_modules` is the complete menu of what an
+  operating model can require; the axis chooses from it. This is what makes the prose
+  checkable, since `ref_model_modules` is exactly what the toolkit's `archetype_loader` reads.
+  Scope answers land on the existing `outcome-codes.yaml` enum as a pre-seeded
+  `not-applicable` + `needs_confirmation: true`, so no new outcome code and no cross-repo
+  contract change was needed.
+- **"Picking a starting archetype" alias table** in `discovery/README.md` — maps market
+  vocabulary (3PL, 4PL, LSP, control tower, NVOCC, shipping line, ferry/ro-ro operator, road
+  haulier, BCO) onto archetype ids, which name an *operating model* rather than a commercial
+  position. Records why xPL is not used as an archetype id: it has no ISO/CEN/UN-CEFACT/WCO
+  definition (4PL is a 1996 Accenture coinage), none of the party-role code lists the derived
+  ontologies are grounded in contains an xPL code, and most real operators occupy several
+  rungs at once — so `service-model` is recorded multi-valued and is a routing hint only.
+- **`scripts/validate_archetypes.py` check 6** (advisory) — the guard that keeps the prose
+  honest. Asserts every module IRI a Scope profile names is declared in that archetype's
+  `ref_model_modules` (grain-3 mode targets excepted and matched against `mode_bindings`
+  instead), that a paired guide carries a Scope profile at all, that `pattern.md`'s per-mode
+  table agrees with `pattern.yaml`'s `mode_bindings` statuses, and that every mode target
+  resolves through the catalog.
+- **`mode_bindings[].module_iris` and `.leg_module_iris`** in
+  `blueprints/patterns/multimodal-order-leg/pattern.yaml` — the module IRIs per mode, split
+  by grain (3 = the reservation-grain standard, 2 = where mode is stated). Makes that block
+  the single mode→module source the discovery guides cite. IATA carries
+  `import_policy: reference-only`.
+- **`.docs/wip/discovery-scope-selection-cr.md`** — the cross-repo CR for machine-readable
+  scope resolution (`_scope/scope-axes.yaml` + the `archetype_loader` /
+  `discovery-conformance load` changes to consume it), specified so registry and reader land
+  together the way CR #203 did for outcome codes. Also records the deferred backlog: archetype
+  composition, the five missing archetypes, and the forwarder guide's remaining business areas.
+
+### Fixed
+- **`freight-forwarder.yaml` could not express transport mode at all.** The archetype declared
+  11 modules against 27/28 for the two carrier archetypes and was missing
+  `mmt/inland-transport` — the module declaring `RoadLeg`/`RailLeg`/`BargeLeg`/`InlandLeg`,
+  which is precisely where `multimodal-order-leg` places mode and which the forwarder guide's
+  own §3 links to. A forwarder hub built from this archetype could not state that a leg was a
+  road leg. Added at `required` with those four classes, plus `mmt/transport-means`
+  (`Aircraft`/`RailVehicle`/`RoadVehicle`/`BargeVessel`) at `recommended` and
+  `InlandCarrier`/`HaulageInstructions` for carrier-versus-merchant haulage.
+- **Air and rail mode specialisations were invisible to the discovery layer.** `pattern.yaml`
+  still reported `status: extension-point` for both while `pattern.md` said *modelled* — the
+  78c967c work landed in the models and the prose but not the machine twin, because nothing
+  reads it. Both set to `modelled` with their catalogued module IRIs. Same drift in
+  `accelerator-packs/logistics/current/blueprint/capability-coverage.yaml`, which still listed
+  "Air reservation alignment (IATA ONE Record)" and "Rail reservation alignment (TAF TSI)" as
+  open extension points at a stale `accelerator_version: "1.8.0"`.
+- **`freight-forwarder.md` violated the structure its own `discovery/README.md` mandates** —
+  168 lines using `## 1.` instead of `## §1`, no `§0` interview-flow / outcome-code /
+  don't-ask-twice blocks, no link to its archetype YAML, and *Outcome guidance* on only 2 of 9
+  sections while `shipping-carrier.md` and `unit-load-carrier.md` both complied fully. Most
+  consequentially §1 asked "which modes are supported" and "door-to-door or port-to-port" and
+  then dropped the answers: no outcome guidance, and a mode-blind *Maps to*. Rebuilt on the
+  `shipping-carrier.md` skeleton with guidance on every section. New business areas (dangerous
+  goods, sustainability, settlement, trade facilitation, warehousing) are deliberately
+  deferred — see the CR.
+- **`blueprint/evidence/class-inventory.yaml` was missing the entire RAIL module set**, and
+  `tests/test_logistics_blueprint.py::test_real_repository_inventory_is_deterministic_without_artifacts`
+  was **already failing on `main`** as a result. Commit 78c967c added `owl:imports <ont/rail>`
+  to `logistics-accelerator.ttl` but never regenerated the derived inventory evidence, so the
+  committed artifact carried 67 modules against the accelerator's actual 74 and zero
+  `ont/rail` records. Regenerated with `scripts/generate_logistics_inventory.py`; the
+  hardcoded module count in the test is updated to 74 with a note on why it moved. The four
+  blueprint registries are re-stamped to the pack version, which the version-agreement
+  invariant requires transitively via the generated inventory.
+- **`shipping-carrier.yaml`** gained `mmt/inland-transport` at `optional` (with `InlandLeg`,
+  `RoadLeg`, `RailLeg`, `BargeLeg`) so the carrier-haulage promotion in its Scope profile has a
+  declared module to promote, satisfying resolution rule 1. `blueprint/transport-order` stays
+  deliberately absent: a carrier's incoming demand *is* the booking, and the guide now routes a
+  carrier that genuinely sells arranged transport to the composition backlog instead of
+  stretching the archetype.
 - **`authoritative-ontologies/FIBO/current/LICENSE`** — upstream MIT license text
   (Copyright (c) 2020 Enterprise Data Management Council). The 300+ vendored FIBO files
   were bundled without the license text, which MIT requires to travel with any copy or

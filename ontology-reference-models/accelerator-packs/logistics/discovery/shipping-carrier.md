@@ -47,6 +47,62 @@ catalog graph and present it as a confirmation checklist — not as open
 questions. This guide therefore focuses on **business semantics** and
 **cardinality/lifecycle decisions** the ontology cannot pin down.
 
+### Scope profile (ask before §1)
+
+The axes, their allowed values and the **resolution rules** (promote never
+demote; out-of-scope ⇒ pre-seeded `not-applicable` with
+`needs_confirmation: true`) are defined once in
+[`README.md`](./README.md#scope-axes). Only the carrier-specific
+consequences are below. §1 asks these same questions in business terms —
+if the answers differ, the Scope profile is wrong and must be corrected
+first, because the module set depends on it.
+
+#### `modes-served` (multi-valued)
+
+Ocean-side values only for this archetype; a carrier selling road or rail
+feeder legs on its own bill is answering for a leg it subcontracts, which
+belongs on the `service-model` axis, not here. Mode targets are cited from
+[`pattern.yaml` `mode_bindings`](../../../blueprints/patterns/multimodal-order-leg/pattern.yaml).
+
+| Answer | Modules promoted / added | Pre-seed `not-applicable` |
+|---|---|---|
+| `ocean` (deep-sea, short-sea, feeder) | archetype defaults apply unchanged | — |
+| `barge` / inland waterway | `https://www.kairosflow.ai/ont/mmt/transport-means` (`BargeVessel`) → **required** | — |
+| `ocean` only, no barge | — | `mmt/transport-means#BargeVessel` |
+| carrier haulage sold on road or rail legs | `https://www.kairosflow.ai/ont/mmt/inland-transport` → **recommended** (`RoadLeg`, `RailLeg`) | — |
+
+#### `geographic-scope`
+
+| Answer | Modules promoted / added | Pre-seed `not-applicable` |
+|---|---|---|
+| `door-to-door` (carrier haulage) or `both` | `https://www.kairosflow.ai/ont/mmt/inland-transport` → **recommended**; `dcsa/locations#PlaceOfReceipt`, `PlaceOfDelivery`, `PreCarriageFromLocation`, `OnwardInlandRoutingLocation` → **required** | — |
+| `port-to-port` only | — | `dcsa/locations#PreCarriageFromLocation`, `OnwardInlandRoutingLocation`, `mmt/consignment#MasterConsignment`, `HouseConsignment` (confirm against §2 Q3 first) |
+
+This is the rule §1's **Outcome guidance** states in prose; both cite this
+axis so the two cannot drift.
+
+#### `service-model` (multi-valued)
+
+| Answer | Modules promoted / added | Pre-seed `not-applicable` |
+|---|---|---|
+| `2pl` (asset carrier — the default) | archetype defaults apply unchanged | — |
+| also `3pl` / `4pl` (carrier also selling arranged multi-carrier services) | **none — stop and escalate**, see below | — |
+
+A pure `2pl` keeps grain 1 absent, deliberately: its incoming demand **is**
+the booking, and adding a `TransportOrder` above `dcsa:Booking` duplicates
+it with a synonym ([`pattern.md`](../../../blueprints/patterns/multimodal-order-leg/pattern.md),
+"When NOT to use"). `blueprint/transport-order` is therefore **not declared
+in this archetype at all**, and no axis may add it — an axis can only
+promote a module the archetype already declares
+([resolution rule 1](./README.md#resolution-rules)).
+
+So a carrier that genuinely also sells arranged multi-carrier transport is
+not one archetype being tuned; it is two operating models in one company —
+the `freight-forwarder` archetype for that part of the business. Composition
+is unsupported in v0 (one archetype id per session). Record the finding, run
+the forwarding side as a separate session, and flag it for the composition
+backlog. Do **not** stretch this archetype to cover it.
+
 ---
 
 ## §1 Service scope & shipment type

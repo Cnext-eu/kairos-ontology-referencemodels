@@ -31,7 +31,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-08-15"^^xsd:date ;
-    owl:versionInfo "1.9.0" ;
+    owl:versionInfo "1.10.0" ;
     owl:imports <https://www.kairosflow.ai/ont/blueprint/transport-order> ,
                 <https://www.kairosflow.ai/ont/dcsa> ,
                 <https://www.kairosflow.ai/ont/dcsa/demurrage-detention> ,
