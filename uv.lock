@@ -262,7 +262,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "jsonschema", marker = "extra == 'dev'", specifier = ">=4.0" },
-    { name = "kairos-ontology-toolkit", url = "https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.1.0rc2/kairos_ontology_toolkit-5.1.0rc2-py3-none-any.whl" },
+    { name = "kairos-ontology-toolkit", url = "https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.2.0rc6/kairos_ontology_toolkit-5.2.0rc6-py3-none-any.whl" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0" },
     { name = "pyyaml", marker = "extra == 'dev'", specifier = ">=6.0" },
     { name = "rdflib", marker = "extra == 'dev'", specifier = ">=7.4" },
@@ -271,8 +271,8 @@ provides-extras = ["dev"]
 
 [[package]]
 name = "kairos-ontology-toolkit"
-version = "5.1.0rc2"
-source = { url = "https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.1.0rc2/kairos_ontology_toolkit-5.1.0rc2-py3-none-any.whl" }
+version = "5.2.0rc6"
+source = { url = "https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.2.0rc6/kairos_ontology_toolkit-5.2.0rc6-py3-none-any.whl" }
 dependencies = [
     { name = "click" },
     { name = "jinja2" },
@@ -288,7 +288,7 @@ dependencies = [
     { name = "rdflib" },
 ]
 wheels = [
-    { url = "https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.1.0rc2/kairos_ontology_toolkit-5.1.0rc2-py3-none-any.whl", hash = "sha256:330abaefb9091ebf96c7b700d419919a419030d0c90ef0aa99a05b9d15bfc041" },
+    { url = "https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.2.0rc6/kairos_ontology_toolkit-5.2.0rc6-py3-none-any.whl", hash = "sha256:c4a21524b093cb6029a7850c218f9ee7ccfaf84c2f49516fcf5074e1514597ad" },
 ]
 
 [package.metadata]
@@ -305,7 +305,7 @@ requires-dist = [
     { name = "packaging", specifier = ">=23.0" },
     { name = "pyarrow", specifier = ">=14.0.0" },
     { name = "pyarrow", marker = "extra == 'parquet'", specifier = ">=14.0.0" },
-    { name = "pypdf", specifier = ">=4.0.0" },
+    { name = "pypdf", specifier = ">=6.14.2" },
     { name = "pyshacl", specifier = ">=0.30.1" },
     { name = "python-dotenv", specifier = ">=1.0.0,<2.0.0" },
     { name = "pyyaml", specifier = ">=6.0" },

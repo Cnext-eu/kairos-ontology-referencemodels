@@ -7,6 +7,74 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+A QA pass after [1.15.0](#1150---2026-08-10) found every automated gate green while six
+documentation surfaces had silently gone stale. Each miss was in a file with **no machine
+reader**. This release makes the derived surfaces generated or tested, closes the RAIL/IATA
+registration gap, and removes a hub scaffold that never belonged in this repository.
+
+### Added
+- **`tests/test_model_registration.py`** — fan-out tests treating `manifest.yaml` as the single
+  hand-edited registry: every advertised module must be imported by the accelerator, resolvable
+  through the catalog, absent from `owl:imports` when reference-only, and reachable from
+  `data-domains.yaml`. A module may opt out only via an explicit `data_domain_status` on the
+  manifest entry, so a known gap is a tracked gap. A model added to the bundle and wired nowhere
+  now fails three tests at once.
+- **`scripts/generate_pack_docs.py`** — renders pack README module tables, version lines, and the
+  `.intro` version/sheet tables from `manifest.yaml` plus per-module `VERSION` files into
+  marker-delimited blocks, leaving hand-written narrative untouched. `--check` runs in CI, the
+  same contract as `generate_logistics_inventory.py --check`.
+- **`scripts/check_toolkit_pin.py`** — compares the pinned toolkit wheel against the newest
+  release on the configured `[tool.kairos].channel`. A wheel URL is exact by construction and
+  `channel` is only read by `kairos-ontology update --upgrade`, so nothing ever advanced the pin
+  on its own. Degrades to a pass when offline.
+- **Cross-repo contract CI job** — installs the pinned toolkit and runs
+  `tests/test_toolkit_contract.py`, asserting tests were actually collected so a silent skip
+  fails the build. Structural validation stays toolkit-free in its own job.
+- **Model sheets for RAIL and IATA** (`.intro/industry-models/`) — the two newest models were the
+  only ones with no business-facing briefing. RAIL carries the reservation-vs-movement grain
+  split; IATA carries the authoritative-mirror tier and reference-only import policy.
+
+### Changed
+- **Mode-binding and scope-profile drift now fail the build** (`validate_archetypes.py` checks 6
+  and 7, previously advisory). The v1.13-1.15 defect — `pattern.yaml` saying `extension-point`
+  for air and rail for two releases — would have printed a warning into a green run.
+- **`mode_bindings[].target` → `target_iris` + `target_note`.** The old field held an IRI for
+  ocean but prose for air and rail, and the collector skipped anything not starting with `http`,
+  so the prose was never validated. Every `target_iris` entry is now asserted to be a declared
+  `owl:Class`.
+- **RAIL and IATA wired into `data-domains.yaml`** by grain: `rail/path-request` and
+  `rail/consignment` plus IATA ONE Record cargo at the reservation grain (`booking`);
+  `rail/train-running` and `rail/rolling-stock` at movement grain (`intermodal`); `rail/party`
+  beside `imo/party`. IATA is marked `reference-only` — the pack never imports it, a hub binds to
+  it hub-local. The toolkit now resolves 56 module profiles for logistics, up from 50.
+- **Toolkit pin `5.1.0rc2` → `5.2.0rc6`**, `uv.lock` regenerated. Three versions had been live at
+  once: installed `4.5.0rc4`, pinned `5.1.0rc2`, published `5.2.0rc6`. The cross-repo contract
+  tests could not run before this, because `pattern_loader` does not exist in `5.1.0rc2`.
+- **`.github/copilot-instructions.md` rewritten for this repository.** It described a v5 *hub*
+  — `kairos.yaml`, `compile <domain>`, EntityBinding — none of which exists here.
+
+### Fixed
+- **`scripts/catalog_utils.py` now implements `rewriteURI`.** Only exact `<uri>` entries were
+  honoured, so the single rule covering 300+ FIBO files was invisible: every FIBO import resolved
+  to `None` while `test_catalog.py` still reported "all mappings valid". Includes the FIBO
+  trailing-slash convention (`…/Contracts/` → `Contracts.rdf`).
+- Stale generated facts: the logistics pack README claimed "8 ontologies" and version `1.6.0`
+  against 11 imports at `1.10.0`; the two `.intro` version tables were up to four releases behind.
+- `pattern.md` listed `TransportMovement` as an air reservation-grain target; it is movement grain.
+
+### Removed
+- **27 toolkit-managed agent files** — 22 hub-authoring `kairos-*` skills, 3 `SC-*` skills, and a
+  stray `.docs/wip/SKILL.md`. The toolkit's hub scaffold had been applied to a repository that is
+  not a hub, which is why `kairos-design-silver` appeared stale: it was current, and simply did
+  not belong here. The two repo-authored skills are kept and renamed off the toolkit's `kairos-`
+  namespace to `refmodels-ontology-audit` and `refmodels-ontology-versioning`.
+
+### Known gaps (recorded, not silent)
+- financial-services `data-domains.yaml` names three FIBO ontologies absent from the vendored
+  release, and its `manifest.yaml` advertises nine FIBO module groups the accelerator never
+  imports. Both are pre-existing, need FIBO judgement, and are listed in `KNOWN_GAPS` in
+  `tests/test_model_registration.py`. Any *new* gap, in any pack, fails.
+
 ## [1.15.0] - 2026-08-10
 
 Closes the transport-mode specialisation gap opened in [1.14.0](#1140---2026-08-10):

@@ -1,127 +1,81 @@
-<!-- kairos-ontology-toolkit:managed v5.1.0rc2 -->
-# Kairos Ontology Toolkit — Copilot Instructions
+# Kairos Reference Models — Agent Instructions
 
-## Session greeting (mandatory)
+## What this repository is
 
-On the first response of every conversation, display this before answering:
+This repo **publishes versioned ontology reference models**. It is consumed by
+`kairos-ontology-toolkit`, which reads a small contract surface from here.
 
-> 👋 Welcome to the **Kairos Ontology Toolkit** — an ontology-driven platform that
-> generates data pipelines, BI models, search indexes, and more from OWL/Turtle
-> domain models.
->
-> **New here?** Invoke **kairos-help** for an orientation.
->
-> **Returning?** I can run a read-only hub diagnostic with **kairos-diagnose-status**.
+**This repo is not an ontology hub.** There is no `model/`, no `integration/`, no
+`kairos.yaml`, and no `compile` step. Hub-authoring concepts — EntityBinding,
+`integration/bindings/*.binding.yaml`, dbt transforms, `ontology-hub-publish/` — belong in a
+client hub, not here. If a task seems to call for them, it is aimed at the wrong repository.
 
-## V5 architecture
+> **Do not run `kairos-ontology setup-config`, `init`, or `update` in this repo.** They
+> install the toolkit's hub scaffold (25 hub-authoring skills plus a hub
+> `copilot-instructions.md`). That scaffold was previously applied here by mistake and has
+> been removed; re-running those commands reinstates it.
 
-Kairos v5 is stateless and has one source-to-canonical execution authority:
+## Content tiers
 
-```text
-model/ontologies/<domain>.ttl
-model/shapes/
-integration/discovery/
-integration/sources/<source>/
-integration/bindings/<source>-to-<domain>.binding.yaml
-integration/transforms/dbt/models/
-kairos.yaml
-../ontology-hub-publish/
-```
+| Tier | Path | Rule |
+|---|---|---|
+| **Authoritative** | `authoritative-ontologies/` | Official RDF/OWL from standards bodies (FIBO, IATA ONE Record). Vendored **verbatim** — never hand-edit; re-download instead. |
+| **Derived** | `derived-ontologies/` | Kairos RDF interpretations of non-RDF standards (DCSA, MMT, BSP, TIC, IMO, WCO, RAIL, Sustainability). Every class must be backed by a cited element of its standard. |
+| **Blueprint** | `blueprints/` | Opinionated Kairos guidance (archetypes, patterns, `blueprints/ontology/`). Not a standard; versioned independently. |
 
-- OWL defines canonical meaning; source TTL defines physical relations and columns.
-- A closed `EntityBinding` YAML document defines one canonical entity from one source relation or
-  one ordinary contracted dbt model. Unknown fields and duplicate YAML keys are errors.
-- Complex joins, windows, aggregations, JSON expansion, fallback logic, or grain changes belong in
-  ordinary dbt SQL plus an enforced dbt properties contract, referenced by `source.dbtModel`.
-- `compile` builds one immutable, graph-free `CompilePlan`. Check, explain, emit, Gold, and MDM
-  consume this plan; they must not independently resolve or rebuild canonical Silver/dbt inputs.
-- `../ontology-hub-publish/` (a sibling of the hub) is derived. Never hand-edit compiler-owned artifacts.
-- V5 is a clean authoring break. Create older hubs again from fresh; do not invent compatibility.
+Accelerator packs (`accelerator-packs/<pack>/`) pre-compose these into a bundle per sector.
 
-Canonical commands:
+## The published contract
 
-```powershell
-kairos-ontology compile <domain> --check --format json
-kairos-ontology compile <domain> --explain --format json
-kairos-ontology compile <domain> --emit
-```
+The toolkit reads exactly these. Treat any change to them as a cross-repo contract change:
 
-Passing compilation does not replace downstream dbt, adapter, deployment, security, or data tests.
-
-## Code conventions
-
-- Python 3.12+, src layout under `src/kairos_ontology/`, 100-character lines.
-- Core ontology/compiler code lives in `kairos_ontology.core`; design-time MDM lives in
-  `kairos_ontology.mdm`. MDM may import core; core must never import MDM.
-- Public APIs are re-exported from `kairos_ontology/__init__.py`.
-- Use `rdflib.Graph` for RDF. Never serialize RDF by string concatenation.
-- Every new or modified `.py` file starts with:
-
-  ```python
-  # SPDX-License-Identifier: Apache-2.0
-  # Copyright 2026 Cnext.eu
-  ```
-
-- Tests live under `tests/`. New behavior needs a happy-path and error/edge test.
-- Mock external APIs. Use pytest-asyncio for async tests.
-- Run with uv: `uv sync`, `uv run pytest`, `uv run kairos-ontology ...`.
-
-## Ontology conventions
-
-- Every ontology declares `owl:Ontology`, `rdfs:label`, and `owl:versionInfo`.
-- Use HTTP(S) namespaces. Classes are PascalCase; properties are camelCase.
-- Every class has a label and comment. Every property has domain, range, and label.
-- Validate syntax before applying ontology changes.
-- Never modify `main` directly; use a feature branch and PR.
-
-## Skill routing
-
-| User intent | Skill |
+| Path | Consumer |
 |---|---|
-| Start, continue, or determine next action | `kairos-flow` |
-| Business context and terminology | `kairos-design-discovery` |
-| Import, document, or analyse source schemas | `kairos-design-source` |
-| Create or change OWL classes/properties | `kairos-design-domain` |
-| Author source-to-canonical EntityBinding YAML | `kairos-design-mapping` |
-| Create a complex contracted dbt model | `kairos-develop-dbt-transformation` |
-| Design Gold/Power BI products | `kairos-design-gold` |
-| Design MDM policy | `kairos-design-mdm` |
-| Validate ontology and compile diagnostics | `kairos-execute-validate` |
-| Compile or generate artifacts | `kairos-execute-project` |
-| Review bindings and compiler explanation | `kairos-execute-report` |
-| Detailed read-only hub diagnostic | `kairos-diagnose-status` |
-| Create a fresh hub | `kairos-setup-init` |
-| Configure a hub | `kairos-setup-config` |
-| Create or consume a dataplatform | `kairos-setup-dataplatform`, `kairos-package-dataplatform` |
-| Update toolkit/managed files/reference models or release toolkit | `kairos-toolkit-ops` |
-| Toolkit development | `kairos-toolkit-dev` |
+| `catalog-v001.xml` | root marker + URI resolution |
+| `blueprints/archetypes/*.yaml` | `archetype_loader` (`ref_model_modules`, `core_concepts`) |
+| `blueprints/patterns/*/pattern.yaml` | `pattern_loader` |
+| `accelerator-packs/*/client-hub-blueprint/data-domains.yaml` | `analyse_sources`, `reference_modules` |
+| `accelerator-packs/*/discovery/<id>.md` | path only — **never parsed** |
 
-Always invoke the owning skill before a skill-managed command or authored design change. Set
-`KAIROS_SKILL_CONTEXT=1` only while a skill legitimately wraps a command.
+Two rules learned the hard way:
 
-## Design interaction
+1. **Never ship a machine-readable file with no reader.** Files nothing consumes rot silently
+   — `pattern.yaml` `mode_bindings` said `extension-point` for two releases after the models
+   landed. If the consumer does not exist yet, write a CR (`.docs/wip/*-cr.md`) and land the
+   file *with* its reader.
+2. **A tier/enum shared with the toolkit is duplicated there.** Changing
+   `blueprints/archetypes/_schema/archetype.schema.json` `$defs/tier` needs a coordinated PR;
+   `tests/test_toolkit_contract.py` will fail loudly when they diverge.
 
-Discovery, source, ontology, mapping, dbt transformation, Gold, and MDM design are interactive by
-default. An explicit fleet override applies only to the active skill invocation and expires when it
-ends or pauses. Fleet mode keeps all validation and evidence checks, records each AI-approved choice
-with rationale, confidence, and references, and stops for ambiguity, low confidence, sensitive or
-proprietary data, policy choices, and destructive actions.
+## Adding or changing an industry model
 
-## Validation and tests
+`manifest.yaml` is the **single hand-edited registry**. Everything else is generated or tested
+against it. After editing it:
 
-- `validate_content()` returns syntax and SHACL result sections.
-- Run the smallest focused tests first; projection/compiler changes require scenario coverage.
-- EntityBinding/compiler changes should run `tests/scenarios/test_scenario_v5.py` and relevant
-  compiler tests.
-- Skill or instruction changes must keep `.github/skills/<name>/SKILL.md` byte-identical to
-  `src/kairos_ontology/scaffold/skills/<name>/SKILL.md` and run scaffold sync/managed tests.
+1. Author the ontology under the correct tier; every class cites its standard.
+2. Bump the module `VERSION` and `owl:versionInfo` together (**refmodels-ontology-versioning**).
+3. Register in `catalog-v001.xml` (one entry per module document IRI).
+4. Add the module to the accelerator `owl:imports` and to `data-domains.yaml`.
+5. Run the full gate below — generators and the fan-out test catch the surfaces prose forgets.
+6. Update `CHANGELOG.md`; releases are tagged `v*.*.*` and `VERSION` must match the tag.
 
-## Scaffold and open-source checks
+## Validation gate
 
-Changes affecting hub repositories must also update `src/kairos_ontology/scaffold/`. Keep both
-Copilot instruction copies byte-identical. Architectural changes update
-`docs/design/toolkit-design-decisions.md`.
+```bash
+python -m pytest -q
+python scripts/generate_logistics_inventory.py --check
+python scripts/validate_logistics_blueprint.py
+python scripts/validate_structure.py
+python scripts/version_manager.py check
+python scripts/validate_archetypes.py
+```
 
-Before a PR, verify SPDX headers, no secrets or PII, Apache-2.0-compatible dependencies, NOTICE for
-bundled third-party components, no proprietary examples, DCO sign-off, and issue-closing keywords in
-the PR body for fully fixed issues.
+These run in `.github/workflows/validate.yml` on every PR and again on release.
+
+## Repo skills
+
+- **refmodels-ontology-audit** — verify every `owl:Class` is backed by its cited standard.
+- **refmodels-ontology-versioning** — version bumps and archiving.
+
+Both are repo-owned. They deliberately do **not** use the `kairos-` prefix, which belongs to
+the toolkit's managed scaffold.

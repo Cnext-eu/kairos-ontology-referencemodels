@@ -70,14 +70,15 @@ in the hub, never at the order grain.
 
 The machine-readable form of this table is [`pattern.yaml`](./pattern.yaml) `mode_bindings`,
 which additionally carries the module IRIs per mode (`module_iris` at grain 3,
-`leg_module_iris` at grain 2). That block is the single source consumed by the `modes-served`
-scope axis in the accelerator-pack discovery guides; `scripts/validate_archetypes.py` check 6
-asserts the two stay in agreement.
+`leg_module_iris` at grain 2) and the bindable class IRIs (`target_iris`). That block is the
+single source consumed by the `modes-served` scope axis in the accelerator-pack discovery
+guides; `scripts/validate_archetypes.py` check 7 **fails the build** when this table and
+`mode_bindings` disagree, and when a `target_iris` is not a declared `owl:Class`.
 
 | Mode | Reservation-grain target (grain 3) | Status | Note |
 |---|---|---|---|
 | **Ocean** | DCSA Booking (BKG API) — `dcsa/booking#Booking` | **Modelled** (derived, `DCSA/`) | Bind hub-local, per above. |
-| **Air** | **IATA ONE Record** cargo data model (`Booking`, `BookingRequest`, `BookingOption`, `TransportMovement`) | **Modelled** (authoritative mirror, `authoritative-ontologies/IATA/`) | ONE Record is published natively as RDF/OWL, so it is vendored FIBO-style under `authoritative-ontologies/IATA/` (namespace `https://onerecord.iata.org/ns/cargo#`), not hand-authored as a derived ontology. Reference it via the catalog; do not bulk-import into accelerator packs (mirrors the FIBO exclusion). **Not** IATA Cargo-XML: `XFWB`/`XFZB` are waybill messages, i.e. document grain, already covered by `mmt/documents#AirWaybill`. |
+| **Air** | **IATA ONE Record** cargo data model (`Booking`, `BookingRequest`, `BookingOption`) | **Modelled** (authoritative mirror, `authoritative-ontologies/IATA/`) | ONE Record is published natively as RDF/OWL, so it is vendored FIBO-style under `authoritative-ontologies/IATA/` (namespace `https://onerecord.iata.org/ns/cargo#`), not hand-authored as a derived ontology. Reference it via the catalog; do not bulk-import into accelerator packs (mirrors the FIBO exclusion). `TransportMovement` is grain 4 (movement), not a reservation target, and is selected by execution scope. **Not** IATA Cargo-XML: `XFWB`/`XFZB` are waybill messages, i.e. document grain, already covered by `mmt/documents#AirWaybill`. |
 | **Rail** | **TAF TSI** — Path Request / Consignment Order messages | **Modelled** (derived, `RAIL/`) | Hand-authored derived ontology grounded in the TAF TSI data catalogue (`taf_cat_complete.xsd`, EU Regulation 1305/2012 Annex D.2 Appendix F). Modules: `consignment` (Consignment Order Message / ORFEUS ECN), `path-request` (PCS path allocation), `train-running`, `rolling-stock`, `party` (RU/IM), `shared-kernel`. Every class is backed by a cited TAF TSI element. **Not** railML: that is infrastructure and timetable, a different grain entirely. The CIM consignment note is document grain and is already modelled as `mmt/documents#RailConsignmentNote`. |
 | **Road** | None — no standard forces a reservation shape | Pattern-only | Model the subcontract as a plain `CarrierReservation` on a `RoadLeg`. `mmt/documents#RoadConsignmentNote` (CMR) covers the document grain. |
 | **Barge / inland waterway** | None dominant | Pattern-only | `mmt/inland-transport#BargeLeg` carries the mode. |

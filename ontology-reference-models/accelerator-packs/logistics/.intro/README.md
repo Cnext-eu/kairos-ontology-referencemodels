@@ -13,17 +13,21 @@ This folder contains a business-and-architecture oriented documentation set for 
 
 ## Version snapshot (current)
 
+<!-- BEGIN GENERATED: versions -->
 | Component | Version |
 |---|---|
-| Logistics accelerator pack | 1.3.0 |
-| BSP | 1.3.0 |
-| DCSA | 1.1.0 |
+| Kairos Logistics Accelerator Pack | 1.10.0 |
+| DCSA | 1.3.0 |
+| MMT | 1.1.0 |
+| BSP | 1.5.0 |
+| TIC | 1.3.0 |
 | IMO | 1.1.0 |
-| MMT | 1.0.0 |
-| SupplyChain | 1.1.0 |
-| Sustainability | 1.1.0 |
-| TIC | 1.2.0 |
 | WCO | 1.2.0 |
+| Sustainability | 1.1.0 |
+| supply-chain | 1.2.0 |
+| RAIL | 1.0.0 |
+| IATA | 3.3.0 RC1 (2026-08 standard) |
+<!-- END GENERATED: versions -->
 
 ## Documents
 

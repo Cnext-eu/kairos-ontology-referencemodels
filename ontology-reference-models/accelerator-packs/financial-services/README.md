@@ -61,4 +61,6 @@ See the [client-hub-blueprint/](client-hub-blueprint/) folder for:
 
 ## Version
 
+<!-- BEGIN GENERATED: version -->
 See [VERSION](VERSION) — currently **2.1.0**.
+<!-- END GENERATED: version -->

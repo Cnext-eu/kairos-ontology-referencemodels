@@ -33,10 +33,15 @@ groups:
           - uri: "https://www.kairosflow.ai/ont/imo/party#"
             module: "IMO / Party"
             provides: "Classification society, CSO, SSO, PFSO, PSCO (maritime security roles)"
+          - uri: "https://www.kairosflow.ai/ont/rail/party#"
+            module: "RAIL / Party"
+            provides: "Railway undertaking (RU), infrastructure manager (IM), lead RU, wagon keeper"
+            mode: rail
         standards:
           - "UN/CEFACT CCL"
           - "ISO 20197-1:2024 BSP-RDM"
           - "IMO Compendium"
+          - "TAF TSI (EU Regulation 1305/2012, Annex D.2 Appendix F)"
 
       - id: commercial
         name: "Customer, Contract & Commercial Agreement"
@@ -63,6 +68,14 @@ groups:
           reservation (dcsa/booking#Booking). One order may procure several bookings across
           several carriers and modes. Mode belongs to the leg, never to either of these — see
           blueprints/patterns/multimodal-order-leg.
+        mode_note: >
+          The carrier reservation is grain 3 in blueprints/patterns/multimodal-order-leg, and
+          that is the only place a mode-specific standard enters this domain. Each mode binds
+          its own reservation shape — ocean via DCSA Booking, rail via the TAF TSI path request
+          and consignment order, air via IATA ONE Record — while the order above them stays
+          mode-neutral. Road and barge have no dominant reservation standard and are modelled
+          as a plain CarrierReservation. Import only the modes the client actually serves; the
+          modes-served scope axis in discovery/README.md decides which.
         imports:
           - uri: "https://www.kairosflow.ai/ont/blueprint/transport-order#"
             module: "Blueprint / Transport Order"
@@ -70,12 +83,32 @@ groups:
           - uri: "https://www.kairosflow.ai/ont/dcsa/booking#"
             module: "DCSA / Booking"
             provides: "Booking, shipping instruction, confirmation, amendment"
+            mode: ocean
+          - uri: "https://www.kairosflow.ai/ont/rail/path-request#"
+            module: "RAIL / Path Request"
+            provides: "Path request, path confirmation, pre-arranged and on-demand path, path details"
+            mode: rail
+          - uri: "https://www.kairosflow.ai/ont/rail/consignment#"
+            module: "RAIL / Consignment Order"
+            provides: "Consignment order message, consignment-level data, consignment identification"
+            mode: rail
+          - uri: "https://onerecord.iata.org/ns/cargo#"
+            module: "IATA ONE Record / Cargo"
+            provides: "Booking, booking request, booking option, booking shipment"
+            mode: air
+            import_policy: reference-only
+            note: >
+              Vendored under authoritative-ontologies/IATA/ and resolved through the catalog.
+              The accelerator pack deliberately never imports it (mirrors the FIBO exclusion),
+              but a client hub serving air cargo binds to it here, hub-local, at grain 3.
           - uri: "https://www.kairosflow.ai/ont/bsp/documents#"
             module: "BSP / Documents"
             provides: "Order document, commercial instruction"
         standards:
           - "DCSA Booking API"
           - "ISO 20197-1:2024 BSP-RDM"
+          - "TAF TSI (EU Regulation 1305/2012, Annex D.2 Appendix F)"
+          - "IATA ONE Record (cargo data model, RDF/OWL)"
 
       - id: financial
         name: "Tariff, Surcharge, Invoice, Settlement & Operational Finance"
@@ -186,14 +219,28 @@ groups:
       - id: intermodal
         name: "Intermodal Rail, Barge & Inland Execution"
         folder: "model/ontologies/intermodal/"
-        owns: "Inland legs, rail/barge connections, road execution, terminal-to-terminal handovers, and inland route execution."
-        does_not_own: "Maritime voyage execution, terminal yard moves, cargo master data, or customer contracts."
+        owns: "Inland legs, rail/barge connections, road execution, terminal-to-terminal handovers, inland route execution, train running and rolling-stock composition."
+        does_not_own: "Maritime voyage execution, terminal yard moves, cargo master data, customer contracts, or the rail path/consignment reservation (that is booking, grain 3)."
+        grain_note: >
+          This domain is movement grain (grain 4): what actually ran, with which wagons. The
+          rail *reservation* — path request and consignment order — belongs to booking, one
+          grain above. Splitting them is what lets a hub reserve a path it never ran, and run
+          a service against a path reserved months earlier.
         imports:
           - uri: "https://www.kairosflow.ai/ont/mmt/inland-transport#"
             module: "MMT / Inland Transport"
             provides: "Inland leg, rail connection, barge connection, road transport"
+          - uri: "https://www.kairosflow.ai/ont/rail/train-running#"
+            module: "RAIL / Train Running"
+            provides: "Train running information, running forecast, train delay and interruption"
+            mode: rail
+          - uri: "https://www.kairosflow.ai/ont/rail/rolling-stock#"
+            module: "RAIL / Rolling Stock"
+            provides: "Wagon, locomotive, train composition, wagon technical data"
+            mode: rail
         standards:
           - "UN/CEFACT MMT-RDM"
+          - "TAF TSI (EU Regulation 1305/2012, Annex D.2 Appendix F)"
 
   - id: maritime-terminal
     name: "Maritime & Terminal"

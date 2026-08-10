@@ -42,6 +42,7 @@ jobs:
           python -m pytest -q
           python scripts/generate_logistics_inventory.py --check
           python scripts/validate_logistics_blueprint.py
+          python scripts/generate_pack_docs.py --check
           python scripts/validate_archetypes.py
           python scripts/validate_structure.py
           python scripts/version_manager.py check
