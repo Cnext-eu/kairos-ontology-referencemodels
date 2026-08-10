@@ -1,5 +1,5 @@
 format_version: "1.0"
-accelerator_version: "1.7.0"
+accelerator_version: "1.8.0"
 capabilities:
   - id: party-and-role-management
     status: deferred
@@ -31,6 +31,19 @@ capabilities:
       - "convergence-analysis.md Booking and order"
     confidence: high
     maturity: experimental
+  - id: transport-order-orchestration
+    status: deferred
+    concept_ids: [transport-order, carrier-reservation]
+    extension_points:
+      - "Air reservation alignment (IATA ONE Record)"
+      - "Rail reservation alignment (TAF TSI)"
+      - "Order lifecycle status history"
+    evidence:
+      - "issue #29 standards audit"
+      - "blueprints/patterns/multimodal-order-leg/pattern.md"
+    confidence: high
+    maturity: experimental
+    pattern_ids: [multimodal-order-leg]
   - id: shipment-and-consignment
     status: deferred
     concept_ids: [shipment, consignment, consignment-item]

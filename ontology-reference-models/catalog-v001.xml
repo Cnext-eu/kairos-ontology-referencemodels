@@ -96,6 +96,10 @@
     <!-- ========== Supply Chain Integration ========== -->
     <uri name="https://www.kairosflow.ai/ont/supply-chain" uri="derived-ontologies/SupplyChain/current/supply-chain.ttl"/>
     
+    <!-- ========== Blueprint Tier (Kairos-authored, no standard provenance) ========== -->
+    <uri name="https://www.kairosflow.ai/ont/blueprint" uri="blueprints/ontology/blueprint.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/blueprint/transport-order" uri="blueprints/ontology/transport-order/transport-order.ttl"/>
+
     <!-- ========== Accelerator Packs ========== -->
     <uri name="https://www.kairosflow.ai/ont/accelerator/logistics" uri="accelerator-packs/logistics/current/logistics-accelerator.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/accelerator/financial-services" uri="accelerator-packs/financial-services/current/financial-services-accelerator.ttl"/>

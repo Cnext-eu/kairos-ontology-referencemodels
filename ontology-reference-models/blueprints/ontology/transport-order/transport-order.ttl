@@ -1,0 +1,158 @@
+@prefix : <https://www.kairosflow.ai/ont/blueprint/transport-order#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix cons: <https://www.kairosflow.ai/ont/mmt/consignment#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/blueprint/transport-order> a owl:Ontology ;
+    dcterms:title "Kairos Blueprint — Transport Order Domain" ;
+    dcterms:description """Demand-side transport order grain, and the supply-side reservation
+    slot it procures against.
+
+    BLUEPRINT TIER — opinionated Kairos guidance, NOT a standards-derived ontology. No primary
+    standard defines the intermediary-owned order grain (see issue #29's standards audit: DCSA
+    Booking is a carrier capacity reservation, BSP Purchase/SalesOrder are commercial buy/sell
+    documents, TIC Order is a terminal handling directive, MMT TransportInstructions is
+    instruction content without durable job identity). This module supplies the missing grain
+    rather than force-fitting one of those.
+
+    Grain separation this module exists to hold (pattern `multimodal-order-leg`):
+
+      1. Order        — this module's :TransportOrder. Mode-agnostic, always.
+      2. Leg          — mmt/consignment#TransportLeg. MODE LIVES HERE.
+      3. Reservation  — this module's :CarrierReservation. Mode-specific standards bind HERE.
+      4. Movement     — mmt/consignment#TransportMovement. Actual execution.
+
+    :TransportOrder is deliberately narrow. It carries order identity, the requested service
+    window, and object relationships outward. It does NOT absorb cargo, customs, document, or
+    financial properties — those stay in their owning modules and are reached by traversal.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-08-10"^^xsd:date ;
+    dcterms:modified "2026-08-10"^^xsd:date ;
+    owl:versionInfo "0.1.0" ;
+    dcterms:source "Kairos blueprint tier — no external standard provenance claimed" ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/consignment> ;
+    rdfs:seeAlso <https://github.com/Cnext-eu/kairos-ontology-referencemodels/issues/29> ,
+                 <https://github.com/Cnext-eu/kairos-ontology-referencemodels/issues/33> .
+
+#################################################################
+#    Classes
+#################################################################
+
+:TransportOrder a owl:Class ;
+    rdfs:label "Transport Order"@en ;
+    rdfs:comment """One commercial request for transport, accepted by the party that arranges it
+    and owned by that party for its whole lifecycle.
+
+    Grain: the arranging party's own durable job. One transport order may procure zero, one, or
+    many carrier reservations (:CarrierReservation) across one or many modes — that 1..N fan-out
+    is what makes it non-equivalent to DCSA Booking, which is a single carrier's reservation.
+
+    Applies to the demand side of the relationship: freight forwarder, NVOCC, 3PL, or a
+    shipper's own TMS. A carrier acting purely as supply side does NOT have this grain — its
+    incoming demand IS the carrier reservation. See the per-archetype tiering in
+    blueprints/archetypes/.
+
+    NEVER specialise this class by transport mode. A door-to-door order is multimodal by
+    construction, so a mode subclass axis breaks on the first intermodal order. Mode is carried
+    by the leg."""@en ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :transportOrderReference ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:CarrierReservation a owl:Class ;
+    rdfs:label "Carrier Reservation"@en ;
+    rdfs:comment """A commitment of capacity by one carrier for one leg of a transport order.
+
+    Grain: one carrier's acceptance of one leg. This is the mode-specific extension point —
+    the only place in the pattern where a mode-bound external standard legitimately attaches,
+    because at this grain the standard's own semantics genuinely hold.
+
+    Mode bindings are declared by the hub, not here. A hub with ocean scope declares its ocean
+    reservation class as a subclass of BOTH :CarrierReservation and dcsa/booking#Booking; a hub
+    with no ocean scope declares no such class and inherits none of DCSA's ocean semantics. The
+    binding is left to the hub because cross-model OWL axioms are an open stakeholder decision
+    (convergence-analysis.md "Required stakeholder decisions" #9) — this module declares the
+    slot, not the axiom.
+
+    Per-mode alignment targets are documented in
+    blueprints/patterns/multimodal-order-leg/pattern.md."""@en .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+# Foreign-endpoint convention: where an endpoint is a class owned by another module whose
+# authority is still unresolved, rdfs:domain / rdfs:range are omitted rather than guessed.
+# This mirrors the MMT modules' own cross-domain convention (see MMT/README.md) and avoids
+# asserting axioms over classes this tier does not own.
+
+:hasOrderingParty a owl:ObjectProperty ;
+    rdfs:label "has ordering party"@en ;
+    rdfs:comment """The customer that placed the transport order. Range omitted: the durable
+    Party authority is an open reference-model gap (overlap-register `party-role-parents`),
+    so this tier must not pin it to BSP TradeParty or MMT TransportParty."""@en ;
+    rdfs:domain :TransportOrder .
+
+:hasPlannedLeg a owl:ObjectProperty ;
+    rdfs:label "has planned leg"@en ;
+    rdfs:comment """Links the order to the ordered sequence of planned legs that satisfy it.
+    1..N. Each leg carries its own mode; the order carries none."""@en ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range cons:TransportLeg .
+
+:coversConsignment a owl:ObjectProperty ;
+    rdfs:label "covers consignment"@en ;
+    rdfs:comment """Links the order to the goods grouping it moves. Kept as a traversal rather
+    than absorbed properties — the order does not carry cargo attributes."""@en ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range cons:Consignment .
+
+:hasCarrierReservation a owl:ObjectProperty ;
+    rdfs:label "has carrier reservation"@en ;
+    rdfs:comment """Links a planned leg to the carrier reservation that covers it. Domain
+    omitted per the foreign-endpoint convention: the subject is mmt/consignment#TransportLeg,
+    a class this tier does not own.
+
+    ANTI-PATTERN: a direct order-to-reservation shortcut. Reservations attach to legs, never to
+    the order — routing them through the leg is what keeps mode out of the order."""@en ;
+    rdfs:range :CarrierReservation .
+
+:realizedByMovement a owl:ObjectProperty ;
+    rdfs:label "realized by movement"@en ;
+    rdfs:comment """Plan-to-execution link from a planned leg to the actual movement that
+    realized it. Domain and range both omitted per the foreign-endpoint convention — both
+    endpoints (mmt/consignment#TransportLeg, mmt/consignment#TransportMovement) are owned by
+    MMT, and their plan/actual boundary is still under review (decision log LOG-BP-006)."""@en .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:transportOrderReference a owl:DatatypeProperty ;
+    rdfs:label "transport order reference"@en ;
+    rdfs:comment """The arranging party's own order identifier. Scoped to its issuer — never
+    assume cross-party uniqueness, and never survivor-match on it across source systems."""@en ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range xsd:string .
+
+# Temporal properties follow the normative naming of the `temporal-quartet` pattern.
+# Start/End is used rather than Arrival/Departure because an order's requested window is
+# duration-bearing, not a point-of-presence event.
+
+:requestedStart a owl:DatatypeProperty ;
+    rdfs:label "requested start"@en ;
+    rdfs:comment "Service window start requested by the ordering party."@en ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range xsd:dateTime .
+
+:requestedEnd a owl:DatatypeProperty ;
+    rdfs:label "requested end"@en ;
+    rdfs:comment "Service window end requested by the ordering party."@en ;
+    rdfs:domain :TransportOrder ;
+    rdfs:range xsd:dateTime .

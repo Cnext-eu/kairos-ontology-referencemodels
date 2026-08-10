@@ -62,6 +62,7 @@ placeholder's. Do not add one "for consistency" with the derived ontologies.
 | [`qualified-role-assignment`](qualified-role-assignment/pattern.md) | 1, 2, 7 |
 | [`temporal-quartet`](temporal-quartet/pattern.md) | 8 (partly) |
 | [`governed-code-list`](governed-code-list/pattern.md) | 8 |
+| [`multimodal-order-leg`](multimodal-order-leg/pattern.md) | 5 |
 
 Gap numbers refer to `accelerator-packs/logistics/current/blueprint/convergence-analysis.md`
 §"Explicit reference-model gaps".

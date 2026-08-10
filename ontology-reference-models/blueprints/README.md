@@ -16,6 +16,30 @@ Blueprints are versioned independently of the ref models they reference (see `ar
 
 - [`archetypes/`](archetypes/) — Per-archetype YAML catalogs (one file per archetype) describing the ref-model modules and core concepts an archetype is expected to support. **Structure only** — no interview prose.
 - [`patterns/`](patterns/) — Sector-neutral modelling craft (shapes and naming conventions) harvested from client hub implementations. Naming conventions are normative; structural guidance is advisory. See `patterns/README.md`. Not part of the `archetypes/` cross-repo contract — there is currently no toolkit consumer for this folder.
+- [`ontology/`](ontology/) — **Kairos-authored OWL classes** for business grains that a standards audit has shown no installed standard expresses. The only blueprint module that declares classes rather than describing how to compose existing ones, so it carries the highest admission bar — see `ontology/README.md`. Referenced from `archetypes/` like any other module IRI.
+
+## Anchor-selection invariant
+
+When a pack or archetype names the class for a concept, **the anchor must be the most general
+class that covers every sector the pack declares**. A narrower anchor silently restricts the
+pack: anchoring `equipment-asset` on DCSA `Container` excludes the non-containerised operators
+that the logistics pack's own `manifest.yaml` `target_sectors` lists, so the anchor moved to MMT
+`TransportEquipment`.
+
+Two corollaries, both learned the hard way:
+
+- **Generality is judged against the pack's declared sectors, not against the richest available
+  model.** A more detailed standard class is not a better anchor if its detail is mode- or
+  sector-specific.
+- **Where a distinction really is mode- or sector-specific, push it down a grain rather than
+  narrowing the anchor.** Transport mode does not narrow the transport order; it specialises the
+  leg, and the mode-bound standard binds at the leg's carrier reservation. See
+  [`patterns/multimodal-order-leg`](patterns/multimodal-order-leg/pattern.md).
+
+`scripts/validate_archetypes.py` enforces a lexical proxy for this (advisory only): it warns when
+a concept's `authority` text admits a scope qualifier — "for _X_ scope" — that has no counterpart
+in the pack's `target_sectors`. It cannot reason about cross-standard generality, so the warning
+is a prompt to re-check the anchor, not a proof that one is wrong.
 
 ## Companion: sector discovery materials (in accelerator-packs)
 

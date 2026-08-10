@@ -1,5 +1,5 @@
 format_version: "1.0"
-accelerator_version: "1.7.0"
+accelerator_version: "1.8.0"
 concepts:
   - id: party
     class_uri: https://www.kairosflow.ai/ont/bsp/party#TradeParty
@@ -229,6 +229,39 @@ concepts:
     maturity: experimental
     first_slice: false
     standards: ["DCSA"]
+  - id: transport-order
+    class_uri: https://www.kairosflow.ai/ont/blueprint/transport-order#TransportOrder
+    authority: "Kairos blueprint tier. No external standard defines this grain — the issue #29 standards audit rejected every installed candidate as a different grain, so the class is authored here rather than force-fitted onto DCSA Booking."
+    grain: "One commercial request for transport, owned by the party that arranges it"
+    identity: "Arranging-party-scoped transport order reference"
+    lifecycle: "Acceptance through planning, procurement of carrier reservations, execution, and closure or cancellation"
+    disposition: unresolved
+    evidence:
+      - "blueprint/transport-order.ttl defines TransportOrder and CarrierReservation"
+      - "issue #29 standards audit: DCSA Booking is a carrier capacity reservation, DCSA Shipment a carrier-side transaction, BSP Purchase/SalesOrder commercial buy/sell, TIC Order a terminal handling directive, MMT TransportInstructions instruction content without durable job identity"
+      - "freight-forwarder archetype: the forwarder arranges across one or more carriers, so one order may procure several carrier bookings — proves non-equivalence with DCSA Booking"
+      - "blueprints/patterns/multimodal-order-leg/pattern.md"
+    evidence_basis: analysis
+    confidence: high
+    maturity: experimental
+    first_slice: false
+    standards: []
+  - id: carrier-reservation
+    class_uri: https://www.kairosflow.ai/ont/blueprint/transport-order#CarrierReservation
+    authority: "Kairos blueprint tier. Declares the slot at which a mode-bound external standard legitimately attaches; the mode-specific binding itself is hub-local pending the cross-model-axiom decision."
+    grain: "One carrier's commitment of capacity for one leg"
+    identity: "Carrier-scoped reservation reference — the carrier booking reference where the carrier is an ocean carrier"
+    lifecycle: "Request through confirmation, rejection, or cancellation, bounded by its leg"
+    disposition: unresolved
+    evidence:
+      - "blueprint/transport-order.ttl defines CarrierReservation as the mode-specific extension point"
+      - "convergence-analysis.md 'Required stakeholder decisions' #9 — cross-model OWL axioms unresolved, so the DCSA binding is left to the hub"
+      - "blueprints/patterns/multimodal-order-leg/pattern.md per-mode alignment targets"
+    evidence_basis: analysis
+    confidence: medium
+    maturity: experimental
+    first_slice: false
+    standards: []
   - id: transport-document
     class_uri: https://www.kairosflow.ai/ont/dcsa/transport-documents#TransportDocument
     authority: "Candidate only: DCSA transport-document model for carrier scope"

@@ -17,13 +17,19 @@
     - IMO (maritime regulatory)
     - WCO (customs & border)
     - Sustainability (carbon & energy)
-    
+
+    Plus one blueprint-tier module — the ONLY non-standards-derived content in this pack:
+    - Blueprint / Transport Order (Kairos-authored; closes the demand-side order grain that the
+      standards audit in issue #29 proved no installed standard expresses). Kept as a separate
+      import so consumers can see exactly which classes carry no standard provenance.
+
     Does NOT include FIBO (use Financial Services Accelerator for capital-markets ontologies).""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-08-09"^^xsd:date ;
-    owl:versionInfo "1.7.0" ;
-    owl:imports <https://www.kairosflow.ai/ont/dcsa> ,
+    dcterms:modified "2026-08-10"^^xsd:date ;
+    owl:versionInfo "1.8.0" ;
+    owl:imports <https://www.kairosflow.ai/ont/blueprint/transport-order> ,
+                <https://www.kairosflow.ai/ont/dcsa> ,
                 <https://www.kairosflow.ai/ont/dcsa/demurrage-detention> ,
                 <https://www.kairosflow.ai/ont/mmt> ,
                 <https://www.kairosflow.ai/ont/bsp> ,

@@ -41,6 +41,7 @@ ref_model_modules:
   # Commercial cycle (booking → transport document). CMR/road waybill is the
   # primary transport document for this archetype, not an ocean B/L.
   - { iri: "https://www.kairosflow.ai/ont/dcsa/booking",             tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/blueprint/transport-order", tier: recommended }
   - { iri: "https://www.kairosflow.ai/ont/mmt/documents",            tier: required }
   - { iri: "https://www.kairosflow.ai/ont/mmt/consignment",          tier: required }
   - { iri: "https://www.kairosflow.ai/ont/mmt/cargo",                tier: required }
@@ -117,6 +118,12 @@ ref_model_modules:
 core_concepts:
 
   # ─── 1. Booking / order intake ─────────────────────────────────────────
+  # Demand-side order, recommended not required: this archetype is supply side for its own
+  # tonnage, and only needs the order grain where it sells door-to-door direct and subcontracts
+  # legs it does not run itself. See patterns/multimodal-order-leg "When NOT to use".
+  - { uri: "https://www.kairosflow.ai/ont/blueprint/transport-order#TransportOrder", tier: recommended, label: "Transport Order" }
+  - { uri: "https://www.kairosflow.ai/ont/blueprint/transport-order#CarrierReservation", tier: recommended, label: "Carrier Reservation" }
+
   - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#Booking",                tier: required,    label: "Booking" }
   - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#BookingRequest",         tier: required,    label: "Booking Request" }
   - { uri: "https://www.kairosflow.ai/ont/dcsa/booking#ConfirmedBooking",       tier: required,    label: "Confirmed Booking" }

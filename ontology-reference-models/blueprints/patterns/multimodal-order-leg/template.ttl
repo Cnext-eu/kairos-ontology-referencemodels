@@ -1,0 +1,43 @@
+@prefix : <https://example.org/hub/pattern/multimodal-order-leg#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix bp: <https://www.kairosflow.ai/ont/blueprint/transport-order#> .
+@prefix dcsa-bkg: <https://www.kairosflow.ai/ont/dcsa/booking#> .
+@prefix cons: <https://www.kairosflow.ai/ont/mmt/consignment#> .
+@prefix inland: <https://www.kairosflow.ai/ont/mmt/inland-transport#> .
+
+# Copyable OWL fragment. Replace the `:` prefix with your hub's own namespace before use.
+# Deliberately carries NO owl:versionInfo — this is a pattern template, not a versioned
+# ontology module. See ../README.md before adding one.
+#
+# The order, leg, reservation, and movement classes already exist. Do not redeclare them.
+# What a hub authors is only the mode bindings it has source feasibility for.
+
+# --- Ocean scope: the reservation for an ocean leg IS a carrier capacity reservation, so the
+# --- mode-specific standard holds here with full feasibility.
+:OceanCarrierReservation a owl:Class ;
+    rdfs:label "Ocean Carrier Reservation"@en ;
+    rdfs:comment "Reservation covering an ocean leg. Binds the DCSA booking semantics at the grain where they actually hold."@en ;
+    rdfs:subClassOf bp:CarrierReservation , dcsa-bkg:Booking .
+
+# --- Road scope: no external standard forces a reservation shape, so the generic slot is used
+# --- directly. Note what is absent — no DCSA subclass, therefore no carrierBookingReference
+# --- obligation, therefore no unpopulatable field.
+:RoadCarrierReservation a owl:Class ;
+    rdfs:label "Road Carrier Reservation"@en ;
+    rdfs:comment "Reservation covering a road leg — typically a haulier subcontract."@en ;
+    rdfs:subClassOf bp:CarrierReservation .
+
+# --- Air / rail: author ONLY with source feasibility. See pattern.md for the alignment targets
+# --- (IATA ONE Record; TAF TSI). Until then these are documented extension points, not classes.
+
+# --- The leg already carries the mode. Nothing below is authored by the hub; shown to make the
+# --- traversal explicit:
+#
+#   bp:TransportOrder  --bp:hasPlannedLeg-->        cons:TransportLeg
+#   cons:TransportLeg  (is a)                       inland:RoadLeg | inland:RailLeg | inland:BargeLeg
+#   cons:TransportLeg  --bp:hasCarrierReservation-> bp:CarrierReservation
+#   cons:TransportLeg  --bp:realizedByMovement-->   cons:TransportMovement
+#
+# An intermodal order reaches an :OceanCarrierReservation through one leg and a
+# :RoadCarrierReservation through another. Neither type is ever asserted on the order.

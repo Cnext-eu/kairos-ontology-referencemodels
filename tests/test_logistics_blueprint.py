@@ -331,7 +331,9 @@ def test_real_repository_inventory_is_deterministic_without_artifacts() -> None:
         encoding="utf-8"
     ).strip()
     assert first["accelerator_version"] == expected_version
-    assert len(first["modules"]) == 66
+    # 66 standards-derived modules + blueprint/transport-order, the pack's only
+    # non-standards-derived import.
+    assert len(first["modules"]) == 67
     assert len(first["records"]) > 1_000
 
 

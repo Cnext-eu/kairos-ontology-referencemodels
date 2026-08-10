@@ -48,6 +48,46 @@ archetypes/
    - **MAJOR** — schema-version bump, removed/renamed archetype id, narrowed `compatible_with` range.
 5. Add a CHANGELOG entry, open a PR. Two ontology-team approvals required per `CONTRIBUTING.md`; SME sign-off required for any archetype that may be perceived as client-specific.
 
+## Authoring guidance
+
+Three rules that have each already cost a correction:
+
+**1. Anchor on the most general class that covers the archetype's scope.** Not the richest
+class, not the one whose standard you know best. See the anchor-selection invariant in
+[`../README.md`](../README.md). Where the distinction you were reaching for is genuinely mode- or
+sector-specific, it belongs a grain lower, not in a narrower anchor.
+
+**2. Express archetype variation through `tier`, never through a forked catalog.** The whole
+point of one file per archetype with a three-value tier is that the same concept can be
+`required` for one archetype and `optional` for another. `blueprint/transport-order#TransportOrder`
+is `required` for `freight-forwarder` (it arranges transport it does not run), `recommended` for
+`unit-load-carrier` (only where it sells door-to-door), and absent for `shipping-carrier` (supply
+side — its incoming demand *is* the booking). That is three positions on one concept with no
+duplicated catalog. Do not create parallel "flavours" of an archetype for a difference that
+`tier` can carry.
+
+**3. Comment a deliberate omission.** There is no `not_applicable` tier today, so a concept left
+out of `core_concepts` is indistinguishable from one nobody has reviewed. If you leave something
+out on purpose, say so in a YAML comment at the point where a reader would expect it, and name
+the reason — see the `TransportOrder` comment in `shipping-carrier.yaml`. A `not_applicable` tier
+would make this machine-readable; until then the comment is the only record.
+
+### Companion patterns
+
+`core_concepts` names *which* classes an archetype needs; it cannot express the *shape* they
+combine in. Where a shape matters, the relevant pattern in [`../patterns/`](../patterns/) is the
+normative reference — but there is no field linking an archetype to a pattern today, so the link
+lives in the discovery guide's "Maps to" and outcome guidance instead. Patterns most likely to
+apply to a transport archetype:
+
+| Pattern | Applies when the archetype has |
+|---|---|
+| [`multimodal-order-leg`](../patterns/multimodal-order-leg/pattern.md) | A demand-side order, multiple modes, or subcontracted legs |
+| [`qualified-role-assignment`](../patterns/qualified-role-assignment/pattern.md) | One party playing several roles over time |
+| [`temporal-quartet`](../patterns/temporal-quartet/pattern.md) | Requested / planned / estimated / actual timestamps |
+| [`governed-code-list`](../patterns/governed-code-list/pattern.md) | Status or type codes with an owner and a lifecycle |
+| [`deferred-relationship`](../patterns/deferred-relationship/pattern.md) | A link whose far endpoint has not conformed yet |
+
 ## What does NOT live here
 
 By design, the catalog contains **structure only** — no discovery-skill UX. The following all live in the toolkit repo (`kairos-design-discovery` skill):
