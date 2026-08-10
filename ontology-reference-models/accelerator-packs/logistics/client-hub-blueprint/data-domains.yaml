@@ -114,7 +114,15 @@ groups:
         name: "Tariff, Surcharge, Invoice, Settlement & Operational Finance"
         folder: "model/ontologies/financial/"
         owns: "Tariff structures, surcharges (BAF, CAF, THC, PSS), freight charges, demurrage and detention, invoices, credit notes, settlement, payment allocation, trade finance (L/C, documentary collection), cost allocation, cost-to-serve, budget variance, revenue attribution, yield metrics, load factor, and profitability analysis."
-        does_not_own: "Customer contracts, booking lifecycle, emissions methodology, operational events, or general ledger chart-of-accounts."
+        does_not_own: "Customer contracts, booking lifecycle, emissions methodology, operational events, general ledger chart-of-accounts, or working capital metrics (DSO, DPO, cash conversion cycle) — those are client extensions."
+        extension_note: >
+          This domain covers the full operational finance lifecycle: charges and surcharges
+          (BSP), demurrage and detention (DCSA), cost allocation and budgeting, and
+          revenue/yield analytics. Working capital metrics — DSO, DPO, cash conversion cycle —
+          are deliberately absent and belong in client extensions, because their calculation
+          methods are implementation-specific and no standard fixes them. Adopting a shared
+          definition here would encode one company's accounting policy as though it were
+          industry semantics.
         overlaps:
           - class: FreeTimePeriod
             candidates: [BSP/Financial, DCSA/Demurrage-Detention]

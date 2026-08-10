@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.kairosflow.ai/schema/accelerator/data-domains.schema.json",
+  "title": "Accelerator pack data-domain registry",
+  "$comment": "Contract file. Read by the toolkit's analyse_sources.load_data_domains and reference_modules.load_accelerator_module_config. The 'owns'/'does_not_own' prose is not decoration: build_data_domain_targets feeds it to an LLM that classifies source-system tables into domains, so wording changes are behavioural. additionalProperties is false throughout, so a typo'd key fails here rather than being silently ignored by the loader.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "groups"],
+  "properties": {
+    "schema_version": {"type": "string", "minLength": 1},
+    "groups": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/group"}
+    },
+    "cross_domain_relationships": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/relationship"}
+    }
+  },
+  "$defs": {
+    "iri": {
+      "type": "string",
+      "pattern": "^https?://",
+      "minLength": 1
+    },
+    "group": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "domains"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+        "name": {"type": "string", "minLength": 1},
+        "question": {"type": "string"},
+        "domains": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/domain"}
+        }
+      }
+    },
+    "domain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "owns", "does_not_own", "imports"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "$comment": "Matched against hub ontology file stems by cli/shared.py::_ontology_domain_hints."
+        },
+        "name": {"type": "string", "minLength": 1},
+        "folder": {"type": "string"},
+        "owns": {"type": "string", "minLength": 1},
+        "does_not_own": {"type": "string", "minLength": 1},
+        "grain_note": {
+          "type": "string",
+          "$comment": "Co-located commentary for whoever edits this file. NOT classifier input: load_data_domains builds a fixed dict and passes through only name/owns/does_not_own/group/uris/modules/imports. Anything that must reach the classifier belongs in 'owns' or 'does_not_own'."
+        },
+        "mode_note": {"type": "string"},
+        "extension_note": {"type": "string"},
+        "note": {"type": "string"},
+        "standards": {"type": "array", "items": {"type": "string"}},
+        "overlaps": {"type": "array", "items": {"$ref": "#/$defs/overlap"}},
+        "imports": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/import"},
+          "$comment": "Required, but may be empty. An empty list is a statement, not an omission: the domain is a pure client extension backed by no reference model (mdm, claims, insurance, trade-finance). The key must still be present so the difference between 'nothing to import' and 'nobody filled this in' stays visible."
+        }
+      }
+    },
+    "import": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["uri", "module"],
+      "properties": {
+        "uri": {"$ref": "#/$defs/iri"},
+        "module": {"type": "string", "minLength": 1},
+        "provides": {"type": "string"},
+        "mode": {
+          "enum": ["ocean", "air", "rail", "road", "barge"],
+          "$comment": "Mirrors mode_bindings[].mode in blueprints/patterns/multimodal-order-leg/pattern.yaml."
+        },
+        "import_policy": {
+          "enum": ["reference-only"],
+          "$comment": "Catalogue the IRI and let a hub bind to it, but never add it to the accelerator's owl:imports."
+        },
+        "note": {"type": "string"}
+      }
+    },
+    "overlap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["class", "candidates", "resolved_to"],
+      "properties": {
+        "class": {"type": "string", "minLength": 1},
+        "candidates": {"type": "array", "minItems": 2, "items": {"type": "string"}},
+        "resolved_to": {"type": "string", "minLength": 1},
+        "rationale": {"type": "string"}
+      }
+    },
+    "relationship": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "property_uri"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "property_uri": {"$ref": "#/$defs/iri"},
+        "inverse_of": {"$ref": "#/$defs/iri"},
+        "domain_class_uri": {"$ref": "#/$defs/iri"},
+        "range_class_uri": {"$ref": "#/$defs/iri"},
+        "source_domain": {"type": "string"},
+        "target_domain": {"type": "string"},
+        "description": {"type": "string"},
+        "status": {"type": "string"}
+      }
+    }
+  }
+}
