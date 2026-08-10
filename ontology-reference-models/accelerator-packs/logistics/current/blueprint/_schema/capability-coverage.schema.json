@@ -44,7 +44,13 @@
             "items": {"type": "string", "minLength": 1}
           },
           "confidence": {"enum": ["low", "medium", "high"]},
-          "maturity": {"enum": ["experimental", "preview", "stable"]}
+          "maturity": {"enum": ["experimental", "preview", "stable"]},
+          "pattern_ids": {
+            "description": "Ids of blueprints/patterns/<id> directories that address this capability's extension points. Informational only — no referential check against the patterns folder exists yet.",
+            "type": "array",
+            "items": {"type": "string", "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"},
+            "uniqueItems": true
+          }
         }
       }
     }

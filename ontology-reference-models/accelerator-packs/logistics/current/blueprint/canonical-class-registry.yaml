@@ -1,5 +1,5 @@
 format_version: "1.0"
-accelerator_version: "1.6.0"
+accelerator_version: "1.7.0"
 concepts:
   - id: party
     class_uri: https://www.kairosflow.ai/ont/bsp/party#TradeParty
@@ -11,6 +11,7 @@ concepts:
     evidence:
       - "BSP party.ttl defines TradeParty and shared party identifiers"
       - "convergence-analysis.md Session A and explicit Party gap"
+    evidence_basis: analysis
     confidence: medium
     maturity: experimental
     first_slice: false
@@ -25,6 +26,7 @@ concepts:
     evidence:
       - "DCSA locations.ttl defines Location and contextual location specialisations"
       - "convergence-analysis.md Session A"
+    evidence_basis: analysis
     confidence: medium
     maturity: experimental
     first_slice: false
@@ -39,6 +41,7 @@ concepts:
     evidence:
       - "DCSA booking.ttl defines Booking, BookingRequest, and ConfirmedBooking"
       - "convergence-analysis.md Sessions A and B"
+    evidence_basis: analysis
     confidence: high
     maturity: experimental
     first_slice: false
@@ -53,10 +56,12 @@ concepts:
     evidence:
       - "DCSA booking.ttl defines Shipment as a complete transport transaction"
       - "convergence-analysis.md Shipment and consignment analysis"
+    evidence_basis: analysis
     confidence: high
     maturity: experimental
     first_slice: false
     standards: ["DCSA"]
+    implementations: ["att-001"]
   - id: consignment
     class_uri: https://www.kairosflow.ai/ont/mmt/consignment#Consignment
     authority: "Candidate only: UN/CEFACT MMT"
@@ -67,6 +72,7 @@ concepts:
     evidence:
       - "MMT consignment.ttl defines Consignment and master/house specialisations"
       - "convergence-analysis.md Shipment and consignment analysis"
+    evidence_basis: analysis
     confidence: high
     maturity: experimental
     first_slice: false
@@ -81,24 +87,28 @@ concepts:
     evidence:
       - "MMT consignment.ttl defines ConsignmentItem"
       - "convergence-analysis.md Session B"
+    evidence_basis: analysis
     confidence: high
     maturity: experimental
     first_slice: false
     standards: ["UN/CEFACT MMT-RDM"]
   - id: equipment-asset
-    class_uri: https://www.kairosflow.ai/ont/dcsa/equipment#Container
-    authority: "Candidate only: DCSA equipment model for container scope"
-    grain: "One durable physical container"
-    identity: "ISO 6346 container number"
+    class_uri: https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment
+    authority: "Candidate only: MMT general transport-equipment model, covering containerised and non-containerised equipment. Corrected from a DCSA Container anchor, which admitted a container-scope restriction the pack's own manifest.yaml target_sectors (road carrier, 3PL, NVOCC) do not support — see scripts/validate_archetypes.py anchor-generality check."
+    grain: "One durable physical transport-equipment asset, container or non-containerised unit load"
+    identity: "Scheme-scoped equipment identifier — ISO 6346 container number where the asset is a container, otherwise a carrier- or lessor-scoped equipment identifier"
     lifecycle: "Registration through retirement"
     disposition: unresolved
     evidence:
-      - "DCSA equipment.ttl defines Container and containerNumber"
+      - "MMT equipment.ttl defines TransportEquipment and its FreightContainer specialisation"
       - "convergence-analysis.md Equipment analysis"
+      - "att-001: implementation evidence declined the Container-only anchor because the observed operation is non-containerised unit-load; the pack-consistency defect (manifest.yaml target_sectors) is the basis for this correction, not the attestation alone"
+    evidence_basis: pack-consistency
     confidence: high
     maturity: experimental
     first_slice: false
-    standards: ["DCSA", "ISO 6346"]
+    standards: ["UN/CEFACT MMT-RDM", "DCSA", "ISO 6346"]
+    implementations: ["att-001"]
   - id: equipment-request
     class_uri: https://www.kairosflow.ai/ont/dcsa/booking#RequestedEquipment
     authority: "Candidate only: DCSA booking model"
@@ -109,6 +119,7 @@ concepts:
     evidence:
       - "DCSA booking.ttl defines RequestedEquipment"
       - "convergence-analysis.md Equipment analysis"
+    evidence_basis: analysis
     confidence: high
     maturity: experimental
     first_slice: false
@@ -123,6 +134,7 @@ concepts:
     evidence:
       - "DCSA booking.ttl defines UtilizedTransportEquipment"
       - "convergence-analysis.md Equipment analysis"
+    evidence_basis: analysis
     confidence: high
     maturity: experimental
     first_slice: false
@@ -137,6 +149,7 @@ concepts:
     evidence:
       - "DCSA container-operations.ttl defines ContainerJourney"
       - "convergence-analysis.md Equipment analysis"
+    evidence_basis: analysis
     confidence: high
     maturity: experimental
     first_slice: false
@@ -151,6 +164,7 @@ concepts:
     evidence:
       - "MMT consignment.ttl defines TransportRoute"
       - "convergence-analysis.md Movement analysis"
+    evidence_basis: analysis
     confidence: high
     maturity: experimental
     first_slice: false
@@ -165,6 +179,7 @@ concepts:
     evidence:
       - "MMT consignment.ttl defines TransportLeg"
       - "convergence-analysis.md Movement analysis"
+    evidence_basis: analysis
     confidence: high
     maturity: experimental
     first_slice: false
@@ -179,6 +194,7 @@ concepts:
     evidence:
       - "MMT consignment.ttl defines TransportMovement"
       - "convergence-analysis.md Movement analysis"
+    evidence_basis: analysis
     confidence: high
     maturity: experimental
     first_slice: false
@@ -193,6 +209,7 @@ concepts:
     evidence:
       - "DCSA transport-call.ttl defines TransportCall"
       - "convergence-analysis.md Movement analysis"
+    evidence_basis: analysis
     confidence: high
     maturity: experimental
     first_slice: false
@@ -207,6 +224,7 @@ concepts:
     evidence:
       - "DCSA events.ttl defines Event and event categories"
       - "convergence-analysis.md Event analysis"
+    evidence_basis: analysis
     confidence: medium
     maturity: experimental
     first_slice: false
@@ -221,6 +239,7 @@ concepts:
     evidence:
       - "DCSA transport-documents.ttl defines TransportDocument"
       - "convergence-analysis.md Document analysis"
+    evidence_basis: analysis
     confidence: medium
     maturity: experimental
     first_slice: false

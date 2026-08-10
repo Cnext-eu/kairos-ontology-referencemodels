@@ -1,0 +1,31 @@
+id: governed-code-list
+problem: >
+  A classification dimension is carried as a raw, source-typed string with no cross-source
+  survivorship, so disagreement between sources surfaces downstream instead of at the boundary.
+applicability: >
+  The classification dimension is sourced from more than one system, or a governed cross-source
+  authority for the value already exists.
+closes_gap: [8]
+normativity:
+  naming: normative
+  participants: advisory
+  cardinality_rules: advisory
+naming_conventions:
+  - element: governed_code_list_class
+    convention: "<Dimension>Code"
+    example: EquipmentTypeCode
+  - element: raw_source_value
+    convention: "source<Dimension>Value"
+    example: sourceEquipmentTypeValue
+  - element: link_to_governed_code
+    convention: "has<Dimension>Code"
+    example: hasEquipmentTypeCode
+anti_patterns:
+  - id: raw-string-as-classification-of-record
+    description: "The raw source string is propagated as the classification, with no governed dimension to reconcile disagreements against."
+    rejection_reason: "Reproduces the exact cross-source disagreement defect this pattern exists to close."
+  - id: implicit-survivorship
+    description: "Whichever source loads last silently overwrites the governed code."
+    rejection_reason: "Survivorship must be a stated per-dimension rule, not an artifact of load order."
+grain_collisions:
+  - "Source-noun ≠ canonical grain: a source column named e.g. status may carry current-state, a temporal status observation, or a lifecycle event — three grains that must be disambiguated before it is treated as a governed code."

@@ -63,6 +63,7 @@ between catalog and interview script.
 |---|---|---|
 | `freight-forwarder` | [`freight-forwarder.md`](./freight-forwarder.md) | Freight forwarder, NVOCC, multimodal logistics service provider |
 | `shipping-carrier` | [`shipping-carrier.md`](./shipping-carrier.md) | Ocean carrier (vessel operators), short-sea, ro-ro, barge |
+| `unit-load-carrier` | [`unit-load-carrier.md`](./unit-load-carrier.md) | Non-containerised unit-load / ro-ro / short-sea carrier — trailer, swap-body, cassette operations with own-account and subcontracted road haulage |
 
 ## Adding a new sector
 

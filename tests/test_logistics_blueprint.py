@@ -148,6 +148,7 @@ def _documents() -> dict:
                     "lifecycle": "Creation through retirement",
                     "disposition": "approved",
                     "evidence": evidence,
+                    "evidence_basis": "standard",
                     "confidence": "high",
                     "maturity": "preview",
                     "first_slice": True,
@@ -162,6 +163,7 @@ def _documents() -> dict:
                     "lifecycle": "Creation through retirement",
                     "disposition": "approved",
                     "evidence": evidence,
+                    "evidence_basis": "standard",
                     "confidence": "high",
                     "maturity": "preview",
                     "first_slice": True,
@@ -389,6 +391,25 @@ def test_synthetic_source_shapes_are_schema_valid_and_have_complete_keys() -> No
                 assert set(table["primary_key"]) <= set(table["columns"])
 
 
+def test_committed_attestations_are_schema_valid_and_source_neutral() -> None:
+    blueprint = LOGISTICS_CURRENT / "blueprint"
+    schema = json.loads(
+        (blueprint / "_schema" / "attestation.schema.json").read_text(encoding="utf-8")
+    )
+    attestation_paths = sorted((blueprint / "evidence" / "attestations").glob("*.yaml"))
+
+    assert [path.stem for path in attestation_paths] == ["att-001"]
+    forbidden_terms = ("cldn", "client", "customer")
+    for path in attestation_paths:
+        attestation = load_yaml(path)
+        Draft202012Validator(schema).validate(attestation)
+        assert attestation["id"] == path.stem
+
+        raw = path.read_text(encoding="utf-8").lower()
+        for term in forbidden_terms:
+            assert term not in raw, f"{path.name} is not source-neutral: found {term!r}"
+
+
 def test_valid_registry_and_contract_flow_is_deterministic(tmp_path: Path) -> None:
     paths, _ = _fixture_paths(tmp_path)
     first = tmp_path / "contract-one.yaml"
@@ -416,6 +437,21 @@ def test_unknown_class_uri_is_rejected(tmp_path: Path) -> None:
     _replace(paths, "canonical", canonical)
 
     with pytest.raises(BlueprintValidationError, match="unknown class URI"):
+        validate_documents(paths)
+
+
+def test_approved_concept_with_implementation_evidence_basis_is_rejected(
+    tmp_path: Path,
+) -> None:
+    paths, documents = _fixture_paths(tmp_path)
+    canonical = copy.deepcopy(documents["canonical"])
+    canonical["concepts"][0]["evidence_basis"] = "implementation"
+    _replace(paths, "canonical", canonical)
+
+    with pytest.raises(
+        BlueprintValidationError,
+        match="disposition is approved but evidence_basis is implementation",
+    ):
         validate_documents(paths)
 
 

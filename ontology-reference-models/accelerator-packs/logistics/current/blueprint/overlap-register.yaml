@@ -1,5 +1,5 @@
 format_version: "1.0"
-accelerator_version: "1.6.0"
+accelerator_version: "1.7.0"
 entries:
   - id: party-role-parents
     concept_id: party
@@ -68,9 +68,10 @@ entries:
       - https://www.kairosflow.ai/ont/dcsa/booking#UtilizedTransportEquipment
       - https://www.kairosflow.ai/ont/dcsa/container-operations#ContainerJourney
     disposition: unresolved
-    rationale: "Durable asset, demand line, allocation, and operational journey require separate identities and lifecycles."
+    rationale: "Durable asset, demand line, allocation, and operational journey require separate identities and lifecycles. dcsa/equipment#Container is a scope-specific overlay of the anchor (containerised equipment only), not the anchor itself — see canonical-class-registry.yaml equipment-asset, corrected to mmt/equipment#TransportEquipment because the pack's manifest.yaml target_sectors include non-containerised operations (road carrier, 3PL, NVOCC)."
     evidence:
       - "convergence-analysis.md Equipment analysis"
+      - "att-001: one source allocation relation carried equipment, driver, operator, and subcontractor rows together, so the equipment-utilisation grain requires a resource-type discriminator rather than a clean 1:1 to the asset"
     confidence: high
     maturity: experimental
     first_slice: false

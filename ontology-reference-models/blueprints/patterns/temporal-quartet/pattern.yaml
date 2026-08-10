@@ -1,0 +1,46 @@
+id: temporal-quartet
+problem: >
+  Transport aggregates commonly distinguish requested, planned, estimated, and actual timestamps
+  for a start/arrival and an end/departure event. Without a shared naming convention, each class
+  independently invents its own words for the same eight timestamps.
+applicability: >
+  Any class distinguishing what was asked for, planned, estimated, or actually observed for a
+  start/arrival or end/departure event.
+closes_gap: [8]
+normativity:
+  naming: normative
+  participants: advisory
+  cardinality_rules: advisory
+naming_conventions:
+  - qualifier: requested
+    start_or_arrival: requestedStart
+    arrival_variant: requestedArrival
+    end_or_departure: requestedEnd
+    departure_variant: requestedDeparture
+  - qualifier: planned
+    start_or_arrival: plannedStart
+    arrival_variant: plannedArrival
+    end_or_departure: plannedEnd
+    departure_variant: plannedDeparture
+  - qualifier: estimated
+    start_or_arrival: estimatedStart
+    arrival_variant: estimatedArrival
+    end_or_departure: estimatedEnd
+    departure_variant: estimatedDeparture
+  - qualifier: actual
+    start_or_arrival: actualStart
+    arrival_variant: actualArrival
+    end_or_departure: actualEnd
+    departure_variant: actualDeparture
+  rule: >
+    Use Start/End for duration-bearing activities and Arrival/Departure for point-of-presence
+    events. Never mix vocabularies on one class. Never substitute a synonym (eta, expected, due)
+    for estimated or requested.
+anti_patterns:
+  - id: synonym-for-estimated-or-requested
+    description: "A property named eta, expectedTime, or due_date instead of estimated*/requested*."
+    rejection_reason: "This is the exact naming drift this pattern was shipped normative to stop."
+  - id: overwrite-actual-in-place
+    description: "A correction to an actual* value overwrites the existing literal instead of appending a new observation."
+    rejection_reason: "Actual values are immutable once recorded; corrections are new events, not mutations."
+grain_collisions: []

@@ -215,6 +215,15 @@ def validate_documents(paths: BlueprintPaths) -> dict[str, Any]:
             )
         if concept.get("first_slice") and concept["disposition"] == "unresolved":
             errors.append(f"canonical:{concept['id']}: first-slice concept is unresolved")
+        if (
+            concept["disposition"] == "approved"
+            and concept.get("evidence_basis") == "implementation"
+        ):
+            errors.append(
+                f"canonical:{concept['id']}: disposition is approved but evidence_basis is "
+                "implementation — implementation evidence may raise, corroborate, or force "
+                "re-review of a concept, but cannot by itself authorise disposition: approved"
+            )
 
     for entry in overlap.get("entries", []):
         if entry["concept_id"] not in concept_by_id:

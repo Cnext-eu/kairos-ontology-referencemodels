@@ -1,5 +1,5 @@
 accelerator_uri: https://www.kairosflow.ai/ont/accelerator/logistics
-accelerator_version: 1.6.0
+accelerator_version: 1.7.0
 format_version: '1.0'
 modules:
 - ontology_uri: https://www.kairosflow.ai/ont/accelerator/logistics
@@ -16793,6 +16793,22 @@ records:
   source_file: derived-ontologies/SupplyChain/current/supply-chain.ttl
   superclasses: []
   uri: https://www.kairosflow.ai/ont/supply-chain#hasEnergyConsumption
+- comments:
+  - Links an MMT TransportMovement to the carbon footprint of that specific movement leg. Operational
+    emissions data is commonly captured at movement/trip grain rather than at the consignment or transport-service
+    grain that hasCarbonFootprint and hasEnergyConsumption attach to; this property closes that attachment
+    gap.
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/consignment#TransportMovement
+  kind: object_property
+  labels:
+  - has movement emission
+  module_uri: https://www.kairosflow.ai/ont/supply-chain
+  ranges:
+  - https://www.kairosflow.ai/ont/sustainability/carbon#CarbonFootprint
+  source_file: derived-ontologies/SupplyChain/current/supply-chain.ttl
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/supply-chain#hasMovementEmission
 - comments:
   - Links an MMT Consignment to the BSP Invoice raised for settlement.
   domains:
