@@ -66,6 +66,22 @@ Both turned out to be the same gap seen from opposite ends: the missing thing wa
   must still confirm from source data, and to flag mode-typed orders as a known anti-pattern to
   redirect.
 
+### Fixed
+- **`temporal-quartet/pattern.yaml` was invalid YAML** from the day it shipped (1.13.0). A stray
+  `rule:` mapping key inside a block sequence parses as an error but reads fine to a human, so
+  review missed it. `kairos-ontology-toolkit`'s `pattern_loader` skips a malformed pattern
+  silently during bulk listing — so the library's only *normative* naming pattern was never
+  visible to the `kairos-design-domain` flow, and no check in either repo failed. Found by
+  running the toolkit's own loader against this branch.
+- **The stale claim that caused it.** `patterns/README.md` and `blueprints/README.md` both stated
+  there was no toolkit consumer for the pattern library. There is one, and its loader was written
+  lenient *because* this repo said the library had no schema — each repo relying on the other's
+  assumption. Both statements corrected.
+- **`validate_structure.py` now parses every `blueprints/patterns/<id>/pattern.yaml`** and checks
+  `id` against the directory name. Parse-only floor, not the owed JSON Schema.
+- `naming_conventions` is documented as a list-only block; whole-block prose belongs in a sibling
+  `naming_rule` key. Applied to `temporal-quartet` and `multimodal-order-leg`.
+
 ### Known gaps (not addressed here)
 - **No `not_applicable` tier** in `archetype.schema.json`, so `shipping-carrier` omitting
   `TransportOrder` on purpose is machine-indistinguishable from nobody having reviewed it. The
@@ -76,6 +92,13 @@ Both turned out to be the same gap seen from opposite ends: the missing thing wa
 - Convergence gaps **3** (booking amendment/version history), **4** (equipment
   allocation/utilisation), and **6** (source-neutral event envelope) remain unclaimed by any
   pattern.
+- **`patterns/_schema/pattern.schema.json` is still owed.** Both triggers the v0.1 README set for
+  writing it have now fired. The parse guard added here catches malformed YAML, not a
+  wrong-but-parseable pattern.
+- **`VALID_TIERS` is duplicated across repos** — `archetype.schema.json` here and
+  `archetype_loader.py` in the toolkit, which comments that it mirrors ours. Adding a
+  `not_applicable` tier requires a coordinated pair of PRs; a schema-first change would break the
+  consumer on the next ref-model bump.
 
 ## [1.13.0] - 2026-08-09
 

@@ -40,11 +40,11 @@ naming_conventions:
     property: hasCarrierReservation
   - link: leg-to-movement
     property: realizedByMovement
-  rule: >
-    Aggregate identity follows the repo-wide <aggregate>Reference convention. Requested service
-    windows follow the temporal-quartet pattern (requestedStart / requestedEnd). Never name a
-    property or class on the order after a transport mode, and never declare a direct
-    order-to-reservation link — reservations attach to legs.
+naming_rule: >
+  Aggregate identity follows the repo-wide <aggregate>Reference convention. Requested service
+  windows follow the temporal-quartet pattern (requestedStart / requestedEnd). Never name a
+  property or class on the order after a transport mode, and never declare a direct
+  order-to-reservation link — reservations attach to legs.
 mode_bindings:
   - mode: ocean
     grain: reservation

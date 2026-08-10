@@ -15,7 +15,7 @@ Blueprints are versioned independently of the ref models they reference (see `ar
 ## Contents
 
 - [`archetypes/`](archetypes/) — Per-archetype YAML catalogs (one file per archetype) describing the ref-model modules and core concepts an archetype is expected to support. **Structure only** — no interview prose.
-- [`patterns/`](patterns/) — Sector-neutral modelling craft (shapes and naming conventions) harvested from client hub implementations. Naming conventions are normative; structural guidance is advisory. See `patterns/README.md`. Not part of the `archetypes/` cross-repo contract — there is currently no toolkit consumer for this folder.
+- [`patterns/`](patterns/) — Sector-neutral modelling craft (shapes and naming conventions) harvested from client hub implementations. Naming conventions are normative; structural guidance is advisory. See `patterns/README.md`. Not part of the `archetypes/` cross-repo contract, but **it does have a toolkit consumer** — `kairos-ontology-toolkit`'s `core/pattern_loader.py` reads every `pattern.yaml` for the `kairos-design-domain` authoring flow. An earlier version of this line claimed there was none; that error let an unparseable `pattern.yaml` ship undetected.
 - [`ontology/`](ontology/) — **Kairos-authored OWL classes** for business grains that a standards audit has shown no installed standard expresses. The only blueprint module that declares classes rather than describing how to compose existing ones, so it carries the highest admission bar — see `ontology/README.md`. Referenced from `archetypes/` like any other module IRI.
 
 ## Anchor-selection invariant

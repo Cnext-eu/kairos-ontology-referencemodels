@@ -32,10 +32,10 @@ naming_conventions:
     arrival_variant: actualArrival
     end_or_departure: actualEnd
     departure_variant: actualDeparture
-  rule: >
-    Use Start/End for duration-bearing activities and Arrival/Departure for point-of-presence
-    events. Never mix vocabularies on one class. Never substitute a synonym (eta, expected, due)
-    for estimated or requested.
+naming_rule: >
+  Use Start/End for duration-bearing activities and Arrival/Departure for point-of-presence
+  events. Never mix vocabularies on one class. Never substitute a synonym (eta, expected, due)
+  for estimated or requested.
 anti_patterns:
   - id: synonym-for-estimated-or-requested
     description: "A property named eta, expectedTime, or due_date instead of estimated*/requested*."
