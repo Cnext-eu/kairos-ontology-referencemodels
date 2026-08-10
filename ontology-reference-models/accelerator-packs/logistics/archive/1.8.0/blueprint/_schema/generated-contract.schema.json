@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.kairosflow.ai/schema/logistics/generated-contract.schema.json",
+  "title": "Generated Logistics Silver contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format_version",
+    "accelerator_version",
+    "profile_version",
+    "contract_version",
+    "maturity",
+    "supported_adapters",
+    "entities",
+    "relationships"
+  ],
+  "properties": {
+    "format_version": {"const": "1.0"},
+    "accelerator_version": {"$ref": "#/$defs/semver"},
+    "profile_version": {"$ref": "#/$defs/semver"},
+    "contract_version": {"$ref": "#/$defs/semver"},
+    "maturity": {"enum": ["experimental", "preview", "stable"]},
+    "supported_adapters": {
+      "type": "array",
+      "items": {"enum": ["fabric", "databricks"]},
+      "uniqueItems": true
+    },
+    "entities": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/entity"}
+    },
+    "relationships": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/relationship"}
+    }
+  },
+  "$defs": {
+    "semver": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-(?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*)(?:\\.(?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "uris": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "concept_id",
+        "class_uri",
+        "physical_name",
+        "business_grain",
+        "natural_key_properties",
+        "required_properties",
+        "optional_properties",
+        "scd_policy",
+        "reference_data",
+        "applicable_standards",
+        "maturity"
+      ],
+      "properties": {
+        "concept_id": {"type": "string", "minLength": 1},
+        "class_uri": {"type": "string", "minLength": 1},
+        "physical_name": {"type": "string", "minLength": 1},
+        "business_grain": {"type": "string", "minLength": 1},
+        "natural_key_properties": {"$ref": "#/$defs/uris"},
+        "required_properties": {"$ref": "#/$defs/uris"},
+        "optional_properties": {"$ref": "#/$defs/uris"},
+        "scd_policy": {"enum": ["none", "type1", "type2", "append_only"]},
+        "reference_data": {"type": "boolean"},
+        "applicable_standards": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "maturity": {"enum": ["experimental", "preview", "stable"]}
+      }
+    },
+    "relationship": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "property_uri",
+        "domain_concept",
+        "range_concept",
+        "direction",
+        "cardinality",
+        "temporal_semantics",
+        "maturity"
+      ],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "property_uri": {"type": "string", "minLength": 1},
+        "domain_concept": {"type": "string", "minLength": 1},
+        "range_concept": {"type": "string", "minLength": 1},
+        "direction": {"enum": ["forward", "inverse", "bidirectional"]},
+        "cardinality": {"type": "string", "pattern": "^(0|1|n)\\.\\.(1|n)$"},
+        "temporal_semantics": {"type": "string", "minLength": 1},
+        "maturity": {"enum": ["experimental", "preview", "stable"]}
+      }
+    }
+  }
+}

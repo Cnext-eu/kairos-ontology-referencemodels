@@ -10,7 +10,18 @@
     FIBO URIs are resolved via rewriteURI — no update needed on FIBO upgrades.
     -->
     
-    <!-- FIBO: single rewrite rule resolves all FIBO URIs to the stable local path.
+    <!-- ========== IATA ONE Record (air cargo, authoritative mirror) ========== -->
+    <!-- Two ontology documents: the data model (cargo) and the code lists.
+         The DM ontology's owl:imports points at the raw GitHub URL of the CL
+         ontology; that too is mapped here so resolution works offline. -->
+    <uri name="https://onerecord.iata.org/ns/cargo"
+         uri="authoritative-ontologies/IATA/current/IATA-1R-DM-Ontology.ttl"/>
+    <uri name="https://onerecord.iata.org/ns/code-lists"
+         uri="authoritative-ontologies/IATA/current/IATA-1R-CL-Ontology.ttl"/>
+    <uri name="https://raw.githubusercontent.com/IATA-Cargo/ONE-Record/refs/heads/master/working_draft/ontology/IATA-1R-CL-Ontology.ttl"
+         uri="authoritative-ontologies/IATA/current/IATA-1R-CL-Ontology.ttl"/>
+
+    <!-- ========== FIBO: single rewrite rule resolves all FIBO URIs to the stable local path.
          The folder is always named "fibo/" regardless of release version. -->
     <rewriteURI uriStartString="https://spec.edmcouncil.org/fibo/ontology/"
                 rewritePrefix="authoritative-ontologies/FIBO/current/fibo/"/>
@@ -45,6 +56,15 @@
     <uri name="https://www.kairosflow.ai/ont/mmt/party" uri="derived-ontologies/MMT/current/party/party.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/mmt/route-network" uri="derived-ontologies/MMT/current/route-network/route-network.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/mmt/transport-means" uri="derived-ontologies/MMT/current/transport-means/transport-means.ttl"/>
+    
+    <!-- ========== RAIL (TAF TSI — EU rail freight reservation & running) ========== -->
+    <uri name="https://www.kairosflow.ai/ont/rail" uri="derived-ontologies/RAIL/current/rail.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/rail/consignment" uri="derived-ontologies/RAIL/current/consignment/consignment.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/rail/path-request" uri="derived-ontologies/RAIL/current/path-request/path-request.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/rail/train-running" uri="derived-ontologies/RAIL/current/train-running/train-running.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/rail/rolling-stock" uri="derived-ontologies/RAIL/current/rolling-stock/rolling-stock.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/rail/party" uri="derived-ontologies/RAIL/current/party/party.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/rail/shared-kernel" uri="derived-ontologies/RAIL/current/shared-kernel/shared-kernel.ttl"/>
     
     <!-- ========== BSP (Buy-Ship-Pay) ========== -->
     <uri name="https://www.kairosflow.ai/ont/bsp" uri="derived-ontologies/BSP/current/bsp.ttl"/>

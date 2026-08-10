@@ -3,6 +3,8 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix bp: <https://www.kairosflow.ai/ont/blueprint/transport-order#> .
 @prefix dcsa-bkg: <https://www.kairosflow.ai/ont/dcsa/booking#> .
+@prefix iata-cargo: <https://onerecord.iata.org/ns/cargo#> .
+@prefix rail-path: <https://www.kairosflow.ai/ont/rail/path-request#> .
 @prefix cons: <https://www.kairosflow.ai/ont/mmt/consignment#> .
 @prefix inland: <https://www.kairosflow.ai/ont/mmt/inland-transport#> .
 
@@ -20,6 +22,24 @@
     rdfs:comment "Reservation covering an ocean leg. Binds the DCSA booking semantics at the grain where they actually hold."@en ;
     rdfs:subClassOf bp:CarrierReservation , dcsa-bkg:Booking .
 
+# --- Air scope: the reservation for an air leg binds IATA ONE Record cargo semantics. ONE
+# --- Record is vendored as an authoritative mirror under authoritative-ontologies/IATA/
+# --- (namespace https://onerecord.iata.org/ns/cargo#). Bind the relevant ONE Record class
+# --- (e.g. Booking) at the reservation grain; resolve via the catalog, do not bulk-import.
+:AirCarrierReservation a owl:Class ;
+    rdfs:label "Air Carrier Reservation"@en ;
+    rdfs:comment "Reservation covering an air leg. Binds IATA ONE Record cargo booking semantics at the reservation grain."@en ;
+    rdfs:subClassOf bp:CarrierReservation , iata-cargo:Booking .
+
+# --- Rail scope: the reservation for a rail leg binds TAF TSI. The derived RAIL ontology
+# --- (derived-ontologies/RAIL/) grounds the Path Request / Consignment Order messages of
+# --- the TAF TSI data catalogue. Bind the path-request or consignment class at the
+# --- reservation grain, hub-local.
+:RailCarrierReservation a owl:Class ;
+    rdfs:label "Rail Carrier Reservation"@en ;
+    rdfs:comment "Reservation covering a rail leg. Binds TAF TSI path-request / consignment-order semantics at the reservation grain."@en ;
+    rdfs:subClassOf bp:CarrierReservation , rail-path:PathRequestMessage .
+
 # --- Road scope: no external standard forces a reservation shape, so the generic slot is used
 # --- directly. Note what is absent — no DCSA subclass, therefore no carrierBookingReference
 # --- obligation, therefore no unpopulatable field.
@@ -27,9 +47,6 @@
     rdfs:label "Road Carrier Reservation"@en ;
     rdfs:comment "Reservation covering a road leg — typically a haulier subcontract."@en ;
     rdfs:subClassOf bp:CarrierReservation .
-
-# --- Air / rail: author ONLY with source feasibility. See pattern.md for the alignment targets
-# --- (IATA ONE Record; TAF TSI). Until then these are documented extension points, not classes.
 
 # --- The leg already carries the mode. Nothing below is authored by the hub; shown to make the
 # --- traversal explicit:

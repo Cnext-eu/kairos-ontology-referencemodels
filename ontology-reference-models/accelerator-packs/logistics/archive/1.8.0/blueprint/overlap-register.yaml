@@ -1,0 +1,159 @@
+format_version: "1.0"
+accelerator_version: "1.8.0"
+entries:
+  - id: party-role-parents
+    concept_id: party
+    class_uris:
+      - https://www.kairosflow.ai/ont/bsp/party#TradeParty
+      - https://www.kairosflow.ai/ont/dcsa/party#ShippingParty
+      - https://www.kairosflow.ai/ont/mmt/party#TransportParty
+      - https://www.kairosflow.ai/ont/imo/party#MaritimeParty
+    disposition: reference_model_gap
+    rationale: "Stakeholder-approved architecture requires a neutral durable Party identity and qualified contextual role assignment. Existing classes remain standards overlays pending audit and proven mappings."
+    evidence:
+      - "Stakeholder confirmation 2026-07-21"
+      - "convergence-analysis.md Party and contextual roles"
+      - "evidence/cross-archetype-assessment.md"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+  - id: location-authority
+    concept_id: location
+    class_uris:
+      - https://www.kairosflow.ai/ont/dcsa/locations#Location
+      - https://www.kairosflow.ai/ont/mmt/locations#Location
+      - https://www.kairosflow.ai/ont/mmt/locations#TransportLocation
+    disposition: unresolved
+    rationale: "DCSA carrier and MMT multimodal scopes overlap, while itinerary-role subclasses must not duplicate physical locations."
+    evidence:
+      - "convergence-analysis.md Location and contextual location roles"
+    confidence: medium
+    maturity: experimental
+    first_slice: false
+  - id: booking-order-terms
+    concept_id: booking
+    class_uris:
+      - https://www.kairosflow.ai/ont/dcsa/booking#Booking
+      - https://www.kairosflow.ai/ont/bsp/commercial#PurchaseOrder
+      - https://www.kairosflow.ai/ont/bsp/commercial#SalesOrder
+      - https://www.kairosflow.ai/ont/tic/handling-operations#Order
+    disposition: unresolved
+    rationale: "Carrier reservation, buyer/seller commercial order, and terminal move directive are explicitly different grains."
+    evidence:
+      - "convergence-analysis.md Booking and order"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+  - id: shipment-grains
+    concept_id: shipment
+    class_uris:
+      - https://www.kairosflow.ai/ont/dcsa/booking#Shipment
+      - https://www.kairosflow.ai/ont/bsp/commercial#Shipment
+      - https://www.kairosflow.ai/ont/bsp/commercial#Consignment
+      - https://www.kairosflow.ai/ont/mmt/consignment#Consignment
+    disposition: unresolved
+    rationale: "Carrier transaction, physical delivery, and identifiable goods collection are related but not equivalent."
+    evidence:
+      - "convergence-analysis.md Consignment and shipment"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+  - id: equipment-grains
+    concept_id: equipment-asset
+    class_uris:
+      - https://www.kairosflow.ai/ont/dcsa/equipment#Container
+      - https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment
+      - https://www.kairosflow.ai/ont/mmt/equipment#FreightContainer
+      - https://www.kairosflow.ai/ont/dcsa/booking#RequestedEquipment
+      - https://www.kairosflow.ai/ont/dcsa/booking#UtilizedTransportEquipment
+      - https://www.kairosflow.ai/ont/dcsa/container-operations#ContainerJourney
+    disposition: unresolved
+    rationale: "Durable asset, demand line, allocation, and operational journey require separate identities and lifecycles. dcsa/equipment#Container is a scope-specific overlay of the anchor (containerised equipment only), not the anchor itself — see canonical-class-registry.yaml equipment-asset, corrected to mmt/equipment#TransportEquipment because the pack's manifest.yaml target_sectors include non-containerised operations (road carrier, 3PL, NVOCC)."
+    evidence:
+      - "convergence-analysis.md Equipment analysis"
+      - "att-001: one source allocation relation carried equipment, driver, operator, and subcontractor rows together, so the equipment-utilisation grain requires a resource-type discriminator rather than a clean 1:1 to the asset"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+  - id: route-execution-grains
+    concept_id: transport-movement
+    class_uris:
+      - https://www.kairosflow.ai/ont/mmt/consignment#TransportRoute
+      - https://www.kairosflow.ai/ont/mmt/consignment#TransportLeg
+      - https://www.kairosflow.ai/ont/mmt/consignment#TransportMovement
+      - https://www.kairosflow.ai/ont/dcsa/booking#TransportPlanLeg
+      - https://www.kairosflow.ai/ont/dcsa/transport-call#TransportCall
+      - https://www.kairosflow.ai/ont/imo/port-call#PortCall
+      - https://www.kairosflow.ai/ont/tic/handling-operations#Move
+    disposition: unresolved
+    rationale: "Route, plan, execution, call, regulatory visit, and terminal handling are complementary grains."
+    evidence:
+      - "convergence-analysis.md Movement, leg, stop and call"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+  - id: event-authority
+    concept_id: event
+    class_uris:
+      - https://www.kairosflow.ai/ont/dcsa/events#Event
+      - https://www.kairosflow.ai/ont/dcsa/events#TransportEvent
+      - https://www.kairosflow.ai/ont/mmt/events#TransportEvent
+      - https://www.kairosflow.ai/ont/bsp/commercial#ShipmentEvent
+      - https://www.kairosflow.ai/ont/tic/events#TerminalEvent
+    disposition: unresolved
+    rationale: "Event scopes and subjects differ; a neutral envelope needs correction, subject-role, and time-classifier semantics."
+    evidence:
+      - "convergence-analysis.md Transport event"
+    confidence: medium
+    maturity: experimental
+    first_slice: false
+  - id: transport-document-authority
+    concept_id: transport-document
+    class_uris:
+      - https://www.kairosflow.ai/ont/dcsa/transport-documents#TransportDocument
+      - https://www.kairosflow.ai/ont/mmt/documents#TransportDocument
+      - https://www.kairosflow.ai/ont/bsp/documents#TransportDocument
+    disposition: unresolved
+    rationale: "Carrier, multimodal, and BSP document scopes overlap but equivalence and version/issuance semantics are not proven."
+    evidence:
+      - "convergence-analysis.md Document pattern"
+    confidence: medium
+    maturity: experimental
+    first_slice: false
+  - id: transport-order-grain
+    concept_id: transport-order
+    class_uris:
+      - https://www.kairosflow.ai/ont/blueprint/transport-order#TransportOrder
+      - https://www.kairosflow.ai/ont/dcsa/booking#Booking
+      - https://www.kairosflow.ai/ont/dcsa/booking#Shipment
+      - https://www.kairosflow.ai/ont/bsp/commercial#PurchaseOrder
+      - https://www.kairosflow.ai/ont/bsp/commercial#SalesOrder
+      - https://www.kairosflow.ai/ont/tic/handling-operations#Order
+      - https://www.kairosflow.ai/ont/mmt/documents#TransportInstructions
+    disposition: unresolved
+    rationale: "Audit finding is distinct_grain, held at unresolved pending stakeholder review per LOG-BP-012 — only a stakeholder-confirmed entry may carry a resolved disposition (see party-role-parents). The arranging party's own order, a carrier's capacity reservation, a commercial buy/sell of goods, a terminal handling directive, and instruction content are five different grains. One order may procure several carrier reservations across several carriers and modes, which alone rules out equivalence with DCSA Booking. Supersedes the workaround of force-fitting the order onto the nearest standard class; refines but does not replace `booking-order-terms`, which stays scoped to the booking concept."
+    evidence:
+      - "issue #29 standards audit"
+      - "convergence-analysis.md Booking and order"
+      - "blueprints/patterns/multimodal-order-leg/pattern.md grain collisions"
+    confidence: high
+    maturity: experimental
+    first_slice: false
+  - id: transport-order-mode-axis
+    concept_id: transport-order
+    class_uris:
+      - https://www.kairosflow.ai/ont/blueprint/transport-order#TransportOrder
+      - https://www.kairosflow.ai/ont/blueprint/transport-order#CarrierReservation
+      - https://www.kairosflow.ai/ont/mmt/consignment#TransportLeg
+      - https://www.kairosflow.ai/ont/mmt/inland-transport#RoadLeg
+      - https://www.kairosflow.ai/ont/mmt/inland-transport#RailLeg
+      - https://www.kairosflow.ai/ont/mmt/inland-transport#BargeLeg
+    disposition: unresolved
+    rationale: "Audit finding is specialisation, held at unresolved pending stakeholder review per LOG-BP-013. Transport mode specialises the leg, never the order. An order is multimodal by construction, so a mode subclass axis on the order breaks on the first intermodal order. MMT already reifies mode onto the leg; a mode-bound external standard attaches at the leg's carrier reservation, which is the grain at which that standard's own semantics hold."
+    evidence:
+      - "MMT/README.md reification of TransportMovement modeCode into RoadLeg, RailLeg, BargeLeg"
+      - "issue #33 and the road-versus-DCSA subclassing question that raised it"
+      - "blueprints/patterns/multimodal-order-leg/pattern.md anti-patterns"
+    confidence: high
+    maturity: experimental
+    first_slice: false

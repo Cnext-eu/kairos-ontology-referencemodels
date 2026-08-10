@@ -1,0 +1,39 @@
+flowchart TB
+    classDef candidate fill:#fff3cd,stroke:#856404,color:#212529
+    classDef standard fill:#e2e3e5,stroke:#41464b,color:#212529
+
+    Party["Candidate: Party"]:::candidate
+    Location["Candidate: Location"]:::candidate
+    Booking["Candidate: Booking"]:::candidate
+    Shipment["Candidate: Shipment"]:::candidate
+    Consignment["Candidate: Consignment"]:::candidate
+    Equipment["Candidate: Equipment asset"]:::candidate
+    Event["Candidate: Event"]:::candidate
+    Document["Candidate: Transport document"]:::candidate
+
+    BSPParty["BSP TradeParty"]:::standard -. investigate .-> Party
+    DCSAParty["DCSA ShippingParty"]:::standard -. contextual role .-> Party
+    MMTParty["MMT TransportParty"]:::standard -. contextual role .-> Party
+    IMOParty["IMO MaritimeParty"]:::standard -. contextual role .-> Party
+
+    DCSALocation["DCSA Location"]:::standard -. investigate .-> Location
+    MMTLocation["MMT Location / TransportLocation"]:::standard -. investigate .-> Location
+
+    DCSABooking["DCSA Booking"]:::standard -. candidate .-> Booking
+    BSPOrder["BSP Purchase / Sales Order"]:::standard -. explicitly distinct .-> Booking
+    TICOrder["TIC terminal Order"]:::standard -. explicitly distinct .-> Booking
+
+    DCSAShipment["DCSA Shipment"]:::standard -. candidate .-> Shipment
+    BSPShipment["BSP Shipment"]:::standard -. cross-standard alignment .-> Shipment
+    MMTConsignment["MMT Consignment"]:::standard -. candidate .-> Consignment
+
+    DCSAContainer["DCSA Container"]:::standard -. container scope .-> Equipment
+    MMTEquipment["MMT TransportEquipment"]:::standard -. multimodal scope .-> Equipment
+
+    DCSAEvent["DCSA Event"]:::standard -. carrier candidate .-> Event
+    MMTEvent["MMT TransportEvent"]:::standard -. multimodal context .-> Event
+    TICEvent["TIC TerminalEvent"]:::standard -. terminal context .-> Event
+
+    DCSADocument["DCSA TransportDocument"]:::standard -. carrier context .-> Document
+    MMTDocument["MMT TransportDocument"]:::standard -. multimodal context .-> Document
+    BSPDocument["BSP TransportDocument"]:::standard -. trade context .-> Document

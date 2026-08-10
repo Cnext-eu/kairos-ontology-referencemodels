@@ -1,7 +1,7 @@
 package:
   id: logistics
   name: "Kairos Logistics Accelerator Pack"
-  version: "1.7.0"
+  version: "1.9.0"
   description: "Pre-composed ontology bundle for logistics companies"
   namespace: "https://www.kairosflow.ai/ont/accelerator/logistics#"
   
@@ -47,6 +47,17 @@ package:
       name: "Supply Chain"
       uri: "https://www.kairosflow.ai/ont/supply-chain#"
       focus: "Cross-standard bridge properties linking DCSA, MMT, BSP, TIC, IMO, and WCO"
+    - id: RAIL
+      name: "TAF TSI Rail"
+      uri: "https://www.kairosflow.ai/ont/rail#"
+      focus: "EU rail freight reservation & running (path request, consignment order, train running, rolling stock)"
+
+  references:
+    - id: IATA
+      name: "IATA ONE Record (air cargo)"
+      uri: "https://onerecord.iata.org/ns/cargo#"
+      focus: "Air cargo booking, shipment, transport movement"
+      note: "Authoritative mirror vendored under authoritative-ontologies/IATA/. Exposed via the OASIS catalog; not bulk-imported into this pack. Bind hub-local at the reservation grain per the multimodal-order-leg pattern."
 
   excludes:
     - id: FIBO
@@ -61,3 +72,5 @@ package:
     - "WCO Data Model 3.10.0"
     - "ISO 14083:2023"
     - "GLEC Framework"
+    - "TAF TSI (EU Regulation 1305/2012, Annex D.2 Appendix F)"
+    - "IATA ONE Record (cargo data model, RDF/OWL)"

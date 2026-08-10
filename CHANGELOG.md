@@ -7,6 +7,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **`authoritative-ontologies/FIBO/current/LICENSE`** — upstream MIT license text
+  (Copyright (c) 2020 Enterprise Data Management Council). The 300+ vendored FIBO files
+  were bundled without the license text, which MIT requires to travel with any copy or
+  substantial portion. IATA already shipped its `LICENSE`; FIBO did not.
+- **`authoritative-ontologies/FIBO/README.md`** — mirror README matching the IATA
+  template: tier, contents, version, catalog `rewriteURI` binding, license.
+- **FIBO entry in `NOTICE`** third-party section, plus an explicit note that both bundled
+  ontologies are MIT, that MIT is Apache-2.0 compatible, and that vendored files are
+  aligned to by reference rather than edited.
+- **`authoritative-ontologies/IATA/`** — IATA ONE Record air-cargo ontology vendored
+  verbatim (v3.3.0 RC1, 2026-08 standard). Ships the Data Model
+  (`IATA-1R-DM-Ontology.ttl`, namespace `https://onerecord.iata.org/ns/cargo#`) and
+  Code Lists (`IATA-1R-CL-Ontology.ttl`, namespace
+  `https://onerecord.iata.org/ns/code-lists#`), plus `LICENSE` (MIT), `METADATA.txt`
+  (provenance), and `README.md`. Registered in `catalog-v001.xml` (three `uri` entries,
+  including mapping the DM's `owl:imports` of the code-lists to the local CL file).
+  This is the **authoritative mirror** for the air reservation grain — ONE Record is
+  published natively as RDF/OWL, so no hand-authored derived ontology is needed. Not
+  bulk-imported into the logistics accelerator (mirrors the FIBO exclusion); exposed
+  via catalog + `manifest.yaml` `references`.
+- **`derived-ontologies/RAIL/`** (v1.0.0) — hand-authored **derived** ontology for rail,
+  backed by **TAF TSI** (EU Regulation 1305/2012, Annex D.2 Appendix F — Data
+  Catalogue; machine-readable `taf_cat_complete.xsd` from the ERA GitHub). 38 classes
+  across six modules: `shared-kernel`, `party`, `path-request`, `consignment`,
+  `train-running`, `rolling-stock`. Not railML (infrastructure/timetable grain) —
+  TAF TSI is the reservation/running grain that matches the pattern. Every class
+  cites its exact TAF TSI element via `dcterms:source` + `rdfs:seeAlso`; the
+  `kairos-ontology-audit` discipline found zero invented classes. Registered in
+  `catalog-v001.xml` (seven `uri` entries).
+- **`multimodal-order-leg` pattern updates** — `pattern.md` per-mode table now records
+  Air as *Modelled (authoritative mirror)* and Rail as *Modelled (derived)*; the
+  project-cargo-not-a-mode note is strengthened to an authoritative statement.
+  `template.ttl` adds `iata-cargo:` and `rail-path:` prefixes plus hub-local
+  `AirCarrierReservation` (subClassOf `bp:CarrierReservation`, `iata-cargo:Booking`)
+  and `RailCarrierReservation` (subClassOf `bp:CarrierReservation`,
+  `rail-path:PathRequestMessage`) example bindings at the reservation grain (grain 3).
+  Mode remains never specialised at the order grain.
+- **Logistics accelerator pack 1.9.0** — archived 1.8.0; bumped VERSION and
+  `logistics-accelerator.ttl` to 1.9.0; added the RAIL import; `manifest.yaml`
+  bumped 1.7.0 → 1.9.0, RAIL added to `includes`, IATA added to a new `references`
+  section (catalog-exposed, not imported), and TAF TSI + IATA ONE Record added to
+  `standards_alignment`.
+
 ## [1.14.0] - 2026-08-10
 
 Closes the transport-order gap ([#29](https://github.com/Cnext-eu/kairos-ontology-referencemodels/issues/29))

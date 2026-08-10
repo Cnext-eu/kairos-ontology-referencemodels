@@ -64,22 +64,23 @@ the hub.
 
 ### Per-mode alignment targets
 
-Only **Ocean** is modelled in this repo today. The rest are extension points, deliberately not
-authored ahead of a client with that scope — the same evidence discipline that governs
-`canonical-class-registry.yaml`.
+**Ocean**, **Air**, and **Rail** are all modelled in this repo. Road and barge carry no
+dominant reservation-grain standard, so they remain pattern-only. Each mode binds at grain 3
+in the hub, never at the order grain.
 
 | Mode | Reservation-grain target (grain 3) | Status | Note |
 |---|---|---|---|
-| **Ocean** | DCSA Booking (BKG API) — `dcsa/booking#Booking` | **Modelled** | Bind hub-local, per above. |
-| **Air** | **IATA ONE Record** cargo data model (`Booking`, `BookingRequest`, `BookingOption`, `TransportMovement`) | Extension point | ONE Record is published as RDF/OWL, so it would enter `authoritative-ontologies/` — not `derived-ontologies/`. **Not** IATA Cargo-XML: `XFWB`/`XFZB` are waybill messages, i.e. document grain, already covered by `mmt/documents#AirWaybill`. |
-| **Rail** | **TAF TSI** (Telematics Applications for Freight) — Path Request / Consignment Order messages | Extension point | **Not** RailML: that is infrastructure and timetable, a different grain entirely. The CIM consignment note is document grain and is already modelled as `mmt/documents#RailConsignmentNote`. |
+| **Ocean** | DCSA Booking (BKG API) — `dcsa/booking#Booking` | **Modelled** (derived, `DCSA/`) | Bind hub-local, per above. |
+| **Air** | **IATA ONE Record** cargo data model (`Booking`, `BookingRequest`, `BookingOption`, `TransportMovement`) | **Modelled** (authoritative mirror, `authoritative-ontologies/IATA/`) | ONE Record is published natively as RDF/OWL, so it is vendored FIBO-style under `authoritative-ontologies/IATA/` (namespace `https://onerecord.iata.org/ns/cargo#`), not hand-authored as a derived ontology. Reference it via the catalog; do not bulk-import into accelerator packs (mirrors the FIBO exclusion). **Not** IATA Cargo-XML: `XFWB`/`XFZB` are waybill messages, i.e. document grain, already covered by `mmt/documents#AirWaybill`. |
+| **Rail** | **TAF TSI** — Path Request / Consignment Order messages | **Modelled** (derived, `RAIL/`) | Hand-authored derived ontology grounded in the TAF TSI data catalogue (`taf_cat_complete.xsd`, EU Regulation 1305/2012 Annex D.2 Appendix F). Modules: `consignment` (Consignment Order Message / ORFEUS ECN), `path-request` (PCS path allocation), `train-running`, `rolling-stock`, `party` (RU/IM), `shared-kernel`. Every class is backed by a cited TAF TSI element. **Not** railML: that is infrastructure and timetable, a different grain entirely. The CIM consignment note is document grain and is already modelled as `mmt/documents#RailConsignmentNote`. |
 | **Road** | None — no standard forces a reservation shape | Pattern-only | Model the subcontract as a plain `CarrierReservation` on a `RoadLeg`. `mmt/documents#RoadConsignmentNote` (CMR) covers the document grain. |
 | **Barge / inland waterway** | None dominant | Pattern-only | `mmt/inland-transport#BargeLeg` carries the mode. |
 
 **Project cargo is not a mode.** It is a combination of cargo characteristics (out-of-gauge,
 heavy-lift) and service scope (engineering, permits, route survey). Modelling it as a fifth
 branch of a mode axis is a category error — it cuts across every mode. Express it on the cargo
-and on the service scope, not on the leg and not on the order.
+and on the service scope, not on the leg and not on the order. No project-cargo ontology is
+authored in this repo; this note is the authoritative statement of that position.
 
 ## Naming (normative)
 

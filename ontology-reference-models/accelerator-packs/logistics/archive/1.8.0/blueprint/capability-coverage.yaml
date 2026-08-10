@@ -1,0 +1,120 @@
+format_version: "1.0"
+accelerator_version: "1.8.0"
+capabilities:
+  - id: party-and-role-management
+    status: deferred
+    concept_ids: [party]
+    extension_points:
+      - "Neutral durable Party identity"
+      - "Qualified contextual Party role assignment"
+    evidence:
+      - "convergence-analysis.md Party and contextual roles"
+    confidence: medium
+    maturity: experimental
+    pattern_ids: [qualified-role-assignment]
+  - id: location-and-itinerary-roles
+    status: deferred
+    concept_ids: [location]
+    extension_points:
+      - "Qualified location role assignment"
+    evidence:
+      - "convergence-analysis.md Location and contextual location roles"
+    confidence: medium
+    maturity: experimental
+    pattern_ids: [qualified-role-assignment]
+  - id: booking-lifecycle
+    status: deferred
+    concept_ids: [booking]
+    extension_points:
+      - "Booking amendment and version history"
+    evidence:
+      - "convergence-analysis.md Booking and order"
+    confidence: high
+    maturity: experimental
+  - id: transport-order-orchestration
+    status: deferred
+    concept_ids: [transport-order, carrier-reservation]
+    extension_points:
+      - "Air reservation alignment (IATA ONE Record)"
+      - "Rail reservation alignment (TAF TSI)"
+      - "Order lifecycle status history"
+    evidence:
+      - "issue #29 standards audit"
+      - "blueprints/patterns/multimodal-order-leg/pattern.md"
+    confidence: high
+    maturity: experimental
+    pattern_ids: [multimodal-order-leg]
+  - id: shipment-and-consignment
+    status: deferred
+    concept_ids: [shipment, consignment, consignment-item]
+    extension_points:
+      - "Split and consolidation cardinalities"
+    evidence:
+      - "convergence-analysis.md Consignment and shipment"
+    confidence: high
+    maturity: experimental
+  - id: equipment-planning-and-execution
+    status: deferred
+    concept_ids:
+      - equipment-asset
+      - equipment-request
+      - equipment-utilisation
+      - container-journey
+    extension_points:
+      - "General multimodal equipment allocation"
+    evidence:
+      - "convergence-analysis.md Equipment analysis"
+    confidence: high
+    maturity: experimental
+  - id: route-plan-and-execution
+    status: deferred
+    concept_ids:
+      - transport-route
+      - transport-leg
+      - transport-movement
+      - transport-call
+    extension_points:
+      - "Ordered stop pattern"
+      - "Plan-to-execution realization"
+    evidence:
+      - "convergence-analysis.md Movement, leg, stop and call"
+    confidence: high
+    maturity: experimental
+  - id: event-history
+    status: deferred
+    concept_ids: [event]
+    extension_points:
+      - "Source-neutral event envelope"
+      - "Subject roles and correction or supersession"
+    evidence:
+      - "convergence-analysis.md Transport event"
+    confidence: medium
+    maturity: experimental
+  - id: transport-document-lifecycle
+    status: deferred
+    concept_ids: [transport-document]
+    extension_points:
+      - "Document version, issuance, and surrender history"
+    evidence:
+      - "convergence-analysis.md Document pattern"
+    confidence: medium
+    maturity: experimental
+  - id: empty-equipment-repositioning
+    status: deferred
+    concept_ids: []
+    extension_points:
+      - "Empty equipment availability and repositioning, universal for carriers and lessors managing owned or leased fleets; no parent class exists anywhere in the pack today"
+    evidence:
+      - "manifest.yaml target_sectors include Ocean carrier, Road carrier, and 3PL, all of which reposition empty equipment; no standard cited in this pack's derived ontologies models it yet"
+      - "att-001: corroborating implementation evidence for a fleet operator"
+    confidence: medium
+    maturity: experimental
+  - id: trade-lane-and-market-segment
+    status: deferred
+    concept_ids: []
+    extension_points:
+      - "Trade lane and market-segment classification for lane profitability, a first-order carrier capability with no class in the commercial ontology today"
+    evidence:
+      - "manifest.yaml target_sectors include Ocean carrier and Road carrier, both of which report profitability by lane; no class exists in BSP commercial or DCSA today"
+    confidence: medium
+    maturity: experimental

@@ -1,0 +1,50 @@
+format_version: "1.0"
+id: synthetic-freight-forwarder
+purpose: "Source-neutral evidence shape; not a projection contract or client model."
+systems:
+  - id: forwarding-core
+    tables:
+      - name: parties
+        grain: "One source party record"
+        primary_key: [party_id]
+        columns: [party_id, legal_name, registration_number, country_code, active_from, active_to]
+      - name: forwarding_jobs
+        grain: "One customer forwarding instruction"
+        primary_key: [job_id]
+        columns: [job_id, customer_party_id, shipper_party_id, consignee_party_id, status_code, created_at]
+      - name: carrier_bookings
+        grain: "One carrier booking linked to a forwarding job"
+        primary_key: [carrier_id, booking_reference]
+        columns: [carrier_id, booking_reference, job_id, booking_status, requested_departure]
+      - name: consignments
+        grain: "One house or master consignment"
+        primary_key: [consignment_id]
+        columns: [consignment_id, job_id, consignment_level, master_consignment_id, consignor_party_id, consignee_party_id]
+      - name: consignment_items
+        grain: "One identifiable goods line in a consignment"
+        primary_key: [consignment_id, item_sequence]
+        columns: [consignment_id, item_sequence, goods_description, gross_weight, weight_unit]
+      - name: transport_legs
+        grain: "One ordered planned leg for a consignment"
+        primary_key: [consignment_id, leg_sequence]
+        columns: [consignment_id, leg_sequence, mode_code, origin_location_id, destination_location_id, carrier_party_id]
+      - name: equipment_allocations
+        grain: "One equipment allocation to a consignment"
+        primary_key: [allocation_id]
+        columns: [allocation_id, consignment_id, requested_type, equipment_identifier, allocated_at, released_at]
+      - name: milestones
+        grain: "One source milestone occurrence"
+        primary_key: [source_system, event_id]
+        columns: [source_system, event_id, subject_type, subject_id, event_type, time_classifier, event_time, supersedes_event_id]
+relationships:
+  - "forwarding_jobs 1..n carrier_bookings"
+  - "forwarding_jobs 1..n consignments"
+  - "master consignments 0..n house consignments"
+  - "consignments 1..n consignment_items"
+  - "consignments 0..n transport_legs"
+  - "consignments 0..n equipment_allocations"
+stress_cases:
+  - "One customer instruction creates bookings with two carriers."
+  - "Several house consignments consolidate into one master."
+  - "A planned leg is replaced but retained for audit."
+  - "An event correction supersedes, rather than overwrites, a prior event."

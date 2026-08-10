@@ -17,21 +17,17 @@
     - IMO (maritime regulatory)
     - WCO (customs & border)
     - Sustainability (carbon & energy)
-    - RAIL (TAF TSI — EU rail freight reservation & running)
 
     Plus one blueprint-tier module — the ONLY non-standards-derived content in this pack:
     - Blueprint / Transport Order (Kairos-authored; closes the demand-side order grain that the
       standards audit in issue #29 proved no installed standard expresses). Kept as a separate
       import so consumers can see exactly which classes carry no standard provenance.
 
-    Does NOT include FIBO (use Financial Services Accelerator for capital-markets ontologies).
-    Does NOT bulk-import IATA ONE Record (air cargo) — the authoritative mirror is vendored
-    under authoritative-ontologies/IATA/ and exposed via the catalog; bind it hub-local at the
-    reservation grain per the multimodal-order-leg pattern, the same way FIBO is excluded.""" ;
+    Does NOT include FIBO (use Financial Services Accelerator for capital-markets ontologies).""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-08-15"^^xsd:date ;
-    owl:versionInfo "1.9.0" ;
+    dcterms:modified "2026-08-10"^^xsd:date ;
+    owl:versionInfo "1.8.0" ;
     owl:imports <https://www.kairosflow.ai/ont/blueprint/transport-order> ,
                 <https://www.kairosflow.ai/ont/dcsa> ,
                 <https://www.kairosflow.ai/ont/dcsa/demurrage-detention> ,
@@ -41,5 +37,4 @@
                 <https://www.kairosflow.ai/ont/imo> ,
                 <https://www.kairosflow.ai/ont/wco> ,
                 <https://www.kairosflow.ai/ont/sustainability> ,
-                <https://www.kairosflow.ai/ont/supply-chain> ,
-                <https://www.kairosflow.ai/ont/rail> .
+                <https://www.kairosflow.ai/ont/supply-chain> .
