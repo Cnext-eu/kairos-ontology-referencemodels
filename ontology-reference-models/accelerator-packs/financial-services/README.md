@@ -52,12 +52,15 @@ Or, if working locally, point your tool at:
 ontology-reference-models/accelerator-packs/financial-services/current/financial-services-accelerator.ttl
 ```
 
-## Client Hub Blueprint
+## Data domains
 
-See the [client-hub-blueprint/](client-hub-blueprint/) folder for:
+- **[data-domains.yaml](client-hub-blueprint/data-domains.yaml)** — the domain registry: what each
+  domain owns and does not own, and which reference modules it imports. Read by the toolkit, so
+  it is contract rather than documentation — see [CONTRACT.md](../../CONTRACT.md).
 
-- **[BLUEPRINT.md](client-hub-blueprint/BLUEPRINT.md)** — recommended folder structure and import guidance for organising a client ontology hub
-- **[data-domains.yaml](client-hub-blueprint/data-domains.yaml)** — machine-readable domain registry with ownership boundaries and import URIs
+For the hub folder structure itself, run `kairos-ontology new-repo` / `init`: the toolkit
+scaffolds and owns that layout. Consumption rules — import the module rather than the pack,
+extend rather than redefine — are in [CONTRACT.md](../../CONTRACT.md).
 
 ## Version
 

@@ -1,0 +1,110 @@
+# Published contract surface — the machine-readable half of CONTRACT.md.
+#
+# Every file this repository publishes that a consumer parses is listed here, with the loader
+# that reads it and the check that keeps it honest. Enforced by tests/test_contract_manifest.py:
+# a schema listed here must validate every matching file, and an enforced_by test must exist.
+#
+# Why the file exists: `data-domains.yaml` became load-bearing without ceremony — it acquired a
+# second consumer (reference_modules) and a whole `module_profiles` block in the toolkit while
+# nothing here recorded that it was contract at all. Meanwhile `BLUEPRINT.md` sat beside it
+# looking equally official and was read by nobody. This file draws that line explicitly.
+#
+# `schema: null` is honest, not a gap: the pattern library ships markdown-first and the
+# toolkit's loader is deliberately schema-lenient, and an XML catalog is not JSON-Schema
+# shaped. Those rows are enforced by execution instead — the real loader, or resolution.
+
+contract_version_policy: >
+  Versioned with the repository VERSION. A change to anything listed here is a minor bump at
+  least and is called out in CHANGELOG.md. Advisory surfaces — warnings, discovery prose,
+  model sheets — are not contract and may change freely.
+
+surfaces:
+  - id: catalog
+    path: catalog-v001.xml
+    schema: null
+    consumers:
+      - kairos_ontology.core.archetype_loader (root marker via _looks_like_refmodels_root)
+      - kairos_ontology.core.reference_modules (module document resolution)
+    enforced_by:
+      - tests/test_model_registration.py::test_every_accelerator_import_is_catalogued
+      - scripts/validate_archetypes.py (check 2, ref_model_modules IRI resolution)
+    notes: >
+      Both explicit <uri> entries and <rewriteURI> prefix rules are contract. The rewrite rule
+      alone covers 300+ FIBO documents; scripts/catalog_utils.py ignored rewrites entirely
+      until v1.15.0+, so every FIBO import silently resolved to None.
+
+  - id: archetypes
+    path: blueprints/archetypes/*.yaml
+    schema: blueprints/archetypes/_schema/archetype.schema.json
+    consumers:
+      - kairos_ontology.core.archetype_loader.load_archetype
+    reads:
+      - ref_model_modules[].{iri,tier}
+      - core_concepts[].{uri,tier,label}
+    enforced_by:
+      - scripts/validate_archetypes.py
+      - tests/test_toolkit_contract.py::test_every_archetype_loads_through_the_real_loader
+    notes: >
+      $defs/tier is duplicated in the toolkit as archetype_loader.VALID_TIERS. Changing it
+      needs a coordinated PR in both repositories;
+      test_toolkit_contract.py::test_tier_enum_matches_the_consumer_copy fails when they drift.
+
+  - id: patterns
+    path: blueprints/patterns/*/pattern.yaml
+    schema: null
+    consumers:
+      - kairos_ontology.core.pattern_loader.load_pattern (fail-fast)
+      - kairos_ontology.core.pattern_loader.load_patterns (warn-and-skip)
+    enforced_by:
+      - tests/test_toolkit_contract.py::test_every_pattern_loads_through_the_real_loader
+      - tests/test_toolkit_contract.py::test_bulk_pattern_load_emits_no_warnings
+      - scripts/validate_archetypes.py (check 7, multimodal-order-leg mode_bindings)
+    notes: >
+      Intentionally schema-lenient: the loader promotes seven known keys and preserves the rest
+      in `extra`, because pattern-specific blocks differ per pattern. Unparseable YAML shipped
+      undetected for two minor versions in v1.13.0, which is why bulk load emitting any warning
+      is treated as a failure here.
+
+  - id: data-domains
+    path: accelerator-packs/*/client-hub-blueprint/data-domains.yaml
+    schema: accelerator-packs/_schema/data-domains.schema.json
+    consumers:
+      - kairos_ontology.core.analyse_sources.load_data_domains
+      - kairos_ontology.core.analyse_sources.build_data_domain_targets
+      - kairos_ontology.core.reference_modules.load_accelerator_module_config
+      - kairos_ontology.core.scaffold_binding (owl:imports resolution for a target class)
+    reads:
+      - groups[].domains[].{id,name,owns,does_not_own}
+      - groups[].domains[].imports[].{uri,module,profile}
+      - module_profiles[] (optional; absent entries are synthesised as legacy profiles)
+    enforced_by:
+      - tests/test_model_registration.py::test_every_data_domain_import_is_catalogued
+      - tests/test_model_registration.py::test_every_include_reaches_data_domains
+    notes: >
+      The path is hardcoded in the toolkit (analyse_sources and reference_modules), so moving
+      this file is a coordinated two-repository change and must use expand/contract — see
+      CONTRACT.md, Deprecation. `owns`/`does_not_own` are classifier input, not decoration.
+
+  - id: discovery-docs
+    path: accelerator-packs/*/discovery/*.md
+    schema: null
+    consumers:
+      - kairos_ontology.core.archetype_loader.locate_discovery_doc
+    enforced_by:
+      - scripts/validate_archetypes.py (checks 3, 5, 6)
+    notes: >
+      Only the *path* is contract. The toolkit hands it to a design skill and never parses the
+      markdown, so the file name must match the archetype id. Content is advisory.
+
+  - id: ontology-modules
+    path: [derived-ontologies/, authoritative-ontologies/, blueprints/ontology/]
+    schema: null
+    consumers:
+      - kairos_ontology.core.reference_modules.resolve_reference_modules
+    enforced_by:
+      - scripts/version_manager.py check (VERSION matches owl:versionInfo)
+      - scripts/validate_structure.py
+      - tests/test_model_registration.py
+    notes: >
+      Module document IRIs and their owl:versionInfo are contract; a hub resolves modules by
+      IRI through the catalog. Authoritative mirrors are vendored verbatim and never edited.

@@ -7,12 +7,72 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+Two changes, both from the same QA pass and shipping together. **Part 2** names the contract and
+retires the last hand-maintained restatement of it; **Part 1** below made the derived surfaces
+generated or tested.
+
+### Part 2 — name the contract, retire BLUEPRINT.md
+
+#### Added
+- **`ontology-reference-models/CONTRACT.md`** — what this repository publishes, what consumers may
+  rely on, and how it changes. Kept deliberately thin: rules and policy only, no restatement of
+  schemas or key lists, because a prose copy of a machine file is what rots.
+- **`ontology-reference-models/contract-manifest.yaml`** — the machine-readable half: each of the
+  six published surfaces with its schema, its consuming loader, and the check that guards it.
+  Enforced by **`tests/test_contract_manifest.py`**, which asserts that every glob still matches
+  files, every declared schema validates every match, every `enforced_by` target still exists,
+  and every `schema: null` row justifies itself.
+- **`accelerator-packs/_schema/data-domains.schema.json`** — the first schema for
+  `data-domains.yaml`, which the toolkit has read for four minor versions with nothing checking
+  its shape. `additionalProperties: false` throughout, so a typo'd key now fails here instead of
+  being silently dropped by the loader.
+- **Adoption order** in `accelerator-packs/logistics/discovery/README.md` — the five-phase
+  sequencing rehomed from `BLUEPRINT.md`, beside the scope axes that decide *which* domains a
+  client needs.
+
+#### Removed
+- **`client-hub-blueprint/BLUEPRINT.md` from both packs** (338 and 255 lines). Measured before
+  deleting: ~119 lines copied the toolkit's own `scaffold/ontology-hub/` tree, ~86 restated
+  `data-domains.yaml` — and had **already drifted four bridge properties** behind it
+  (`hasBookingParty`, `hasEvent`, `hasTransportDocument`, `hasTransportEquipment`), a seventh
+  stale surface the QA pass never counted — and ~22 were superseded by the toolkit's `mdm/`
+  package and `kairos-design-mdm`. Rewriting it for v5 would have recreated both drift sources
+  in fresh paint.
+
+  Its three genuinely unique facts were rehomed to files that already have readers: the
+  import-the-module-not-the-pack rule and the extend-vs-import table to `CONTRACT.md`; the
+  phased adoption order to `discovery/README.md`; the working-capital-metrics boundary into the
+  `financial` domain's `does_not_own`. Hub folder structure is now deferred to
+  `kairos-ontology new-repo`, which generates and owns it.
+
+  This also achieves the contract/prose separation that motivated the proposed
+  `client-hub-blueprint/` rename — by moving the prose out rather than the contract file, so no
+  cross-repo coordination is needed. **The rename is therefore not planned**: the folder now
+  holds only `data-domains.yaml`, and the path is hardcoded in 32 places across 10 toolkit files.
+
+#### Changed
+- **`.docs/ReferenceMaterial/mdm.md`** carries a prominent pre-v5 banner mapping each retired
+  surface it describes to its v5 replacement, and pointing at `kairos-design-mdm`. Content kept:
+  the phased-coexistence reasoning is still sound, only the mechanics are obsolete. `.docs/` is
+  not shipped in the release tarball.
+- `discovery/README.md` now states that archetype checks 6 and 7 **fail the build** — they were
+  promoted from advisory in the preceding entry, and that text still described them as guards.
+
+#### Fixed
+- The working-capital-metrics boundary is stated in `does_not_own`, which the source-system
+  classifier actually reads. `load_data_domains` builds a fixed dict — only `name`, `owns`,
+  `does_not_own`, `group`, `uris`, `modules` and `imports` reach `build_data_domain_targets`.
+  Custom keys such as `grain_note`, `mode_note` and `extension_note` are co-located commentary
+  for editors only, and the schema now says so.
+
+### Part 1 — make derived surfaces generated or tested
+
 A QA pass after [1.15.0](#1150---2026-08-10) found every automated gate green while six
 documentation surfaces had silently gone stale. Each miss was in a file with **no machine
 reader**. This release makes the derived surfaces generated or tested, closes the RAIL/IATA
 registration gap, and removes a hub scaffold that never belonged in this repository.
 
-### Added
+#### Added
 - **`tests/test_model_registration.py`** — fan-out tests treating `manifest.yaml` as the single
   hand-edited registry: every advertised module must be imported by the accelerator, resolvable
   through the catalog, absent from `owl:imports` when reference-only, and reachable from
@@ -34,7 +94,7 @@ registration gap, and removes a hub scaffold that never belonged in this reposit
   only ones with no business-facing briefing. RAIL carries the reservation-vs-movement grain
   split; IATA carries the authoritative-mirror tier and reference-only import policy.
 
-### Changed
+#### Changed
 - **Mode-binding and scope-profile drift now fail the build** (`validate_archetypes.py` checks 6
   and 7, previously advisory). The v1.13-1.15 defect — `pattern.yaml` saying `extension-point`
   for air and rail for two releases — would have printed a warning into a green run.
@@ -53,7 +113,7 @@ registration gap, and removes a hub scaffold that never belonged in this reposit
 - **`.github/copilot-instructions.md` rewritten for this repository.** It described a v5 *hub*
   — `kairos.yaml`, `compile <domain>`, EntityBinding — none of which exists here.
 
-### Fixed
+#### Fixed
 - **`scripts/catalog_utils.py` now implements `rewriteURI`.** Only exact `<uri>` entries were
   honoured, so the single rule covering 300+ FIBO files was invisible: every FIBO import resolved
   to `None` while `test_catalog.py` still reported "all mappings valid". Includes the FIBO
@@ -62,14 +122,14 @@ registration gap, and removes a hub scaffold that never belonged in this reposit
   against 11 imports at `1.10.0`; the two `.intro` version tables were up to four releases behind.
 - `pattern.md` listed `TransportMovement` as an air reservation-grain target; it is movement grain.
 
-### Removed
+#### Removed
 - **27 toolkit-managed agent files** — 22 hub-authoring `kairos-*` skills, 3 `SC-*` skills, and a
   stray `.docs/wip/SKILL.md`. The toolkit's hub scaffold had been applied to a repository that is
   not a hub, which is why `kairos-design-silver` appeared stale: it was current, and simply did
   not belong here. The two repo-authored skills are kept and renamed off the toolkit's `kairos-`
   namespace to `refmodels-ontology-audit` and `refmodels-ontology-versioning`.
 
-### Known gaps (recorded, not silent)
+#### Known gaps (recorded, not silent)
 - financial-services `data-domains.yaml` names three FIBO ontologies absent from the vendored
   release, and its `manifest.yaml` advertises nine FIBO module groups the accelerator never
   imports. Both are pre-existing, need FIBO judgement, and are listed in `KNOWN_GAPS` in

@@ -153,14 +153,39 @@ resolution needs a `scope-axes.yaml` registry **and** a consumer, specified toge
 `.docs/wip/discovery-scope-selection-cr.md`. Shipping the registry first would leave a
 fourth unread machine file in a repo that already has stale ones.
 
-Two guards exist meanwhile: `scripts/validate_archetypes.py` check 6 asserts that every
-module IRI a Scope profile names is resolvable and present in that archetype's
-`ref_model_modules`, and that `pattern.md`'s mode table agrees with `pattern.yaml`.
+Two guards exist meanwhile, and both **fail the build** rather than warn:
+`scripts/validate_archetypes.py` check 6 asserts that every module IRI a Scope profile names
+is resolvable and present in that archetype's `ref_model_modules`; check 7 asserts that
+`pattern.md`'s mode table agrees with `pattern.yaml` `mode_bindings` and that every
+`target_iris` entry is a declared `owl:Class`.
 
 **Composition is still unsupported** — exactly one archetype id per discovery session (see
 [`blueprints/archetypes/README.md`](../../blueprints/archetypes/README.md)). A client that is
 genuinely both a carrier and a forwarder needs archetype composition; the axes tune one
 archetype, they do not merge two.
+
+## Adoption order
+
+The scope axes decide *which* domains a client needs. This decides *what order* to build them
+in. It is guidance, not a contract — nothing validates it — but it reflects the dependency
+reality that most domains reference a party, and almost nothing references claims.
+
+```
+Phase 1: party → mdm → commercial → booking
+Phase 2: consignment → cargo → equipment → route-schedule
+Phase 3: vessel-maritime → terminal-operations → events
+Phase 4: customs → dangerous-goods → sustainability → documents
+Phase 5: financial → claims → compliance → reference-data
+```
+
+Start with **party**: it is the most common MDM case and nearly every other domain points at
+it, so getting it wrong is expensive later. Specialist domains — `roro`, `automotive`,
+`intermodal` — enter wherever the client's operations put them, not at a fixed phase; the
+`modes-served` and `service-model` axes above are what pull them in.
+
+Domain ids are those in
+[`client-hub-blueprint/data-domains.yaml`](../client-hub-blueprint/data-domains.yaml), which
+is the authority for what each domain owns and which reference modules it imports.
 
 ## Adding a new sector
 

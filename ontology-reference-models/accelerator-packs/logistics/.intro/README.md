@@ -39,7 +39,8 @@ This folder contains a business-and-architecture oriented documentation set for 
 ## Source basis
 
 This documentation is based on:
-- `accelerator-packs/logistics/client-hub-blueprint/BLUEPRINT.md`
 - `accelerator-packs/logistics/client-hub-blueprint/data-domains.yaml`
+- `accelerator-packs/logistics/discovery/README.md` (scope axes and adoption order)
 - `accelerator-packs/logistics/README.md`
 - `derived-ontologies/*/README.md`
+- `ontology-reference-models/CONTRACT.md` (consumption rules)

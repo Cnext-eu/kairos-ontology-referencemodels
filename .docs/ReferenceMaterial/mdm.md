@@ -1,5 +1,27 @@
 # MDM Implementation Pattern — Phased Coexistence
 
+> ## ⚠️ Pre-v5 historical design — not current guidance
+>
+> This document was written against **Kairos toolkit v4** and describes authoring surfaces that
+> **no longer exist**. Do not follow its implementation steps.
+>
+> | It says | v5 reality |
+> |---|---|
+> | `model/extensions/<domain>-silver-ext.ttl` | Retired. Physical materialization policy lives in `integration/bindings/<source>-to-<domain>.binding.yaml`. |
+> | `model/mappings/<source>/<source>-to-<domain>.ttl` | Retired. Same closed `EntityBinding` document. |
+> | `kairos project --target silver` | Retired — `RETIRED_COMPILER_TARGETS = ("dbt", "silver")`. Use `kairos-ontology compile <domain> --check`. |
+> | `kairos-ontology-medallion-silver` skill | Retired redirect: *"Silver Design Is Folded into EntityBinding."* |
+>
+> For current MDM guidance use the **`kairos-design-mdm`** skill and the toolkit's own `mdm/`
+> package (`model`, `validation`, `vocabulary`, `profile_projector`). MDM policy in v5 is an
+> optional, runtime-neutral consumer of the immutable `CompilePlan`; `EntityBinding` remains
+> the sole source-to-canonical execution authority.
+>
+> **Why it is kept:** the *reasoning* — phased coexistence, golden-record survivorship, the
+> crosswalk model, GDPR satellites — is still sound and was expensive to work out. Only the
+> mechanics are obsolete. `.docs/` is not shipped in the release tarball, so this reaches no
+> consumer; it is an internal design record.
+
 ## Party Domain Example (Customers / Clients)
 
 ---
