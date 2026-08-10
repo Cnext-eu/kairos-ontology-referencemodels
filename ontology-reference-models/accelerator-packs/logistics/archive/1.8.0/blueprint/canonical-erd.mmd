@@ -1,0 +1,43 @@
+flowchart LR
+    classDef unresolved fill:#fff3cd,stroke:#856404,color:#212529
+    classDef gap fill:#f8d7da,stroke:#842029,color:#212529
+
+    Party["Party identity<br/>UNRESOLVED"]:::unresolved
+    PartyRole["Party role assignment<br/>GAP / INVESTIGATE"]:::gap
+    Location["Location identity<br/>UNRESOLVED"]:::unresolved
+    LocationRole["Location role assignment<br/>GAP / INVESTIGATE"]:::gap
+    Booking["Booking<br/>UNRESOLVED"]:::unresolved
+    Shipment["Shipment<br/>UNRESOLVED"]:::unresolved
+    Consignment["Consignment<br/>UNRESOLVED"]:::unresolved
+    Item["Consignment item<br/>UNRESOLVED"]:::unresolved
+    Request["Equipment request<br/>UNRESOLVED"]:::unresolved
+    Allocation["Equipment utilisation<br/>UNRESOLVED"]:::unresolved
+    Asset["Equipment asset<br/>UNRESOLVED"]:::unresolved
+    Journey["Container journey<br/>UNRESOLVED"]:::unresolved
+    Route["Transport route<br/>UNRESOLVED"]:::unresolved
+    Leg["Transport leg<br/>UNRESOLVED"]:::unresolved
+    Movement["Transport movement<br/>UNRESOLVED"]:::unresolved
+    Call["Transport call<br/>UNRESOLVED"]:::unresolved
+    Event["Event<br/>UNRESOLVED"]:::unresolved
+    Document["Transport document<br/>UNRESOLVED"]:::unresolved
+
+    Party --> PartyRole
+    Location --> LocationRole
+    PartyRole -. participates in .-> Booking
+    LocationRole -. scopes .-> Leg
+    Booking -. creates or reserves .-> Shipment
+    Shipment -. books .-> Consignment
+    Consignment --> Item
+    Booking --> Request
+    Shipment --> Allocation
+    Allocation --> Asset
+    Asset --> Journey
+    Consignment --> Route
+    Route --> Leg
+    Leg -. realized by .-> Movement
+    Movement --> Call
+    Event -. concerns .-> Shipment
+    Event -. concerns .-> Consignment
+    Event -. concerns .-> Asset
+    Event -. occurs at .-> Call
+    Consignment -. evidenced by .-> Document

@@ -1,0 +1,14 @@
+IATA ONE Record Ontologies - Download Information
+==================================================
+
+source: IATA ONE Record (Linked Data data model for air cargo)
+publisher: International Air Transport Association (IATA)
+download_date: 2026-08-10
+version: 3.3.0 RC1 (2026-08 standard)
+release_name: 2026-08-standard
+release_url: https://github.com/IATA-Cargo/ONE-Record/tree/2026-08-standard
+ontology_files:
+  - IATA-1R-DM-Ontology.ttl  (data model; namespace https://onerecord.iata.org/ns/cargo#)
+  - IATA-1R-CL-Ontology.ttl  (code lists; namespace https://onerecord.iata.org/ns/code-lists/)
+license: MIT License (see ./LICENSE)
+homepage: https://www.iata.org/en/programs/cargo/e/freight/one-record/

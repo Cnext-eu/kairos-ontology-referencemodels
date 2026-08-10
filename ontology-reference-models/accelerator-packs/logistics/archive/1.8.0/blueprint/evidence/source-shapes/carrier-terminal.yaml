@@ -1,0 +1,51 @@
+format_version: "1.0"
+id: synthetic-carrier-terminal
+purpose: "Source-neutral evidence shape; not a projection contract or client model."
+systems:
+  - id: carrier-core
+    tables:
+      - name: parties
+        grain: "One source party record"
+        primary_key: [party_id]
+        columns: [party_id, legal_name, carrier_code, country_code]
+      - name: bookings
+        grain: "One carrier capacity reservation"
+        primary_key: [carrier_booking_reference]
+        columns: [carrier_booking_reference, booking_party_id, shipper_party_id, consignee_party_id, booking_status]
+      - name: shipments
+        grain: "One carrier transport transaction"
+        primary_key: [shipment_id]
+        columns: [shipment_id, carrier_booking_reference, transport_document_reference]
+      - name: equipment_requests
+        grain: "One requested type and quantity line"
+        primary_key: [carrier_booking_reference, request_sequence]
+        columns: [carrier_booking_reference, request_sequence, equipment_type_code, requested_quantity]
+      - name: containers
+        grain: "One durable container asset"
+        primary_key: [container_number]
+        columns: [container_number, iso_type_code, ownership_code, operational_status]
+      - name: equipment_utilisations
+        grain: "One allocation of a container to a shipment"
+        primary_key: [utilisation_id]
+        columns: [utilisation_id, shipment_id, container_number, assigned_at, released_at]
+      - name: transport_calls
+        grain: "One vessel or inland means interaction at a facility"
+        primary_key: [transport_call_reference]
+        columns: [transport_call_reference, transport_means_id, facility_id, planned_arrival, actual_arrival, actual_departure]
+  - id: terminal-events
+    tables:
+      - name: operational_events
+        grain: "One immutable terminal or transport occurrence"
+        primary_key: [source_system, event_id]
+        columns: [source_system, event_id, event_type, container_number, shipment_id, transport_call_reference, facility_id, event_time]
+relationships:
+  - "bookings 0..n shipments"
+  - "bookings 1..n equipment_requests"
+  - "shipments 0..n equipment_utilisations"
+  - "containers 0..n equipment_utilisations"
+  - "transport_calls 0..n operational_events"
+stress_cases:
+  - "A booking is confirmed before a physical container is assigned."
+  - "One container participates in several shipments over its asset lifecycle."
+  - "A terminal event concerns a container and a transport call."
+  - "The same port is loading, transshipment, and discharge in different journeys."

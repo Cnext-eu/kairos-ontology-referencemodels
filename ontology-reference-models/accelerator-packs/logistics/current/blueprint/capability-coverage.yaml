@@ -1,5 +1,5 @@
 format_version: "1.0"
-accelerator_version: "1.8.0"
+accelerator_version: "1.10.0"
 capabilities:
   - id: party-and-role-management
     status: deferred
@@ -35,12 +35,14 @@ capabilities:
     status: deferred
     concept_ids: [transport-order, carrier-reservation]
     extension_points:
-      - "Air reservation alignment (IATA ONE Record)"
-      - "Rail reservation alignment (TAF TSI)"
+      # Air and rail reservation alignment closed by the mode-specialisation work: IATA ONE
+      # Record is mirrored under authoritative-ontologies/IATA/ and TAF TSI is modelled as
+      # derived-ontologies/RAIL/. Both now bind at grain 3 via pattern.yaml mode_bindings.
       - "Order lifecycle status history"
     evidence:
       - "issue #29 standards audit"
       - "blueprints/patterns/multimodal-order-leg/pattern.md"
+      - "mode specialisations: authoritative-ontologies/IATA/, derived-ontologies/RAIL/"
     confidence: high
     maturity: experimental
     pattern_ids: [multimodal-order-leg]

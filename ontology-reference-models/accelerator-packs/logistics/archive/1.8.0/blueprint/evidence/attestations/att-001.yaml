@@ -1,0 +1,23 @@
+format_version: "1.0"
+id: att-001
+archetype: shipping-carrier
+accelerator: logistics
+attested_at: "2026-08-01"
+concepts:
+  - concept_id: equipment-asset
+    chosen_parent: https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment
+    declined_parent: https://www.kairosflow.ai/ont/dcsa/equipment#Container
+    decline_reason: "Registry anchor covers only containerised equipment; the observed operation is non-containerised unit-load and required a general transport-equipment anchor to model any of its fleet."
+    grain: "One durable physical transport-equipment asset, container or non-containerised unit load."
+    cardinalities_observed:
+      - "one allocation relation carried equipment, driver, operator, and subcontractor rows together"
+  - concept_id: shipment
+    chosen_parent: https://www.kairosflow.ai/ont/dcsa/booking#Shipment
+    grain: "A third grain distinct from the registry's shipment and consignment: the physical trip, owning distance, toll, emissions, and predecessor/successor chaining."
+    cardinalities_observed:
+      - "one shipment realizes across one or more physical trips"
+patterns_used:
+  - temporal-quartet
+  - deferred-relationship
+grain_collisions_encountered:
+  - "a source relation named for the carrier transaction also carried the goods-collection grain in a subset of records, requiring the two to be split before mapping"

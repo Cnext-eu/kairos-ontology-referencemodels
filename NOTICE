@@ -14,3 +14,32 @@ under the same Apache License, Version 2.0; see
 between authoritative, derived, and blueprint tiers.
 
 Licensed under the Apache License, Version 2.0.
+
+----------------------------------------------------------------------
+
+Third-party bundled components
+==============================
+
+This product includes the following third-party ontologies, vendored
+verbatim under their respective licenses. See the LICENSE and METADATA
+files alongside each for provenance and version details.
+
+FIBO - Financial Industry Business Ontology
+  - Path: ontology-reference-models/authoritative-ontologies/FIBO/
+  - Copyright (c) 2020 Enterprise Data Management Council
+  - License: MIT License
+  - Homepage: https://spec.edmcouncil.org/fibo/
+
+IATA ONE Record Ontology (air cargo data model)
+  - Path: ontology-reference-models/authoritative-ontologies/IATA/
+  - Copyright (c) 2025 IATA-Cargo
+  - License: MIT License
+  - Homepage: https://www.iata.org/en/programs/cargo/e/freight/one-record/
+
+Both bundled ontologies are MIT licensed. The MIT license is permissive and
+compatible with the Apache License, Version 2.0, under which this product is
+released; the MIT terms continue to apply to the vendored files themselves and
+are reproduced verbatim in the LICENSE file alongside each ontology. The
+vendored files are not modified — alignment to them is expressed from Kairos
+ontologies by reference (e.g. rdfs:subClassOf), never by editing upstream
+sources.

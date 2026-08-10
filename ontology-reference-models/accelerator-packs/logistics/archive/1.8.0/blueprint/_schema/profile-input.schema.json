@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.kairosflow.ai/schema/logistics/profile-input.schema.json",
+  "title": "Logistics Silver profile YAML input",
+  "$comment": "This YAML profile is the single physical-profile source intended to derive both future TTL and the generated contract, avoiding duplicate authority. It selects approved concepts and physical policy without redefining grains or relationships.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format_version",
+    "accelerator_version",
+    "profile_version",
+    "contract_version",
+    "maturity",
+    "supported_adapters",
+    "entities"
+  ],
+  "properties": {
+    "format_version": {"const": "1.0"},
+    "accelerator_version": {"$ref": "#/$defs/semver"},
+    "profile_version": {"$ref": "#/$defs/semver"},
+    "contract_version": {"$ref": "#/$defs/semver"},
+    "maturity": {"enum": ["experimental", "preview", "stable"]},
+    "supported_adapters": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"enum": ["fabric", "databricks"]},
+      "uniqueItems": true
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "concept_id",
+          "physical_name",
+          "natural_key_properties",
+          "required_properties",
+          "optional_properties",
+          "scd_policy",
+          "reference_data"
+        ],
+        "properties": {
+          "concept_id": {"type": "string", "minLength": 1},
+          "physical_name": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+          "natural_key_properties": {"$ref": "#/$defs/uris"},
+          "required_properties": {"$ref": "#/$defs/uris"},
+          "optional_properties": {"$ref": "#/$defs/uris"},
+          "scd_policy": {"enum": ["none", "type1", "type2", "append_only"]},
+          "reference_data": {"type": "boolean"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "semver": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-(?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*)(?:\\.(?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "uris": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    }
+  }
+}

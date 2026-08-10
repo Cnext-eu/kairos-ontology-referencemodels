@@ -23,6 +23,10 @@ ref_model_modules:
   - { iri: "https://www.kairosflow.ai/ont/dcsa/booking", tier: recommended }
   - { iri: "https://www.kairosflow.ai/ont/mmt/party", tier: required }
   - { iri: "https://www.kairosflow.ai/ont/mmt/consignment", tier: required }
+  # Mode lives on the leg, never on the order — patterns/multimodal-order-leg. Without this
+  # module a forwarder hub cannot state that a leg is a road, rail or barge leg at all.
+  - { iri: "https://www.kairosflow.ai/ont/mmt/inland-transport", tier: required }
+  - { iri: "https://www.kairosflow.ai/ont/mmt/transport-means", tier: recommended }
   - { iri: "https://www.kairosflow.ai/ont/mmt/documents", tier: required }
   - { iri: "https://www.kairosflow.ai/ont/mmt/cargo", tier: required }
   - { iri: "https://www.kairosflow.ai/ont/mmt/equipment", tier: recommended }
@@ -57,6 +61,25 @@ core_concepts:
   - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#ConsignmentItem", tier: required, label: "Consignment Item" }
   - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#TransportRoute", tier: required, label: "Transport Route" }
   - { uri: "https://www.kairosflow.ai/ont/mmt/consignment#TransportLeg", tier: required, label: "Transport Leg" }
+
+  # Mode-bearing leg subclasses. These are grain 2 of multimodal-order-leg — the only place a
+  # mode may be stated. The `modes-served` scope axis in the discovery guide selects which of
+  # them a given forwarder actually needs; the rest are recorded `not-applicable`.
+  - { uri: "https://www.kairosflow.ai/ont/mmt/inland-transport#InlandLeg", tier: required, label: "Inland Leg (abstract)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/inland-transport#RoadLeg", tier: required, label: "Road Leg" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/inland-transport#RailLeg", tier: required, label: "Rail Leg" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/inland-transport#BargeLeg", tier: required, label: "Barge Leg" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/inland-transport#InlandCarrier", tier: recommended, label: "Inland Carrier" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/inland-transport#HaulageInstructions", tier: recommended, label: "Haulage Instructions (carrier vs merchant haulage)" }
+
+  # Mode-bearing means of transport. Tiered optional: a non-asset forwarder may hold only the
+  # carrier's reference. Selected per mode by the `modes-served` axis.
+  - { uri: "https://www.kairosflow.ai/ont/mmt/transport-means#LogisticsMeansOfTransport", tier: recommended, label: "Means of Transport (abstract)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/transport-means#Vessel", tier: optional, label: "Vessel" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/transport-means#Aircraft", tier: optional, label: "Aircraft" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/transport-means#RailVehicle", tier: optional, label: "Rail Vehicle" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/transport-means#RoadVehicle", tier: optional, label: "Road Vehicle" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/transport-means#BargeVessel", tier: optional, label: "Barge Vessel" }
 
   # Forwarder and carrier documents.
   - { uri: "https://www.kairosflow.ai/ont/mmt/documents#TransportDocument", tier: required, label: "Transport Document" }

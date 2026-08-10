@@ -1,0 +1,40 @@
+@prefix : <https://www.kairosflow.ai/ont/accelerator/logistics#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+<https://www.kairosflow.ai/ont/accelerator/logistics> a owl:Ontology ;
+    dcterms:title "Kairos Logistics Accelerator Pack" ;
+    dcterms:description """Pre-composed ontology bundle for logistics companies.
+    
+    Includes all logistics-relevant ontologies:
+    - DCSA (container shipping, demurrage & detention)
+    - MMT (multi-modal transport)
+    - BSP (buy-ship-pay: commercial, financial, cost accounting, revenue & yield)
+    - TIC (terminal operations)
+    - IMO (maritime regulatory)
+    - WCO (customs & border)
+    - Sustainability (carbon & energy)
+
+    Plus one blueprint-tier module — the ONLY non-standards-derived content in this pack:
+    - Blueprint / Transport Order (Kairos-authored; closes the demand-side order grain that the
+      standards audit in issue #29 proved no installed standard expresses). Kept as a separate
+      import so consumers can see exactly which classes carry no standard provenance.
+
+    Does NOT include FIBO (use Financial Services Accelerator for capital-markets ontologies).""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-08-10"^^xsd:date ;
+    owl:versionInfo "1.8.0" ;
+    owl:imports <https://www.kairosflow.ai/ont/blueprint/transport-order> ,
+                <https://www.kairosflow.ai/ont/dcsa> ,
+                <https://www.kairosflow.ai/ont/dcsa/demurrage-detention> ,
+                <https://www.kairosflow.ai/ont/mmt> ,
+                <https://www.kairosflow.ai/ont/bsp> ,
+                <https://www.kairosflow.ai/ont/tic> ,
+                <https://www.kairosflow.ai/ont/imo> ,
+                <https://www.kairosflow.ai/ont/wco> ,
+                <https://www.kairosflow.ai/ont/sustainability> ,
+                <https://www.kairosflow.ai/ont/supply-chain> .
