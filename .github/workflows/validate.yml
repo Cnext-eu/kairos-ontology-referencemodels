@@ -59,6 +59,9 @@ jobs:
         run: |
           python scripts/generate_logistics_inventory.py --check
           python scripts/validate_logistics_blueprint.py
+
+      - name: Check generated pack documentation is current
+        run: python scripts/generate_pack_docs.py --check
       
       - name: Validate repository structure
         run: |
@@ -93,3 +96,42 @@ jobs:
               repo: context.repo.repo,
               body: '❌ Validation failed. Please check the validation report artifacts for details.'
             })
+
+  # Separate job on purpose: the structural validation above stays toolkit-free, so this
+  # repo never build-depends on its own consumer. Only the cross-repo contract needs the
+  # toolkit installed, and only that job pays the cost of fetching it.
+  cross-repo-contract:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Check the toolkit pin is current for its channel
+        run: uv run --extra dev python scripts/check_toolkit_pin.py --check
+
+      - name: Install the pinned toolkit
+        run: uv sync --extra dev
+
+      # test_toolkit_contract.py probes for the toolkit's loaders and SKIPS when absent,
+      # which is why it never ran in CI before. Point it at the installed package and
+      # assert it actually collected tests, so a silent skip fails the build instead of
+      # passing it — the exact failure mode this job exists to end.
+      - name: Run cross-repo contract tests against the installed toolkit
+        run: |
+          export KAIROS_TOOLKIT_SRC="$(uv run python -c 'import kairos_ontology, pathlib; print(pathlib.Path(kairos_ontology.__file__).parent.parent)')"
+          echo "KAIROS_TOOLKIT_SRC=$KAIROS_TOOLKIT_SRC"
+          uv run --extra dev python -m pytest tests/test_toolkit_contract.py -v -ra \
+            -p no:randomly --strict-markers | tee contract.log
+          if grep -qE '^[0-9]+ skipped|no tests ran' contract.log; then
+            echo "::error::Contract tests skipped instead of running — the toolkit was not visible."
+            exit 1
+          fi

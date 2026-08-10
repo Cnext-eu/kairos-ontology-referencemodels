@@ -53,10 +53,18 @@ naming_rule: >
 # `leg_module_iris` is grain 2 (where mode is stated, always MMT). `module_iris` is grain 3 (the
 # reservation-grain standard), empty where no standard exists. `import_policy: reference-only`
 # means catalogue the IRI but never add it to an accelerator pack's includes.
+#
+# `target_iris` is the resolvable class IRI(s) a hub binds to at grain 3 — always a list, always
+# empty for a pattern-only mode. `target_note` carries the human label. These replace the former
+# single `target`, which held an IRI for ocean but prose for air and rail; the validator skipped
+# anything that did not start with "http", so the prose values were never checked at all.
+# validate_archetypes.py check 7 now asserts every target_iris entry is a declared owl:Class.
 mode_bindings:
   - mode: ocean
     grain: reservation
-    target: https://www.kairosflow.ai/ont/dcsa/booking#Booking
+    target_note: "DCSA Booking (BKG API)"
+    target_iris:
+      - https://www.kairosflow.ai/ont/dcsa/booking#Booking
     status: modelled
     binding: hub-local
     leg_module_iris: []
@@ -64,7 +72,11 @@ mode_bindings:
       - https://www.kairosflow.ai/ont/dcsa/booking
   - mode: air
     grain: reservation
-    target: "IATA ONE Record cargo data model (Booking, BookingRequest, BookingOption)"
+    target_note: "IATA ONE Record cargo data model"
+    target_iris:
+      - https://onerecord.iata.org/ns/cargo#Booking
+      - https://onerecord.iata.org/ns/cargo#BookingRequest
+      - https://onerecord.iata.org/ns/cargo#BookingOption
     status: modelled
     binding: hub-local
     import_policy: reference-only
@@ -80,7 +92,10 @@ mode_bindings:
       are waybill messages at document grain, already covered by mmt/documents#AirWaybill.
   - mode: rail
     grain: reservation
-    target: "TAF TSI — Path Request / Consignment Order"
+    target_note: "TAF TSI — Path Request / Consignment Order"
+    target_iris:
+      - https://www.kairosflow.ai/ont/rail/path-request#PathRequestMessage
+      - https://www.kairosflow.ai/ont/rail/consignment#ConsignmentOrderMessage
     status: modelled
     binding: hub-local
     leg_module_iris:
@@ -98,7 +113,8 @@ mode_bindings:
       modelled as mmt/documents#RailConsignmentNote.
   - mode: road
     grain: reservation
-    target: null
+    target_note: "None — no standard forces a reservation shape"
+    target_iris: []
     status: pattern-only
     leg_module_iris:
       - https://www.kairosflow.ai/ont/mmt/inland-transport
@@ -106,7 +122,8 @@ mode_bindings:
     note: "No standard forces a reservation shape. CMR covers the document grain only."
   - mode: barge
     grain: reservation
-    target: null
+    target_note: "None dominant"
+    target_iris: []
     status: pattern-only
     leg_module_iris:
       - https://www.kairosflow.ai/ont/mmt/inland-transport

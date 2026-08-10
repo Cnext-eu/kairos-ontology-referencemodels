@@ -18,7 +18,7 @@ Two checks:
           the graph reachable from its module (the prefix of the URI must match
           one of the catalogued module IRIs).
 
-Also runs four advisory-only checks that never fail the build:
+Also runs three advisory-only checks that never fail the build:
 
   3. Discovery-doc pairing: warn if an archetype has no matching
      ``accelerator-packs/*/discovery/<id>.md`` (filename-stem convention).
@@ -36,21 +36,30 @@ Also runs four advisory-only checks that never fail the build:
      whose ``<id>`` does not match a known archetype id — the symmetric complement
      of check 3.
 
+And two blocking checks that fail the build. Both guard prose that the toolkit consumes
+but never parses — the surface with no automated reader, and therefore the one that rots:
+
   6. Scope-profile integrity: the discovery guides carry a prose "scope switchboard"
      that tunes an archetype's module set from the SME's answers (modes served,
      geographic scope, service model). It is prose because the consumer is an LLM
      skill reading the markdown — the toolkit's ``archetype_loader`` hands it the doc
-     path and never parses it. Unwatched prose drifts, so two invariants are checked:
-     every module IRI a Scope profile names is declared in that archetype's
-     ``ref_model_modules`` (or is a grain-3 mode target from ``multimodal-order-leg``
-     ``pattern.yaml``), and ``pattern.md``'s per-mode table agrees with that file's
-     ``mode_bindings`` statuses. The second targets a drift that really occurred: air
-     and rail stayed ``extension-point`` in the YAML for two releases after the models
-     landed, because nothing read it.
+     path and never parses it. Every module IRI a Scope profile names must be declared
+     in that archetype's ``ref_model_modules`` (or be a grain-3 mode target from
+     ``multimodal-order-leg`` ``pattern.yaml``), and a guide must carry a Scope profile
+     once its siblings do.
+
+  7. Mode-binding drift: ``pattern.md``'s per-mode alignment table must agree with
+     ``pattern.yaml`` ``mode_bindings`` statuses, and every mode target IRI must resolve
+     through the catalog. This targets a drift that really occurred: air and rail stayed
+     ``extension-point`` in the YAML for two releases after the models landed, because
+     nothing read it.
+
+Checks 6 and 7 block rather than warn. A warning inside an otherwise-green run is
+indistinguishable from the silence that let the original drift ship twice.
 
 Network policy: local-only. No remote IRI dereference. YAML loaded with
-``yaml.safe_load``. The script exits non-zero on any hard failure; checks 3-5
-only ever emit warnings.
+``yaml.safe_load``. The script exits non-zero on any hard failure or on checks 6-7;
+checks 3-5 only ever emit warnings.
 
 Usage:
     python scripts/validate_archetypes.py
@@ -228,9 +237,9 @@ def _scope_profile_section(text: str) -> str | None:
 
 
 def _check_scope_profiles(
-    archetype_modules: dict[str, set[str]], warnings: list[str]
+    archetype_modules: dict[str, set[str]], errors: list[str]
 ) -> None:
-    """Advisory-only: keep each guide's Scope profile honest against the machine catalog.
+    """Blocking: keep each guide's Scope profile honest against the machine catalog.
 
     The scope switchboard is prose because the consumer is an LLM skill reading the discovery
     markdown — ``archetype_loader`` hands it the doc path and never parses it. Prose with no
@@ -259,7 +268,7 @@ def _check_scope_profiles(
         rel = doc_path.relative_to(REPO_ROOT)
         section = _scope_profile_section(doc_path.read_text(encoding="utf-8"))
         if section is None:
-            warnings.append(
+            errors.append(
                 f"{rel}: no '### Scope profile' section — the archetype's module set cannot "
                 "be tuned from the interview (see discovery/README.md, 'Scope axes')"
             )
@@ -267,12 +276,52 @@ def _check_scope_profiles(
         for iri in sorted(set(_SCOPE_IRI_RE.findall(section))):
             if iri in declared or iri in mode_target_iris:
                 continue
-            warnings.append(
+            errors.append(
                 f"{rel}: Scope profile names module '{iri}' which is not in "
                 f"{doc_path.stem}.yaml ref_model_modules, nor a mode target in "
                 "multimodal-order-leg/pattern.yaml — an axis may only promote a module the "
                 "archetype already declares (discovery/README.md resolution rule 1)"
             )
+
+
+def _check_target_iris_are_classes(data: dict, rel: Path, errors: list[str]) -> None:
+    """Every ``mode_bindings[].target_iris`` entry must be a declared ``owl:Class``.
+
+    The former single ``target`` field held an IRI for ocean but prose for air and rail, and
+    the collector only picked up values starting with ``http`` — so the prose was silently
+    unvalidated. Resolving each target as a real class is what makes the field trustworthy.
+    """
+    if not CATALOG_PATH.exists():
+        return
+    from catalog_utils import CatalogResolver  # type: ignore[import-not-found]
+    from rdflib import Graph
+
+    resolver = CatalogResolver(CATALOG_PATH)
+    graphs: dict[str, set[str]] = {}
+    for binding in data.get("mode_bindings", []) or []:
+        for uri in binding.get("target_iris") or []:
+            module = _module_of(uri)
+            if module not in graphs:
+                local_path = resolver.resolve(module)
+                if local_path is None or not Path(local_path).exists():
+                    errors.append(
+                        f"{rel}: target_iris '{uri}' resolves to module '{module}' which has "
+                        "no catalog mapping (or the file is missing)"
+                    )
+                    graphs[module] = set()
+                    continue
+                try:
+                    g = Graph()
+                    g.parse(local_path, format="turtle")
+                    graphs[module] = _collect_class_iris(g)
+                except Exception as exc:  # broad: surface any parser error clearly
+                    errors.append(f"{rel}: failed to parse {local_path} for '{uri}' — {exc}")
+                    graphs[module] = set()
+                    continue
+            if graphs[module] and uri not in graphs[module]:
+                errors.append(
+                    f"{rel}: target_iris '{uri}' is not declared as owl:Class in '{module}'"
+                )
 
 
 def _mode_binding_iris() -> set[str]:
@@ -285,20 +334,20 @@ def _mode_binding_iris() -> set[str]:
     data = _load_yaml(path) or {}
     iris: set[str] = set()
     for binding in data.get("mode_bindings", []) or []:
-        for key in ("module_iris", "leg_module_iris"):
+        for key in ("module_iris", "leg_module_iris", "target_iris"):
             iris.update(binding.get(key) or [])
-        target = binding.get("target")
-        if isinstance(target, str) and target.startswith("http"):
-            iris.add(target)
     return iris
 
 
-def _check_mode_binding_drift(warnings: list[str]) -> None:
-    """Advisory-only: ``pattern.md``'s mode table must agree with ``pattern.yaml``.
+def _check_mode_binding_drift(errors: list[str]) -> None:
+    """Blocking: ``pattern.md``'s mode table must agree with ``pattern.yaml``.
 
     This is the drift that actually happened: the air and rail mode specialisations landed in
     the models and in ``pattern.md``, but ``pattern.yaml`` kept saying ``extension-point`` for
     two releases because nothing read it. Cheap lexical check, aimed squarely at that failure.
+
+    It fails the build rather than warning, because a warning in an otherwise-green run is
+    indistinguishable from the silence that let the original drift ship twice.
     """
     base = ONTOLOGY_ROOT / "blueprints" / "patterns" / "multimodal-order-leg"
     yaml_path, md_path = base / "pattern.yaml", base / "pattern.md"
@@ -317,14 +366,29 @@ def _check_mode_binding_drift(warnings: list[str]) -> None:
         status = str(binding.get("status", "")).lower()
         row = next((r for m, r in md_status.items() if m.startswith(mode)), None)
         if row is None:
-            warnings.append(
+            errors.append(
                 f"{rel}: mode '{mode}' has no row in pattern.md's per-mode alignment table"
             )
         elif status.replace("-", " ") not in row.replace("-", " "):
-            warnings.append(
+            errors.append(
                 f"{rel}: mode '{mode}' is '{status}' in pattern.yaml but pattern.md's table "
                 "does not say so — the prose and the machine twin have drifted"
             )
+        # A modelled mode must name at least one grain-3 class; a pattern-only mode must not,
+        # since "pattern-only" means precisely that no standard supplies a reservation shape.
+        targets = binding.get("target_iris") or []
+        if status == "modelled" and not targets:
+            errors.append(
+                f"{rel}: mode '{mode}' is 'modelled' but declares no target_iris — a modelled "
+                "mode must name the grain-3 class(es) a hub binds to"
+            )
+        elif status == "pattern-only" and targets:
+            errors.append(
+                f"{rel}: mode '{mode}' is 'pattern-only' but declares target_iris {targets} — "
+                "pattern-only means no reservation-grain standard exists"
+            )
+
+    _check_target_iris_are_classes(data, rel, errors)
 
     resolver_targets = _mode_binding_iris()
     if not CATALOG_PATH.exists() or not resolver_targets:
@@ -336,7 +400,7 @@ def _check_mode_binding_drift(warnings: list[str]) -> None:
         base_iri = iri.split("#", 1)[0]
         local_path = resolver.resolve(base_iri)
         if local_path is None or not Path(local_path).exists():
-            warnings.append(
+            errors.append(
                 f"{rel}: mode_bindings IRI '{base_iri}' has no catalog mapping "
                 "(or the file is missing) — the mode target is not resolvable"
             )
@@ -448,11 +512,13 @@ def main() -> int:
             }
         print(f"  • {rel}")
 
-    # Pack-level advisory checks: not tied to any single archetype file.
+    # Pack-level checks: not tied to any single archetype file.
     _check_anchor_generality(warnings)
     _check_orphaned_discovery_docs({f.stem for f in files}, warnings)
-    _check_scope_profiles(archetype_modules, warnings)
-    _check_mode_binding_drift(warnings)
+    # Checks 6 and 7 are blocking: they guard prose that the toolkit consumes but never
+    # parses, which is exactly the surface that rots when a check only warns.
+    _check_scope_profiles(archetype_modules, errors)
+    _check_mode_binding_drift(errors)
 
     print()
     for w in warnings:

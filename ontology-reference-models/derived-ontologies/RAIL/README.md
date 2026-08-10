@@ -23,7 +23,7 @@ reservation grain, hub-local.
   Railways (ERA) at <https://github.com/EU-Agency-for-Railways/TSI_TAF>.
 - **Implementation guideline:** ERA-TD-105 (TAF TSI Implementation Guide).
 - Every `owl:Class` in this ontology is backed by a documented TAF TSI data
-  element (verified by `kairos-ontology-audit`). No invented classes.
+  element (verified by `refmodels-ontology-audit`). No invented classes.
 
 ## Structure
 

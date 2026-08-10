@@ -16,18 +16,27 @@ This accelerator pack is designed for organisations in the logistics and supply 
 
 ## What's included?
 
-The Logistics Accelerator imports **8 ontologies** covering the full logistics value chain:
+<!-- BEGIN GENERATED: modules -->
+The Logistics Accelerator bundles **9 ontologies** via **11 `owl:imports`** (some modules are imported at sub-module granularity):
 
-| Ontology | Standard | Focus |
-|----------|----------|-------|
-| DCSA | DCSA API Standards | Container shipping lifecycle |
-| MMT | UN/CEFACT MMT-RDM | Consignment, movement, cargo, equipment |
-| BSP | ISO 20197-1:2024 | Party, contract, invoice, settlement |
-| TIC | TIC 4.0 | Terminal operations, handling, automotive |
-| IMO | IMO Compendium / FAL / IMDG | Vessel registry, dangerous goods, port-call, crew, environmental, maritime security |
-| WCO | WCO Data Model 3.10.0 | Customs declarations, goods items, procedures, trade facilitation |
-| Sustainability | ISO 14083:2023 / GLEC | Emissions, energy, ESG reporting |
-| Supply Chain | — | Integration layer |
+| Ontology | Standard | Version | Focus |
+|---|---|---|---|
+| DCSA | Digital Container Shipping Association | `1.3.0` | Container shipping lifecycle |
+| MMT | Multi-Modal Transport | `1.1.0` | Consignment, movement, cargo, equipment |
+| BSP | Buy-Ship-Pay | `1.5.0` | Party, contract, invoice, settlement |
+| TIC | Terminal Industry Committee 4.0 | `1.3.0` | Terminal operations, handling, automotive |
+| IMO | International Maritime Organization | `1.1.0` | Vessel registry, dangerous goods, port-call, crew, environmental, maritime security |
+| WCO | World Customs Organization | `1.2.0` | Customs declarations, goods items, procedures, trade facilitation |
+| Sustainability | Sustainability & Carbon | `1.1.0` | Emissions, energy, ESG reporting |
+| supply-chain | Supply Chain | `1.2.0` | Cross-standard bridge properties linking DCSA, MMT, BSP, TIC, IMO, and WCO |
+| RAIL | TAF TSI Rail | `1.0.0` | EU rail freight reservation & running (path request, consignment order, train running, rolling stock) |
+
+Reference-only — catalogued and bindable, deliberately **not** imported:
+
+| Ontology | Standard | Version | Focus |
+|---|---|---|---|
+| IATA | IATA ONE Record (air cargo) | `3.3.0 RC1 (2026-08 standard)` | Air cargo booking, shipment, transport movement |
+<!-- END GENERATED: modules -->
 
 ### What's NOT included?
 
@@ -52,7 +61,9 @@ ontology-reference-models/accelerator-packs/logistics/current/logistics-accelera
 
 ## Version
 
-See [VERSION](VERSION) — currently **1.6.0**.
+<!-- BEGIN GENERATED: version -->
+See [VERSION](VERSION) — currently **1.10.0**.
+<!-- END GENERATED: version -->
 
 ## Sector discovery materials
 
