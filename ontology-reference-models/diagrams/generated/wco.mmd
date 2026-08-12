@@ -1,0 +1,212 @@
+classDiagram
+  direction LR
+  class AEOCertification {
+    +2 attributes
+  }
+  class AEOHolder {
+    +1 attributes
+  }
+  class ATACarnet {
+    +3 attributes
+  }
+  class AuthorityMessage
+  class BondedWarehouse {
+    +4 attributes
+  }
+  class BorderCrossing {
+    +4 attributes
+  }
+  class Certificate {
+    +3 attributes
+  }
+  class CertificateOfOrigin
+  class Consignee {
+    +3 attributes
+  }
+  class Consignor {
+    +3 attributes
+  }
+  class CustomsAuthority {
+    +2 attributes
+  }
+  class CustomsBroker {
+    +1 attributes
+  }
+  class CustomsControlledArea {
+    +3 attributes
+  }
+  class CustomsDeclaration {
+    +17 attributes
+  }
+  class CustomsDeclarationDocument {
+    +4 attributes
+  }
+  class CustomsOffice {
+    +4 attributes
+  }
+  class CustomsProcedure {
+    +8 attributes
+  }
+  class CustomsValue {
+    +8 attributes
+  }
+  class Declarant {
+    +2 attributes
+  }
+  class DeclarationStatus {
+    +2 attributes
+  }
+  class DesignatedExportPlace {
+    +3 attributes
+  }
+  class DutyCalculation {
+    +9 attributes
+  }
+  class EntryExitSummary
+  class ExportDeclaration
+  class ExportLicenseDocument {
+    +2 attributes
+  }
+  class ExportPermit
+  class Exporter {
+    +1 attributes
+  }
+  class Filing {
+    +2 attributes
+  }
+  class FreeZone {
+    +3 attributes
+  }
+  class FreightAgent
+  class GoodsItem {
+    +10 attributes
+  }
+  class GuaranteeProvider {
+    +7 attributes
+  }
+  class ICS2Reference
+  class ImportDeclaration
+  class ImportPermit
+  class ImportPermitDocument {
+    +2 attributes
+  }
+  class Importer {
+    +1 attributes
+  }
+  class InspectionReference {
+    +4 attributes
+  }
+  class License {
+    +3 attributes
+  }
+  class Packaging {
+    +4 attributes
+  }
+  class PreferenceClaim {
+    +1 attributes
+  }
+  class PreferentialOriginDoc {
+    +2 attributes
+  }
+  class SADForm {
+    +1 attributes
+  }
+  class SPSCertificate
+  class SingleWindow {
+    +1 attributes
+  }
+  class T1Document
+  class T2Document
+  class TIRCarnet {
+    +4 attributes
+  }
+  class TariffClassification {
+    +1 attributes
+  }
+  class TradeAgreementReference {
+    +1 attributes
+  }
+  class TransitDeclaration {
+    +1 attributes
+  }
+  class TransitDocument
+  class TrustedTrader
+  class eFTIRecord {
+    +2 attributes
+  }
+  Certificate <|-- CertificateOfOrigin
+  CustomsDeclaration <|-- EntryExitSummary
+  CustomsDeclaration <|-- ExportDeclaration
+  License <|-- ExportPermit
+  CustomsDeclaration <|-- ImportDeclaration
+  License <|-- ImportPermit
+  CustomsDeclarationDocument <|-- SADForm
+  Certificate <|-- SPSCertificate
+  TransitDocument <|-- T1Document
+  TransitDocument <|-- T2Document
+  CustomsDeclaration <|-- TransitDeclaration
+  CustomsDeclarationDocument <|-- TransitDocument
+  AEOHolder --> Declarant : actsAsDeclarant
+  AEOHolder --> AEOCertification : hasAEOCertification
+  AEOHolder --> CustomsAuthority : regulatedBy
+  AEOHolder --> CustomsBroker : representedByBroker
+  BondedWarehouse --> CustomsOffice : supervisedBy
+  Certificate --> TradeAgreementReference : issuedUnder
+  CustomsBroker --> Declarant : actsAsDeclarant
+  CustomsBroker --> CustomsAuthority : regulatedBy
+  CustomsDeclaration --> ATACarnet : accompaniedByCarnet
+  CustomsDeclaration --> AEOHolder : hasAEOHolder
+  CustomsDeclaration --> AuthorityMessage : hasAuthorityMessage
+  CustomsDeclaration --> Certificate : hasCertificate
+  CustomsDeclaration --> Consignee : hasConsignee
+  CustomsDeclaration --> Consignor : hasConsignor
+  CustomsDeclaration --> CustomsDeclarationDocument : hasCustomsDocument
+  CustomsDeclaration --> CustomsValue : hasCustomsValue
+  CustomsDeclaration --> DeclarationStatus : hasDeclarationStatus
+  CustomsDeclaration --> DutyCalculation : hasDutyCalculation
+  CustomsDeclaration --> Filing : hasFiling
+  CustomsDeclaration --> FreightAgent : hasFreightAgent
+  CustomsDeclaration --> GoodsItem : hasGoodsItem
+  CustomsDeclaration --> GuaranteeProvider : hasGuaranteeProvider
+  CustomsDeclaration --> InspectionReference : hasInspectionReference
+  CustomsDeclaration --> License : hasLicense
+  CustomsDeclaration --> PreferenceClaim : hasPreferenceClaim
+  CustomsDeclaration --> TariffClassification : hasTariffClassification
+  CustomsDeclaration --> TrustedTrader : hasTrustedTrader
+  CustomsDeclaration --> CustomsOffice : locatedAtCustomsOffice
+  CustomsDeclaration --> FreeZone : locatedInFreeZone
+  CustomsDeclaration --> CustomsControlledArea : withinCustomsControlledArea
+  CustomsDeclarationDocument --> CustomsDeclarationDocument : supersedes
+  Declarant --> CustomsAuthority : regulatedBy
+  Declarant --> CustomsBroker : representedByBroker
+  EntryExitSummary --> ICS2Reference : hasICS2Reference
+  ExportDeclaration --> DesignatedExportPlace : hasDesignatedExportPlace
+  ExportDeclaration --> ExportLicenseDocument : hasExportLicenseDocument
+  ExportDeclaration --> Exporter : hasExporter
+  Exporter --> Declarant : actsAsDeclarant
+  Exporter --> CustomsAuthority : regulatedBy
+  Exporter --> CustomsBroker : representedByBroker
+  Filing --> SingleWindow : hasSingleWindow
+  Filing --> eFTIRecord : haseFTIRecord
+  FreightAgent --> Declarant : actsAsDeclarant
+  FreightAgent --> CustomsAuthority : regulatedBy
+  FreightAgent --> CustomsBroker : representedByBroker
+  GoodsItem --> CustomsProcedure : hasCustomsProcedure
+  GoodsItem --> CustomsValue : hasGoodsItemCustomsValue
+  GoodsItem --> DutyCalculation : hasGoodsItemDutyCalculation
+  GoodsItem --> TariffClassification : hasGoodsItemTariffClassification
+  GoodsItem --> Packaging : hasPackaging
+  GuaranteeProvider --> Declarant : actsAsDeclarant
+  GuaranteeProvider --> CustomsAuthority : regulatedBy
+  GuaranteeProvider --> CustomsBroker : representedByBroker
+  ImportDeclaration --> ImportPermitDocument : hasImportPermitDocument
+  ImportDeclaration --> Importer : hasImporter
+  ImportDeclaration --> BondedWarehouse : storedInBondedWarehouse
+  Importer --> Declarant : actsAsDeclarant
+  Importer --> CustomsAuthority : regulatedBy
+  Importer --> CustomsBroker : representedByBroker
+  PreferenceClaim --> PreferentialOriginDoc : hasOriginDocument
+  PreferenceClaim --> TradeAgreementReference : hasTradeAgreementReference
+  TransitDeclaration --> TIRCarnet : coveredByTIRCarnet
+  TransitDeclaration --> BorderCrossing : hasBorderCrossing
+  TransitDeclaration --> TransitDocument : hasTransitDocument

@@ -1,0 +1,14 @@
+flowchart LR
+  ASSET["EquipmentAsset"]
+  CODE["EquipmentTypeCode<br/><small>governed — the value of record</small>"]:::gov
+  RAW1["sourceEquipmentTypeValue<br/><small>system A — as received</small>"]:::raw
+  RAW2["sourceEquipmentTypeValue<br/><small>system B — as received</small>"]:::raw
+
+  ASSET -->|"hasEquipmentTypeCode (1..1)"| CODE
+  ASSET -->|"0..n"| RAW1
+  ASSET -->|"0..n"| RAW2
+  RAW1 -. survivorship rule .-> CODE
+  RAW2 -. survivorship rule .-> CODE
+
+  classDef gov fill:#e8f7e9,stroke:#3aa657;
+  classDef raw fill:#fff3d6,stroke:#d8a13b;

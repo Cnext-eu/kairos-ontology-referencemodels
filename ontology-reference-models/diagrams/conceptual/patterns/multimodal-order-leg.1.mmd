@@ -1,0 +1,16 @@
+flowchart LR
+  ORDER["TransportOrder<br/><small>aggregate root — carries NO mode</small>"]
+  LEG["TransportLeg<br/><small>carries the mode</small>"]
+  RES["CarrierReservation<br/><small>mode bound here, by binding</small>"]
+  MOV["TransportMovement<br/><small>execution — mode inherited</small>"]
+
+  ORDER -->|hasPlannedLeg| LEG
+  LEG -->|hasCarrierReservation| RES
+  LEG -->|realizedByMovement| MOV
+
+  classDef order fill:#f3e8ff,stroke:#8a3bd8;
+  classDef leg fill:#e8f7e9,stroke:#3aa657;
+  classDef other fill:#eef4ff,stroke:#3b6ea8;
+  class ORDER order;
+  class LEG leg;
+  class RES,MOV other;

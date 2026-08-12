@@ -1,0 +1,8 @@
+flowchart TB
+  PARTY["Party"]
+  SHIPPER["Shipper"]:::bad
+  CARRIER["Carrier"]:::bad
+  PARTY --> SHIPPER
+  PARTY --> CARRIER
+  SHIPPER -.->|"breaks when one org is both,<br/>needs re-typing when the role changes"| WHY["subclassing identity by role ✗"]
+  classDef bad fill:#ffe3e3,stroke:#d84b4b;

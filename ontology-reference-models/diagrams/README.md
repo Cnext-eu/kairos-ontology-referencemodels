@@ -4,7 +4,8 @@ Visual documentation of the Kairos reference models — built for business and o
 conversations, where the point is to *show* the concepts and how they relate rather than read
 Turtle. Every diagram is [Mermaid](https://mermaid.js.org/) and renders natively on GitHub.
 
-There are two layers, kept in separate folders on purpose.
+There are two layers, kept in separate folders on purpose. Every diagram also ships as a raw
+`.mmd` file next to its `.md` (see [Raw `.mmd` source files](#raw-mmd-source-files) below).
 
 ## [`conceptual/`](conceptual/) — hand-authored
 
@@ -60,6 +61,28 @@ python scripts/generate_ontology_diagrams.py --input path/to/your-hub/model
 `owl:Ontology`, its IRI scopes which classes are "yours"; if it does not, every class in the input
 is treated as yours.
 
+## Raw `.mmd` source files
+
+Alongside every diagram `.md` sits a raw [`.mmd`](https://mermaid.js.org/) file containing just
+the Mermaid source — no markdown fence, no banner — so it loads directly into
+[mermaid.live](https://mermaid.live), a Confluence/Notion Mermaid plugin, or `mmdc` without
+hand-stripping the surrounding markdown. A single-diagram file yields `<name>.mmd`; a file with
+several diagrams (some conceptual pages) yields `<name>.1.mmd`, `<name>.2.mmd`, … in reading order.
+
+These are a **pure derivative of the committed `.md`** (which is what GitHub renders), regenerated
+and `--check`-verified by the same script — so they never drift:
+
+```bash
+# Regenerate every .mmd (runs automatically as part of a full generator run)
+python scripts/generate_ontology_diagrams.py
+
+# CI verifies both the .md and the .mmd exports are current
+python scripts/generate_ontology_diagrams.py --check
+```
+
+Do not hand-edit a `.mmd`; edit the diagram in its `.md` (or the Turtle, for generated suites) and
+regenerate.
+
 ## Rendering to images
 
 The diagrams are source-only; GitHub renders them inline. To export SVG/PNG for slides, the
@@ -69,4 +92,6 @@ in the repo `package.json`:
 ```bash
 npm install
 npx mmdc -i ontology-reference-models/diagrams/generated/dcsa.md -o dcsa.svg
+# …or straight from the raw source file:
+npx mmdc -i ontology-reference-models/diagrams/generated/dcsa.mmd -o dcsa.svg
 ```

@@ -1,0 +1,376 @@
+classDiagram
+  direction LR
+  class Address {
+    +4 attributes
+  }
+  class AgingBucket {
+    +1 attributes
+  }
+  class AirWaybill {
+    +5 attributes
+  }
+  class Airport {
+    +1 attributes
+  }
+  class AllocationBasis {
+    +1 attributes
+  }
+  class AncillaryRevenue
+  class Bank
+  class BankAccount {
+    +4 attributes
+  }
+  class BankGuarantee {
+    +2 attributes
+  }
+  class BillOfLading {
+    +6 attributes
+  }
+  class BudgetItem {
+    +2 attributes
+  }
+  class BunkerAdjustmentFactor
+  class BusinessEvent {
+    +3 attributes
+  }
+  class Buyer
+  class CapacityUtilization
+  class Carrier
+  class CertificateOfOrigin {
+    +3 attributes
+  }
+  class Charge {
+    +3 attributes
+  }
+  class CommercialInvoice {
+    +1 attributes
+  }
+  class CommercialTransaction {
+    +1 attributes
+  }
+  class Consignee
+  class Consignment
+  class Contact {
+    +5 attributes
+  }
+  class ContractRate
+  class ContributionMargin {
+    +2 attributes
+  }
+  class CostAllocation {
+    +1 attributes
+  }
+  class CostCenter {
+    +2 attributes
+  }
+  class CostPerUnit {
+    +2 attributes
+  }
+  class CostToServe {
+    +1 attributes
+  }
+  class CostVariance {
+    +3 attributes
+  }
+  class Country {
+    +1 attributes
+  }
+  class CreditNote
+  class CurrencyAdjustmentFactor
+  class CustomsBroker
+  class CustomsDeclaration {
+    +4 attributes
+  }
+  class CustomsEvent
+  class DebitNote
+  class DeliveryNote
+  class Dimension
+  class Document {
+    +7 attributes
+  }
+  class DocumentEvent
+  class DocumentaryCollection {
+    +1 attributes
+  }
+  class DocumentationFee
+  class DutyTax {
+    +4 attributes
+  }
+  class EmergencyBunkerSurcharge
+  class ExportLicense
+  class Facility
+  class FinancingArrangement {
+    +4 attributes
+  }
+  class FreeTimePeriod {
+    +2 attributes
+  }
+  class FreightCharge
+  class FreightForwarder
+  class FreightRate {
+    +2 attributes
+  }
+  class FreightRevenue
+  class HandlingCharge
+  class HealthCertificate
+  class ImportLicense
+  class InspectionCertificate
+  class InsuranceCertificate
+  class InsuranceProvider
+  class Invoice {
+    +9 attributes
+  }
+  class InvoiceLine {
+    +2 attributes
+  }
+  class LetterOfCredit {
+    +5 attributes
+  }
+  class LoadFactor {
+    +3 attributes
+  }
+  class Location {
+    +1 attributes
+  }
+  class Manufacturer
+  class ManufacturingPlant
+  class Measurement
+  class MonetaryAmount
+  class NotifyParty
+  class OrderChange {
+    +2 attributes
+  }
+  class OrderEvent
+  class OrderLine {
+    +5 attributes
+  }
+  class OrderResponse {
+    +2 attributes
+  }
+  class OverheadAllocation
+  class Package
+  class PackingList
+  class Payment {
+    +4 attributes
+  }
+  class PaymentAllocation {
+    +1 attributes
+  }
+  class PaymentEvent
+  class PaymentTerms {
+    +2 attributes
+  }
+  class PeakSeasonSurcharge
+  class PhytosanitaryCertificate
+  class Port
+  class Product {
+    +2 attributes
+  }
+  class ProfitabilityScope {
+    +2 attributes
+  }
+  class ProformaInvoice
+  class PurchaseOrder {
+    +3 attributes
+  }
+  class Quotation
+  class RateCard {
+    +4 attributes
+  }
+  class ReceiptAdvice
+  class Reconciliation
+  class RegulatoryRequirement {
+    +3 attributes
+  }
+  class RemittanceAdvice {
+    +3 attributes
+  }
+  class RequestForQuotation {
+    +3 attributes
+  }
+  class RevenueItem {
+    +3 attributes
+  }
+  class RevenuePerUnit {
+    +2 attributes
+  }
+  class SalesContract
+  class SalesOrder
+  class Seller
+  class Shipment {
+    +9 attributes
+  }
+  class ShipmentEvent
+  class ShipmentLine
+  class Shipper
+  class SpotRate
+  class StorageCharge
+  class Supplier
+  class Surcharge
+  class SurchargeRevenue
+  class TariffClassification {
+    +3 attributes
+  }
+  class TariffSchedule {
+    +2 attributes
+  }
+  class TerminalHandlingCharge
+  class TerminalOperator
+  class TradeAgreement {
+    +3 attributes
+  }
+  class TradeItem {
+    +1 attributes
+  }
+  class TradeParty {
+    +11 attributes
+  }
+  class TransportCostItem {
+    +3 attributes
+  }
+  class TransportDocument
+  class TransportEquipment
+  class TransportLeg
+  class TransportService
+  class Volume
+  class Warehouse
+  class WarehouseKeeper
+  class Weight
+  class YieldAnalysis {
+    +4 attributes
+  }
+  class rdf__Thing
+  <<rdf>> rdf__Thing
+  Location <|-- Address
+  TransportDocument <|-- AirWaybill
+  Facility <|-- Airport
+  RevenueItem <|-- AncillaryRevenue
+  TradeParty <|-- Bank
+  TransportDocument <|-- BillOfLading
+  Surcharge <|-- BunkerAdjustmentFactor
+  TradeParty <|-- Buyer
+  TradeParty <|-- Carrier
+  Document <|-- CertificateOfOrigin
+  Invoice <|-- CommercialInvoice
+  TradeParty <|-- Consignee
+  Shipment <|-- Consignment
+  RateCard <|-- ContractRate
+  Location <|-- Country
+  Surcharge <|-- CurrencyAdjustmentFactor
+  TradeParty <|-- CustomsBroker
+  Document <|-- CustomsDeclaration
+  Document <|-- DeliveryNote
+  Measurement <|-- Dimension
+  Charge <|-- DocumentationFee
+  Surcharge <|-- EmergencyBunkerSurcharge
+  Document <|-- ExportLicense
+  Location <|-- Facility
+  Charge <|-- FreightCharge
+  TradeParty <|-- FreightForwarder
+  RevenueItem <|-- FreightRevenue
+  Charge <|-- HandlingCharge
+  Document <|-- HealthCertificate
+  Document <|-- ImportLicense
+  Document <|-- InspectionCertificate
+  Document <|-- InsuranceCertificate
+  TradeParty <|-- InsuranceProvider
+  TradeParty <|-- Manufacturer
+  Facility <|-- ManufacturingPlant
+  Measurement <|-- MonetaryAmount
+  TradeParty <|-- NotifyParty
+  CommercialTransaction <|-- OrderChange
+  BusinessEvent <|-- OrderEvent
+  CommercialTransaction <|-- OrderResponse
+  CostAllocation <|-- OverheadAllocation
+  Document <|-- PackingList
+  Surcharge <|-- PeakSeasonSurcharge
+  Document <|-- PhytosanitaryCertificate
+  Facility <|-- Port
+  Invoice <|-- ProformaInvoice
+  CommercialTransaction <|-- PurchaseOrder
+  CommercialTransaction <|-- Quotation
+  Document <|-- ReceiptAdvice
+  CommercialTransaction <|-- RequestForQuotation
+  CommercialTransaction <|-- SalesContract
+  CommercialTransaction <|-- SalesOrder
+  TradeParty <|-- Seller
+  BusinessEvent <|-- ShipmentEvent
+  TradeParty <|-- Shipper
+  RateCard <|-- SpotRate
+  Charge <|-- StorageCharge
+  TradeParty <|-- Supplier
+  Charge <|-- Surcharge
+  RevenueItem <|-- SurchargeRevenue
+  Surcharge <|-- TerminalHandlingCharge
+  TradeParty <|-- TerminalOperator
+  Product <|-- TradeItem
+  Document <|-- TransportDocument
+  Measurement <|-- Volume
+  Facility <|-- Warehouse
+  TradeParty <|-- WarehouseKeeper
+  Measurement <|-- Weight
+  BudgetItem --> CostVariance : hasVariance
+  BusinessEvent --> Location : occursAtLocation
+  Charge --> TariffSchedule : appliesTariff
+  Charge --> FreeTimePeriod : hasFreeTime
+  CommercialTransaction --> Buyer : hasBuyer
+  CommercialTransaction --> Document : hasDocument
+  CommercialTransaction --> BusinessEvent : hasEvent
+  CommercialTransaction --> Invoice : hasInvoice
+  CommercialTransaction --> PurchaseOrder : hasPurchaseOrder
+  CommercialTransaction --> Seller : hasSeller
+  CommercialTransaction --> Shipment : hasShipment
+  CostAllocation --> rdf__Thing : allocatedTo
+  CostAllocation --> TransportCostItem : hasCostItem
+  CostAllocation --> CostPerUnit : hasCostPerUnit
+  CostCenter --> BudgetItem : hasBudget
+  CostCenter --> CostToServe : hasCostToServe
+  FreightCharge --> Surcharge : hasSurcharge
+  Invoice --> Charge : hasCharge
+  Invoice --> FinancingArrangement : hasFinancingArrangement
+  Invoice --> InvoiceLine : hasInvoiceLine
+  Invoice --> LetterOfCredit : hasLetterOfCredit
+  Invoice --> Payment : hasPayment
+  Invoice --> PaymentTerms : hasPaymentTerms
+  Invoice --> Shipment : relatedToShipment
+  LetterOfCredit --> Bank : advisingBank
+  LetterOfCredit --> Bank : confirmingBank
+  LetterOfCredit --> Bank : issuingBank
+  OrderChange --> PurchaseOrder : amendsOrder
+  OrderLine --> Product : orderedProduct
+  OrderResponse --> PurchaseOrder : respondsToOrder
+  OverheadAllocation --> AllocationBasis : usesAllocationBasis
+  Payment --> PaymentAllocation : hasAllocation
+  Payment --> RemittanceAdvice : hasRemittanceAdvice
+  PaymentAllocation --> Invoice : allocatedToInvoice
+  Product --> Country : hasCountryOfOrigin
+  Product --> Manufacturer : hasManufacturer
+  Product --> TariffClassification : hasTariffClassification
+  ProfitabilityScope --> ContributionMargin : hasContributionMargin
+  ProfitabilityScope --> LoadFactor : hasLoadFactor
+  ProfitabilityScope --> RevenueItem : hasRevenueItem
+  ProfitabilityScope --> RevenuePerUnit : hasRevenuePerUnit
+  ProfitabilityScope --> YieldAnalysis : hasYieldAnalysis
+  PurchaseOrder --> OrderLine : hasOrderLine
+  Quotation --> RequestForQuotation : respondsToRFQ
+  RevenueItem --> RateCard : appliesRateCard
+  RevenuePerUnit --> ProfitabilityScope : measuredFor
+  Shipment --> Carrier : hasCarrier
+  Shipment --> Consignee : hasConsignee
+  Shipment --> CustomsDeclaration : hasCustomsDeclaration
+  Shipment --> Location : hasDestinationLocation
+  Shipment --> Location : hasOriginLocation
+  Shipment --> Package : hasPackage
+  Shipment --> ShipmentLine : hasShipmentLine
+  Shipment --> Shipper : hasShipper
+  Shipment --> TransportDocument : hasTransportDocument
+  Shipment --> TransportEquipment : hasTransportEquipment
+  Shipment --> PurchaseOrder : relatedToOrder
+  TariffSchedule --> FreightRate : hasFreightRate
+  TradeParty --> Address : hasAddress
+  TradeParty --> BankAccount : hasBankAccount
+  TradeParty --> Address : hasBillingAddress
+  TradeParty --> Contact : hasContact
+  TradeParty --> PaymentTerms : hasPartyPaymentTerms
+  TradeParty --> Address : hasShippingAddress
+  TransportCostItem --> CostCenter : hasCostCenter

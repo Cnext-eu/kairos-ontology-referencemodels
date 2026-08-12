@@ -33,7 +33,11 @@ conversations.
   consumer of the tarball/submodule can diagram their ontology and see the reference-model classes
   they import as external stubs. Bridge modules that own no classes (SupplyChain) render as a
   cross-suite relationship map because an association is kept when the *property* is suite-owned,
-  even when both endpoints are external.
+  even when both endpoints are external. Every diagram also ships as a raw `.mmd` sibling next to
+  its `.md` (single-diagram pages as `<name>.mmd`, multi-diagram conceptual pages as
+  `<name>.1.mmd`, `<name>.2.mmd`, …) — plain Mermaid with no markdown fence, ready to paste into
+  mermaid.live or a wiki plugin. The `.mmd` exports are a pure derivative of the committed `.md`,
+  regenerated and `--check`-verified by the same script so they never drift.
 - **`tests/test_ontology_diagrams.py`** — asserts every suite is discovered, every generated
   diagram is current, and the SupplyChain bridge links at least two other suites. A suite whose
   Turtle changes without its diagram being regenerated now fails the build.

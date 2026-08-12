@@ -1,0 +1,14 @@
+flowchart LR
+  PARTY["Party<br/><small>durable identity — one record</small>"]
+  RA["PartyRoleAssignment<br/><small>(identity, role, context, validity)</small>"]
+  BOOKING["Booking<br/><small>context</small>"]
+  ROLE["hasRole<br/><small>Shipper | Consignee | Carrier …</small>"]
+
+  RA -->|assignedToParty| PARTY
+  RA -->|inContextOfBooking| BOOKING
+  RA -->|hasRole| ROLE
+
+  classDef id fill:#e8f7e9,stroke:#3aa657;
+  classDef link fill:#f3e8ff,stroke:#8a3bd8;
+  class PARTY id;
+  class RA link;

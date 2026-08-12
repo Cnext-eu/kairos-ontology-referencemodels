@@ -1,0 +1,36 @@
+flowchart TB
+  PACK["Logistics Accelerator Pack<br/><small>ont/accelerator/logistics#</small>"]
+
+  subgraph INCL["owl:imports — bundled"]
+    direction LR
+    DCSA["DCSA"]
+    MMT["MMT"]
+    BSP["BSP"]
+    TIC["TIC"]
+    IMO["IMO"]
+    WCO["WCO"]
+    RAIL["RAIL"]
+    SUS["Sustainability"]
+    SC["SupplyChain<br/><small>cross-standard bridge</small>"]
+  end
+
+  subgraph REF["referenced, not bundled"]
+    IATA["IATA ONE Record<br/><small>bind hub-local at reservation grain</small>"]
+  end
+
+  subgraph EXC["excluded"]
+    FIBO["FIBO<br/><small>use the Financial Services pack</small>"]
+  end
+
+  PACK --> INCL
+  PACK -. via catalog .-> REF
+  PACK -. never imports .-> EXC
+
+  classDef pack fill:#f3e8ff,stroke:#8a3bd8,color:#123;
+  classDef incl fill:#e8f7e9,stroke:#3aa657,color:#123;
+  classDef ref fill:#fff3d6,stroke:#d8a13b,color:#123;
+  classDef exc fill:#ffe3e3,stroke:#d84b4b,color:#123;
+  class PACK pack;
+  class DCSA,MMT,BSP,TIC,IMO,WCO,RAIL,SUS,SC incl;
+  class IATA ref;
+  class FIBO exc;

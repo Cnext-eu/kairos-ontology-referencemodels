@@ -1,0 +1,8 @@
+flowchart LR
+  BOOKING["Booking"]
+  ASSET["EquipmentAsset<br/><small>target — not yet conformant</small>"]:::pending
+
+  BOOKING -->|"hasEquipmentAllocation<br/>(declared now, nothing populates it yet)"| ASSET
+  BOOKING -->|"equipmentAllocationReference : xsd:string<br/>(carries the FK today)"| FK["interim scalar value"]
+
+  classDef pending fill:#fff3d6,stroke:#d8a13b,stroke-dasharray:4;

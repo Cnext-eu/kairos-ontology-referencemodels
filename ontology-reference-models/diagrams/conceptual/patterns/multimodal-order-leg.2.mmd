@@ -1,0 +1,13 @@
+flowchart LR
+  RES["CarrierReservation<br/>(grain 3)"]
+  OCEAN["ocean → DCSA Booking"]
+  AIR["air → IATA ONE Record<br/><small>vendored, catalog-resolved</small>"]
+  RAIL["rail → TAF TSI<br/>Path Request / Consignment Order"]
+  ROAD["road → pattern-only<br/><small>no standard forces a shape</small>"]
+  BARGE["barge → pattern-only"]
+
+  RES --> OCEAN
+  RES --> AIR
+  RES --> RAIL
+  RES --> ROAD
+  RES --> BARGE

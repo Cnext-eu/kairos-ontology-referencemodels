@@ -1,0 +1,22 @@
+flowchart TB
+  subgraph START["Start / Arrival"]
+    RS["requestedStart / requestedArrival"]
+    PS["plannedStart / plannedArrival"]
+    ES["estimatedStart / estimatedArrival"]
+    AS["actualStart / actualArrival<br/><small>immutable once observed</small>"]
+  end
+  subgraph END["End / Departure"]
+    RE["requestedEnd / requestedDeparture"]
+    PE["plannedEnd / plannedDeparture"]
+    EE["estimatedEnd / estimatedDeparture"]
+    AE["actualEnd / actualDeparture<br/><small>immutable once observed</small>"]
+  end
+
+  classDef req fill:#eef4ff,stroke:#3b6ea8;
+  classDef plan fill:#e8f7e9,stroke:#3aa657;
+  classDef est fill:#fff3d6,stroke:#d8a13b;
+  classDef act fill:#f3e8ff,stroke:#8a3bd8;
+  class RS,RE req;
+  class PS,PE plan;
+  class ES,EE est;
+  class AS,AE act;

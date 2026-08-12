@@ -1,0 +1,312 @@
+classDiagram
+  direction LR
+  class Anchorage {
+    +1 attributes
+  }
+  class ArrivalNotice
+  class BallastWaterManagementPlan {
+    +3 attributes
+  }
+  class Berth {
+    +3 attributes
+  }
+  class BerthStay {
+    +2 attributes
+  }
+  class BunkeringOperation {
+    +1 attributes
+  }
+  class CallSign
+  class CertificateOfCompetency {
+    +5 attributes
+  }
+  class CertificateOfProficiency {
+    +1 attributes
+  }
+  class ClassSociety
+  class ClassificationSociety
+  class CompanySecurityOfficer
+  class CrewChange {
+    +1 attributes
+  }
+  class CrewList {
+    +2 attributes
+  }
+  class CrewMember {
+    +3 attributes
+  }
+  class DGDeclaration {
+    +1 attributes
+  }
+  class DangerousGoodsItem {
+    +2 attributes
+  }
+  class DeadweightTonnage {
+    +1 attributes
+  }
+  class DeclarationOfSecurity {
+    +4 attributes
+  }
+  class DepartureNotice
+  class DocumentOfCompliance
+  class EmergencyContact {
+    +2 attributes
+  }
+  class EmergencySchedule {
+    +2 attributes
+  }
+  class EmissionControlArea {
+    +2 attributes
+  }
+  class FALForm {
+    +2 attributes
+  }
+  class FlagAuthority {
+    +1 attributes
+  }
+  class FlagState
+  class FlashPoint {
+    +1 attributes
+  }
+  class Fleet
+  class GarbageManagementPlan {
+    +2 attributes
+  }
+  class GrossTonnage {
+    +1 attributes
+  }
+  class HazardClass {
+    +1 attributes
+  }
+  class IMONumber
+  class InternationalEnergyEfficiencyCertificate {
+    +6 attributes
+  }
+  class InternationalShipSecurityCertificate
+  class MARPOLSpecialArea {
+    +2 attributes
+  }
+  class MMSI
+  class MaritimeAgent
+  class MaritimeLabourCertificate {
+    +2 attributes
+  }
+  class MaritimeLocation {
+    +3 attributes
+  }
+  class MaritimeParty {
+    +6 attributes
+  }
+  class MasterOfVessel {
+    +1 attributes
+  }
+  class NetTonnage {
+    +1 attributes
+  }
+  class NoxiousLiquidSubstance {
+    +2 attributes
+  }
+  class PackingGroup {
+    +1 attributes
+  }
+  class Passenger {
+    +4 attributes
+  }
+  class PassengerList {
+    +2 attributes
+  }
+  class PilotBoardingPlace
+  class PilotService
+  class PilotageRequest {
+    +1 attributes
+  }
+  class Port {
+    +2 attributes
+  }
+  class PortApproach {
+    +2 attributes
+  }
+  class PortAuthority
+  class PortCall {
+    +4 attributes
+  }
+  class PortCallStatus
+  class PortFacilitySecurityOfficer
+  class PortFacilitySecurityPlan {
+    +5 attributes
+  }
+  class PortHealthDeclaration {
+    +2 attributes
+  }
+  class PortReceptionFacility {
+    +1 attributes
+  }
+  class PortStateControlOfficer
+  class PreArrivalNotification {
+    +2 attributes
+  }
+  class RouteWaypoint {
+    +4 attributes
+  }
+  class SafetyManagementCertificate
+  class SeaLeg
+  class Seafarer {
+    +4 attributes
+  }
+  class SegregationRule
+  class ShipEnergyEfficiencyManagementPlan {
+    +5 attributes
+  }
+  class ShipManager
+  class ShipOperator
+  class ShipOwner
+  class ShipSecurityOfficer
+  class ShipSecurityPlan {
+    +5 attributes
+  }
+  class ShipboardOilPollutionEmergencyPlan {
+    +2 attributes
+  }
+  class StatutoryCertificate {
+    +6 attributes
+  }
+  class StatutorySurvey {
+    +4 attributes
+  }
+  class StowageCategory
+  class TowageProvider
+  class TowageRequest {
+    +1 attributes
+  }
+  class TrafficSeparationScheme
+  class UNNumber {
+    +1 attributes
+  }
+  class VTSZone {
+    +2 attributes
+  }
+  class Vessel {
+    +9 attributes
+  }
+  class VesselCapacity
+  class VesselOperationalStatus
+  class VesselType
+  class Voyage {
+    +1 attributes
+  }
+  class VoyagePlan {
+    +1 attributes
+  }
+  class WasteDisposal {
+    +2 attributes
+  }
+  class WastePreNotification {
+    +2 attributes
+  }
+  class imo__PortFacility
+  <<imo>> imo__PortFacility
+  MaritimeLocation <|-- Anchorage
+  MaritimeLocation <|-- Berth
+  MaritimeParty <|-- ClassificationSociety
+  MaritimeParty <|-- CompanySecurityOfficer
+  VesselCapacity <|-- DeadweightTonnage
+  StatutoryCertificate <|-- DocumentOfCompliance
+  MaritimeLocation <|-- EmissionControlArea
+  MaritimeParty <|-- FlagAuthority
+  VesselCapacity <|-- GrossTonnage
+  StatutoryCertificate <|-- InternationalEnergyEfficiencyCertificate
+  StatutoryCertificate <|-- InternationalShipSecurityCertificate
+  MaritimeLocation <|-- MARPOLSpecialArea
+  MaritimeParty <|-- MaritimeAgent
+  StatutoryCertificate <|-- MaritimeLabourCertificate
+  MaritimeParty <|-- MasterOfVessel
+  VesselCapacity <|-- NetTonnage
+  MaritimeLocation <|-- PilotBoardingPlace
+  MaritimeParty <|-- PilotService
+  MaritimeLocation <|-- Port
+  MaritimeLocation <|-- PortApproach
+  MaritimeParty <|-- PortAuthority
+  MaritimeParty <|-- PortFacilitySecurityOfficer
+  MaritimeLocation <|-- PortReceptionFacility
+  MaritimeParty <|-- PortStateControlOfficer
+  StatutoryCertificate <|-- SafetyManagementCertificate
+  MaritimeParty <|-- ShipManager
+  MaritimeParty <|-- ShipOperator
+  MaritimeParty <|-- ShipOwner
+  MaritimeParty <|-- ShipSecurityOfficer
+  MaritimeParty <|-- TowageProvider
+  MaritimeLocation <|-- TrafficSeparationScheme
+  MaritimeLocation <|-- VTSZone
+  BallastWaterManagementPlan --> Vessel : appliesToVessel
+  ClassificationSociety --> FlagAuthority : recognizedBy
+  CrewList --> PortCall : forPortCall
+  CrewList --> Vessel : forVessel
+  CrewList --> CrewMember : hasCrewMember
+  CrewMember --> Seafarer : hasSeafarer
+  DGDeclaration --> DangerousGoodsItem : declaresItem
+  DGDeclaration --> EmergencyContact : hasEmergencyContact
+  DangerousGoodsItem --> EmergencySchedule : hasEmergencySchedule
+  DangerousGoodsItem --> FlashPoint : hasFlashPoint
+  DangerousGoodsItem --> HazardClass : hasHazardClass
+  DangerousGoodsItem --> PackingGroup : hasPackingGroup
+  DangerousGoodsItem --> StowageCategory : hasStowageCategory
+  DangerousGoodsItem --> UNNumber : hasUNNumber
+  DeclarationOfSecurity --> imo__PortFacility : dosFacility
+  DeclarationOfSecurity --> Vessel : dosShip
+  DocumentOfCompliance --> MaritimeParty : issuedToCompany
+  Fleet --> Vessel : hasMember
+  GarbageManagementPlan --> Vessel : appliesToVessel
+  HazardClass --> SegregationRule : hasSegregationRule
+  MaritimeLocation --> MaritimeLocation : locatedWithin
+  MaritimeParty --> MaritimeParty : actsOnBehalfOf
+  MaritimeParty --> MasterOfVessel : employs
+  MaritimeParty --> MaritimeLocation : providesServiceAt
+  PassengerList --> PortCall : forPortCall
+  PassengerList --> Vessel : forVessel
+  PassengerList --> Passenger : hasPassenger
+  Port --> Anchorage : hasAnchorage
+  Port --> Berth : hasBerth
+  Port --> PilotBoardingPlace : hasPilotBoardingPlace
+  Port --> PortApproach : hasPortApproach
+  Port --> VTSZone : hasVTSZone
+  PortApproach --> TrafficSeparationScheme : hasTrafficSeparationScheme
+  PortCall --> ArrivalNotice : hasArrivalNotice
+  PortCall --> BerthStay : hasBerthStay
+  PortCall --> BunkeringOperation : hasBunkeringOperation
+  PortCall --> CrewChange : hasCrewChange
+  PortCall --> DepartureNotice : hasDepartureNotice
+  PortCall --> FALForm : hasFALForm
+  PortCall --> PilotageRequest : hasPilotageRequest
+  PortCall --> PortCallStatus : hasPortCallStatus
+  PortCall --> PortHealthDeclaration : hasPortHealthDeclaration
+  PortCall --> PreArrivalNotification : hasPreArrivalNotification
+  PortCall --> TowageRequest : hasTowageRequest
+  PortCall --> WasteDisposal : hasWasteDisposal
+  PortCall --> WastePreNotification : hasWastePreNotification
+  PortCall --> Voyage : partOfVoyage
+  PortFacilitySecurityPlan --> imo__PortFacility : appliesToFacility
+  SeaLeg --> Voyage : partOfVoyage
+  Seafarer --> CertificateOfCompetency : holdsCoC
+  Seafarer --> CertificateOfProficiency : holdsCoP
+  ShipEnergyEfficiencyManagementPlan --> Vessel : appliesToVessel
+  ShipManager --> ShipOwner : managesVesselFor
+  ShipOperator --> ShipOwner : operatesVesselFor
+  ShipSecurityPlan --> Vessel : appliesToVessel
+  ShipboardOilPollutionEmergencyPlan --> Vessel : appliesToVessel
+  StatutoryCertificate --> MaritimeParty : issuedBy
+  StatutoryCertificate --> Vessel : issuedFor
+  StatutoryCertificate --> StatutorySurvey : resultOfSurvey
+  StatutorySurvey --> MaritimeParty : conductedBy
+  StatutorySurvey --> Vessel : surveyedVessel
+  Vessel --> CallSign : hasCallSign
+  Vessel --> VesselCapacity : hasCapacity
+  Vessel --> ClassSociety : hasClassSociety
+  Vessel --> FlagState : hasFlagState
+  Vessel --> IMONumber : hasIMONumber
+  Vessel --> MMSI : hasMMSI
+  Vessel --> VesselOperationalStatus : hasOperationalStatus
+  Vessel --> VesselType : hasVesselType
+  Voyage --> PortCall : hasPortCall
+  Voyage --> SeaLeg : hasSeaLeg
+  Voyage --> VoyagePlan : hasVoyagePlan
+  VoyagePlan --> RouteWaypoint : hasWaypoint

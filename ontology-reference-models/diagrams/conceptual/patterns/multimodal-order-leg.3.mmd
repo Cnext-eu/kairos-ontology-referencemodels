@@ -1,0 +1,12 @@
+flowchart TB
+  A["OceanOrder / RoadOrder subclasses,<br/>or an orderTransportMode scalar"]:::bad
+  B["order rdfs:subClassOf a mode-specific<br/>standard class (e.g. dcsa:Booking)"]:::bad
+  C["hasBooking directly on the order<br/>(order → reservation shortcut)"]:::bad
+  D["cargo / customs / financial properties<br/>declared on the order class"]:::bad
+
+  A -->|"an intermodal order needs two types at once"| WHY1["mode belongs on the leg"]
+  B -->|"inherits obligations no source can populate"| WHY2["bind at the reservation grain"]
+  C -->|"loses which leg a reservation covers"| WHY3["reservations attach to legs"]
+  D -->|"the order is a root, not a report"| WHY4["fan out to owning domains"]
+
+  classDef bad fill:#ffe3e3,stroke:#d84b4b;

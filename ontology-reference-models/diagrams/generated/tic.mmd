@@ -1,0 +1,306 @@
+classDiagram
+  direction LR
+  class AutomatedGuidedVehicle {
+    +1 attributes
+  }
+  class BargeConnection
+  class BargeQuay
+  class Battery {
+    +5 attributes
+  }
+  class BodyRepair
+  class CargoVisit {
+    +8 attributes
+  }
+  class CarrierTrip {
+    +5 attributes
+  }
+  class CarrierVisit {
+    +11 attributes
+  }
+  class ChargingSessionEvent {
+    +5 attributes
+  }
+  class ChargingStation {
+    +4 attributes
+  }
+  class Cycle {
+    +1 attributes
+  }
+  class DamageDetectedEvent
+  class DamageReport {
+    +3 attributes
+  }
+  class DischargeMove
+  class ElectricTerminalTractor
+  class EmptyContainerHandler {
+    +1 attributes
+  }
+  class EquipmentHealth {
+    +4 attributes
+  }
+  class Gate {
+    +1 attributes
+  }
+  class GateInEvent {
+    +2 attributes
+  }
+  class GateLane {
+    +2 attributes
+  }
+  class GateOutEvent {
+    +1 attributes
+  }
+  class HorizontalMove
+  class InspectionEvent {
+    +1 attributes
+  }
+  class JobInstruction {
+    +2 attributes
+  }
+  class KPI {
+    +6 attributes
+  }
+  class LiftMove
+  class LoadMove
+  class Move {
+    +3 attributes
+  }
+  class Order {
+    +1 attributes
+  }
+  class PDI {
+    +2 attributes
+  }
+  class PowerSource {
+    +3 attributes
+  }
+  class Quay {
+    +4 attributes
+  }
+  class QuayCrane {
+    +1 attributes
+  }
+  class QuaySide
+  class RailHead
+  class RailSiding {
+    +2 attributes
+  }
+  class RailVisit {
+    +3 attributes
+  }
+  class RailWagon {
+    +4 attributes
+  }
+  class ReachStacker
+  class ReeferAlarmEvent {
+    +2 attributes
+  }
+  class ReeferMonitoring {
+    +10 attributes
+  }
+  class ReeferPlug {
+    +2 attributes
+  }
+  class ReeferPlugInEvent {
+    +2 attributes
+  }
+  class ReeferPlugOutEvent {
+    +2 attributes
+  }
+  class ReeferRack {
+    +3 attributes
+  }
+  class ReeferSlot {
+    +3 attributes
+  }
+  class Seal {
+    +3 attributes
+  }
+  class ServiceCompleteEvent
+  class Spreader {
+    +4 attributes
+  }
+  class StackEvent
+  class Stevedore
+  class StorageZone
+  class StowagePlan {
+    +3 attributes
+  }
+  class StraddleCarrier {
+    +1 attributes
+  }
+  class TerminalEquipment {
+    +2 attributes
+  }
+  class TerminalEvent {
+    +4 attributes
+  }
+  class TerminalLocation {
+    +2 attributes
+  }
+  class TerminalOperator {
+    +1 attributes
+  }
+  class TerminalParty {
+    +2 attributes
+  }
+  class TerminalTractor
+  class VIN {
+    +1 attributes
+  }
+  class VehicleReleaseStatus {
+    +1 attributes
+  }
+  class VehicleService {
+    +2 attributes
+  }
+  class VehicleStorage {
+    +1 attributes
+  }
+  class VehicleUnit {
+    +4 attributes
+  }
+  class VesselDischargeEvent {
+    +2 attributes
+  }
+  class VesselLoadEvent {
+    +2 attributes
+  }
+  class Wash
+  class YardArea {
+    +1 attributes
+  }
+  class YardCrane {
+    +1 attributes
+  }
+  class YardMoveEvent {
+    +1 attributes
+  }
+  class YardPosition {
+    +4 attributes
+  }
+  class locations_Berth
+  class locations_Terminal {
+    +2 attributes
+  }
+  class terminal_infrastructure_Berth {
+    +3 attributes
+  }
+  class terminal_infrastructure_Terminal {
+    +2 attributes
+  }
+  TerminalEquipment <|-- AutomatedGuidedVehicle
+  TerminalLocation <|-- BargeQuay
+  VehicleService <|-- BodyRepair
+  TerminalEvent <|-- ChargingSessionEvent
+  TerminalEvent <|-- DamageDetectedEvent
+  Move <|-- DischargeMove
+  TerminalTractor <|-- ElectricTerminalTractor
+  TerminalEquipment <|-- EmptyContainerHandler
+  TerminalEvent <|-- GateInEvent
+  TerminalLocation <|-- GateLane
+  TerminalEvent <|-- GateOutEvent
+  Move <|-- HorizontalMove
+  TerminalEvent <|-- InspectionEvent
+  Move <|-- LiftMove
+  Move <|-- LoadMove
+  Move <|-- Order
+  VehicleService <|-- PDI
+  TerminalEquipment <|-- QuayCrane
+  TerminalLocation <|-- QuaySide
+  TerminalLocation <|-- RailSiding
+  CarrierVisit <|-- RailVisit
+  TerminalEquipment <|-- ReachStacker
+  TerminalEvent <|-- ReeferAlarmEvent
+  TerminalLocation <|-- ReeferPlug
+  TerminalEvent <|-- ReeferPlugInEvent
+  TerminalEvent <|-- ReeferPlugOutEvent
+  TerminalEvent <|-- ServiceCompleteEvent
+  TerminalEvent <|-- StackEvent
+  TerminalParty <|-- Stevedore
+  TerminalEquipment <|-- StraddleCarrier
+  TerminalParty <|-- TerminalOperator
+  TerminalEquipment <|-- TerminalTractor
+  TerminalEvent <|-- VesselDischargeEvent
+  TerminalEvent <|-- VesselLoadEvent
+  VehicleService <|-- Wash
+  TerminalEquipment <|-- YardCrane
+  TerminalEvent <|-- YardMoveEvent
+  TerminalLocation <|-- YardPosition
+  TerminalLocation <|-- locations_Berth
+  TerminalLocation <|-- locations_Terminal
+  BargeConnection --> TerminalEquipment : assignedEquipment
+  BargeConnection --> terminal_infrastructure_Terminal : belongsToTerminal
+  BargeQuay --> locations_Terminal : withinTerminal
+  BodyRepair --> DamageReport : relatedDamageReport
+  CargoVisit --> Cycle : hasCycle
+  CargoVisit --> Move : hasMove
+  CargoVisit --> Seal : hasSeal
+  CargoVisit --> CarrierVisit : partOfCarrierVisit
+  CarrierVisit --> CargoVisit : hasCargoVisit
+  CarrierVisit --> CarrierTrip : hasCarrierTrip
+  CarrierVisit --> Cycle : hasCycle
+  CarrierVisit --> StowagePlan : hasStowagePlan
+  ChargingSessionEvent --> ChargingStation : atChargingStation
+  ChargingSessionEvent --> TerminalEquipment : chargedEquipment
+  ChargingStation --> TerminalEquipment : servesEquipment
+  Cycle --> Move : hasMove
+  Gate --> TerminalEquipment : assignedEquipment
+  Gate --> terminal_infrastructure_Terminal : belongsToTerminal
+  Gate --> GateLane : hasGateLane
+  GateLane --> locations_Terminal : withinTerminal
+  JobInstruction --> TerminalLocation : instructionDestination
+  JobInstruction --> TerminalLocation : instructionOrigin
+  Move --> JobInstruction : executesInstruction
+  Move --> Move : followsMove
+  Move --> TerminalEquipment : performedBy
+  QuaySide --> locations_Terminal : withinTerminal
+  RailHead --> TerminalEquipment : assignedEquipment
+  RailHead --> terminal_infrastructure_Terminal : belongsToTerminal
+  RailSiding --> locations_Terminal : withinTerminal
+  RailVisit --> RailWagon : hasWagon
+  ReeferMonitoring --> ReeferSlot : monitoredAtSlot
+  ReeferPlug --> locations_Terminal : withinTerminal
+  ReeferRack --> TerminalLocation : atLocation
+  ReeferRack --> ReeferSlot : hasSlot
+  Stevedore --> CarrierVisit : stevedoresCarrierVisit
+  StorageZone --> TerminalEquipment : assignedEquipment
+  StorageZone --> terminal_infrastructure_Terminal : belongsToTerminal
+  TerminalEquipment --> Battery : hasBattery
+  TerminalEquipment --> EquipmentHealth : hasHealthStatus
+  TerminalEquipment --> PowerSource : hasPowerSource
+  TerminalEquipment --> Spreader : hasSpreader
+  TerminalEvent --> TerminalLocation : fromLocation
+  TerminalEvent --> TerminalEquipment : involvedEquipment
+  TerminalEvent --> CargoVisit : involvesCargo
+  TerminalEvent --> VehicleUnit : involvesCargo
+  TerminalEvent --> TerminalParty : recordedBy
+  TerminalEvent --> CarrierVisit : relatedVesselCall
+  TerminalEvent --> TerminalLocation : toLocation
+  TerminalEvent --> TerminalEvent : triggeredBy
+  TerminalLocation --> TerminalLocation : adjacentTo
+  TerminalOperator --> locations_Terminal : operatesTerminal
+  TerminalParty --> TerminalParty : employedBy
+  VehicleService --> TerminalParty : performedBy
+  VehicleUnit --> DamageReport : hasDamageReport
+  VehicleUnit --> VehicleReleaseStatus : hasReleaseStatus
+  VehicleUnit --> VehicleService : hasService
+  VehicleUnit --> VehicleStorage : hasStorageAssignment
+  VehicleUnit --> VIN : hasVIN
+  YardArea --> TerminalEquipment : assignedEquipment
+  YardArea --> terminal_infrastructure_Terminal : belongsToTerminal
+  YardArea --> StorageZone : hasStorageZone
+  YardPosition --> ReeferPlug : hasReeferPlug
+  YardPosition --> locations_Terminal : withinTerminal
+  locations_Berth --> locations_Terminal : withinTerminal
+  locations_Terminal --> TerminalLocation : hasLocation
+  terminal_infrastructure_Berth --> TerminalEquipment : assignedEquipment
+  terminal_infrastructure_Berth --> terminal_infrastructure_Terminal : belongsToTerminal
+  terminal_infrastructure_Terminal --> BargeConnection : hasBargeConnection
+  terminal_infrastructure_Terminal --> terminal_infrastructure_Berth : hasBerth
+  terminal_infrastructure_Terminal --> Gate : hasGate
+  terminal_infrastructure_Terminal --> Quay : hasQuay
+  terminal_infrastructure_Terminal --> RailHead : hasRailHead
+  terminal_infrastructure_Terminal --> StorageZone : hasStorageZone
+  terminal_infrastructure_Terminal --> YardArea : hasYardArea

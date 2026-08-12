@@ -108,3 +108,44 @@ def test_input_mode_without_ontology_iri_treats_all_classes_as_own(tmp_path) -> 
     )
     out = gen.render_input(model, "No Root", gen.suite_bases())
     assert "class Foo" in out and "class Bar" in out
+
+
+def _all_diagram_md() -> list[Path]:
+    return sorted(gen.DIAGRAMS_DIR.rglob("*.md"))
+
+
+def test_every_mermaid_block_has_a_current_mmd_export() -> None:
+    """Each fenced ```mermaid block in a diagram .md has a matching raw .mmd sibling.
+
+    Same --check contract as the generator: the .mmd files are a pure derivative of the
+    committed markdown, so if a .md changed and .mmd was not refreshed, this fails.
+    """
+    for md_path in _all_diagram_md():
+        for mmd_path, body in gen.mmd_targets_for(md_path):
+            assert mmd_path.exists(), (
+                f"{mmd_path} is missing — run python scripts/generate_ontology_diagrams.py"
+            )
+            assert mmd_path.read_text(encoding="utf-8") == body, (
+                f"{mmd_path.name} is stale — run: python scripts/generate_ontology_diagrams.py"
+            )
+
+
+def test_no_orphan_mmd_files() -> None:
+    """Every .mmd corresponds to a mermaid block that still exists."""
+    expected = {
+        mmd_path
+        for md_path in _all_diagram_md()
+        for mmd_path, _ in gen.mmd_targets_for(md_path)
+    }
+    orphans = [p for p in gen.DIAGRAMS_DIR.rglob("*.mmd") if p not in expected]
+    assert not orphans, f"orphaned .mmd files: {orphans}"
+
+
+def test_mmd_export_is_plain_mermaid_without_fences_or_banner() -> None:
+    """A raw .mmd is directly loadable by mmdc / mermaid.live: no markdown, no HTML banner."""
+    sample = gen.OUTPUT_DIR / "dcsa.mmd"
+    text = sample.read_text(encoding="utf-8")
+    assert "```" not in text
+    assert "<!--" not in text
+    assert text.lstrip().startswith("classDiagram")
+

@@ -1,0 +1,8 @@
+flowchart LR
+  OBJ["hasEquipmentAllocation<br/><small>eventual object property</small>"]
+  SCALAR["equipmentAllocationReference<br/><small>= target + 'Reference'</small>"]
+  OBJ -.->|"same root word"| SCALAR
+
+  BAD["equip_id_fk<br/><small>named after the source column</small>"]:::bad
+  BAD -.->|"rejected: a column name is<br/>evidence of nothing"| OBJ
+  classDef bad fill:#ffe3e3,stroke:#d84b4b;

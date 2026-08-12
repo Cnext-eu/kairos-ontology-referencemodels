@@ -1,0 +1,88 @@
+classDiagram
+  direction LR
+  class AllocationCompany
+  class ConsignmentIdentification {
+    +2 attributes
+  }
+  class ConsignmentLevelData
+  class ConsignmentOrderMessage {
+    +3 attributes
+  }
+  class CoordinatingInfrastructureManager
+  class ExceptionalConsignment
+  class InfrastructureManager
+  class LeadRailwayUndertaking
+  class OnDemandPath
+  class OperationalTrainIdentifier
+  class PathCanceledMessage
+  class PathConfirmedMessage
+  class PathDetailsMessage
+  class PathDetailsRefusedMessage
+  class PathInformation
+  class PathNotAvailableMessage
+  class PathRequestMessage
+  class PlannedTrainIdentifier {
+    +3 attributes
+  }
+  class PreArrangedPath
+  class RailCustomer {
+    +1 attributes
+  }
+  class RailLocationIdentifier {
+    +1 attributes
+  }
+  class RailwayUndertaking {
+    +1 attributes
+  }
+  class ShipmentType
+  class TelematicsDevice
+  class TelematicsOnBoard
+  class TrainCompositionMessage
+  class TrainLocationStatus {
+    +2 attributes
+  }
+  class TrainRunningData
+  class TrainRunningForecastMessage
+  class TrainRunningInformationMessage
+  class TrainRunningInterruptionMessage
+  class TrainRunningTechData
+  class TypeOfRequest
+  class ValidityPeriod {
+    +1 attributes
+  }
+  class WagonAtDeparture {
+    +1 attributes
+  }
+  class WagonLocationStatus {
+    +1 attributes
+  }
+  class WagonStatusMessage
+  class WagonTelematics
+  InfrastructureManager <|-- CoordinatingInfrastructureManager
+  RailwayUndertaking <|-- LeadRailwayUndertaking
+  ConsignmentLevelData --> ConsignmentIdentification : hasConsignmentIdentification
+  ConsignmentLevelData --> ExceptionalConsignment : hasExceptionalConsignment
+  ConsignmentLevelData --> ShipmentType : hasShipmentType
+  ConsignmentOrderMessage --> ConsignmentLevelData : hasConsignmentLevelData
+  ConsignmentOrderMessage --> RailwayUndertaking : receivingRU
+  ConsignmentOrderMessage --> RailwayUndertaking : sendingRU
+  CoordinatingInfrastructureManager --> InfrastructureManager : coordinatingIMFor
+  LeadRailwayUndertaking --> RailwayUndertaking : isLeadRUOf
+  PathConfirmedMessage --> InfrastructureManager : confirmedBy
+  PathConfirmedMessage --> PathInformation : offersPath
+  PathInformation --> ValidityPeriod : pathValidityPeriod
+  PathRequestMessage --> PathInformation : hasPathInformation
+  PathRequestMessage --> RailwayUndertaking : requestedBy
+  PathRequestMessage --> TypeOfRequest : typeOfRequest
+  TrainCompositionMessage --> PlannedTrainIdentifier : compositionFor
+  TrainCompositionMessage --> WagonAtDeparture : hasWagonAtDeparture
+  TrainLocationStatus --> RailLocationIdentifier : atLocation
+  TrainRunningData --> TrainRunningTechData : hasRunningTechData
+  TrainRunningForecastMessage --> OperationalTrainIdentifier : forecastFor
+  TrainRunningInformationMessage --> TrainRunningData : hasRunningData
+  TrainRunningInformationMessage --> OperationalTrainIdentifier : reportsTrain
+  TrainRunningInterruptionMessage --> OperationalTrainIdentifier : interruptionFor
+  WagonAtDeparture --> WagonTelematics : hasWagonTelematics
+  WagonLocationStatus --> RailLocationIdentifier : wagonLocation
+  WagonStatusMessage --> WagonAtDeparture : reportsWagon
+  WagonTelematics --> TelematicsDevice : hasTelematicsDevice

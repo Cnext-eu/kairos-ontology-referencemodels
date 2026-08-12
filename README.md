@@ -147,6 +147,10 @@ holds [Mermaid](https://mermaid.js.org/) diagrams that render natively on GitHub
   suite, generated straight from the Turtle by `scripts/generate_ontology_diagrams.py` and kept
   current by the validation gate (`--check`). **Do not edit these by hand.**
 
+Every diagram also ships as a raw `.mmd` file next to its `.md` — plain Mermaid source (no markdown
+fence) you can paste straight into [mermaid.live](https://mermaid.live), a wiki plugin or `mmdc`.
+The `.mmd` files are derived from the `.md` and kept in sync by the same `--check`.
+
 ```bash
 python scripts/generate_ontology_diagrams.py            # refresh all suite diagrams
 python scripts/generate_ontology_diagrams.py --check    # verify they are current (CI)
