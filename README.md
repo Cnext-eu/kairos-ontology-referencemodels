@@ -55,6 +55,7 @@ kairos-ontology-referencemodels/
 │   │   ├── archetypes/                # Per-archetype YAML catalogs (e.g. shipping-carrier)
 │   │   ├── patterns/                  # Sector-neutral shapes and naming conventions
 │   │   └── ontology/                  # Kairos-authored classes where no standard defines the grain
+│   ├── diagrams/                      # Mermaid diagrams (conceptual + generated per-suite)
 │   └── catalog-v001.xml               # XML catalog for import resolution
 ├── scripts/                           # Tooling (validation, version management)
 ├── examples/                          # Usage examples
@@ -129,6 +130,28 @@ itself cannot infer. The shipping-carrier discovery script lives at
 
 Both are consumed by the `kairos-design-discovery` skill in the
 [`kairos-ontology-toolkit`](https://github.com/Cnext-eu/kairos-ontology-toolkit) repository.
+
+---
+
+## 🖼️ Visual documentation
+
+For business and onboarding conversations, [`ontology-reference-models/diagrams/`](ontology-reference-models/diagrams/)
+holds [Mermaid](https://mermaid.js.org/) diagrams that render natively on GitHub — no build step:
+
+- **[`conceptual/`](ontology-reference-models/diagrams/conceptual/)** — hand-authored big picture:
+  the [content-tier landscape](ontology-reference-models/diagrams/conceptual/tier-landscape.md),
+  the [cross-domain relationship map](ontology-reference-models/diagrams/conceptual/domain-relationships.md),
+  the [logistics accelerator-pack composition](ontology-reference-models/diagrams/conceptual/accelerator-logistics.md),
+  and each [blueprint pattern](ontology-reference-models/diagrams/conceptual/patterns/) drawn as the shape it prescribes.
+- **[`generated/`](ontology-reference-models/diagrams/generated/)** — one class diagram per derived
+  suite, generated straight from the Turtle by `scripts/generate_ontology_diagrams.py` and kept
+  current by the validation gate (`--check`). **Do not edit these by hand.**
+
+```bash
+python scripts/generate_ontology_diagrams.py            # refresh all suite diagrams
+python scripts/generate_ontology_diagrams.py --check    # verify they are current (CI)
+python scripts/generate_ontology_diagrams.py --suite DCSA --module booking   # drill into one module
+```
 
 ---
 

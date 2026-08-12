@@ -68,6 +68,7 @@ python scripts/validate_logistics_blueprint.py
 python scripts/validate_structure.py
 python scripts/version_manager.py check
 python scripts/validate_archetypes.py
+python scripts/generate_ontology_diagrams.py --check
 ```
 
 These run in `.github/workflows/validate.yml` on every PR and again on release.

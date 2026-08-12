@@ -1,10 +1,12 @@
 {
   "private": true,
-  "description": "Kairos ontology hub — dev dependencies for diagram rendering",
+  "description": "Kairos reference models — dev dependencies for Mermaid diagram rendering",
   "devDependencies": {
     "@mermaid-js/mermaid-cli": "^11.4.0"
   },
   "scripts": {
-    "render-erd": "mmdc -i ontology-hub/output/medallion/dbt/docs/diagrams/master-erd.mmd -o ontology-hub/output/medallion/dbt/docs/diagrams/master-erd.svg"
+    "diagrams": "python scripts/generate_ontology_diagrams.py",
+    "diagrams:check": "python scripts/generate_ontology_diagrams.py --check",
+    "render-diagram": "mmdc -i ontology-reference-models/diagrams/generated/dcsa.md -o ontology-reference-models/diagrams/generated/dcsa.svg"
   }
 }

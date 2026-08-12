@@ -17,3 +17,9 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+
+# Node / Mermaid diagram rendering
+node_modules/
+
+# Diagram render artifacts (diagrams are committed as Mermaid source, not images)
+*.mmd.svg
