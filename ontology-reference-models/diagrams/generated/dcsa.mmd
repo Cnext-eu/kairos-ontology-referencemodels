@@ -3,55 +3,105 @@ classDiagram
   class AvailableForDropoffEvent
   class AvailableForPickupEvent
   class BargeTransportCall {
-    +6 attributes
+    +string bargeCallSignNumber
+    +string bargeFlag
+    +string bargeIMONumber
+    +string bargeName
+    +string bargeOperatorCarrierCode
+    +string bargeOperatorCarrierCodeListProvider
   }
   class BillOfLading {
-    +4 attributes
+    +string billOfLadingNumber
+    +boolean isNegotiable
+    +integer numberOfOriginals
+    +date shippedOnBoardDate
   }
   class Booking {
-    +12 attributes
+    +dateTime bookingRequestDateTime
+    +string bookingStatus
+    +dateTime bookingUpdatedDateTime
+    +string carrierBookingReference [1..*]
+    +string carrierCode
+    +string deliveryTypeAtDestination
+    +string freightPaymentTerm
+    +string incoterm
+    +string receiptTypeAtOrigin
+    +string requestedOnCarriageModeOfTransport
+    +string requestedPreCarriageModeOfTransport
+    +string serviceContractReference
   }
   class BookingParty
   class BookingRequest
   class BorderCrossing
   class BorderCrossingEvent
   class CargoItem {
-    +5 attributes
+    +integer cargoLineItemNumber [1..*]
+    +integer numberOfPackages
+    +string packageCode
+    +decimal volume
+    +decimal weight
   }
   class Carrier
   class CombinedDemurrageDetention
   class Commodity {
-    +11 attributes
+    +string commodityDescription
+    +decimal flashPoint
+    +string hsCode
+    +string imoClass
+    +boolean isLimitedQuantity
+    +boolean isMarinePollutant
+    +boolean isReportableQuantity
+    +integer packingGroup
+    +string properShippingName
+    +string technicalName
+    +string unNumber
   }
   class ConfirmedBooking
   class Consignee
   class Container {
-    +8 attributes
+    +string containerNumber [1]
+    +string containerSizeType
+    +boolean emptyIndicator
+    +boolean isShipperOwned
+    +string isoEquipmentCode
+    +string sealNumber
+    +decimal tareWeight
+    +decimal verifiedGrossMass
   }
   class ContainerFreightStation
   class ContainerJourney {
-    +1 attributes
+    +string journeyStatus
   }
   class ContainerOperationalStatus {
-    +2 attributes
+    +string operationalStatusCode
+    +dateTime statusTimestamp
   }
   class ContainerStripping {
-    +1 attributes
+    +dateTime strippingDate
   }
   class ContainerStuffing {
-    +1 attributes
+    +dateTime stuffingDate
   }
   class CustomsEvent {
-    +1 attributes
+    +string customsEventTypeCode
   }
   class CutOffTime {
-    +2 attributes
+    +dateTime cutOffDateTime
+    +string cutOffType
   }
   class DemurrageCharge {
-    +5 attributes
+    +decimal chargeAmount [1..*]
+    +date chargeEndDate
+    +date chargeStartDate
+    +integer chargeableDays
+    +string currency
   }
   class DemurrageDetentionTariff {
-    +5 attributes
+    +string equipmentType
+    +string portCode
+    +string tradeDirection
+    +date validFrom
+    +date validTo
   }
   class DemurrageEvent
   class Depot
@@ -60,7 +110,8 @@ classDiagram
   class DetentionEvent
   class DischargedFromVesselEvent
   class DisputeRecord {
-    +2 attributes
+    +string disputeReason
+    +string disputeStatus
   }
   class DocumentEvent
   class DocumentIssuedEvent
@@ -71,14 +122,19 @@ classDiagram
   class EmptyContainerPickupEvent
   class EmptyContainerReturnEvent
   class EquipmentEvent {
-    +1 attributes
+    +boolean isTransshipmentMove
   }
   class Event {
-    +5 attributes
+    +string eventClassifierCode
+    +dateTime eventDateTime [1..*]
+    +string eventTypeCode
+    +string facilityTypeCode
+    +string facilityTypeCodeOPR
   }
   class FlatRackContainer
   class FreeTimeAllowance {
-    +2 attributes
+    +integer freeDays [1..*]
+    +string freeTimeType
   }
   class FreightForwarder
   class GateInEvent
@@ -86,17 +142,20 @@ classDiagram
   class InlandTerminal
   class InspectionEvent
   class LiftOnLiftOff {
-    +2 attributes
+    +dateTime loloTimestamp
+    +string loloType
   }
   class LoadedOnVesselEvent
   class Location {
-    +3 attributes
+    +string facilityTypeCode
+    +string shipmentLocationTypeCode
+    +string unLocationCode
   }
   class NotifyParty
   class OnwardInlandRoutingLocation
   class OpenTopContainer
   class PerDiemRate {
-    +1 attributes
+    +decimal dailyRate [1..*]
   }
   class PickedUpEvent
   class PlaceOfDelivery
@@ -108,67 +167,96 @@ classDiagram
   class PreCarriageFromLocation
   class RailRamp
   class RailTransportCall {
-    +3 attributes
+    +string departureID
+    +string railCar
+    +string railService
   }
   class RateTier {
-    +3 attributes
+    +integer tierEndDay
+    +decimal tierRate
+    +integer tierStartDay
   }
   class ReeferContainer {
-    +4 attributes
+    +decimal humidityPercent
+    +decimal temperatureSetting
+    +string temperatureUnit
+    +decimal ventilationSetting
   }
   class RequestedEquipment
   class SailingSchedule
   class SeaWaybill
   class SealEvent {
-    +1 attributes
+    +string sealEventTypeCode
   }
   class ServiceLoop {
-    +2 attributes
+    +string frequency
+    +string serviceLoopCode
   }
   class Shipment {
-    +4 attributes
+    +decimal cargoGrossWeight
+    +string vesselIMONumber
+    +string vesselName
+    +string voyageNumber
   }
   class Shipper
   class ShippingInstruction {
-    +1 attributes
+    +string shippingInstructionReference [1..*]
   }
   class ShippingParty
   class StorageCharge
   class TankContainer
   class Terminal {
-    +1 attributes
+    +string facilityCode
   }
   class TransitTime {
-    +2 attributes
+    +integer transitDays
+    +integer transitHours
   }
   class TransportCall {
-    +5 attributes
+    +string facilityTypeCode
+    +string facilityTypeCodeTRN
+    +string modeOfTransport
+    +string transportPlanStage
+    +integer transportPlanStageSequenceNumber
   }
   class TransportDocument {
-    +5 attributes
+    +string documentStatus
+    +boolean isElectronic
+    +string onCarriageBy
+    +string preCarriageBy
+    +string transportDocumentReference [1..*]
   }
   class TransportEvent
   class TransportPlanLeg {
-    +5 attributes
+    +string legModeOfTransport
+    +string legTransportPlanStage
+    +integer legTransportPlanStageSequenceNumber
+    +dateTime plannedArrivalDate
+    +dateTime plannedDepartureDate
   }
   class TransshipmentPort
   class TruckTransportCall {
-    +2 attributes
+    +string chassisLicencePlate
+    +string licencePlate
   }
   class UtilizedTransportEquipment {
-    +1 attributes
+    +string equipmentReference [1..*]
   }
   class VesselArrivalEvent {
-    +2 attributes
+    +dateTime actualTimeOfArrival
+    +dateTime estimatedTimeOfArrival
   }
   class VesselDepartureEvent {
-    +2 attributes
+    +dateTime actualTimeOfDeparture
+    +dateTime estimatedTimeOfDeparture
   }
   class VesselTransportCall {
-    +2 attributes
+    +string vesselIMONumber
+    +string vesselName
   }
   class Waiver {
-    +2 attributes
+    +decimal waiverAmount
+    +string waiverType
   }
   EquipmentEvent <|-- AvailableForDropoffEvent
   EquipmentEvent <|-- AvailableForPickupEvent

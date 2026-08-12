@@ -1,138 +1,237 @@
 classDiagram
   direction LR
   class AEOCertification {
-    +2 attributes
+    +string aeoStatus [1..*]
+    +string aeoType
   }
   class AEOHolder {
-    +1 attributes
+    +string aeoNumber [1..*]
   }
   class ATACarnet {
-    +3 attributes
+    +date carnetExpiryDate
+    +string carnetNumber [1..*]
+    +integer numberOfPages
   }
   class AuthorityMessage
   class BondedWarehouse {
-    +4 attributes
+    +decimal latitude
+    +decimal longitude
+    +string warehouseApprovalNumber [1..*]
+    +string warehouseType
   }
   class BorderCrossing {
-    +4 attributes
+    +string borderCrossingCode [1..*]
+    +string borderCrossingName
+    +decimal latitude
+    +decimal longitude
   }
   class Certificate {
-    +3 attributes
+    +date certificateExpiryDate
+    +date certificateIssueDate
+    +string certificateNumber [1..*]
   }
   class CertificateOfOrigin
   class Consignee {
-    +3 attributes
+    +string consigneeAddress
+    +string consigneeIdentifier [1..*]
+    +string consigneeName
   }
   class Consignor {
-    +3 attributes
+    +string consignorAddress
+    +string consignorIdentifier [1..*]
+    +string consignorName
   }
   class CustomsAuthority {
-    +2 attributes
+    +string authorityCode [1..*]
+    +string authorityName
   }
   class CustomsBroker {
-    +1 attributes
+    +string brokerLicenseNumber [1..*]
   }
   class CustomsControlledArea {
-    +3 attributes
+    +string areaIdentifier
+    +decimal latitude
+    +decimal longitude
   }
   class CustomsDeclaration {
-    +17 attributes
+    +dateTime acceptanceDate
+    +string amendmentReason
+    +string borderTransportMeansId
+    +string conveyanceReferenceNumber
+    +string declarationNumber [1..*]
+    +string declarationType
+    +string functionCode
+    +string localReferenceNumber
+    +string nationalityOfTransportMeans
+    +string placeOfLoading
+    +string placeOfUnloading
+    +dateTime releaseDate
+    +string specificCircumstancesCode
+    +decimal totalGrossWeight
+    +integer totalNumberOfItems
+    +integer totalPackages
+    +string transportModeCode
   }
   class CustomsDeclarationDocument {
-    +4 attributes
+    +date documentDate
+    +string documentNumber [1..*]
+    +string documentStatus
+    +integer numberOfPages
   }
   class CustomsOffice {
-    +4 attributes
+    +decimal latitude
+    +decimal longitude
+    +string officeCode [1..*]
+    +string officeName
   }
   class CustomsProcedure {
-    +8 attributes
+    +string additionalProcedureCode
+    +date dischargeDueDate
+    +string previousProcedure
+    +string procedureCategory
+    +string procedureCode [1..*]
+    +string procedureDescription
+    +string requestedProcedure
+    +string specialProcedureType
   }
   class CustomsValue {
-    +8 attributes
+    +string currencyCode
+    +decimal exchangeRate
+    +decimal freightCharges
+    +decimal insuranceCost
+    +decimal totalAdjustments
+    +string valuationBasis
+    +string valuationMethod
+    +decimal valueDeclared [1..*]
   }
   class Declarant {
-    +2 attributes
+    +string declarantIdentifier [1..*]
+    +string declarantName
   }
   class DeclarationStatus {
-    +2 attributes
+    +string statusCode
+    +dateTime statusDateTime
   }
   class DesignatedExportPlace {
-    +3 attributes
+    +decimal latitude
+    +decimal longitude
+    +string placeCode
   }
   class DutyCalculation {
-    +9 attributes
+    +string defermentAccountNumber
+    +decimal dutyAmount [1..*]
+    +string dutyCalculationMethod
+    +decimal dutyRate
+    +string dutyRegimeCode
+    +string dutyTypeCode
+    +string paymentMethodCode
+    +string paymentStatus
+    +string quotaOrderNumber
   }
   class EntryExitSummary
   class ExportDeclaration
   class ExportLicenseDocument {
-    +2 attributes
+    +string licenseNumber [1..*]
+    +integer numberOfPages
   }
   class ExportPermit
   class Exporter {
-    +1 attributes
+    +string exporterEORI [1..*]
   }
   class Filing {
-    +2 attributes
+    +dateTime filingDate
+    +string filingReference [1..*]
   }
   class FreeZone {
-    +3 attributes
+    +string freeZoneIdentifier
+    +decimal latitude
+    +decimal longitude
   }
   class FreightAgent
   class GoodsItem {
-    +10 attributes
+    +string commodityDescription
+    +string countryOfDestination
+    +string countryOfOrigin
+    +string dangerousGoodsUNDG
+    +decimal grossWeight
+    +decimal netWeight
+    +integer sequenceNumber [1..*]
+    +decimal statisticalValue
+    +string supplementaryUnits
+    +decimal tariffQuantity
   }
   class GuaranteeProvider {
-    +7 attributes
+    +decimal guaranteeAmount
+    +string guaranteeCurrency
+    +string guaranteeReference [1..*]
+    +string guaranteeReferenceNumber
+    +string guaranteeType
+    +date guaranteeValidFrom
+    +date guaranteeValidTo
   }
   class ICS2Reference
   class ImportDeclaration
   class ImportPermit
   class ImportPermitDocument {
-    +2 attributes
+    +integer numberOfPages
+    +string permitNumber [1..*]
   }
   class Importer {
-    +1 attributes
+    +string importerEORI [1..*]
   }
   class InspectionReference {
-    +4 attributes
+    +string examinationResult
+    +string examinationType
+    +dateTime inspectionDate
+    +string riskChannel
   }
   class License {
-    +3 attributes
+    +string licenseNumber [1..*]
+    +date licenseValidFrom
+    +date licenseValidTo
   }
   class Packaging {
-    +4 attributes
+    +string marksAndNumbers
+    +integer numberOfPackages
+    +string packageTypeCode
+    +string shippingMarks
   }
   class PreferenceClaim {
-    +1 attributes
+    +string preferenceCode
   }
   class PreferentialOriginDoc {
-    +2 attributes
+    +integer numberOfPages
+    +string originCriterion [1..*]
   }
   class SADForm {
-    +1 attributes
+    +string sadBoxNumber [1..*]
   }
   class SPSCertificate
   class SingleWindow {
-    +1 attributes
+    +string singleWindowIdentifier [1..*]
   }
   class T1Document
   class T2Document
   class TIRCarnet {
-    +4 attributes
+    +integer numberOfPages
+    +string tirCarnetNumber [1..*]
+    +date tirValidFrom
+    +date tirValidTo
   }
   class TariffClassification {
-    +1 attributes
+    +string hsCode [1..*]
   }
   class TradeAgreementReference {
-    +1 attributes
+    +string agreementName
   }
   class TransitDeclaration {
-    +1 attributes
+    +string movementReferenceNumber
   }
   class TransitDocument
   class TrustedTrader
   class eFTIRecord {
-    +2 attributes
+    +string eFTIDataSubsetIdentifier
+    +string eFTIPlatformIdentifier [1..*]
   }
   Certificate <|-- CertificateOfOrigin
   CustomsDeclaration <|-- EntryExitSummary

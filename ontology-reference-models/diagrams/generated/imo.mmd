@@ -1,207 +1,292 @@
 classDiagram
   direction LR
   class Anchorage {
-    +1 attributes
+    +string anchorageName
   }
   class ArrivalNotice
   class BallastWaterManagementPlan {
-    +3 attributes
+    +string bwmsTreatmentType
+    +date planApprovalDate [1..*]
+    +date planRevisionDate
   }
   class Berth {
-    +3 attributes
+    +decimal berthLength
+    +string berthName [1..*]
+    +decimal depthAlongside
   }
   class BerthStay {
-    +2 attributes
+    +dateTime berthArrivalTime
+    +dateTime berthDepartureTime
   }
   class BunkeringOperation {
-    +1 attributes
+    +decimal bunkerQuantity
   }
   class CallSign
   class CertificateOfCompetency {
-    +5 attributes
+    +date cocExpiryDate
+    +string cocGrade
+    +date cocIssueDate
+    +string cocIssuingCountry
+    +string cocNumber [1]
   }
   class CertificateOfProficiency {
-    +1 attributes
+    +string copFunction
   }
   class ClassSociety
   class ClassificationSociety
   class CompanySecurityOfficer
   class CrewChange {
-    +1 attributes
+    +integer crewMemberCount
   }
   class CrewList {
-    +2 attributes
+    +date listDate
+    +integer totalCrewCount
   }
   class CrewMember {
-    +3 attributes
+    +date embarkationDate
+    +string portOfEmbarkation
+    +string rank
   }
   class DGDeclaration {
-    +1 attributes
+    +date declarationDate
   }
   class DangerousGoodsItem {
-    +2 attributes
+    +string properShippingName
+    +string subsidiaryRisk
   }
   class DeadweightTonnage {
-    +1 attributes
+    +decimal deadweightTonnageValue
   }
   class DeclarationOfSecurity {
-    +4 attributes
+    +string dosActivityDescription
+    +dateTime dosEndDate
+    +dateTime dosStartDate
+    +integer securityLevel
   }
   class DepartureNotice
   class DocumentOfCompliance
   class EmergencyContact {
-    +2 attributes
+    +string contactName
+    +string contactPhone
   }
   class EmergencySchedule {
-    +2 attributes
+    +string emsFireSchedule
+    +string emsSpillageSchedule
   }
   class EmissionControlArea {
-    +2 attributes
+    +string ecaDesignation [1..*]
+    +string ecaName
   }
   class FALForm {
-    +2 attributes
+    +integer falFormNumber
+    +string falFormType
   }
   class FlagAuthority {
-    +1 attributes
+    +string authorityCountryCode [1..*]
   }
   class FlagState
   class FlashPoint {
-    +1 attributes
+    +decimal flashPointValue
   }
   class Fleet
   class GarbageManagementPlan {
-    +2 attributes
+    +date planApprovalDate
+    +date planRevisionDate
   }
   class GrossTonnage {
-    +1 attributes
+    +decimal grossTonnageValue
   }
   class HazardClass {
-    +1 attributes
+    +string hazardClassCode
   }
   class IMONumber
   class InternationalEnergyEfficiencyCertificate {
-    +6 attributes
+    +decimal attainedEEDI
+    +decimal attainedEEXI
+    +string ciiRating
+    +decimal ciiValue
+    +decimal requiredEEDI
+    +decimal requiredEEXI
   }
   class InternationalShipSecurityCertificate
   class MARPOLSpecialArea {
-    +2 attributes
+    +string specialAreaAnnex
+    +string specialAreaName
   }
   class MMSI
   class MaritimeAgent
   class MaritimeLabourCertificate {
-    +2 attributes
+    +string dmlcPartI
+    +string dmlcPartII
   }
   class MaritimeLocation {
-    +3 attributes
+    +decimal latitude
+    +decimal longitude
+    +decimal maxDraftAllowed
   }
   class MaritimeParty {
-    +6 attributes
+    +string contactEmail
+    +string contactPhone
+    +string imoCompanyNumber
+    +string partyIdentifier
+    +string partyName
+    +string portOfOperation
   }
   class MasterOfVessel {
-    +1 attributes
+    +string certificateOfCompetency [1..*]
   }
   class NetTonnage {
-    +1 attributes
+    +decimal netTonnageValue
   }
   class NoxiousLiquidSubstance {
-    +2 attributes
+    +string nlsCategory [1]
+    +string nlsName
   }
   class PackingGroup {
-    +1 attributes
+    +string packingGroupCode
   }
   class Passenger {
-    +4 attributes
+    +string passengerDisembarkedAt
+    +string passengerEmbarkedAt
+    +string passengerName
+    +string passengerNationality
   }
   class PassengerList {
-    +2 attributes
+    +date listDate
+    +integer totalPassengerCount
   }
   class PilotBoardingPlace
   class PilotService
   class PilotageRequest {
-    +1 attributes
+    +dateTime requestedTime [1..*]
   }
   class Port {
-    +2 attributes
+    +string portName
+    +string unlocode [1]
   }
   class PortApproach {
-    +2 attributes
+    +decimal channelDepth
+    +decimal channelWidth
   }
   class PortAuthority
   class PortCall {
-    +4 attributes
+    +dateTime actualTimeOfArrival
+    +dateTime actualTimeOfDeparture
+    +dateTime estimatedTimeOfArrival
+    +dateTime estimatedTimeOfDeparture
   }
   class PortCallStatus
   class PortFacilitySecurityOfficer
   class PortFacilitySecurityPlan {
-    +5 attributes
+    +date approvalDate [1..*]
+    +string ispsComplianceStatus
+    +date reviewDueDate
+    +string rsoName
+    +integer securityLevel
   }
   class PortHealthDeclaration {
-    +2 attributes
+    +date healthDeclarationDate
+    +boolean healthIssuesReported
   }
   class PortReceptionFacility {
-    +1 attributes
+    +string wasteTypesAccepted
   }
   class PortStateControlOfficer
   class PreArrivalNotification {
-    +2 attributes
+    +string preArrivalStatus
+    +dateTime preArrivalSubmittedDate
   }
   class RouteWaypoint {
-    +4 attributes
+    +decimal plannedSpeed
+    +decimal waypointLatitude
+    +decimal waypointLongitude
+    +integer waypointSequence
   }
   class SafetyManagementCertificate
   class SeaLeg
   class Seafarer {
-    +4 attributes
+    +date dateOfBirth
+    +string nationality
+    +string seafarerId [1..*]
+    +string seafarerName
   }
   class SegregationRule
   class ShipEnergyEfficiencyManagementPlan {
-    +5 attributes
+    +date planApprovalDate [1..*]
+    +date planRevisionDate
+    +string seemPartIIIStatus
+    +string seemPartIIStatus
+    +string seemPartIStatus
   }
   class ShipManager
   class ShipOperator
   class ShipOwner
   class ShipSecurityOfficer
   class ShipSecurityPlan {
-    +5 attributes
+    +date approvalDate [1..*]
+    +string ispsComplianceStatus
+    +date reviewDueDate
+    +string rsoName
+    +integer securityLevel
   }
   class ShipboardOilPollutionEmergencyPlan {
-    +2 attributes
+    +date planApprovalDate
+    +date planRevisionDate
   }
   class StatutoryCertificate {
-    +6 attributes
+    +string certificateNumber [1]
+    +string certificateType [1]
+    +date expiryDate
+    +date issueDate
+    +string issuingAuthority
+    +date lastEndorsementDate
   }
   class StatutorySurvey {
-    +4 attributes
+    +string surveyConvention
+    +date surveyDate [1]
+    +string surveyOutcome
+    +string surveyType
   }
   class StowageCategory
   class TowageProvider
   class TowageRequest {
-    +1 attributes
+    +dateTime requestedTime
   }
   class TrafficSeparationScheme
   class UNNumber {
-    +1 attributes
+    +string unNumberValue
   }
   class VTSZone {
-    +2 attributes
+    +string vtsAuthority [1..*]
+    +string vtsChannel
   }
   class Vessel {
-    +9 attributes
+    +decimal beamValue
+    +string callSignValue
+    +decimal draftValue
+    +string imoNumber [1]
+    +decimal lengthOverallValue
+    +string mmsiNumber
+    +string portOfRegistry
+    +string vesselName
+    +gYear yearBuilt
   }
   class VesselCapacity
   class VesselOperationalStatus
   class VesselType
   class Voyage {
-    +1 attributes
+    +string voyageNumber [1..*]
   }
   class VoyagePlan {
-    +1 attributes
+    +dateTime voyagePlanApprovalDate
   }
   class WasteDisposal {
-    +2 attributes
+    +decimal wasteQuantity
+    +string wasteType
   }
   class WastePreNotification {
-    +2 attributes
+    +decimal estimatedWasteVolume
+    +dateTime wasteNotificationDate
   }
   class imo__PortFacility
   <<imo>> imo__PortFacility
@@ -241,16 +326,16 @@ classDiagram
   ClassificationSociety --> FlagAuthority : recognizedBy
   CrewList --> PortCall : forPortCall
   CrewList --> Vessel : forVessel
-  CrewList --> CrewMember : hasCrewMember
-  CrewMember --> Seafarer : hasSeafarer
-  DGDeclaration --> DangerousGoodsItem : declaresItem
+  CrewList --> "1..*" CrewMember : hasCrewMember
+  CrewMember --> "1" Seafarer : hasSeafarer
+  DGDeclaration --> "1..*" DangerousGoodsItem : declaresItem
   DGDeclaration --> EmergencyContact : hasEmergencyContact
   DangerousGoodsItem --> EmergencySchedule : hasEmergencySchedule
   DangerousGoodsItem --> FlashPoint : hasFlashPoint
-  DangerousGoodsItem --> HazardClass : hasHazardClass
+  DangerousGoodsItem --> "1..*" HazardClass : hasHazardClass
   DangerousGoodsItem --> PackingGroup : hasPackingGroup
   DangerousGoodsItem --> StowageCategory : hasStowageCategory
-  DangerousGoodsItem --> UNNumber : hasUNNumber
+  DangerousGoodsItem --> "1..*" UNNumber : hasUNNumber
   DeclarationOfSecurity --> imo__PortFacility : dosFacility
   DeclarationOfSecurity --> Vessel : dosShip
   DocumentOfCompliance --> MaritimeParty : issuedToCompany
@@ -277,7 +362,7 @@ classDiagram
   PortCall --> DepartureNotice : hasDepartureNotice
   PortCall --> FALForm : hasFALForm
   PortCall --> PilotageRequest : hasPilotageRequest
-  PortCall --> PortCallStatus : hasPortCallStatus
+  PortCall --> "1..*" PortCallStatus : hasPortCallStatus
   PortCall --> PortHealthDeclaration : hasPortHealthDeclaration
   PortCall --> PreArrivalNotification : hasPreArrivalNotification
   PortCall --> TowageRequest : hasTowageRequest
@@ -301,12 +386,12 @@ classDiagram
   Vessel --> CallSign : hasCallSign
   Vessel --> VesselCapacity : hasCapacity
   Vessel --> ClassSociety : hasClassSociety
-  Vessel --> FlagState : hasFlagState
+  Vessel --> "1" FlagState : hasFlagState
   Vessel --> IMONumber : hasIMONumber
   Vessel --> MMSI : hasMMSI
   Vessel --> VesselOperationalStatus : hasOperationalStatus
-  Vessel --> VesselType : hasVesselType
+  Vessel --> "1..*" VesselType : hasVesselType
   Voyage --> PortCall : hasPortCall
   Voyage --> SeaLeg : hasSeaLeg
   Voyage --> VoyagePlan : hasVoyagePlan
-  VoyagePlan --> RouteWaypoint : hasWaypoint
+  VoyagePlan --> "2..*" RouteWaypoint : hasWaypoint

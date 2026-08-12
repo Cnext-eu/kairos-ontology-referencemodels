@@ -4,76 +4,94 @@
 
 # Sustainability — class diagram
 
-Classes: 32 · inheritance: 14 · associations: 23
+Classes: 32 · attributes: 36 · inheritance: 14 · associations: 23
 
 ```mermaid
 classDiagram
   direction LR
   class Ammonia
   class BunkerDeliveryNote {
-    +3 attributes
+    +date bdnDate
+    +string bdnNumber [1..*]
+    +string bdnSupplier
   }
   class CIIRating {
-    +2 attributes
+    +string ciiGrade [1..*]
+    +decimal ciiValue
   }
   class CO2Intensity {
-    +1 attributes
+    +decimal intensityValue [1..*]
   }
   class CarbonEmission {
-    +2 attributes
+    +string emissionUnit
+    +decimal emissionValue [1..*]
   }
   class CarbonFootprint {
-    +1 attributes
+    +decimal totalCO2e [1..*]
   }
   class CarbonOffset {
-    +2 attributes
+    +decimal offsetQuantity [1..*]
+    +string offsetStandard
   }
   class EEXICompliance {
-    +2 attributes
+    +decimal eexiRequired
+    +decimal eexiValue [1..*]
   }
   class EUETSAllowance {
-    +2 attributes
+    +decimal allowanceQuantity [1..*]
+    +gYear allowanceYear
   }
   class Electric
   class EmissionFactor {
-    +3 attributes
+    +string factorSource
+    +string factorUnit
+    +decimal factorValue [1..*]
   }
   class EmissionReport {
-    +2 attributes
+    +string reportingPeriod [1..*]
+    +string verificationStatus
   }
   class EnergyConsumption {
-    +2 attributes
+    +string consumptionUnit
+    +decimal consumptionValue [1..*]
   }
   class EnergyEfficiency {
-    +2 attributes
+    +string efficiencyUnit
+    +decimal efficiencyValue [1..*]
   }
   class EnergyPerformanceIndicator {
-    +3 attributes
+    +string kpiDescription
+    +string kpiUnit
+    +decimal kpiValue [1..*]
   }
   class EnergySource
   class FuelOilConsumption {
-    +1 attributes
+    +decimal fuelQuantity [1..*]
   }
   class FuelType {
-    +4 attributes
+    +decimal fuelCarbonFactor
+    +decimal fuelLowerCalorificValue
+    +string fuelName
+    +decimal fuelSulphurContent
   }
   class HFO
   class Hydrogen
   class LNG
   class Methanol
   class ModalShiftMetric {
-    +1 attributes
+    +decimal modalShiftReduction
   }
   class RenewableEnergy
   class Scope1Emission
   class Scope2Emission
   class Scope3Emission
   class Shorepower {
-    +2 attributes
+    +decimal connectionFrequency
+    +decimal connectionVoltage [1..*]
   }
   class TankToWake
   class TonneKilometre {
-    +1 attributes
+    +decimal tonneKilometreValue
   }
   class VLSFO
   class WellToWake

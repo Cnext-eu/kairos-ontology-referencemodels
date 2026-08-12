@@ -24,9 +24,13 @@ conversations.
   - **`generated/`** (machine-generated) — one Mermaid class diagram per derived suite (DCSA, MMT,
     BSP, TIC, IMO, WCO, RAIL, SupplyChain, Sustainability), rendered straight from the Turtle.
 - **`scripts/generate_ontology_diagrams.py`** — parses each suite's `current/**/*.ttl` with
-  `rdflib` and renders the per-suite class diagrams behind a `DO NOT EDIT` banner. Classes,
-  `rdfs:subClassOf` inheritance, and object-property `domain → range` associations are shown;
-  datatype properties are summarised as an attribute count to keep the diagrams meeting-legible.
+  `rdflib` and renders the per-suite class diagrams behind a `DO NOT EDIT` banner. Every class
+  shows its **datatype attributes with their types** (`+string carrierBookingReference`),
+  `rdfs:subClassOf` inheritance, and object-property `domain → range` associations. Cardinality
+  restrictions (`owl:Restriction`) render as UML **multiplicities** — on the attribute
+  (`… [1..*]`) or the association target end (`CrewList --> "1..*" CrewMember`) — bringing the
+  generated diagrams up to the class-diagram detail (typed attributes, multiplicities, stereotyped
+  external classes) that business and onboarding audiences expect.
   `--suite` and `--module` drill in on demand; `--check` diffs against disk without writing — the
   same contract as `generate_pack_docs.py --check`, and now a step in `validate.yml`. `--input DIR`
   renders **any** external ontology directory (a customer's own hub) with the same layout, so a

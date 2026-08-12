@@ -4,200 +4,302 @@
 
 # TIC — class diagram
 
-Classes: 76 · inheritance: 40 · associations: 74
+Classes: 76 · attributes: 159 · inheritance: 40 · associations: 74
 
 ```mermaid
 classDiagram
   direction LR
   class AutomatedGuidedVehicle {
-    +1 attributes
+    +string navigationMode
   }
   class BargeConnection
   class BargeQuay
   class Battery {
-    +5 attributes
+    +string batteryId [1]
+    +decimal batteryTemperature
+    +decimal capacityKWh
+    +decimal stateOfCharge
+    +decimal stateOfHealth
   }
   class BodyRepair
   class CargoVisit {
-    +8 attributes
+    +dateTime cargoArrivalTime [1]
+    +dateTime cargoDepartureTime
+    +decimal cargoGrossWeightKg
+    +string conditionCode
+    +string containerNumber
+    +string holdStatus
+    +string isoTypeCode
+    +string weightClass
   }
   class CarrierTrip {
-    +5 attributes
+    +string departurePort
+    +dateTime estimatedArrival
+    +dateTime estimatedDeparture
+    +string nextPort
+    +string tripId
   }
   class CarrierVisit {
-    +11 attributes
+    +string carrierType
+    +string mmsiNumber
+    +integer moveCount
+    +string vesselCallSign
+    +string vesselIMONumber
+    +decimal vesselLOA
+    +decimal vesselMaxDraft
+    +string vesselName
+    +dateTime visitArrivalTime [1]
+    +dateTime visitDepartureTime
+    +string voyageNumber
   }
   class ChargingSessionEvent {
-    +5 attributes
+    +dateTime chargingEndTime
+    +dateTime chargingStartTime
+    +string chargingStationRef
+    +decimal energyDeliveredKWh
+    +string vehicleRef
   }
   class ChargingStation {
-    +4 attributes
+    +decimal chargerPowerKW
+    +string chargerType
+    +string stationId [1]
+    +string stationStatus
   }
   class Cycle {
-    +1 attributes
+    +integer moveCount
   }
   class DamageDetectedEvent
   class DamageReport {
-    +3 attributes
+    +string damageDescription
+    +string damageSeverity
+    +string damageZoneCode [1..*]
   }
   class DischargeMove
   class ElectricTerminalTractor
   class EmptyContainerHandler {
-    +1 attributes
+    +integer stackingHeight
   }
   class EquipmentHealth {
-    +4 attributes
+    +string alarmCode
+    +string equipmentCondition
+    +string faultCode
+    +decimal hoursToNextService
   }
   class Gate {
-    +1 attributes
+    +integer gateCapacityTrucksPerHour
   }
   class GateInEvent {
-    +2 attributes
+    +string sealNumber
+    +string truckLicensePlate
   }
   class GateLane {
-    +2 attributes
+    +string laneDirection
+    +string laneNumber [1]
   }
   class GateOutEvent {
-    +1 attributes
+    +string truckLicensePlate
   }
   class HorizontalMove
   class InspectionEvent {
-    +1 attributes
+    +string inspectionOutcome [1]
   }
   class JobInstruction {
-    +2 attributes
+    +integer instructionPriority
+    +string unitReference
   }
   class KPI {
-    +6 attributes
+    +string kpiCode [1]
+    +string kpiDescription
+    +string kpiFormula
+    +string kpiName
+    +string kpiScope
+    +string kpiUnit
   }
   class LiftMove
   class LoadMove
   class Move {
-    +3 attributes
+    +integer moveDurationSeconds
+    +dateTime moveTimestamp [1]
+    +integer sequenceNumber
   }
   class Order {
-    +1 attributes
+    +string orderType
   }
   class PDI {
-    +2 attributes
+    +date inspectionDate
+    +string inspectionResult [1]
   }
   class PowerSource {
-    +3 attributes
+    +decimal energyConsumptionKWh
+    +decimal fuelLevel
+    +string powerType
   }
   class Quay {
-    +4 attributes
+    +integer numberOfBerths
+    +decimal quayDepthMetres
+    +string quayId [1]
+    +decimal quayLengthMetres
   }
   class QuayCrane {
-    +1 attributes
+    +decimal outreachMetres
   }
   class QuaySide
   class RailHead
   class RailSiding {
-    +2 attributes
+    +decimal trackLengthMetres
+    +string trackNumber
   }
   class RailVisit {
-    +3 attributes
+    +string trackId
+    +string trainId
+    +integer wagonCount
   }
   class RailWagon {
-    +4 attributes
+    +string wagonNumber [1]
+    +integer wagonPositionInTrain
+    +integer wagonSlotCount
+    +string wagonType
   }
   class ReachStacker
   class ReeferAlarmEvent {
-    +2 attributes
+    +string reeferAlarmCode
+    +string reeferAlarmSeverity
   }
   class ReeferMonitoring {
-    +10 attributes
+    +decimal actualTemperature
+    +string alarmStatus
+    +decimal co2Level
+    +string containerReference
+    +dateTime monitoringTimestamp [1]
+    +decimal oxygenLevel
+    +string powerState
+    +decimal returnTemperature
+    +decimal setTemperature
+    +decimal supplyTemperature
   }
   class ReeferPlug {
-    +2 attributes
+    +string plugNumber [1]
+    +decimal powerCapacityKW
   }
   class ReeferPlugInEvent {
-    +2 attributes
+    +dateTime plugEventTimestamp
+    +string reeferPlugNumber
   }
   class ReeferPlugOutEvent {
-    +2 attributes
+    +dateTime plugEventTimestamp
+    +string reeferPlugNumber
   }
   class ReeferRack {
-    +3 attributes
+    +decimal powerSupplyCapacityKW
+    +integer rackCapacity
+    +string rackId [1]
   }
   class ReeferSlot {
-    +3 attributes
+    +decimal plugCapacityKW
+    +string slotNumber [1]
+    +string slotPowerStatus
   }
   class Seal {
-    +3 attributes
+    +string sealNumber [1]
+    +string sealStatus
+    +string sealType
   }
   class ServiceCompleteEvent
   class Spreader {
-    +4 attributes
+    +string lockStatus
+    +string spreaderId [1]
+    +integer spreaderSize
+    +string spreaderType
   }
   class StackEvent
   class Stevedore
   class StorageZone
   class StowagePlan {
-    +3 attributes
+    +dateTime planDate
+    +string planVersion
+    +integer totalUnitsPlanned
   }
   class StraddleCarrier {
-    +1 attributes
+    +integer stackingHeight
   }
   class TerminalEquipment {
-    +2 attributes
+    +decimal equipmentSpeed
+    +decimal liftCapacityTonnes
   }
   class TerminalEvent {
-    +4 attributes
+    +string eventDescription
+    +dateTime eventTimestamp [1]
+    +string eventType [1]
+    +string unitReference
   }
   class TerminalLocation {
-    +2 attributes
+    +decimal latitude
+    +decimal longitude
   }
   class TerminalOperator {
-    +1 attributes
+    +string operatorCode [1]
   }
   class TerminalParty {
-    +2 attributes
+    +string partyIdentifier
+    +string partyName
   }
   class TerminalTractor
   class VIN {
-    +1 attributes
+    +string vinCode [1]
   }
   class VehicleReleaseStatus {
-    +1 attributes
+    +string releaseStatusCode [1]
   }
   class VehicleService {
-    +2 attributes
+    +date serviceDate
+    +string serviceStatus
   }
   class VehicleStorage {
-    +1 attributes
+    +string storagePosition [1]
   }
   class VehicleUnit {
-    +4 attributes
+    +string colour
+    +string make
+    +string model
+    +gYear modelYear
   }
   class VesselDischargeEvent {
-    +2 attributes
+    +string stowagePosition
+    +string vesselCallReference
   }
   class VesselLoadEvent {
-    +2 attributes
+    +string stowagePosition
+    +string vesselCallReference
   }
   class Wash
   class YardArea {
-    +1 attributes
+    +integer stackingCapacity
   }
   class YardCrane {
-    +1 attributes
+    +integer stackingCapacity
   }
   class YardMoveEvent {
-    +1 attributes
+    +string moveReason
   }
   class YardPosition {
-    +4 attributes
+    +string bay [1]
+    +string block [1]
+    +string row [1]
+    +string tier [1]
   }
   class locations_Berth
   class locations_Terminal {
-    +2 attributes
+    +string facilityCode [1]
+    +string unlocode
   }
   class terminal_infrastructure_Berth {
-    +3 attributes
+    +decimal berthDepthMetres
+    +decimal berthLengthMetres
+    +string berthNumber
   }
   class terminal_infrastructure_Terminal {
-    +2 attributes
+    +string terminalCode [1..*]
+    +string terminalName
   }
   TerminalEquipment <|-- AutomatedGuidedVehicle
   TerminalLocation <|-- BargeQuay
@@ -242,7 +344,7 @@ classDiagram
   BargeConnection --> TerminalEquipment : assignedEquipment
   BargeConnection --> terminal_infrastructure_Terminal : belongsToTerminal
   BargeQuay --> locations_Terminal : withinTerminal
-  BodyRepair --> DamageReport : relatedDamageReport
+  BodyRepair --> "1..*" DamageReport : relatedDamageReport
   CargoVisit --> Cycle : hasCycle
   CargoVisit --> Move : hasMove
   CargoVisit --> Seal : hasSeal
@@ -254,13 +356,13 @@ classDiagram
   ChargingSessionEvent --> ChargingStation : atChargingStation
   ChargingSessionEvent --> TerminalEquipment : chargedEquipment
   ChargingStation --> TerminalEquipment : servesEquipment
-  Cycle --> Move : hasMove
+  Cycle --> "1..*" Move : hasMove
   Gate --> TerminalEquipment : assignedEquipment
   Gate --> terminal_infrastructure_Terminal : belongsToTerminal
-  Gate --> GateLane : hasGateLane
+  Gate --> "1..*" GateLane : hasGateLane
   GateLane --> locations_Terminal : withinTerminal
-  JobInstruction --> TerminalLocation : instructionDestination
-  JobInstruction --> TerminalLocation : instructionOrigin
+  JobInstruction --> "1" TerminalLocation : instructionDestination
+  JobInstruction --> "1" TerminalLocation : instructionOrigin
   Move --> JobInstruction : executesInstruction
   Move --> Move : followsMove
   Move --> TerminalEquipment : performedBy
@@ -296,16 +398,16 @@ classDiagram
   VehicleUnit --> VehicleReleaseStatus : hasReleaseStatus
   VehicleUnit --> VehicleService : hasService
   VehicleUnit --> VehicleStorage : hasStorageAssignment
-  VehicleUnit --> VIN : hasVIN
+  VehicleUnit --> "1" VIN : hasVIN
   YardArea --> TerminalEquipment : assignedEquipment
   YardArea --> terminal_infrastructure_Terminal : belongsToTerminal
   YardArea --> StorageZone : hasStorageZone
   YardPosition --> ReeferPlug : hasReeferPlug
   YardPosition --> locations_Terminal : withinTerminal
-  locations_Berth --> locations_Terminal : withinTerminal
+  locations_Berth --> "1" locations_Terminal : withinTerminal
   locations_Terminal --> TerminalLocation : hasLocation
   terminal_infrastructure_Berth --> TerminalEquipment : assignedEquipment
-  terminal_infrastructure_Berth --> terminal_infrastructure_Terminal : belongsToTerminal
+  terminal_infrastructure_Berth --> "1" terminal_infrastructure_Terminal : belongsToTerminal
   terminal_infrastructure_Terminal --> BargeConnection : hasBargeConnection
   terminal_infrastructure_Terminal --> terminal_infrastructure_Berth : hasBerth
   terminal_infrastructure_Terminal --> Gate : hasGate

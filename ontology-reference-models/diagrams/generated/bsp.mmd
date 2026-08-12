@@ -1,114 +1,163 @@
 classDiagram
   direction LR
   class Address {
-    +4 attributes
+    +string city
+    +string postalCode
+    +string stateProvince
+    +string streetAddress
   }
   class AgingBucket {
-    +1 attributes
+    +string agingCategory
   }
   class AirWaybill {
-    +5 attributes
+    +string airWaybillNumber
+    +decimal chargeableWeight
+    +string destinationAirport
+    +string executingCarrier
+    +string originAirport
   }
   class Airport {
-    +1 attributes
+    +string iataAirportCode
   }
   class AllocationBasis {
-    +1 attributes
+    +string allocationBasisType
   }
   class AncillaryRevenue
   class Bank
   class BankAccount {
-    +4 attributes
+    +string accountHolderName
+    +string accountNumber
+    +string bic
+    +string iban
   }
   class BankGuarantee {
-    +2 attributes
+    +decimal guaranteeAmount
+    +string guaranteeType
   }
   class BillOfLading {
-    +6 attributes
+    +string billOfLadingNumber
+    +string freightPayableAt
+    +boolean negotiable
+    +integer numberOfOriginals
+    +date onBoardDate
+    +string placeOfIssue
   }
   class BudgetItem {
-    +2 attributes
+    +decimal budgetAmount [1..*]
+    +string period
   }
   class BunkerAdjustmentFactor
   class BusinessEvent {
-    +3 attributes
+    +dateTime eventDateTime [1..*]
+    +string eventStatus
+    +string eventType
   }
   class Buyer
   class CapacityUtilization
   class Carrier
   class CertificateOfOrigin {
-    +3 attributes
+    +string issuingAuthority
+    +string originCriterion
+    +boolean preferentialIndicator
   }
   class Charge {
-    +3 attributes
+    +decimal chargeAmount [1..*]
+    +string chargeBasis
+    +string chargeType
   }
   class CommercialInvoice {
-    +1 attributes
+    +decimal customsValue
   }
   class CommercialTransaction {
-    +1 attributes
+    +string incoterm
   }
   class Consignee
   class Consignment
   class Contact {
-    +5 attributes
+    +string contactEmail
+    +string contactName
+    +string contactPhone
+    +string contactRole
+    +string jobTitle
   }
   class ContractRate
   class ContributionMargin {
-    +2 attributes
+    +decimal marginAmount
+    +decimal marginPercentage
   }
   class CostAllocation {
-    +1 attributes
+    +decimal allocatedAmount [1..*]
   }
   class CostCenter {
-    +2 attributes
+    +string costCenterCode [1..*]
+    +string costCenterName
   }
   class CostPerUnit {
-    +2 attributes
+    +string costUnit
+    +decimal unitCost
   }
   class CostToServe {
-    +1 attributes
+    +decimal totalCostToServe
   }
   class CostVariance {
-    +3 attributes
+    +decimal actualAmount
+    +decimal varianceAmount
+    +decimal variancePercentage
   }
   class Country {
-    +1 attributes
+    +string countryCode
   }
   class CreditNote
   class CurrencyAdjustmentFactor
   class CustomsBroker
   class CustomsDeclaration {
-    +4 attributes
+    +string customsOffice
+    +string declarationType
+    +string procedureCode
+    +date releaseDate
   }
   class CustomsEvent
   class DebitNote
   class DeliveryNote
   class Dimension
   class Document {
-    +7 attributes
+    +date documentDate
+    +string documentNumber
+    +string documentStatus
+    +string documentType
+    +dateTime issuingDate
+    +string issuingParty
+    +string signatoryName
   }
   class DocumentEvent
   class DocumentaryCollection {
-    +1 attributes
+    +string collectionType
   }
   class DocumentationFee
   class DutyTax {
-    +4 attributes
+    +decimal dutyAmount
+    +string dutyCurrency
+    +decimal dutyRate
+    +string dutyType
   }
   class EmergencyBunkerSurcharge
   class ExportLicense
   class Facility
   class FinancingArrangement {
-    +4 attributes
+    +decimal discountRate
+    +decimal financingAmount
+    +string financingStatus
+    +string financingType
   }
   class FreeTimePeriod {
-    +2 attributes
+    +integer freeDays
+    +string freeTimeType
   }
   class FreightCharge
   class FreightForwarder
   class FreightRate {
-    +2 attributes
+    +decimal rateAmount [1..*]
+    +string rateBasis
   }
   class FreightRevenue
   class HandlingCharge
@@ -118,19 +167,34 @@ classDiagram
   class InsuranceCertificate
   class InsuranceProvider
   class Invoice {
-    +9 attributes
+    +string currency
+    +decimal discountAmount
+    +date dueDate
+    +decimal exchangeRate
+    +date invoiceDate
+    +string invoiceNumber [1..*]
+    +decimal subtotalAmount
+    +decimal taxAmount
+    +decimal totalAmount
   }
   class InvoiceLine {
-    +2 attributes
+    +integer lineNumber [1..*]
+    +decimal taxRate
   }
   class LetterOfCredit {
-    +5 attributes
+    +decimal creditAmount
+    +date expiryDate
+    +date lcIssueDate
+    +string lcStatus
+    +string lcType
   }
   class LoadFactor {
-    +3 attributes
+    +decimal capacityAvailable
+    +decimal capacityUsed
+    +decimal loadFactorPercentage
   }
   class Location {
-    +1 attributes
+    +string unLocationCode
   }
   class Manufacturer
   class ManufacturingPlant
@@ -138,67 +202,101 @@ classDiagram
   class MonetaryAmount
   class NotifyParty
   class OrderChange {
-    +2 attributes
+    +string changeReason
+    +string orderChangeNumber
   }
   class OrderEvent
   class OrderLine {
-    +5 attributes
+    +decimal lineAmount
+    +integer lineNumber [1..*]
+    +decimal quantity
+    +string unitOfMeasure
+    +decimal unitPrice
   }
   class OrderResponse {
-    +2 attributes
+    +date responseDate
+    +string responseStatus
   }
   class OverheadAllocation
   class Package
   class PackingList
   class Payment {
-    +4 attributes
+    +decimal paymentAmount [1..*]
+    +date paymentDate
+    +string paymentMethod
+    +string paymentReference
   }
   class PaymentAllocation {
-    +1 attributes
+    +decimal allocatedAmount
   }
   class PaymentEvent
   class PaymentTerms {
-    +2 attributes
+    +integer netDays
+    +string paymentTermsDescription
   }
   class PeakSeasonSurcharge
   class PhytosanitaryCertificate
   class Port
   class Product {
-    +2 attributes
+    +string productCode
+    +string productDescription
   }
   class ProfitabilityScope {
-    +2 attributes
+    +string scopeIdentifier
+    +string scopeType
   }
   class ProformaInvoice
   class PurchaseOrder {
-    +3 attributes
+    +date orderDate
+    +string purchaseOrderNumber [1..*]
+    +date requestedDeliveryDate
   }
   class Quotation
   class RateCard {
-    +4 attributes
+    +decimal rateAmount
+    +string rateBasis
+    +date validFrom
+    +date validTo
   }
   class ReceiptAdvice
   class Reconciliation
   class RegulatoryRequirement {
-    +3 attributes
+    +string governmentAction
+    +string procedureType
+    +string regulatoryAuthority
   }
   class RemittanceAdvice {
-    +3 attributes
+    +decimal remittanceAmount
+    +date remittanceDate
+    +string remittanceReference
   }
   class RequestForQuotation {
-    +3 attributes
+    +date rfqDate
+    +string rfqNumber
+    +date rfqResponseDeadline
   }
   class RevenueItem {
-    +3 attributes
+    +string currency
+    +decimal revenueAmount [1..*]
+    +string revenueCategory
   }
   class RevenuePerUnit {
-    +2 attributes
+    +decimal yieldPerUnit
+    +string yieldUnit
   }
   class SalesContract
   class SalesOrder
   class Seller
   class Shipment {
-    +9 attributes
+    +date actualDeliveryDate
+    +date expectedDeliveryDate
+    +decimal grossWeight
+    +decimal netWeight
+    +integer numberOfPackages
+    +string packageType
+    +date shipmentDate
+    +string shipmentNumber [1..*]
+    +decimal volumeMeasure
   }
   class ShipmentEvent
   class ShipmentLine
@@ -209,24 +307,41 @@ classDiagram
   class Surcharge
   class SurchargeRevenue
   class TariffClassification {
-    +3 attributes
+    +string hsChapter
+    +string hsCode
+    +string hsDescription
   }
   class TariffSchedule {
-    +2 attributes
+    +date validFrom
+    +date validTo
   }
   class TerminalHandlingCharge
   class TerminalOperator
   class TradeAgreement {
-    +3 attributes
+    +date agreementEffectiveDate
+    +string agreementName
+    +decimal preferentialRate
   }
   class TradeItem {
-    +1 attributes
+    +string gtin
   }
   class TradeParty {
-    +11 attributes
+    +string contactEmail
+    +string contactPhone
+    +decimal creditLimit
+    +string creditLimitCurrency
+    +string dunsNumber
+    +string legalEntityIdentifier
+    +string partyIdentifier
+    +string partyName
+    +string registrationCountry
+    +string registrationNumber
+    +string taxIdentificationNumber
   }
   class TransportCostItem {
-    +3 attributes
+    +decimal costAmount [1..*]
+    +string costType
+    +string currency
   }
   class TransportDocument
   class TransportEquipment
@@ -237,7 +352,10 @@ classDiagram
   class WarehouseKeeper
   class Weight
   class YieldAnalysis {
-    +4 attributes
+    +decimal netYield
+    +string period
+    +decimal totalRevenue
+    +decimal totalVariableCost
   }
   class rdf__Thing
   <<rdf>> rdf__Thing

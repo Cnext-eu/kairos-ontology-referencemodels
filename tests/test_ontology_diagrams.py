@@ -110,6 +110,45 @@ def test_input_mode_without_ontology_iri_treats_all_classes_as_own(tmp_path) -> 
     assert "class Foo" in out and "class Bar" in out
 
 
+def test_generated_diagrams_show_typed_attributes() -> None:
+    """Datatype properties render as typed UML attributes, not a bare count."""
+    bases = gen.suite_bases()
+    content = gen.render_suite("DCSA", "booking", bases)
+    assert "+string carrierBookingReference" in content
+    # The old collapsed "+N attributes" summary must be gone.
+    assert "attributes\n" not in content.replace("· attributes:", "")
+    assert "+12 attributes" not in content
+
+
+def test_generated_diagrams_carry_multiplicities() -> None:
+    """owl:Restriction cardinalities surface as UML multiplicities on attributes and edges."""
+    bases = gen.suite_bases()
+    booking = gen.render_suite("DCSA", "booking", bases)
+    # min-cardinality 1 on a datatype property → attribute multiplicity [1..*].
+    assert "carrierBookingReference [1..*]" in booking
+    # Object-property cardinalities surface as target-end multiplicities somewhere in the suite.
+    imo = gen.render_suite("IMO", None, bases)
+    assert '--> "1..*"' in imo or '--> "1"' in imo
+
+
+def test_mult_from_restriction_maps_owl_cardinalities() -> None:
+    """The multiplicity mapping covers exact / min / max cardinality shapes."""
+    from rdflib import Graph, BNode, Literal, XSD
+
+    def mult(pred, n):
+        g = Graph()
+        r = BNode()
+        g.add((r, gen.RDF.type, gen.OWL.Restriction))
+        g.add((r, pred, Literal(n, datatype=XSD.nonNegativeInteger)))
+        return gen.mult_from_restriction(g, r)
+
+    assert mult(gen.OWL.cardinality, 1) == "1"
+    assert mult(gen.OWL.minCardinality, 0) == "*"
+    assert mult(gen.OWL.minCardinality, 1) == "1..*"
+    assert mult(gen.OWL.minCardinality, 2) == "2..*"
+    assert mult(gen.OWL.maxCardinality, 5) == "0..5"
+
+
 def _all_diagram_md() -> list[Path]:
     return sorted(gen.DIAGRAMS_DIR.rglob("*.md"))
 

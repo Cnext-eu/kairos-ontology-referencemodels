@@ -21,7 +21,13 @@ The big picture. Curated, narrative diagrams a generator cannot infer:
 ## [`generated/`](generated/) — machine-generated, do not edit
 
 One Mermaid class diagram per derived ontology suite, rendered straight from the Turtle by
-[`scripts/generate_ontology_diagrams.py`](../../scripts/generate_ontology_diagrams.py). These
+[`scripts/generate_ontology_diagrams.py`](../../scripts/generate_ontology_diagrams.py). Each class
+shows its **datatype attributes with their types** (`+string carrierBookingReference`), inheritance
+(`rdfs:subClassOf`), and object-property associations labelled with the property name. Where the
+ontology declares a cardinality (`owl:Restriction`), it renders as a UML **multiplicity** — on the
+attribute (`+string carrierBookingReference [1..*]`) or the association target end
+(`CrewList --> "1..*" CrewMember`). Classes owned by another suite appear as external stubs with a
+`<<suite>>` stereotype. These
 are **derived facts** — never hand-edited, per
 [`CONTRACT.md`](../CONTRACT.md)'s "generated or tested, never hand-maintained" rule. CI runs the
 generator's `--check` mode, so a suite that changes without its diagram being refreshed fails the
@@ -34,7 +40,7 @@ python scripts/generate_ontology_diagrams.py
 # Verify they are current (what CI runs)
 python scripts/generate_ontology_diagrams.py --check
 
-# Drill into a single module on demand (prints to stdout)
+# Drill into a single module for a focused, package-style view (prints to stdout)
 python scripts/generate_ontology_diagrams.py --suite DCSA --module booking
 ```
 

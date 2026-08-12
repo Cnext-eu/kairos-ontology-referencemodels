@@ -4,7 +4,7 @@
 
 # SupplyChain — class diagram
 
-Classes: 0 · inheritance: 0 · associations: 20
+Classes: 0 · attributes: 0 · inheritance: 0 · associations: 20
 
 ```mermaid
 classDiagram

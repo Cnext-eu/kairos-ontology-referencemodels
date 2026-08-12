@@ -4,18 +4,21 @@
 
 # RAIL — class diagram
 
-Classes: 38 · inheritance: 2 · associations: 26
+Classes: 38 · attributes: 16 · inheritance: 2 · associations: 26
 
 ```mermaid
 classDiagram
   direction LR
   class AllocationCompany
   class ConsignmentIdentification {
-    +2 attributes
+    +string consignmentNumber
+    +string previousConsignmentNumber
   }
   class ConsignmentLevelData
   class ConsignmentOrderMessage {
-    +3 attributes
+    +dateTime comPreparationDatetime
+    +string dossierNumber
+    +string versionNumber
   }
   class CoordinatingInfrastructureManager
   class ExceptionalConsignment
@@ -31,24 +34,27 @@ classDiagram
   class PathNotAvailableMessage
   class PathRequestMessage
   class PlannedTrainIdentifier {
-    +3 attributes
+    +string operatorCode
+    +string plannedTrainNumber
+    +date startDate
   }
   class PreArrangedPath
   class RailCustomer {
-    +1 attributes
+    +string customerCodeValue
   }
   class RailLocationIdentifier {
-    +1 attributes
+    +string locationCode
   }
   class RailwayUndertaking {
-    +1 attributes
+    +string companyCode
   }
   class ShipmentType
   class TelematicsDevice
   class TelematicsOnBoard
   class TrainCompositionMessage
   class TrainLocationStatus {
-    +2 attributes
+    +dateTime actualArrivalTime
+    +dateTime actualDepartureTime
   }
   class TrainRunningData
   class TrainRunningForecastMessage
@@ -57,13 +63,13 @@ classDiagram
   class TrainRunningTechData
   class TypeOfRequest
   class ValidityPeriod {
-    +1 attributes
+    +string bitmapDays
   }
   class WagonAtDeparture {
-    +1 attributes
+    +string wagonNumber
   }
   class WagonLocationStatus {
-    +1 attributes
+    +dateTime wagonActualTime
   }
   class WagonStatusMessage
   class WagonTelematics

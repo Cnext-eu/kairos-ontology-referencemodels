@@ -4,30 +4,31 @@
 
 # MMT — class diagram
 
-Classes: 110 · inheritance: 62 · associations: 46
+Classes: 110 · attributes: 95 · inheritance: 62 · associations: 46
 
 ```mermaid
 classDiagram
   direction LR
   class AirWaybill {
-    +1 attributes
+    +string airWaybillNumber
   }
   class Aircraft {
-    +1 attributes
+    +string flightNumber
   }
   class Airport {
-    +2 attributes
+    +string iataAirportCode
+    +string icaoAirportCode
   }
   class ArrivalEvent
   class BargeLeg
   class BargeVessel
   class BillOfLading {
-    +1 attributes
+    +string billOfLadingNumber
   }
   class BorderCrossing
   class CargoInsurance
   class CargoItem {
-    +1 attributes
+    +string cargoDescription
   }
   class CargoManifest
   class CargoMeasurement
@@ -35,14 +36,35 @@ classDiagram
   class CertificateOfOrigin
   class CommercialInvoice
   class Commodity {
-    +2 attributes
+    +string commodityCode
+    +string commodityDescription
   }
   class Consignee
   class Consignment {
-    +17 attributes
+    +dateTime availabilityDueDateTime
+    +dateTime carrierAcceptanceDateTime
+    +string carrierAssignedID
+    +decimal chargeableWeight
+    +string consigneeAssignedID
+    +string consignmentReference [1..*]
+    +string consignorAssignedID
+    +boolean containerizationIndicator
+    +string currency
+    +string customsID
+    +decimal customsValue
+    +dateTime exportExitDateTime
+    +string freightForwarderAssignedID
+    +string freightTerms
+    +string incoterm
+    +integer loadingSequenceNumeric
+    +boolean transshipmentPermissionIndicator
   }
   class ConsignmentItem {
-    +5 attributes
+    +decimal grossWeight
+    +integer itemSequenceNumber [1..*]
+    +decimal netWeight
+    +integer numberOfPackages
+    +decimal volume
   }
   class Consignor
   class CorrosiveSubstance
@@ -50,14 +72,23 @@ classDiagram
   class CustomsClearanceEvent
   class CustomsDeclaration
   class DangerousGoods {
-    +7 attributes
+    +string emergencyContactNumber
+    +decimal flashPoint
+    +string hazardClass
+    +string packingGroup
+    +string properShippingName
+    +string technicalName
+    +string unNumber
   }
   class DangerousGoodsDeclaration
   class DeliveryEvent
   class DeliveryInstructions
   class DepartureEvent
   class Dimension {
-    +4 attributes
+    +string dimensionUnit
+    +decimal heightValue
+    +decimal lengthValue
+    +decimal widthValue
   }
   class DischargeEvent
   class DisposalInstructions
@@ -72,48 +103,54 @@ classDiagram
   class FreightForwarder
   class Goods
   class GoodsItem {
-    +4 attributes
+    +string countryOfOrigin
+    +string goodsDescription
+    +string hsCode
+    +boolean isHazardous
   }
   class HandlingInstructions {
-    +2 attributes
+    +string handlingCode
+    +string handlingInstruction
   }
   class HandoverEvent {
-    +2 attributes
+    +dateTime handoverDateTime
+    +string handoverType
   }
   class HaulageInstructions
   class HouseConsignment {
-    +1 attributes
+    +string houseReferenceNumber
   }
   class HouseWaybill
   class InlandCarrier {
-    +1 attributes
+    +string inlandCarrierCode
   }
   class InlandLeg {
-    +1 attributes
+    +string inlandMode
   }
   class InlandPort
   class InlandTerminal {
-    +1 attributes
+    +string terminalCode
   }
   class InspectionEvent
   class InspectionStatus
   class LoadingEvent
   class Location {
-    +1 attributes
+    +string unLocationCode
   }
   class LogisticsConvoy
   class LogisticsMeansOfTransport {
-    +1 attributes
+    +string carrierCode
   }
   class MasterConsignment {
-    +1 attributes
+    +string masterReferenceNumber
   }
   class MasterWaybill
   class MiscellaneousDangerousGoods
   class NotifyParty
   class OxidizingSubstance
   class Package {
-    +2 attributes
+    +string packageCode
+    +string packageType
   }
   class PackageSpecification
   class PackingList
@@ -127,22 +164,29 @@ classDiagram
   class RailLeg
   class RailTerminal
   class RailVehicle {
-    +1 attributes
+    +string trainNumber
   }
   class ReeferContainer {
-    +3 attributes
+    +decimal maximumTemperature
+    +decimal minimumTemperature
+    +decimal temperatureSetting
   }
   class RoadConsignmentNote
   class RoadLeg
   class RoadTerminal
   class RoadVehicle {
-    +1 attributes
+    +string vehicleRegistration
   }
   class Route {
-    +5 attributes
+    +string frequencyTypeCode
+    +string routeCode
+    +string routeDescription
+    +string securityLevelCode
+    +string statusCode
   }
   class Seal {
-    +2 attributes
+    +string sealNumber
+    +string sealType
   }
   class ShippingMarks
   class SwapBody
@@ -154,26 +198,44 @@ classDiagram
   class TrailerUnit
   class TransferEvent
   class TransportDocument {
-    +1 attributes
+    +string documentNumber [1..*]
   }
   class TransportEquipment {
-    +8 attributes
+    +string categoryCode
+    +string equipmentIdentifier [1..*]
+    +string equipmentSizeType
+    +boolean isShipperOwned
+    +decimal maxGrossWeight
+    +string operationalStatusCode
+    +decimal tareWeight
+    +string transportMovementStatusCode
   }
   class TransportEvent {
-    +3 attributes
+    +dateTime eventDateTime [1..*]
+    +string eventStatus
+    +string eventType
   }
   class TransportInstructions
   class TransportLeg
   class TransportLocation
   class TransportMovement {
-    +8 attributes
+    +dateTime actualArrivalTime
+    +dateTime actualDepartureTime
+    +dateTime estimatedArrivalTime
+    +dateTime estimatedDepartureTime
+    +string modeCode
+    +string movementStatusCode
+    +string stageCode
+    +string transportMode
   }
   class TransportParty
   class TransportRoute
   class TransportService
   class TransportServiceExecution
   class Vessel {
-    +3 attributes
+    +string vesselIMO
+    +string vesselName
+    +string voyageNumber
   }
   class Warehouse
   class WarehouseOperator
@@ -181,7 +243,8 @@ classDiagram
   class WasteMaterial
   class WasteMaterialComponent
   class Weight {
-    +2 attributes
+    +string weightUnit
+    +decimal weightValue
   }
   TransportDocument <|-- AirWaybill
   LogisticsMeansOfTransport <|-- Aircraft
@@ -284,8 +347,8 @@ classDiagram
   TransportEvent --> TransportEquipment : involvesEquipment
   TransportEvent --> LogisticsMeansOfTransport : involvesTransportMeans
   TransportEvent --> Location : occursAtLocation
-  TransportLeg --> TransportLocation : arrivalLocation
-  TransportLeg --> TransportLocation : departureLocation
+  TransportLeg --> "1..*" TransportLocation : arrivalLocation
+  TransportLeg --> "1..*" TransportLocation : departureLocation
   TransportLeg --> TransportLocation : hasLocation
   TransportLeg --> LogisticsMeansOfTransport : usesTransportMeans
   TransportRoute --> TransportLeg : hasTransportLeg

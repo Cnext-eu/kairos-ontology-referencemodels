@@ -15,9 +15,11 @@ So the per-suite class diagrams are **generated from the Turtle**, never hand-ed
 script parses every ``current/**/*.ttl`` in a suite with ``rdflib`` and renders a Mermaid
 ``classDiagram`` capturing:
 
-  * every ``owl:Class`` as a node (with a compact datatype-attribute count),
+  * every ``owl:Class`` as a node (with its datatype attributes typed, and multiplicities
+    from ``owl:Restriction`` cardinalities),
   * ``rdfs:subClassOf`` between named classes as inheritance edges,
-  * ``owl:ObjectProperty`` ``rdfs:domain -> rdfs:range`` as labelled associations,
+  * ``owl:ObjectProperty`` ``rdfs:domain -> rdfs:range`` as labelled associations, carrying the
+    target-end multiplicity when a cardinality restriction declares one,
   * classes owned by *other* suites (reached across a suite boundary) as external stubs.
 
 Output lands under ``ontology-reference-models/diagrams/generated/`` behind a GENERATED
@@ -195,6 +197,65 @@ def expand_class_nodes(graph: Graph, node) -> list[URIRef]:
     return classes
 
 
+def mult_from_restriction(graph: Graph, restr) -> str:
+    """Turn an ``owl:Restriction`` cardinality into a UML multiplicity string.
+
+    ``owl:cardinality n`` -> ``n``; ``owl:minCardinality`` / ``owl:maxCardinality`` (and their
+    qualified variants) map to ``0..*`` / ``1..*`` / ``n..*`` / ``0..m`` as appropriate. Returns
+    an empty string when the restriction carries no cardinality (e.g. an ``owl:someValuesFrom``).
+    """
+    def as_int(pred) -> int | None:
+        v = graph.value(restr, pred)
+        try:
+            return int(v) if v is not None else None
+        except (TypeError, ValueError):
+            return None
+
+    exact = as_int(OWL.cardinality)
+    if exact is None:
+        exact = as_int(OWL.qualifiedCardinality)
+    if exact is not None:
+        return str(exact)
+
+    lo = as_int(OWL.minCardinality)
+    if lo is None:
+        lo = as_int(OWL.minQualifiedCardinality)
+    hi = as_int(OWL.maxCardinality)
+    if hi is None:
+        hi = as_int(OWL.maxQualifiedCardinality)
+
+    if lo is not None and hi is not None:
+        return f"{lo}..{hi}"
+    if lo is not None:
+        return "*" if lo == 0 else ("1..*" if lo == 1 else f"{lo}..*")
+    if hi is not None:
+        return f"0..{hi}"
+    return ""
+
+
+def restriction_multiplicities(graph: Graph) -> dict[tuple[URIRef, URIRef], str]:
+    """Map ``(class, property)`` to the multiplicity its ``owl:Restriction`` declares.
+
+    A ``rdfs:subClassOf [ a owl:Restriction ; owl:onProperty P ; owl:minCardinality 1 ]`` on
+    class C records that C relates to P's range with multiplicity ``1..*`` — the target-end
+    cardinality of the C -> range association (or the multiplicity of the C.P attribute).
+    """
+    out: dict[tuple[URIRef, URIRef], str] = {}
+    for cls in graph.subjects(RDF.type, OWL.Class):
+        if not isinstance(cls, URIRef):
+            continue
+        for restr in graph.objects(cls, RDFS.subClassOf):
+            if (restr, RDF.type, OWL.Restriction) not in graph:
+                continue
+            prop = graph.value(restr, OWL.onProperty)
+            if not isinstance(prop, URIRef):
+                continue
+            mult = mult_from_restriction(graph, restr)
+            if mult:
+                out[(cls, prop)] = mult
+    return out
+
+
 def collect(graph: Graph, base: str):
     """Extract the classes, inheritance edges and associations owned by this graph.
 
@@ -209,13 +270,23 @@ def collect(graph: Graph, base: str):
         if not base or str(cls).startswith(base + "/") or str(cls).startswith(base + "#"):
             own_classes.add(cls)
 
-    # Datatype-attribute count per owned class (keeps diagrams meeting-legible).
-    attr_count: dict[URIRef, int] = {c: 0 for c in own_classes}
+    # Cardinality restrictions (owl:Restriction on rdfs:subClassOf) → UML multiplicities,
+    # used both for attribute multiplicities and for association target-end cardinalities.
+    restr_mult = restriction_multiplicities(graph)
+
+    # Datatype attributes per owned class: (name, type, multiplicity). Shown in full — a
+    # business audience reads the attributes and their datatypes, not a bare count.
+    attrs: dict[URIRef, list[tuple[str, str, str]]] = {c: [] for c in own_classes}
     for prop in graph.subjects(RDF.type, OWL.DatatypeProperty):
+        pname = local_name(str(prop))
+        rng = next((r for r in graph.objects(prop, RDFS.range) if isinstance(r, URIRef)), None)
+        tname = local_name(str(rng)) if rng is not None else ""
         for dom in graph.objects(prop, RDFS.domain):
             for cls in expand_class_nodes(graph, dom):
-                if cls in attr_count:
-                    attr_count[cls] += 1
+                if cls in attrs:
+                    attrs[cls].append((pname, tname, restr_mult.get((cls, prop), "")))
+    for cls in attrs:
+        attrs[cls].sort()
 
     # Inheritance: only named-class superclasses (skip owl:Restriction blank nodes).
     subclass_edges: set[tuple[URIRef, URIRef]] = set()
@@ -227,8 +298,9 @@ def collect(graph: Graph, base: str):
     # Associations: object property domain -> range, expanding unions. An edge is kept when
     # either endpoint is an owned class, or when the *property* is owned by this suite — the
     # latter surfaces cross-suite bridge modules (e.g. SupplyChain) whose endpoints both live
-    # in other suites.
-    assoc_edges: set[tuple[URIRef, URIRef, str]] = set()
+    # in other suites. The target-end multiplicity comes from a cardinality restriction on the
+    # domain class for that property, when one is declared.
+    assoc_edges: set[tuple[URIRef, URIRef, str, str]] = set()
     for prop in graph.subjects(RDF.type, OWL.ObjectProperty):
         pname = local_name(str(prop))
         prop_owned = (not base) or str(prop).startswith(base + "/") or str(prop).startswith(base + "#")
@@ -237,9 +309,9 @@ def collect(graph: Graph, base: str):
         for dom in domains:
             for rng in ranges:
                 if dom in own_classes or rng in own_classes or prop_owned:
-                    assoc_edges.add((dom, rng, pname))
+                    assoc_edges.add((dom, rng, pname, restr_mult.get((dom, prop), "")))
 
-    return own_classes, attr_count, subclass_edges, assoc_edges
+    return own_classes, attrs, subclass_edges, assoc_edges
 
 
 def render_suite(suite_name: str, module: str | None, bases: dict[str, str]) -> str:
@@ -272,7 +344,7 @@ def render_input(input_dir: Path, name: str | None, bases: dict[str, str]) -> st
 def render_document(title: str, graph: Graph, base: str, bases: dict[str, str], module: str | None,
                     banner: str = GENERATED_BANNER) -> str:
     """Render a parsed graph to a Mermaid ``classDiagram`` markdown document."""
-    own_classes, attr_count, subclass_edges, assoc_edges = collect(graph, base)
+    own_classes, attrs, subclass_edges, assoc_edges = collect(graph, base)
 
     if module:
         # Restrict to classes whose URI lives under …/<module> (the module namespace).
@@ -284,7 +356,7 @@ def render_document(title: str, graph: Graph, base: str, bases: dict[str, str], 
 
     kept_sub = {(a, b) for (a, b) in subclass_edges if a in own_classes}
     if module:
-        kept_assoc = {(a, b, p) for (a, b, p) in assoc_edges if a in own_classes or b in own_classes}
+        kept_assoc = {(a, b, p, m) for (a, b, p, m) in assoc_edges if a in own_classes or b in own_classes}
     else:
         # collect() already scoped associations to this graph (endpoint- or property-owned).
         kept_assoc = set(assoc_edges)
@@ -294,7 +366,7 @@ def render_document(title: str, graph: Graph, base: str, bases: dict[str, str], 
     for a, b in kept_sub:
         if b not in own_classes:
             external.add(b)
-    for a, b, _ in kept_assoc:
+    for a, b, _p, _m in kept_assoc:
         if a not in own_classes:
             external.add(a)
         if b not in own_classes:
@@ -306,22 +378,28 @@ def render_document(title: str, graph: Graph, base: str, bases: dict[str, str], 
         # id_map ids are unique, so (id, uri) is a total order — fully deterministic.
         return (id_map[uri], str(uri))
 
+    attr_total = sum(len(attrs.get(c, [])) for c in own_classes)
     lines: list[str] = [banner, ""]
     lines.append(f"# {title} — class diagram")
     lines.append("")
-    lines.append(f"Classes: {len(own_classes)} · inheritance: {len(kept_sub)} · associations: {len(kept_assoc)}")
+    lines.append(
+        f"Classes: {len(own_classes)} · attributes: {attr_total} · "
+        f"inheritance: {len(kept_sub)} · associations: {len(kept_assoc)}"
+    )
     lines.append("")
     lines.append("```mermaid")
     lines.append("classDiagram")
     lines.append("  direction LR")
 
-    # Own class nodes.
+    # Own class nodes, with their datatype attributes (type + optional multiplicity).
     for cls in sorted(own_classes, key=key):
         nid = id_map[cls]
-        count = attr_count.get(cls, 0)
-        if count:
+        members = attrs.get(cls, [])
+        if members:
             lines.append(f"  class {nid} {{")
-            lines.append(f"    +{count} attributes")
+            for pname, tname, mult in members:
+                suffix = f" [{mult}]" if mult else ""
+                lines.append(f"    +{tname} {pname}{suffix}".replace("+ ", "+"))
             lines.append("  }")
         else:
             lines.append(f"  class {nid}")
@@ -336,9 +414,10 @@ def render_document(title: str, graph: Graph, base: str, bases: dict[str, str], 
     for a, b in sorted(kept_sub, key=lambda e: (id_map[e[0]], id_map[e[1]])):
         lines.append(f"  {id_map[b]} <|-- {id_map[a]}")
 
-    # Association edges.
-    for a, b, p in sorted(kept_assoc, key=lambda e: (id_map[e[0]], e[2], id_map[e[1]])):
-        lines.append(f"  {id_map[a]} --> {id_map[b]} : {p}")
+    # Association edges, with target-end multiplicity when the ontology declares one.
+    for a, b, p, m in sorted(kept_assoc, key=lambda e: (id_map[e[0]], e[2], id_map[e[1]])):
+        mult = f' "{m}" ' if m else " "
+        lines.append(f"  {id_map[a]} -->{mult}{id_map[b]} : {p}")
 
     lines.append("```")
     lines.append("")
