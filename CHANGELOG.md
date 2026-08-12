@@ -28,9 +28,12 @@ conversations.
   `rdfs:subClassOf` inheritance, and object-property `domain → range` associations are shown;
   datatype properties are summarised as an attribute count to keep the diagrams meeting-legible.
   `--suite` and `--module` drill in on demand; `--check` diffs against disk without writing — the
-  same contract as `generate_pack_docs.py --check`, and now a step in `validate.yml`. Bridge
-  modules that own no classes (SupplyChain) render as a cross-suite relationship map because an
-  association is kept when the *property* is suite-owned, even when both endpoints are external.
+  same contract as `generate_pack_docs.py --check`, and now a step in `validate.yml`. `--input DIR`
+  renders **any** external ontology directory (a customer's own hub) with the same layout, so a
+  consumer of the tarball/submodule can diagram their ontology and see the reference-model classes
+  they import as external stubs. Bridge modules that own no classes (SupplyChain) render as a
+  cross-suite relationship map because an association is kept when the *property* is suite-owned,
+  even when both endpoints are external.
 - **`tests/test_ontology_diagrams.py`** — asserts every suite is discovered, every generated
   diagram is current, and the SupplyChain bridge links at least two other suites. A suite whose
   Turtle changes without its diagram being regenerated now fails the build.

@@ -151,6 +151,7 @@ holds [Mermaid](https://mermaid.js.org/) diagrams that render natively on GitHub
 python scripts/generate_ontology_diagrams.py            # refresh all suite diagrams
 python scripts/generate_ontology_diagrams.py --check    # verify they are current (CI)
 python scripts/generate_ontology_diagrams.py --suite DCSA --module booking   # drill into one module
+python scripts/generate_ontology_diagrams.py --input path/to/your-hub/model --name "Your Hub" --output hub.md   # your own ontology
 ```
 
 ---

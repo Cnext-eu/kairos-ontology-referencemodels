@@ -62,3 +62,49 @@ def test_supplychain_is_a_cross_suite_bridge() -> None:
 def test_generated_files_carry_the_do_not_edit_banner() -> None:
     for md in gen.OUTPUT_DIR.glob("*.md"):
         assert "DO NOT EDIT" in md.read_text(encoding="utf-8").splitlines()[0]
+
+
+def test_input_mode_renders_customer_ontology(tmp_path) -> None:
+    """A customer can point --input at their own Turtle; imported reference classes render
+    as external stubs labelled by their suite."""
+    model = tmp_path / "model"
+    model.mkdir()
+    (model / "hub.ttl").write_text(
+        """@prefix : <https://acme.example/ont/logistics#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcsa: <https://www.kairosflow.ai/ont/dcsa/booking#> .
+
+<https://acme.example/ont/logistics> a owl:Ontology .
+:Shipment a owl:Class .
+:PriorityShipment a owl:Class ; rdfs:subClassOf :Shipment .
+:customerName a owl:DatatypeProperty ; rdfs:domain :Shipment ; rdfs:range xsd:string .
+:coversBooking a owl:ObjectProperty ; rdfs:domain :Shipment ; rdfs:range dcsa:Booking .
+""",
+        encoding="utf-8",
+    )
+    bases = gen.suite_bases()
+    out = gen.render_input(model, "ACME Hub", bases)
+
+    assert "# ACME Hub — class diagram" in out
+    # Customer's own classes are nodes; the imported DCSA class is an external stub.
+    assert "class Shipment" in out
+    assert "Shipment <|-- PriorityShipment" in out
+    assert "<<dcsa>>" in out and "coversBooking" in out
+
+
+def test_input_mode_without_ontology_iri_treats_all_classes_as_own(tmp_path) -> None:
+    """A customer ontology with no owl:Ontology root still renders its classes."""
+    model = tmp_path / "model"
+    model.mkdir()
+    (model / "hub.ttl").write_text(
+        """@prefix : <https://acme.example/x#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+:Foo a owl:Class .
+:Bar a owl:Class .
+""",
+        encoding="utf-8",
+    )
+    out = gen.render_input(model, "No Root", gen.suite_bases())
+    assert "class Foo" in out and "class Bar" in out

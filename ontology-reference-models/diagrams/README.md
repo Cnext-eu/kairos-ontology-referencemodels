@@ -37,6 +37,29 @@ python scripts/generate_ontology_diagrams.py --check
 python scripts/generate_ontology_diagrams.py --suite DCSA --module booking
 ```
 
+## Generating diagrams from your own hub ontology
+
+The same script works on **any** directory of Turtle — a customer hub can point it at its own
+ontology and get the same class diagrams. Reference-model classes you import (DCSA, MMT, …) render
+as external stubs labelled by their suite, so your own classes and the reference classes you build
+on show up together. `scripts/` ships in the release tarball, so a submodule or tarball consumer
+already has it.
+
+```bash
+# Render your hub ontology to a Markdown file with an embedded Mermaid diagram
+python scripts/generate_ontology_diagrams.py \
+    --input path/to/your-hub/model \
+    --name "Acme Logistics Hub" \
+    --output acme-hub.md
+
+# Or print to stdout to pipe elsewhere
+python scripts/generate_ontology_diagrams.py --input path/to/your-hub/model
+```
+
+`--input` parses every `*.ttl` beneath the directory. If your ontology declares an
+`owl:Ontology`, its IRI scopes which classes are "yours"; if it does not, every class in the input
+is treated as yours.
+
 ## Rendering to images
 
 The diagrams are source-only; GitHub renders them inline. To export SVG/PNG for slides, the
