@@ -8,12 +8,14 @@ entries:
       - https://www.kairosflow.ai/ont/dcsa/party#ShippingParty
       - https://www.kairosflow.ai/ont/mmt/party#TransportParty
       - https://www.kairosflow.ai/ont/imo/party#MaritimeParty
+      - https://www.kairosflow.ai/ont/tic/party#TerminalParty
     disposition: reference_model_gap
     rationale: "Stakeholder-approved architecture requires a neutral durable Party identity and qualified contextual role assignment. Existing classes remain standards overlays pending audit and proven mappings."
     evidence:
       - "Stakeholder confirmation 2026-07-21"
       - "convergence-analysis.md Party and contextual roles"
       - "evidence/cross-archetype-assessment.md"
+      - "2026-08 audit (issue #51): tic/party#TerminalParty is a fifth live role parent (2 subclasses, TerminalOperator/Stevedore — below pattern-conformance check C's >=3 threshold, hence never flagged); added by audit, not by the 2026-07-21 stakeholder confirmation"
     confidence: high
     maturity: experimental
     first_slice: false

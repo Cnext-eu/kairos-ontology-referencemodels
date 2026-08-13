@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Party bookkeeping (#51)
+
+#### Changed
+- **`tic/party#TerminalParty` registered as the fifth role parent** in the overlap register's
+  `party-role-parents.class_uris`, with an explicitly audit-sourced evidence line (its 2
+  subclasses sit below pattern-conformance check C's ≥3 detection threshold, which is why the
+  #41 sweep never flagged it). The qualified-role-assignment grain-collision prose now names
+  TIC alongside BSP/DCSA/MMT/IMO. No pattern exemption — it would never be exercised at the
+  current threshold and would warn as stale on every CI run.
+
 ### BSP 2.0.0 — estimatedDeliveryDate rename + party-property re-ranging (#50, #51)
 
 #### Changed — BSP **2.0.0** (breaking: term rename)

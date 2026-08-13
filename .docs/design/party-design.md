@@ -154,3 +154,11 @@ less. IMO is the cheap one (zero external property coupling, zero hub bindings) 
 half its "subclasses" are not contextual roles at all (FlagAuthority/ClassificationSociety/
 PortAuthority are durable organisation kinds; MasterOfVessel and the security officers are
 persons), so a uniform hybrid would be semantically wrong there.
+
+A **fifth role parent** surfaced in the 2026-08 audit: `tic/party#TerminalParty`
+(`TerminalOperator`/`Stevedore` subclasses, with live `rdfs:domain :TerminalOperator` usage).
+It sits below the conformance check C's ≥3-subclass detection threshold, which is why the #41
+sweep never flagged it. It is covered by its entry in the overlap register's
+`party-role-parents.class_uris` (audit-sourced evidence line), NOT by a pattern exemption —
+an exemption would never be exercised at the current threshold and would be flagged as stale
+on every CI run.
