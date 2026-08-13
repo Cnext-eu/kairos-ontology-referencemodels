@@ -20,7 +20,6 @@ groups:
 
       - id: party
         name: "Party, Person & Agent"
-        folder: "model/ontologies/party/"
         owns: "Legal persons, natural persons, autonomous agents, party roles, contact details, and party identifiers."
         does_not_own: "Corporate structure, ownership chains, financial instruments, contracts, or transactions."
         imports:
@@ -42,7 +41,6 @@ groups:
 
       - id: organisation
         name: "Organisation, Corporate Structure & Ownership"
-        folder: "model/ontologies/organisation/"
         owns: "Formal organisations, corporate hierarchy, ownership chains, control relationships, partnerships, trusts, and sole proprietorships."
         does_not_own: "Natural persons, party roles, financial instruments, regulatory filings, or market data."
         imports:
@@ -79,7 +77,6 @@ groups:
 
       - id: regulatory
         name: "Government, Regulatory & Jurisdictional"
-        folder: "model/ontologies/regulatory/"
         owns: "Government entities, regulatory bodies, jurisdictions, legal frameworks, and legal capacity."
         does_not_own: "Compliance obligations, audit evidence, financial instruments, or market infrastructure."
         imports:
@@ -98,7 +95,6 @@ groups:
 
       - id: financial-market-participants
         name: "Financial Market Participants & Infrastructure"
-        folder: "model/ontologies/financial-market-participants/"
         owns: "Exchanges, clearing houses, registries, central counterparties, financial intermediaries, financial service providers, and market infrastructure entities."
         does_not_own: "Legal entity master data, party contact details, financial instruments, or market data."
         imports:
@@ -125,7 +121,6 @@ groups:
 
       - id: contracts
         name: "Agreements, Contracts & Obligations"
-        folder: "model/ontologies/contracts/"
         owns: "Legal agreements, contracts, contractual terms, conditions, obligations, warranties, and contract lifecycle."
         does_not_own: "Financial instrument terms, ACTUS cashflow analytics, product catalogs, or transaction settlement."
         imports:
@@ -140,7 +135,6 @@ groups:
 
       - id: products-services
         name: "Financial Products & Services"
-        folder: "model/ontologies/products-services/"
         owns: "Product catalogs, service offerings, product types, payment schedules, and product lifecycle."
         does_not_own: "Specific instrument types (securities, derivatives, loans), market data, or party master data."
         imports:
@@ -159,7 +153,6 @@ groups:
 
       - id: actus-contract-analytics
         name: "ACTUS Contract Terms & Cashflow Analytics"
-        folder: "model/ontologies/actus/"
         owns: "Algorithmic contract types, contract term definitions, cashflow taxonomy, contract state machines, and term applicability."
         does_not_own: "Legal contract lifecycle, product catalogs, settlement, or market data."
         imports:
@@ -179,7 +172,6 @@ groups:
 
       - id: instruments
         name: "Core Financial Instruments"
-        folder: "model/ontologies/instruments/"
         owns: "Instrument base concepts, instrument identifiers (ISIN, CUSIP, FIGI), debt and equity instrument foundations, and instrument classification."
         does_not_own: "Specific security types, derivative contracts, loan products, or market prices."
         imports:
@@ -197,7 +189,6 @@ groups:
 
       - id: securities
         name: "Securities — Debt, Equities & Funds"
-        folder: "model/ontologies/securities/"
         owns: "Bonds, notes, equities, shares, fund units, ETFs, security identifiers, listings, restrictions, and issuance details."
         does_not_own: "Derivatives, loans, market prices/yields, or corporate actions."
         imports:
@@ -221,7 +212,6 @@ groups:
 
       - id: derivatives
         name: "Derivatives — Options, Futures, Swaps"
-        folder: "model/ontologies/derivatives/"
         owns: "Options, futures, forwards, swaps, credit derivatives, rate derivatives, security-based derivatives, and derivative contract terms."
         does_not_own: "Underlying securities, loans, market data, or settlement transactions."
         imports:
@@ -248,7 +238,6 @@ groups:
 
       - id: loans
         name: "Loans — Commercial, Consumer & Mortgage"
-        folder: "model/ontologies/loans/"
         owns: "Loan products, loan terms, amortisation schedules, collateral, borrower/lender roles, mortgage specifics, and loan lifecycle."
         does_not_own: "Securities, derivatives, market data, or party master data."
         imports:
@@ -274,7 +263,6 @@ groups:
 
       - id: market-data
         name: "Market Data — Prices, Yields & Analytics"
-        folder: "model/ontologies/market-data/"
         owns: "Market prices, yields, spreads, analytics, valuations, and temporal market snapshots."
         does_not_own: "Instrument definitions, economic indicators, FX rates, or index compositions."
         imports:
@@ -295,7 +283,6 @@ groups:
 
       - id: indicators
         name: "Indicators, Indices, FX & Interest Rates"
-        folder: "model/ontologies/indicators/"
         owns: "Economic indicators, foreign exchange rates, interest rate benchmarks, market indices, and reference rates."
         does_not_own: "Instrument-level market data, security prices, or transaction data."
         imports:
@@ -321,7 +308,6 @@ groups:
 
       - id: transactions
         name: "Transactions, Settlement & Positions"
-        folder: "model/ontologies/transactions/"
         owns: "Financial transactions, trade execution, settlement, clearing, position keeping, and transaction lifecycle."
         does_not_own: "Instrument definitions, accounting entries, market data, or contract terms."
         imports:
@@ -339,7 +325,6 @@ groups:
 
       - id: accounting
         name: "Accounting, Ledger & Financial Reporting"
-        folder: "model/ontologies/accounting/"
         owns: "Accounting entries, ledger balances, currency amounts, cashflows, equity accounting, and financial reporting."
         does_not_own: "Transaction execution, instrument definitions, party master data, or market data."
         imports:
@@ -361,7 +346,6 @@ groups:
 
       - id: corporate-actions
         name: "Corporate Actions & Events"
-        folder: "model/ontologies/corporate-actions/"
         owns: "Corporate actions, stock splits, dividends, rights issues, mergers, tender offers, and corporate event lifecycle."
         does_not_own: "Securities definitions, market prices, transaction settlement, or party master data."
         imports:
@@ -373,7 +357,6 @@ groups:
 
       - id: securities-issuance
         name: "Securities Issuance Process"
-        folder: "model/ontologies/securities-issuance/"
         owns: "Securities issuance workflows, IPO process, underwriting, bookbuilding, allocation, and issuance lifecycle."
         does_not_own: "Security definitions, corporate actions post-issuance, market data, or settlement."
         imports:
@@ -394,7 +377,6 @@ groups:
 
       - id: reference-data
         name: "Reference Data, Identifiers & Classifications"
-        folder: "model/ontologies/reference-data/"
         owns: "Shared identifiers, code lists, classification schemes, places, addresses, dates, time concepts, ratings, and arrangements."
         does_not_own: "Domain-specific transactions, instrument definitions, or party master data."
         imports:
@@ -437,7 +419,6 @@ groups:
 
       - id: compliance
         name: "Compliance, Governance & Audit"
-        folder: "model/ontologies/compliance/"
         owns: "Regulatory compliance obligations, governance policies, audit evidence, KYC/AML requirements, and reporting obligations."
         does_not_own: "Regulatory body definitions, party master data, financial instruments, or transactions."
         imports: []
@@ -446,7 +427,6 @@ groups:
 
       - id: mdm
         name: "MDM Hub (Golden Records, Crosswalks, Match/Merge)"
-        folder: "model/ontologies/mdm/"
         owns: "Golden records, crosswalks (source-to-golden links), source system registry, match groups, merge events, and survivorship rules."
         does_not_own: "Domain-specific entity definitions — it masters them via reference."
         imports: []
@@ -461,7 +441,6 @@ groups:
 
       - id: insurance
         name: "Insurance — Policy, Claims & Underwriting"
-        folder: "model/ontologies/insurance/"
         owns: "Insurance policies, claims, underwriting, premiums, coverage, loss events, and actuarial concepts."
         does_not_own: "Core financial instruments, banking products, securities, or market data."
         imports: []
@@ -471,7 +450,6 @@ groups:
 
       - id: trade-finance
         name: "Trade Finance — Letters of Credit, Guarantees & Collections"
-        folder: "model/ontologies/trade-finance/"
         owns: "Letters of credit, bank guarantees, documentary collections, trade finance instruments, and documentary workflows."
         does_not_own: "General contracts, securities, derivatives, or party master data."
         imports: []
