@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### BSP 2.0.0 — estimatedDeliveryDate rename + party-property re-ranging (#50, #51)
+
+#### Changed — BSP **2.0.0** (breaking: term rename)
+- **`bsp/commercial#expectedDeliveryDate` renamed** (closes #50). The UN/CEFACT web vocabulary
+  is decisive: `HeaderTradeDelivery` carries estimated/actual/planned/requested DeliveryEvent —
+  no `expected*` delivery element exists (full property list checked; org:uncefact code search
+  0 hits) — so the rename is *more* source-faithful than the status quo, and the property now
+  carries the citation it never had (`rdfs:seeAlso` `estimatedDeliveryEvent`, with the
+  event→date flattening stated as a deliberate simplification). Evidence boundary: the D23B
+  spreadsheet/XSD itself was not enumerable; the audit covers the web-vocabulary rendering.
+  The AUDIT-TODO exemption in `temporal-quartet/pattern.yaml` is deleted — the exemptions
+  ledger is now fully cited.
+
+  | old (BSP 1.x) | new (BSP 2.0.0) |
+  |---|---|
+  | `bsp/commercial#expectedDeliveryDate` | `bsp/commercial#estimatedDeliveryDate` |
+
+- **Party-property re-ranging (#51 precondition 2, BSP side).** The 9 object properties that
+  ranged over deprecated role subclasses — `hasBuyer`/`hasSeller`/`hasShipper`/`hasConsignee`/
+  `hasCarrier`/`hasManufacturer` (bsp/party) and `issuingBank`/`advisingBank`/`confirmingBank`
+  (bsp/financial — missed by the #41 inventory) — now range over the undeprecated `:TradeParty`
+  and specialise a new domainless REUSABLE `bsp-party:hasParty` landing pad (mirrors
+  `mmt/consignment#hasParty`). Term IRIs, domains, and the deprecated subclasses are unchanged;
+  instance data stays valid; typed-range *entailments* weaken, which is the point. Archetype
+  pins move to `BSP >=2.0.0,<3` (freight-forwarder, unit-load-carrier; archetypes 0.6.1) so
+  hubs opt in consciously. Rides the major the rename already forced — one migration event,
+  not two.
+
 ### Required modules now conform to the normative patterns — and CI checks it (#41)
 
 The pattern library and the derived ontologies were governed independently and nothing checked

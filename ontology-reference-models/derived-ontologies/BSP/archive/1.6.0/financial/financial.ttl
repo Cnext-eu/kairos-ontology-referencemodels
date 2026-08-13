@@ -22,8 +22,8 @@
     - Events: Payment lifecycle events""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-08-13"^^xsd:date ;
-    owl:versionInfo "2.0.0" ;
+    dcterms:modified "2026-06-20"^^xsd:date ;
+    owl:versionInfo "1.6.0" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
@@ -498,25 +498,22 @@
     rdfs:range :LetterOfCredit .
 
 :issuingBank a owl:ObjectProperty ;
-    rdfs:subPropertyOf party:hasParty ;
     rdfs:label "issuing bank" ;
-    rdfs:comment "The bank that issues the letter of credit on behalf of the buyer. Range widened from the deprecated party:Bank overlay to party:TradeParty (BSP 2.0.0) — the banking role is carried by the property itself and, in role-assignment form, by a TradePartyRoleAssignment with PartyRoleCode BANK; party:Bank stays declared for message-level interop." ;
+    rdfs:comment "The bank that issues the letter of credit on behalf of the buyer." ;
     rdfs:domain :LetterOfCredit ;
-    rdfs:range party:TradeParty .
+    rdfs:range party:Bank .
 
 :advisingBank a owl:ObjectProperty ;
-    rdfs:subPropertyOf party:hasParty ;
     rdfs:label "advising bank" ;
-    rdfs:comment "The bank in the seller's country that advises the L/C to the beneficiary. Range widened from the deprecated party:Bank overlay to party:TradeParty (BSP 2.0.0) — the banking role is carried by the property itself and, in role-assignment form, by a TradePartyRoleAssignment with PartyRoleCode BANK; party:Bank stays declared for message-level interop." ;
+    rdfs:comment "The bank in the seller's country that advises the L/C to the beneficiary." ;
     rdfs:domain :LetterOfCredit ;
-    rdfs:range party:TradeParty .
+    rdfs:range party:Bank .
 
 :confirmingBank a owl:ObjectProperty ;
-    rdfs:subPropertyOf party:hasParty ;
     rdfs:label "confirming bank" ;
-    rdfs:comment "The bank that adds its confirmation (guarantee) to the L/C. Range widened from the deprecated party:Bank overlay to party:TradeParty (BSP 2.0.0) — the banking role is carried by the property itself and, in role-assignment form, by a TradePartyRoleAssignment with PartyRoleCode BANK; party:Bank stays declared for message-level interop." ;
+    rdfs:comment "The bank that adds its confirmation (guarantee) to the L/C." ;
     rdfs:domain :LetterOfCredit ;
-    rdfs:range party:TradeParty .
+    rdfs:range party:Bank .
 
 :hasFinancingArrangement a owl:ObjectProperty ;
     rdfs:label "has financing arrangement" ;
