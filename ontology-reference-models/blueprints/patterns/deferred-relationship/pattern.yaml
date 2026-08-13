@@ -18,7 +18,12 @@ naming_conventions:
   - element: interim_scalar_property
     convention: "<target>Reference"
     example: equipmentAllocationReference
-    rule: "MUST be derivable from the eventual object property name by appending 'Reference'."
+    rule: >
+      MUST be the target class's local name, lower-camel-cased, with 'Reference' appended.
+      Transform: take the target class local name, downcase its first character, append
+      'Reference' (EquipmentAllocation -> equipmentAllocationReference). Derived from the
+      target class, never from the eventual object property name — the two derivations
+      coincide only when the property happens to be named has<Target>.
 anti_patterns:
   - id: silently-dropped-relationship
     description: "The relationship existed in the source but is omitted because its target is unresolved."

@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### deferred-relationship — one derivation, one range policy (#39, #42)
+
+`blueprints/patterns/` bumped to **0.3.0**: two normative rules in this pattern changed meaning.
+
+#### Changed
+- **Interim-scalar naming MUST now derives from the target class** (closes #39). The published
+  rule said "derivable from the eventual object property name by appending 'Reference'", which
+  contradicted its own example (`hasEquipmentAllocation` + `Reference` ≠
+  `equipmentAllocationReference`) and named a different source than the `<target>Reference`
+  convention beside it. The rule now states the full transform: target class local name,
+  first character downcased, `Reference` appended. The worked example's target class is renamed
+  `EquipmentAsset` → `EquipmentAllocation` so example, convention and rule finally agree.
+- **The pattern now prescribes one range policy: a marked stub class** (closes #42). `pattern.md`
+  declared the range while `template.ttl` said to omit both domain and range — two mutually
+  exclusive instructions for the same decision. Resolution: the domain is *never* deferred (it is
+  the class being authored — the template's deferred-domain instruction was simply wrong); the
+  range is declared against a stub class in the hub's namespace whose `rdfs:comment` starts with
+  the literal marker `STUB (deferred-relationship):`, making unmigrated stubs mechanically
+  findable. New pattern.md section "Domain and range while the target is unresolved" states the
+  policy, the stub's migration duty, and an explicit ban: **`rdfs:range owl:Thing` is never an
+  acceptable substitute** — it passes `validate` and then hard-fails `compile`
+  (`safety.relationship-endpoint`, non-suppressible) the moment a binding is authored.
+  `template.ttl` now declares domain and range on both properties and carries the marked stub.
+- Toolkit note: v5.2.1rc7's `validate` warning text and DD-133 §7 describe the *omitted*-range
+  shape as pattern-prescribed; a toolkit issue updating that wording is filed with this change.
+  Omission remains tolerated by the toolkit, so nothing breaks in the interim.
+
 Two changes, both from the same QA pass and shipping together. **Part 2** names the contract and
 retires the last hand-maintained restatement of it; **Part 1** below made the derived surfaces
 generated or tested.
