@@ -53,5 +53,5 @@ anti_patterns:
     description: "BSP TradeParty, DCSA ShippingParty, and MMT TransportParty treated as owl:equivalentClass without checking grain."
     rejection_reason: "Similar labels do not establish equivalence; each may be a role overlay on the same identity or a distinct grain."
 grain_collisions:
-  - "Party: BSP, DCSA, MMT, and IMO each define a role-bearing party parent with a different context; none is the durable identity on its own."
+  - "Party: BSP, DCSA, MMT, IMO, and TIC each define a role-bearing party parent with a different context; none is the durable identity on its own."
   - "Location: DCSA specialises Location by shipment role (Port of Loading, Port of Discharge); materialising those as separate physical places duplicates one port playing several roles."

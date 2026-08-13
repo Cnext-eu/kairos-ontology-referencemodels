@@ -132,7 +132,7 @@ can be Shipper on one assignment and Consignee on another without duplicating th
 
 ## Grain collisions
 
-- **Party.** BSP, DCSA, MMT, and IMO each define a role-bearing party parent with a different
+- **Party.** BSP, DCSA, MMT, IMO, and TIC each define a role-bearing party parent with a different
   context. None of them is the durable identity on its own — each is evidence for a role overlay.
 - **Location.** DCSA specialises `Location` by shipment role (Port of Loading, Port of Discharge).
   Materialising those as separate physical places duplicates one port that plays several roles.
