@@ -7,12 +7,24 @@
 # Deliberately carries NO owl:versionInfo — this is a pattern template, not a versioned
 # ontology module. See ../README.md before adding one.
 
+:Booking a owl:Class ;
+    rdfs:label "Booking"@en ;
+    rdfs:comment "Stand-in for the class you are authoring. The relationship's domain is never deferred — it is concrete by construction."@en .
+
+:EquipmentAllocation a owl:Class ;
+    rdfs:label "Equipment Allocation (stub)"@en ;
+    rdfs:comment "STUB (deferred-relationship): placeholder minted before the target domain is modelled. Replace with or align to the real class when the target module is onboarded, and re-point any bindings."@en .
+
 :hasEquipmentAllocation a owl:ObjectProperty ;
     rdfs:label "has equipment allocation"@en ;
-    rdfs:comment "Eventual object property. Declared even though its range concept has not yet conformed."@en .
-    # rdfs:domain / rdfs:range — set once both endpoints are concrete classes in your hub.
+    rdfs:comment "Eventual object property. Declared now, ranging over the marked stub until the target module conforms."@en ;
+    rdfs:domain :Booking ;
+    rdfs:range :EquipmentAllocation .
+    # NEVER substitute rdfs:range owl:Thing — it passes validate, then hard-fails compile
+    # (safety.relationship-endpoint, non-suppressible) the moment a binding is authored.
 
 :equipmentAllocationReference a owl:DatatypeProperty ;
     rdfs:label "equipment allocation reference"@en ;
-    rdfs:comment "Interim scalar carrying the same foreign-key value :hasEquipmentAllocation will eventually connect. Name is derived from the object property by appending 'Reference' — see pattern.md Naming."@en ;
+    rdfs:comment "Interim scalar carrying the same foreign-key value :hasEquipmentAllocation will eventually connect. Name is the target class's local name, lower-camel-cased, with 'Reference' appended — see pattern.md Naming."@en ;
+    rdfs:domain :Booking ;
     rdfs:range xsd:string .
