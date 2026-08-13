@@ -110,6 +110,7 @@ This entry fixes today's instances **and** the mechanism.
   which auto-activates `test_contract_manifest`'s schema validation over every pattern file.
   This closes the 1.14.0 "Known gaps" item.
 
+
 ### deferred-relationship — one derivation, one range policy (#39, #42)
 
 `blueprints/patterns/` bumped to **0.3.0**: two normative rules in this pattern changed meaning.
@@ -136,6 +137,29 @@ This entry fixes today's instances **and** the mechanism.
 - Toolkit note: v5.2.1rc7's `validate` warning text and DD-133 §7 describe the *omitted*-range
   shape as pattern-prescribed; a toolkit issue updating that wording is filed with this change.
   Omission remains tolerated by the toolkit, so nothing breaks in the interim.
+
+### qualified-role-assignment — heterogeneous identity types documented (#43)
+
+#### Added
+- A "Heterogeneous identity types (context, not a requirement)" section in
+  `qualified-role-assignment/pattern.md` (closes #43). A reproducibility test — two blind,
+  independent authoring runs from identical evidence — resolved the same two-identity-type case
+  two different, reasonable ways because the pattern was silent on it. The section names both
+  legitimate shapes (one assignment class per concrete identity type, or one class ranging over
+  a shared supertype), warns against minting an abstract supertype nothing else needs, and makes
+  explicit that the `physical_simplification` escape hatch is evaluated **per identity type**,
+  not once per pattern application. Deliberately prose-only context with no enforcement surface
+  and no `pattern.yaml` change — the structural choice stays a judgment call.
+
+### data-domains — drop the unread `folder:` key (#38)
+
+#### Removed
+- The `folder: "model/ontologies/<id>/"` key from all 22 domains in each of the logistics and
+  financial-services `client-hub-blueprint/data-domains.yaml` files, and its declaration from
+  `accelerator-packs/_schema/data-domains.schema.json`. The key stated a directory-per-domain
+  layout nothing implements: the toolkit derives the flat `model/ontologies/<id>.ttl` path from
+  `id` and never reads `folder`, so the key was a second place for the path convention to drift
+  (closes #38).
 
 Two changes, both from the same QA pass and shipping together. **Part 2** names the contract and
 retires the last hand-maintained restatement of it; **Part 1** below made the derived surfaces

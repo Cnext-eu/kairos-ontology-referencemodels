@@ -56,6 +56,37 @@ One durable identity may have `0..n` role assignments, each scoped to exactly on
 context may require `1..n` role assignments (e.g. a booking requires at least a Shipper and a
 Carrier) — the minimum cardinality is a pack-level business rule, not part of this pattern.
 
+## Heterogeneous identity types (context, not a requirement)
+
+The `<Identity>` token in the naming convention above binds to whichever class is durable and
+role-bearing in the hub's model. When two or more *distinct* concrete identity classes can hold
+the same kind of role assignment — e.g. both an `Organisation` and a `Staff` record can be
+`assignedTo<Identity>` on a shipment — a hub has two equally valid ways to satisfy this pattern:
+
+- **Two role-assignment classes**, one per concrete identity type (`OrganisationRoleAssignment`,
+  `StaffRoleAssignment`), each with its own `assignedTo<Identity>` link. Keep this when the two
+  identity types' role vocabularies, contexts, or lifecycle genuinely diverge.
+- **One role-assignment class** whose identity-facing link ranges over a shared abstract
+  supertype (a named class, e.g. `Party`, or an anonymous `owl:unionOf` of the concrete types)
+  when the roles, contexts, and validity rules are the same regardless of which concrete type
+  holds them.
+
+Introducing a named abstract supertype is a structural convenience for the second option, not a
+requirement of this pattern — it is only worth the extra class when something else in the hub (a
+shared property, a shared reference-model parent, a cross-cutting query) needs to address "any
+role-bearing identity" without enumerating the concrete types. Do not add it purely because two
+concrete types happen to share a role shape once; check whether the concrete types already share
+a natural common ancestor in the imported reference models before inventing a new one.
+
+**The two identity types do not have to use the same physical representation.** One concrete
+type's evidence may support the full reified link entity (a source table carrying role + context
++ identity as its own grain) while another's evidence only supports the `physical_simplification`
+boolean-flag escape hatch described in the next section (a source table carrying only
+per-identity boolean role columns, no independent role+context grain at all). Evaluate the
+escape hatch's three preconditions per identity type, not once for the whole pattern
+application — a hub is not required to pick one physical shape and apply it uniformly across
+every identity type that plays the role.
+
 ## When NOT to use — flattened boolean role flags as a physical simplification
 
 A boolean flag per role directly on the identity (`isCarrier`, `isForwarder`) is an **acceptable
