@@ -47,10 +47,9 @@
         "id": {
           "type": "string",
           "pattern": "^[a-z][a-z0-9-]*$",
-          "$comment": "Matched against hub ontology file stems by cli/shared.py::_ontology_domain_hints."
+          "$comment": "Matched against hub ontology file stems by cli/shared.py::_ontology_domain_hints. The toolkit derives the flat hub layout model/ontologies/<id>.ttl from this id; there is no per-domain folder (issue #38)."
         },
         "name": {"type": "string", "minLength": 1},
-        "folder": {"type": "string"},
         "owns": {"type": "string", "minLength": 1},
         "does_not_own": {"type": "string", "minLength": 1},
         "grain_note": {
