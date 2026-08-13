@@ -12,9 +12,10 @@ description: >
 compatible_with:
   repo_tag_range: ">=1.11.0,<2.0.0"
   ontology_versions:
-    BSP: ">=1.5.0,<2"
+    BSP: ">=1.6.0,<2"
     DCSA: ">=1.3.0,<2"
-    MMT: ">=1.1.0,<2"
+    # MMT 2.0.0: temporal-quartet property renames (clean break) + role-assignment machinery.
+    MMT: ">=2.0.0,<3"
     WCO: ">=1.2.0,<2"
 
 ref_model_modules:
@@ -35,14 +36,22 @@ ref_model_modules:
   - { iri: "https://www.kairosflow.ai/ont/wco/customs", tier: optional }
 
 core_concepts:
-  # Party identity and transport roles.
+  # Party identity and role assignment. Roles are modelled via the
+  # qualified-role-assignment machinery (BSP 1.6.0 / MMT 2.0.0) — one durable
+  # party, 0..n role assignments, each scoped to a context. The per-role
+  # subclasses are deprecated standards overlays: recommended for
+  # message-level interop, never the hub's role model.
   - { uri: "https://www.kairosflow.ai/ont/bsp/party#TradeParty", tier: required, label: "Trade Party" }
-  - { uri: "https://www.kairosflow.ai/ont/bsp/party#FreightForwarder", tier: required, label: "Freight Forwarder (trade role)" }
-  - { uri: "https://www.kairosflow.ai/ont/mmt/party#TransportParty", tier: required, label: "Transport Party (abstract role)" }
-  - { uri: "https://www.kairosflow.ai/ont/mmt/party#FreightForwarder", tier: required, label: "Freight Forwarder (transport role)" }
-  - { uri: "https://www.kairosflow.ai/ont/mmt/party#Carrier", tier: required, label: "Carrier" }
-  - { uri: "https://www.kairosflow.ai/ont/mmt/party#Consignor", tier: required, label: "Consignor" }
-  - { uri: "https://www.kairosflow.ai/ont/mmt/party#Consignee", tier: required, label: "Consignee" }
+  - { uri: "https://www.kairosflow.ai/ont/bsp/party#TradePartyRoleAssignment", tier: required, label: "Trade Party Role Assignment" }
+  - { uri: "https://www.kairosflow.ai/ont/bsp/party#PartyRoleCode", tier: required, label: "Party Role Code (governed list)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#TransportParty", tier: required, label: "Transport Party (abstract identity)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#TransportPartyRoleAssignment", tier: required, label: "Transport Party Role Assignment" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#TransportPartyRoleCode", tier: required, label: "Transport Party Role Code (governed list)" }
+  - { uri: "https://www.kairosflow.ai/ont/bsp/party#FreightForwarder", tier: recommended, label: "Freight Forwarder (deprecated trade-role overlay)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#FreightForwarder", tier: recommended, label: "Freight Forwarder (deprecated transport-role overlay)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#Carrier", tier: recommended, label: "Carrier (deprecated role overlay)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#Consignor", tier: recommended, label: "Consignor (deprecated role overlay)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#Consignee", tier: recommended, label: "Consignee (deprecated role overlay)" }
 
   # Demand-side order the forwarder owns, and the reservation slot it procures against.
   # Mode never appears here — it is carried by the leg. See patterns/multimodal-order-leg.

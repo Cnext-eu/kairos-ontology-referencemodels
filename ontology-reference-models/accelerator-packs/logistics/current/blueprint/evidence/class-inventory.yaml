@@ -4115,6 +4115,22 @@ records:
   - https://www.kairosflow.ai/ont/bsp/party#TradeParty
   uri: https://www.kairosflow.ai/ont/bsp/party#NotifyParty
 - comments:
+  - "Governed code list of trade-party roles (Buyer, Seller, Shipper,\n    Consignee, Carrier, FreightForwarder,\
+    \ CustomsBroker, Bank, Manufacturer,\n    Supplier, NotifyParty, InsuranceProvider, TerminalOperator,\
+    \ WarehouseKeeper, ...).\n\n    Named per blueprints/patterns/governed-code-list (<Dimension>Code).\
+    \ The value\n    set corresponds to the deprecated role subclasses above; survivorship and\n    value\
+    \ governance are a pack-level MDM concern, not fixed by this module."
+  domains: []
+  kind: class
+  labels:
+  - Party Role Code
+  module_uri: https://www.kairosflow.ai/ont/bsp/party
+  ranges: []
+  source_file: derived-ontologies/BSP/current/party/party.ttl
+  sources: *id007
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/party#PartyRoleCode
+- comments:
   - "The party selling goods or services.\n    \n    UN/CEFACT BSP: A TradeParty role (sellerTradeParty\
     \ context)."
   domains: []
@@ -4184,6 +4200,21 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/party#TradeParty
 - comments:
+  - "The (identity, role, context, validity) link entity: one durable\n    TradeParty playing one role\
+    \ in one context for some period.\n\n    Named per blueprints/patterns/qualified-role-assignment\n\
+    \    (<Identity>RoleAssignment). This — not the deprecated role subclasses —\n    is the shape hubs\
+    \ reuse for role modelling."
+  domains: []
+  kind: class
+  labels:
+  - Trade Party Role Assignment
+  module_uri: https://www.kairosflow.ai/ont/bsp/party
+  ranges: []
+  source_file: derived-ontologies/BSP/current/party/party.ttl
+  sources: *id007
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/party#TradePartyRoleAssignment
+- comments:
   - "A party providing warehousing and storage services. May operate\n    bonded warehouses, free zone\
     \ warehouses, or general distribution centers."
   domains: []
@@ -4197,6 +4228,20 @@ records:
   superclasses:
   - https://www.kairosflow.ai/ont/bsp/party#TradeParty
   uri: https://www.kairosflow.ai/ont/bsp/party#WarehouseKeeper
+- comments:
+  - The durable identity holding the role. Named per qualified-role-assignment (assignedTo<Identity>).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/party#TradePartyRoleAssignment
+  kind: object_property
+  labels:
+  - assigned to trade party
+  module_uri: https://www.kairosflow.ai/ont/bsp/party
+  ranges:
+  - https://www.kairosflow.ai/ont/bsp/party#TradeParty
+  source_file: derived-ontologies/BSP/current/party/party.ttl
+  sources: *id007
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/party#assignedToTradeParty
 - comments:
   - Email address of the party (primary coordinate) or of a specific contact person.
   domains: []
@@ -4266,12 +4311,13 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/party#dunsNumber
 - comments:
-  - "Relates a trade party to one of its postal/physical addresses.\n    Cardinality: 1:n — a party may\
-    \ have many addresses. The typed roles\n    :hasBillingAddress and :hasShippingAddress are specialisations\
-    \ of this\n    generic relationship. The Address class is shared master data defined in\n    the BSP\
-    \ reference-data module."
-  domains:
-  - https://www.kairosflow.ai/ont/bsp/party#TradeParty
+  - "REUSABLE — no rdfs:domain by design: asserting a domain of :TradeParty\n    would infer TradeParty\
+    \ subsumption onto any hub identity class using this\n    property (BSP 1.6.0). Relates a party-like\
+    \ identity to one of its\n    postal/physical addresses. Cardinality: 1:n — a party may have many\n\
+    \    addresses. The typed roles :hasBillingAddress and :hasShippingAddress are\n    specialisations\
+    \ of this generic relationship. The Address class is shared\n    master data defined in the BSP reference-data\
+    \ module."
+  domains: []
   kind: object_property
   labels:
   - has address
@@ -4283,9 +4329,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/party#hasAddress
 - comments:
-  - 'Identifies billing address. Cardinality: 0..1.'
-  domains:
-  - https://www.kairosflow.ai/ont/bsp/party#TradeParty
+  - 'REUSABLE — no rdfs:domain by design (see :hasAddress). Identifies billing address. Cardinality: 0..1.'
+  domains: []
   kind: object_property
   labels:
   - has billing address
@@ -4339,9 +4384,10 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/party#hasConsignee
 - comments:
-  - 'Relates a trade party to its contact persons. Cardinality: 1:n.'
-  domains:
-  - https://www.kairosflow.ai/ont/bsp/party#TradeParty
+  - 'REUSABLE — no rdfs:domain by design: asserting a domain of :TradeParty would infer TradeParty subsumption
+    onto any hub identity class using this property, re-creating the subclass-identity-by-role anti-pattern
+    by the back door (BSP 1.6.0). Relates a party-like identity to its contact persons. Cardinality: 1:n.'
+  domains: []
   kind: object_property
   labels:
   - has contact
@@ -4366,6 +4412,21 @@ records:
   sources: *id007
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/party#hasManufacturer
+- comments:
+  - The role held, from the governed PartyRoleCode list. Named per qualified-role-assignment (fixed name
+    hasRole, ranging over the pack's controlled role vocabulary).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/party#TradePartyRoleAssignment
+  kind: object_property
+  labels:
+  - has role
+  module_uri: https://www.kairosflow.ai/ont/bsp/party
+  ranges:
+  - https://www.kairosflow.ai/ont/bsp/party#PartyRoleCode
+  source_file: derived-ontologies/BSP/current/party/party.ttl
+  sources: *id007
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/party#hasRole
 - comments:
   - Identifies the seller.
   domains:
@@ -4395,9 +4456,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/party#hasShipper
 - comments:
-  - 'Identifies shipping/delivery address. Cardinality: 0..1.'
-  domains:
-  - https://www.kairosflow.ai/ont/bsp/party#TradeParty
+  - 'REUSABLE — no rdfs:domain by design (see :hasAddress). Identifies shipping/delivery address. Cardinality:
+    0..1.'
+  domains: []
   kind: object_property
   labels:
   - has shipping address
@@ -4493,6 +4554,34 @@ records:
   sources: *id007
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/party#registrationNumber
+- comments:
+  - Start of the assignment's validity period, independent of the identity's own lifecycle.
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/party#TradePartyRoleAssignment
+  kind: datatype_property
+  labels:
+  - role valid from
+  module_uri: https://www.kairosflow.ai/ont/bsp/party
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#dateTime
+  source_file: derived-ontologies/BSP/current/party/party.ttl
+  sources: *id007
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/party#roleValidFrom
+- comments:
+  - End of the assignment's validity period; absent while the assignment holds.
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/party#TradePartyRoleAssignment
+  kind: datatype_property
+  labels:
+  - role valid to
+  module_uri: https://www.kairosflow.ai/ont/bsp/party
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#dateTime
+  source_file: derived-ontologies/BSP/current/party/party.ttl
+  sources: *id007
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/party#roleValidTo
 - comments:
   - Tax identification number assigned by the country of registration (VAT number, EIN, etc.).
   domains:
@@ -14166,33 +14255,35 @@ records:
   - https://www.kairosflow.ai/ont/mmt/consignment#TransportService
   uri: https://www.kairosflow.ai/ont/mmt/consignment#TransportServiceExecution
 - comments:
-  - Actual arrival date and time.
+  - Actual arrival date and time. Named per blueprints/patterns/temporal-quartet (normative naming); renamed
+    from actualArrivalTime in MMT 2.0.0.
   domains:
   - https://www.kairosflow.ai/ont/mmt/consignment#TransportMovement
   kind: datatype_property
   labels:
-  - actual arrival time (ATA)
+  - actual arrival (ATA)
   module_uri: https://www.kairosflow.ai/ont/mmt/consignment
   ranges:
   - http://www.w3.org/2001/XMLSchema#dateTime
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
   sources: *id031
   superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt/consignment#actualArrivalTime
+  uri: https://www.kairosflow.ai/ont/mmt/consignment#actualArrival
 - comments:
-  - Actual departure date and time.
+  - Actual departure date and time. Named per blueprints/patterns/temporal-quartet (normative naming);
+    renamed from actualDepartureTime in MMT 2.0.0.
   domains:
   - https://www.kairosflow.ai/ont/mmt/consignment#TransportMovement
   kind: datatype_property
   labels:
-  - actual departure time (ATD)
+  - actual departure (ATD)
   module_uri: https://www.kairosflow.ai/ont/mmt/consignment
   ranges:
   - http://www.w3.org/2001/XMLSchema#dateTime
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
   sources: *id031
   superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt/consignment#actualDepartureTime
+  uri: https://www.kairosflow.ai/ont/mmt/consignment#actualDeparture
 - comments:
   - 'Identifies the arrival location. Cardinality: 0..1.'
   domains:
@@ -14208,7 +14299,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#arrivalLocation
 - comments:
-  - Date/time when consignment is due to be available for collection.
+  - Date/time when consignment is due to be available for collection. Mirrors UN/CEFACT RABIE v101 SupplyChainConsignment.AvailabilityDueDateTime
+    — source fidelity wins over the temporal-quartet synonym ban here (see CONTRACT.md, Patterns vs derived
+    modules); exempted with citation in blueprints/patterns/temporal-quartet/pattern.yaml.
   domains:
   - https://www.kairosflow.ai/ont/mmt/consignment#Consignment
   kind: datatype_property
@@ -14404,33 +14497,35 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#departureLocation
 - comments:
-  - Estimated arrival date and time.
+  - Estimated arrival date and time. Named per blueprints/patterns/temporal-quartet (normative naming);
+    renamed from estimatedArrivalTime in MMT 2.0.0.
   domains:
   - https://www.kairosflow.ai/ont/mmt/consignment#TransportMovement
   kind: datatype_property
   labels:
-  - estimated arrival time (ETA)
+  - estimated arrival (ETA)
   module_uri: https://www.kairosflow.ai/ont/mmt/consignment
   ranges:
   - http://www.w3.org/2001/XMLSchema#dateTime
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
   sources: *id031
   superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt/consignment#estimatedArrivalTime
+  uri: https://www.kairosflow.ai/ont/mmt/consignment#estimatedArrival
 - comments:
-  - Estimated departure date and time.
+  - Estimated departure date and time. Named per blueprints/patterns/temporal-quartet (normative naming);
+    renamed from estimatedDepartureTime in MMT 2.0.0.
   domains:
   - https://www.kairosflow.ai/ont/mmt/consignment#TransportMovement
   kind: datatype_property
   labels:
-  - estimated departure time (ETD)
+  - estimated departure (ETD)
   module_uri: https://www.kairosflow.ai/ont/mmt/consignment
   ranges:
   - http://www.w3.org/2001/XMLSchema#dateTime
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
   sources: *id031
   superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt/consignment#estimatedDepartureTime
+  uri: https://www.kairosflow.ai/ont/mmt/consignment#estimatedDeparture
 - comments:
   - Date/time when consignment exited the country of export.
   domains:
@@ -14869,7 +14964,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#masterReferenceNumber
 - comments:
-  - UN/CEFACT transport mode code (1-9).
+  - UN/CEFACT transport mode code (1-9). Inherited from the leg like transportMode above — see blueprints/patterns/multimodal-order-leg
+    grain 4 and MMT/README.md on reifying TransportMovement + modeCode into leg subclasses.
   domains:
   - https://www.kairosflow.ai/ont/mmt/consignment#TransportMovement
   kind: datatype_property
@@ -14967,7 +15063,11 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#stageCode
 - comments:
-  - 'Mode of transport: MARITIME, AIR, RAIL, ROAD, INLAND_WATERWAY.'
+  - 'Mode of transport: MARITIME, AIR, RAIL, ROAD, INLAND_WATERWAY. A movement''s mode is INHERITED from
+    its leg and must agree with it (blueprints/patterns/multimodal-order-leg, grain 4): at leg grain,
+    mode is expressed by the reified leg subclasses (inland-transport InlandLeg/RailLeg/BargeLeg/RoadLeg,
+    subclasses of TransportLeg) and inland-transport:inlandMode. This scalar is a source-faithful denormalised
+    copy at movement grain (RABIE LogisticsTransportMovement), not the place mode is decided.'
   domains:
   - https://www.kairosflow.ai/ont/mmt/consignment#TransportMovement
   kind: datatype_property
@@ -15950,8 +16050,12 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/inland-transport#InlandCarrier
 - comments:
-  - "A transport leg using inland modes (rail, barge, road).\n\n    UN/CEFACT RABIE: PreCarriageLogisticsTransportMovement\
-    \ or\n    OnCarriageLogisticsTransportMovement in SupplyChainConsignmentType."
+  - "A transport leg using inland modes (rail, barge, road).\n\n    Grain 2 of blueprints/patterns/multimodal-order-leg:\
+    \ mode is reified onto the\n    leg by these subclasses of consignment:TransportLeg (a deliberate\
+    \ MMT design\n    decision — see MMT/README.md on reifying TransportMovement + modeCode); the\n  \
+    \  scalar form is :inlandMode. Cross-module IRI by prefix, imports closed by the\n    MMT root ontology\
+    \ (mmt.ttl), per MMT convention.\n\n    UN/CEFACT RABIE: PreCarriageLogisticsTransportMovement or\n\
+    \    OnCarriageLogisticsTransportMovement in SupplyChainConsignmentType."
   domains: []
   kind: class
   labels:
@@ -15960,7 +16064,8 @@ records:
   ranges: []
   source_file: derived-ontologies/MMT/current/inland-transport/inland-transport.ttl
   sources: *id035
-  superclasses: []
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/consignment#TransportLeg
   uri: https://www.kairosflow.ai/ont/mmt/inland-transport#InlandLeg
 - comments:
   - "A terminal for inland transport operations.\n\n    UN/CEFACT RABIE: LogisticsLocationType used as\
@@ -16443,6 +16548,34 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/party#TransportParty
 - comments:
+  - "The (identity, role, context, validity) link entity: one durable\n    TransportParty playing one\
+    \ role in one context for some period. Named per\n    blueprints/patterns/qualified-role-assignment\
+    \ (<Identity>RoleAssignment).\n    This — not the deprecated role subclasses — is the shape hubs reuse."
+  domains: []
+  kind: class
+  labels:
+  - Transport Party Role Assignment
+  module_uri: https://www.kairosflow.ai/ont/mmt/party
+  ranges: []
+  source_file: derived-ontologies/MMT/current/party/party.ttl
+  sources: *id037
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/party#TransportPartyRoleAssignment
+- comments:
+  - "Governed code list of transport-party roles (Consignor, Consignee,\n    Carrier, FreightForwarder,\
+    \ CustomsBroker, NotifyParty, TerminalOperator,\n    WarehouseOperator). Named per blueprints/patterns/governed-code-list\n\
+    \    (<Dimension>Code); value governance is a pack-level MDM concern."
+  domains: []
+  kind: class
+  labels:
+  - Transport Party Role Code
+  module_uri: https://www.kairosflow.ai/ont/mmt/party
+  ranges: []
+  source_file: derived-ontologies/MMT/current/party/party.ttl
+  sources: *id037
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/party#TransportPartyRoleCode
+- comments:
   - "A party operating a warehouse or storage facility.\n    \n    UN/CEFACT MMT: Provides storage and\
     \ inventory services."
   domains: []
@@ -16456,6 +16589,63 @@ records:
   superclasses:
   - https://www.kairosflow.ai/ont/mmt/party#TransportParty
   uri: https://www.kairosflow.ai/ont/mmt/party#WarehouseOperator
+- comments:
+  - The durable identity holding the role. Named per qualified-role-assignment (assignedTo<Identity>).
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/party#TransportPartyRoleAssignment
+  kind: object_property
+  labels:
+  - assigned to transport party
+  module_uri: https://www.kairosflow.ai/ont/mmt/party
+  ranges:
+  - https://www.kairosflow.ai/ont/mmt/party#TransportParty
+  source_file: derived-ontologies/MMT/current/party/party.ttl
+  sources: *id037
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/party#assignedToTransportParty
+- comments:
+  - The role held, from the governed TransportPartyRoleCode list. Named per qualified-role-assignment
+    (fixed name hasRole).
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/party#TransportPartyRoleAssignment
+  kind: object_property
+  labels:
+  - has role
+  module_uri: https://www.kairosflow.ai/ont/mmt/party
+  ranges:
+  - https://www.kairosflow.ai/ont/mmt/party#TransportPartyRoleCode
+  source_file: derived-ontologies/MMT/current/party/party.ttl
+  sources: *id037
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/party#hasRole
+- comments:
+  - Start of the assignment's validity period, independent of the identity's own lifecycle.
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/party#TransportPartyRoleAssignment
+  kind: datatype_property
+  labels:
+  - role valid from
+  module_uri: https://www.kairosflow.ai/ont/mmt/party
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#dateTime
+  source_file: derived-ontologies/MMT/current/party/party.ttl
+  sources: *id037
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/party#roleValidFrom
+- comments:
+  - End of the assignment's validity period; absent while the assignment holds.
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/party#TransportPartyRoleAssignment
+  kind: datatype_property
+  labels:
+  - role valid to
+  module_uri: https://www.kairosflow.ai/ont/mmt/party
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#dateTime
+  source_file: derived-ontologies/MMT/current/party/party.ttl
+  sources: *id037
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/party#roleValidTo
 - comments:
   - "A defined transport path between origin and destination.\n\n    UN/CEFACT RABIE: TransportRouteType\
     \ — identified by ID, has itinerary\n    stops (ItineraryStopTransportEvent), frequency, and scheduled\

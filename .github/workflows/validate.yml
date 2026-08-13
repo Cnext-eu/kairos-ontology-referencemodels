@@ -73,7 +73,10 @@ jobs:
 
       - name: Validate archetype blueprints
         run: python scripts/validate_archetypes.py
-      
+
+      - name: Validate pattern conformance (derived ontologies vs pattern library)
+        run: python scripts/validate_pattern_conformance.py
+
       - name: Upload validation results
         if: always()
         uses: actions/upload-artifact@v4

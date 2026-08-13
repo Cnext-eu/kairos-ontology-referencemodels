@@ -17,7 +17,8 @@ compatible_with:
   repo_tag_range: ">=1.10.0,<2.0.0"
   ontology_versions:
     DCSA:           ">=1.3.0,<2"
-    MMT:            ">=1.1.0,<2"
+    # MMT 2.0.0: temporal-quartet property renames (clean break) + role-assignment machinery.
+    MMT:            ">=2.0.0,<3"
     IMO:            ">=1.0.0,<2"
     WCO:            ">=1.2.0,<2"
     Sustainability: ">=1.0.0,<2"

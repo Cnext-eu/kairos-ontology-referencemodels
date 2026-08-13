@@ -1,0 +1,135 @@
+@prefix : <https://www.kairosflow.ai/ont/mmt/events#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/mmt/events> a owl:Ontology ;
+    dcterms:title "MMT Events Domain" ;
+    dcterms:description """Transport event classes for the Kairos Multi-Modal Transport ontology.
+
+    Covers departure, arrival, loading, discharge, pickup, delivery, transfer,
+    customs clearance, warehouse storage, and inspection events.
+    Based on UN/CEFACT MMT Reference Data Model.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
+    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
+    rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
+
+#################################################################
+#    Event Classes
+#################################################################
+
+:TransportEvent a owl:Class ;
+    rdfs:label "Transport Event" ;
+    rdfs:comment """An occurrence in the transport lifecycle.
+    
+    UN/CEFACT MMT: Base class for all transport events.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :eventDateTime ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:LoadingEvent a owl:Class ;
+    rdfs:label "Loading Event" ;
+    rdfs:comment """Cargo being loaded onto transport means.
+    
+    UN/CEFACT MMT: Loading onto vessel, aircraft, truck, etc.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:DischargeEvent a owl:Class ;
+    rdfs:label "Discharge Event" ;
+    rdfs:comment """Cargo being discharged from transport means.
+    
+    UN/CEFACT MMT: Unloading from vehicle, vessel, aircraft.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:DepartureEvent a owl:Class ;
+    rdfs:label "Departure Event" ;
+    rdfs:comment """Transport means departing from a location.
+    
+    UN/CEFACT MMT: Actual or estimated departure.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:ArrivalEvent a owl:Class ;
+    rdfs:label "Arrival Event" ;
+    rdfs:comment """Transport means arriving at a location.
+    
+    UN/CEFACT MMT: Actual or estimated arrival.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:PickupEvent a owl:Class ;
+    rdfs:label "Pickup Event" ;
+    rdfs:comment """Cargo picked up from consignor.
+    
+    UN/CEFACT MMT: Collection of goods for transport.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:DeliveryEvent a owl:Class ;
+    rdfs:label "Delivery Event" ;
+    rdfs:comment """Cargo delivered to consignee.
+    
+    UN/CEFACT MMT: Final delivery of goods.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:TransferEvent a owl:Class ;
+    rdfs:label "Transfer Event" ;
+    rdfs:comment """Cargo transferred between transport means.
+    
+    UN/CEFACT MMT: Transshipment, intermodal transfer.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:CustomsClearanceEvent a owl:Class ;
+    rdfs:label "Customs Clearance Event" ;
+    rdfs:comment """Cargo cleared through customs.
+    
+    UN/CEFACT MMT: Import, export, or transit clearance.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:WarehouseStorageEvent a owl:Class ;
+    rdfs:label "Warehouse Storage Event" ;
+    rdfs:comment """Cargo entering or leaving warehouse storage.
+    
+    UN/CEFACT MMT: Warehouse receipt, warehouse release.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:InspectionEvent a owl:Class ;
+    rdfs:label "Inspection Event" ;
+    rdfs:comment """Cargo inspection by authorities or parties.
+    
+    UN/CEFACT MMT: Customs, security, or quality inspection.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:InspectionStatus a owl:Class ;
+    rdfs:label "Inspection Status" ;
+    rdfs:comment """The status result of a cargo or equipment inspection.
+
+    UN/CEFACT RABIE: InspectionStatusType — pass, fail, conditional,
+    or pending status of customs, security, or quality inspection.""" .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:eventDateTime a owl:DatatypeProperty ;
+    rdfs:label "event date time" ;
+    rdfs:comment "Date and time when event occurred or is scheduled." ;
+    rdfs:domain :TransportEvent ;
+    rdfs:range xsd:dateTime .
+
+:eventType a owl:DatatypeProperty ;
+    rdfs:label "event type" ;
+    rdfs:comment "Type of transport event." ;
+    rdfs:domain :TransportEvent ;
+    rdfs:range xsd:string .
+
+:eventStatus a owl:DatatypeProperty ;
+    rdfs:label "event status" ;
+    rdfs:comment "Status: ACTUAL, ESTIMATED, PLANNED, CANCELLED." ;
+    rdfs:domain :TransportEvent ;
+    rdfs:range xsd:string .
