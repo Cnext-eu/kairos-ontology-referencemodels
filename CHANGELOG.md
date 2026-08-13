@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### data-domains — drop the unread `folder:` key (#38)
+
+#### Removed
+- The `folder: "model/ontologies/<id>/"` key from all 22 domains in each of the logistics and
+  financial-services `client-hub-blueprint/data-domains.yaml` files, and its declaration from
+  `accelerator-packs/_schema/data-domains.schema.json`. The key stated a directory-per-domain
+  layout nothing implements: the toolkit derives the flat `model/ontologies/<id>.ttl` path from
+  `id` and never reads `folder`, so the key was a second place for the path convention to drift
+  (closes #38).
+
 Two changes, both from the same QA pass and shipping together. **Part 2** names the contract and
 retires the last hand-maintained restatement of it; **Part 1** below made the derived surfaces
 generated or tested.

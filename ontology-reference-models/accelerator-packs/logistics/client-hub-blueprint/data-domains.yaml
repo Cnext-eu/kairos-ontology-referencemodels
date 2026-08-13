@@ -20,7 +20,6 @@ groups:
 
       - id: party
         name: "Party, Role & Organisation"
-        folder: "model/ontologies/party/"
         owns: "Legal entities, customers, suppliers, carriers, terminal operators, agents, authorities, contacts, roles, and organisational hierarchy."
         does_not_own: "Contracts, bookings, invoices, operational events, or terminal moves."
         imports:
@@ -45,7 +44,6 @@ groups:
 
       - id: commercial
         name: "Customer, Contract & Commercial Agreement"
-        folder: "model/ontologies/commercial/"
         owns: "Commercial relationships, service agreements, trade terms, customer commitments, pricing conditions at contract level."
         does_not_own: "Surcharge calculation, invoice posting, booking execution, or terminal tariff events."
         imports:
@@ -58,7 +56,6 @@ groups:
 
       - id: booking
         name: "Booking, Quote & Order Management"
-        folder: "model/ontologies/booking/"
         owns: "Booking requests, quotes, transport orders, customer instructions, booking confirmation, and booking lifecycle."
         does_not_own: "Transport execution events, invoices, vessel schedules, terminal handling, or the transport mode of any individual leg."
         grain_note: >
@@ -112,7 +109,6 @@ groups:
 
       - id: financial
         name: "Tariff, Surcharge, Invoice, Settlement & Operational Finance"
-        folder: "model/ontologies/financial/"
         owns: "Tariff structures, surcharges (BAF, CAF, THC, PSS), freight charges, demurrage and detention, invoices, credit notes, settlement, payment allocation, trade finance (L/C, documentary collection), cost allocation, cost-to-serve, budget variance, revenue attribution, yield metrics, load factor, and profitability analysis."
         does_not_own: "Customer contracts, booking lifecycle, emissions methodology, operational events, general ledger chart-of-accounts, or working capital metrics (DSO, DPO, cash conversion cycle) — those are client extensions."
         extension_note: >
@@ -153,7 +149,6 @@ groups:
 
       - id: consignment
         name: "Consignment, Shipment & Transport Movement"
-        folder: "model/ontologies/consignment/"
         owns: "Consignments, shipments, transport legs, multimodal chains, handovers, and transport status."
         does_not_own: "Terminal micro-events, commercial pricing, customs declarations, or vehicle service details."
         imports:
@@ -169,7 +164,6 @@ groups:
 
       - id: cargo
         name: "Cargo, Goods & Cargo Unit"
-        folder: "model/ontologies/cargo/"
         owns: "Cargo description, goods classification, packages, weights, dimensions, commodity attributes, and handling requirements."
         does_not_own: "Transport equipment, terminal moves, automotive services, or DG regulatory rules."
         overlaps:
@@ -191,7 +185,6 @@ groups:
 
       - id: equipment
         name: "Cargo Equipment & Fleet Equipment"
-        folder: "model/ontologies/equipment/"
         owns: "Trailers, containers, tank containers, reefer units, chassis, swap bodies, equipment identifiers, and equipment status."
         does_not_own: "Vessel fleet, terminal cranes, cargo contents, or operational moves."
         imports:
@@ -207,7 +200,6 @@ groups:
 
       - id: route-schedule
         name: "Route, Network, Schedule & Service"
-        folder: "model/ontologies/route-schedule/"
         owns: "Service network, routes, corridors, sailing schedules, service loops, cut-offs, and transit times."
         does_not_own: "Actual cargo loaded, terminal moves, invoices, or customer contracts."
         imports:
@@ -226,7 +218,6 @@ groups:
 
       - id: intermodal
         name: "Intermodal Rail, Barge & Inland Execution"
-        folder: "model/ontologies/intermodal/"
         owns: "Inland legs, rail/barge connections, road execution, terminal-to-terminal handovers, inland route execution, train running and rolling-stock composition."
         does_not_own: "Maritime voyage execution, terminal yard moves, cargo master data, customer contracts, or the rail path/consignment reservation (that is booking, grain 3)."
         grain_note: >
@@ -257,7 +248,6 @@ groups:
 
       - id: vessel-maritime
         name: "Vessel, Fleet & Maritime Operations"
-        folder: "model/ontologies/vessel-maritime/"
         owns: "Vessels, vessel characteristics, voyages, sea legs, port calls, berthing, fleet capabilities, statutory certificates, crew management, environmental compliance (SEEMP, BWMP, SOPEP), and maritime security (ISPS, ship security plans)."
         does_not_own: "Terminal yard moves, customer bookings, cargo commercial terms, or emissions formulas."
         overlaps:
@@ -296,7 +286,6 @@ groups:
 
       - id: terminal-operations
         name: "Terminal, Yard, Berth, Gate & Handling Operations"
-        folder: "model/ontologies/terminal-operations/"
         owns: "Terminal infrastructure, yard areas, gates, berths, storage zones, stevedoring, load/discharge moves, and handling instructions."
         does_not_own: "Customer contracts, route network, vessel master data, cargo semantics, or customs declarations."
         imports:
@@ -318,7 +307,6 @@ groups:
 
       - id: roro
         name: "RoRo Operations"
-        folder: "model/ontologies/roro/"
         owns: "RoRo-specific cargo concepts: trailers, self-drive units, rolling machinery, lane-metre planning, RoRo load/discharge context."
         does_not_own: "Generic cargo master data, vessel master data, terminal yard moves, or commercial charges."
         imports:
@@ -335,7 +323,6 @@ groups:
 
       - id: automotive
         name: "Automotive Logistics & Vehicle Services"
-        folder: "model/ontologies/automotive/"
         owns: "Vehicle-unit lifecycle, PDI, wash, enhancement, modification, technical service, body repair, storage, and release readiness."
         does_not_own: "Generic RoRo handling, general cargo classification, terminal yard master data, or contract terms."
         imports:
@@ -352,7 +339,6 @@ groups:
 
       - id: dangerous-goods
         name: "Dangerous Goods & Cargo Restrictions"
-        folder: "model/ontologies/dangerous-goods/"
         owns: "DG restrictions, hazardous cargo attributes, acceptance rules, route/terminal/vessel restrictions, and regulatory classes."
         does_not_own: "All cargo classification, customs declarations, booking lifecycle, or incident response."
         imports:
@@ -365,7 +351,6 @@ groups:
 
       - id: customs
         name: "Customs, Border & Regulatory Declarations"
-        folder: "model/ontologies/customs/"
         owns: "Customs declarations, goods items, packaging, customs procedures, border filings, regulatory declarations, declarants, brokers, consignees/consignors, customs documents (SAD, carnets), customs offices, border crossings, bonded warehouses, free zones, and regulatory status."
         does_not_own: "Transport execution, cargo operations, commercial contracts, or DG acceptance rules."
         overlaps:
@@ -395,7 +380,6 @@ groups:
 
       - id: compliance
         name: "Compliance, Governance, Policy & Legal"
-        folder: "model/ontologies/compliance/"
         owns: "Regulatory policies, corporate governance, privacy, audit evidence, and legal document metadata."
         does_not_own: "Customs filings, cargo restrictions, commercial contracts, or invoice settlement."
         imports:
@@ -407,7 +391,6 @@ groups:
 
       - id: sustainability
         name: "Sustainability, Carbon, Energy & ESG"
-        folder: "model/ontologies/sustainability/"
         owns: "Carbon intensity, emissions factors, energy consumption, modal-shift metrics, Scope 1/2/3 reporting, and ESG indicators."
         does_not_own: "Commercial surcharge pricing, operational events, or vessel/terminal master data."
         imports:
@@ -429,7 +412,6 @@ groups:
 
       - id: events
         name: "Track & Trace / Operational Events"
-        folder: "model/ontologies/events/"
         owns: "Normalised event model across cargo, equipment, vessel, terminal, gate, handover, and multimodal transport events."
         does_not_own: "Master definitions of cargo, vessel, equipment, terminal, route, or customer."
         overlaps:
@@ -461,7 +443,6 @@ groups:
 
       - id: claims
         name: "Claims, Damage, Exception & Incident Management"
-        folder: "model/ontologies/claims/"
         owns: "Damage records, claims, operational exceptions, incidents, root-cause classification, and resolution status."
         does_not_own: "Routine operational events, cargo master data, vehicle service completion, or invoice settlement."
         imports: []
@@ -470,7 +451,6 @@ groups:
 
       - id: documents
         name: "Documents, Messages & Evidence"
-        folder: "model/ontologies/documents/"
         owns: "Business and transport documents, message metadata, document versions, evidence, and document-to-shipment links."
         does_not_own: "Semantic truth of cargo, bookings, customs, or invoices — references them via links."
         imports:
@@ -489,7 +469,6 @@ groups:
 
       - id: reference-data
         name: "Master Data, Code Lists & Reference Data"
-        folder: "model/ontologies/reference-data/"
         owns: "Shared identifiers, code lists, location codes, port codes, equipment type codes, status codes, UoM, and currency."
         does_not_own: "Domain-specific transactions or operational events."
         imports:
@@ -512,7 +491,6 @@ groups:
 
       - id: mdm
         name: "MDM Hub (Golden Records, Crosswalks, Match/Merge)"
-        folder: "model/ontologies/mdm/"
         owns: "Golden records, crosswalks (source-to-golden links), source system registry, match groups, merge events, and survivorship rules."
         does_not_own: "Domain-specific entity definitions — it masters them via reference."
         imports: []
