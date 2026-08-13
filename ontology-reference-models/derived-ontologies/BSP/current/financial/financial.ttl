@@ -498,22 +498,25 @@
     rdfs:range :LetterOfCredit .
 
 :issuingBank a owl:ObjectProperty ;
+    rdfs:subPropertyOf party:hasParty ;
     rdfs:label "issuing bank" ;
-    rdfs:comment "The bank that issues the letter of credit on behalf of the buyer." ;
+    rdfs:comment "The bank that issues the letter of credit on behalf of the buyer. Range widened from the deprecated party:Bank overlay to party:TradeParty (BSP 2.0.0) — the banking role is carried by the property itself and, in role-assignment form, by a TradePartyRoleAssignment with PartyRoleCode BANK; party:Bank stays declared for message-level interop." ;
     rdfs:domain :LetterOfCredit ;
-    rdfs:range party:Bank .
+    rdfs:range party:TradeParty .
 
 :advisingBank a owl:ObjectProperty ;
+    rdfs:subPropertyOf party:hasParty ;
     rdfs:label "advising bank" ;
-    rdfs:comment "The bank in the seller's country that advises the L/C to the beneficiary." ;
+    rdfs:comment "The bank in the seller's country that advises the L/C to the beneficiary. Range widened from the deprecated party:Bank overlay to party:TradeParty (BSP 2.0.0) — the banking role is carried by the property itself and, in role-assignment form, by a TradePartyRoleAssignment with PartyRoleCode BANK; party:Bank stays declared for message-level interop." ;
     rdfs:domain :LetterOfCredit ;
-    rdfs:range party:Bank .
+    rdfs:range party:TradeParty .
 
 :confirmingBank a owl:ObjectProperty ;
+    rdfs:subPropertyOf party:hasParty ;
     rdfs:label "confirming bank" ;
-    rdfs:comment "The bank that adds its confirmation (guarantee) to the L/C." ;
+    rdfs:comment "The bank that adds its confirmation (guarantee) to the L/C. Range widened from the deprecated party:Bank overlay to party:TradeParty (BSP 2.0.0) — the banking role is carried by the property itself and, in role-assignment form, by a TradePartyRoleAssignment with PartyRoleCode BANK; party:Bank stays declared for message-level interop." ;
     rdfs:domain :LetterOfCredit ;
-    rdfs:range party:Bank .
+    rdfs:range party:TradeParty .
 
 :hasFinancingArrangement a owl:ObjectProperty ;
     rdfs:label "has financing arrangement" ;

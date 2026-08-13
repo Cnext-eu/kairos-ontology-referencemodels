@@ -251,41 +251,59 @@
 #    Object Properties
 #################################################################
 
+:hasParty a owl:ObjectProperty ;
+    rdfs:label "has party" ;
+    rdfs:comment """REUSABLE — no rdfs:domain by design: the typed specialisations
+    attach to different subjects (CommercialTransaction, Shipment, Product,
+    LetterOfCredit), and asserting a shared domain would infer that class onto
+    every hub class using this property. Generic landing pad relating a subject
+    to a participating trade party (BSP 2.0.0, mirroring mmt/consignment#hasParty).
+    The typed roles :hasBuyer, :hasSeller, :hasShipper, :hasConsignee, :hasCarrier,
+    :hasManufacturer and the bsp/financial bank properties are specialisations.
+    Cardinality: 0..n.""" ;
+    rdfs:range :TradeParty .
+
 :hasBuyer a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
     rdfs:label "has buyer" ;
-    rdfs:comment "Identifies the buyer." ;
+    rdfs:comment "Identifies the buyer. Range widened from the deprecated :Buyer overlay to :TradeParty (BSP 2.0.0) — the intended role is carried by the property itself and, in role-assignment form, by a TradePartyRoleAssignment with PartyRoleCode BUYER; :Buyer stays declared for message-level interop." ;
     rdfs:domain comm:CommercialTransaction ;
-    rdfs:range :Buyer .
+    rdfs:range :TradeParty .
 
 :hasSeller a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
     rdfs:label "has seller" ;
-    rdfs:comment "Identifies the seller." ;
+    rdfs:comment "Identifies the seller. Range widened from the deprecated :Seller overlay to :TradeParty (BSP 2.0.0) — the intended role is carried by the property itself and, in role-assignment form, by a TradePartyRoleAssignment with PartyRoleCode SELLER; :Seller stays declared for message-level interop." ;
     rdfs:domain comm:CommercialTransaction ;
-    rdfs:range :Seller .
+    rdfs:range :TradeParty .
 
 :hasShipper a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
     rdfs:label "has shipper" ;
-    rdfs:comment "Identifies the shipper/consignor." ;
+    rdfs:comment "Identifies the shipper/consignor. Range widened from the deprecated :Shipper overlay to :TradeParty (BSP 2.0.0) — the intended role is carried by the property itself and, in role-assignment form, by a TradePartyRoleAssignment with PartyRoleCode SHIPPER; :Shipper stays declared for message-level interop." ;
     rdfs:domain comm:Shipment ;
-    rdfs:range :Shipper .
+    rdfs:range :TradeParty .
 
 :hasConsignee a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
     rdfs:label "has consignee" ;
-    rdfs:comment "Identifies the consignee." ;
+    rdfs:comment "Identifies the consignee. Range widened from the deprecated :Consignee overlay to :TradeParty (BSP 2.0.0) — the intended role is carried by the property itself and, in role-assignment form, by a TradePartyRoleAssignment with PartyRoleCode CONSIGNEE; :Consignee stays declared for message-level interop." ;
     rdfs:domain comm:Shipment ;
-    rdfs:range :Consignee .
+    rdfs:range :TradeParty .
 
 :hasCarrier a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
     rdfs:label "has carrier" ;
-    rdfs:comment "Identifies the carrier." ;
+    rdfs:comment "Identifies the carrier. Range widened from the deprecated :Carrier overlay to :TradeParty (BSP 2.0.0) — the intended role is carried by the property itself and, in role-assignment form, by a TradePartyRoleAssignment with PartyRoleCode CARRIER; :Carrier stays declared for message-level interop." ;
     rdfs:domain comm:Shipment ;
-    rdfs:range :Carrier .
+    rdfs:range :TradeParty .
 
 :hasManufacturer a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
     rdfs:label "has manufacturer" ;
-    rdfs:comment "Identifies the manufacturer." ;
+    rdfs:comment "Identifies the manufacturer. Range widened from the deprecated :Manufacturer overlay to :TradeParty (BSP 2.0.0) — the intended role is carried by the property itself and, in role-assignment form, by a TradePartyRoleAssignment with PartyRoleCode MANUFACTURER; :Manufacturer stays declared for message-level interop." ;
     rdfs:domain comm:Product ;
-    rdfs:range :Manufacturer .
+    rdfs:range :TradeParty .
 
 :hasContact a owl:ObjectProperty ;
     rdfs:label "has contact" ;
