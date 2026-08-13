@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### qualified-role-assignment — heterogeneous identity types documented (#43)
+
+#### Added
+- A "Heterogeneous identity types (context, not a requirement)" section in
+  `qualified-role-assignment/pattern.md` (closes #43). A reproducibility test — two blind,
+  independent authoring runs from identical evidence — resolved the same two-identity-type case
+  two different, reasonable ways because the pattern was silent on it. The section names both
+  legitimate shapes (one assignment class per concrete identity type, or one class ranging over
+  a shared supertype), warns against minting an abstract supertype nothing else needs, and makes
+  explicit that the `physical_simplification` escape hatch is evaluated **per identity type**,
+  not once per pattern application. Deliberately prose-only context with no enforcement surface
+  and no `pattern.yaml` change — the structural choice stays a judgment call.
+
 Two changes, both from the same QA pass and shipping together. **Part 2** names the contract and
 retires the last hand-maintained restatement of it; **Part 1** below made the derived surfaces
 generated or tested.
