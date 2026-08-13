@@ -394,18 +394,9 @@
     rdfs:domain :Shipment ;
     rdfs:range xsd:date .
 
-:estimatedDeliveryDate a owl:DatatypeProperty ;
-    rdfs:label "estimated delivery date" ;
-    rdfs:comment """Estimated date of delivery of the shipment.
-
-    UN/CEFACT web vocabulary: HeaderTradeDelivery carries estimatedDeliveryEvent
-    (alongside actualDeliveryEvent / plannedDeliveryEvent / requestedDeliveryEvent);
-    the date itself is the event's occurrenceDateTime. This property flattens that
-    event -> date pair to a single xsd:date — a deliberate modelling simplification,
-    matching :actualDeliveryDate. Renamed from :expectedDeliveryDate in BSP 2.0.0
-    (issue #50): 'estimated' is the source's own qualifier; no expected* delivery
-    element exists in the UN/CEFACT vocabulary.""" ;
-    rdfs:seeAlso <https://vocabulary.uncefact.org/estimatedDeliveryEvent> ;
+:expectedDeliveryDate a owl:DatatypeProperty ;
+    rdfs:label "expected delivery date" ;
+    rdfs:comment "Expected date of delivery." ;
     rdfs:domain :Shipment ;
     rdfs:range xsd:date .
 

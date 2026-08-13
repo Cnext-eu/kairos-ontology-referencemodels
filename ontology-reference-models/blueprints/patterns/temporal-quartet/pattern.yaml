@@ -88,11 +88,6 @@ anti_patterns:
         reason: "IMO Compendium / port-call message term (ATA) — cited source vocabulary."
       - name: https://www.kairosflow.ai/ont/imo/port-call#actualTimeOfDeparture
         reason: "IMO Compendium / port-call message term (ATD) — cited source vocabulary."
-      # Audit-TODO: no confirmed BSP D23B element backs this name. Follow-up
-      # issue tracks renaming to estimatedDeliveryDate in a future BSP minor
-      # if the citation cannot be produced.
-      - name: https://www.kairosflow.ai/ont/bsp/commercial#expectedDeliveryDate
-        reason: "AUDIT-TODO — exempted pending source verification; rename to estimatedDeliveryDate in a future BSP release if no BSP D23B element backs it."
   - id: overwrite-actual-in-place
     description: "A correction to an actual* value overwrites the existing literal instead of appending a new observation."
     rejection_reason: "Actual values are immutable once recorded; corrections are new events, not mutations."
