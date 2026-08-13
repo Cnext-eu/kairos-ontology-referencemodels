@@ -22,7 +22,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-06-20"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    owl:versionInfo "2.0.0" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
 
@@ -306,13 +306,13 @@
 
 :transportMode a owl:DatatypeProperty ;
     rdfs:label "transport mode" ;
-    rdfs:comment "Mode of transport: MARITIME, AIR, RAIL, ROAD, INLAND_WATERWAY." ;
+    rdfs:comment "Mode of transport: MARITIME, AIR, RAIL, ROAD, INLAND_WATERWAY. A movement's mode is INHERITED from its leg and must agree with it (blueprints/patterns/multimodal-order-leg, grain 4): at leg grain, mode is expressed by the reified leg subclasses (inland-transport InlandLeg/RailLeg/BargeLeg/RoadLeg, subclasses of TransportLeg) and inland-transport:inlandMode. This scalar is a source-faithful denormalised copy at movement grain (RABIE LogisticsTransportMovement), not the place mode is decided." ;
     rdfs:domain :TransportMovement ;
     rdfs:range xsd:string .
 
 :modeCode a owl:DatatypeProperty ;
     rdfs:label "mode code" ;
-    rdfs:comment "UN/CEFACT transport mode code (1-9)." ;
+    rdfs:comment "UN/CEFACT transport mode code (1-9). Inherited from the leg like transportMode above — see blueprints/patterns/multimodal-order-leg grain 4 and MMT/README.md on reifying TransportMovement + modeCode into leg subclasses." ;
     rdfs:domain :TransportMovement ;
     rdfs:range xsd:string .
 
@@ -400,27 +400,27 @@
     rdfs:domain :Consignment ;
     rdfs:range xsd:string .
 
-:estimatedDepartureTime a owl:DatatypeProperty ;
-    rdfs:label "estimated departure time (ETD)" ;
-    rdfs:comment "Estimated departure date and time." ;
+:estimatedDeparture a owl:DatatypeProperty ;
+    rdfs:label "estimated departure (ETD)" ;
+    rdfs:comment "Estimated departure date and time. Named per blueprints/patterns/temporal-quartet (normative naming); renamed from estimatedDepartureTime in MMT 2.0.0." ;
     rdfs:domain :TransportMovement ;
     rdfs:range xsd:dateTime .
 
-:actualDepartureTime a owl:DatatypeProperty ;
-    rdfs:label "actual departure time (ATD)" ;
-    rdfs:comment "Actual departure date and time." ;
+:actualDeparture a owl:DatatypeProperty ;
+    rdfs:label "actual departure (ATD)" ;
+    rdfs:comment "Actual departure date and time. Named per blueprints/patterns/temporal-quartet (normative naming); renamed from actualDepartureTime in MMT 2.0.0." ;
     rdfs:domain :TransportMovement ;
     rdfs:range xsd:dateTime .
 
-:estimatedArrivalTime a owl:DatatypeProperty ;
-    rdfs:label "estimated arrival time (ETA)" ;
-    rdfs:comment "Estimated arrival date and time." ;
+:estimatedArrival a owl:DatatypeProperty ;
+    rdfs:label "estimated arrival (ETA)" ;
+    rdfs:comment "Estimated arrival date and time. Named per blueprints/patterns/temporal-quartet (normative naming); renamed from estimatedArrivalTime in MMT 2.0.0." ;
     rdfs:domain :TransportMovement ;
     rdfs:range xsd:dateTime .
 
-:actualArrivalTime a owl:DatatypeProperty ;
-    rdfs:label "actual arrival time (ATA)" ;
-    rdfs:comment "Actual arrival date and time." ;
+:actualArrival a owl:DatatypeProperty ;
+    rdfs:label "actual arrival (ATA)" ;
+    rdfs:comment "Actual arrival date and time. Named per blueprints/patterns/temporal-quartet (normative naming); renamed from actualArrivalTime in MMT 2.0.0." ;
     rdfs:domain :TransportMovement ;
     rdfs:range xsd:dateTime .
 
@@ -466,7 +466,7 @@
 
 :availabilityDueDateTime a owl:DatatypeProperty ;
     rdfs:label "availability due date time" ;
-    rdfs:comment "Date/time when consignment is due to be available for collection." ;
+    rdfs:comment "Date/time when consignment is due to be available for collection. Mirrors UN/CEFACT RABIE v101 SupplyChainConsignment.AvailabilityDueDateTime — source fidelity wins over the temporal-quartet synonym ban here (see CONTRACT.md, Patterns vs derived modules); exempted with citation in blueprints/patterns/temporal-quartet/pattern.yaml." ;
     rdfs:domain :Consignment ;
     rdfs:range xsd:dateTime .
 

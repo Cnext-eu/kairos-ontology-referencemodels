@@ -61,6 +61,7 @@ surfaces:
       - tests/test_toolkit_contract.py::test_bulk_pattern_load_emits_no_warnings
       - scripts/validate_archetypes.py (check 7, multimodal-order-leg mode_bindings)
       - scripts/validate_structure.py (pattern.yaml schema + template.ttl guard)
+      - scripts/validate_pattern_conformance.py (derived ontologies vs normative patterns)
     notes: >
       The schema is open at the top level (the toolkit's loader promotes seven known keys and
       preserves the rest in `extra`; custom top-level blocks differ per pattern by design) and

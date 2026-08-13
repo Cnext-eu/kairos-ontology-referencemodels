@@ -34,6 +34,21 @@ anti_patterns:
   - id: subclass-identity-by-role
     description: "Identity is subclassed by role, e.g. Shipper subClassOf Party."
     rejection_reason: "Breaks the moment one organisation plays two roles; requires re-typing on role change."
+    # Exempt role parents are STANDARDS OVERLAYS with LIVE role subclasses:
+    # derived modules mirroring their source standard's role-typed party
+    # contexts for fidelity and message-level interop. The BSP/MMT role
+    # subclasses need no entry here — they are owl:deprecated (BSP 1.6.0 /
+    # MMT 2.0.0, superseded by TradePartyRoleAssignment /
+    # TransportPartyRoleAssignment) and deprecated subjects are outside
+    # detection; un-deprecating one revives the warning, which is the
+    # guard working. See CONTRACT.md, "Patterns vs derived modules", and
+    # overlap-register.yaml 'party-role-parents' for the parked
+    # durable-party-identity stakeholder decision.
+    exemptions:
+      - name: https://www.kairosflow.ai/ont/dcsa/party#ShippingParty
+        reason: "DCSA standards overlay mirroring DCSA's role-typed party shape; hybrid role-assignment machinery pending the party-identity stakeholder decision (overlap-register.yaml 'party-role-parents')."
+      - name: https://www.kairosflow.ai/ont/imo/party#MaritimeParty
+        reason: "IMO standards overlay mirroring the IMO Compendium's role-typed party shape; hybrid role-assignment machinery pending the same party-identity stakeholder decision."
   - id: equal-labels-treated-as-equivalent
     description: "BSP TradeParty, DCSA ShippingParty, and MMT TransportParty treated as owl:equivalentClass without checking grain."
     rejection_reason: "Similar labels do not establish equivalence; each may be a role overlay on the same identity or a distinct grain."

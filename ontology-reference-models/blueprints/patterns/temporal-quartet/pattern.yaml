@@ -51,12 +51,48 @@ anti_patterns:
     banned_name_tokens: [eta, etd, ata, atd, expected, due]
     applies_to_ranges: ["xsd:dateTime", "xsd:date", "xsd:time"]
     exemptions:
+      # Domain terms of art — deadlines, not quartet-event timestamps.
       - name: dueDate
         reason: "BSP financial term of art — payment due date (bsp/financial), not a quartet-event timestamp."
       - name: dischargeDueDate
         reason: "WCO customs term of art (wco/customs) — discharge deadline, not a quartet-event timestamp."
       - name: reviewDueDate
         reason: "IMO maritime-security term of art (imo/maritime-security) — review deadline, not a quartet-event timestamp."
+      # Source-fidelity exemptions — the derived module mirrors a cited source
+      # element name; source fidelity wins over the pattern (CONTRACT.md,
+      # "Patterns vs derived modules"). Full IRIs: exempt the cited module's
+      # term only, not every reuse of the name.
+      - name: https://www.kairosflow.ai/ont/mmt/consignment#availabilityDueDateTime
+        reason: "UN/CEFACT RABIE v101 SupplyChainConsignment.AvailabilityDueDateTime — cited source element."
+      - name: https://www.kairosflow.ai/ont/rail/train-running#actualArrivalTime
+        reason: "TAF TSI ArrivalTimeAtLocationActual (EU 1305/2012 Annex D.2) — cited source element."
+      - name: https://www.kairosflow.ai/ont/rail/train-running#actualDepartureTime
+        reason: "TAF TSI DepartureTimeAtLocationActual (EU 1305/2012 Annex D.2) — cited source element."
+      - name: https://www.kairosflow.ai/ont/dcsa/events#estimatedTimeOfArrival
+        reason: "DCSA Track & Trace field name (eventDateTime classifier EST + ARRI) — cited source vocabulary."
+      - name: https://www.kairosflow.ai/ont/dcsa/events#estimatedTimeOfDeparture
+        reason: "DCSA Track & Trace field name — cited source vocabulary."
+      - name: https://www.kairosflow.ai/ont/dcsa/events#actualTimeOfArrival
+        reason: "DCSA Track & Trace field name — cited source vocabulary."
+      - name: https://www.kairosflow.ai/ont/dcsa/events#actualTimeOfDeparture
+        reason: "DCSA Track & Trace field name — cited source vocabulary."
+      - name: https://www.kairosflow.ai/ont/dcsa/booking#plannedArrivalDate
+        reason: "DCSA Booking (BKG) field name — cited source vocabulary."
+      - name: https://www.kairosflow.ai/ont/dcsa/booking#plannedDepartureDate
+        reason: "DCSA Booking (BKG) field name — cited source vocabulary."
+      - name: https://www.kairosflow.ai/ont/imo/port-call#estimatedTimeOfArrival
+        reason: "IMO Compendium / port-call message term (ETA) — cited source vocabulary."
+      - name: https://www.kairosflow.ai/ont/imo/port-call#estimatedTimeOfDeparture
+        reason: "IMO Compendium / port-call message term (ETD) — cited source vocabulary."
+      - name: https://www.kairosflow.ai/ont/imo/port-call#actualTimeOfArrival
+        reason: "IMO Compendium / port-call message term (ATA) — cited source vocabulary."
+      - name: https://www.kairosflow.ai/ont/imo/port-call#actualTimeOfDeparture
+        reason: "IMO Compendium / port-call message term (ATD) — cited source vocabulary."
+      # Audit-TODO: no confirmed BSP D23B element backs this name. Follow-up
+      # issue tracks renaming to estimatedDeliveryDate in a future BSP minor
+      # if the citation cannot be produced.
+      - name: https://www.kairosflow.ai/ont/bsp/commercial#expectedDeliveryDate
+        reason: "AUDIT-TODO — exempted pending source verification; rename to estimatedDeliveryDate in a future BSP release if no BSP D23B element backs it."
   - id: overwrite-actual-in-place
     description: "A correction to an actual* value overwrites the existing literal instead of appending a new observation."
     rejection_reason: "Actual values are immutable once recorded; corrections are new events, not mutations."

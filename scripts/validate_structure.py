@@ -69,6 +69,7 @@ REF_SUFFIX_RE = re.compile(r'^(?P<stem>.+?)(Ref|Reference|Id|Identifier)$')
 DOMAIN_SIMPLE_RE = re.compile(
     r'rdfs:domain\s+(?P<domain>[A-Za-z][\w-]*:[A-Za-z][\w-]*|:[A-Za-z][\w-]*)\s*[;.]'
 )
+REUSABLE_NO_DOMAIN_RE = re.compile(r'REUSABLE\s+—\s+no rdfs:domain by design')
 
 
 class ValidationResult:
@@ -331,6 +332,18 @@ def validate_property_completeness(folder: Path, verbose: bool) -> ValidationRes
             if RDFS_DOMAIN_RE.search(block):
                 r.ok(
                     f"{ttl_rel}: {property_name} ({property_type}) has rdfs:domain",
+                    verbose,
+                    is_verbose=True,
+                )
+            elif REUSABLE_NO_DOMAIN_RE.search(block):
+                # Escape marker for deliberately domainless reusable properties:
+                # asserting a domain would infer that class onto every hub class
+                # using the property (e.g. bsp/party hasAddress + TradeParty
+                # re-created subclass-identity-by-role by the back door). The
+                # marker must be in the property's own rdfs:comment; range is
+                # still required. Documented in CONTRACT.md.
+                r.ok(
+                    f"{ttl_rel}: {property_name} ({property_type}) domainless by design (REUSABLE marker)",
                     verbose,
                     is_verbose=True,
                 )

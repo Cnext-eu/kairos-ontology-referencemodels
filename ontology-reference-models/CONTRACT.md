@@ -48,6 +48,28 @@ way: `scaffold-binding` resolves the module that owns the target class and keeps
 `blueprints/patterns/multimodal-order-leg`. An order spanning three modes has no single mode
 value; `mode_bindings[].target_iris` names the grain-3 class each mode binds to.
 
+## Patterns vs derived modules
+
+The pattern library (`blueprints/patterns/`) and the derived ontologies are both published by
+this repository, and until v1.16.0 nothing reconciled them. The precedence rule:
+
+1. **Pattern-normative naming governs every Kairos-chosen name** — everything in
+   `blueprints/ontology/`, and any derived-module term that does not mirror a cited source
+   element.
+2. **Where a derived module mirrors its source standard's element name, source fidelity wins**
+   — but only visibly: the term carries the citation in its `rdfs:comment` **and** an entry in
+   the owning pattern's `exemptions` list (`{name, reason}`, reason cites the source). The
+   exemptions list is the machine-readable record of every place a pattern yields.
+3. **An unexempted disagreement between a pattern and shipped content is a defect in this
+   repository.** `scripts/validate_pattern_conformance.py` fails the build on it. Hub authors
+   follow the pattern and file an issue here.
+
+Deliberately domainless reusable properties are marked with an `rdfs:comment` starting
+`REUSABLE — no rdfs:domain by design` (e.g. `bsp/party#hasAddress`: a `TradeParty` domain would
+infer the subsumption the qualified-role-assignment pattern bans onto every hub class using the
+property). `validate_structure.py` accepts a missing domain only with that marker; the range is
+always required.
+
 ## Rules for us
 
 **Never ship a machine-readable file with no reader.** Every stale surface this repository has
@@ -92,3 +114,18 @@ old path a release later. A hard cut breaks any hub on the previous toolkit — 
 
 Advisory surfaces (warnings, discovery prose) may change freely. Anything in
 `contract-manifest.yaml` may not.
+
+**Terms inside a published module** (class/property IRIs) have their own policy — hubs bind to
+them even though only document IRIs are listed in the manifest:
+
+- **Renaming or removing a term IRI is a breaking change and a MAJOR module bump**, with an
+  old→new table in the `CHANGELOG.md` entry. Archetype `compatible_with.ontology_versions`
+  ranges are updated in the same release, so existing hubs opt in consciously rather than
+  inheriting the break through a compatible-looking pin. (First exercised by MMT 2.0.0 —
+  the temporal-quartet renames.)
+- **Additive machinery and annotations are a minor bump**: new classes/properties,
+  `owl:deprecated true` markings, comment/citation changes. (First exercised by BSP 1.6.0 —
+  the role-assignment machinery.)
+- **`owl:deprecated true` is a signal, not a removal**: the term stays declared and resolvable
+  for at least the remainder of the current major version; conformance checks skip deprecated
+  subjects.

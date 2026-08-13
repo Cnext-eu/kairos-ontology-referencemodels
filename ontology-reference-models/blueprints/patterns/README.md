@@ -63,6 +63,12 @@ Each `pattern.md` states its normativity **per section**, not as a single blanke
 A pattern is advisory or normative per its own content, not per this README — always check the
 `normativity` block in the individual `pattern.yaml`.
 
+**Where a pattern and a derived module disagree**, the precedence rule lives in `CONTRACT.md`,
+"Patterns vs derived modules": pattern-normative naming governs Kairos-chosen names; a derived
+module mirroring a cited source element wins on source fidelity, but only through a cited entry
+in the pattern's `exemptions` list; an unexempted disagreement is a repo defect —
+`scripts/validate_pattern_conformance.py` fails the build on it.
+
 ## Layout
 
 ```

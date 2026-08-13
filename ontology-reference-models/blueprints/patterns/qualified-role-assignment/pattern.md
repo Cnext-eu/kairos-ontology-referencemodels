@@ -21,6 +21,17 @@ itinerary it appears in), temporally bounded (starts and ends independently of t
 lifecycle), or multiply-held (one identity holds several roles concurrently). Do not use it for a
 role that is a permanent, definitional attribute of the identity itself.
 
+**Standards overlays are exempt — hubs are not.** The derived party modules (`bsp/party`,
+`mmt/party`, `dcsa/party`, `imo/party`) mirror their source standards' role-typed party shapes
+for fidelity and message-level interop. The BSP/MMT role subclasses are `owl:deprecated`
+overlays (superseded by the modules' role-assignment machinery); the still-live DCSA/IMO role
+parents are named in this pattern's `exemptions`, each with a cited reason. A hub MUST NOT
+subclass its durable Party identity under any of them — it assigns
+roles through the modules' role-assignment machinery (`TradePartyRoleAssignment`,
+`TransportPartyRoleAssignment`) or its own `<Identity>RoleAssignment` per this pattern. Where a
+pattern and a derived module disagree without an exemption entry, that is a defect in this
+repository — see CONTRACT.md, "Patterns vs derived modules".
+
 ## Participants (advisory)
 
 - **Durable identity** — the party or location record, independent of any role it plays.
@@ -108,7 +119,13 @@ can be Shipper on one assignment and Consignee on another without duplicating th
 ## Anti-patterns
 
 - **Subclassing the identity by role** (`Shipper subClassOf Party`) — breaks the moment one
-  organisation plays two roles, and requires re-typing the record when its role changes.
+  organisation plays two roles, and requires re-typing the record when its role changes. The
+  exempt standards overlays (see Applicability) are the only sanctioned instances, and even
+  there the subclasses are deprecated for hub use. Watch the **back-door variant** too:
+  asserting a reusable property that declares `rdfs:domain <RoleParent>` on a hub identity
+  class infers the subsumption silently — which is why `bsp/party`'s reusable properties
+  (`hasAddress`, `hasContact`, ...) are deliberately domainless (`REUSABLE — no rdfs:domain
+  by design`).
 - **Treating equal role labels as equivalent classes** across standards (BSP `TradeParty`, DCSA
   `ShippingParty`, MMT `TransportParty`) without checking whether each is genuinely a role overlay
   on the same durable identity or a distinct grain.

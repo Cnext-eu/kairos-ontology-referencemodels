@@ -1,0 +1,195 @@
+@prefix : <https://www.kairosflow.ai/ont/bsp/reference-data#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix comm: <https://www.kairosflow.ai/ont/bsp/commercial#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/bsp/reference-data> a owl:Ontology ;
+    dcterms:title "Kairos BSP Reference Data Domain Ontology" ;
+    dcterms:description """Reference data domain of the Buy-Ship-Pay Reference Data Model.
+
+    This module defines location and measurement reference data covering:
+    - Locations: Addresses, facilities, ports, airports, warehouses
+    - Countries: Sovereign nations with ISO 3166 codes
+    - Measurements: Weight, volume, dimension, monetary amounts
+    - Code lists: UN/LOCODE, IATA codes, country codes""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-06-20"^^xsd:date ;
+    owl:versionInfo "1.5.0" ;
+    dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/> .
+
+#################################################################
+#    Location Classes
+#################################################################
+
+:Location a owl:Class ;
+    rdfs:label "Location" ;
+    rdfs:comment """A physical or logical place.
+    
+    UN/CEFACT BSP: Maps to LogisticsLocation — a logistics related
+    physical location or place.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/LogisticsLocation> .
+
+:Address a owl:Class ;
+    rdfs:label "Address" ;
+    rdfs:comment """A structured postal or physical address.
+    
+    UN/CEFACT BSP: Maps to TradeAddress — the location at which a trade
+    related organization or person may be found.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TradeAddress> ;
+    rdfs:subClassOf :Location .
+
+:Facility a owl:Class ;
+    rdfs:label "Facility" ;
+    rdfs:comment """A physical site where business activities occur.
+    
+    ISO BSP: Factories, warehouses, stores, ports.""" ;
+    rdfs:subClassOf :Location .
+
+:Port a owl:Class ;
+    rdfs:label "Port" ;
+    rdfs:comment """A maritime facility for vessel operations.
+    
+    ISO BSP: Seaport identified by UN/LOCODE.""" ;
+    rdfs:subClassOf :Facility ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/imo/locations#Port> ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/locations#Location> .
+
+:Airport a owl:Class ;
+    rdfs:label "Airport" ;
+    rdfs:comment """An air transport facility.
+    
+    ISO BSP: Identified by IATA/ICAO codes.""" ;
+    rdfs:subClassOf :Facility .
+
+:Warehouse a owl:Class ;
+    rdfs:label "Warehouse" ;
+    rdfs:comment """A storage facility for goods.
+    
+    ISO BSP: Distribution center, depot.""" ;
+    rdfs:subClassOf :Facility .
+
+:ManufacturingPlant a owl:Class ;
+    rdfs:label "Manufacturing Plant" ;
+    rdfs:comment """A facility where goods are produced.
+    
+    UN/CEFACT BSP: Maps to ProductionFacility — a man made physical structure
+    in which something is produced.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/ProductionFacility> ;
+    rdfs:subClassOf :Facility .
+
+:Country a owl:Class ;
+    rdfs:label "Country" ;
+    rdfs:comment """A sovereign nation state identified by ISO 3166 codes.
+    
+    UN/CEFACT BSP: Maps to Country — the area of land that belongs to a nation,
+    used or referenced for trade purposes.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Country> ;
+    rdfs:subClassOf :Location .
+
+#################################################################
+#    Measurement and Quantity Classes
+#################################################################
+
+:Measurement a owl:Class ;
+    rdfs:label "Measurement" ;
+    rdfs:comment """A quantified observation or dimension.
+    
+    UN/CEFACT BSP: Maps to Measurement — an amount, size, or extent
+    as established by measuring.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Measurement> .
+
+:Weight a owl:Class ;
+    rdfs:label "Weight" ;
+    rdfs:comment """A measurement of mass.
+    
+    ISO BSP: Gross weight, net weight, chargeable weight.""" ;
+    rdfs:subClassOf :Measurement .
+
+:Volume a owl:Class ;
+    rdfs:label "Volume" ;
+    rdfs:comment """A measurement of three-dimensional space.
+    
+    ISO BSP: Cubic meters, cubic feet.""" ;
+    rdfs:subClassOf :Measurement .
+
+:Dimension a owl:Class ;
+    rdfs:label "Dimension" ;
+    rdfs:comment """A linear measurement.
+    
+    ISO BSP: Length, width, height.""" ;
+    rdfs:subClassOf :Measurement .
+
+:MonetaryAmount a owl:Class ;
+    rdfs:label "Monetary Amount" ;
+    rdfs:comment """A sum of money.
+    
+    ISO BSP: Invoice amount, payment amount, duty amount.""" ;
+    rdfs:subClassOf :Measurement .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasOriginLocation a owl:ObjectProperty ;
+    rdfs:label "has origin location" ;
+    rdfs:comment "Identifies origin location." ;
+    rdfs:domain comm:Shipment ;
+    rdfs:range :Location .
+
+:hasDestinationLocation a owl:ObjectProperty ;
+    rdfs:label "has destination location" ;
+    rdfs:comment "Identifies destination location." ;
+    rdfs:domain comm:Shipment ;
+    rdfs:range :Location .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:countryCode a owl:DatatypeProperty ;
+    rdfs:label "country code" ;
+    rdfs:comment "ISO 3166 country code (2 or 3 characters)." ;
+    rdfs:domain :Country ;
+    rdfs:range xsd:string .
+
+:unLocationCode a owl:DatatypeProperty ;
+    rdfs:label "UN location code" ;
+    rdfs:comment "UN/LOCODE (5 characters)." ;
+    rdfs:domain :Location ;
+    rdfs:range xsd:string .
+
+:iataAirportCode a owl:DatatypeProperty ;
+    rdfs:label "IATA airport code" ;
+    rdfs:comment "3-letter IATA code." ;
+    rdfs:domain :Airport ;
+    rdfs:range xsd:string .
+
+:streetAddress a owl:DatatypeProperty ;
+    rdfs:label "street address" ;
+    rdfs:comment "Street name and number." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:string .
+
+:city a owl:DatatypeProperty ;
+    rdfs:label "city" ;
+    rdfs:comment "City name." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:string .
+
+:stateProvince a owl:DatatypeProperty ;
+    rdfs:label "state/province" ;
+    rdfs:comment "State or province name/code." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:string .
+
+:postalCode a owl:DatatypeProperty ;
+    rdfs:label "postal code" ;
+    rdfs:comment "ZIP or postal code." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:string .

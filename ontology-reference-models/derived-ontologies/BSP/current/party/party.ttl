@@ -16,17 +16,33 @@
     - Buyer, Seller, Shipper, Consignee, Carrier
     - Financial institutions (Banks)
     - Intermediaries (Freight Forwarder, Customs Broker)
-    - Supply chain participants (Manufacturer, Supplier, Notify Party)""" ;
+    - Supply chain participants (Manufacturer, Supplier, Notify Party)
+
+    Since 1.6.0 roles are modelled via the qualified-role-assignment pattern
+    (TradePartyRoleAssignment + hasRole over the governed PartyRoleCode list);
+    the role subclasses remain as deprecated standards overlays.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-06-20"^^xsd:date ;
-    owl:versionInfo "1.5.0" ;
+    dcterms:modified "2026-08-13"^^xsd:date ;
+    owl:versionInfo "1.6.0" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     owl:imports <https://www.kairosflow.ai/ont/bsp/reference-data> ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
 #################################################################
 #    Party Role Classes
+#
+#    DEPRECATED AS ROLE MODEL (BSP 1.6.0). The role subclasses below are
+#    standards overlays mirroring UN/CEFACT BSP role contexts — kept for
+#    source fidelity and message-level interop, but they are the
+#    subclass-identity-by-role anti-pattern the qualified-role-assignment
+#    pattern rejects: one organisation holding two roles concurrently
+#    cannot be represented. Hubs MUST NOT subclass their durable Party
+#    identity under these; assign roles via :TradePartyRoleAssignment +
+#    :hasRole (Role Assignment section below). See CONTRACT.md,
+#    "Patterns vs derived modules", and blueprints/patterns/
+#    qualified-role-assignment (deprecated subjects are outside its
+#    subclass-identity-by-role detection; un-deprecating revives it).
 #################################################################
 
 :TradeParty a owl:Class ;
@@ -42,28 +58,32 @@
     rdfs:comment """The party purchasing goods or services.
     
     UN/CEFACT BSP: A TradeParty role (buyerTradeParty context).""" ;
-    rdfs:subClassOf :TradeParty .
+    rdfs:subClassOf :TradeParty ;
+    owl:deprecated true .
 
 :Seller a owl:Class ;
     rdfs:label "Seller" ;
     rdfs:comment """The party selling goods or services.
     
     UN/CEFACT BSP: A TradeParty role (sellerTradeParty context).""" ;
-    rdfs:subClassOf :TradeParty .
+    rdfs:subClassOf :TradeParty ;
+    owl:deprecated true .
 
 :Shipper a owl:Class ;
     rdfs:label "Shipper" ;
     rdfs:comment """The party tendering goods for transport (consignor).
     
     UN/CEFACT BSP: A TradeParty role (shipFromTradeParty context).""" ;
-    rdfs:subClassOf :TradeParty .
+    rdfs:subClassOf :TradeParty ;
+    owl:deprecated true .
 
 :Consignee a owl:Class ;
     rdfs:label "Consignee" ;
     rdfs:comment """The party to whom goods are shipped.
     
     UN/CEFACT BSP: A TradeParty role (shipToTradeParty context).""" ;
-    rdfs:subClassOf :TradeParty .
+    rdfs:subClassOf :TradeParty ;
+    owl:deprecated true .
 
 :Carrier a owl:Class ;
     rdfs:label "Carrier" ;
@@ -71,14 +91,16 @@
     
     UN/CEFACT BSP: A TradeParty role (carrierTradeParty context).""" ;
     rdfs:subClassOf :TradeParty ;
-    rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/party#Carrier> .
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/party#Carrier> ;
+    owl:deprecated true .
 
 :FreightForwarder a owl:Class ;
     rdfs:label "Freight Forwarder" ;
     rdfs:comment """A party arranging transport on behalf of shippers.
     
     UN/CEFACT BSP: A TradeParty role (freightForwarderTradeParty context).""" ;
-    rdfs:subClassOf :TradeParty .
+    rdfs:subClassOf :TradeParty ;
+    owl:deprecated true .
 
 :CustomsBroker a owl:Class ;
     rdfs:label "Customs Broker" ;
@@ -86,7 +108,8 @@
     
     UN/CEFACT BSP: A TradeParty role (customsBrokerTradeParty context).""" ;
     rdfs:subClassOf :TradeParty ;
-    rdfs:seeAlso <https://www.kairosflow.ai/ont/wco/party#CustomsBroker> .
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/wco/party#CustomsBroker> ;
+    owl:deprecated true .
 
 :Bank a owl:Class ;
     rdfs:label "Bank" ;
@@ -95,28 +118,32 @@
     UN/CEFACT BSP: Maps to PaymentFinancialInstitution / CreditorFinancialInstitution /
     DebtorFinancialInstitution.""" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/PaymentFinancialInstitution> ;
-    rdfs:subClassOf :TradeParty .
+    rdfs:subClassOf :TradeParty ;
+    owl:deprecated true .
 
 :Manufacturer a owl:Class ;
     rdfs:label "Manufacturer" ;
     rdfs:comment """The party producing the goods.
     
     UN/CEFACT BSP: A TradeParty role — may be seller or supplier to seller.""" ;
-    rdfs:subClassOf :TradeParty .
+    rdfs:subClassOf :TradeParty ;
+    owl:deprecated true .
 
 :Supplier a owl:Class ;
     rdfs:label "Supplier" ;
     rdfs:comment """A party supplying goods or components.
     
     UN/CEFACT BSP: A TradeParty role — upstream provider in supply chain.""" ;
-    rdfs:subClassOf :TradeParty .
+    rdfs:subClassOf :TradeParty ;
+    owl:deprecated true .
 
 :NotifyParty a owl:Class ;
     rdfs:label "Notify Party" ;
     rdfs:comment """A party to be notified of shipment arrival.
     
     ISO BSP: Often consignee or their agent.""" ;
-    rdfs:subClassOf :TradeParty .
+    rdfs:subClassOf :TradeParty ;
+    owl:deprecated true .
 
 #################################################################
 #    Additional Party Roles (v1.3.0)
@@ -128,19 +155,22 @@
 
     Covers hull and machinery (H&M), protection and indemnity (P&I),
     and cargo insurance underwriters.""" ;
-    rdfs:subClassOf :TradeParty .
+    rdfs:subClassOf :TradeParty ;
+    owl:deprecated true .
 
 :TerminalOperator a owl:Class ;
     rdfs:label "Terminal Operator" ;
     rdfs:comment """A party operating a port terminal, inland terminal, or container
     depot. Responsible for cargo handling, storage, and gate operations.""" ;
-    rdfs:subClassOf :TradeParty .
+    rdfs:subClassOf :TradeParty ;
+    owl:deprecated true .
 
 :WarehouseKeeper a owl:Class ;
     rdfs:label "Warehouse Keeper" ;
     rdfs:comment """A party providing warehousing and storage services. May operate
     bonded warehouses, free zone warehouses, or general distribution centers.""" ;
-    rdfs:subClassOf :TradeParty .
+    rdfs:subClassOf :TradeParty ;
+    owl:deprecated true .
 
 #################################################################
 #    Contact Person (v1.4.0)
@@ -158,6 +188,64 @@
     UN/CEFACT BSP: Maps to TradeContact — a person or department to contact
     in a trade party.""" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/TradeContact> .
+
+#################################################################
+#    Role Assignment (v1.6.0)
+#
+#    Pattern-conformant role machinery per blueprints/patterns/
+#    qualified-role-assignment (naming normative) and governed-code-list.
+#    One durable :TradeParty holds 0..n role assignments, each scoped to
+#    one context — the same organisation can be shipper on one booking,
+#    carrier on another, and a creditor in finance, concurrently, without
+#    re-typing or duplicating the party record. The role vocabulary is
+#    the set formerly expressed as the deprecated role subclasses above;
+#    its governed values are pack/MDM-owned (governed-code-list pattern).
+#    Context links follow inContextOf<Context> and are declared by the
+#    hub per context class (e.g. inContextOfBooking, inContextOfShipment).
+#################################################################
+
+:PartyRoleCode a owl:Class ;
+    rdfs:label "Party Role Code" ;
+    rdfs:comment """Governed code list of trade-party roles (Buyer, Seller, Shipper,
+    Consignee, Carrier, FreightForwarder, CustomsBroker, Bank, Manufacturer,
+    Supplier, NotifyParty, InsuranceProvider, TerminalOperator, WarehouseKeeper, ...).
+
+    Named per blueprints/patterns/governed-code-list (<Dimension>Code). The value
+    set corresponds to the deprecated role subclasses above; survivorship and
+    value governance are a pack-level MDM concern, not fixed by this module.""" .
+
+:TradePartyRoleAssignment a owl:Class ;
+    rdfs:label "Trade Party Role Assignment" ;
+    rdfs:comment """The (identity, role, context, validity) link entity: one durable
+    TradeParty playing one role in one context for some period.
+
+    Named per blueprints/patterns/qualified-role-assignment
+    (<Identity>RoleAssignment). This — not the deprecated role subclasses —
+    is the shape hubs reuse for role modelling.""" .
+
+:assignedToTradeParty a owl:ObjectProperty ;
+    rdfs:label "assigned to trade party" ;
+    rdfs:comment "The durable identity holding the role. Named per qualified-role-assignment (assignedTo<Identity>)." ;
+    rdfs:domain :TradePartyRoleAssignment ;
+    rdfs:range :TradeParty .
+
+:hasRole a owl:ObjectProperty ;
+    rdfs:label "has role" ;
+    rdfs:comment "The role held, from the governed PartyRoleCode list. Named per qualified-role-assignment (fixed name hasRole, ranging over the pack's controlled role vocabulary)." ;
+    rdfs:domain :TradePartyRoleAssignment ;
+    rdfs:range :PartyRoleCode .
+
+:roleValidFrom a owl:DatatypeProperty ;
+    rdfs:label "role valid from" ;
+    rdfs:comment "Start of the assignment's validity period, independent of the identity's own lifecycle." ;
+    rdfs:domain :TradePartyRoleAssignment ;
+    rdfs:range xsd:dateTime .
+
+:roleValidTo a owl:DatatypeProperty ;
+    rdfs:label "role valid to" ;
+    rdfs:comment "End of the assignment's validity period; absent while the assignment holds." ;
+    rdfs:domain :TradePartyRoleAssignment ;
+    rdfs:range xsd:dateTime .
 
 #################################################################
 #    Object Properties
@@ -201,32 +289,30 @@
 
 :hasContact a owl:ObjectProperty ;
     rdfs:label "has contact" ;
-    rdfs:comment "Relates a trade party to its contact persons. Cardinality: 1:n." ;
-    rdfs:domain :TradeParty ;
+    rdfs:comment "REUSABLE — no rdfs:domain by design: asserting a domain of :TradeParty would infer TradeParty subsumption onto any hub identity class using this property, re-creating the subclass-identity-by-role anti-pattern by the back door (BSP 1.6.0). Relates a party-like identity to its contact persons. Cardinality: 1:n." ;
     rdfs:range :Contact .
 
 :hasAddress a owl:ObjectProperty ;
     rdfs:label "has address" ;
-    rdfs:comment """Relates a trade party to one of its postal/physical addresses.
-    Cardinality: 1:n — a party may have many addresses. The typed roles
-    :hasBillingAddress and :hasShippingAddress are specialisations of this
-    generic relationship. The Address class is shared master data defined in
-    the BSP reference-data module.""" ;
-    rdfs:domain :TradeParty ;
+    rdfs:comment """REUSABLE — no rdfs:domain by design: asserting a domain of :TradeParty
+    would infer TradeParty subsumption onto any hub identity class using this
+    property (BSP 1.6.0). Relates a party-like identity to one of its
+    postal/physical addresses. Cardinality: 1:n — a party may have many
+    addresses. The typed roles :hasBillingAddress and :hasShippingAddress are
+    specialisations of this generic relationship. The Address class is shared
+    master data defined in the BSP reference-data module.""" ;
     rdfs:range ref-data:Address .
 
 :hasBillingAddress a owl:ObjectProperty ;
     rdfs:subPropertyOf :hasAddress ;
     rdfs:label "has billing address" ;
-    rdfs:comment "Identifies billing address. Cardinality: 0..1." ;
-    rdfs:domain :TradeParty ;
+    rdfs:comment "REUSABLE — no rdfs:domain by design (see :hasAddress). Identifies billing address. Cardinality: 0..1." ;
     rdfs:range ref-data:Address .
 
 :hasShippingAddress a owl:ObjectProperty ;
     rdfs:subPropertyOf :hasAddress ;
     rdfs:label "has shipping address" ;
-    rdfs:comment "Identifies shipping/delivery address. Cardinality: 0..1." ;
-    rdfs:domain :TradeParty ;
+    rdfs:comment "REUSABLE — no rdfs:domain by design (see :hasAddress). Identifies shipping/delivery address. Cardinality: 0..1." ;
     rdfs:range ref-data:Address .
 
 #################################################################

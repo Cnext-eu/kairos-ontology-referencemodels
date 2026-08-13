@@ -26,8 +26,9 @@ compatible_with:
   repo_tag_range: ">=1.13.0,<2.0.0"
   ontology_versions:
     DCSA:           ">=1.3.0,<2"
-    MMT:            ">=1.1.0,<2"
-    BSP:            ">=1.5.0,<2"
+    # MMT 2.0.0: temporal-quartet property renames (clean break) + role-assignment machinery.
+    MMT:            ">=2.0.0,<3"
+    BSP:            ">=1.6.0,<2"
     TIC:            ">=1.3.0,<2"
     IMO:            ">=1.1.0,<2"
     WCO:            ">=1.2.0,<2"
@@ -175,21 +176,24 @@ core_concepts:
   - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#DisposalInstructions",       tier: optional,    label: "Disposal Instructions" }
 
   # ─── 5. Parties & roles ────────────────────────────────────────────────
+  # Roles are modelled via the qualified-role-assignment machinery (MMT 2.0.0):
+  # one durable TransportParty, 0..n role assignments, each scoped to a context.
   # Own-account vs subcontracted haulier is NOT modelled as two subclasses —
   # both are the same real class (Carrier / InlandCarrier, §9 below) with the
-  # own-vs-subcontracted split carried as an attribute/qualified-role
-  # distinction (see the `qualified-role-assignment` pattern candidate in the
-  # CR-RM-01 pattern library proposal). That is a deliberate design decision,
-  # not a class gap — it does not appear in capability-coverage.yaml.
-  - { uri: "https://www.kairosflow.ai/ont/mmt/party#Carrier",                    tier: required,    label: "Carrier" }
-  - { uri: "https://www.kairosflow.ai/ont/mmt/party#Consignor",                  tier: required,    label: "Consignor" }
-  - { uri: "https://www.kairosflow.ai/ont/mmt/party#Consignee",                  tier: required,    label: "Consignee" }
-  - { uri: "https://www.kairosflow.ai/ont/mmt/party#TransportParty",             tier: required,    label: "Transport Party (abstract role)" }
-  - { uri: "https://www.kairosflow.ai/ont/mmt/party#FreightForwarder",           tier: recommended, label: "Freight Forwarder" }
-  - { uri: "https://www.kairosflow.ai/ont/mmt/party#NotifyParty",                tier: optional,    label: "Notify Party" }
-  - { uri: "https://www.kairosflow.ai/ont/mmt/party#CustomsBroker",              tier: recommended, label: "Customs Broker" }
-  - { uri: "https://www.kairosflow.ai/ont/mmt/party#TerminalOperator",           tier: recommended, label: "Terminal Operator" }
-  - { uri: "https://www.kairosflow.ai/ont/mmt/party#WarehouseOperator",          tier: optional,    label: "Warehouse Operator" }
+  # own-vs-subcontracted split carried as a qualified-role distinction. The
+  # per-role subclasses below are deprecated standards overlays: recommended
+  # for message-level interop, never the hub's role model.
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#TransportParty",             tier: required,    label: "Transport Party (abstract identity)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#TransportPartyRoleAssignment", tier: required,  label: "Transport Party Role Assignment" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#TransportPartyRoleCode",     tier: required,    label: "Transport Party Role Code (governed list)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#Carrier",                    tier: recommended, label: "Carrier (deprecated role overlay)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#Consignor",                  tier: recommended, label: "Consignor (deprecated role overlay)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#Consignee",                  tier: recommended, label: "Consignee (deprecated role overlay)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#FreightForwarder",           tier: recommended, label: "Freight Forwarder (deprecated role overlay)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#NotifyParty",                tier: optional,    label: "Notify Party (deprecated role overlay)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#CustomsBroker",              tier: recommended, label: "Customs Broker (deprecated role overlay)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#TerminalOperator",           tier: recommended, label: "Terminal Operator (deprecated role overlay)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/party#WarehouseOperator",          tier: optional,    label: "Warehouse Operator (deprecated role overlay)" }
 
   # ─── 6. Locations & geographic network ─────────────────────────────────
   - { uri: "https://www.kairosflow.ai/ont/dcsa/locations#Port",                  tier: required,    label: "Port (ro-ro / ferry terminal)" }

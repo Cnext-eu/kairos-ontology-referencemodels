@@ -7,6 +7,85 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Required modules now conform to the normative patterns — and CI checks it (#41)
+
+The pattern library and the derived ontologies were governed independently and nothing checked
+one against the other, so `tier: required` modules shipped names a normative pattern bans.
+This entry fixes today's instances **and** the mechanism.
+
+#### Changed — MMT **2.0.0** (breaking: term renames)
+- **temporal-quartet conformance in `mmt/consignment`** — the four uncited `*Time`-suffixed
+  quartet properties are renamed (clean break, no bridge stubs; old→new below). Any hub bound
+  to the old IRIs must migrate when it opts into MMT 2 — the archetype pins move to
+  `>=2.0.0,<3` in the same release precisely so the break is a conscious opt-in (one local hub,
+  cldn2-ontology-hub-1 `movement.ttl`, is known to bind them).
+
+  | old (MMT 1.x) | new (MMT 2.0.0) |
+  |---|---|
+  | `estimatedDepartureTime` | `estimatedDeparture` |
+  | `actualDepartureTime` | `actualDeparture` |
+  | `estimatedArrivalTime` | `estimatedArrival` |
+  | `actualArrivalTime` | `actualArrival` |
+
+  `availabilityDueDateTime` is **kept**: it mirrors UN/CEFACT RABIE v101
+  `SupplyChainConsignment.AvailabilityDueDateTime`, and source fidelity wins — visibly, via a
+  cited exemption entry (see the precedence rule below). `carrierAcceptanceDateTime` /
+  `exportExitDateTime` are single event timestamps, not quartet members — unchanged.
+- **multimodal-order-leg grain 2 is now real, not asserted** — `inland-transport#InlandLeg`
+  gains `rdfs:subClassOf consignment:TransportLeg` (RailLeg/BargeLeg/RoadLeg inherit), so
+  mode-as-reified-leg-subclass actually holds in the graph. `transportMode`/`modeCode` stay on
+  `TransportMovement` (RABIE-faithful) with comments stating they are inherited from the leg,
+  never decided there. MMT 1.1.0 archived as its first frozen snapshot.
+
+#### Changed — BSP **1.6.0** and MMT party (additive role machinery)
+- **qualified-role-assignment machinery added** to `bsp/party` (`TradePartyRoleAssignment`,
+  governed `PartyRoleCode`, `assignedToTradeParty`, `hasRole`, `roleValidFrom/To`) and
+  `mmt/party` (`TransportPartyRoleAssignment` etc.). One durable party, 0..n role assignments,
+  each scoped to a context — the multi-role organisation (debtor+creditor+forwarder,
+  concurrently) is finally representable with required modules.
+- **The 22 role subclasses (14 BSP + 8 MMT) are `owl:deprecated true`** — kept as standards
+  overlays for source fidelity and message-level interop, never the hub's role model. Removal
+  is parked on the durable-party-identity stakeholder decision (overlap-register
+  `party-role-parents`); design record in `.docs/design/party-design.md`.
+- **Reusable properties are now genuinely reusable** — `hasContact` / `hasAddress` /
+  `hasBillingAddress` / `hasShippingAddress` drop `rdfs:domain :TradeParty` (marked
+  `REUSABLE — no rdfs:domain by design`), killing the back-door subsumption that made hubs
+  redeclare them locally. `validate_structure.py` accepts a missing domain only with that
+  marker; range stays required.
+- **Archetypes re-authored** (`freight-forwarder`, `unit-load-carrier`; archetypes 0.6.0):
+  role-assignment class + role code list are `required` core concepts; the deprecated role
+  subclasses demote to `recommended`/`optional`. Version pins: MMT `>=2.0.0,<3`,
+  BSP `>=1.6.0,<2` (also `shipping-carrier`'s MMT pin).
+
+#### Added — the mechanism
+- **`scripts/validate_pattern_conformance.py`**, wired into CI as a blocking step: (A)
+  temporal-quartet naming over every current derived/blueprint TTL — the 16-name quartet rule
+  plus the structured banned-token rule, honouring cited exemptions and skipping
+  `owl:deprecated` subjects; (B) multimodal-order-leg participants — every `leg_module_iris`
+  module that declares `*Leg` classes must wire one under the pattern's leg class
+  (means-borne modes are noted and skipped), and no mode-named property/subclass at order
+  grain; (C, advisory) subclass-identity-by-role detection outside the pattern's exemptions.
+  Exemption-usage stats are printed so dead entries stay visible. Negative-tested: a
+  reintroduced live `estimatedDepartureTime` fails the build.
+- **Precedence rule** in `CONTRACT.md` ("Patterns vs derived modules"): pattern-normative
+  naming governs Kairos-chosen names; a derived module mirroring a cited source element wins on
+  source fidelity, but only through a cited `exemptions` entry; an unexempted disagreement is a
+  repo defect and CI fails on it. Plus a **term-level rename/deprecation policy** (rename =
+  major module bump with old→new table; additive/deprecation = minor; deprecated terms stay
+  resolvable for the major).
+- **Cited exemption seeds** in `temporal-quartet/pattern.yaml` for every source-faithful
+  variant this repo ships (DCSA T&T/BKG, IMO port-call, TAF TSI train-running, RABIE
+  availability) — and one `AUDIT-TODO`: `bsp/commercial#expectedDeliveryDate`, exempted pending
+  source verification with a follow-up issue to rename to `estimatedDeliveryDate` if uncited.
+- **`qualified-role-assignment` exemptions** for the still-live DCSA/IMO party overlays;
+  applicability prose states hubs MUST NOT copy the subclass shape and documents the
+  domainless-property trap.
+
+#### Changed — tooling
+- **Toolkit pin `5.2.0rc8` → `5.2.1rc9`** (`check_toolkit_pin.py --update`), `uv.lock`
+  regenerated; cross-repo contract tests and `list-patterns --coverage` verified against the
+  installed RC (43 units, unit ids stable, 0 unrecognized shapes).
+
 ### temporal-quartet — the synonym ban becomes a closed, structured list (#40)
 
 #### Added
