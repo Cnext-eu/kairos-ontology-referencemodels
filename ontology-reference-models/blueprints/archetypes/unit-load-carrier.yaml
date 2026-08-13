@@ -28,7 +28,8 @@ compatible_with:
     DCSA:           ">=1.3.0,<2"
     # MMT 2.0.0: temporal-quartet property renames (clean break) + role-assignment machinery.
     MMT:            ">=2.0.0,<3"
-    BSP:            ">=1.6.0,<2"
+    # BSP 2.0.0: estimatedDeliveryDate rename (clean break) + party-prop re-ranging to TradeParty.
+    BSP:            ">=2.0.0,<3"
     TIC:            ">=1.3.0,<2"
     IMO:            ">=1.1.0,<2"
     WCO:            ">=1.2.0,<2"

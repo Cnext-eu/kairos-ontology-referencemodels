@@ -60,16 +60,22 @@ per-context, historizable.
 Consequences: BSP 1.5.0 → 1.6.0 (minor — additive + annotations), MMT machinery rides the
 2.0.0 already forced by the temporal-quartet renames. Archetypes re-authored in the same
 release: role-assignment class + role code list are `required` core concepts; the
-deprecated subclasses demoted to `recommended`. Nothing breaks; existing message-level
-mappings keep resolving.
+deprecated subclasses demoted to `recommended`. Nothing breaks; the subclass IRIs stay
+resolvable for any future message-level mapping (none exists as an artifact today — see
+precondition 4 below).
 
 ### B. Full refactor (REJECTED for now)
 
 Delete the subclasses and ship only the role-assignment shape. Knock-on chain measured
 before rejecting:
 
-- `hasShipper` / `hasCarrier` / `hasBuyer` / `hasConsignee` / `hasManufacturer` **range over
-  the subclasses** — all must be redesigned (role assignments or re-ranged).
+- `hasBuyer` / `hasSeller` / `hasShipper` / `hasConsignee` / `hasCarrier` / `hasManufacturer`
+  (bsp/party) **and** `issuingBank` / `advisingBank` / `confirmingBank` (bsp/financial, ranged
+  over the deprecated `party:Bank` — missed by the original #41 inventory) **range over the
+  subclasses** — all must be redesigned (role assignments or re-ranged).
+  *Historical as of BSP 2.0.0 (issue #50/#51): all 9 were re-ranged to `:TradeParty` under the
+  new `bsp-party:hasParty` landing pad, riding the major the `estimatedDeliveryDate` rename
+  already forced.*
 - `mmt/consignment` object properties range over `mmt-party:Consignor` / `Consignee` — MMT
   breaks alongside BSP.
 - The freight-forwarder AND shipping-carrier/unit-load-carrier archetypes pin role
@@ -97,22 +103,54 @@ before rejecting:
 
 ## The reversible path to full removal (if ever chosen)
 
-Preconditions to revisit, in order:
+Preconditions to revisit, in order — **measured status as of the 2026-08 audit (issue #51)**:
 
 1. The `party-role-parents` stakeholder decision lands on a durable-identity model.
-2. No shipped module property ranges over a role subclass (redesign `hasShipper` et al.
-   first, as their own change with their own consumers checked).
-3. A survey of client hubs (they vendor this repo — grep for the subclass IRIs) shows no
-   live bindings, or a migration window is agreed.
+   *Status: OPEN and cold — the register entry is byte-identical since pack 1.8.0 (evidence
+   string "Stakeholder confirmation 2026-07-21"), `maturity: experimental`, and its disposition
+   is test-pinned (`tests/test_logistics_blueprint.py`). Everything below stays parked on it.*
+2. No shipped module property ranges over a role subclass.
+   *Status: MET for BSP as of 2.0.0 (all 9 props re-ranged to `:TradeParty` under
+   `bsp-party:hasParty`). MMT's 5 typed props (`hasConsignor`/`hasConsignee`/`hasCarrier`/
+   `hasFreightForwarder`/`hasNotifyParty`) still range subclasses, but all already sit under
+   `mmt:hasParty` (range `TransportParty`) — widening them is deferred to the removal release
+   itself, since it buys nothing while precondition 1 is parked and one live external binding
+   exists.*
+3. A survey of client hubs shows no live bindings, or a migration window is agreed.
+   *Status: surveyed (16 local hubs, 2026-08). Exactly ONE live binding to a deprecated
+   BSP/MMT subclass: tsplit-ontology-hub `model/ontologies/party/party.ttl:51`
+   (`:Carrier rdfs:subClassOf mmt-party:Carrier`; the same file has a pre-existing dangling
+   `bsp-party:Party` reference and its own PartyRole individuals — it needs a touch anyway).
+   DCSA role subclasses ARE bound in cldn6 and cldn2-1 conformance artifacts — DCSA removal
+   would not be low-impact.*
 4. Message-level interop needs are covered another way (e.g. role-code-driven mapping).
+   *Status: vacuous today — no message-mapping artifact (XSD/EDI/projection) exists anywhere in
+   the repo; the keep-rationale above is untested in both directions. Cannot be positively
+   closed until precondition 1 moves.*
 
 Then removal is a BSP/MMT major with the old→new table in the CHANGELOG, per the
 term-rename policy in CONTRACT.md.
 
 ## Pattern/exemption bookkeeping
 
-`qualified-role-assignment/pattern.yaml` `exemptions` names the four standards-overlay role
-parents (`bsp/party#TradeParty`, `mmt/party#TransportParty`, `dcsa/party#ShippingParty`,
-`imo/party#MaritimeParty`), each with a cited reason. `dcsa/party` and `imo/party` have
-NOT received the hybrid machinery yet — they are smaller overlays with no archetype-required
-role subclasses at stake; they inherit the same parked decision.
+`qualified-role-assignment/pattern.yaml` `exemptions` names the **two still-live**
+standards-overlay role parents (`dcsa/party#ShippingParty`, `imo/party#MaritimeParty`), each
+with a cited reason. `bsp/party#TradeParty` and `mmt/party#TransportParty` need no entry:
+their role subclasses are `owl:deprecated`, deprecated subjects are outside the
+subclass-identity-by-role detection, and an exemption for them would be flagged as stale by
+the conformance check's usage stats — un-deprecating a subclass revives the warning, which is
+the guard working.
+
+`dcsa/party` and `imo/party` have NOT received the hybrid machinery. The original deferral
+rationale here ("smaller overlays with no archetype-required role subclasses at stake") was
+**wrong**, corrected by the 2026-08 audit: `shipping-carrier.yaml` pins `dcsa/party#Carrier`,
+`#Shipper`, `#Consignee`, `#BookingParty` (and `#ShippingParty`) at `tier: required`; nine
+DCSA properties range over the subclasses (booking 5, transport-documents 3 — all with
+`hasParty`/`hasDocumentParty` landing pads already in place — plus one parent-ranged); and the
+two most recently active hubs (cldn6, cldn2-1) bind them in conformance artifacts. The DCSA
+deferral is deliberate (source fidelity to DCSA's own normative role-typed shape) but it is
+not cost-free, and expanding #51 to DCSA would cost MORE than the BSP/MMT hybrid did, not
+less. IMO is the cheap one (zero external property coupling, zero hub bindings) — but roughly
+half its "subclasses" are not contextual roles at all (FlagAuthority/ClassificationSociety/
+PortAuthority are durable organisation kinds; MasterOfVessel and the security officers are
+persons), so a uniform hybrid would be semantically wrong there.

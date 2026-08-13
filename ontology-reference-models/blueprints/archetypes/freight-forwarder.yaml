@@ -12,7 +12,8 @@ description: >
 compatible_with:
   repo_tag_range: ">=1.11.0,<2.0.0"
   ontology_versions:
-    BSP: ">=1.6.0,<2"
+    # BSP 2.0.0: estimatedDeliveryDate rename (clean break) + party-prop re-ranging to TradeParty.
+    BSP: ">=2.0.0,<3"
     DCSA: ">=1.3.0,<2"
     # MMT 2.0.0: temporal-quartet property renames (clean break) + role-assignment machinery.
     MMT: ">=2.0.0,<3"

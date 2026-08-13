@@ -644,6 +644,25 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#changeReason
 - comments:
+  - "Estimated date of delivery of the shipment.\n\n    UN/CEFACT web vocabulary: HeaderTradeDelivery\
+    \ carries estimatedDeliveryEvent\n    (alongside actualDeliveryEvent / plannedDeliveryEvent / requestedDeliveryEvent);\n\
+    \    the date itself is the event's occurrenceDateTime. This property flattens that\n    event ->\
+    \ date pair to a single xsd:date — a deliberate modelling simplification,\n    matching :actualDeliveryDate.\
+    \ Renamed from :expectedDeliveryDate in BSP 2.0.0\n    (issue #50): 'estimated' is the source's own\
+    \ qualifier; no expected* delivery\n    element exists in the UN/CEFACT vocabulary."
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#Shipment
+  kind: datatype_property
+  labels:
+  - estimated delivery date
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#date
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#estimatedDeliveryDate
+- comments:
   - Date and time when event occurred.
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#BusinessEvent
@@ -685,20 +704,6 @@ records:
   sources: *id002
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#eventType
-- comments:
-  - Expected date of delivery.
-  domains:
-  - https://www.kairosflow.ai/ont/bsp/commercial#Shipment
-  kind: datatype_property
-  labels:
-  - expected delivery date
-  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#date
-  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
-  sources: *id002
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/bsp/commercial#expectedDeliveryDate
 - comments:
   - Total weight including packaging (kg).
   domains:
@@ -3030,7 +3035,10 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/financial#accountNumber
 - comments:
-  - The bank in the seller's country that advises the L/C to the beneficiary.
+  - The bank in the seller's country that advises the L/C to the beneficiary. Range widened from the deprecated
+    party:Bank overlay to party:TradeParty (BSP 2.0.0) — the banking role is carried by the property itself
+    and, in role-assignment form, by a TradePartyRoleAssignment with PartyRoleCode BANK; party:Bank stays
+    declared for message-level interop.
   domains:
   - https://www.kairosflow.ai/ont/bsp/financial#LetterOfCredit
   kind: object_property
@@ -3038,7 +3046,7 @@ records:
   - advising bank
   module_uri: https://www.kairosflow.ai/ont/bsp/financial
   ranges:
-  - https://www.kairosflow.ai/ont/bsp/party#Bank
+  - https://www.kairosflow.ai/ont/bsp/party#TradeParty
   source_file: derived-ontologies/BSP/current/financial/financial.ttl
   sources: *id006
   superclasses: []
@@ -3170,7 +3178,10 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/financial#collectionType
 - comments:
-  - The bank that adds its confirmation (guarantee) to the L/C.
+  - The bank that adds its confirmation (guarantee) to the L/C. Range widened from the deprecated party:Bank
+    overlay to party:TradeParty (BSP 2.0.0) — the banking role is carried by the property itself and,
+    in role-assignment form, by a TradePartyRoleAssignment with PartyRoleCode BANK; party:Bank stays declared
+    for message-level interop.
   domains:
   - https://www.kairosflow.ai/ont/bsp/financial#LetterOfCredit
   kind: object_property
@@ -3178,7 +3189,7 @@ records:
   - confirming bank
   module_uri: https://www.kairosflow.ai/ont/bsp/financial
   ranges:
-  - https://www.kairosflow.ai/ont/bsp/party#Bank
+  - https://www.kairosflow.ai/ont/bsp/party#TradeParty
   source_file: derived-ontologies/BSP/current/financial/financial.ttl
   sources: *id006
   superclasses: []
@@ -3664,7 +3675,10 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/financial#invoiceNumber
 - comments:
-  - The bank that issues the letter of credit on behalf of the buyer.
+  - The bank that issues the letter of credit on behalf of the buyer. Range widened from the deprecated
+    party:Bank overlay to party:TradeParty (BSP 2.0.0) — the banking role is carried by the property itself
+    and, in role-assignment form, by a TradePartyRoleAssignment with PartyRoleCode BANK; party:Bank stays
+    declared for message-level interop.
   domains:
   - https://www.kairosflow.ai/ont/bsp/financial#LetterOfCredit
   kind: object_property
@@ -3672,7 +3686,7 @@ records:
   - issuing bank
   module_uri: https://www.kairosflow.ai/ont/bsp/financial
   ranges:
-  - https://www.kairosflow.ai/ont/bsp/party#Bank
+  - https://www.kairosflow.ai/ont/bsp/party#TradeParty
   source_file: derived-ontologies/BSP/current/financial/financial.ttl
   sources: *id006
   superclasses: []
@@ -4342,7 +4356,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/party#hasBillingAddress
 - comments:
-  - Identifies the buyer.
+  - Identifies the buyer. Range widened from the deprecated :Buyer overlay to :TradeParty (BSP 2.0.0)
+    — the intended role is carried by the property itself and, in role-assignment form, by a TradePartyRoleAssignment
+    with PartyRoleCode BUYER; :Buyer stays declared for message-level interop.
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#CommercialTransaction
   kind: object_property
@@ -4350,13 +4366,15 @@ records:
   - has buyer
   module_uri: https://www.kairosflow.ai/ont/bsp/party
   ranges:
-  - https://www.kairosflow.ai/ont/bsp/party#Buyer
+  - https://www.kairosflow.ai/ont/bsp/party#TradeParty
   source_file: derived-ontologies/BSP/current/party/party.ttl
   sources: *id007
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/party#hasBuyer
 - comments:
-  - Identifies the carrier.
+  - Identifies the carrier. Range widened from the deprecated :Carrier overlay to :TradeParty (BSP 2.0.0)
+    — the intended role is carried by the property itself and, in role-assignment form, by a TradePartyRoleAssignment
+    with PartyRoleCode CARRIER; :Carrier stays declared for message-level interop.
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#Shipment
   kind: object_property
@@ -4364,13 +4382,15 @@ records:
   - has carrier
   module_uri: https://www.kairosflow.ai/ont/bsp/party
   ranges:
-  - https://www.kairosflow.ai/ont/bsp/party#Carrier
+  - https://www.kairosflow.ai/ont/bsp/party#TradeParty
   source_file: derived-ontologies/BSP/current/party/party.ttl
   sources: *id007
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/party#hasCarrier
 - comments:
-  - Identifies the consignee.
+  - Identifies the consignee. Range widened from the deprecated :Consignee overlay to :TradeParty (BSP
+    2.0.0) — the intended role is carried by the property itself and, in role-assignment form, by a TradePartyRoleAssignment
+    with PartyRoleCode CONSIGNEE; :Consignee stays declared for message-level interop.
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#Shipment
   kind: object_property
@@ -4378,7 +4398,7 @@ records:
   - has consignee
   module_uri: https://www.kairosflow.ai/ont/bsp/party
   ranges:
-  - https://www.kairosflow.ai/ont/bsp/party#Consignee
+  - https://www.kairosflow.ai/ont/bsp/party#TradeParty
   source_file: derived-ontologies/BSP/current/party/party.ttl
   sources: *id007
   superclasses: []
@@ -4399,7 +4419,10 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/party#hasContact
 - comments:
-  - Identifies the manufacturer.
+  - Identifies the manufacturer. Range widened from the deprecated :Manufacturer overlay to :TradeParty
+    (BSP 2.0.0) — the intended role is carried by the property itself and, in role-assignment form, by
+    a TradePartyRoleAssignment with PartyRoleCode MANUFACTURER; :Manufacturer stays declared for message-level
+    interop.
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#Product
   kind: object_property
@@ -4407,11 +4430,29 @@ records:
   - has manufacturer
   module_uri: https://www.kairosflow.ai/ont/bsp/party
   ranges:
-  - https://www.kairosflow.ai/ont/bsp/party#Manufacturer
+  - https://www.kairosflow.ai/ont/bsp/party#TradeParty
   source_file: derived-ontologies/BSP/current/party/party.ttl
   sources: *id007
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/party#hasManufacturer
+- comments:
+  - "REUSABLE — no rdfs:domain by design: the typed specialisations\n    attach to different subjects\
+    \ (CommercialTransaction, Shipment, Product,\n    LetterOfCredit), and asserting a shared domain would\
+    \ infer that class onto\n    every hub class using this property. Generic landing pad relating a subject\n\
+    \    to a participating trade party (BSP 2.0.0, mirroring mmt/consignment#hasParty).\n    The typed\
+    \ roles :hasBuyer, :hasSeller, :hasShipper, :hasConsignee, :hasCarrier,\n    :hasManufacturer and\
+    \ the bsp/financial bank properties are specialisations.\n    Cardinality: 0..n."
+  domains: []
+  kind: object_property
+  labels:
+  - has party
+  module_uri: https://www.kairosflow.ai/ont/bsp/party
+  ranges:
+  - https://www.kairosflow.ai/ont/bsp/party#TradeParty
+  source_file: derived-ontologies/BSP/current/party/party.ttl
+  sources: *id007
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/party#hasParty
 - comments:
   - The role held, from the governed PartyRoleCode list. Named per qualified-role-assignment (fixed name
     hasRole, ranging over the pack's controlled role vocabulary).
@@ -4428,7 +4469,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/party#hasRole
 - comments:
-  - Identifies the seller.
+  - Identifies the seller. Range widened from the deprecated :Seller overlay to :TradeParty (BSP 2.0.0)
+    — the intended role is carried by the property itself and, in role-assignment form, by a TradePartyRoleAssignment
+    with PartyRoleCode SELLER; :Seller stays declared for message-level interop.
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#CommercialTransaction
   kind: object_property
@@ -4436,13 +4479,15 @@ records:
   - has seller
   module_uri: https://www.kairosflow.ai/ont/bsp/party
   ranges:
-  - https://www.kairosflow.ai/ont/bsp/party#Seller
+  - https://www.kairosflow.ai/ont/bsp/party#TradeParty
   source_file: derived-ontologies/BSP/current/party/party.ttl
   sources: *id007
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/party#hasSeller
 - comments:
-  - Identifies the shipper/consignor.
+  - Identifies the shipper/consignor. Range widened from the deprecated :Shipper overlay to :TradeParty
+    (BSP 2.0.0) — the intended role is carried by the property itself and, in role-assignment form, by
+    a TradePartyRoleAssignment with PartyRoleCode SHIPPER; :Shipper stays declared for message-level interop.
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#Shipment
   kind: object_property
@@ -4450,7 +4495,7 @@ records:
   - has shipper
   module_uri: https://www.kairosflow.ai/ont/bsp/party
   ranges:
-  - https://www.kairosflow.ai/ont/bsp/party#Shipper
+  - https://www.kairosflow.ai/ont/bsp/party#TradeParty
   source_file: derived-ontologies/BSP/current/party/party.ttl
   sources: *id007
   superclasses: []
