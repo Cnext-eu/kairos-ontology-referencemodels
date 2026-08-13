@@ -39,9 +39,33 @@ aggregates in this pack need a subset of the full quartet — few need all eight
 
 Use `Start`/`End` for a duration-bearing activity (a transport leg, a booking window) and
 `Arrival`/`Departure` for a point-of-presence event (a transport call, a port call). Never mix
-the two vocabularies on the same class, and never substitute a synonym (`eta`, `expected`,
-`due`) for `estimated` or `requested` — that substitution is precisely the drift this pattern
-exists to stop.
+the two vocabularies on the same class, and never substitute a synonym for `estimated` or
+`requested` — that substitution is precisely the drift this pattern exists to stop. The banned
+synonyms are a **closed, structured list** on the `synonym-for-estimated-or-requested`
+anti-pattern in `pattern.yaml` (`banned_name_tokens`), not examples: an implementation checks
+exactly that list, no more and no less.
+
+### Synonym ban — matching semantics (normative)
+
+These are the semantics a conforming implementation applies to `banned_name_tokens`. They are
+part of the rule: an implementation that matches differently is not enforcing this pattern.
+
+1. **Scope** — `owl:DatatypeProperty` declarations whose declared `rdfs:range` is one of the
+   pattern's `applies_to_ranges` (`xsd:dateTime`, `xsd:date`, `xsd:time`). Properties with other
+   ranges, and object properties, are out of scope.
+2. **Exemptions first** — a property whose local name exactly matches an `exemptions[].name`
+   entry (case-sensitive, any namespace) is exempt. Exemptions exist because some banned tokens
+   are ordinary domain vocabulary elsewhere (`dueDate` on an invoice); every entry MUST carry a
+   `reason` citing the source standard or term of art, so each place the ban yields is a visible,
+   audited line item.
+3. **Tokenisation** — split the local name at underscores, at lower-to-upper and digit-to-letter
+   boundaries, and at the end of an uppercase run followed by a lowercase letter, so acronym runs
+   hold together: `requestedETA` → `[requested, ETA]`, `due_date` → `[due, date]`,
+   `availabilityDueDateTime` → `[availability, Due, Date, Time]`. Comparison is
+   case-insensitive.
+4. **Violation** — the name violates iff any **whole token** equals a banned token. Substrings
+   never match: `hasWagonAtDeparture` contains the letters `atd` but no `atd` token, and is
+   clean.
 
 ## Cardinality rules (advisory)
 
@@ -74,8 +98,11 @@ needs, it does not require all eight.
 
 ## Anti-patterns
 
-- **Inventing a synonym** (`eta`, `expectedTime`, `due_date`) instead of `estimated*` /
-  `requested*`. This is the exact defect that motivated shipping this pattern normative.
+- **Inventing a synonym** for `estimated*` / `requested*` — any name carrying a
+  `banned_name_tokens` token (`eta`, `etd`, `ata`, `atd`, `expected`, `due`) on a temporal
+  property, e.g. `eta`, `expectedTime`, `due_date`, `estimatedTimeOfArrival`. This is the exact
+  defect that motivated shipping this pattern normative; the closed list and matching semantics
+  above are what make it checkable.
 - **Overwriting `actual*` in place** on a correction instead of appending a new observation.
 
 ## Grain collisions

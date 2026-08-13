@@ -15,6 +15,17 @@ to copy. This library is the shared copy.
 
 ## Status
 
+**v0.3 — markdown-first, schema-validated.** `_schema/pattern.schema.json` now exists and
+`scripts/validate_structure.py` validates every `pattern.yaml` against it: open at the top level
+(custom top-level keys remain fine — the loader preserves them in `extra`), strict inside every
+list-entry shape, because the v0.2 defect class was a wrong-but-parseable key *inside* an entry.
+Normative denylists are structured fields on the anti-pattern that owns them
+(`banned_name_tokens` / `applies_to_ranges` / `exemptions`, first used by `temporal-quartet`),
+with matching semantics defined in the owning pattern's `pattern.md` — every exemption carries a
+cited reason, so each place a normative rule yields is a visible, audited line item.
+
+The v0.2 statement below is kept for history:
+
 **v0.2 — markdown-first, parse-guarded, no JSON Schema yet.**
 
 The v0.1 statement here — "there is no toolkit consumer for this folder yet" — was **wrong by the

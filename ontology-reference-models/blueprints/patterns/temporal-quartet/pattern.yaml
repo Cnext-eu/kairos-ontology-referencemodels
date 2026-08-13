@@ -34,12 +34,29 @@ naming_conventions:
     departure_variant: actualDeparture
 naming_rule: >
   Use Start/End for duration-bearing activities and Arrival/Departure for point-of-presence
-  events. Never mix vocabularies on one class. Never substitute a synonym (eta, expected, due)
-  for estimated or requested.
+  events. Never mix vocabularies on one class — this clause is mechanically checkable against
+  the 16 names published in naming_conventions above. Never substitute a synonym for estimated
+  or requested; the closed banned-token list lives on the synonym-for-estimated-or-requested
+  anti-pattern below, with matching semantics defined in pattern.md.
 anti_patterns:
   - id: synonym-for-estimated-or-requested
-    description: "A property named eta, expectedTime, or due_date instead of estimated*/requested*."
+    description: "A temporal property named with a synonym token (eta, etd, ata, atd, expected, due) instead of the published estimated*/requested*/actual* names."
     rejection_reason: "This is the exact naming drift this pattern was shipped normative to stop."
+    # Matching semantics (normative, defined in pattern.md "Synonym ban — matching semantics"):
+    # scope is datatype properties whose declared rdfs:range is in applies_to_ranges; the
+    # property local name is tokenised on camelCase/snake_case boundaries with acronym runs
+    # kept whole (requestedETA -> [requested, eta]); a name violates iff any WHOLE token
+    # equals a banned token. Exemptions are exact, case-sensitive local-name matches (any
+    # namespace) and each entry MUST carry a reason citing the source standard or term of art.
+    banned_name_tokens: [eta, etd, ata, atd, expected, due]
+    applies_to_ranges: ["xsd:dateTime", "xsd:date", "xsd:time"]
+    exemptions:
+      - name: dueDate
+        reason: "BSP financial term of art — payment due date (bsp/financial), not a quartet-event timestamp."
+      - name: dischargeDueDate
+        reason: "WCO customs term of art (wco/customs) — discharge deadline, not a quartet-event timestamp."
+      - name: reviewDueDate
+        reason: "IMO maritime-security term of art (imo/maritime-security) — review deadline, not a quartet-event timestamp."
   - id: overwrite-actual-in-place
     description: "A correction to an actual* value overwrites the existing literal instead of appending a new observation."
     rejection_reason: "Actual values are immutable once recorded; corrections are new events, not mutations."

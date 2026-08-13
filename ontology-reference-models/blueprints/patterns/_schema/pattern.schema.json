@@ -1,0 +1,202 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.kairosflow.ai/schema/patterns/pattern.schema.json",
+  "title": "Blueprint pattern (pattern.yaml)",
+  "$comment": "Contract file for blueprints/patterns/*/pattern.yaml. The toolkit's pattern_loader promotes seven known keys and preserves the rest in an 'extra' dict, and its coverage ledger reports unknown top-level keys loudly — so the top level here is deliberately OPEN (custom top-level keys are the library's documented design). Entry shapes inside the known list keys are deliberately STRICT (additionalProperties: false): the v1.13.0 defect was a stray key inside a block sequence that read fine to a human and silently broke the one normative pattern, and strict entry shapes are what catch that class. Owed since v0.1; both triggers for writing it fired (a consumer exists; more than one person authors).",
+  "type": "object",
+  "required": ["id", "problem", "applicability", "normativity"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "$comment": "Must equal the pattern's directory name; validate_structure.py checks the equality."
+    },
+    "problem": {"type": "string", "minLength": 1},
+    "applicability": {"type": "string", "minLength": 1},
+    "closes_gap": {
+      "type": "array",
+      "items": {"type": "integer"}
+    },
+    "normativity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["naming", "participants", "cardinality_rules"],
+      "properties": {
+        "naming": {"enum": ["normative", "advisory"]},
+        "participants": {"enum": ["normative", "advisory"]},
+        "cardinality_rules": {"enum": ["normative", "advisory"]}
+      }
+    },
+    "naming_conventions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          {"$ref": "#/$defs/element_convention"},
+          {"$ref": "#/$defs/quartet_convention"},
+          {"$ref": "#/$defs/link_convention"}
+        ]
+      },
+      "$comment": "A list of entries and nothing else. Prose that applies to the whole block goes in the sibling top-level naming_rule key — never as a trailing key inside the sequence (the v1.13.0 defect). An entry-scoped rule: key on an element entry is fine."
+    },
+    "naming_rule": {"type": "string", "minLength": 1},
+    "anti_patterns": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/anti_pattern"}
+    },
+    "grain_collisions": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {"type": "string", "minLength": 1},
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["against", "reason"],
+            "properties": {
+              "against": {"$ref": "#/$defs/iri"},
+              "reason": {"type": "string", "minLength": 1}
+            }
+          }
+        ]
+      }
+    },
+    "participants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["grain", "class_uri", "carries_mode"],
+        "properties": {
+          "grain": {"type": "string", "minLength": 1},
+          "class_uri": {"$ref": "#/$defs/iri"},
+          "carries_mode": {
+            "enum": [true, false, "by-binding", "inherited"],
+            "$comment": "Deliberately type-mixed: booleans for unconditional grains, strings for qualified ones. Consumers must not read this as a plain bool — 'by-binding' and 'inherited' are truthy."
+          }
+        }
+      }
+    },
+    "mode_bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["mode", "grain", "target_note", "target_iris", "status", "leg_module_iris", "module_iris"],
+        "properties": {
+          "mode": {"enum": ["ocean", "air", "rail", "road", "barge"]},
+          "grain": {"type": "string", "minLength": 1},
+          "target_note": {"type": "string", "minLength": 1},
+          "target_iris": {"type": "array", "items": {"$ref": "#/$defs/iri"}},
+          "status": {"enum": ["modelled", "pattern-only"]},
+          "binding": {"enum": ["hub-local"]},
+          "import_policy": {"enum": ["reference-only"]},
+          "leg_module_iris": {"type": "array", "items": {"$ref": "#/$defs/iri"}},
+          "module_iris": {"type": "array", "items": {"$ref": "#/$defs/iri"}},
+          "note": {"type": "string"}
+        }
+      }
+    },
+    "physical_simplification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowed_when", "shape"],
+      "properties": {
+        "allowed_when": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "shape": {"type": "string", "minLength": 1}
+      }
+    }
+  },
+  "$defs": {
+    "iri": {
+      "type": "string",
+      "pattern": "^https?://",
+      "minLength": 1
+    },
+    "element_convention": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["element", "convention", "example"],
+      "properties": {
+        "element": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+        "convention": {"type": "string", "minLength": 1},
+        "example": {"type": "string", "minLength": 1},
+        "rule": {
+          "type": "string",
+          "minLength": 1,
+          "$comment": "Entry-scoped normative rule. Must state its derivation and transform in full — a MUST an implementation cannot evaluate is effectively advisory (issue #39)."
+        }
+      }
+    },
+    "quartet_convention": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["qualifier", "start_or_arrival", "arrival_variant", "end_or_departure", "departure_variant"],
+      "properties": {
+        "qualifier": {"enum": ["requested", "planned", "estimated", "actual"]},
+        "start_or_arrival": {"$ref": "#/$defs/camel_name"},
+        "arrival_variant": {"$ref": "#/$defs/camel_name"},
+        "end_or_departure": {"$ref": "#/$defs/camel_name"},
+        "departure_variant": {"$ref": "#/$defs/camel_name"}
+      }
+    },
+    "link_convention": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["link", "property"],
+      "properties": {
+        "link": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+        "property": {"$ref": "#/$defs/camel_name"}
+      }
+    },
+    "camel_name": {
+      "type": "string",
+      "pattern": "^[a-z][A-Za-z0-9]*$"
+    },
+    "anti_pattern": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "description", "rejection_reason"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+        "description": {"type": "string", "minLength": 1},
+        "rejection_reason": {"type": "string", "minLength": 1},
+        "banned_name_tokens": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "pattern": "^[a-z][a-z0-9]*$"},
+          "$comment": "Closed denylist, matched on whole camelCase/snake_case tokens per the pattern.md matching-semantics section. Publishing it structurally is what makes the ban enforceable (issue #40)."
+        },
+        "applies_to_ranges": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "pattern": "^xsd:[a-zA-Z]+$"}
+        },
+        "exemptions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "reason"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "$comment": "Exact, case-sensitive match on a property/class local name (any namespace) or a full IRI."
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "$comment": "MUST cite the source standard or term of art — every place a normative rule yields is a visible, audited line item."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
