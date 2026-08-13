@@ -45,6 +45,7 @@ BLUEPRINTS_DIR = ONTOLOGY_ROOT / "blueprints"
 ARCHETYPES_DIR = BLUEPRINTS_DIR / "archetypes"
 ARCHETYPE_SCHEMA = ARCHETYPES_DIR / "_schema" / "archetype.schema.json"
 PATTERNS_DIR = BLUEPRINTS_DIR / "patterns"
+PATTERN_SCHEMA = PATTERNS_DIR / "_schema" / "pattern.schema.json"
 SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+$")
 ARCHETYPE_ID_RE = re.compile(r"^[a-z][a-z0-9]*(-[a-z0-9]+)*$")
 
@@ -466,6 +467,71 @@ def validate_relationship_explicitness(folder: Path, verbose: bool) -> Validatio
     return r
 
 
+RANGE_OWL_THING_RE = re.compile(r'rdfs:range\s+owl:Thing\b')
+
+
+def pattern_schema_errors(data, schema):
+    """Validate one parsed pattern.yaml against pattern.schema.json.
+
+    Returns a list of human-readable error strings (empty = valid). Split out
+    from validate_blueprints so tests can exercise the schema against known-bad
+    shapes (the v1.13.0 stray-`rule:` defect class) without touching the tree.
+    """
+    import jsonschema
+
+    validator = jsonschema.Draft202012Validator(schema)
+    errors = []
+    for err in sorted(validator.iter_errors(data), key=lambda e: list(e.absolute_path)):
+        path = "/".join(str(p) for p in err.absolute_path) or "<root>"
+        errors.append(f"{path}: {err.message}")
+    return errors
+
+
+def validate_pattern_template(template_text: str):
+    """Structural guard for a pattern's template.ttl.
+
+    Returns a list of error strings. Enforces the two rules the
+    deferred-relationship review made explicit (issues #39/#42):
+      - rdfs:range owl:Thing is never an acceptable placeholder (it passes hub
+        validate, then hard-fails compile as safety.relationship-endpoint).
+      - every property block declares rdfs:domain (the domain is never
+        deferred — it is the class being authored). Range is deliberately NOT
+        required here; the range policy is pattern-specific prose.
+    """
+    # Full-line comments are guidance, not declarations — the templates warn
+    # ABOUT owl:Thing in comments, which must not trip the ban on declaring it.
+    lines = [
+        line for line in template_text.splitlines()
+        if not line.lstrip().startswith("#")
+    ]
+    errors = []
+    if RANGE_OWL_THING_RE.search("\n".join(lines)):
+        errors.append(
+            "declares rdfs:range owl:Thing — banned placeholder; it passes validate "
+            "then hard-fails compile (safety.relationship-endpoint)"
+        )
+    current_property = None
+    block_lines = []
+    for line in lines:
+        if current_property is None:
+            m = PROPERTY_START_RE.match(line)
+            if m:
+                current_property = m.group("property")
+                block_lines = [line]
+        else:
+            block_lines.append(line)
+        if current_property is not None and BLOCK_END_RE.search(line):
+            block = "\n".join(block_lines)
+            if not RDFS_DOMAIN_RE.search(block):
+                errors.append(
+                    f"property {current_property} has no rdfs:domain — the domain is "
+                    "never deferred (it is the class being authored)"
+                )
+            current_property = None
+            block_lines = []
+    return errors
+
+
 def validate_blueprints(verbose: bool) -> ValidationResult:
     """Validate the opinionated blueprints/ module structure.
 
@@ -476,10 +542,13 @@ def validate_blueprints(verbose: bool) -> ValidationResult:
       2. blueprints/archetypes/VERSION exists and is SemVer.
       3. blueprints/archetypes/README.md exists.
       4. blueprints/archetypes/_schema/archetype.schema.json exists.
-      5. Every blueprints/patterns/<id>/pattern.yaml parses and its id matches
-         its directory name (parse-only — the library is markdown-first, but it
-         has a downstream parser in kairos-ontology-toolkit).
-      5. Every *.yaml directly under archetypes/ (excluding _schema/ and dotfiles)
+      5. Every blueprints/patterns/<id>/pattern.yaml parses, its id matches its
+         directory name, and it validates against
+         blueprints/patterns/_schema/pattern.schema.json (the library has a
+         downstream parser in kairos-ontology-toolkit).
+      6. Every blueprints/patterns/<id>/template.ttl passes the template guard:
+         no rdfs:range owl:Thing, and every property block declares rdfs:domain.
+      7. Every *.yaml directly under archetypes/ (excluding _schema/ and dotfiles)
          loads with yaml.safe_load and its top-level ``id`` equals the filename stem.
     """
     r = ValidationResult()
@@ -556,12 +625,28 @@ def validate_blueprints(verbose: bool) -> ValidationResult:
         else:
             r.ok(f"{rel}: id '{archetype_id}' matches filename", verbose, is_verbose=True)
 
-    # Per-pattern YAML files. Parse-only, not schema validation: the pattern library is
-    # markdown-first by design, but it IS parsed by a downstream consumer
-    # (kairos-ontology-toolkit core/pattern_loader.py, which raises on a malformed
-    # pattern.yaml when one is requested by id and silently skips it in bulk listing).
-    # temporal-quartet shipped unparseable in v1.13.0 and nothing caught it, because a
-    # stray `rule:` key inside a block sequence is invalid YAML but reads fine to a human.
+    # Per-pattern YAML files: parse, id/directory match, and full JSON-Schema
+    # validation against _schema/pattern.schema.json. The schema closes the
+    # v1.13.0 defect class for good: temporal-quartet shipped unparseable (a
+    # stray `rule:` key inside a block sequence — invalid YAML that reads fine
+    # to a human) and the toolkit's pattern_loader silently skipped it in bulk
+    # listing, so the one normative pattern was invisible for its entire life.
+    # Parse guards caught malformed YAML; the schema now also catches
+    # wrong-but-parseable shapes inside list entries.
+    if PATTERN_SCHEMA.is_file():
+        r.ok("blueprints/patterns/_schema/pattern.schema.json exists", verbose, is_verbose=True)
+    else:
+        r.fail("blueprints/patterns/_schema/pattern.schema.json missing")
+
+    pattern_schema = None
+    if PATTERN_SCHEMA.is_file():
+        try:
+            import json
+            import jsonschema  # noqa: F401 — probe only; used via pattern_schema_errors
+            pattern_schema = json.loads(PATTERN_SCHEMA.read_text(encoding="utf-8"))
+        except ImportError:
+            r.warn("jsonschema not installed — pattern.yaml schema validation skipped (CI installs it)")
+
     for pattern_dir in sorted(p for p in PATTERNS_DIR.glob("*") if p.is_dir()):
         if pattern_dir.name.startswith(".") or pattern_dir.name == "_schema":
             continue
@@ -583,6 +668,26 @@ def validate_blueprints(verbose: bool) -> ValidationResult:
             r.fail(f"{rel}: id '{pattern_id}' does not match directory '{pattern_dir.name}'")
         else:
             r.ok(f"{rel}: parses, id matches directory", verbose, is_verbose=True)
+
+        if pattern_schema is not None:
+            schema_errors = pattern_schema_errors(data, pattern_schema)
+            if schema_errors:
+                for err in schema_errors:
+                    r.fail(f"{rel}: schema — {err}")
+            else:
+                r.ok(f"{rel}: validates against pattern.schema.json", verbose, is_verbose=True)
+
+        template_file = pattern_dir / "template.ttl"
+        if template_file.is_file():
+            template_rel = template_file.relative_to(ONTOLOGY_ROOT)
+            template_errors = validate_pattern_template(
+                template_file.read_text(encoding="utf-8")
+            )
+            if template_errors:
+                for err in template_errors:
+                    r.fail(f"{template_rel}: {err}")
+            else:
+                r.ok(f"{template_rel}: template guard passed", verbose, is_verbose=True)
 
     return r
 

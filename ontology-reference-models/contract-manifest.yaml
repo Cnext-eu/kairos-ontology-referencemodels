@@ -9,9 +9,10 @@
 # nothing here recorded that it was contract at all. Meanwhile `BLUEPRINT.md` sat beside it
 # looking equally official and was read by nobody. This file draws that line explicitly.
 #
-# `schema: null` is honest, not a gap: the pattern library ships markdown-first and the
-# toolkit's loader is deliberately schema-lenient, and an XML catalog is not JSON-Schema
-# shaped. Those rows are enforced by execution instead — the real loader, or resolution.
+# `schema: null` is honest, not a gap: an XML catalog is not JSON-Schema shaped, and ontology
+# modules are validated by execution (the real loader, or resolution) rather than by schema.
+# The pattern library gained its owed schema in patterns v0.3.0 — open top level (the toolkit's
+# loader is deliberately lenient about custom blocks), strict entry shapes.
 
 contract_version_policy: >
   Versioned with the repository VERSION. A change to anything listed here is a minor bump at
@@ -51,7 +52,7 @@ surfaces:
 
   - id: patterns
     path: blueprints/patterns/*/pattern.yaml
-    schema: null
+    schema: blueprints/patterns/_schema/pattern.schema.json
     consumers:
       - kairos_ontology.core.pattern_loader.load_pattern (fail-fast)
       - kairos_ontology.core.pattern_loader.load_patterns (warn-and-skip)
@@ -59,11 +60,15 @@ surfaces:
       - tests/test_toolkit_contract.py::test_every_pattern_loads_through_the_real_loader
       - tests/test_toolkit_contract.py::test_bulk_pattern_load_emits_no_warnings
       - scripts/validate_archetypes.py (check 7, multimodal-order-leg mode_bindings)
+      - scripts/validate_structure.py (pattern.yaml schema + template.ttl guard)
     notes: >
-      Intentionally schema-lenient: the loader promotes seven known keys and preserves the rest
-      in `extra`, because pattern-specific blocks differ per pattern. Unparseable YAML shipped
-      undetected for two minor versions in v1.13.0, which is why bulk load emitting any warning
-      is treated as a failure here.
+      The schema is open at the top level (the toolkit's loader promotes seven known keys and
+      preserves the rest in `extra`; custom top-level blocks differ per pattern by design) and
+      strict inside list-entry shapes — the v1.13.0 defect was a stray key inside a block
+      sequence, invisible to a human and silently skipped by bulk listing, which is why bulk
+      load emitting any warning is treated as a failure here. Structured anti-pattern fields
+      (banned_name_tokens / applies_to_ranges / exemptions) are contract for the pattern
+      conformance check; every exemption entry carries a cited reason.
 
   - id: data-domains
     path: accelerator-packs/*/client-hub-blueprint/data-domains.yaml

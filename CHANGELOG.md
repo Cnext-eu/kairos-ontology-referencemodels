@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### temporal-quartet — the synonym ban becomes a closed, structured list (#40)
+
+#### Added
+- **`banned_name_tokens: [eta, etd, ata, atd, expected, due]`**, `applies_to_ranges:
+  [xsd:dateTime, xsd:date, xsd:time]` and a cited `exemptions` list on the
+  `synonym-for-estimated-or-requested` anti-pattern (closes #40). The normative ban previously
+  lived only as prose examples ("eta, expected, due") that disagreed with the anti-pattern's own
+  literals ("eta, expectedTime, due_date") — an implementation had to choose between
+  under-enforcing and inventing policy. The token list is now closed; matching semantics
+  (scope by range, exemptions first, whole-token camel/snake matching with acronym runs) are a
+  normative subsection of `pattern.md`. Exemptions each carry a reason citing the source term of
+  art (`dueDate`, `dischargeDueDate`, `reviewDueDate`), so every place the ban yields is a
+  visible, audited line item.
+- **`blueprints/patterns/_schema/pattern.schema.json`** — the schema owed since v0.1; both
+  triggers for writing it fired long ago (a consumer exists; more than one person authors).
+  Open at the top level (custom top-level keys are the library's documented design; the
+  toolkit's loader preserves them in `extra`), strict `additionalProperties: false` inside every
+  list-entry shape — the v1.13.0 defect was a wrong-but-parseable key inside a block sequence.
+  `scripts/validate_structure.py` now validates every `pattern.yaml` against it, and guards
+  every pattern `template.ttl` (no `rdfs:range owl:Thing`; every property declares
+  `rdfs:domain`). The `patterns` surface in `contract-manifest.yaml` now declares the schema,
+  which auto-activates `test_contract_manifest`'s schema validation over every pattern file.
+  This closes the 1.14.0 "Known gaps" item.
+
 ### deferred-relationship — one derivation, one range policy (#39, #42)
 
 `blueprints/patterns/` bumped to **0.3.0**: two normative rules in this pattern changed meaning.
