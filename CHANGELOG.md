@@ -7,6 +7,78 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.17.0] - 2026-08-14
+
+### The shipped bundle now inventories cleanly, and CI proves it (#57)
+
+v1.16.0 released with four defects that appear the first time a hub runs
+`kairos-ontology generate-inventory` against the bundle: three ontologies whose import
+closure could not resolve, and two files that produced the same inventory filename and
+clobbered each other. The resulting `check-inventory` failure was permanent — re-running
+never cleared it — so every hub on that release hit a blocking gate failure on first use
+and paid the cost of proving it was a false alarm.
+
+Nothing caught it because `validate.yml`'s first job is deliberately toolkit-free and the
+second ran only `test_toolkit_contract.py`, which probes the toolkit's *loaders and APIs*.
+The contract was tested; the corpus was not.
+
+#### Added — three authoritative mirrors
+- **`authoritative-ontologies/OMG-Commons/`** — the 22-module Commons Ontology Library
+  (MIT, versionIRI 20250801).
+- **`authoritative-ontologies/OMG-LCC/`** — Languages, Countries and Codes, 3 modules
+  (MIT, versionIRI 20211101).
+- **`authoritative-ontologies/W3C-SKOS/`** — the SKOS core vocabulary (W3C Software and
+  Document License — the first non-MIT bundled component, so `NOTICE`'s blanket "both
+  bundled ontologies are MIT licensed" paragraph is now per-vendor).
+
+  None of these is used directly by any Kairos-authored module. They are bundled because
+  the vendored FIBO tree imports them. **Without them no FIBO closure resolved at all** —
+  a wider blast radius than the three failing files suggested, since only `.ttl` files
+  reach the inventory generator and FIBO ships `.rdf`.
+
+  OMG LCC was **masked**: the missing Commons mirror failed the closure first, so LCC
+  never appeared in any error output until Commons resolved. It surfaced only because the
+  new gate resolves each closure to completion rather than grepping a generator's log.
+
+- **`tests/test_bundle_conformance.py`** — runs the consumer's own inventory and loader
+  APIs over every bundled TTL, and is wired into the existing `cross-repo-contract` job
+  (which already has the pinned toolkit installed, so the marginal cost is one pytest
+  argument). Three invariants: inventory filenames are injective; every source resolves
+  its import closure non-degraded; every `.ttl` is classified inventoriable-or-archived,
+  so a newly added file cannot slip through unnoticed.
+
+  It deliberately does **not** grep the CLI. `generate-inventory` exits 0 while emitting
+  those failures (toolkit #405), which would make the grep load-bearing, and matching
+  emoji in CLI output is brittle across locales and toolkit releases. Calling the API
+  makes a broken closure an exception, works against the currently pinned toolkit, and
+  needed no cross-repo fix to land.
+
+#### Changed
+- **`catalog-v001.xml`** — `rewriteURI` rules for OMG Commons and OMG LCC (both publish
+  IRIs ending in `/` against `<name>.rdf` on disk, exactly like FIBO), and an explicit
+  `<uri>` for SKOS.
+- **Pattern OWL fragments are named `<pattern-id>.ttl`, not `template.ttl`.** Both
+  `deferred-relationship/template.ttl` and `multimodal-order-leg/template.ttl` mapped to a
+  single `template-inventory.yaml` — the consumer namespaces inventories by owning model
+  only under `derived-ontologies/`, so `blueprints/patterns/` fell outside DD-054. One
+  silently overwrote the other and every hub saw an unclearable `template: STALE`.
+- **`scripts/validate_structure.py`** discovers the pattern fragment by glob rather than
+  by the hardcoded name `template.ttl`, so the structural guard follows the file instead
+  of the filename. Without this the rename would have silently disabled the guard on both
+  patterns.
+- **`.github/workflows/validate.yml`** — deleted the commented-out
+  `# TODO: Enable when kairos-ontology-toolkit is published to PyPI` block. It was
+  superseded by `cross-repo-contract`, which installs the toolkit via `uv sync`, and it
+  implied coverage that did not exist.
+- **`contract-manifest.yaml`** — the new test is registered against the `catalog` and
+  `ontology-modules` surfaces, with a note that `scripts/test_catalog.py` only checks
+  `<uri>` targets and is blind to a wrong `rewritePrefix`; resolution is now proven by
+  execution instead.
+
+#### Result
+`generate-inventory` over the bundle: **82 of 82 inventories, zero failures, zero
+collisions** (was 78 generated, 3 closure failures, 1 collision).
+
 ## [1.16.0] - 2026-08-13
 
 ### Party bookkeeping (#51)

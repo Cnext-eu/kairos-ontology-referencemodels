@@ -501,7 +501,7 @@ def pattern_schema_errors(data, schema):
 
 
 def validate_pattern_template(template_text: str):
-    """Structural guard for a pattern's template.ttl.
+    """Structural guard for a pattern's copyable OWL fragment (``<id>.ttl``).
 
     Returns a list of error strings. Enforces the two rules the
     deferred-relationship review made explicit (issues #39/#42):
@@ -559,8 +559,9 @@ def validate_blueprints(verbose: bool) -> ValidationResult:
          directory name, and it validates against
          blueprints/patterns/_schema/pattern.schema.json (the library has a
          downstream parser in kairos-ontology-toolkit).
-      6. Every blueprints/patterns/<id>/template.ttl passes the template guard:
-         no rdfs:range owl:Thing, and every property block declares rdfs:domain.
+      6. Every OWL fragment under blueprints/patterns/<id>/ (any *.ttl that is not a
+         *.shacl.ttl — by convention <id>.ttl) passes the template guard: no
+         rdfs:range owl:Thing, and every property block declares rdfs:domain.
       7. Every *.yaml directly under archetypes/ (excluding _schema/ and dotfiles)
          loads with yaml.safe_load and its top-level ``id`` equals the filename stem.
     """
@@ -690,8 +691,13 @@ def validate_blueprints(verbose: bool) -> ValidationResult:
             else:
                 r.ok(f"{rel}: validates against pattern.schema.json", verbose, is_verbose=True)
 
-        template_file = pattern_dir / "template.ttl"
-        if template_file.is_file():
+        # Discovered by glob, not by a fixed "template.ttl" name. The two templates that
+        # had that name both inventoried to template-inventory.yaml in the consumer and
+        # silently clobbered each other (gh#57); they are now named for their pattern.
+        # Globbing means the guard follows the file instead of the filename.
+        for template_file in sorted(pattern_dir.glob("*.ttl")):
+            if template_file.name.endswith(".shacl.ttl"):
+                continue
             template_rel = template_file.relative_to(ONTOLOGY_ROOT)
             template_errors = validate_pattern_template(
                 template_file.read_text(encoding="utf-8")

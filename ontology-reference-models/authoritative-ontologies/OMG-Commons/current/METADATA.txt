@@ -1,0 +1,33 @@
+OMG Commons Ontology Library - Download Information
+==================================================
+
+source: Commons Ontology Library (COL) - shared foundational ontologies
+publisher: Object Management Group (OMG)
+download_date: 2026-08-14
+version: 20250801
+release_name: Commons 1.2 (2025-08-01 versionIRI)
+release_url: https://www.omg.org/spec/Commons/
+ontology_files:
+  - 22 modules under current/commons/, one .rdf per module, flat layout
+  - namespaces are https://www.omg.org/spec/Commons/<Module>/
+license: MIT License (see ./LICENSE)
+homepage: https://www.omg.org/spec/Commons/
+
+notes:
+  Fetched by dereferencing each module IRI with Accept: application/rdf+xml, then
+  following owl:imports transitively until closed. The closure is exactly the 22
+  modules listed below; Commons imports nothing outside itself except W3C built-ins
+  (owl, rdfs, rdf, xsd, skos), so the mirror resolves fully offline.
+
+  Modules: AnnotationVocabulary, BusinessAuthorizations, Classifiers, CodesAndCodeSets,
+  Collections, ContextualDesignators, ContextualIdentifiers, DatesAndTimes, Designators,
+  Documents, Identifiers, Languages, Locations, Organizations, PartiesAndSituations,
+  QuantitiesAndUnits, RegistrationAuthorities, RegulatoryAgencies, RolesAndCompositions,
+  SitesAndFacilities, StructuredCollections, TextDatatype.
+
+  Individual modules carry a range of versionIRI dates (20221101, 20230801, 20240801,
+  20250801) because OMG only re-stamps a module when it changes. 20250801 is the newest
+  and is recorded above as the release identity.
+
+  There is no fetch script for this mirror (scripts/download_fibo.py is FIBO-specific).
+  Refresh by re-dereferencing the module IRIs above.

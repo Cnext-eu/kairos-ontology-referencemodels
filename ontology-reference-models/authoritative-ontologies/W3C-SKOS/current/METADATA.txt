@@ -1,0 +1,26 @@
+W3C SKOS Core Vocabulary - Download Information
+==================================================
+
+source: SKOS Simple Knowledge Organization System - Core Vocabulary
+publisher: World Wide Web Consortium (W3C)
+download_date: 2026-08-14
+version: SKOS Recommendation 2009-08-18 (namespace document, current)
+release_name: skos-reference-20090818
+release_url: https://www.w3.org/TR/2009/REC-skos-reference-20090818/
+ontology_files:
+  - skos/core.rdf  (namespace http://www.w3.org/2004/02/skos/core#)
+license: W3C Software and Document License (2023) (see ./LICENSE)
+homepage: https://www.w3.org/TR/skos-reference/
+
+notes:
+  Fetched from https://www.w3.org/2004/02/skos/core.rdf with
+  Accept: application/rdf+xml. The document declares
+  owl:Ontology rdf:about="http://www.w3.org/2004/02/skos/core", which is exactly the
+  IRI that FIBO's etc/vocabulary/scaffolding.ttl owl:imports, so catalog resolution
+  matches on the document IRI. SKOS imports nothing, so the mirror is a single file.
+
+  The SKOS namespace document is not versioned by W3C beyond the 2009 Recommendation;
+  there is no release tag to track. Refresh by re-fetching the URL above.
+
+  Note the license differs from the other bundled mirrors: SKOS is under the W3C
+  Software and Document License, not MIT. See the repository NOTICE.

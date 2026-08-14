@@ -25,7 +25,37 @@
          The folder is always named "fibo/" regardless of release version. -->
     <rewriteURI uriStartString="https://spec.edmcouncil.org/fibo/ontology/"
                 rewritePrefix="authoritative-ontologies/FIBO/current/fibo/"/>
-    
+
+    <!-- ========== OMG Commons Ontology Library (COL) ==========
+         FIBO imports Commons throughout, so without these entries NO FIBO closure
+         resolves — the v1.16.0 breakage in gh#57. Nothing here imports Commons
+         directly; it is reached transitively from FIBO.
+
+         Same shape as the FIBO rule: Commons publishes ontology IRIs ending in "/"
+         (https://www.omg.org/spec/Commons/Locations/) while the file on disk is
+         "Locations.rdf" one level up. The resolver retries a directory-shaped rewrite
+         target as <name>.rdf/.ttl/.owl, so one rule covers all 22 modules. -->
+    <rewriteURI uriStartString="https://www.omg.org/spec/Commons/"
+                rewritePrefix="authoritative-ontologies/OMG-Commons/current/commons/"/>
+
+    <!-- ========== OMG LCC (Languages, Countries and Codes) ==========
+         The other FIBO dependency, imported by fibo/ACTUS. This one was masked in
+         v1.16.0: the missing Commons mirror failed the closure first, so LCC never
+         appeared in the error output until Commons resolved.
+
+         The upstream IRI path layout (Countries/, Languages/) is preserved on disk, so
+         one rewrite covers the whole tree. -->
+    <rewriteURI uriStartString="https://www.omg.org/spec/LCC/"
+                rewritePrefix="authoritative-ontologies/OMG-LCC/current/lcc/"/>
+
+    <!-- ========== W3C SKOS ==========
+         Imported by FIBO's etc/vocabulary/scaffolding.ttl. A single document, so an
+         explicit <uri> rather than a rewrite. The loader also registers the "/" and "#"
+         variants of this name, which covers the skos: prefix form used for annotations
+         across the derived ontologies. -->
+    <uri name="http://www.w3.org/2004/02/skos/core"
+         uri="authoritative-ontologies/W3C-SKOS/current/skos/core.rdf"/>
+
     <!-- ========== DCSA (Digital Container Shipping Association) ========== -->
     <uri name="https://www.kairosflow.ai/ont/dcsa" uri="derived-ontologies/DCSA/current/dcsa.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/dcsa/shipment-journey" uri="derived-ontologies/DCSA/current/shipment-journey/shipment-journey.ttl"/>
