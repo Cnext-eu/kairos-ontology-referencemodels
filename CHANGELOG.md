@@ -75,9 +75,18 @@ The contract was tested; the corpus was not.
   `<uri>` targets and is blind to a wrong `rewritePrefix`; resolution is now proven by
   execution instead.
 
+#### Changed — toolkit pin
+- **Pinned toolkit bumped 5.2.1rc9 → 5.2.3rc1**, the `preview` channel head and the exact
+  version the client hub reported gh#57 against. The pin check is time-dependent — it
+  compares against whatever the channel has released since — so it went red on `main` as
+  soon as 5.2.3rc1 shipped, independently of any change here. Bumping also means the fix
+  is verified against the version that produced the original report, not just the version
+  that happened to be pinned when it was written.
+
 #### Result
-`generate-inventory` over the bundle: **82 of 82 inventories, zero failures, zero
-collisions** (was 78 generated, 3 closure failures, 1 collision).
+`generate-inventory` over the bundle, on both 5.2.1rc9 and 5.2.3rc1: **82 of 82
+inventories, zero failures, zero collisions** (was 78 generated, 3 closure failures,
+1 collision).
 
 ## [1.16.0] - 2026-08-13
 
