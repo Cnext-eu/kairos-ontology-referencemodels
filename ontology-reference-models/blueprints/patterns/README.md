@@ -79,14 +79,22 @@ patterns/
     pattern.md                  # problem, applicability, when NOT to use, worked example,
                                  # anti-patterns, grain collisions
     pattern.yaml                # naming conventions — the part that is normative
-    template.ttl                # OPTIONAL — placeholder-namespace OWL fragment
+    <pattern-id>.ttl            # OPTIONAL — placeholder-namespace OWL fragment
 ```
 
-**No `owl:versionInfo` in `template.ttl`.** `scripts/version_manager.py` scans every folder under
+**The OWL fragment is named for its pattern, not `template.ttl`.** Until v1.17.0 both fragments
+were called `template.ttl`. The consumer derives an inventory filename from the TTL stem and only
+namespaces by owning model under `derived-ontologies/`, so both collapsed to a single
+`template-inventory.yaml` — one silently overwrote the other and every hub saw a permanent
+`template: STALE` failure it could not clear (gh#57). Name the fragment `<pattern-id>.ttl`.
+`scripts/validate_structure.py` discovers it by glob, so the guard follows the file rather than
+the name.
+
+**No `owl:versionInfo` in the fragment.** `scripts/version_manager.py` scans every folder under
 `blueprints/` that has a `VERSION` file and requires every `owl:versionInfo` literal in every
-`.ttl` beneath it to equal that file's contents. A `template.ttl` is a namespace-placeholder
-fragment for hubs to copy, not a versioned ontology module — it must carry no `owl:versionInfo`,
-or `version_manager.py check` fails in CI the moment this module's version diverges from the
+`.ttl` beneath it to equal that file's contents. The fragment is a namespace-placeholder for hubs
+to copy, not a versioned ontology module — it must carry no `owl:versionInfo`, or
+`version_manager.py check` fails in CI the moment this module's version diverges from the
 placeholder's. Do not add one "for consistency" with the derived ontologies.
 
 ## Contents

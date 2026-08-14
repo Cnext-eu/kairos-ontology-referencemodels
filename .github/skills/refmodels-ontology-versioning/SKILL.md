@@ -99,6 +99,12 @@ The script automatically:
 
 After downloading, update `catalog-v001.xml` if the extracted folder name changed.
 
+**The other mirrors (IATA, OMG-Commons, OMG-LCC, W3C-SKOS) have no script** — archive, re-fetch
+and hand-write `METADATA.txt` in the same key order. See
+`ontology-reference-models/VERSIONING.md`. Always finish with
+`pytest tests/test_bundle_conformance.py`, which proves every closure still resolves offline;
+a mirror that silently stops resolving is exactly the v1.16.0 failure (gh#57).
+
 ## Folder Structure
 
 ```

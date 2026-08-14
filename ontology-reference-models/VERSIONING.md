@@ -59,6 +59,26 @@ This will:
 2. Download new FIBO release into `current/`
 3. Update `METADATA.txt`
 
+### Updating the other authoritative mirrors
+
+`scripts/download_fibo.py` is FIBO-specific. IATA, OMG-Commons, OMG-LCC and W3C-SKOS are
+vendored **manually**: move `current/` to `archive/{old_version}/`, re-fetch, and hand-write
+`METADATA.txt` in the same key order (`source`, `publisher`, `download_date`, `version`,
+`release_name`, `release_url`, `license`, `homepage`).
+
+The OMG mirrors are fetched by dereferencing each module IRI with
+`Accept: application/rdf+xml` and following `owl:imports` until the closure is closed; the
+module lists are recorded in their `METADATA.txt`. Preserve the upstream IRI path layout on
+disk so the single `rewriteURI` rule in `catalog-v001.xml` keeps resolving.
+
+After any mirror update, run the bundle conformance suite — it is what proves the closure
+still resolves offline:
+
+```bash
+export KAIROS_TOOLKIT_SRC="$(uv run python -c 'import kairos_ontology, pathlib; print(pathlib.Path(kairos_ontology.__file__).parent.parent)')"
+uv run --extra dev python -m pytest tests/test_bundle_conformance.py -v
+```
+
 ### Archiving all ontologies at once
 
 ```bash

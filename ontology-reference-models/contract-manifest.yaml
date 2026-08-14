@@ -28,11 +28,16 @@ surfaces:
       - kairos_ontology.core.reference_modules (module document resolution)
     enforced_by:
       - tests/test_model_registration.py::test_every_accelerator_import_is_catalogued
+      - tests/test_bundle_conformance.py::test_every_source_resolves_its_import_closure
       - scripts/validate_archetypes.py (check 2, ref_model_modules IRI resolution)
     notes: >
       Both explicit <uri> entries and <rewriteURI> prefix rules are contract. The rewrite rule
       alone covers 300+ FIBO documents; scripts/catalog_utils.py ignored rewrites entirely
-      until v1.15.0+, so every FIBO import silently resolved to None.
+      until v1.15.0+, so every FIBO import silently resolved to None. Note that
+      scripts/test_catalog.py only checks that <uri> targets exist on disk — a wrong
+      rewritePrefix is invisible to it. Resolution is proven by execution instead:
+      test_bundle_conformance.py loads every bundled TTL through the consumer's own loader,
+      which is what caught the missing OMG Commons / LCC / SKOS mirrors in gh#57.
 
   - id: archetypes
     path: blueprints/archetypes/*.yaml
@@ -60,7 +65,7 @@ surfaces:
       - tests/test_toolkit_contract.py::test_every_pattern_loads_through_the_real_loader
       - tests/test_toolkit_contract.py::test_bulk_pattern_load_emits_no_warnings
       - scripts/validate_archetypes.py (check 7, multimodal-order-leg mode_bindings)
-      - scripts/validate_structure.py (pattern.yaml schema + template.ttl guard)
+      - scripts/validate_structure.py (pattern.yaml schema + <pattern-id>.ttl fragment guard)
       - scripts/validate_pattern_conformance.py (derived ontologies vs normative patterns)
     notes: >
       The schema is open at the top level (the toolkit's loader promotes seven known keys and
@@ -111,6 +116,11 @@ surfaces:
       - scripts/version_manager.py check (VERSION matches owl:versionInfo)
       - scripts/validate_structure.py
       - tests/test_model_registration.py
+      - tests/test_bundle_conformance.py::test_inventory_filenames_are_injective
+      - tests/test_bundle_conformance.py::test_every_bundled_ttl_is_classified
     notes: >
       Module document IRIs and their owl:versionInfo are contract; a hub resolves modules by
       IRI through the catalog. Authoritative mirrors are vendored verbatim and never edited.
+      The *set* of modules is contract too: every non-archived .ttl must be inventoriable by
+      the consumer and must map to a unique inventory filename. v1.16.0 shipped two files both
+      named template.ttl that collapsed onto one inventory and clobbered each other (gh#57).

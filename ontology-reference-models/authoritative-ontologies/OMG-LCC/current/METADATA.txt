@@ -1,0 +1,31 @@
+OMG LCC (Languages, Countries and Codes) - Download Information
+==================================================
+
+source: Languages, Countries and Codes (LCC)
+publisher: Object Management Group (OMG)
+download_date: 2026-08-14
+version: 20211101
+release_name: LCC 1.1 (2021-11-01 versionIRI)
+release_url: https://www.omg.org/spec/LCC/
+ontology_files:
+  - Countries/CountryRepresentation.rdf
+  - Countries/ISO3166-1-CountryCodes.rdf
+  - Languages/LanguageRepresentation.rdf
+license: MIT License (see ./LICENSE)
+homepage: https://www.omg.org/spec/LCC/
+
+notes:
+  Fetched by dereferencing each module IRI with Accept: application/rdf+xml, then
+  following owl:imports transitively until closed. The closure is exactly the three
+  modules above; LCC imports nothing outside itself except W3C built-ins, so the mirror
+  resolves fully offline.
+
+  The upstream IRI path layout is preserved on disk (Countries/, Languages/) so the
+  single catalog rewriteURI rule maps cleanly.
+
+  Individual modules carry versionIRI dates 20151101, 20190201 and 20211101 because OMG
+  only re-stamps a module when it changes. 20211101 is the newest and is recorded above
+  as the release identity.
+
+  There is no fetch script for this mirror (scripts/download_fibo.py is FIBO-specific).
+  Refresh by re-dereferencing the module IRIs above.

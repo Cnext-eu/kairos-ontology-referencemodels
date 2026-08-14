@@ -21,34 +21,10 @@ jobs:
         with:
           python-version: '3.12'
       
-      # TODO: Enable when kairos-ontology-toolkit is published to PyPI
-      # - name: Install kairos-ontology-toolkit
-      #   run: |
-      #     pip install --upgrade pip
-      #     pip install kairos-ontology-toolkit
-      
-      # - name: Display toolkit version
-      #   run: kairos-ontology --version
-      
-      # - name: Validate ontology syntax and SHACL
-      #   run: |
-      #     kairos-ontology validate \
-      #       --ontologies ontologies \
-      #       --shapes shapes \
-      #       --all
-      
-      # - name: Test XML catalog resolution
-      #   run: |
-      #     kairos-ontology catalog-test --catalog catalog-v001.xml
-      
-      # - name: Generate test projections
-      #   run: |
-      #     kairos-ontology project \
-      #       --target all \
-      #       --ontologies ontologies \
-      #       --mappings mappings \
-      #       --output test-output
-      
+      # Toolkit-driven checks deliberately do NOT live here — see the cross-repo-contract
+      # job below, which installs the pinned toolkit via `uv sync` and runs the contract
+      # and bundle-conformance suites against it. This job stays toolkit-free on purpose.
+
       - name: Install validation dependencies
         run: pip install --quiet pytest jsonschema pyyaml rdflib
 
@@ -124,15 +100,21 @@ jobs:
       - name: Install the pinned toolkit
         run: uv sync --extra dev
 
-      # test_toolkit_contract.py probes for the toolkit's loaders and SKIPS when absent,
-      # which is why it never ran in CI before. Point it at the installed package and
-      # assert it actually collected tests, so a silent skip fails the build instead of
-      # passing it — the exact failure mode this job exists to end.
-      - name: Run cross-repo contract tests against the installed toolkit
+      # Both suites probe for the toolkit's loaders and SKIP when absent, which is why
+      # test_toolkit_contract.py never ran in CI before. Point them at the installed
+      # package and assert they actually collected tests, so a silent skip fails the
+      # build instead of passing it — the exact failure mode this job exists to end.
+      #
+      # test_toolkit_contract.py covers the published surfaces (patterns, archetypes).
+      # test_bundle_conformance.py covers the corpus: it runs the toolkit's inventory
+      # and closure APIs over every bundled TTL. v1.16.0 released with three unresolvable
+      # closures and an inventory filename collision because nothing did that (gh#57).
+      - name: Run cross-repo contract and bundle conformance tests against the installed toolkit
         run: |
           export KAIROS_TOOLKIT_SRC="$(uv run python -c 'import kairos_ontology, pathlib; print(pathlib.Path(kairos_ontology.__file__).parent.parent)')"
           echo "KAIROS_TOOLKIT_SRC=$KAIROS_TOOLKIT_SRC"
-          uv run --extra dev python -m pytest tests/test_toolkit_contract.py -v -ra \
+          uv run --extra dev python -m pytest \
+            tests/test_toolkit_contract.py tests/test_bundle_conformance.py -v -ra \
             -p no:randomly --strict-markers | tee contract.log
           if grep -qE '^[0-9]+ skipped|no tests ran' contract.log; then
             echo "::error::Contract tests skipped instead of running — the toolkit was not visible."
