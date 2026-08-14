@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **The release gate no longer runs a weaker check set than the PR gate.** `release.yml`
+  restated a subset of `validate.yml`'s checks by hand, and had drifted: it was missing
+  `validate_pattern_conformance.py` and the entire `cross-repo-contract` job. A tag could
+  therefore publish a bundle that PR CI would have rejected — including, until v1.17.0,
+  one that no hub could inventory (#57). `release.yml` now *calls* `validate.yml` via
+  `workflow_call` and gates the release on it with `needs:`, so the two cannot diverge:
+  there is only one gate.
+
+  Releases pass `skip-toolkit-pin-check: true`. That check compares the pin against
+  whatever the toolkit has published since, so it is time-dependent and would block a
+  release for a reason unrelated to the artifact being released — it went red on `main`
+  this way between #58 and #59. What a release does still need, that the pinned toolkit
+  can actually read the bundle, is the contract and conformance suites, which run either
+  way.
+
+  The input is phrased as skip-rather-than-require deliberately: on push/PR the `inputs`
+  context is null and GitHub coerces null and `false` alike, so a `!= false` guard would
+  have silently skipped the pin check on ordinary CI.
+
+  Also drops `release.yml`'s commented-out
+  `# TODO: Enable when kairos-ontology-toolkit is published to PyPI` block, the twin of
+  the one removed from `validate.yml` in v1.17.0, and its now-unused Python setup.
+
 ## [1.17.0] - 2026-08-14
 
 ### The shipped bundle now inventories cleanly, and CI proves it (#57)
