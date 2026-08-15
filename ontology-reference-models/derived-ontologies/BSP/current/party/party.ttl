@@ -4,6 +4,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix schema: <https://schema.org/> .
 @prefix comm: <https://www.kairosflow.ai/ont/bsp/commercial#> .
 @prefix ref-data: <https://www.kairosflow.ai/ont/bsp/reference-data#> .
 
@@ -23,8 +24,8 @@
     the role subclasses remain as deprecated standards overlays.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-08-13"^^xsd:date ;
-    owl:versionInfo "2.0.0" ;
+    dcterms:modified "2026-08-15"^^xsd:date ;
+    owl:versionInfo "2.1.0" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     owl:imports <https://www.kairosflow.ai/ont/bsp/reference-data> ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
@@ -231,20 +232,36 @@
 
 :hasRole a owl:ObjectProperty ;
     rdfs:label "has role" ;
-    rdfs:comment "The role held, from the governed PartyRoleCode list. Named per qualified-role-assignment (fixed name hasRole, ranging over the pack's controlled role vocabulary)." ;
-    rdfs:domain :TradePartyRoleAssignment ;
+    rdfs:comment """REUSABLE — no rdfs:domain by design: asserting a domain of
+    :TradePartyRoleAssignment would type every hub-local assignment class's
+    instances as this module's assignment class, reintroducing the trade
+    context the local durable identity exists to avoid (BSP 2.1.0). The role
+    held, from the governed PartyRoleCode list. Named per
+    qualified-role-assignment (fixed name hasRole, ranging over the pack's
+    controlled role vocabulary). The rdfs:range stays: reuse this property
+    only when the role vocabulary IS :PartyRoleCode; a hub whose roles span
+    other contexts mints a local hasRole per the pattern and can still reuse
+    :roleValidFrom and :roleValidTo. schema:domainIncludes is additive,
+    non-entailing domain evidence — hubs add their own triple for their
+    assignment class.""" ;
+    schema:domainIncludes :TradePartyRoleAssignment ;
     rdfs:range :PartyRoleCode .
 
 :roleValidFrom a owl:DatatypeProperty ;
     rdfs:label "role valid from" ;
-    rdfs:comment "Start of the assignment's validity period, independent of the identity's own lifecycle." ;
-    rdfs:domain :TradePartyRoleAssignment ;
+    rdfs:comment """REUSABLE — no rdfs:domain by design: any role-assignment class,
+    reference or hub-local, may carry the validity period (BSP 2.1.0). Start of
+    the assignment's validity period, independent of the identity's own
+    lifecycle.""" ;
+    schema:domainIncludes :TradePartyRoleAssignment ;
     rdfs:range xsd:dateTime .
 
 :roleValidTo a owl:DatatypeProperty ;
     rdfs:label "role valid to" ;
-    rdfs:comment "End of the assignment's validity period; absent while the assignment holds." ;
-    rdfs:domain :TradePartyRoleAssignment ;
+    rdfs:comment """REUSABLE — no rdfs:domain by design: any role-assignment class,
+    reference or hub-local, may carry the validity period (BSP 2.1.0). End of
+    the assignment's validity period; absent while the assignment holds.""" ;
+    schema:domainIncludes :TradePartyRoleAssignment ;
     rdfs:range xsd:dateTime .
 
 #################################################################
@@ -260,7 +277,9 @@
     to a participating trade party (BSP 2.0.0, mirroring mmt/consignment#hasParty).
     The typed roles :hasBuyer, :hasSeller, :hasShipper, :hasConsignee, :hasCarrier,
     :hasManufacturer and the bsp/financial bank properties are specialisations.
-    Cardinality: 0..n.""" ;
+    Cardinality: 0..n. schema:domainIncludes is deliberately not asserted here:
+    the subject classes are owned by the specialisations' own rdfs:domain
+    declarations, and no single class anchors the landing pad.""" ;
     rdfs:range :TradeParty .
 
 :hasBuyer a owl:ObjectProperty ;
@@ -307,7 +326,8 @@
 
 :hasContact a owl:ObjectProperty ;
     rdfs:label "has contact" ;
-    rdfs:comment "REUSABLE — no rdfs:domain by design: asserting a domain of :TradeParty would infer TradeParty subsumption onto any hub identity class using this property, re-creating the subclass-identity-by-role anti-pattern by the back door (BSP 1.6.0). Relates a party-like identity to its contact persons. Cardinality: 1:n." ;
+    rdfs:comment "REUSABLE — no rdfs:domain by design: asserting a domain of :TradeParty would infer TradeParty subsumption onto any hub identity class using this property, re-creating the subclass-identity-by-role anti-pattern by the back door (BSP 1.6.0). Relates a party-like identity to its contact persons. Cardinality: 1:n. schema:domainIncludes carries the reference anchor as non-entailing evidence (BSP 2.1.0)." ;
+    schema:domainIncludes :TradeParty ;
     rdfs:range :Contact .
 
 :hasAddress a owl:ObjectProperty ;
@@ -318,19 +338,23 @@
     postal/physical addresses. Cardinality: 1:n — a party may have many
     addresses. The typed roles :hasBillingAddress and :hasShippingAddress are
     specialisations of this generic relationship. The Address class is shared
-    master data defined in the BSP reference-data module.""" ;
+    master data defined in the BSP reference-data module. schema:domainIncludes
+    carries the reference anchor as non-entailing evidence (BSP 2.1.0).""" ;
+    schema:domainIncludes :TradeParty ;
     rdfs:range ref-data:Address .
 
 :hasBillingAddress a owl:ObjectProperty ;
     rdfs:subPropertyOf :hasAddress ;
     rdfs:label "has billing address" ;
     rdfs:comment "REUSABLE — no rdfs:domain by design (see :hasAddress). Identifies billing address. Cardinality: 0..1." ;
+    schema:domainIncludes :TradeParty ;
     rdfs:range ref-data:Address .
 
 :hasShippingAddress a owl:ObjectProperty ;
     rdfs:subPropertyOf :hasAddress ;
     rdfs:label "has shipping address" ;
     rdfs:comment "REUSABLE — no rdfs:domain by design (see :hasAddress). Identifies shipping/delivery address. Cardinality: 0..1." ;
+    schema:domainIncludes :TradeParty ;
     rdfs:range ref-data:Address .
 
 #################################################################

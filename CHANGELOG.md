@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed — MMT 2.1.0 and BSP 2.1.0: role-assignment properties are now genuinely reusable (#61)
+
+The qualified-role-assignment pattern's own grain collision ("none of the five party parents
+is the durable identity on its own") forces every hub to mint a local assignment class — but
+`hasRole`, `roleValidFrom` and `roleValidTo` were domain-bound to the *reference* assignment
+classes, so no hub could carry them without subclassing the class the pattern tells it to
+avoid. Both hit the wall in practice (#43's `owl:unionOf` workaround was a symptom).
+
+- **mmt/party + bsp/party**: `rdfs:domain` dropped from `hasRole`, `roleValidFrom`,
+  `roleValidTo` (marked `REUSABLE — no rdfs:domain by design`); `rdfs:range` unchanged.
+  Minor bumps per the axiom-relaxation rule — entailments weaken, no instance data breaks,
+  no IRI moves (precedent: BSP 1.6.0's de-domained address/contact properties).
+- **`schema:domainIncludes`** (first use in the repo) now carries the intended anchor as
+  additive, non-entailing domain evidence — the toolkit's `effective_domain_classes()` /
+  `class_properties()` already honor it. Backfilled onto the four de-domained BSP 1.6.0
+  properties (`hasContact`, `hasAddress`, `hasBillingAddress`, `hasShippingAddress`).
+  Deliberately NOT on `bsp-party:hasParty` — a landing pad has no single anchor; its
+  subjects are owned by the specialisations' own `rdfs:domain` declarations.
+- **Scope notes, stated as decisions**: `hasRole` keeps its module-local code-list range —
+  reuse it only when the role vocabulary IS that module's code list; otherwise mint a local
+  `hasRole` per the pattern (the validity pair stays reusable either way).
+  `assignedToTransportParty`/`assignedToTradeParty` are excluded — their *ranges* are the
+  party classes, a separate design decision.
+- CONTRACT.md now states the axiom-relaxation rule explicitly (dropping `rdfs:domain` /
+  widening `rdfs:range` = minor). Archetype pins `>=2.0.0,<3` remain valid; no archetype
+  changes.
+
 ## [1.17.0] - 2026-08-14
 
 ### The shipped bundle now inventories cleanly, and CI proves it (#57)

@@ -126,6 +126,11 @@ them even though only document IRIs are listed in the manifest:
 - **Additive machinery and annotations are a minor bump**: new classes/properties,
   `owl:deprecated true` markings, comment/citation changes. (First exercised by BSP 1.6.0 —
   the role-assignment machinery.)
+- **Relaxing an axiom is a minor bump**: dropping an `rdfs:domain` (with the
+  `REUSABLE — no rdfs:domain by design` marker) or widening an `rdfs:range` weakens
+  entailments without invalidating any instance data or removing any IRI. (First exercised by
+  BSP 1.6.0 — the de-domained address/contact properties; restated by MMT/BSP 2.1.0 — the
+  role-assignment properties.)
 - **`owl:deprecated true` is a signal, not a removal**: the term stays declared and resolvable
   for at least the remainder of the current major version; conformance checks skip deprecated
   subjects.

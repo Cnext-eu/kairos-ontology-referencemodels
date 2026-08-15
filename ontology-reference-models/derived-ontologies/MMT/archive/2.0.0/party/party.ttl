@@ -1,0 +1,154 @@
+@prefix : <https://www.kairosflow.ai/ont/mmt/party#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/mmt/party> a owl:Ontology ;
+    dcterms:title "MMT Party Domain" ;
+    dcterms:description """Party role classes for the Kairos Multi-Modal Transport ontology.
+
+    Covers consignors, consignees, carriers, freight forwarders, customs brokers,
+    notify parties, terminal operators, and warehouse operators.
+    Based on UN/CEFACT MMT Reference Data Model.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-08-13"^^xsd:date ;
+    owl:versionInfo "2.0.0" ;
+    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
+    rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
+
+#################################################################
+#    Party Role Classes
+#
+#    DEPRECATED AS ROLE MODEL (MMT 2.0.0). The role subclasses below are
+#    standards overlays mirroring UN/CEFACT MMT role contexts — kept for
+#    source fidelity and message-level interop, but they are the
+#    subclass-identity-by-role anti-pattern the qualified-role-assignment
+#    pattern rejects. Hubs MUST NOT subclass their durable Party identity
+#    under these; assign roles via :TransportPartyRoleAssignment +
+#    :hasRole (Role Assignment section below). See CONTRACT.md,
+#    "Patterns vs derived modules", and blueprints/patterns/
+#    qualified-role-assignment (deprecated subjects are outside its
+#    subclass-identity-by-role detection; un-deprecating revives it).
+#################################################################
+
+:TransportParty a owl:Class ;
+    rdfs:label "Transport Party" ;
+    rdfs:comment """An organization or person playing a role in transport operations.
+    
+    UN/CEFACT MMT: Abstract parent for all party roles.""" .
+
+:Consignor a owl:Class ;
+    rdfs:label "Consignor" ;
+    rdfs:comment """The party consigning goods to a carrier (shipper).
+    
+    UN/CEFACT MMT: Party sending the goods.""" ;
+    rdfs:subClassOf :TransportParty ;
+    owl:deprecated true .
+
+:Consignee a owl:Class ;
+    rdfs:label "Consignee" ;
+    rdfs:comment """The party to whom goods are consigned.
+    
+    UN/CEFACT MMT: Party receiving the goods.""" ;
+    rdfs:subClassOf :TransportParty ;
+    owl:deprecated true .
+
+:Carrier a owl:Class ;
+    rdfs:label "Carrier" ;
+    rdfs:comment """The party undertaking to perform or procure transport.
+    
+    UN/CEFACT MMT: Transport service provider.""" ;
+    rdfs:subClassOf :TransportParty ;
+    owl:deprecated true .
+
+:FreightForwarder a owl:Class ;
+    rdfs:label "Freight Forwarder" ;
+    rdfs:comment """A party arranging transport on behalf of shippers.
+    
+    UN/CEFACT MMT: Logistics service provider, NVOCC.""" ;
+    rdfs:subClassOf :TransportParty ;
+    owl:deprecated true .
+
+:CustomsBroker a owl:Class ;
+    rdfs:label "Customs Broker" ;
+    rdfs:comment """A party handling customs clearance procedures.
+    
+    UN/CEFACT MMT: Facilitates cross-border trade.""" ;
+    rdfs:subClassOf :TransportParty ;
+    owl:deprecated true .
+
+:NotifyParty a owl:Class ;
+    rdfs:label "Notify Party" ;
+    rdfs:comment """A party to be notified of cargo arrival.
+    
+    UN/CEFACT MMT: Often the consignee or their agent.""" ;
+    rdfs:subClassOf :TransportParty ;
+    owl:deprecated true .
+
+:TerminalOperator a owl:Class ;
+    rdfs:label "Terminal Operator" ;
+    rdfs:comment """A party operating a cargo terminal.
+    
+    UN/CEFACT MMT: Port, airport, or rail terminal operator.""" ;
+    rdfs:subClassOf :TransportParty ;
+    owl:deprecated true .
+
+:WarehouseOperator a owl:Class ;
+    rdfs:label "Warehouse Operator" ;
+    rdfs:comment """A party operating a warehouse or storage facility.
+    
+    UN/CEFACT MMT: Provides storage and inventory services.""" ;
+    rdfs:subClassOf :TransportParty ;
+    owl:deprecated true .
+
+#################################################################
+#    Role Assignment (v2.0.0)
+#
+#    Pattern-conformant role machinery per blueprints/patterns/
+#    qualified-role-assignment (naming normative) and governed-code-list.
+#    The role vocabulary is the set formerly expressed as the deprecated
+#    role subclasses above. Context links follow inContextOf<Context> and
+#    are declared by the hub per context class.
+#################################################################
+
+:TransportPartyRoleCode a owl:Class ;
+    rdfs:label "Transport Party Role Code" ;
+    rdfs:comment """Governed code list of transport-party roles (Consignor, Consignee,
+    Carrier, FreightForwarder, CustomsBroker, NotifyParty, TerminalOperator,
+    WarehouseOperator). Named per blueprints/patterns/governed-code-list
+    (<Dimension>Code); value governance is a pack-level MDM concern.""" .
+
+:TransportPartyRoleAssignment a owl:Class ;
+    rdfs:label "Transport Party Role Assignment" ;
+    rdfs:comment """The (identity, role, context, validity) link entity: one durable
+    TransportParty playing one role in one context for some period. Named per
+    blueprints/patterns/qualified-role-assignment (<Identity>RoleAssignment).
+    This — not the deprecated role subclasses — is the shape hubs reuse.""" .
+
+:assignedToTransportParty a owl:ObjectProperty ;
+    rdfs:label "assigned to transport party" ;
+    rdfs:comment "The durable identity holding the role. Named per qualified-role-assignment (assignedTo<Identity>)." ;
+    rdfs:domain :TransportPartyRoleAssignment ;
+    rdfs:range :TransportParty .
+
+:hasRole a owl:ObjectProperty ;
+    rdfs:label "has role" ;
+    rdfs:comment "The role held, from the governed TransportPartyRoleCode list. Named per qualified-role-assignment (fixed name hasRole)." ;
+    rdfs:domain :TransportPartyRoleAssignment ;
+    rdfs:range :TransportPartyRoleCode .
+
+:roleValidFrom a owl:DatatypeProperty ;
+    rdfs:label "role valid from" ;
+    rdfs:comment "Start of the assignment's validity period, independent of the identity's own lifecycle." ;
+    rdfs:domain :TransportPartyRoleAssignment ;
+    rdfs:range xsd:dateTime .
+
+:roleValidTo a owl:DatatypeProperty ;
+    rdfs:label "role valid to" ;
+    rdfs:comment "End of the assignment's validity period; absent while the assignment holds." ;
+    rdfs:domain :TransportPartyRoleAssignment ;
+    rdfs:range xsd:dateTime .
