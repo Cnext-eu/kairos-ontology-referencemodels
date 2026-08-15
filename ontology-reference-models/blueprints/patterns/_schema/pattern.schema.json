@@ -45,6 +45,7 @@
       "items": {"$ref": "#/$defs/anti_pattern"}
     },
     "grain_collisions": {
+      "$comment": "Two entry shapes, by design. Class-anchored collisions MUST use the {against, reason} mapping — one entry per class IRI, scalar `against` (the toolkit coverage ledger keys units on it) — so a tool can check the hub does not collapse into the class. The bare-string form is reserved for grain warnings that name no class (e.g. governed-code-list's source-noun caveat); do not use it when a class IRI exists.",
       "type": "array",
       "items": {
         "oneOf": [

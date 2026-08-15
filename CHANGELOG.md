@@ -29,6 +29,51 @@ container-scoped overlay, and the archetypes each pick one side — but neither
   1.3.0 → 1.4.0** (annotations = minor; pins `>=1.3.0,<2` unaffected).
 - The forced dual import itself is toolkit behavior and deliberately unchanged.
 
+### Changed — patterns 0.4.0: qualified-role-assignment × governed-code-list composition stated (#62)
+
+The two most commonly co-applicable patterns both declared `naming: normative` and prescribed
+different names for the same slot (`hasRole` vs `has<Dimension>Code`), and following either one
+literally landed in the other's anti-pattern. The composition rule is now stated in both
+(`pattern.md` "Composes with" sections + `pattern.yaml` comments): **`hasRole` names the slot;
+`governed-code-list` decides its shape.** Single-source, ungoverned dimension → literal is fine
+and qualified-role-assignment is complete alone; when governed-code-list also applies, `hasRole`
+ranges to the governed `<Dimension>Code` class and the raw string moves to
+`source<Dimension>Value`. `has<Dimension>Code` remains normative for every slot no other pattern
+claims. This ratifies what bsp/mmt party already ship (`hasRole` → `PartyRoleCode` /
+`TransportPartyRoleCode`).
+
+Adjacent defect fixed: qualified-role-assignment's worked example declared `hasRole` as a
+DatatypeProperty over `xsd:string` — contradicting both the shipped modules and
+governed-code-list's `raw-string-as-classification-of-record` anti-pattern. The example now
+shows the composed form, with the literal collapse allowed only under the stated caveat.
+Also added to governed-code-list: where the values live (slot = the standard's, members =
+client master data in the blueprint's `reference-data` domain; the enum constraint is SHACL
+`sh:in` via `kairos-ontology suggest-shapes`, DD-076).
+
+### Changed — patterns 0.4.0: class-anchored grain collisions are now machine-readable (#63)
+
+`grain_collisions` shipped in two shapes — `{against, reason}` mappings (multimodal-order-leg)
+and bare prose (qualified-role-assignment, governed-code-list) — with the party collision, the
+most consequential entry in the library, unavailable to any automated check.
+
+- **qualified-role-assignment**: the party prose entry is now **five `{against, reason}`
+  entries**, one per role parent (`bsp/party#TradeParty`, `mmt/party#TransportParty`,
+  `dcsa/party#ShippingParty`, `imo/party#MaritimeParty`, `tic/party#TerminalParty` — the set
+  #55 completed); the location prose entry is now two entries
+  (`dcsa/locations#PortOfLoading`, `#PortOfDischarge`). `against` stays **scalar** — the
+  toolkit coverage ledger keys units on it, and one-entry-per-IRI is what a
+  does-not-collapse-into check consumes.
+- **The two-shape design is now stated, not accidental**: the schema `$comment`,
+  contract-manifest notes, and a new test pin it — class-anchored collisions MUST use the
+  mapping form; the bare-string form is reserved for grain warnings that name no class
+  (governed-code-list's source-noun caveat is the only shipped instance, unchanged — it has
+  no class IRI to carry and banning prose would relocate it without making it checkable).
+- Toolkit follow-up filed: the reshaped units re-key from `#0`/`#1` to IRIs in
+  `list-patterns --coverage` (2 → 7 units), staling two registry entries until the toolkit
+  registry updates. The ledger is not a gate; repo CI is unaffected.
+
+<<<<<<< HEAD
+=======
 ### Changed — MMT 2.1.0 and BSP 2.1.0: role-assignment properties are now genuinely reusable (#61)
 
 The qualified-role-assignment pattern's own grain collision ("none of the five party parents
@@ -56,6 +101,7 @@ avoid. Both hit the wall in practice (#43's `owl:unionOf` workaround was a sympt
   widening `rdfs:range` = minor). Archetype pins `>=2.0.0,<3` remain valid; no archetype
   changes.
 
+>>>>>>> origin/main
 ## [1.17.0] - 2026-08-14
 
 ### The shipped bundle now inventories cleanly, and CI proves it (#57)

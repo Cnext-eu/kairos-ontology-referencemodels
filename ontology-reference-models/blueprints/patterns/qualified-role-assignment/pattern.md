@@ -50,6 +50,26 @@ repository — see CONTRACT.md, "Patterns vs derived modules".
 | Link to context | `inContextOf<Context>`, e.g. `inContextOfBooking` |
 | Role value property | `hasRole`, ranging over the pack's controlled role vocabulary |
 
+## Composes with governed-code-list
+
+`hasRole` names the slot; `governed-code-list` decides its shape. When the role dimension is
+single-source and ungoverned, a literal-valued `hasRole` is fine and this pattern is complete
+on its own. When `governed-code-list`'s applicability **also** holds — the role values are
+sourced from more than one system, or a governed authority for them exists (almost every role
+vocabulary in a multi-system hub) — `hasRole` keeps this pattern's normative name but ranges to
+the governed `<Dimension>Code` class, and the raw source string moves to
+`source<Dimension>Value`. The two patterns are complementary, not alternatives: following this
+pattern's literal form on a governed dimension lands in `governed-code-list`'s
+`raw-string-as-classification-of-record` anti-pattern, while renaming the slot to
+`has<Dimension>Code` breaks this pattern's fixed `hasRole` name. `has<Dimension>Code` remains
+the normative name for every slot this pattern does not claim.
+
+This is the shape the reference modules ship: `bsp/party#hasRole` ranges to
+`bsp/party#PartyRoleCode`, `mmt/party#hasRole` to `mmt/party#TransportPartyRoleCode`. Both are
+domainless (`REUSABLE — no rdfs:domain by design`, MMT/BSP 2.1.0): reuse a module's `hasRole`
+only when your role vocabulary IS that module's code list; otherwise mint a local `hasRole` per
+this pattern — the modules' `roleValidFrom`/`roleValidTo` stay reusable either way.
+
 ## Cardinality rules (advisory)
 
 One durable identity may have `0..n` role assignments, each scoped to exactly one context. A
@@ -108,10 +128,21 @@ If any of those three conditions stops holding, materialise the full link entity
     rdfs:domain :PartyRoleAssignment ;
     rdfs:range :Booking .
 
-:hasRole a owl:DatatypeProperty ;
+# Role dimension governed (the common case) — composed with governed-code-list:
+:PartyRoleCode a owl:Class .               # governed dimension (<Dimension>Code)
+
+:hasRole a owl:ObjectProperty ;
     rdfs:domain :PartyRoleAssignment ;
-    rdfs:range xsd:string .   # constrained to the pack's role vocabulary
+    rdfs:range :PartyRoleCode .            # this pattern's name, that pattern's shape
+
+:sourcePartyRoleValue a owl:DatatypeProperty ;
+    rdfs:domain :PartyRoleAssignment ;
+    rdfs:range xsd:string .                # as-received per source; evidence, not authority
 ```
+
+Only when the role dimension is single-source and ungoverned may `hasRole` collapse to a
+datatype property (`rdfs:range xsd:string`, `sh:in`-constrained) — see *Composes with
+governed-code-list*.
 
 One `Party` record; one `PartyRoleAssignment` per (party, role, booking) triple — the same party
 can be Shipper on one assignment and Consignee on another without duplicating the party.
@@ -132,7 +163,14 @@ can be Shipper on one assignment and Consignee on another without duplicating th
 
 ## Grain collisions
 
-- **Party.** BSP, DCSA, MMT, IMO, and TIC each define a role-bearing party parent with a different
-  context. None of them is the durable identity on its own — each is evidence for a role overlay.
-- **Location.** DCSA specialises `Location` by shipment role (Port of Loading, Port of Discharge).
-  Materialising those as separate physical places duplicates one port that plays several roles.
+Each collision is recorded in `pattern.yaml` as one `{against, reason}` entry per class IRI, so
+a tool can check "the hub's durable identity does not collapse into this class".
+
+- **Party.** BSP (`bsp/party#TradeParty`), MMT (`mmt/party#TransportParty`), DCSA
+  (`dcsa/party#ShippingParty`), IMO (`imo/party#MaritimeParty`), and TIC
+  (`tic/party#TerminalParty`) each define a role-bearing party parent with a different
+  context. None of them is the durable identity on its own — each is evidence for a role
+  overlay. The maintained set is `overlap-register.yaml` `party-role-parents`.
+- **Location.** DCSA specialises `Location` by shipment role (`dcsa/locations#PortOfLoading`,
+  `#PortOfDischarge`, and the wider role-class family). Materialising those as separate physical
+  places duplicates one port that plays several roles.
