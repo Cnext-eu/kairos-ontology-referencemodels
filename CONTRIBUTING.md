@@ -43,14 +43,22 @@ cd kairos-ontology-referencemodels
 
 ### Validating your changes
 
-Run the structure validation before opening a PR:
+Run the tier-1 gate before opening a PR:
 
 ```bash
-py scripts/validate_structure.py
+python scripts/check_all.py
 ```
 
-The same check runs automatically in CI on every push and pull request via
-`.github/workflows/validate.yml`.
+`check_all.py` parses `.github/workflows/validate.yml` and runs the `validate` job's
+steps locally, in CI order — the workflow is the single source of truth, so the local
+gate cannot drift from CI. It covers structure, versions, archetypes, patterns,
+generated docs, and the pytest suite, all without installing the toolkit.
+
+On a green run it prints the tier-2 contract command (`uv sync --extra dev` + the
+toolkit contract/conformance tests), which verifies the pinned toolkit can actually
+read this bundle. Run tier 2 as well when you change any published contract surface
+(see `ontology-reference-models/contract-manifest.yaml`). CI remains the authoritative
+gate on every push and pull request.
 
 ## Ontology conventions
 
@@ -92,7 +100,7 @@ proposed solution (if any), and alternatives considered.
    git checkout -b feature/my-improvement
    ```
 2. Make your changes — follow the ontology conventions above.
-3. Run `py scripts/validate_structure.py` and fix any failures.
+3. Run `python scripts/check_all.py` and fix any failures.
 4. Commit with DCO sign-off: `git commit -s`
 5. Push and open a Pull Request against `main`.
 
@@ -119,7 +127,7 @@ Never commit to `main` directly — always branch + PR.
 
 ### PR checklist
 
-- [ ] `py scripts/validate_structure.py` passes
+- [ ] `python scripts/check_all.py` passes (tier-1 gate)
 - [ ] Ontology version bumped + old version archived (if content changed)
 - [ ] DCO sign-off on all commits
 - [ ] No secrets, credentials, or PII in labels, comments, or fixtures
