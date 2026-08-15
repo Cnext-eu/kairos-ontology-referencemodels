@@ -4,8 +4,8 @@
 
 _Part of the [Kairos Community Edition](https://github.com/Cnext-eu) by Cnext.eu_
 
-[![Validation Status](https://img.shields.io/badge/validation-passing-brightgreen.svg)](https://github.com/Cnext-eu/kairos-ontology-referencemodels/actions)
-[![Version](https://img.shields.io/badge/version-1.15.0-blue.svg)](VERSION)
+[![Validation Status](https://github.com/Cnext-eu/kairos-ontology-referencemodels/actions/workflows/validate.yml/badge.svg)](https://github.com/Cnext-eu/kairos-ontology-referencemodels/actions/workflows/validate.yml)
+[![Version](VERSION)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 ---
@@ -18,7 +18,8 @@ The Kairos Reference Models repository provides validated, versioned ontologies 
 - ✅ **Semantic versioning** for stable evolution (per-ontology + global)
 - ✅ **Automated validation** on every commit (syntax, SHACL, consistency, structure)
 - ✅ **FIBO integration** with 300+ Financial Industry Business Ontology files
-- ✅ **8 derived ontology suites** covering logistics, trade, and sustainability
+- ✅ **8 standard-backed derived ontologies** covering logistics, trade, and sustainability
+- ✅ **SupplyChain bridge module** linking the standards into one supply-chain view
 - ✅ **Accelerator Packs** — one-import bundles for Logistics and Financial Services
 - ✅ **SKOS mappings** for alignment with industry standards (Schema.org)
 - ✅ **Git-based distribution** via tags and submodules
@@ -31,26 +32,24 @@ The Kairos Reference Models repository provides validated, versioned ontologies 
 kairos-ontology-referencemodels/
 ├── ontology-reference-models/
 │   ├── authoritative-ontologies/      # Official RDF/OWL from standards bodies
-│   │   └── FIBO/                      # FIBO Q4 2025 (300+ files)
+│   │   ├── FIBO/                      # FIBO Q4 2025 (300+ files, EDM Council)
+│   │   ├── IATA/                      # IATA ONE Record
+│   │   ├── OMG-Commons/               # OMG Commons (vocabularies)
+│   │   ├── OMG-LCC/                   # OMG Languages, Countries & Codes
+│   │   └── W3C-SKOS/                  # W3C SKOS core
 │   ├── derived-ontologies/            # Our RDF interpretations of non-RDF standards
-│   │   ├── DCSA/                      # Container shipping (1 root + 7 domains)
-│   │   │   ├── dcsa.ttl
-│   │   │   ├── booking/
-│   │   │   ├── container-operations/
-│   │   │   ├── equipment/
-│   │   │   ├── events/
-│   │   │   ├── locations/
-│   │   │   ├── party/
-│   │   │   └── transport-documents/
+│   │   ├── DCSA/                      # Container shipping (1 root + 6 domains)
 │   │   ├── MMT/                       # Multi-modal transport (1 root + 10 domains)
-│   │   ├── BSP/                       # Buy-Ship-Pay (1 root + 6 domains)
-│   │   ├── TIC/                       # Terminal operations (1 root + 6 domains)
-│   │   ├── IMO/                       # Maritime regulatory (1 root + 5 domains)
+│   │   ├── BSP/                       # Buy-Ship-Pay (1 root + 8 domains)
+│   │   ├── TIC/                       # Terminal operations (1 root + 8 domains)
+│   │   ├── IMO/                       # Maritime regulatory (1 root + 9 domains)
 │   │   ├── WCO/                       # Customs & border (1 root + 5 domains)
 │   │   ├── Sustainability/            # Carbon & energy (1 root + 2 domains)
+│   │   ├── RAIL/                      # TAF TSI rail (1 root + 6 domains)
+│   │   └── SupplyChain/               # Cross-standard bridge (defines no new classes)
 │   ├── accelerator-packs/             # Pre-composed bundles
-│   │   ├── logistics/                 # 8 ontologies for logistics companies
-│   │   └── financial-services/        # FIBO + BSP for financial services
+│   │   ├── logistics/                 # 11 ontologies for logistics companies
+│   │   └── financial-services/        # FIBO FND/BE foundations for financial services
 │   ├── blueprints/                    # Opinionated Kairos guidance (not standards)
 │   │   ├── archetypes/                # Per-archetype YAML catalogs (e.g. shipping-carrier)
 │   │   ├── patterns/                  # Sector-neutral shapes and naming conventions
@@ -68,19 +67,23 @@ kairos-ontology-referencemodels/
 
 ## 🏭 Ontology Suite
 
-The repository ships **7 derived ontologies** covering the full logistics, trade, and sustainability value chain:
+The repository ships **8 standard-backed derived ontologies** covering the full logistics, trade, and sustainability value chain:
 
 | # | Ontology | Standard | Focus | Domains |
 |---|----------|----------|-------|---------|
-| 1 | **DCSA** | DCSA API Standards | Container shipping lifecycle | 13 |
-| 2 | **MMT** | UN/CEFACT MMT-RDM | Consignment, movement, cargo, equipment | 11 |
-| 3 | **BSP** | ISO 20197-1:2024 | Party, contract, invoice, settlement | 7 |
-| 4 | **TIC** | TIC 4.0 | Terminal operations, handling, automotive | 7 |
-| 5 | **IMO** | IMO Compendium / FAL / IMDG | Vessel registry, dangerous goods, port-call | 6 |
-| 6 | **WCO** | WCO Data Model 3.0 | Customs declarations, trade facilitation | 6 |
-| 7 | **Sustainability** | ISO 14083:2023 / GLEC | Emissions, energy, ESG reporting | 3 |
+| 1 | **DCSA** | DCSA API Standards | Container shipping lifecycle | 6 |
+| 2 | **MMT** | UN/CEFACT MMT-RDM | Consignment, movement, cargo, equipment | 10 |
+| 3 | **BSP** | ISO 20197-1:2024 | Party, contract, invoice, settlement | 8 |
+| 4 | **TIC** | TIC 4.0 | Terminal operations, handling, automotive | 8 |
+| 5 | **IMO** | IMO Compendium / FAL / IMDG | Vessel registry, dangerous goods, port-call | 9 |
+| 6 | **WCO** | WCO Data Model 3.0 | Customs declarations, trade facilitation | 5 |
+| 7 | **Sustainability** | ISO 14083:2023 / GLEC | Emissions, energy, ESG reporting | 2 |
+| 8 | **RAIL** | TAF TSI | Train running, path requests, rolling stock, consignment | 6 |
 
-Plus **FIBO** (300+ authoritative ontology files from the EDM Council) for financial industry concepts.
+Plus the **SupplyChain** module — a *cross-standard bridge* that defines no new classes of
+its own, but composes and links classes across the standards above into one supply-chain
+view. Plus **FIBO**, **IATA ONE Record**, **OMG Commons / LCC**, and **W3C SKOS** — 300+
+authoritative ontology files vendored verbatim from the standards bodies.
 
 Each derived ontology lives in its own directory under `ontology-reference-models/derived-ontologies/` with a `VERSION` file for independent versioning.
 
@@ -92,8 +95,8 @@ Accelerator Packs are **pre-composed bundles** that let you import an entire ver
 
 | Pack | Import URI | What's included |
 |------|-----------|-----------------|
-| **Logistics** | `https://www.kairosflow.ai/ont/accelerator/logistics#` | DCSA, MMT, BSP, TIC, IMO, WCO, Sustainability |
-| **Financial Services** | `https://www.kairosflow.ai/ont/accelerator/financial-services#` | FIBO foundations + BSP |
+| **Logistics** | `https://www.kairosflow.ai/ont/accelerator/logistics#` | DCSA, MMT, BSP, TIC, IMO, WCO, Sustainability, SupplyChain, RAIL |
+| **Financial Services** | `https://www.kairosflow.ai/ont/accelerator/financial-services#` | FIBO FND & BE foundations |
 
 ```turtle
 # Example — import the entire logistics suite in one line
@@ -145,37 +148,35 @@ git submodule update --init --recursive
 
 # Pin to specific version
 cd reference-models
-git checkout v1.0.0
+git checkout v1.18.0
 cd ..
 git add reference-models
-git commit -m "Pin reference-models to v1.0.0"
+git commit -m "Pin reference-models to v1.18.0"
 ```
 
 **Option 2: Direct Clone**
 ```bash
 # Clone reference models
-git clone --branch v1.0.0 https://github.com/Cnext-eu/kairos-ontology-referencemodels.git
+git clone --branch v1.18.0 https://github.com/Cnext-eu/kairos-ontology-referencemodels.git
 ```
 
 ### Validate Reference Models
 
-Install the [kairos-ontology-toolkit](https://github.com/Cnext-eu/kairos-core-ontology-hub):
+Validation is done with the
+[kairos-ontology-toolkit](https://github.com/Cnext-eu/kairos-ontology-toolkit) consumer
+CLI, pointed at this repo's `ontology-reference-models/` layout and its
+[`catalog-v001.xml`](ontology-reference-models/catalog-v001.xml) import-resolution catalog.
+See that repo's README for exact `kairos-ontology validate` flags.
 
-```bash
-pip install kairos-ontology-toolkit
-```
-
-Validate all ontologies:
-
-```bash
-# If using submodule
-kairos-ontology validate \
-  --ontologies reference-models/ontologies \
-  --shapes reference-models/shapes
-
-# Test catalog resolution
-kairos-ontology catalog-test --catalog reference-models/catalog-v001.xml
-```
+> **Contributors** — to validate changes *inside this repository*, skip the toolkit and
+> run the local gate instead:
+>
+> ```bash
+> python scripts/check_all.py        # tier-1 toolkit-free gate
+> ```
+>
+> See [CONTRIBUTING.md](CONTRIBUTING.md) and the *✅ Validation gate* section below for
+> the contract (tier-2) tests.
 
 ---
 
@@ -183,7 +184,7 @@ kairos-ontology catalog-test --catalog reference-models/catalog-v001.xml
 
 ### Financial Industry Business Ontology
 
-[ontologies/authoritative-ontologies/FIBO/](ontology-reference-models/authoritative-ontologies/FIBO/) contains 300+ FIBO Q4 2025 ontologies:
+[authoritative-ontologies/FIBO/](ontology-reference-models/authoritative-ontologies/FIBO/) contains 300+ FIBO Q4 2025 ontologies:
 
 - **fibo-fnd**: Foundations (agents, organizations, people)
 - **fibo-fbc**: Business Contracts
@@ -191,14 +192,17 @@ kairos-ontology catalog-test --catalog reference-models/catalog-v001.xml
 
 **XML Catalog Resolution:**
 
-[catalog-v001.xml](ontology-reference-models/catalog-v001.xml) maps FIBO URIs and all derived-ontology URIs to local files:
+[catalog-v001.xml](ontology-reference-models/catalog-v001.xml) maps FIBO URIs and all derived-ontology URIs to local files.
+FIBO uses a URI-prefix rewrite into the vendored tree (`authoritative-ontologies/FIBO/current/fibo/`):
 
 ```xml
-<uri name="https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/"
-     uri="ontologies/authoritative-ontologies/FIBO/edmcouncil-fibo-da9e773/FND/AgentsAndPeople/Agents.rdf"/>
+<rewriteURI uriStartString="https://spec.edmcouncil.org/fibo/ontology/"
+            rewritePrefix="authoritative-ontologies/FIBO/current/fibo/"/>
 ```
 
-This enables offline development and consistent import resolution.
+So `https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/` resolves to
+`ontology-reference-models/authoritative-ontologies/FIBO/current/fibo/FND/AgentsAndPeople/Agents/`
+(a directory listing).
 
 ---
 
@@ -236,7 +240,7 @@ Reference models follow [SemVer 2.0.0](https://semver.org/):
 git tag
 
 # Checkout specific version
-git checkout v1.0.0
+git checkout v1.18.0
 
 # Upgrade to latest
 git checkout main
@@ -281,7 +285,7 @@ Reference models are maintained by the Kairos Ontology Team.
 
 1. Create feature branch: `git checkout -b feature/add-invoice-class`
 2. Edit ontologies and shapes
-3. Validate locally: `kairos-ontology validate --all`
+3. Validate locally: `python scripts/check_all.py` (see *✅ Validation gate* below)
 4. Update CHANGELOG.md
 5. Update VERSION if needed
 6. Open Pull Request
@@ -289,12 +293,44 @@ Reference models are maintained by the Kairos Ontology Team.
 8. Merge to main
 9. Create release tag (if version changed)
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full contributor guide.
+
 **For External Contributors:**
 
 External contributions are welcome! Please:
 1. Open an issue describing the proposed change
 2. Wait for ontology team feedback
 3. Follow the PR process above
+
+---
+
+## ✅ Validation gate
+
+This repo validates itself in two tiers. **Run the tier-1 gate before opening a PR.**
+
+### Tier 1 — toolkit-free local gate
+
+```bash
+python scripts/check_all.py
+```
+
+Runs every repo-intrinsic check (ontology syntax, structure, catalog, archetypes,
+patterns, contract manifest, version consistency, and the unit tests). Depends only on
+Python — **not** on the `kairos-ontology-toolkit` it feeds. `check_all.py` derives the
+step list from `validate.yml` so there is one source of truth for the gate.
+
+### Tier 2 — cross-repo contract checks
+
+Run only when your change could affect the toolkit contract (catalog scheme, manifest
+shape, accelerator-pack layout, blueprint YAML). Needs the pinned toolkit installed:
+
+```bash
+uv sync --extra dev
+python -m pytest tests/test_toolkit_contract.py tests/test_bundle_conformance.py -v -ra -p no:randomly
+```
+
+These are the same tests the `contract` job runs in CI (see
+[`.github/workflows/validate.yml`](.github/workflows/validate.yml)).
 
 ---
 
@@ -374,10 +410,9 @@ For questions about using these models in customer projects, contact the Ontolog
 
 ## 🔗 Related Repositories
 
-- **[kairos-core-ontology-hub](https://github.com/Cnext-eu/kairos-core-ontology-hub)** - Toolkit development and testing
-- **[kairos-ontology-toolkit](https://pypi.org/project/kairos-ontology-toolkit/)** - CLI for validation and projection
+- **[kairos-ontology-toolkit](https://github.com/Cnext-eu/kairos-ontology-toolkit)** - Consumer CLI and Python library (validates hubs and projects ontologies)
 - **[kairos-customer-template](https://github.com/Cnext-eu/kairos-customer-template)** - Template for customer projects
 
 ---
 
-**Current Version:** 1.13.0 | **Last Updated:** 2026-08-09
+The canonical version lives in [`VERSION`](VERSION) and [`CHANGELOG.md`](CHANGELOG.md).

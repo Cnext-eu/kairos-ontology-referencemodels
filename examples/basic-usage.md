@@ -15,7 +15,7 @@ Best for projects under version control that need stable, versioned references.
 cd my-ontology-project
 
 # Add reference models as submodule
-git submodule add https://github.com/Cnext-eu/kairos-reference-models.git reference-models
+git submodule add https://github.com/Cnext-eu/kairos-ontology-referencemodels.git reference-models
 
 # Initialize and update
 git submodule update --init --recursive
@@ -27,7 +27,7 @@ cd ..
 
 # Commit the pinned version
 git add .gitmodules reference-models
-git commit -m "Add kairos-reference-models@v1.0.0"
+git commit -m "Add kairos-ontology-referencemodels@v1.0.0"
 ```
 
 **Update to newer version:**
@@ -46,10 +46,10 @@ Simpler for experimentation or non-Git projects.
 
 ```bash
 # Clone specific version
-git clone --branch v1.0.0 --depth 1 https://github.com/Cnext-eu/kairos-reference-models.git
+git clone --branch v1.0.0 --depth 1 https://github.com/Cnext-eu/kairos-ontology-referencemodels.git
 
 # Or clone latest
-git clone https://github.com/Cnext-eu/kairos-reference-models.git
+git clone https://github.com/Cnext-eu/kairos-ontology-referencemodels.git
 ```
 
 ---
@@ -196,7 +196,7 @@ for row in g.query(query):
 
 ```
 my-ontology-project/
-├── reference-models/          # Git submodule → kairos-reference-models@v1.0.0
+├── reference-models/          # Git submodule → kairos-ontology-referencemodels@v1.0.0
 │   ├── ontologies/
 │   ├── shapes/
 │   ├── mappings/
@@ -256,7 +256,7 @@ git commit -m "Pin reference-models to v1.0.0"
 
 - **[Extending Models](extending-models.md)** - Learn how to extend Kairos classes with custom properties
 - **[CHANGELOG](../CHANGELOG.md)** - See version history and upgrade notes
-- **[GitHub Discussions](https://github.com/Cnext-eu/kairos-reference-models/discussions)** - Ask questions and share feedback
+- **[GitHub Discussions](https://github.com/Cnext-eu/kairos-ontology-referencemodels/discussions)** - Ask questions and share feedback
 
 ---
 
