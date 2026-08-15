@@ -185,3 +185,22 @@ def test_template_guard_requires_domain_on_every_property() -> None:
     )
     errors = validate_pattern_template(ttl)
     assert any("rdfs:domain" in e for e in errors)
+
+
+def test_template_guard_treats_rdfs_domain_in_comment_as_absent() -> None:
+    """rdfs:domain mentioned inside an rdfs:comment must not count as a declaration.
+
+    Regression test for gh#69: the REUSABLE marker phrase "no rdfs:domain by
+    design" contains the token ``rdfs:domain``, which caused RDFS_DOMAIN_RE to
+    match on the comment text — making the domainless branch unreachable and
+    silently passing properties that have no real rdfs:domain triple.
+    """
+    ttl = (
+        ":hasRole a owl:ObjectProperty ;\n"
+        '    rdfs:comment """REUSABLE — no rdfs:domain by design.""" ;\n'
+        "    rdfs:range :RoleCode .\n"
+    )
+    errors = validate_pattern_template(ttl)
+    assert any("rdfs:domain" in e for e in errors), (
+        "rdfs:domain in a comment was counted as a real declaration (gh#69)"
+    )

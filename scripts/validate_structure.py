@@ -71,6 +71,26 @@ DOMAIN_SIMPLE_RE = re.compile(
 )
 REUSABLE_NO_DOMAIN_RE = re.compile(r'REUSABLE\s+—\s+no rdfs:domain by design')
 
+# Matches Turtle string literals: triple-quoted ("""..."""), single-quoted ("..."),
+# and their single-quote analogues ('''...''', '...'). Used to strip literals
+# before regex-searching for predicate keywords like rdfs:domain, so that an
+# rdfs:comment *mentioning* rdfs:domain does not count as a real declaration.
+_TTL_STRING_LITERAL_RE = re.compile(r'"""[\s\S]*?"""|\'\'\'[\s\S]*?\'\'\'|"(?:[^"\\]|\\.)*"|\'(?:[^\'\\]|\\.)*\'')
+
+
+def _strip_turtle_literals_and_comments(text: str) -> str:
+    """Remove Turtle string literals and full-line comments from *text*.
+
+    Property blocks sometimes contain rdfs:comment strings that mention
+    rdfs:domain (e.g. the REUSABLE marker ``"REUSABLE — no rdfs:domain by
+    design"``). Searching the raw block for ``\\brdfs:domain\\b`` matches
+    those mentions, making the REUSABLE domainless branch unreachable.
+    Stripping literals first means only actual predicate declarations remain.
+    """
+    stripped = _TTL_STRING_LITERAL_RE.sub('""', text)
+    lines = [line for line in stripped.splitlines() if not line.lstrip().startswith("#")]
+    return "\n".join(lines)
+
 
 class ValidationResult:
     def __init__(self):
@@ -329,7 +349,8 @@ def validate_property_completeness(folder: Path, verbose: bool) -> ValidationRes
         )
 
         for property_name, property_type, block in property_blocks:
-            if RDFS_DOMAIN_RE.search(block):
+            code_block = _strip_turtle_literals_and_comments(block)
+            if RDFS_DOMAIN_RE.search(code_block):
                 r.ok(
                     f"{ttl_rel}: {property_name} ({property_type}) has rdfs:domain",
                     verbose,
@@ -535,7 +556,7 @@ def validate_pattern_template(template_text: str):
             block_lines.append(line)
         if current_property is not None and BLOCK_END_RE.search(line):
             block = "\n".join(block_lines)
-            if not RDFS_DOMAIN_RE.search(block):
+            if not RDFS_DOMAIN_RE.search(_strip_turtle_literals_and_comments(block)):
                 errors.append(
                     f"property {current_property} has no rdfs:domain — the domain is "
                     "never deferred (it is the class being authored)"
