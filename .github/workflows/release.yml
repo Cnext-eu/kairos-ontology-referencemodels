@@ -90,7 +90,7 @@ jobs:
             echo "See CHANGELOG.md for details." > RELEASE_NOTES.md
           fi
 
-      - name: Create GitHub Release
+      - name: Create GitHub Release, or attach assets to an existing one
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -99,12 +99,26 @@ jobs:
           case "$VERSION" in
             *-*) PRERELEASE_FLAG="--prerelease" ;;
           esac
-          gh release create "v$VERSION" \
-            --title "Release $VERSION" \
-            --notes-file RELEASE_NOTES.md \
-            $PRERELEASE_FLAG \
-            "kairos-reference-models-$VERSION.tar.gz" \
-                        "dist/kairos_ontology_referencemodels-$VERSION-py3-none-any.whl"
+          ASSETS=(
+            "kairos-reference-models-$VERSION.tar.gz"
+            "dist/kairos_ontology_referencemodels-$VERSION-py3-none-any.whl"
+          )
+          if gh release view "v$VERSION" --json id >/dev/null 2>&1; then
+            # Publishing a release from the GitHub UI creates the tag, and the tag
+            # triggers this workflow — so an existing release is the normal outcome
+            # of a hand-drafted release, not an error. Keep its hand-written title
+            # and notes; attach the built artifacts. --clobber makes a re-run after
+            # a partial upload safe. (v1.20.1 shipped asset-less because this case
+            # used to fail: "a release with the same tag name already exists".)
+            echo "Release v$VERSION already exists — uploading assets to it."
+            gh release upload "v$VERSION" --clobber "${ASSETS[@]}"
+          else
+            gh release create "v$VERSION" \
+              --title "Release $VERSION" \
+              --notes-file RELEASE_NOTES.md \
+              $PRERELEASE_FLAG \
+              "${ASSETS[@]}"
+          fi
       
       - name: Publish to artifact registry (optional)
         if: false  # Enable when Azure Blob Storage is configured
