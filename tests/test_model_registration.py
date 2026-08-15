@@ -27,6 +27,7 @@ tracked gap; the failure mode being closed here is the *silent* one.
 from __future__ import annotations
 
 import sys
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import pytest
@@ -219,6 +220,28 @@ def test_every_data_domain_import_is_catalogued(pack, resolver) -> None:
     )
     assert not unresolved, (
         f"{pack['name']}: data-domains.yaml imports with no catalog mapping: {unresolved}"
+    )
+
+
+def test_every_rewrite_prefix_is_a_real_directory() -> None:
+    """Every ``<rewriteURI>`` prefix in the catalog must point at a real directory.
+
+    ``<uri>`` entries name files whose existence is easy to check, but a ``rewritePrefix``
+    names a *directory* — and a typo there is invisible to every explicit-target check.
+    The FIBO rule alone covers 300+ documents, so a wrong prefix fails an entire closure
+    at import time, inside the consumer's loader, long after the catalog looked valid.
+    """
+    root = ET.parse(CATALOG_PATH).getroot()
+    ns = "{urn:oasis:names:tc:entity:xmlns:xml:catalog}"
+    failures = []
+    for el in root.iter(f"{ns}rewriteURI"):
+        prefix = el.get("uriStartString")
+        target = (el.get("rewritePrefix") or "").strip()
+        if not (ONTOLOGY_ROOT / target).is_dir():
+            failures.append(f"{prefix} -> {target}")
+    assert not failures, (
+        "catalog-v001.xml rewriteURI prefixes that do not resolve to a real directory "
+        f"under ontology-reference-models/: {failures}"
     )
 
 

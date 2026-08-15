@@ -1,0 +1,12 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: weekly
+    # The toolkit wheel URL pin in pyproject.toml is intentionally NOT covered here —
+    # scripts/check_toolkit_pin.py owns toolkit version updates (channel-gated).

@@ -33,9 +33,9 @@ surfaces:
     notes: >
       Both explicit <uri> entries and <rewriteURI> prefix rules are contract. The rewrite rule
       alone covers 300+ FIBO documents; scripts/catalog_utils.py ignored rewrites entirely
-      until v1.15.0+, so every FIBO import silently resolved to None. Note that
-      scripts/test_catalog.py only checks that <uri> targets exist on disk — a wrong
-      rewritePrefix is invisible to it. Resolution is proven by execution instead:
+      until v1.15.0+, so every FIBO import silently resolved to None.
+      tests/test_model_registration.py::test_every_rewrite_prefix_is_a_real_directory
+      now statically covers rewritePrefix targets. Resolution is proven by execution too:
       test_bundle_conformance.py loads every bundled TTL through the consumer's own loader,
       which is what caught the missing OMG Commons / LCC / SKOS mirrors in gh#57.
 

@@ -14,8 +14,14 @@ dev = [
     "jsonschema>=4.0",
     "pyyaml>=6.0",
     "pytest>=8.0",
+    # CI passes `-p no:randomly`; today the plugin only arrives transitively via the
+    # toolkit wheel, so a toolkit-free dev install would fail on the unknown option.
+    "pytest-randomly>=3.16",
     "rdflib>=7.4",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "scripts"]
 
 [tool.kairos]
 # Channel controls which toolkit version is installed on `kairos-ontology update --upgrade`.
