@@ -74,7 +74,10 @@ surfaces:
       sequence, invisible to a human and silently skipped by bulk listing, which is why bulk
       load emitting any warning is treated as a failure here. Structured anti-pattern fields
       (banned_name_tokens / applies_to_ranges / exemptions) are contract for the pattern
-      conformance check; every exemption entry carries a cited reason.
+      conformance check; every exemption entry carries a cited reason. grain_collisions has
+      two entry shapes by design: class-anchored collisions use {against, reason} with a
+      scalar against IRI (the toolkit coverage ledger keys units on it); the bare-string
+      form is reserved for grain warnings that name no class.
 
   - id: data-domains
     path: accelerator-packs/*/client-hub-blueprint/data-domains.yaml

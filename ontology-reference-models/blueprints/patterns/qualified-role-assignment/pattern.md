@@ -132,7 +132,14 @@ can be Shipper on one assignment and Consignee on another without duplicating th
 
 ## Grain collisions
 
-- **Party.** BSP, DCSA, MMT, IMO, and TIC each define a role-bearing party parent with a different
-  context. None of them is the durable identity on its own — each is evidence for a role overlay.
-- **Location.** DCSA specialises `Location` by shipment role (Port of Loading, Port of Discharge).
-  Materialising those as separate physical places duplicates one port that plays several roles.
+Each collision is recorded in `pattern.yaml` as one `{against, reason}` entry per class IRI, so
+a tool can check "the hub's durable identity does not collapse into this class".
+
+- **Party.** BSP (`bsp/party#TradeParty`), MMT (`mmt/party#TransportParty`), DCSA
+  (`dcsa/party#ShippingParty`), IMO (`imo/party#MaritimeParty`), and TIC
+  (`tic/party#TerminalParty`) each define a role-bearing party parent with a different
+  context. None of them is the durable identity on its own — each is evidence for a role
+  overlay. The maintained set is `overlap-register.yaml` `party-role-parents`.
+- **Location.** DCSA specialises `Location` by shipment role (`dcsa/locations#PortOfLoading`,
+  `#PortOfDischarge`, and the wider role-class family). Materialising those as separate physical
+  places duplicates one port that plays several roles.
