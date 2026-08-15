@@ -45,9 +45,16 @@ Keep the subclasses, add the pattern-conformant machinery beside them:
 :PartyRoleCode a owl:Class .                  # governed code list (governed-code-list pattern)
 :TradePartyRoleAssignment a owl:Class .       # (identity, role, context, validity) link entity
 :assignedToTradeParty rdfs:domain :TradePartyRoleAssignment ; rdfs:range :TradeParty .
-:hasRole              rdfs:domain :TradePartyRoleAssignment ; rdfs:range :PartyRoleCode .
-:roleValidFrom / :roleValidTo                 # validity period
+
+# role-carrying props: domain REMOVED in 2.1.0 (issue #61) — the pattern's own grain
+# collision forces every hub to mint a local assignment class, so a reference-bound
+# domain made these properties unreusable. schema:domainIncludes carries the intended
+# anchor as non-entailing evidence instead.
+:hasRole              schema:domainIncludes :TradePartyRoleAssignment ; rdfs:range :PartyRoleCode .
+:roleValidFrom / :roleValidTo                 # validity period — likewise domainless (2.1.0)
 # inContextOf<Context> — declared by the hub per context class
+# NB: reuse :hasRole only when the role vocabulary IS :PartyRoleCode; a hub whose roles
+# span other contexts mints a local hasRole and still reuses roleValidFrom/To.
 
 # reusable props: domain REMOVED (marked "REUSABLE — no rdfs:domain by design")
 :hasAddress rdfs:range ref-data:Address .
