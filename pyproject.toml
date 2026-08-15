@@ -12,7 +12,7 @@ dependencies = []
 
 [project.optional-dependencies]
 dev = [
-    "kairos-ontology-toolkit @ https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.2.3rc1/kairos_ontology_toolkit-5.2.3rc1-py3-none-any.whl",
+    "kairos-ontology-toolkit @ https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.2.3rc6/kairos_ontology_toolkit-5.2.3rc6-py3-none-any.whl",
     "jsonschema>=4.0",
     "pyyaml>=6.0",
     "pytest>=8.0",

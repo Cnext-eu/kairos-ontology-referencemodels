@@ -194,7 +194,9 @@ def test_every_bundled_ttl_is_classified(toolkit) -> None:
     ``archive/`` is excluded deliberately and by the consumer's own rule
     (``is_archived_ref_model_source``): superseded versions are shipped for provenance and
     are never inventoried. They are not exempt from being classified — they are classified
-    as archived.
+    as archived.  Pattern-library TTLs (``blueprints/patterns/<id>/*.ttl``) are a third
+    category: they are copyable authoring stubs excluded from inventory by
+    ``is_pattern_template_source``.
     """
     inventory, _ = toolkit
     all_ttl = sorted(ONTOLOGY_ROOT.glob("**/*.ttl"))
@@ -206,8 +208,14 @@ def test_every_bundled_ttl_is_classified(toolkit) -> None:
         for p in all_ttl
         if inventory.is_archived_ref_model_source(p, ref_models_dir=ONTOLOGY_ROOT)
     }
+    pattern_templates = {
+        p.resolve()
+        for p in all_ttl
+        if inventory.is_pattern_template_source(p, ref_models_dir=ONTOLOGY_ROOT)
+    }
 
-    unclassified = sorted(_rel(p) for p in all_ttl if p.resolve() not in inventoriable | archived)
+    accounted = inventoriable | archived | pattern_templates
+    unclassified = sorted(_rel(p) for p in all_ttl if p.resolve() not in accounted)
     assert not unclassified, (
         "TTL files the consumer would neither inventory nor treat as archived:\n"
         + "\n".join(f"  {p}" for p in unclassified)

@@ -10,7 +10,7 @@ pack ships is listed; a module with no sheet yet is shown as such rather than om
 <!-- BEGIN GENERATED: sheets -->
 | Model | Sheet | Version |
 |---|---|---|
-| DCSA | [dcsa.md](dcsa.md) | 1.4.0 |
+| DCSA | [dcsa.md](dcsa.md) | 1.4.1 |
 | MMT | [mmt-un-cefact.md](mmt-un-cefact.md) | 2.1.0 |
 | BSP | [bsp-iso-20197.md](bsp-iso-20197.md) | 2.1.0 |
 | TIC | [tic-4-0.md](tic-4-0.md) | 1.3.0 |
@@ -27,8 +27,8 @@ pack ships is listed; a module with no sheet yet is shown as such rather than om
 <!-- BEGIN GENERATED: versions -->
 | Component | Version |
 |---|---|
-| Kairos Logistics Accelerator Pack | 1.10.0 |
-| DCSA | 1.4.0 |
+| Kairos Logistics Accelerator Pack | 1.10.1 |
+| DCSA | 1.4.1 |
 | MMT | 2.1.0 |
 | BSP | 2.1.0 |
 | TIC | 1.3.0 |
