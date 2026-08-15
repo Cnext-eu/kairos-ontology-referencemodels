@@ -5,7 +5,7 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.20.1] - 2026-08-15
 
 ### Fixed
 - **Duplicate class IRIs across dcsa/events and dcsa/track-and-trace (gh#81).** The
@@ -17,6 +17,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `events` entry. The `track-and-trace` owl:Ontology remains in the catalog as an
   internal DCSA hierarchy node (imported by `dcsa.ttl`); it is no longer a separate
   consumer-facing import.
+- **Turtle literal stripping before rdfs:domain search (#69).** `RDFS_DOMAIN_RE`
+  searched the full property block including `rdfs:comment` text. The REUSABLE marker
+  "no rdfs:domain by design" itself contains `rdfs:domain`, causing every REUSABLE
+  property to match the first branch and making the elif `REUSABLE_NO_DOMAIN_RE`
+  branch dead code. Validation passed but for the wrong reason. Added
+  `_strip_turtle_literals_and_comments()` to remove string literals and full-line
+  comments before searching for `rdfs:domain`.
+- **Toolkit pin updated to 5.2.3rc6.** Updated `pyproject.toml` and `uv.lock`;
+  regenerated stale logistics pack docs; added `pattern_templates` as a third
+  classification category in `test_bundle_conformance.py`.
 
 ## [1.20.0] - 2026-08-15
 
