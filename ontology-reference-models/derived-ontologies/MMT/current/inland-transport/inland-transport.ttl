@@ -23,7 +23,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;
-    owl:versionInfo "2.0.0" ;
+    owl:versionInfo "2.1.0" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model v1.0 (RABIE v101)" ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
 

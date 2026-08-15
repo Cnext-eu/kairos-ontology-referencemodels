@@ -4,6 +4,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix schema: <https://schema.org/> .
 
 # Ontology Metadata
 <https://www.kairosflow.ai/ont/mmt/party> a owl:Ontology ;
@@ -15,8 +16,8 @@
     Based on UN/CEFACT MMT Reference Data Model.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-08-13"^^xsd:date ;
-    owl:versionInfo "2.0.0" ;
+    dcterms:modified "2026-08-15"^^xsd:date ;
+    owl:versionInfo "2.1.0" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
 
@@ -137,18 +138,33 @@
 
 :hasRole a owl:ObjectProperty ;
     rdfs:label "has role" ;
-    rdfs:comment "The role held, from the governed TransportPartyRoleCode list. Named per qualified-role-assignment (fixed name hasRole)." ;
-    rdfs:domain :TransportPartyRoleAssignment ;
+    rdfs:comment """REUSABLE — no rdfs:domain by design: asserting a domain of
+    :TransportPartyRoleAssignment would type every hub-local assignment class's
+    instances as this module's assignment class, reintroducing the transport
+    context the local durable identity exists to avoid (MMT 2.1.0). The role
+    held, from the governed TransportPartyRoleCode list. Named per
+    qualified-role-assignment (fixed name hasRole). The rdfs:range stays:
+    reuse this property only when the role vocabulary IS
+    :TransportPartyRoleCode; a hub whose roles span other contexts mints a
+    local hasRole per the pattern and can still reuse :roleValidFrom and
+    :roleValidTo. schema:domainIncludes is additive, non-entailing domain
+    evidence — hubs add their own triple for their assignment class.""" ;
+    schema:domainIncludes :TransportPartyRoleAssignment ;
     rdfs:range :TransportPartyRoleCode .
 
 :roleValidFrom a owl:DatatypeProperty ;
     rdfs:label "role valid from" ;
-    rdfs:comment "Start of the assignment's validity period, independent of the identity's own lifecycle." ;
-    rdfs:domain :TransportPartyRoleAssignment ;
+    rdfs:comment """REUSABLE — no rdfs:domain by design: any role-assignment class,
+    reference or hub-local, may carry the validity period (MMT 2.1.0). Start of
+    the assignment's validity period, independent of the identity's own
+    lifecycle.""" ;
+    schema:domainIncludes :TransportPartyRoleAssignment ;
     rdfs:range xsd:dateTime .
 
 :roleValidTo a owl:DatatypeProperty ;
     rdfs:label "role valid to" ;
-    rdfs:comment "End of the assignment's validity period; absent while the assignment holds." ;
-    rdfs:domain :TransportPartyRoleAssignment ;
+    rdfs:comment """REUSABLE — no rdfs:domain by design: any role-assignment class,
+    reference or hub-local, may carry the validity period (MMT 2.1.0). End of
+    the assignment's validity period; absent while the assignment holds.""" ;
+    schema:domainIncludes :TransportPartyRoleAssignment ;
     rdfs:range xsd:dateTime .

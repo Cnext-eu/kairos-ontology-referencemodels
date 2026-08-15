@@ -1,0 +1,171 @@
+@prefix : <https://www.kairosflow.ai/ont/mmt#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/mmt> a owl:Ontology ;
+    dcterms:title "Kairos Multi-Modal Transport (MMT) Ontology" ;
+    dcterms:description """UN/CEFACT Multi-Modal Transport Reference Data Model ontology for international logistics and freight transport.
+    
+    This ontology provides a comprehensive semantic framework for multi-modal transport operations, covering:
+    - Transport service execution and routing
+    - Consignments and cargo handling
+    - Transport equipment (containers, vehicles, units)
+    - Transport events and milestones
+    - Transport documents and instructions
+    - Party roles in logistics operations
+    - Locations, routes, and transport legs
+    - Cross-border and customs processes
+    - Dangerous goods and special cargo
+    
+    Fully aligned with UN/CEFACT MMT Reference Data Model for global supply chain interoperability.
+    
+    This root ontology imports all 10 domain modules.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-06-20"^^xsd:date ;
+    owl:versionInfo "2.0.0" ;
+    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model v1.0 (RABIE v101)" ;
+    rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/consignment> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/cargo> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/equipment> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/transport-means> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/party> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/locations> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/documents> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/events> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/route-network> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/inland-transport> .
+
+#################################################################
+#    Dangerous Goods Classes
+#    Source: UN Recommendations on the Transport of Dangerous Goods
+#    ("Orange Book"), 23rd revised edition. The parent DangerousGoods
+#    class corresponds to unece:DangerousGoods in BSP D23B.
+#    Subclasses reify the 9 hazard classes as OWL types; the BSP model
+#    uses a single flat class with hazardClassificationId instead.
+#    (A separate IMO ontology covers DG transport documentation.)
+#################################################################
+
+:DangerousGoods a owl:Class ;
+    rdfs:label "Dangerous Goods" ;
+    rdfs:comment """Hazardous materials requiring special handling.
+    
+    UN/CEFACT BSP D23B: Corresponds to unece:DangerousGoods — goods which may contain
+    a substance which poses risks to people and/or the environment during transportation.
+    The BSP model uses hazardClassificationId to distinguish classes; the subclasses below
+    reify the UN TDG hazard class taxonomy as OWL classes for semantic expressiveness.""" .
+
+:ExplosiveGoods a owl:Class ;
+    rdfs:label "Explosive Goods (Class 1)" ;
+    rdfs:comment """Explosive substances and articles.
+    
+    UN TDG Recommendations, Part 2, §2.1: Class 1 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:FlammableGas a owl:Class ;
+    rdfs:label "Flammable Gas (Class 2.1)" ;
+    rdfs:comment """Flammable gases.
+    
+    UN TDG Recommendations, Part 2, §2.2: Class 2.1 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:FlammableLiquid a owl:Class ;
+    rdfs:label "Flammable Liquid (Class 3)" ;
+    rdfs:comment """Flammable liquids.
+    
+    UN TDG Recommendations, Part 2, §2.3: Class 3 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:FlammableSolid a owl:Class ;
+    rdfs:label "Flammable Solid (Class 4)" ;
+    rdfs:comment """Flammable solids.
+    
+    UN TDG Recommendations, Part 2, §2.4: Class 4 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:OxidizingSubstance a owl:Class ;
+    rdfs:label "Oxidizing Substance (Class 5)" ;
+    rdfs:comment """Oxidizing substances and organic peroxides.
+    
+    UN TDG Recommendations, Part 2, §2.5: Class 5 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:ToxicSubstance a owl:Class ;
+    rdfs:label "Toxic Substance (Class 6)" ;
+    rdfs:comment """Toxic and infectious substances.
+    
+    UN TDG Recommendations, Part 2, §2.6: Class 6 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:RadioactiveMaterial a owl:Class ;
+    rdfs:label "Radioactive Material (Class 7)" ;
+    rdfs:comment """Radioactive materials.
+    
+    UN TDG Recommendations, Part 2, §2.7: Class 7 dangerous goods.
+    Also exists as standalone unece:RadioactiveMaterial in BSP D23B.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:CorrosiveSubstance a owl:Class ;
+    rdfs:label "Corrosive Substance (Class 8)" ;
+    rdfs:comment """Corrosive substances.
+    
+    UN TDG Recommendations, Part 2, §2.8: Class 8 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:MiscellaneousDangerousGoods a owl:Class ;
+    rdfs:label "Miscellaneous Dangerous Goods (Class 9)" ;
+    rdfs:comment """Miscellaneous dangerous substances and articles.
+    
+    UN TDG Recommendations, Part 2, §2.9: Class 9 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+#################################################################
+#    Dangerous Goods Datatype Properties
+#################################################################
+
+:unNumber a owl:DatatypeProperty ;
+    rdfs:label "UN number" ;
+    rdfs:comment "UN dangerous goods identification number." ;
+    rdfs:domain :DangerousGoods ;
+    rdfs:range xsd:string .
+
+:hazardClass a owl:DatatypeProperty ;
+    rdfs:label "hazard class" ;
+    rdfs:comment "UN dangerous goods class (1-9)." ;
+    rdfs:domain :DangerousGoods ;
+    rdfs:range xsd:string .
+
+:packingGroup a owl:DatatypeProperty ;
+    rdfs:label "packing group" ;
+    rdfs:comment "Packing group: I (high danger), II (medium), III (low)." ;
+    rdfs:domain :DangerousGoods ;
+    rdfs:range xsd:string .
+
+:properShippingName a owl:DatatypeProperty ;
+    rdfs:label "proper shipping name" ;
+    rdfs:comment "Official UN name for dangerous goods." ;
+    rdfs:domain :DangerousGoods ;
+    rdfs:range xsd:string .
+
+:technicalName a owl:DatatypeProperty ;
+    rdfs:label "technical name" ;
+    rdfs:comment "Chemical or technical name of dangerous goods." ;
+    rdfs:domain :DangerousGoods ;
+    rdfs:range xsd:string .
+
+:flashPoint a owl:DatatypeProperty ;
+    rdfs:label "flash point" ;
+    rdfs:comment "Flash point temperature in Celsius for flammable goods." ;
+    rdfs:domain :DangerousGoods ;
+    rdfs:range xsd:decimal .
+
+:emergencyContactNumber a owl:DatatypeProperty ;
+    rdfs:label "emergency contact number" ;
+    rdfs:comment "24-hour emergency phone number for dangerous goods." ;
+    rdfs:domain :DangerousGoods ;
+    rdfs:range xsd:string .
