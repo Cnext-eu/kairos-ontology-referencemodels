@@ -37,14 +37,35 @@ from pathlib import Path
 import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-ONTOLOGY_ROOT = REPO_ROOT / "ontology-reference-models"
+ONTOLOGY_ROOT = REPO_ROOT / "kairos_ontology_referencemodels" / "ontology-reference-models"
 ARCHETYPE_SCHEMA = ONTOLOGY_ROOT / "blueprints" / "archetypes" / "_schema" / "archetype.schema.json"
 
 
 def _toolkit_src() -> Path | None:
-    """Return the toolkit ``src/`` directory, or None when it is not available."""
+    """Return the toolkit ``src/`` directory, or None when it is not available.
+
+    Resolution order:
+    1. Installed package (site-packages) — works after ``uv sync --extra dev`` which installs
+       the toolkit as a wheel dependency.
+    2. ``KAIROS_TOOLKIT_SRC`` env var — explicit override for local development.
+    3. Sibling checkout at ``../kairos-ontology-toolkit/src`` — local development convenience.
+    """
+    # 1. Installed package
+    try:
+        import importlib
+
+        spec = importlib.util.find_spec("kairos_ontology")
+        if spec and spec.origin:
+            # origin is .../kairos_ontology/__init__.py → src/ is two levels up
+            src = Path(spec.origin).resolve().parent.parent
+            if (src / "kairos_ontology" / "core" / "pattern_loader.py").is_file():
+                return src
+    except (ImportError, ModuleNotFoundError):
+        pass
+    # 2. Env var override
     override = os.environ.get("KAIROS_TOOLKIT_SRC")
     candidates = [Path(override)] if override else []
+    # 3. Sibling checkout
     candidates.append(REPO_ROOT.parent / "kairos-ontology-toolkit" / "src")
     for candidate in candidates:
         if (candidate / "kairos_ontology" / "core" / "pattern_loader.py").is_file():
@@ -87,10 +108,10 @@ def test_every_pattern_loads_through_the_real_loader(toolkit) -> None:
     instead of a pattern that quietly never reaches the design flow.
     """
     _, pattern_loader = toolkit
-    ids = pattern_loader.list_patterns(REPO_ROOT)
+    ids = pattern_loader.list_patterns(ONTOLOGY_ROOT)
     assert ids, "pattern library is empty or unreachable from the repo root"
     for pattern_id in ids:
-        pattern = pattern_loader.load_pattern(REPO_ROOT, pattern_id)
+        pattern = pattern_loader.load_pattern(ONTOLOGY_ROOT, pattern_id)
         assert pattern.id == pattern_id, f"{pattern_id}: declared id does not match directory"
 
 
@@ -102,9 +123,9 @@ def test_bulk_pattern_load_emits_no_warnings(toolkit) -> None:
     a published library should give it nothing to warn about.
     """
     _, pattern_loader = toolkit
-    patterns, warnings = pattern_loader.load_patterns(REPO_ROOT)
+    patterns, warnings = pattern_loader.load_patterns(ONTOLOGY_ROOT)
     assert warnings == [], f"toolkit skipped published patterns: {warnings}"
-    assert len(patterns) == len(pattern_loader.list_patterns(REPO_ROOT))
+    assert len(patterns) == len(pattern_loader.list_patterns(ONTOLOGY_ROOT))
 
 
 def test_tier_enum_matches_the_consumer_copy(toolkit) -> None:
@@ -133,7 +154,7 @@ def test_every_archetype_loads_through_the_real_loader(toolkit) -> None:
     )
     assert archetype_ids, "no archetype catalogs found"
     for archetype_id in archetype_ids:
-        catalog = archetype_loader.load_archetype(REPO_ROOT, archetype_id)
+        catalog = archetype_loader.load_archetype(ONTOLOGY_ROOT, archetype_id)
         assert catalog.core_concepts, f"{archetype_id}: no core concepts resolved"
         for concept in catalog.core_concepts:
             assert concept.tier in archetype_loader.VALID_TIERS
@@ -152,7 +173,7 @@ def test_transport_order_tiering_is_visible_to_the_consumer(toolkit) -> None:
     order_uri = "https://www.kairosflow.ai/ont/blueprint/transport-order#TransportOrder"
 
     def tier_of(archetype_id: str) -> str | None:
-        catalog = archetype_loader.load_archetype(REPO_ROOT, archetype_id)
+        catalog = archetype_loader.load_archetype(ONTOLOGY_ROOT, archetype_id)
         return next((c.tier for c in catalog.core_concepts if c.uri == order_uri), None)
 
     assert tier_of("freight-forwarder") == "required"

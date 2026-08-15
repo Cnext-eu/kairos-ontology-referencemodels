@@ -21,7 +21,7 @@ else:
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 LOGISTICS_CURRENT = (
-    REPO_ROOT / "ontology-reference-models" / "accelerator-packs" / "logistics" / "current"
+    REPO_ROOT / "kairos_ontology_referencemodels" / "ontology-reference-models" / "accelerator-packs" / "logistics" / "current"
 )
 DEFAULT_SCHEMA_DIR = LOGISTICS_CURRENT / "blueprint" / "_schema"
 

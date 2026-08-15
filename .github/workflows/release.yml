@@ -45,11 +45,34 @@ jobs:
           fi
           echo "✅ Version file matches tag: $TAG_VERSION"
       
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Build wheel
+        run: |
+          uv build --wheel
+          # Verify the wheel contains the data directory
+          python -m zipfile -l \
+            kairos_ontology_referencemodels-${{ steps.get_version.outputs.version }}-py3-none-any.whl \
+            | grep "ontology-reference-models/catalog-v001.xml" \
+            || { echo "❌ Wheel missing reference-models data"; exit 1; }
+
       - name: Create release archive
         run: |
+          # The data directory now lives inside the Python package; the tar.gz
+          # preserves the original layout for consumers that extract it directly.
           tar -czf kairos-reference-models-${{ steps.get_version.outputs.version }}.tar.gz \
-            ontology-reference-models/ \
+            kairos_ontology_referencemodels/ontology-reference-models/ \
+            kairos_ontology_referencemodels/LICENSE \
+            kairos_ontology_referencemodels/NOTICE \
+            kairos_ontology_referencemodels/__init__.py \
             scripts/ \
+            tests/ \
             VERSION \
             CHANGELOG.md \
             README.md \
@@ -80,7 +103,8 @@ jobs:
             --title "Release $VERSION" \
             --notes-file RELEASE_NOTES.md \
             $PRERELEASE_FLAG \
-            "kairos-reference-models-$VERSION.tar.gz"
+            "kairos-reference-models-$VERSION.tar.gz" \
+            "kairos_ontology_referencemodels-$VERSION-py3-none-any.whl"
       
       - name: Publish to artifact registry (optional)
         if: false  # Enable when Azure Blob Storage is configured

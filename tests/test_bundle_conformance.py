@@ -47,7 +47,7 @@ from pathlib import Path
 import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-ONTOLOGY_ROOT = REPO_ROOT / "ontology-reference-models"
+ONTOLOGY_ROOT = REPO_ROOT / "kairos_ontology_referencemodels" / "ontology-reference-models"
 CATALOG = ONTOLOGY_ROOT / "catalog-v001.xml"
 
 # Sources whose closure is knowingly unresolvable, as ``<path relative to ONTOLOGY_ROOT>:
@@ -58,9 +58,29 @@ EXPECTED_UNRESOLVABLE: dict[str, str] = {}
 
 
 def _toolkit_src() -> Path | None:
-    """Return the directory containing the ``kairos_ontology`` package, or None."""
+    """Return the directory containing the ``kairos_ontology`` package, or None.
+
+    Resolution order:
+    1. Installed package (site-packages) — works after ``uv sync --extra dev`` which installs
+       the toolkit as a wheel dependency.
+    2. ``KAIROS_TOOLKIT_SRC`` env var — explicit override for local development.
+    3. Sibling checkout at ``../kairos-ontology-toolkit/src`` — local development convenience.
+    """
+    # 1. Installed package
+    try:
+        import importlib
+
+        spec = importlib.util.find_spec("kairos_ontology")
+        if spec and spec.origin:
+            src = Path(spec.origin).resolve().parent.parent
+            if (src / "kairos_ontology" / "core" / "inventory.py").is_file():
+                return src
+    except (ImportError, ModuleNotFoundError):
+        pass
+    # 2. Env var override
     override = os.environ.get("KAIROS_TOOLKIT_SRC")
     candidates = [Path(override)] if override else []
+    # 3. Sibling checkout
     candidates.append(REPO_ROOT.parent / "kairos-ontology-toolkit" / "src")
     for candidate in candidates:
         if (candidate / "kairos_ontology" / "core" / "inventory.py").is_file():

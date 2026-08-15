@@ -57,7 +57,7 @@ generated docs, and the pytest suite, all without installing the toolkit.
 On a green run it prints the tier-2 contract command (`uv sync --extra dev` + the
 toolkit contract/conformance tests), which verifies the pinned toolkit can actually
 read this bundle. Run tier 2 as well when you change any published contract surface
-(see `ontology-reference-models/contract-manifest.yaml`). CI remains the authoritative
+(see `kairos_ontology_referencemodels/ontology-reference-models/contract-manifest.yaml`). CI remains the authoritative
 gate on every push and pull request.
 
 ## Ontology conventions

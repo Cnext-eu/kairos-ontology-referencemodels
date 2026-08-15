@@ -30,7 +30,7 @@ import pytest
 import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-ONTOLOGY_ROOT = REPO_ROOT / "ontology-reference-models"
+ONTOLOGY_ROOT = REPO_ROOT / "kairos_ontology_referencemodels" / "ontology-reference-models"
 MANIFEST_PATH = ONTOLOGY_ROOT / "contract-manifest.yaml"
 
 #: ``enforced_by`` entries are "<path>" or "<path>::<test_name>".

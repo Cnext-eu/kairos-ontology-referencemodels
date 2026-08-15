@@ -33,7 +33,7 @@ if sys.stdout.encoding != "utf-8":
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
-ONTOLOGY_ROOT = REPO_ROOT / "ontology-reference-models"
+ONTOLOGY_ROOT = REPO_ROOT / "kairos_ontology_referencemodels" / "ontology-reference-models"
 
 SCAN_DIRS = [
     ONTOLOGY_ROOT / "derived-ontologies",
