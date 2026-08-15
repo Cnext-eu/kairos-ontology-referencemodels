@@ -1,5 +1,5 @@
 format_version: "1.0"
-accelerator_version: "1.10.0"
+accelerator_version: "1.10.1"
 concepts:
   - id: party
     class_uri: https://www.kairosflow.ai/ont/bsp/party#TradeParty

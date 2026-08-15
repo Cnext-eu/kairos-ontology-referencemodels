@@ -1,0 +1,228 @@
+@prefix : <https://www.kairosflow.ai/ont/dcsa/transport-call#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix loc: <https://www.kairosflow.ai/ont/dcsa/locations#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/dcsa/transport-call> a owl:Ontology ;
+    dcterms:title "DCSA Transport Call Domain" ;
+    dcterms:description """Transport call concepts linking transport means to facilities.
+
+    A TransportCall represents the arrival/departure of a transport means
+    (vessel, barge, train, truck) at a specific facility. It is the central
+    DCSA linking entity between transport operations and locations.
+
+    Mode-specific subclasses carry identity properties appropriate to each
+    transport mode (e.g., vessel IMO, barge call sign, rail car number,
+    truck licence plate).
+
+    Based on DCSA Event Domain v3.2.0 transportCall schema with oneOf
+    discriminator on modeOfTransport.
+
+    v1.3.0: Added selected DCSA Domain v3.1.0 facility and barge operator
+    code-list properties from the documented fit-gap analysis. Additional
+    DCSA Domain v3.1.0 fields may be mapped through full domain discovery.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-06-12"^^xsd:date ;
+    dcterms:modified "2026-06-21"^^xsd:date ;
+    owl:versionInfo "1.4.0" ;
+    dcterms:source "DCSA Event Domain v3.2.0, DCSA Domain v3.1.0" ;
+    rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
+
+#################################################################
+#    Transport Call Classes
+#################################################################
+
+:TransportCall a owl:Class ;
+    rdfs:label "Transport Call" ;
+    rdfs:comment """The arrival or departure of a transport means at a facility.
+
+    DCSA: Central linking concept between transport operations (events,
+    schedules, bookings) and physical locations. Every transport event
+    references a TransportCall to identify where and how transport occurs.
+
+    The modeOfTransport discriminates between vessel, barge, rail, and
+    truck transport calls, each carrying mode-specific identity properties.""" .
+
+:VesselTransportCall a owl:Class ;
+    rdfs:label "Vessel Transport Call" ;
+    rdfs:comment """A transport call for an ocean vessel at a port or terminal.
+
+    DCSA: Carries vessel identity (IMO number, name) and voyage references.
+    The primary transport call type for main-carriage ocean legs.""" ;
+    rdfs:subClassOf :TransportCall .
+
+:BargeTransportCall a owl:Class ;
+    rdfs:label "Barge Transport Call" ;
+    rdfs:comment """A transport call for a barge at an inland waterway facility.
+
+    DCSA: Carries barge identity (name, IMO number, flag, call sign,
+    operator carrier code). Used for pre-carriage and on-carriage
+    via inland waterways.""" ;
+    rdfs:subClassOf :TransportCall .
+
+:RailTransportCall a owl:Class ;
+    rdfs:label "Rail Transport Call" ;
+    rdfs:comment """A transport call for a rail service at a rail ramp or terminal.
+
+    DCSA: Carries rail car number, rail service identifier, and
+    departure ID. Used for pre-carriage and on-carriage via rail.""" ;
+    rdfs:subClassOf :TransportCall .
+
+:TruckTransportCall a owl:Class ;
+    rdfs:label "Truck Transport Call" ;
+    rdfs:comment """A transport call for a truck at a facility gate or depot.
+
+    DCSA: Carries licence plate and chassis licence plate.
+    Used for pre-carriage and on-carriage via road.""" ;
+    rdfs:subClassOf :TransportCall .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:occursAtFacility a owl:ObjectProperty ;
+    rdfs:label "occurs at facility" ;
+    rdfs:comment "The location or facility where this transport call takes place." ;
+    rdfs:domain :TransportCall ;
+    rdfs:range loc:Location .
+
+#################################################################
+#    Datatype Properties — Common
+#################################################################
+
+:modeOfTransport a owl:DatatypeProperty ;
+    rdfs:label "mode of transport" ;
+    rdfs:comment """Transport mode for this call. DCSA values: VESSEL, BARGE, RAIL, TRUCK.
+    Combined modes (RAIL_TRUCK, BARGE_TRUCK, BARGE_RAIL, MULTIMODAL) appear
+    on booking-level properties, not on individual transport calls.""" ;
+    rdfs:domain :TransportCall ;
+    rdfs:range xsd:string .
+
+:transportPlanStage a owl:DatatypeProperty ;
+    rdfs:label "transport plan stage" ;
+    rdfs:comment """The stage of the transport plan this call belongs to.
+    DCSA formal enum: PRC (Pre-Carriage), MNC (Main Carriage), ONC (On-Carriage).""" ;
+    rdfs:domain :TransportCall ;
+    rdfs:range xsd:string .
+
+:transportPlanStageSequenceNumber a owl:DatatypeProperty ;
+    rdfs:label "transport plan stage sequence number" ;
+    rdfs:comment "Sequence number within a transport plan stage (1-based)." ;
+    rdfs:domain :TransportCall ;
+    rdfs:range xsd:integer .
+
+:facilityTypeCode a owl:DatatypeProperty ;
+    rdfs:label "facility type code" ;
+    rdfs:comment """DCSA facility type code at this transport call.
+    Values: BORD (Border), CLOC (Customer Location), COFS (Container Freight Station),
+    OFFD (Off-Dock), DEPO (Depot), INTE (Inland Terminal), POTE (Port Terminal),
+    RAMP (Rail Ramp), WAYP (Waypoint).""" ;
+    rdfs:domain :TransportCall ;
+    rdfs:range xsd:string .
+
+:facilityTypeCodeTRN a owl:DatatypeProperty ;
+    rdfs:label "facility type code TRN" ;
+    rdfs:comment """DCSA facility type code variant for transport calls and stuffing or
+    stripping contexts. Values include BORD, CLOC, COFS, OFFD, DEPO, INTE,
+    POTE, RAMP, and WAYP.""" ;
+    rdfs:domain :TransportCall ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Datatype Properties — Vessel
+#################################################################
+
+:vesselIMONumber a owl:DatatypeProperty ;
+    rdfs:label "vessel IMO number" ;
+    rdfs:comment "IMO number of the vessel (7 digits)." ;
+    rdfs:domain :VesselTransportCall ;
+    rdfs:range xsd:string .
+
+:vesselName a owl:DatatypeProperty ;
+    rdfs:label "vessel name" ;
+    rdfs:comment "Name of the vessel." ;
+    rdfs:domain :VesselTransportCall ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Datatype Properties — Barge
+#################################################################
+
+:bargeName a owl:DatatypeProperty ;
+    rdfs:label "barge name" ;
+    rdfs:comment "Name of the barge (required in DCSA bargeIdentification)." ;
+    rdfs:domain :BargeTransportCall ;
+    rdfs:range xsd:string .
+
+:bargeIMONumber a owl:DatatypeProperty ;
+    rdfs:label "barge IMO number" ;
+    rdfs:comment "IMO number of the barge, if registered." ;
+    rdfs:domain :BargeTransportCall ;
+    rdfs:range xsd:string .
+
+:bargeFlag a owl:DatatypeProperty ;
+    rdfs:label "barge flag" ;
+    rdfs:comment "Flag state of the barge (ISO 3166-1 alpha-2)." ;
+    rdfs:domain :BargeTransportCall ;
+    rdfs:range xsd:string .
+
+:bargeCallSignNumber a owl:DatatypeProperty ;
+    rdfs:label "barge call sign number" ;
+    rdfs:comment "Radio call sign of the barge." ;
+    rdfs:domain :BargeTransportCall ;
+    rdfs:range xsd:string .
+
+:bargeOperatorCarrierCode a owl:DatatypeProperty ;
+    rdfs:label "barge operator carrier code" ;
+    rdfs:comment "SCAC or NMFTA code of the barge operator." ;
+    rdfs:domain :BargeTransportCall ;
+    rdfs:range xsd:string .
+
+:bargeOperatorCarrierCodeListProvider a owl:DatatypeProperty ;
+    rdfs:label "barge operator carrier code list provider" ;
+    rdfs:comment """Code-list provider used for the barge operator carrier code.
+    DCSA Domain v3.1.0 values include SMDG and NMFTA.""" ;
+    rdfs:domain :BargeTransportCall ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Datatype Properties — Rail
+#################################################################
+
+:railCar a owl:DatatypeProperty ;
+    rdfs:label "rail car" ;
+    rdfs:comment "Rail car or wagon identifier." ;
+    rdfs:domain :RailTransportCall ;
+    rdfs:range xsd:string .
+
+:railService a owl:DatatypeProperty ;
+    rdfs:label "rail service" ;
+    rdfs:comment "Rail service or train number." ;
+    rdfs:domain :RailTransportCall ;
+    rdfs:range xsd:string .
+
+:departureID a owl:DatatypeProperty ;
+    rdfs:label "departure ID" ;
+    rdfs:comment "Rail departure identifier." ;
+    rdfs:domain :RailTransportCall ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Datatype Properties — Truck
+#################################################################
+
+:licencePlate a owl:DatatypeProperty ;
+    rdfs:label "licence plate" ;
+    rdfs:comment "Truck licence plate number." ;
+    rdfs:domain :TruckTransportCall ;
+    rdfs:range xsd:string .
+
+:chassisLicencePlate a owl:DatatypeProperty ;
+    rdfs:label "chassis licence plate" ;
+    rdfs:comment "Chassis or trailer licence plate number." ;
+    rdfs:domain :TruckTransportCall ;
+    rdfs:range xsd:string .

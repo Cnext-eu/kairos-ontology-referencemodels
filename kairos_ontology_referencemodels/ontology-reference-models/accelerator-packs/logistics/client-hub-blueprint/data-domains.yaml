@@ -443,12 +443,9 @@ groups:
             resolved_to: TIC/Events
             rationale: "Inspections are terminal operations."
         imports:
-          - uri: "https://www.kairosflow.ai/ont/dcsa/track-and-trace#"
-            module: "DCSA / Track and Trace"
-            provides: "Shipment event, equipment event, transport event"
           - uri: "https://www.kairosflow.ai/ont/dcsa/events#"
             module: "DCSA / Events"
-            provides: "Event classification, event type codes"
+            provides: "Shipment event, equipment event, transport event, event classification, event type codes"
           - uri: "https://www.kairosflow.ai/ont/tic/events#"
             module: "TIC / Events"
             provides: "Terminal operational events, gate events"

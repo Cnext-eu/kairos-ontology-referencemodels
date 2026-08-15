@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **Duplicate class IRIs across dcsa/events and dcsa/track-and-trace (gh#81).** The
+  `track-and-trace` module is a thin aggregation wrapper that declares no classes —
+  it only `owl:imports` the `events` sub-module. Both were listed as separate import
+  surfaces in `data-domains.yaml` and `shipping-carrier.yaml`, causing the toolkit to
+  see both as candidate term owners for the same 22 class IRIs. Removed the redundant
+  `track-and-trace` import entry from both; merged its `provides` description into the
+  `events` entry. The `track-and-trace` owl:Ontology remains in the catalog as an
+  internal DCSA hierarchy node (imported by `dcsa.ttl`); it is no longer a separate
+  consumer-facing import.
+
 ## [1.20.0] - 2026-08-15
 
 ### Changed

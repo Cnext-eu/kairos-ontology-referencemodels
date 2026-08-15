@@ -1,0 +1,26 @@
+@prefix : <https://www.kairosflow.ai/ont/dcsa/track-and-trace#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/dcsa/track-and-trace> a owl:Ontology ;
+    dcterms:title "DCSA Track and Trace" ;
+    dcterms:description """Track and Trace covers all shipping event tracking — transport events
+    (vessel movements), equipment events (container handling), and document events
+    (B/L lifecycle). This corresponds to DCSA's Track & Trace (TNT) standard.
+    
+    Aggregation module: declares no classes of its own. All event classes and
+    properties are published by the events sub-module (dcsa/events), which is
+    the single term owner. This module exists as an internal DCSA hierarchy
+    node imported by dcsa.ttl; it is not a separate import surface in
+    data-domains.yaml or archetypes (gh#81).""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.4.0" ;
+    dcterms:source "DCSA Information Model 2024.Q4 — Track and Trace (TNT v2.2)" ;
+    rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> ;
+    owl:imports <https://www.kairosflow.ai/ont/dcsa/events> .

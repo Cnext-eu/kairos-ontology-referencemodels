@@ -1,5 +1,5 @@
 format_version: "1.0"
-accelerator_version: "1.10.0"
+accelerator_version: "1.10.1"
 entries:
   - id: party-role-parents
     concept_id: party

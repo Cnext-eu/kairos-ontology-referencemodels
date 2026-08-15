@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.kairosflow.ai/schema/logistics/attestation.schema.json",
+  "title": "Logistics implementation attestation",
+  "description": "A source-neutral record that a client hub compiled an archetype against real sources and observed a specific canonical choice, grain, or cardinality. An attestation is evidence that may raise, corroborate, or force re-review of a registry concept — see validate_logistics_blueprint.py's evidence_basis check. It never by itself authorises disposition: approved. No client names, source-system names, or column names are permitted anywhere in this document, including the filename.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format_version", "id", "archetype", "accelerator", "attested_at", "concepts"],
+  "properties": {
+    "format_version": {"const": "1.0"},
+    "id": {
+      "description": "Opaque attestation id. MUST equal the YAML filename stem. Not a client identifier.",
+      "type": "string",
+      "pattern": "^att-[0-9]{3,}$"
+    },
+    "archetype": {
+      "description": "Archetype id (blueprints/archetypes/<id>.yaml) the attestation was gathered against.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+    },
+    "accelerator": {
+      "description": "Accelerator pack id (accelerator-packs/<id>/) the attestation belongs to.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+    },
+    "attested_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "concepts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["concept_id", "chosen_parent", "grain"],
+        "properties": {
+          "concept_id": {
+            "description": "Canonical registry concept id this observation bears on.",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          },
+          "chosen_parent": {
+            "description": "Class IRI the implementation actually anchored on.",
+            "type": "string",
+            "format": "uri"
+          },
+          "declined_parent": {
+            "description": "Class IRI the registry recommends, if different from chosen_parent. A declined_parent recurring across attestations forces re-review of that anchor.",
+            "type": "string",
+            "format": "uri"
+          },
+          "decline_reason": {
+            "description": "Short, structural reason for declining the registry's recommended parent. No source-system or column names.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "grain": {
+            "description": "One structural sentence describing the observed grain.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "cardinalities_observed": {
+            "type": "array",
+            "items": {"type": "string", "minLength": 1, "maxLength": 200},
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "patterns_used": {
+      "description": "Ids of blueprints/patterns/<id> applied during this implementation.",
+      "type": "array",
+      "items": {"type": "string", "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"},
+      "uniqueItems": true
+    },
+    "grain_collisions_encountered": {
+      "description": "Short structural descriptions of source-noun-versus-grain collisions encountered, e.g. 'one source relation carried two distinct grains'. No source-system or column names.",
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 300},
+      "uniqueItems": true
+    }
+  }
+}

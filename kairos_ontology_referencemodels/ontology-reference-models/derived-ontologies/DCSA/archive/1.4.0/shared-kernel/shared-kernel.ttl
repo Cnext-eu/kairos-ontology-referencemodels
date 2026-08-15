@@ -1,0 +1,29 @@
+@prefix : <https://www.kairosflow.ai/ont/dcsa/shared-kernel#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/dcsa/shared-kernel> a owl:Ontology ;
+    dcterms:title "DCSA Shared Kernel (SK)" ;
+    dcterms:description """The Shared Kernel contains common entities referenced across all DCSA
+    journeys. In DCSA's Information Model this includes Equipment, Party, Location,
+    Facility, Carrier, Vessel, Transport Call, and Data Types.
+    
+    Sub-modules:
+    - equipment: ISO container types and physical properties
+    - party: Shipping party roles (shipper, consignee, carrier, etc.)
+    - locations: Ports, terminals, inland facilities, and shipping locations
+    - transport-call: Transport means arrival/departure at facilities (vessel, barge, rail, truck)""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-06-12"^^xsd:date ;
+    owl:versionInfo "1.4.0" ;
+    dcterms:source "DCSA Information Model 2024.Q4 — SK (Shared Kernel)" ;
+    rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> ;
+    owl:imports <https://www.kairosflow.ai/ont/dcsa/equipment> ,
+                <https://www.kairosflow.ai/ont/dcsa/party> ,
+                <https://www.kairosflow.ai/ont/dcsa/locations> ,
+                <https://www.kairosflow.ai/ont/dcsa/transport-call> .

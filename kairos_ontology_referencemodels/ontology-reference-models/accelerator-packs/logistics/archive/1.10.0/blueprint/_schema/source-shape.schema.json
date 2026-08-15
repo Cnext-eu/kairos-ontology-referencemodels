@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.kairosflow.ai/schema/logistics/source-shape.schema.json",
+  "title": "Synthetic logistics source shape",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format_version", "id", "purpose", "systems", "relationships", "stress_cases"],
+  "properties": {
+    "format_version": {"const": "1.0"},
+    "id": {"type": "string", "pattern": "^synthetic-[a-z][a-z0-9-]*$"},
+    "purpose": {"type": "string", "minLength": 1},
+    "systems": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "tables"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+          "tables": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["name", "grain", "primary_key", "columns"],
+              "properties": {
+                "name": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+                "grain": {"type": "string", "minLength": 1},
+                "primary_key": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+                  "uniqueItems": true
+                },
+                "columns": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+                  "uniqueItems": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "stress_cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    }
+  }
+}

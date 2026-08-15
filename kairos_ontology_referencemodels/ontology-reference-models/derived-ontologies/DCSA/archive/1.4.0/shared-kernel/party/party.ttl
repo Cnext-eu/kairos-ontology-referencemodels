@@ -1,0 +1,72 @@
+@prefix : <https://www.kairosflow.ai/ont/dcsa/party#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/dcsa/party> a owl:Ontology ;
+    dcterms:title "DCSA Party Domain" ;
+    dcterms:description """Party role concepts for container shipping.
+    
+    Covers all shipping party roles including shipper, consignee,
+    ocean carrier, booking party, notify party, and freight forwarder.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.4.0" ;
+    dcterms:source "DCSA Booking API (BKG) v2.0, EBL API v3.0" ;
+    rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
+
+#################################################################
+#    Party Role Classes
+#################################################################
+
+:ShippingParty a owl:Class ;
+    rdfs:label "Shipping Party" ;
+    rdfs:comment """An organization or person playing a role in container shipping operations.
+    
+    DCSA: Abstract parent for all party roles.""" .
+
+:Shipper a owl:Class ;
+    rdfs:label "Shipper" ;
+    rdfs:comment """The party tendering cargo to the ocean carrier (consignor).
+    
+    DCSA: Party named as shipper on the Bill of Lading.""" ;
+    rdfs:subClassOf :ShippingParty .
+
+:Consignee a owl:Class ;
+    rdfs:label "Consignee" ;
+    rdfs:comment """The party to whom cargo is consigned and entitled to take delivery.
+    
+    DCSA: Party named as consignee on transport document.""" ;
+    rdfs:subClassOf :ShippingParty .
+
+:Carrier a owl:Class ;
+    rdfs:label "Ocean Carrier" ;
+    rdfs:comment """The ocean carrier providing container shipping services.
+    
+    DCSA: Shipping line operating vessels and issuing transport documents.""" ;
+    rdfs:subClassOf :ShippingParty .
+
+:BookingParty a owl:Class ;
+    rdfs:label "Booking Party" ;
+    rdfs:comment """The party making the booking with the ocean carrier.
+    
+    DCSA: May be shipper, freight forwarder, or NVOCC.""" ;
+    rdfs:subClassOf :ShippingParty .
+
+:NotifyParty a owl:Class ;
+    rdfs:label "Notify Party" ;
+    rdfs:comment """A party to be notified when cargo arrives at destination.
+    
+    DCSA: Often the consignee's agent, customs broker, or importer.""" ;
+    rdfs:subClassOf :ShippingParty .
+
+:FreightForwarder a owl:Class ;
+    rdfs:label "Freight Forwarder" ;
+    rdfs:comment """A party arranging transport and related services on behalf of shippers.
+    
+    DCSA: NVOCC or logistics service provider.""" ;
+    rdfs:subClassOf :ShippingParty .

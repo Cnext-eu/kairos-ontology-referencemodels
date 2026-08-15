@@ -61,7 +61,6 @@ ref_model_modules:
   - { iri: "https://www.kairosflow.ai/ont/dcsa/container-operations", tier: recommended }
 
   # Track and trace.
-  - { iri: "https://www.kairosflow.ai/ont/dcsa/track-and-trace",     tier: recommended }
   - { iri: "https://www.kairosflow.ai/ont/dcsa/events",              tier: recommended }
 
   # Demurrage and detention.
