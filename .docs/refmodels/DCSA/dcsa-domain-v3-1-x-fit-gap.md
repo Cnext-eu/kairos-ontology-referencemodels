@@ -4,7 +4,7 @@
 
 **Comparison context:** DCSA Domain v3.1.1 was also parsed. Upstream README marks v3.1.1 as not released and describes only minor latitude/longitude regex/example fixes.
 
-**Local target:** `ontology-reference-models/derived-ontologies/DCSA/current/**/*.ttl`.
+**Local target:** `kairos_ontology_referencemodels/ontology-reference-models/derived-ontologies/DCSA/current/**/*.ttl`.
 
 ## Source provenance
 
@@ -12,7 +12,7 @@
 |---|---:|---|---|
 | DCSA OpenAPI | 3.1.0 | `dcsaorg/DCSA-OpenAPI/domain/dcsa/dcsa_domain_v3.1.0.yaml` | Released DCSA Domain v3.1.x baseline. |
 | DCSA OpenAPI | 3.1.1 | `dcsaorg/DCSA-OpenAPI/domain/dcsa/dcsa_domain_v3.1.1.yaml` | Not released; parsed to check v3.1.x drift. |
-| Kairos local DCSA ontology | 1.2.0 | `ontology-reference-models/derived-ontologies/DCSA/current/` | Modular OWL/Turtle reference ontology. |
+| Kairos local DCSA ontology | 1.2.0 | `kairos_ontology_referencemodels/ontology-reference-models/derived-ontologies/DCSA/current/` | Modular OWL/Turtle reference ontology. |
 
 ## Executive summary
 

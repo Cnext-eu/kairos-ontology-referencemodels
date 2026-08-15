@@ -49,7 +49,7 @@ if sys.stdout.encoding != "utf-8":
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
-ONTOLOGY_ROOT = REPO_ROOT / "ontology-reference-models"
+ONTOLOGY_ROOT = REPO_ROOT / "kairos_ontology_referencemodels" / "ontology-reference-models"
 PACKS_DIR = ONTOLOGY_ROOT / "accelerator-packs"
 DERIVED_DIR = ONTOLOGY_ROOT / "derived-ontologies"
 AUTHORITATIVE_DIR = ONTOLOGY_ROOT / "authoritative-ontologies"

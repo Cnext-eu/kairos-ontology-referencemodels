@@ -13,7 +13,7 @@ from datetime import datetime
 # Configuration
 FIBO_GITHUB_API = "https://api.github.com/repos/edmcouncil/fibo/releases/latest"
 BASE_DIR = Path(__file__).parent.parent
-FIBO_DIR = BASE_DIR / "ontology-reference-models" / "authoritative-ontologies" / "FIBO"
+FIBO_DIR = BASE_DIR / "kairos_ontology_referencemodels" / "ontology-reference-models" / "authoritative-ontologies" / "FIBO"
 TARGET_DIR = FIBO_DIR / "current"
 ARCHIVE_DIR = FIBO_DIR / "archive"
 

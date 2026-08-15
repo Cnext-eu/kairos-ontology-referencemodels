@@ -36,7 +36,7 @@ from rdflib import Graph
 from rdflib.namespace import OWL
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-ONTOLOGY_ROOT = REPO_ROOT / "ontology-reference-models"
+ONTOLOGY_ROOT = REPO_ROOT / "kairos_ontology_referencemodels" / "ontology-reference-models"
 CATALOG_PATH = ONTOLOGY_ROOT / "catalog-v001.xml"
 PACKS_DIR = ONTOLOGY_ROOT / "accelerator-packs"
 

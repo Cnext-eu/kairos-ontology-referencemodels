@@ -30,7 +30,7 @@ The Kairos Reference Models repository provides validated, versioned ontologies 
 
 ```
 kairos-ontology-referencemodels/
-├── ontology-reference-models/
+├── kairos_ontology_referencemodels/ontology-reference-models/
 │   ├── authoritative-ontologies/      # Official RDF/OWL from standards bodies
 │   │   ├── FIBO/                      # FIBO Q4 2025 (300+ files, EDM Council)
 │   │   ├── IATA/                      # IATA ONE Record
@@ -85,7 +85,7 @@ its own, but composes and links classes across the standards above into one supp
 view. Plus **FIBO**, **IATA ONE Record**, **OMG Commons / LCC**, and **W3C SKOS** — 300+
 authoritative ontology files vendored verbatim from the standards bodies.
 
-Each derived ontology lives in its own directory under `ontology-reference-models/derived-ontologies/` with a `VERSION` file for independent versioning.
+Each derived ontology lives in its own directory under `kairos_ontology_referencemodels/ontology-reference-models/derived-ontologies/` with a `VERSION` file for independent versioning.
 
 ---
 
@@ -104,7 +104,7 @@ Accelerator Packs are **pre-composed bundles** that let you import an entire ver
     owl:imports <https://www.kairosflow.ai/ont/accelerator/logistics#> .
 ```
 
-See [`ontology-reference-models/accelerator-packs/`](ontology-reference-models/accelerator-packs/) for details.
+See [`kairos_ontology_referencemodels/ontology-reference-models/accelerator-packs/`](kairos_ontology_referencemodels/ontology-reference-models/accelerator-packs/) for details.
 
 ---
 
@@ -118,17 +118,17 @@ The repository ships a **third content tier** alongside the authoritative and de
 | Derived | `derived-ontologies/` | Kairos RDF interpretations of non-RDF standards (DCSA, MMT, BSP, …). Faithful to the source. |
 | **Blueprint** | **`blueprints/`** | **Opinionated Kairos guidance** layered on top of the ref models — not a standard. Versioned independently. |
 
-The first blueprint shipping today is the **archetype catalog** under [`blueprints/archetypes/`](ontology-reference-models/blueprints/archetypes/). Each YAML file describes the ref-model modules and core concepts a given business archetype is expected to support. Three archetypes ship today: `shipping-carrier` (186 core concepts across 21 business areas), `freight-forwarder` (34 core concepts), and `unit-load-carrier` (170 core concepts across 19 business areas, covering non-containerised ro-ro / short-sea operations).
+The first blueprint shipping today is the **archetype catalog** under [`blueprints/archetypes/`](kairos_ontology_referencemodels/ontology-reference-models/blueprints/archetypes/). Each YAML file describes the ref-model modules and core concepts a given business archetype is expected to support. Three archetypes ship today: `shipping-carrier` (186 core concepts across 21 business areas), `freight-forwarder` (34 core concepts), and `unit-load-carrier` (170 core concepts across 19 business areas, covering non-containerised ro-ro / short-sea operations).
 
-The repository also ships a **pattern library** under [`blueprints/patterns/`](ontology-reference-models/blueprints/patterns/) — sector-neutral modelling craft (shapes and naming conventions) harvested from client hub implementations, distinct from the archetype catalog and not yet part of its cross-repo contract.
+The repository also ships a **pattern library** under [`blueprints/patterns/`](kairos_ontology_referencemodels/ontology-reference-models/blueprints/patterns/) — sector-neutral modelling craft (shapes and naming conventions) harvested from client hub implementations, distinct from the archetype catalog and not yet part of its cross-repo contract.
 
-A third blueprint module, [`blueprints/ontology/`](ontology-reference-models/blueprints/ontology/), holds **Kairos-authored OWL classes** for business grains that a standards audit has shown no installed standard expresses. It has the highest bar of the three — see that folder's README for the admission criteria. It ships `TransportOrder` and `CarrierReservation` today.
+A third blueprint module, [`blueprints/ontology/`](kairos_ontology_referencemodels/ontology-reference-models/blueprints/ontology/), holds **Kairos-authored OWL classes** for business grains that a standards audit has shown no installed standard expresses. It has the highest bar of the three — see that folder's README for the admission criteria. It ships `TransportOrder` and `CarrierReservation` today.
 
 Each archetype may be paired with a **sector discovery script** under
 `accelerator-packs/<pack>/discovery/<archetype-id>.md` holding the SME
 interview questions and lifecycle / cardinality guidance the ontology
 itself cannot infer. The shipping-carrier discovery script lives at
-[`accelerator-packs/logistics/discovery/shipping-carrier.md`](ontology-reference-models/accelerator-packs/logistics/discovery/shipping-carrier.md).
+[`accelerator-packs/logistics/discovery/shipping-carrier.md`](kairos_ontology_referencemodels/ontology-reference-models/accelerator-packs/logistics/discovery/shipping-carrier.md).
 
 Both are consumed by the `kairos-design-discovery` skill in the
 [`kairos-ontology-toolkit`](https://github.com/Cnext-eu/kairos-ontology-toolkit) repository.
@@ -164,8 +164,8 @@ git clone --branch v1.18.0 https://github.com/Cnext-eu/kairos-ontology-reference
 
 Validation is done with the
 [kairos-ontology-toolkit](https://github.com/Cnext-eu/kairos-ontology-toolkit) consumer
-CLI, pointed at this repo's `ontology-reference-models/` layout and its
-[`catalog-v001.xml`](ontology-reference-models/catalog-v001.xml) import-resolution catalog.
+CLI, pointed at this repo's `kairos_ontology_referencemodels/ontology-reference-models/` layout and its
+[`catalog-v001.xml`](kairos_ontology_referencemodels/ontology-reference-models/catalog-v001.xml) import-resolution catalog.
 See that repo's README for exact `kairos-ontology validate` flags.
 
 > **Contributors** — to validate changes *inside this repository*, skip the toolkit and
@@ -184,7 +184,7 @@ See that repo's README for exact `kairos-ontology validate` flags.
 
 ### Financial Industry Business Ontology
 
-[authoritative-ontologies/FIBO/](ontology-reference-models/authoritative-ontologies/FIBO/) contains 300+ FIBO Q4 2025 ontologies:
+[authoritative-ontologies/FIBO/](kairos_ontology_referencemodels/ontology-reference-models/authoritative-ontologies/FIBO/) contains 300+ FIBO Q4 2025 ontologies:
 
 - **fibo-fnd**: Foundations (agents, organizations, people)
 - **fibo-fbc**: Business Contracts
@@ -192,7 +192,7 @@ See that repo's README for exact `kairos-ontology validate` flags.
 
 **XML Catalog Resolution:**
 
-[catalog-v001.xml](ontology-reference-models/catalog-v001.xml) maps FIBO URIs and all derived-ontology URIs to local files.
+[catalog-v001.xml](kairos_ontology_referencemodels/ontology-reference-models/catalog-v001.xml) maps FIBO URIs and all derived-ontology URIs to local files.
 FIBO uses a URI-prefix rewrite into the vendored tree (`authoritative-ontologies/FIBO/current/fibo/`):
 
 ```xml
@@ -201,7 +201,7 @@ FIBO uses a URI-prefix rewrite into the vendored tree (`authoritative-ontologies
 ```
 
 So `https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/` resolves to
-`ontology-reference-models/authoritative-ontologies/FIBO/current/fibo/FND/AgentsAndPeople/Agents/`
+`kairos_ontology_referencemodels/ontology-reference-models/authoritative-ontologies/FIBO/current/fibo/FND/AgentsAndPeople/Agents/`
 (a directory listing).
 
 ---

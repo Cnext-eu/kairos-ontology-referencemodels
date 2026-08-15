@@ -47,7 +47,7 @@ from pathlib import Path
 import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-ONTOLOGY_ROOT = REPO_ROOT / "ontology-reference-models"
+ONTOLOGY_ROOT = REPO_ROOT / "kairos_ontology_referencemodels" / "ontology-reference-models"
 CATALOG = ONTOLOGY_ROOT / "catalog-v001.xml"
 
 # Sources whose closure is knowingly unresolvable, as ``<path relative to ONTOLOGY_ROOT>:

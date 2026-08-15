@@ -21,13 +21,14 @@ else:
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_ACCELERATOR = (
     REPO_ROOT
+    / "kairos_ontology_referencemodels"
     / "ontology-reference-models"
     / "accelerator-packs"
     / "logistics"
     / "current"
     / "logistics-accelerator.ttl"
 )
-DEFAULT_CATALOG = REPO_ROOT / "ontology-reference-models" / "catalog-v001.xml"
+DEFAULT_CATALOG = REPO_ROOT / "kairos_ontology_referencemodels" / "ontology-reference-models" / "catalog-v001.xml"
 DEFAULT_OUTPUT = (
     DEFAULT_ACCELERATOR.parent / "blueprint" / "evidence" / "class-inventory.yaml"
 )

@@ -452,10 +452,10 @@ generated or tested.
 ### Part 2 — name the contract, retire BLUEPRINT.md
 
 #### Added
-- **`ontology-reference-models/CONTRACT.md`** — what this repository publishes, what consumers may
+- **`kairos_ontology_referencemodels/ontology-reference-models/CONTRACT.md`** — what this repository publishes, what consumers may
   rely on, and how it changes. Kept deliberately thin: rules and policy only, no restatement of
   schemas or key lists, because a prose copy of a machine file is what rots.
-- **`ontology-reference-models/contract-manifest.yaml`** — the machine-readable half: each of the
+- **`kairos_ontology_referencemodels/ontology-reference-models/contract-manifest.yaml`** — the machine-readable half: each of the
   six published surfaces with its schema, its consuming loader, and the check that guards it.
   Enforced by **`tests/test_contract_manifest.py`**, which asserts that every glob still matches
   files, every declared schema validates every match, every `enforced_by` target still exists,
@@ -939,7 +939,7 @@ to any single implementation — see "Added" for the mechanism that enforces tha
 
 ### Added
 - **Blueprints (opinionated) module** — new third content tier at
-  `ontology-reference-models/blueprints/` distinct from authoritative and
+  `kairos_ontology_referencemodels/ontology-reference-models/blueprints/` distinct from authoritative and
   derived ontologies. Initial content: archetype catalog
   (`blueprints/archetypes/`, `schema_version: 1`) with a single
   `shipping-carrier.yaml` referencing DCSA + MMT modules and ~30 core
@@ -956,7 +956,7 @@ to any single implementation — see "Added" for the mechanism that enforces tha
 
 ### Changed
 - **`scripts/version_manager.py`** — `SCAN_DIRS` now includes
-  `ontology-reference-models/blueprints/` so the new `archetypes/VERSION`
+  `kairos_ontology_referencemodels/ontology-reference-models/blueprints/` so the new `archetypes/VERSION`
   file is reported by `list` and considered by `check`.
 - **`scripts/validate_structure.py`** — new `validate_blueprints()` check
   asserts blueprints README, archetypes README + SemVer VERSION + schema
@@ -1083,7 +1083,7 @@ to any single implementation — see "Added" for the mechanism that enforces tha
   only (#12)
 - README: license badge MIT → Apache 2.0, version badge → 1.5.0, added Kairos
   Community Edition attribution and rewrote the License section
-- Updated `ontology-reference-models/catalog-v001.xml` for the new modules
+- Updated `kairos_ontology_referencemodels/ontology-reference-models/catalog-v001.xml` for the new modules
 
 ### Removed
 - Stale `.github/info/.sparse-checkout` template (referenced directories that no
@@ -1114,15 +1114,15 @@ to any single implementation — see "Added" for the mechanism that enforces tha
 ## [1.2.1] - 2026-03-01
 
 ### Fixed
-- Corrected `scripts/test_catalog.py` catalog path to `ontology-reference-models/catalog-v001.xml` (was incorrectly pointing to repo root)
-- Removed redundant `ontology-reference-models/` prefix from all relative URI paths in `ontology-reference-models/catalog-v001.xml` so paths resolve correctly from the catalog's own directory (OASIS XML Catalog spec)
-- Moved canonical catalog location to `ontology-reference-models/catalog-v001.xml`; removed stale copy from repo root
+- Corrected `scripts/test_catalog.py` catalog path to `kairos_ontology_referencemodels/ontology-reference-models/catalog-v001.xml` (was incorrectly pointing to repo root)
+- Removed redundant `kairos_ontology_referencemodels/ontology-reference-models/` prefix from all relative URI paths in `kairos_ontology_referencemodels/ontology-reference-models/catalog-v001.xml` so paths resolve correctly from the catalog's own directory (OASIS XML Catalog spec)
+- Moved canonical catalog location to `kairos_ontology_referencemodels/ontology-reference-models/catalog-v001.xml`; removed stale copy from repo root
 
 ## [1.2.0] - 2026-03-01
 
 ### Changed
 - Updated FIBO ontologies from Q3 2025 (master_2025Q3) to Q4 2025 (master_2025Q4)
-- Corrected folder structure from `ontologies/authoritative-ontologies/` to `ontology-reference-models/Authoritative Ontologies/`
+- Corrected folder structure from `ontologies/authoritative-ontologies/` to `kairos_ontology_referencemodels/ontology-reference-models/Authoritative Ontologies/`
 - Updated all catalog paths to point to correct FIBO version (edmcouncil-fibo-90770ba)
 - Fixed download_fibo.py script to use correct target directory
 - Fixed test_catalog.py script to use correct catalog path

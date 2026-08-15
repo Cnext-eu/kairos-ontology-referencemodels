@@ -1,16 +1,18 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
 [project]
 name = "kairos-ontology-referencemodels"
-# Never-published virtual package version — uv.lock mirrors it as `virtual = "."`.
-# The repository version consumers see lives in the root VERSION file (SemVer, tag-matched).
-version = "0.1.0"
-description = "Kairos ontology hub — kairos-ontology-referencemodels"
+dynamic = ["version"]
+description = "Kairos ontology reference models — distributable data package (FIBO, IATA ONE Record, blueprints, archetypes, patterns)"
 requires-python = ">=3.12"
-dependencies = [
-    "kairos-ontology-toolkit @ https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.2.3rc1/kairos_ontology_toolkit-5.2.3rc1-py3-none-any.whl",
-]
+# Data-only package: no runtime dependencies on the toolkit.
+dependencies = []
 
 [project.optional-dependencies]
 dev = [
+    "kairos-ontology-toolkit @ https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.2.3rc1/kairos_ontology_toolkit-5.2.3rc1-py3-none-any.whl",
     "jsonschema>=4.0",
     "pyyaml>=6.0",
     "pytest>=8.0",
@@ -19,6 +21,20 @@ dev = [
     "pytest-randomly>=3.16",
     "rdflib>=7.4",
 ]
+
+[tool.hatch.version]
+# The VERSION file is already tag-matched in the release workflow.
+path = "VERSION"
+pattern = "(?P<version>[0-9]+\\.[0-9]+\\.[0-9]+)"
+
+[tool.hatch.build.targets.wheel]
+# Only the Python package directory is shipped in the wheel.
+# scripts/ and tests/ stay at repo root (dev-only, not shipped).
+packages = ["kairos_ontology_referencemodels"]
+
+[tool.hatch.metadata]
+# The [dev] extras pin the toolkit via a direct GitHub Release URL.
+allow-direct-references = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests", "scripts"]
