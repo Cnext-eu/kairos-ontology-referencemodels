@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.20.0] - 2026-08-15
+
+### Changed
+- **Restructured to a distributable Python data package.** The `ontology-reference-models/`
+  directory now lives inside `kairos_ontology_referencemodels/` and is bundled automatically
+  in the wheel by hatchling. Consumers install via `pip install
+  kairos-ontology-referencemodels` and resolve the data directory through
+  `refmodels_root()` (importlib.resources) instead of a sparse git clone. The release
+  workflow now builds and uploads a `.whl` alongside the `.tar.gz`.
+
+### Removed
+- **`kairos-ontology-toolkit` removed from runtime dependencies.** This is now a data
+  package, not a consumer. The toolkit remains in `dev` extras for contract testing.
+
 ## [1.19.0] - 2026-08-15
 
 ### Fixed
