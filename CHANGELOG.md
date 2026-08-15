@@ -5,6 +5,18 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- **A hand-drafted GitHub release no longer ships without assets.** Publishing a release
+  from the GitHub UI creates the tag, and the tag triggers `release.yml` — whose
+  `gh release create` then failed with "a release with the same tag name already exists",
+  after building the artifacts but before attaching them. That is how v1.20.1 shipped with
+  neither the wheel nor the tarball (repaired by deleting the empty release and re-running
+  the job, hand-written notes preserved). The create step now detects an existing release
+  and uploads the assets to it instead, keeping its hand-written title and notes;
+  `--clobber` makes re-runs after a partial upload safe.
+
 ## [1.20.1] - 2026-08-15
 
 ### Fixed
