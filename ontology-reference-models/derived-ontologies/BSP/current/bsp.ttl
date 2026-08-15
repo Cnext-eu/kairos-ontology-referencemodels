@@ -32,7 +32,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-06-20"^^xsd:date ;
-    owl:versionInfo "2.0.0" ;
+    owl:versionInfo "2.1.0" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     dcterms:references "ISO 20197-1:2024, UN/CEFACT Core Component Library D23B" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> ;
