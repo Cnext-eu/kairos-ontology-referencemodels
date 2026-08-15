@@ -15,8 +15,8 @@
     trailers, and equipment properties. Based on UN/CEFACT MMT Reference Data Model.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "2.0.0" ;
+    dcterms:modified "2026-08-15"^^xsd:date ;
+    owl:versionInfo "2.1.0" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
 
@@ -45,15 +45,28 @@
 :ReeferContainer a owl:Class ;
     rdfs:label "Reefer Container" ;
     rdfs:comment """A temperature-controlled freight container.
-    
-    UN/CEFACT MMT: For perishable or temperature-sensitive cargo.""" ;
+
+    UN/CEFACT MMT: For perishable or temperature-sensitive cargo.
+
+    Overlaps by name with dcsa/equipment#ReeferContainer (different vocabulary:
+    DCSA carries ISO codes, humidity/ventilation). Binding rule: follow the
+    archetype's equipment anchor — this class for mmt-anchored (mixed/
+    non-containerised) fleets, the DCSA twin for container carriers; never
+    bind one physical unit to both. See the logistics blueprint's equipment
+    domain note and canonical-class-registry.yaml equipment-asset.""" ;
     rdfs:subClassOf :FreightContainer .
 
 :TankContainer a owl:Class ;
     rdfs:label "Tank Container" ;
     rdfs:comment """A container for liquid or gas cargo.
-    
-    UN/CEFACT MMT: For bulk liquids, chemicals, gases.""" ;
+
+    UN/CEFACT MMT: For bulk liquids, chemicals, gases.
+
+    Overlaps by name with dcsa/equipment#TankContainer. Binding rule: follow
+    the archetype's equipment anchor — this class for mmt-anchored (mixed/
+    non-containerised) fleets, the DCSA twin for container carriers; never
+    bind one physical unit to both. See the logistics blueprint's equipment
+    domain note and canonical-class-registry.yaml equipment-asset.""" ;
     rdfs:subClassOf :FreightContainer .
 
 :Pallet a owl:Class ;

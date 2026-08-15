@@ -15,8 +15,8 @@
     and identifiers.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
-    owl:versionInfo "1.3.0" ;
+    dcterms:modified "2026-08-15"^^xsd:date ;
+    owl:versionInfo "1.4.0" ;
     dcterms:source "DCSA Booking API (BKG) v2.0, ISO 6346" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
 
@@ -45,15 +45,30 @@
 :ReeferContainer a owl:Class ;
     rdfs:label "Reefer Container" ;
     rdfs:comment """A refrigerated container for temperature-controlled cargo.
-    
-    DCSA: Temperature-controlled container for perishables and pharmaceuticals.""" ;
+
+    DCSA: Temperature-controlled container for perishables and pharmaceuticals.
+
+    Overlaps by name with mmt/equipment#ReeferContainer (different vocabulary:
+    MMT covers the non-container fleet and models Seal as a class). Binding
+    rule: follow the archetype's equipment anchor — this class for container
+    carriers, the MMT twin for mmt-anchored (mixed/non-containerised) fleets,
+    which cite this module for ISO 6346 codes only; never bind one physical
+    unit to both. See the logistics blueprint's equipment domain note and
+    canonical-class-registry.yaml equipment-asset.""" ;
     rdfs:subClassOf :Container .
 
 :TankContainer a owl:Class ;
     rdfs:label "Tank Container" ;
     rdfs:comment """A container designed for liquid bulk cargo transport.
-    
-    DCSA: For chemicals, food-grade liquids, and other liquid products.""" ;
+
+    DCSA: For chemicals, food-grade liquids, and other liquid products.
+
+    Overlaps by name with mmt/equipment#TankContainer. Binding rule: follow
+    the archetype's equipment anchor — this class for container carriers, the
+    MMT twin for mmt-anchored (mixed/non-containerised) fleets, which cite
+    this module for ISO 6346 codes only; never bind one physical unit to
+    both. See the logistics blueprint's equipment domain note and
+    canonical-class-registry.yaml equipment-asset.""" ;
     rdfs:subClassOf :Container .
 
 :FlatRackContainer a owl:Class ;

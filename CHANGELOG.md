@@ -31,6 +31,105 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `# TODO: Enable when kairos-ontology-toolkit is published to PyPI` block, the twin of
   the one removed from `validate.yml` in v1.17.0, and its now-unused Python setup.
 
+## [1.18.0] - 2026-08-15
+
+Four fixes from one blind authoring run (issues #61–#64, filed against v1.16.0): the reference
+content and its own patterns disagreed in four places, and each fix makes the existing decision
+explicit rather than inventing a new one. Module bumps riding this release: **MMT 2.1.0**,
+**BSP 2.1.0**, **DCSA 1.4.0**, **patterns 0.4.0** — all minor; no archetype pin changes.
+
+### Changed — the equipment binding rule is now recorded where authors read (#64)
+
+Every hub authoring an `equipment` domain must import both `mmt/equipment` and
+`dcsa/equipment` (Managed Import Completeness leaves no opt-out), and the two overlap by name
+on `ReeferContainer`/`TankContainer` with different vocabularies. The anchor decision already
+existed — `canonical-class-registry.yaml` `equipment-asset` fixes
+`mmt/equipment#TransportEquipment` as the pack anchor with `dcsa/equipment#Container` as its
+container-scoped overlay, and the archetypes each pick one side — but neither
+`data-domains.yaml` nor the classes themselves said so.
+
+- **logistics `data-domains.yaml` equipment domain**: a domain-level `note` plus per-import
+  `note`s now state the rule — the binding follows the archetype's equipment anchor (mmt for
+  mixed/non-containerised fleets, dcsa for container carriers); for mmt-anchored fleets
+  `dcsa/equipment` is the ISO 6346 code reference on the container subset, not a second
+  anchor; **one physical unit is never bound to both twins**. Deliberately *not* an
+  `overlaps` entry: its single `resolved_to` cannot express an archetype-conditional
+  resolution, and `resolved_to: MMT/Equipment` would be false for shipping-carrier hubs.
+- **TTL comments on all four twin classes** (mmt+dcsa `ReeferContainer`/`TankContainer`) name
+  the twin IRI and the binding rule at point of use. MMT rides the unreleased 2.1.0; **DCSA
+  1.3.0 → 1.4.0** (annotations = minor; pins `>=1.3.0,<2` unaffected).
+- The forced dual import itself is toolkit behavior and deliberately unchanged.
+
+### Changed — patterns 0.4.0: qualified-role-assignment × governed-code-list composition stated (#62)
+
+The two most commonly co-applicable patterns both declared `naming: normative` and prescribed
+different names for the same slot (`hasRole` vs `has<Dimension>Code`), and following either one
+literally landed in the other's anti-pattern. The composition rule is now stated in both
+(`pattern.md` "Composes with" sections + `pattern.yaml` comments): **`hasRole` names the slot;
+`governed-code-list` decides its shape.** Single-source, ungoverned dimension → literal is fine
+and qualified-role-assignment is complete alone; when governed-code-list also applies, `hasRole`
+ranges to the governed `<Dimension>Code` class and the raw string moves to
+`source<Dimension>Value`. `has<Dimension>Code` remains normative for every slot no other pattern
+claims. This ratifies what bsp/mmt party already ship (`hasRole` → `PartyRoleCode` /
+`TransportPartyRoleCode`).
+
+Adjacent defect fixed: qualified-role-assignment's worked example declared `hasRole` as a
+DatatypeProperty over `xsd:string` — contradicting both the shipped modules and
+governed-code-list's `raw-string-as-classification-of-record` anti-pattern. The example now
+shows the composed form, with the literal collapse allowed only under the stated caveat.
+Also added to governed-code-list: where the values live (slot = the standard's, members =
+client master data in the blueprint's `reference-data` domain; the enum constraint is SHACL
+`sh:in` via `kairos-ontology suggest-shapes`, DD-076).
+
+### Changed — patterns 0.4.0: class-anchored grain collisions are now machine-readable (#63)
+
+`grain_collisions` shipped in two shapes — `{against, reason}` mappings (multimodal-order-leg)
+and bare prose (qualified-role-assignment, governed-code-list) — with the party collision, the
+most consequential entry in the library, unavailable to any automated check.
+
+- **qualified-role-assignment**: the party prose entry is now **five `{against, reason}`
+  entries**, one per role parent (`bsp/party#TradeParty`, `mmt/party#TransportParty`,
+  `dcsa/party#ShippingParty`, `imo/party#MaritimeParty`, `tic/party#TerminalParty` — the set
+  #55 completed); the location prose entry is now two entries
+  (`dcsa/locations#PortOfLoading`, `#PortOfDischarge`). `against` stays **scalar** — the
+  toolkit coverage ledger keys units on it, and one-entry-per-IRI is what a
+  does-not-collapse-into check consumes.
+- **The two-shape design is now stated, not accidental**: the schema `$comment`,
+  contract-manifest notes, and a new test pin it — class-anchored collisions MUST use the
+  mapping form; the bare-string form is reserved for grain warnings that name no class
+  (governed-code-list's source-noun caveat is the only shipped instance, unchanged — it has
+  no class IRI to carry and banning prose would relocate it without making it checkable).
+- Toolkit follow-up filed: the reshaped units re-key from `#0`/`#1` to IRIs in
+  `list-patterns --coverage` (2 → 7 units), staling two registry entries until the toolkit
+  registry updates. The ledger is not a gate; repo CI is unaffected.
+
+### Changed — MMT 2.1.0 and BSP 2.1.0: role-assignment properties are now genuinely reusable (#61)
+
+The qualified-role-assignment pattern's own grain collision ("none of the five party parents
+is the durable identity on its own") forces every hub to mint a local assignment class — but
+`hasRole`, `roleValidFrom` and `roleValidTo` were domain-bound to the *reference* assignment
+classes, so no hub could carry them without subclassing the class the pattern tells it to
+avoid. Both hit the wall in practice (#43's `owl:unionOf` workaround was a symptom).
+
+- **mmt/party + bsp/party**: `rdfs:domain` dropped from `hasRole`, `roleValidFrom`,
+  `roleValidTo` (marked `REUSABLE — no rdfs:domain by design`); `rdfs:range` unchanged.
+  Minor bumps per the axiom-relaxation rule — entailments weaken, no instance data breaks,
+  no IRI moves (precedent: BSP 1.6.0's de-domained address/contact properties).
+- **`schema:domainIncludes`** (first use in the repo) now carries the intended anchor as
+  additive, non-entailing domain evidence — the toolkit's `effective_domain_classes()` /
+  `class_properties()` already honor it. Backfilled onto the four de-domained BSP 1.6.0
+  properties (`hasContact`, `hasAddress`, `hasBillingAddress`, `hasShippingAddress`).
+  Deliberately NOT on `bsp-party:hasParty` — a landing pad has no single anchor; its
+  subjects are owned by the specialisations' own `rdfs:domain` declarations.
+- **Scope notes, stated as decisions**: `hasRole` keeps its module-local code-list range —
+  reuse it only when the role vocabulary IS that module's code list; otherwise mint a local
+  `hasRole` per the pattern (the validity pair stays reusable either way).
+  `assignedToTransportParty`/`assignedToTradeParty` are excluded — their *ranges* are the
+  party classes, a separate design decision.
+- CONTRACT.md now states the axiom-relaxation rule explicitly (dropping `rdfs:domain` /
+  widening `rdfs:range` = minor). Archetype pins `>=2.0.0,<3` remain valid; no archetype
+  changes.
+
 ## [1.17.0] - 2026-08-14
 
 ### The shipped bundle now inventories cleanly, and CI proves it (#57)

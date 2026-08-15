@@ -1,0 +1,125 @@
+@prefix : <https://www.kairosflow.ai/ont/dcsa/schedule#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix loc: <https://www.kairosflow.ai/ont/dcsa/locations#> .
+@prefix tc: <https://www.kairosflow.ai/ont/dcsa/transport-call#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/dcsa/schedule> a owl:Ontology ;
+    dcterms:title "DCSA Schedule Domain" ;
+    dcterms:description """Vessel schedule, service loop, cut-off time, and transit time concepts.
+
+    These are DCSA-defined operational planning concepts for container shipping
+    services. They are not part of the UN/CEFACT MMT-RDM standard but are
+    defined in DCSA's Operational Vessel Schedules (OVS) API standard.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-06-12"^^xsd:date ;
+    owl:versionInfo "1.3.0" ;
+    dcterms:source "DCSA Operational Vessel Schedules (OVS) API" ;
+    rdfs:seeAlso <https://dcsa.org/standards/operational-vessel-schedules/> .
+
+#################################################################
+#    Schedule Classes
+#################################################################
+
+:ServiceLoop a owl:Class ;
+    rdfs:label "Service Loop" ;
+    rdfs:comment """A recurring sequence of port calls operated by a carrier or alliance.
+
+    DCSA OVS: A named liner service rotation with fixed port sequence.""" .
+
+:SailingSchedule a owl:Class ;
+    rdfs:label "Sailing Schedule" ;
+    rdfs:comment """A timetable of vessel departures and arrivals for a service.
+
+    DCSA OVS: Published carrier schedules with ETD/ETA per port call.""" .
+
+:CutOffTime a owl:Class ;
+    rdfs:label "Cut-Off Time" ;
+    rdfs:comment """A deadline before which cargo must be delivered to the terminal.
+
+    DCSA OVS: Documentation cut-off, cargo receiving cut-off, VGM cut-off.""" .
+
+:TransitTime a owl:Class ;
+    rdfs:label "Transit Time" ;
+    rdfs:comment """The expected duration of transport between two points.
+
+    DCSA OVS: Port-to-port or door-to-door transit duration.""" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasServiceLoop a owl:ObjectProperty ;
+    rdfs:label "has service loop" ;
+    rdfs:comment "Relates a schedule to its service loop." ;
+    rdfs:domain :SailingSchedule ;
+    rdfs:range :ServiceLoop .
+
+:hasCutOffTime a owl:ObjectProperty ;
+    rdfs:label "has cut-off time" ;
+    rdfs:comment "Relates a schedule entry to its cut-off times." ;
+    rdfs:domain :SailingSchedule ;
+    rdfs:range :CutOffTime .
+
+:hasTransitTime a owl:ObjectProperty ;
+    rdfs:label "has transit time" ;
+    rdfs:comment "Relates a service loop to expected transit times." ;
+    rdfs:domain :ServiceLoop ;
+    rdfs:range :TransitTime .
+
+:hasPortOfCall a owl:ObjectProperty ;
+    rdfs:label "has port of call" ;
+    rdfs:comment "A port included in this sailing schedule's rotation." ;
+    rdfs:domain :SailingSchedule ;
+    rdfs:range loc:Port .
+
+:hasTransportCall a owl:ObjectProperty ;
+    rdfs:label "has transport call" ;
+    rdfs:comment "A vessel transport call in this sailing schedule." ;
+    rdfs:domain :SailingSchedule ;
+    rdfs:range tc:VesselTransportCall .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:serviceLoopCode a owl:DatatypeProperty ;
+    rdfs:label "service loop code" ;
+    rdfs:comment "Carrier-assigned code for the service loop." ;
+    rdfs:domain :ServiceLoop ;
+    rdfs:range xsd:string .
+
+:frequency a owl:DatatypeProperty ;
+    rdfs:label "frequency" ;
+    rdfs:comment "Service frequency: WEEKLY, BI-WEEKLY, MONTHLY." ;
+    rdfs:domain :ServiceLoop ;
+    rdfs:range xsd:string .
+
+:cutOffType a owl:DatatypeProperty ;
+    rdfs:label "cut-off type" ;
+    rdfs:comment "Type of cut-off: CARGO, DOCUMENTATION, VGM, REEFER." ;
+    rdfs:domain :CutOffTime ;
+    rdfs:range xsd:string .
+
+:cutOffDateTime a owl:DatatypeProperty ;
+    rdfs:label "cut-off date time" ;
+    rdfs:comment "Date and time of the cut-off deadline." ;
+    rdfs:domain :CutOffTime ;
+    rdfs:range xsd:dateTime .
+
+:transitDays a owl:DatatypeProperty ;
+    rdfs:label "transit days" ;
+    rdfs:comment "Number of days for transit." ;
+    rdfs:domain :TransitTime ;
+    rdfs:range xsd:integer .
+
+:transitHours a owl:DatatypeProperty ;
+    rdfs:label "transit hours" ;
+    rdfs:comment "Number of hours for transit." ;
+    rdfs:domain :TransitTime ;
+    rdfs:range xsd:integer .

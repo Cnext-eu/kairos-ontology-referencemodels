@@ -17,7 +17,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-05-16"^^xsd:date ;
-    owl:versionInfo "1.3.0" ;
+    owl:versionInfo "1.4.0" ;
     dcterms:source "DCSA Information Model 2024.Q4 — 3. Vessel Journey (OVS v3.0)" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> ;
     owl:imports <https://www.kairosflow.ai/ont/dcsa/schedule> .

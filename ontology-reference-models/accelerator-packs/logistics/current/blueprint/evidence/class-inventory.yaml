@@ -4330,7 +4330,7 @@ records:
     \ identity to one of its\n    postal/physical addresses. Cardinality: 1:n — a party may have many\n\
     \    addresses. The typed roles :hasBillingAddress and :hasShippingAddress are\n    specialisations\
     \ of this generic relationship. The Address class is shared\n    master data defined in the BSP reference-data\
-    \ module."
+    \ module. schema:domainIncludes\n    carries the reference anchor as non-entailing evidence (BSP 2.1.0)."
   domains: []
   kind: object_property
   labels:
@@ -4406,7 +4406,8 @@ records:
 - comments:
   - 'REUSABLE — no rdfs:domain by design: asserting a domain of :TradeParty would infer TradeParty subsumption
     onto any hub identity class using this property, re-creating the subclass-identity-by-role anti-pattern
-    by the back door (BSP 1.6.0). Relates a party-like identity to its contact persons. Cardinality: 1:n.'
+    by the back door (BSP 1.6.0). Relates a party-like identity to its contact persons. Cardinality: 1:n.
+    schema:domainIncludes carries the reference anchor as non-entailing evidence (BSP 2.1.0).'
   domains: []
   kind: object_property
   labels:
@@ -4441,7 +4442,9 @@ records:
     \ infer that class onto\n    every hub class using this property. Generic landing pad relating a subject\n\
     \    to a participating trade party (BSP 2.0.0, mirroring mmt/consignment#hasParty).\n    The typed\
     \ roles :hasBuyer, :hasSeller, :hasShipper, :hasConsignee, :hasCarrier,\n    :hasManufacturer and\
-    \ the bsp/financial bank properties are specialisations.\n    Cardinality: 0..n."
+    \ the bsp/financial bank properties are specialisations.\n    Cardinality: 0..n. schema:domainIncludes\
+    \ is deliberately not asserted here:\n    the subject classes are owned by the specialisations' own\
+    \ rdfs:domain\n    declarations, and no single class anchors the landing pad."
   domains: []
   kind: object_property
   labels:
@@ -4454,10 +4457,16 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/party#hasParty
 - comments:
-  - The role held, from the governed PartyRoleCode list. Named per qualified-role-assignment (fixed name
-    hasRole, ranging over the pack's controlled role vocabulary).
-  domains:
-  - https://www.kairosflow.ai/ont/bsp/party#TradePartyRoleAssignment
+  - "REUSABLE — no rdfs:domain by design: asserting a domain of\n    :TradePartyRoleAssignment would type\
+    \ every hub-local assignment class's\n    instances as this module's assignment class, reintroducing\
+    \ the trade\n    context the local durable identity exists to avoid (BSP 2.1.0). The role\n    held,\
+    \ from the governed PartyRoleCode list. Named per\n    qualified-role-assignment (fixed name hasRole,\
+    \ ranging over the pack's\n    controlled role vocabulary). The rdfs:range stays: reuse this property\n\
+    \    only when the role vocabulary IS :PartyRoleCode; a hub whose roles span\n    other contexts mints\
+    \ a local hasRole per the pattern and can still reuse\n    :roleValidFrom and :roleValidTo. schema:domainIncludes\
+    \ is additive,\n    non-entailing domain evidence — hubs add their own triple for their\n    assignment\
+    \ class."
+  domains: []
   kind: object_property
   labels:
   - has role
@@ -4600,9 +4609,10 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/party#registrationNumber
 - comments:
-  - Start of the assignment's validity period, independent of the identity's own lifecycle.
-  domains:
-  - https://www.kairosflow.ai/ont/bsp/party#TradePartyRoleAssignment
+  - "REUSABLE — no rdfs:domain by design: any role-assignment class,\n    reference or hub-local, may\
+    \ carry the validity period (BSP 2.1.0). Start of\n    the assignment's validity period, independent\
+    \ of the identity's own\n    lifecycle."
+  domains: []
   kind: datatype_property
   labels:
   - role valid from
@@ -4614,9 +4624,10 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/party#roleValidFrom
 - comments:
-  - End of the assignment's validity period; absent while the assignment holds.
-  domains:
-  - https://www.kairosflow.ai/ont/bsp/party#TradePartyRoleAssignment
+  - "REUSABLE — no rdfs:domain by design: any role-assignment class,\n    reference or hub-local, may\
+    \ carry the validity period (BSP 2.1.0). End of\n    the assignment's validity period; absent while\
+    \ the assignment holds."
+  domains: []
   kind: datatype_property
   labels:
   - role valid to
@@ -7482,8 +7493,13 @@ records:
   - https://www.kairosflow.ai/ont/dcsa/equipment#Container
   uri: https://www.kairosflow.ai/ont/dcsa/equipment#PlatformContainer
 - comments:
-  - "A refrigerated container for temperature-controlled cargo.\n    \n    DCSA: Temperature-controlled\
-    \ container for perishables and pharmaceuticals."
+  - "A refrigerated container for temperature-controlled cargo.\n\n    DCSA: Temperature-controlled container\
+    \ for perishables and pharmaceuticals.\n\n    Overlaps by name with mmt/equipment#ReeferContainer\
+    \ (different vocabulary:\n    MMT covers the non-container fleet and models Seal as a class). Binding\n\
+    \    rule: follow the archetype's equipment anchor — this class for container\n    carriers, the MMT\
+    \ twin for mmt-anchored (mixed/non-containerised) fleets,\n    which cite this module for ISO 6346\
+    \ codes only; never bind one physical\n    unit to both. See the logistics blueprint's equipment domain\
+    \ note and\n    canonical-class-registry.yaml equipment-asset."
   domains: []
   kind: class
   labels:
@@ -7496,8 +7512,12 @@ records:
   - https://www.kairosflow.ai/ont/dcsa/equipment#Container
   uri: https://www.kairosflow.ai/ont/dcsa/equipment#ReeferContainer
 - comments:
-  - "A container designed for liquid bulk cargo transport.\n    \n    DCSA: For chemicals, food-grade\
-    \ liquids, and other liquid products."
+  - "A container designed for liquid bulk cargo transport.\n\n    DCSA: For chemicals, food-grade liquids,\
+    \ and other liquid products.\n\n    Overlaps by name with mmt/equipment#TankContainer. Binding rule:\
+    \ follow\n    the archetype's equipment anchor — this class for container carriers, the\n    MMT twin\
+    \ for mmt-anchored (mixed/non-containerised) fleets, which cite\n    this module for ISO 6346 codes\
+    \ only; never bind one physical unit to\n    both. See the logistics blueprint's equipment domain\
+    \ note and\n    canonical-class-registry.yaml equipment-asset."
   domains: []
   kind: class
   labels:
@@ -15520,8 +15540,12 @@ records:
   - https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment
   uri: https://www.kairosflow.ai/ont/mmt/equipment#Pallet
 - comments:
-  - "A temperature-controlled freight container.\n    \n    UN/CEFACT MMT: For perishable or temperature-sensitive\
-    \ cargo."
+  - "A temperature-controlled freight container.\n\n    UN/CEFACT MMT: For perishable or temperature-sensitive\
+    \ cargo.\n\n    Overlaps by name with dcsa/equipment#ReeferContainer (different vocabulary:\n    DCSA\
+    \ carries ISO codes, humidity/ventilation). Binding rule: follow the\n    archetype's equipment anchor\
+    \ — this class for mmt-anchored (mixed/\n    non-containerised) fleets, the DCSA twin for container\
+    \ carriers; never\n    bind one physical unit to both. See the logistics blueprint's equipment\n \
+    \   domain note and canonical-class-registry.yaml equipment-asset."
   domains: []
   kind: class
   labels:
@@ -15561,7 +15585,11 @@ records:
   - https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment
   uri: https://www.kairosflow.ai/ont/mmt/equipment#SwapBody
 - comments:
-  - "A container for liquid or gas cargo.\n    \n    UN/CEFACT MMT: For bulk liquids, chemicals, gases."
+  - "A container for liquid or gas cargo.\n\n    UN/CEFACT MMT: For bulk liquids, chemicals, gases.\n\n\
+    \    Overlaps by name with dcsa/equipment#TankContainer. Binding rule: follow\n    the archetype's\
+    \ equipment anchor — this class for mmt-anchored (mixed/\n    non-containerised) fleets, the DCSA\
+    \ twin for container carriers; never\n    bind one physical unit to both. See the logistics blueprint's\
+    \ equipment\n    domain note and canonical-class-registry.yaml equipment-asset."
   domains: []
   kind: class
   labels:
@@ -16649,10 +16677,15 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/party#assignedToTransportParty
 - comments:
-  - The role held, from the governed TransportPartyRoleCode list. Named per qualified-role-assignment
-    (fixed name hasRole).
-  domains:
-  - https://www.kairosflow.ai/ont/mmt/party#TransportPartyRoleAssignment
+  - "REUSABLE — no rdfs:domain by design: asserting a domain of\n    :TransportPartyRoleAssignment would\
+    \ type every hub-local assignment class's\n    instances as this module's assignment class, reintroducing\
+    \ the transport\n    context the local durable identity exists to avoid (MMT 2.1.0). The role\n  \
+    \  held, from the governed TransportPartyRoleCode list. Named per\n    qualified-role-assignment (fixed\
+    \ name hasRole). The rdfs:range stays:\n    reuse this property only when the role vocabulary IS\n\
+    \    :TransportPartyRoleCode; a hub whose roles span other contexts mints a\n    local hasRole per\
+    \ the pattern and can still reuse :roleValidFrom and\n    :roleValidTo. schema:domainIncludes is additive,\
+    \ non-entailing domain\n    evidence — hubs add their own triple for their assignment class."
+  domains: []
   kind: object_property
   labels:
   - has role
@@ -16664,9 +16697,10 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/party#hasRole
 - comments:
-  - Start of the assignment's validity period, independent of the identity's own lifecycle.
-  domains:
-  - https://www.kairosflow.ai/ont/mmt/party#TransportPartyRoleAssignment
+  - "REUSABLE — no rdfs:domain by design: any role-assignment class,\n    reference or hub-local, may\
+    \ carry the validity period (MMT 2.1.0). Start of\n    the assignment's validity period, independent\
+    \ of the identity's own\n    lifecycle."
+  domains: []
   kind: datatype_property
   labels:
   - role valid from
@@ -16678,9 +16712,10 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/party#roleValidFrom
 - comments:
-  - End of the assignment's validity period; absent while the assignment holds.
-  domains:
-  - https://www.kairosflow.ai/ont/mmt/party#TransportPartyRoleAssignment
+  - "REUSABLE — no rdfs:domain by design: any role-assignment class,\n    reference or hub-local, may\
+    \ carry the validity period (MMT 2.1.0). End of\n    the assignment's validity period; absent while\
+    \ the assignment holds."
+  domains: []
   kind: datatype_property
   labels:
   - role valid to

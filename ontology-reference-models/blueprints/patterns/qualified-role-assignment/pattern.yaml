@@ -11,6 +11,14 @@ normativity:
   naming: normative
   participants: advisory
   cardinality_rules: advisory
+# Composes with governed-code-list when the role dimension is itself governed (multi-source
+# or standards-backed — the common case): hasRole keeps this pattern's normative name but
+# ranges to the governed <Dimension>Code class instead of a literal, and the raw source
+# string moves to source<Dimension>Value. The two patterns are complementary, not
+# alternatives — following this pattern's literal form on a governed dimension lands in
+# governed-code-list's raw-string-as-classification-of-record anti-pattern. When the
+# dimension is single-source and ungoverned, a literal-valued hasRole is fine and this
+# pattern is complete on its own. See "Composes with governed-code-list" in pattern.md.
 naming_conventions:
   - element: role_assignment_class
     convention: "<Identity>RoleAssignment"
@@ -52,6 +60,22 @@ anti_patterns:
   - id: equal-labels-treated-as-equivalent
     description: "BSP TradeParty, DCSA ShippingParty, and MMT TransportParty treated as owl:equivalentClass without checking grain."
     rejection_reason: "Similar labels do not establish equivalence; each may be a role overlay on the same identity or a distinct grain."
+# Class-anchored collisions use the {against, reason} form — one entry per class IRI, so a
+# tool can check "the hub's durable identity does not collapse into this class". The joint
+# claim (none of the five party parents is the durable identity ON ITS OWN) lives in each
+# entry's reason; the maintained set is overlap-register.yaml 'party-role-parents'.
 grain_collisions:
-  - "Party: BSP, DCSA, MMT, IMO, and TIC each define a role-bearing party parent with a different context; none is the durable identity on its own."
-  - "Location: DCSA specialises Location by shipment role (Port of Loading, Port of Discharge); materialising those as separate physical places duplicates one port playing several roles."
+  - against: https://www.kairosflow.ai/ont/bsp/party#TradeParty
+    reason: "Role-bearing party parent with a trade (buy-ship-pay) context; like the other four party parents, not the durable identity on its own."
+  - against: https://www.kairosflow.ai/ont/mmt/party#TransportParty
+    reason: "Role-bearing party parent with a transport-operations context; like the other four party parents, not the durable identity on its own."
+  - against: https://www.kairosflow.ai/ont/dcsa/party#ShippingParty
+    reason: "Role-bearing party parent with a container-shipping context; like the other four party parents, not the durable identity on its own."
+  - against: https://www.kairosflow.ai/ont/imo/party#MaritimeParty
+    reason: "Role-bearing party parent with a maritime/regulatory context; like the other four party parents, not the durable identity on its own."
+  - against: https://www.kairosflow.ai/ont/tic/party#TerminalParty
+    reason: "Role-bearing party parent with a terminal-operations context; like the other four party parents, not the durable identity on its own."
+  - against: https://www.kairosflow.ai/ont/dcsa/locations#PortOfLoading
+    reason: "DCSA specialises Location by shipment role; materialising the role classes (this, PortOfDischarge, PlaceOfReceipt, PlaceOfDelivery, ...) as separate physical places duplicates one port playing several roles."
+  - against: https://www.kairosflow.ai/ont/dcsa/locations#PortOfDischarge
+    reason: "DCSA specialises Location by shipment role; materialising the role classes (this, PortOfLoading, PlaceOfReceipt, PlaceOfDelivery, ...) as separate physical places duplicates one port playing several roles."

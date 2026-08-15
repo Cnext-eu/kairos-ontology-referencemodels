@@ -187,13 +187,32 @@ groups:
         name: "Cargo Equipment & Fleet Equipment"
         owns: "Trailers, containers, tank containers, reefer units, chassis, swap bodies, equipment identifiers, and equipment status."
         does_not_own: "Vessel fleet, terminal cranes, cargo contents, or operational moves."
+        note: >
+          The two imports overlap by local name on ReeferContainer and TankContainer (and
+          conceptually on mmt FreightContainer vs dcsa Container). The binding rule follows the
+          archetype's equipment anchor — mmt/equipment#TransportEquipment for mixed and
+          non-containerised fleets (unit-load-carrier, freight-forwarder),
+          dcsa/equipment#Container for container carriers (shipping-carrier) — per
+          canonical-class-registry.yaml equipment-asset, which fixes the pack-level anchor as
+          mmt/equipment#TransportEquipment with dcsa/equipment#Container as its
+          container-scoped overlay. One physical unit is never bound to both twins. Both
+          imports stay required (Managed Import Completeness); this note records which one to
+          bind to, not which one to import.
         imports:
           - uri: "https://www.kairosflow.ai/ont/mmt/equipment#"
             module: "MMT / Equipment"
             provides: "Transport equipment, trailer, container types"
+            note: >
+              The anchor side for mmt-anchored archetypes: the only module covering trailers,
+              swap bodies and pallets, and the parent of the pack-level equipment-asset anchor.
           - uri: "https://www.kairosflow.ai/ont/dcsa/equipment#"
             module: "DCSA / Equipment"
             provides: "Container, reefer, ISO equipment codes"
+            note: >
+              For mmt-anchored fleets this is the reference vocabulary for ISO 6346 equipment
+              codes on the container subset — not a second anchor; bind container units to the
+              mmt classes and cite the dcsa codes. Container-anchored archetypes
+              (shipping-carrier) anchor this side instead.
         standards:
           - "UN/CEFACT MMT-RDM"
           - "DCSA API Standards"
