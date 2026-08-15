@@ -1,5 +1,7 @@
 [project]
 name = "kairos-ontology-referencemodels"
+# Never-published virtual package version — uv.lock mirrors it as `virtual = "."`.
+# The repository version consumers see lives in the root VERSION file (SemVer, tag-matched).
 version = "0.1.0"
 description = "Kairos ontology hub — kairos-ontology-referencemodels"
 requires-python = ">=3.12"
