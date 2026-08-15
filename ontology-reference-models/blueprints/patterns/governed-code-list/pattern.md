@@ -34,6 +34,26 @@ system-local and has no cross-source counterpart to reconcile against.
 | Raw source value on the instance | `source<Dimension>Value`, e.g. `sourceEquipmentTypeValue` |
 | Link from instance to governed code | `has<Dimension>Code`, e.g. `hasEquipmentTypeCode` |
 
+## Composes with qualified-role-assignment
+
+When the governed dimension is a **role** held through `qualified-role-assignment`'s link
+entity, both patterns' applicability tests pass at once and they compose rather than compete:
+the link property keeps that pattern's fixed, normative name `hasRole` — not
+`has<Dimension>Code` — but takes this pattern's shape, ranging to the governed
+`<Dimension>Code` class with the raw value on `source<Dimension>Value`. `has<Dimension>Code`
+remains the normative name for every slot no other pattern claims. The reference party modules
+ship this composition (`bsp/party#hasRole` → `PartyRoleCode`, `mmt/party#hasRole` →
+`TransportPartyRoleCode`).
+
+## Where the values live
+
+The **slot** is the standard's; the **members** are the client's. Reference modules ship
+governed code-list classes as empty shells (`bsp/party#PartyRoleCode`,
+`mmt/party#TransportPartyRoleCode`): the value set is client master data and belongs to the
+blueprint's `reference-data` domain, whose contract owns code lists and status codes. The
+enumeration constraint itself belongs in SHACL, not OWL — `kairos-ontology suggest-shapes`
+(DD-076) derives `sh:in` enums from bronze distinct-value evidence.
+
 ## Cardinality rules (advisory)
 
 An instance has exactly one governed code per dimension (`1..1` via `has<Dimension>Code`), but

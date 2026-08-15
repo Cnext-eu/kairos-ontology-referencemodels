@@ -10,6 +10,11 @@ normativity:
   naming: normative
   participants: advisory
   cardinality_rules: advisory
+# Composes with qualified-role-assignment: when the governed dimension is a role held via a
+# role-assignment link entity, the link keeps that pattern's fixed name hasRole (not
+# has<Dimension>Code) and ranges to this pattern's <Dimension>Code class; the raw value
+# stays source<Dimension>Value. has<Dimension>Code remains the normative name for every
+# slot no other pattern claims. See "Composes with qualified-role-assignment" in pattern.md.
 naming_conventions:
   - element: governed_code_list_class
     convention: "<Dimension>Code"
