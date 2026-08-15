@@ -58,7 +58,7 @@ jobs:
           uv build --wheel
           # Verify the wheel contains the data directory
           python -m zipfile -l \
-            kairos_ontology_referencemodels-${{ steps.get_version.outputs.version }}-py3-none-any.whl \
+                  dist/kairos_ontology_referencemodels-${{ steps.get_version.outputs.version }}-py3-none-any.whl \
             | grep "ontology-reference-models/catalog-v001.xml" \
             || { echo "❌ Wheel missing reference-models data"; exit 1; }
 
@@ -104,7 +104,7 @@ jobs:
             --notes-file RELEASE_NOTES.md \
             $PRERELEASE_FLAG \
             "kairos-reference-models-$VERSION.tar.gz" \
-            "kairos_ontology_referencemodels-$VERSION-py3-none-any.whl"
+                        "dist/kairos_ontology_referencemodels-$VERSION-py3-none-any.whl"
       
       - name: Publish to artifact registry (optional)
         if: false  # Enable when Azure Blob Storage is configured
