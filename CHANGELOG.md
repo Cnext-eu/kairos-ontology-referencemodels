@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **Consumer-facing docs drift.** The README claimed a stale `version-1.15.0` badge and
+  "Current Version: 1.13.0" footer, gave three conflicting ontology-suite counts, and a
+  Quick Start pointing at a `reference-models/` layout that does not exist. It now carries
+  a real CI badge, the reconciled "8 derived suites + SupplyChain bridge" framing, a
+  corrected repository tree, and a Quick Start pointing contributors at
+  `python scripts/check_all.py`. `examples/basic-usage.md` clone URLs fixed to
+  `kairos-ontology-referencemodels`. `.github/copilot-instructions.md` tier table now lists
+  the SupplyChain bridge in the derived tier.
 - **The release gate no longer runs a weaker check set than the PR gate.** `release.yml`
   restated a subset of `validate.yml`'s checks by hand, and had drifted: it was missing
   `validate_pattern_conformance.py` and the entire `cross-repo-contract` job. A tag could
@@ -30,6 +38,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Also drops `release.yml`'s commented-out
   `# TODO: Enable when kairos-ontology-toolkit is published to PyPI` block, the twin of
   the one removed from `validate.yml` in v1.17.0, and its now-unused Python setup.
+
+### Removed
+- **Hub-scaffold residue.** `package.json` (its only script rendered a client-hub dbt ERD
+  path that does not exist here), `.devcontainer/` (hub-named, pip+npm post-create), and
+  `.env.example` (toolkit AI-provider config consumed by nothing in this repo).
+  `.gitignore` now covers `.claude/`.
+- **`scripts/test_catalog.py`.** Standalone, non-pytest; its disk-existence check is fully
+  covered by `tests/test_model_registration.py`, and it had no reader other than a
+  contract-manifest note (now updated).
+- Seven landed `.docs/wip/` documents (five standard gap-analysis reports, the MMT
+  equipment-refactor plan, the logistics dbt-silver design plan). Content preserved in git
+  history; `.docs/wip/README.md` now states the live-CRs-only rule.
+
+### Added
+- **`scripts/check_all.py` — the tier-1 contributor gate.** Parses `validate.yml`'s
+  `validate` job and runs its `run:` blocks in CI order (reuse, not restatement); fails
+  loudly on an unparseable workflow; prints the tier-2 contract command as a hint.
+- **`test_every_rewrite_prefix_is_a_real_directory`** in
+  `tests/test_model_registration.py`: statically asserts every `<rewriteURI>` prefix in
+  `catalog-v001.xml` resolves to a real directory — the gap the contract manifest flagged.
+- **`.github/dependabot.yml`** (github-actions + pip, weekly). The toolkit wheel pin stays
+  with `check_toolkit_pin.py` and is intentionally uncovered.
+- **`pytest-randomly`** in the dev extras and explicit
+  `[tool.pytest.ini_options] testpaths` — CI passes `-p no:randomly` but the plugin
+  previously arrived only transitively via the toolkit wheel.
 
 ## [1.18.0] - 2026-08-15
 
