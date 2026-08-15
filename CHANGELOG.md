@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed — patterns 0.4.0: qualified-role-assignment × governed-code-list composition stated (#62)
+
+The two most commonly co-applicable patterns both declared `naming: normative` and prescribed
+different names for the same slot (`hasRole` vs `has<Dimension>Code`), and following either one
+literally landed in the other's anti-pattern. The composition rule is now stated in both
+(`pattern.md` "Composes with" sections + `pattern.yaml` comments): **`hasRole` names the slot;
+`governed-code-list` decides its shape.** Single-source, ungoverned dimension → literal is fine
+and qualified-role-assignment is complete alone; when governed-code-list also applies, `hasRole`
+ranges to the governed `<Dimension>Code` class and the raw string moves to
+`source<Dimension>Value`. `has<Dimension>Code` remains normative for every slot no other pattern
+claims. This ratifies what bsp/mmt party already ship (`hasRole` → `PartyRoleCode` /
+`TransportPartyRoleCode`).
+
+Adjacent defect fixed: qualified-role-assignment's worked example declared `hasRole` as a
+DatatypeProperty over `xsd:string` — contradicting both the shipped modules and
+governed-code-list's `raw-string-as-classification-of-record` anti-pattern. The example now
+shows the composed form, with the literal collapse allowed only under the stated caveat.
+Also added to governed-code-list: where the values live (slot = the standard's, members =
+client master data in the blueprint's `reference-data` domain; the enum constraint is SHACL
+`sh:in` via `kairos-ontology suggest-shapes`, DD-076).
+
 ### Changed — patterns 0.4.0: class-anchored grain collisions are now machine-readable (#63)
 
 `grain_collisions` shipped in two shapes — `{against, reason}` mappings (multimodal-order-leg)

@@ -11,6 +11,14 @@ normativity:
   naming: normative
   participants: advisory
   cardinality_rules: advisory
+# Composes with governed-code-list when the role dimension is itself governed (multi-source
+# or standards-backed — the common case): hasRole keeps this pattern's normative name but
+# ranges to the governed <Dimension>Code class instead of a literal, and the raw source
+# string moves to source<Dimension>Value. The two patterns are complementary, not
+# alternatives — following this pattern's literal form on a governed dimension lands in
+# governed-code-list's raw-string-as-classification-of-record anti-pattern. When the
+# dimension is single-source and ungoverned, a literal-valued hasRole is fine and this
+# pattern is complete on its own. See "Composes with governed-code-list" in pattern.md.
 naming_conventions:
   - element: role_assignment_class
     convention: "<Identity>RoleAssignment"
