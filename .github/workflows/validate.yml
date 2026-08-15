@@ -6,6 +6,29 @@ on:
   pull_request:
     branches: [main]
 
+  # Called by release.yml so a tag is gated by exactly these checks. Until v1.17.0 the
+  # release workflow restated a subset of them by hand and had already drifted: it was
+  # missing validate_pattern_conformance.py and the whole cross-repo-contract job, so a
+  # release could publish content that PR CI would have rejected. Reuse, not restatement
+  # — the two gates cannot diverge if there is only one of them.
+  workflow_call:
+    inputs:
+      skip-toolkit-pin-check:
+        description: >
+          Skip the "is the pin current for its channel" check. Releases pass true: that
+          check compares against whatever the toolkit has published since, so it is
+          time-dependent and would block a release for a reason that has nothing to do
+          with the artifact being released. What a release does still need — that the
+          pinned toolkit can actually read this bundle — is the contract and conformance
+          suites, which run either way.
+
+          Phrased as skip-rather-than-require on purpose: on push/PR the `inputs` context
+          is null, and GitHub coerces null and false alike to 0, so a `!= false` guard
+          would silently skip the check on ordinary CI. `!null` is true, so this form
+          fails safe.
+        type: boolean
+        default: false
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -94,7 +117,9 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v5
 
+      # Skipped for releases only — see skip-toolkit-pin-check above.
       - name: Check the toolkit pin is current for its channel
+        if: ${{ !inputs.skip-toolkit-pin-check }}
         run: uv run --extra dev python scripts/check_toolkit_pin.py --check
 
       - name: Install the pinned toolkit

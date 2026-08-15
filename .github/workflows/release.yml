@@ -6,47 +6,28 @@ on:
       - 'v*.*.*'
 
 jobs:
-  validate-and-release:
+  # The release candidate is gated by the same workflow that gates every PR, called
+  # rather than copied. This previously restated a subset of those checks inline and had
+  # drifted: validate_pattern_conformance.py and the entire cross-repo-contract job were
+  # missing, so a tag could publish a bundle that PR CI would have rejected — including,
+  # until v1.17.0, one that no hub could inventory (gh#57).
+  validate:
+    uses: ./.github/workflows/validate.yml
+    with:
+      skip-toolkit-pin-check: true
+
+  release:
+    needs: validate
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      
-      # TODO: Enable when kairos-ontology-toolkit is published to PyPI
-      # - name: Install kairos-ontology-toolkit
-      #   run: |
-      #     pip install --upgrade pip
-      #     pip install kairos-ontology-toolkit
-      
-      # - name: Validate before release
-      #   run: |
-      #     echo "🔍 Validating reference models before release..."
-      #     kairos-ontology validate --all --ontologies ontologies --shapes shapes
-      #     kairos-ontology catalog-test --catalog catalog-v001.xml
-      
-      - name: Install validation dependencies
-        run: pip install --quiet pytest jsonschema pyyaml rdflib
 
-      - name: Validate release candidate
-        run: |
-          python -m pytest -q
-          python scripts/generate_logistics_inventory.py --check
-          python scripts/validate_logistics_blueprint.py
-          python scripts/generate_pack_docs.py --check
-          python scripts/validate_archetypes.py
-          python scripts/validate_structure.py
-          python scripts/version_manager.py check
-      
       - name: Extract version from tag
         id: get_version
         run: |
