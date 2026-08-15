@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.19.0] - 2026-08-15
+
 ### Fixed
 - **Consumer-facing docs drift.** The README claimed a stale `version-1.15.0` badge and
   "Current Version: 1.13.0" footer, gave three conflicting ontology-suite counts, and a
@@ -63,6 +65,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`pytest-randomly`** in the dev extras and explicit
   `[tool.pytest.ini_options] testpaths` — CI passes `-p no:randomly` but the plugin
   previously arrived only transitively via the toolkit wheel.
+
+### Changed
+- **GitHub Actions bumped to current majors** via dependabot (#72–#75, #77):
+  `actions/checkout` v4→v7, `actions/upload-artifact` v4→v7, `actions/github-script`
+  v7→v9, `actions/setup-python` v5→v7, `astral-sh/setup-uv` v5→v7.
 
 ## [1.18.0] - 2026-08-15
 
