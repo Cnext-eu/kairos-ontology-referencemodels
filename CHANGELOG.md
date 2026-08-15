@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.18.0] - 2026-08-15
+
+Four fixes from one blind authoring run (issues #61–#64, filed against v1.16.0): the reference
+content and its own patterns disagreed in four places, and each fix makes the existing decision
+explicit rather than inventing a new one. Module bumps riding this release: **MMT 2.1.0**,
+**BSP 2.1.0**, **DCSA 1.4.0**, **patterns 0.4.0** — all minor; no archetype pin changes.
+
 ### Changed — the equipment binding rule is now recorded where authors read (#64)
 
 Every hub authoring an `equipment` domain must import both `mmt/equipment` and
