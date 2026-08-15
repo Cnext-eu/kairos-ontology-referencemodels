@@ -115,7 +115,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v7
 
       # Skipped for releases only — see skip-toolkit-pin-check above.
       - name: Check the toolkit pin is current for its channel
