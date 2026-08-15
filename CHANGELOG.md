@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed — the equipment binding rule is now recorded where authors read (#64)
+
+Every hub authoring an `equipment` domain must import both `mmt/equipment` and
+`dcsa/equipment` (Managed Import Completeness leaves no opt-out), and the two overlap by name
+on `ReeferContainer`/`TankContainer` with different vocabularies. The anchor decision already
+existed — `canonical-class-registry.yaml` `equipment-asset` fixes
+`mmt/equipment#TransportEquipment` as the pack anchor with `dcsa/equipment#Container` as its
+container-scoped overlay, and the archetypes each pick one side — but neither
+`data-domains.yaml` nor the classes themselves said so.
+
+- **logistics `data-domains.yaml` equipment domain**: a domain-level `note` plus per-import
+  `note`s now state the rule — the binding follows the archetype's equipment anchor (mmt for
+  mixed/non-containerised fleets, dcsa for container carriers); for mmt-anchored fleets
+  `dcsa/equipment` is the ISO 6346 code reference on the container subset, not a second
+  anchor; **one physical unit is never bound to both twins**. Deliberately *not* an
+  `overlaps` entry: its single `resolved_to` cannot express an archetype-conditional
+  resolution, and `resolved_to: MMT/Equipment` would be false for shipping-carrier hubs.
+- **TTL comments on all four twin classes** (mmt+dcsa `ReeferContainer`/`TankContainer`) name
+  the twin IRI and the binding rule at point of use. MMT rides the unreleased 2.1.0; **DCSA
+  1.3.0 → 1.4.0** (annotations = minor; pins `>=1.3.0,<2` unaffected).
+- The forced dual import itself is toolkit behavior and deliberately unchanged.
+
 ### Changed — MMT 2.1.0 and BSP 2.1.0: role-assignment properties are now genuinely reusable (#61)
 
 The qualified-role-assignment pattern's own grain collision ("none of the five party parents

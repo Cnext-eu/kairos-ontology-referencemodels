@@ -7493,8 +7493,13 @@ records:
   - https://www.kairosflow.ai/ont/dcsa/equipment#Container
   uri: https://www.kairosflow.ai/ont/dcsa/equipment#PlatformContainer
 - comments:
-  - "A refrigerated container for temperature-controlled cargo.\n    \n    DCSA: Temperature-controlled\
-    \ container for perishables and pharmaceuticals."
+  - "A refrigerated container for temperature-controlled cargo.\n\n    DCSA: Temperature-controlled container\
+    \ for perishables and pharmaceuticals.\n\n    Overlaps by name with mmt/equipment#ReeferContainer\
+    \ (different vocabulary:\n    MMT covers the non-container fleet and models Seal as a class). Binding\n\
+    \    rule: follow the archetype's equipment anchor — this class for container\n    carriers, the MMT\
+    \ twin for mmt-anchored (mixed/non-containerised) fleets,\n    which cite this module for ISO 6346\
+    \ codes only; never bind one physical\n    unit to both. See the logistics blueprint's equipment domain\
+    \ note and\n    canonical-class-registry.yaml equipment-asset."
   domains: []
   kind: class
   labels:
@@ -7507,8 +7512,12 @@ records:
   - https://www.kairosflow.ai/ont/dcsa/equipment#Container
   uri: https://www.kairosflow.ai/ont/dcsa/equipment#ReeferContainer
 - comments:
-  - "A container designed for liquid bulk cargo transport.\n    \n    DCSA: For chemicals, food-grade\
-    \ liquids, and other liquid products."
+  - "A container designed for liquid bulk cargo transport.\n\n    DCSA: For chemicals, food-grade liquids,\
+    \ and other liquid products.\n\n    Overlaps by name with mmt/equipment#TankContainer. Binding rule:\
+    \ follow\n    the archetype's equipment anchor — this class for container carriers, the\n    MMT twin\
+    \ for mmt-anchored (mixed/non-containerised) fleets, which cite\n    this module for ISO 6346 codes\
+    \ only; never bind one physical unit to\n    both. See the logistics blueprint's equipment domain\
+    \ note and\n    canonical-class-registry.yaml equipment-asset."
   domains: []
   kind: class
   labels:
@@ -15531,8 +15540,12 @@ records:
   - https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment
   uri: https://www.kairosflow.ai/ont/mmt/equipment#Pallet
 - comments:
-  - "A temperature-controlled freight container.\n    \n    UN/CEFACT MMT: For perishable or temperature-sensitive\
-    \ cargo."
+  - "A temperature-controlled freight container.\n\n    UN/CEFACT MMT: For perishable or temperature-sensitive\
+    \ cargo.\n\n    Overlaps by name with dcsa/equipment#ReeferContainer (different vocabulary:\n    DCSA\
+    \ carries ISO codes, humidity/ventilation). Binding rule: follow the\n    archetype's equipment anchor\
+    \ — this class for mmt-anchored (mixed/\n    non-containerised) fleets, the DCSA twin for container\
+    \ carriers; never\n    bind one physical unit to both. See the logistics blueprint's equipment\n \
+    \   domain note and canonical-class-registry.yaml equipment-asset."
   domains: []
   kind: class
   labels:
@@ -15572,7 +15585,11 @@ records:
   - https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment
   uri: https://www.kairosflow.ai/ont/mmt/equipment#SwapBody
 - comments:
-  - "A container for liquid or gas cargo.\n    \n    UN/CEFACT MMT: For bulk liquids, chemicals, gases."
+  - "A container for liquid or gas cargo.\n\n    UN/CEFACT MMT: For bulk liquids, chemicals, gases.\n\n\
+    \    Overlaps by name with dcsa/equipment#TankContainer. Binding rule: follow\n    the archetype's\
+    \ equipment anchor — this class for mmt-anchored (mixed/\n    non-containerised) fleets, the DCSA\
+    \ twin for container carriers; never\n    bind one physical unit to both. See the logistics blueprint's\
+    \ equipment\n    domain note and canonical-class-registry.yaml equipment-asset."
   domains: []
   kind: class
   labels:
