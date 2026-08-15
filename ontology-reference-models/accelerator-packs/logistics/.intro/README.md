@@ -17,7 +17,7 @@ This folder contains a business-and-architecture oriented documentation set for 
 | Component | Version |
 |---|---|
 | Kairos Logistics Accelerator Pack | 1.10.0 |
-| DCSA | 1.3.0 |
+| DCSA | 1.4.0 |
 | MMT | 2.1.0 |
 | BSP | 2.1.0 |
 | TIC | 1.3.0 |
