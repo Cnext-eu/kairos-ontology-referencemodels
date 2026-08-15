@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed — patterns 0.4.0: class-anchored grain collisions are now machine-readable (#63)
+
+`grain_collisions` shipped in two shapes — `{against, reason}` mappings (multimodal-order-leg)
+and bare prose (qualified-role-assignment, governed-code-list) — with the party collision, the
+most consequential entry in the library, unavailable to any automated check.
+
+- **qualified-role-assignment**: the party prose entry is now **five `{against, reason}`
+  entries**, one per role parent (`bsp/party#TradeParty`, `mmt/party#TransportParty`,
+  `dcsa/party#ShippingParty`, `imo/party#MaritimeParty`, `tic/party#TerminalParty` — the set
+  #55 completed); the location prose entry is now two entries
+  (`dcsa/locations#PortOfLoading`, `#PortOfDischarge`). `against` stays **scalar** — the
+  toolkit coverage ledger keys units on it, and one-entry-per-IRI is what a
+  does-not-collapse-into check consumes.
+- **The two-shape design is now stated, not accidental**: the schema `$comment`,
+  contract-manifest notes, and a new test pin it — class-anchored collisions MUST use the
+  mapping form; the bare-string form is reserved for grain warnings that name no class
+  (governed-code-list's source-noun caveat is the only shipped instance, unchanged — it has
+  no class IRI to carry and banning prose would relocate it without making it checkable).
+- Toolkit follow-up filed: the reshaped units re-key from `#0`/`#1` to IRIs in
+  `list-patterns --coverage` (2 → 7 units), staling two registry entries until the toolkit
+  registry updates. The ledger is not a gate; repo CI is unaffected.
+
 ## [1.17.0] - 2026-08-14
 
 ### The shipped bundle now inventories cleanly, and CI proves it (#57)

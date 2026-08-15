@@ -108,6 +108,40 @@ def test_exemption_without_reason_fails(pattern_schema: dict) -> None:
     assert pattern_schema_errors(data, pattern_schema)
 
 
+def test_grain_collision_mapping_without_reason_fails(pattern_schema: dict) -> None:
+    # Class-anchored collisions are {against, reason}; an against without its
+    # reason (or with a stray key) must fail, not silently half-validate.
+    data = {
+        "id": "example-pattern",
+        "problem": "p",
+        "applicability": "a",
+        "normativity": {"naming": "normative", "participants": "advisory",
+                        "cardinality_rules": "advisory"},
+        "grain_collisions": [
+            {"against": "https://www.kairosflow.ai/ont/bsp/party#TradeParty"},
+        ],
+    }
+    assert pattern_schema_errors(data, pattern_schema)
+
+
+def test_grain_collision_prose_and_mapping_shapes_both_validate(pattern_schema: dict) -> None:
+    # Two shapes by design: prose is reserved for grain warnings that name no
+    # class; class-anchored collisions carry a scalar against + reason.
+    data = {
+        "id": "example-pattern",
+        "problem": "p",
+        "applicability": "a",
+        "normativity": {"naming": "normative", "participants": "advisory",
+                        "cardinality_rules": "advisory"},
+        "grain_collisions": [
+            "Source-noun ≠ canonical grain: prose warning naming no class.",
+            {"against": "https://www.kairosflow.ai/ont/bsp/party#TradeParty",
+             "reason": "Role-bearing parent; not the durable identity."},
+        ],
+    }
+    assert not pattern_schema_errors(data, pattern_schema)
+
+
 def test_custom_top_level_key_is_allowed(pattern_schema: dict) -> None:
     # Open top level is the library's documented design; the toolkit loader
     # preserves unknown keys in `extra` and its ledger reports them loudly.
