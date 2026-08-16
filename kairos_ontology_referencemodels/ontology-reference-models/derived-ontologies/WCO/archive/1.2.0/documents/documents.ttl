@@ -1,0 +1,268 @@
+@prefix : <https://www.kairosflow.ai/ont/wco/documents#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix wco-customs: <https://www.kairosflow.ai/ont/wco/customs#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/wco/documents> a owl:Ontology ;
+    dcterms:title "WCO Documents Domain" ;
+    dcterms:description "Customs and trade documents including declarations, permits, transit documents, and international trade carnets based on the WCO Data Model 3.10.0." ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-06-13"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
+    dcterms:source "WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056" ;
+    rdfs:seeAlso <https://www.wcoomd.org/datamodel> .
+
+#################################################################
+#    Customs Declaration Classes
+#################################################################
+
+:CustomsDeclarationDocument a owl:Class ;
+    rdfs:label "Customs Declaration Document" ;
+    rdfs:comment """Official document submitted to customs authorities declaring goods for import, export, or transit.
+
+    WCO: Official document submitted to customs authorities declaring goods for import, export, or transit.""" ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/bsp/documents#BillOfLading> ,
+                 <https://www.kairosflow.ai/ont/dcsa/transport-documents#TransportDocument> ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :documentNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:TransitDocument a owl:Class ;
+    rdfs:label "Transit Document" ;
+    rdfs:comment """Document authorizing the movement of goods under customs control between two customs offices.
+
+    WCO: Document authorizing the movement of goods under customs control between two customs offices.""" ;
+    rdfs:subClassOf :CustomsDeclarationDocument .
+
+:SADForm a owl:Class ;
+    rdfs:label "Single Administrative Document (SAD)" ;
+    rdfs:comment """Single Administrative Document used for customs declarations within the EU.
+
+    WCO: Single Administrative Document used for customs declarations within the EU.""" ;
+    rdfs:subClassOf :CustomsDeclarationDocument ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :sadBoxNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:T1Document a owl:Class ;
+    rdfs:label "T1 Document" ;
+    rdfs:comment """External Union transit document for non-EU goods moving through the EU customs territory.
+
+    WCO: External Union transit document for non-EU goods moving through the EU customs territory.""" ;
+    rdfs:subClassOf :TransitDocument .
+
+:T2Document a owl:Class ;
+    rdfs:label "T2 Document" ;
+    rdfs:comment """Internal Union transit document for EU goods moving through non-EU countries.
+
+    WCO: Internal Union transit document for EU goods moving through non-EU countries.""" ;
+    rdfs:subClassOf :TransitDocument .
+
+#################################################################
+#    Permit and License Classes
+#################################################################
+
+:ImportPermitDocument a owl:Class ;
+    rdfs:label "Import Permit Document" ;
+    rdfs:comment """Document authorizing the importation of specific goods.
+
+    WCO: Document authorizing the importation of specific goods.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :permitNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:ExportLicenseDocument a owl:Class ;
+    rdfs:label "Export License Document" ;
+    rdfs:comment """Document authorizing the exportation of controlled or strategic goods.
+
+    WCO: Document authorizing the exportation of controlled or strategic goods.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :licenseNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:PreferentialOriginDoc a owl:Class ;
+    rdfs:label "Preferential Origin Document" ;
+    rdfs:comment """Document certifying the origin of goods for preferential tariff treatment under trade agreements.
+
+    WCO: Document certifying the origin of goods for preferential tariff treatment under trade agreements.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :originCriterion ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Carnet Classes
+#################################################################
+
+:ATACarnet a owl:Class ;
+    rdfs:label "ATA Carnet" ;
+    rdfs:comment """International customs document for temporary admission of goods across borders.
+
+    WCO: International customs document for temporary admission of goods across borders.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :carnetNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:TIRCarnet a owl:Class ;
+    rdfs:label "TIR Carnet" ;
+    rdfs:comment """International transit document under the TIR Convention for sealed road vehicles.
+
+    WCO: International transit document under the TIR Convention for sealed road vehicles.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :tirCarnetNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasCustomsDocument a owl:ObjectProperty ;
+    rdfs:label "has customs document" ;
+    rdfs:comment "Links an entity to its associated customs declaration document." ;
+    rdfs:domain wco-customs:CustomsDeclaration ;
+    rdfs:range :CustomsDeclarationDocument .
+
+:hasTransitDocument a owl:ObjectProperty ;
+    rdfs:label "has transit document" ;
+    rdfs:comment "Links an entity to its associated transit document." ;
+    rdfs:domain wco-customs:TransitDeclaration ;
+    rdfs:range :TransitDocument .
+
+:hasImportPermitDocument a owl:ObjectProperty ;
+    rdfs:label "has import permit document" ;
+    rdfs:comment "Links an entity to its associated import permit document." ;
+    rdfs:domain wco-customs:ImportDeclaration ;
+    rdfs:range :ImportPermitDocument .
+
+:hasExportLicenseDocument a owl:ObjectProperty ;
+    rdfs:label "has export license document" ;
+    rdfs:comment "Links an entity to its associated export license document." ;
+    rdfs:domain wco-customs:ExportDeclaration ;
+    rdfs:range :ExportLicenseDocument .
+
+:hasOriginDocument a owl:ObjectProperty ;
+    rdfs:label "has origin document" ;
+    rdfs:comment "Links an entity to its associated preferential origin document." ;
+    rdfs:domain wco-customs:PreferenceClaim ;
+    rdfs:range :PreferentialOriginDoc .
+
+:accompaniedByCarnet a owl:ObjectProperty ;
+    rdfs:label "accompanied by carnet" ;
+    rdfs:comment "Links an entity to an accompanying ATA Carnet." ;
+    rdfs:domain wco-customs:CustomsDeclaration ;
+    rdfs:range :ATACarnet .
+
+:coveredByTIRCarnet a owl:ObjectProperty ;
+    rdfs:label "covered by TIR carnet" ;
+    rdfs:comment "Links an entity to a covering TIR Carnet." ;
+    rdfs:domain wco-customs:TransitDeclaration ;
+    rdfs:range :TIRCarnet .
+
+:supersedes a owl:ObjectProperty ;
+    rdfs:label "supersedes" ;
+    rdfs:comment "Indicates a document that replaces or amends a previous version." ;
+    rdfs:domain :CustomsDeclarationDocument ;
+    rdfs:range :CustomsDeclarationDocument .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:documentNumber a owl:DatatypeProperty ;
+    rdfs:label "document number" ;
+    rdfs:comment "Unique identifier number of the customs declaration document." ;
+    rdfs:domain :CustomsDeclarationDocument ;
+    rdfs:range xsd:string .
+
+:documentDate a owl:DatatypeProperty ;
+    rdfs:label "document date" ;
+    rdfs:comment "Date the customs declaration document was issued or submitted." ;
+    rdfs:domain :CustomsDeclarationDocument ;
+    rdfs:range xsd:date .
+
+:documentStatus a owl:DatatypeProperty ;
+    rdfs:label "document status" ;
+    rdfs:comment "Current processing status of the customs declaration document." ;
+    rdfs:domain :CustomsDeclarationDocument ;
+    rdfs:range xsd:string .
+
+:permitNumber a owl:DatatypeProperty ;
+    rdfs:label "permit number" ;
+    rdfs:comment "Unique identifier number of the import permit." ;
+    rdfs:domain :ImportPermitDocument ;
+    rdfs:range xsd:string .
+
+:licenseNumber a owl:DatatypeProperty ;
+    rdfs:label "license number" ;
+    rdfs:comment "Unique identifier number of the export license." ;
+    rdfs:domain :ExportLicenseDocument ;
+    rdfs:range xsd:string .
+
+:originCriterion a owl:DatatypeProperty ;
+    rdfs:label "origin criterion" ;
+    rdfs:comment "Criterion used to determine the preferential origin of goods." ;
+    rdfs:domain :PreferentialOriginDoc ;
+    rdfs:range xsd:string .
+
+:sadBoxNumber a owl:DatatypeProperty ;
+    rdfs:label "SAD box number" ;
+    rdfs:comment "Reference to specific SAD box number." ;
+    rdfs:domain :SADForm ;
+    rdfs:range xsd:string .
+
+:carnetNumber a owl:DatatypeProperty ;
+    rdfs:label "carnet number" ;
+    rdfs:comment "Unique identifier number of the ATA Carnet." ;
+    rdfs:domain :ATACarnet ;
+    rdfs:range xsd:string .
+
+:carnetExpiryDate a owl:DatatypeProperty ;
+    rdfs:label "carnet expiry date" ;
+    rdfs:comment "Expiry date of the ATA Carnet." ;
+    rdfs:domain :ATACarnet ;
+    rdfs:range xsd:date .
+
+:tirCarnetNumber a owl:DatatypeProperty ;
+    rdfs:label "TIR carnet number" ;
+    rdfs:comment "Unique identifier number of the TIR Carnet." ;
+    rdfs:domain :TIRCarnet ;
+    rdfs:range xsd:string .
+
+:tirValidFrom a owl:DatatypeProperty ;
+    rdfs:label "TIR valid from" ;
+    rdfs:comment "Start date of the TIR Carnet validity period." ;
+    rdfs:domain :TIRCarnet ;
+    rdfs:range xsd:date .
+
+:tirValidTo a owl:DatatypeProperty ;
+    rdfs:label "TIR valid to" ;
+    rdfs:comment "End date of the TIR Carnet validity period." ;
+    rdfs:domain :TIRCarnet ;
+    rdfs:range xsd:date .
+
+:numberOfPages a owl:DatatypeProperty ;
+    rdfs:label "number of pages" ;
+    rdfs:comment "Total number of pages in the document." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :CustomsDeclarationDocument :ImportPermitDocument :ExportLicenseDocument :PreferentialOriginDoc :ATACarnet :TIRCarnet )
+    ] ;
+    rdfs:range xsd:integer .

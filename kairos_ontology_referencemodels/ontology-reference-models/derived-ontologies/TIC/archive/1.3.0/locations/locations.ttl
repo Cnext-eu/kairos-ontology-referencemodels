@@ -1,0 +1,251 @@
+@prefix : <https://www.kairosflow.ai/ont/tic/locations#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/tic/locations> a owl:Ontology ;
+    dcterms:title "TIC 4.0 Locations Ontology" ;
+    dcterms:description """Terminal locations and positioning domain of the TIC 4.0 ontology.
+
+    Covers the precise location model within a terminal including terminal, berth, yard
+    positions, gate lanes, quay side areas, reefer plugs, rail sidings, and barge quays.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-21"^^xsd:date ;
+    owl:versionInfo "1.3.0" ;
+    dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
+    rdfs:seeAlso <https://tic40.org/standards/> .
+
+#################################################################
+#    Location Classes
+#################################################################
+
+:TerminalLocation a owl:Class ;
+    rdfs:label "Terminal Location" ;
+    rdfs:comment """A named or coded position within a terminal facility.
+
+    TIC 4.0: Abstract superclass for all terminal location types, providing a common
+    interface for location coding and geospatial reference.""" .
+
+:Terminal a owl:Class ;
+    rdfs:label "Terminal" ;
+    rdfs:comment """The top-level location representing the entire terminal facility.
+
+    TIC 4.0: Identified by UN/LOCODE and terminal-specific facility code.""" ;
+    rdfs:subClassOf :TerminalLocation ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/locations#Terminal> ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :facilityCode ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:Berth a owl:Class ;
+    rdfs:label "Berth" ;
+    rdfs:comment """A specific vessel mooring location alongside the quay.
+
+    TIC 4.0: Identified by berth number within the terminal.""" ;
+    rdfs:subClassOf :TerminalLocation ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :withinTerminal ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:YardPosition a owl:Class ;
+    rdfs:label "Yard Position" ;
+    rdfs:comment """A specific coordinate within the container yard, typically expressed as block-bay-row-tier.
+
+    TIC 4.0: The fundamental unit of yard addressing for container placement and retrieval.""" ;
+    rdfs:subClassOf :TerminalLocation ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :block ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :bay ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :row ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :tier ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:GateLane a owl:Class ;
+    rdfs:label "Gate Lane" ;
+    rdfs:comment """An individual processing lane at a terminal gate complex.
+
+    TIC 4.0: Lanes may be designated for inbound, outbound, or bidirectional traffic.""" ;
+    rdfs:subClassOf :TerminalLocation ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :laneNumber ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:QuaySide a owl:Class ;
+    rdfs:label "Quay Side" ;
+    rdfs:comment """The area alongside the quay wall where vessel loading and discharging operations take place.
+
+    TIC 4.0: The operational zone between the vessel and the yard, serviced by quay cranes.""" ;
+    rdfs:subClassOf :TerminalLocation .
+
+:ReeferPlug a owl:Class ;
+    rdfs:label "Reefer Plug" ;
+    rdfs:comment """An electrical connection point for refrigerated containers within the yard.
+
+    TIC 4.0: Identified by plug number and associated with a yard position; has power
+    capacity and monitoring attributes.""" ;
+    rdfs:subClassOf :TerminalLocation ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :plugNumber ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:RailSiding a owl:Class ;
+    rdfs:label "Rail Siding" ;
+    rdfs:comment """A rail track within the terminal used for loading and unloading rail wagons.
+
+    TIC 4.0: Identified by track number and has length and crane coverage attributes.""" ;
+    rdfs:subClassOf :TerminalLocation .
+
+:BargeQuay a owl:Class ;
+    rdfs:label "Barge Quay" ;
+    rdfs:comment """A dedicated quay for inland waterway barge operations.
+
+    TIC 4.0: Separate from deep-sea berths; optimized for smaller vessel drafts and
+    barge-specific handling equipment.""" ;
+    rdfs:subClassOf :TerminalLocation .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:withinTerminal a owl:ObjectProperty ;
+    rdfs:label "within terminal" ;
+    rdfs:comment "Links a location to the terminal it belongs to." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :Berth :YardPosition :GateLane :QuaySide :ReeferPlug :RailSiding :BargeQuay )
+    ] ;
+    rdfs:range :Terminal .
+
+:hasLocation a owl:ObjectProperty ;
+    rdfs:label "has location" ;
+    rdfs:comment "Links a terminal to a sub-location within it." ;
+    rdfs:domain :Terminal ;
+    rdfs:range :TerminalLocation ;
+    owl:inverseOf :withinTerminal .
+
+:adjacentTo a owl:ObjectProperty ;
+    rdfs:label "adjacent to" ;
+    rdfs:comment "Indicates that two terminal locations are physically adjacent." ;
+    rdfs:domain :TerminalLocation ;
+    rdfs:range :TerminalLocation ;
+    rdf:type owl:SymmetricProperty .
+
+:hasReeferPlug a owl:ObjectProperty ;
+    rdfs:label "has reefer plug" ;
+    rdfs:comment "Links a yard position to an available reefer plug." ;
+    rdfs:domain :YardPosition ;
+    rdfs:range :ReeferPlug .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:facilityCode a owl:DatatypeProperty ;
+    rdfs:label "facility code" ;
+    rdfs:comment "SMDG or BIC facility code identifying the terminal." ;
+    rdfs:domain :Terminal ;
+    rdfs:range xsd:string .
+
+:unlocode a owl:DatatypeProperty ;
+    rdfs:label "UN/LOCODE" ;
+    rdfs:comment "UN/LOCODE of the port where the terminal is located." ;
+    rdfs:domain :Terminal ;
+    rdfs:range xsd:string .
+
+:block a owl:DatatypeProperty ;
+    rdfs:label "block" ;
+    rdfs:comment "Block identifier within the yard (e.g., A, B, C)." ;
+    rdfs:domain :YardPosition ;
+    rdfs:range xsd:string .
+
+:bay a owl:DatatypeProperty ;
+    rdfs:label "bay" ;
+    rdfs:comment "Bay number within a yard block." ;
+    rdfs:domain :YardPosition ;
+    rdfs:range xsd:string .
+
+:row a owl:DatatypeProperty ;
+    rdfs:label "row" ;
+    rdfs:comment "Row number within a bay." ;
+    rdfs:domain :YardPosition ;
+    rdfs:range xsd:string .
+
+:tier a owl:DatatypeProperty ;
+    rdfs:label "tier" ;
+    rdfs:comment "Tier (height level) within a stack position." ;
+    rdfs:domain :YardPosition ;
+    rdfs:range xsd:string .
+
+:laneNumber a owl:DatatypeProperty ;
+    rdfs:label "lane number" ;
+    rdfs:comment "Identifier of the gate lane." ;
+    rdfs:domain :GateLane ;
+    rdfs:range xsd:string .
+
+:laneDirection a owl:DatatypeProperty ;
+    rdfs:label "lane direction" ;
+    rdfs:comment "Traffic direction of the lane (INBOUND, OUTBOUND, BIDIRECTIONAL)." ;
+    rdfs:domain :GateLane ;
+    rdfs:range xsd:string .
+
+:plugNumber a owl:DatatypeProperty ;
+    rdfs:label "plug number" ;
+    rdfs:comment "Identifier of the reefer plug connection point." ;
+    rdfs:domain :ReeferPlug ;
+    rdfs:range xsd:string .
+
+:powerCapacityKW a owl:DatatypeProperty ;
+    rdfs:label "power capacity (kW)" ;
+    rdfs:comment "Electrical power capacity of the reefer plug in kilowatts." ;
+    rdfs:domain :ReeferPlug ;
+    rdfs:range xsd:decimal .
+
+:trackNumber a owl:DatatypeProperty ;
+    rdfs:label "track number" ;
+    rdfs:comment "Identifier of the rail siding track." ;
+    rdfs:domain :RailSiding ;
+    rdfs:range xsd:string .
+
+:trackLengthMetres a owl:DatatypeProperty ;
+    rdfs:label "track length (metres)" ;
+    rdfs:comment "Usable length of the rail siding in metres." ;
+    rdfs:domain :RailSiding ;
+    rdfs:range xsd:decimal .
+
+:latitude a owl:DatatypeProperty ;
+    rdfs:label "latitude" ;
+    rdfs:comment "WGS84 latitude coordinate of the location." ;
+    rdfs:domain :TerminalLocation ;
+    rdfs:range xsd:decimal .
+
+:longitude a owl:DatatypeProperty ;
+    rdfs:label "longitude" ;
+    rdfs:comment "WGS84 longitude coordinate of the location." ;
+    rdfs:domain :TerminalLocation ;
+    rdfs:range xsd:decimal .

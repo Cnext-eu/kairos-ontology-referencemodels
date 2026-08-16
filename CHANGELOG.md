@@ -5,6 +5,595 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.0] - 2026-09-18
+
+### Added
+- **Enriched IMO thin-stub classes across all 9 domain modules (IMO 1.1.0 → 1.2.0).**
+  Systematic enrichment of classes that had zero or very few own properties
+  despite being referenced by other classes or the ontology structure. All new
+  properties are backed by cited IMO conventions and regulations: SOLAS, MARPOL
+  (Annexes I, II, V, VI), ISM Code, ISPS Code, MLC 2006, STCW Convention, FAL
+  Convention (Forms 1-7), IMDG Code (including EmS Guide), BWM Convention, IHR
+  (2005), UNCLOS, IMO Resolution A.1117(30), IMO Resolution A.739(18), IMO
+  Resolution A.893(21), 1969 Tonnage Convention, ITU Radio Regulations, and the
+  IMO Compendium data set. Archived previous version 1.1.0 before enrichment.
+
+  **certificates-surveys.ttl** (16 new datatype properties):
+  - DocumentOfCompliance: `docCompanyAddress`, `docVerificationDate`,
+    `docShipTypeScope`, `docValidityPeriod`, `docReferenceNumber` — ISM Code
+    DOC certificate metadata
+  - InternationalShipSecurityCertificate: `isscShipName`, `isscFlagState`,
+    `isscSecurityPlanReference`, `isscVerificationDate`,
+    `isscInterimCertificate` — ISPS Code ISSC data
+  - SafetyManagementCertificate: `smcImoNumber`, `smcCompanyName`,
+    `smcIntermediateVerificationDate` — ISM Code SMC metadata
+  - MaritimeLabourCertificate: `mlcInspectionDate`,
+    `mlcInspectionAreasCovered`, `mlcIntermediateInspectionDate` — MLC 2006
+    certificate data
+
+  **crew-seafarer.ttl** (8 new datatype properties):
+  - CertificateOfProficiency: `copCertificateNumber`, `copIssueDate`,
+    `copExpiryDate`, `copTrainingProvider` — STCW Convention CoP metadata
+  - CrewList: `crewListFlagState`, `crewListVoyageNumber` — FAL Convention
+    Form 5 crew list context
+  - PassengerList: `passengerListFlagState`, `passengerListVoyageNumber` — FAL
+    Convention Form 6 passenger list context
+
+  **dangerous-goods.ttl** (13 new datatype properties):
+  - HazardClass: `hazardClassName`, `hazardClassDivision` — IMDG Code class
+    and division
+  - UNNumber: `unProperShippingName` — UN Recommendations proper shipping name
+  - PackingGroup: `packingGroupDangerLevel` — IMDG Code / UN Recommendations
+    packing group danger level
+  - FlashPoint: `flashPointTestMethod`, `flashPointUnit` — IMDG Code flash
+    point measurement data
+  - EmergencySchedule: `emsScheduleTitle` — IMDG Code EmS Guide schedule title
+  - SegregationRule: `segregationTerm`, `segregationDescription` — IMDG Code
+    segregation table
+  - StowageCategory: `stowageCategoryCode`, `stowageCategoryDescription` — IMDG
+    Code stowage category
+  - EmergencyContact: `contactOrganization`, `contactAvailable24h` — IMDG Code
+    emergency contact context
+
+  **environmental.ttl** (11 new datatype properties):
+  - BallastWaterManagementPlan: `bwmsD2ComplianceStandard`,
+    `bwmsExchangeMethod`, `bwmsApprovalAuthority` — BWM Convention treatment
+    system approval
+  - ShipboardOilPollutionEmergencyPlan: `sopepReportingProcedures`,
+    `sopepContactAuthorities`, `sopepExercisesDate` — MARPOL Annex I SOPEP
+    metadata
+  - GarbageManagementPlan: `gmpWasteCategories`, `gmpDesignatedOfficer`,
+    `gmpPlacardPosted` — MARPOL Annex V garbage plan metadata
+  - NoxiousLiquidSubstance: `nlsIbcShipType`, `nlsPollutionCategory` — MARPOL
+    Annex II substance classification
+
+  **locations.ttl** (17 new datatype properties):
+  - Anchorage: `anchorageType`, `anchorageMaxVesselSize`,
+    `anchorageHoldingGround` — IMO port state anchorage data
+  - VTSZone: `vtsReportingRequirements`, `vtsServiceArea` — SOLAS V/12 VTS
+    zone metadata
+  - PilotBoardingPlace: `pilotBoardingProcedure`, `pilotBoardingTime`,
+    `pilotLadderRequired` — SOLAS V/10 pilot boarding data
+  - TrafficSeparationScheme: `tssSchemeType`, `tssTrafficLaneDirection`,
+    `tssSeparationZoneWidth` — COLREGS Rule 10 TSS details
+  - EmissionControlArea: `ecaSulphurLimit`, `ecaApplicableAnnex` — MARPOL
+    Annex VI ECA limits
+  - MARPOLSpecialArea: `specialAreaDischargeRestrictions`,
+    `specialAreaEffectiveDate` — MARPOL special area metadata
+  - PortReceptionFacility: `prfFacilityCapacity`, `prfNotificationRequired` —
+    MARPOL Annex V/VI reception facility data
+
+  **maritime-security.ttl** (4 new datatype properties):
+  - ShipSecurityPlan: `sspReviewDate`, `sspSecurityMeasures` — ISPS Code SSP
+    metadata
+  - PortFacilitySecurityPlan: `pfspReviewDate`, `pfspSecurityMeasures` — ISPS
+    Code PFSP metadata
+
+  **party.ttl** (30 new datatype properties):
+  - FlagAuthority: `flagAuthorityName`, `flagAuthorityRegistry` — UNCLOS flag
+    state registration
+  - PortAuthority: `portAuthorityJurisdiction`, `portAuthorityJurisdictionType`
+  - ClassificationSociety: `classSocietyIacsMember`, `classSocietyCode` — SOLAS
+    II-1/3-1 recognized organization data
+  - MasterOfVessel: `masterCoCGrade`, `masterIssuingCountry` — STCW Certificate
+    of Competency metadata
+  - ShipOwner: `shipOwnerRegistry`, `shipOwnerRegistrationDate` — commercial
+    registration
+  - ShipManager: `shipManagerIsmDocRef`, `shipManagerIsmDocCompany` — ISM Code
+    ship management agreement
+  - ShipOperator: `shipOperatorType`, `shipOperatorCharterType` — ship
+    operating agreement
+  - MaritimeAgent: `agentLicenseNumber`, `agentServiceType` — commercial agent
+    licensing
+  - PilotService: `pilotServiceArea`, `pilotServiceCompulsory` — SOLAS V
+    pilotage requirements
+  - TowageProvider: `towageProviderPort`, `towageProviderFleetSize` —
+    commercial towage provider data
+  - CompanySecurityOfficer: `csoContactDetails`, `csoDesignationDate` — ISPS
+    Code CSO metadata
+  - ShipSecurityOfficer: `ssoCertNumber`, `ssoDesignationDate` — ISPS Code SSO
+    metadata
+  - PortFacilitySecurityOfficer: `pfsoContactDetails`, `pfsoDesignationDate` —
+    ISPS Code PFSO metadata
+  - PortStateControlOfficer: `pscMoURegion`, `pscInspectorId` — Paris MOU
+    inspector identification
+
+  **port-call.ttl** (24 new datatype properties):
+  - BerthStay: `berthStayPurpose`, `berthStaySequence` — berth stay context
+  - SeaLeg: `seaLegDeparturePort`, `seaLegArrivalPort`, `seaLegDistance` — FAL
+    Convention sea leg data
+  - FALForm: `falFormSubmissionMethod`, `falFormStatus` — FAL Convention form
+    submission metadata
+  - PortCallStatus: `statusCode`, `statusDescription` — IMO Compendium Port Call
+    Status code list
+  - TowageRequest: `towageType`, `towageTugCount` — towage request details
+  - BunkeringOperation: `bunkerFuelType`, `bunkerSupplierName` — MARPOL Annex
+    VI fuel oil delivery data
+  - WasteDisposal: `wasteDisposalFacility`, `wasteDisposalReceiptNumber` —
+    MARPOL Annex V waste delivery receipt
+  - CrewChange: `crewChangeDirection`, `crewChangeNationalities` — FAL
+    Convention crew change data
+  - PreArrivalNotification: `preArrivalETA`, `preArrivalNotificationPort` — FAL
+    Convention pre-arrival notification
+  - PortHealthDeclaration: `phdSSCReference`, `phdVaccinationRequired` — IHR
+    (2005) health declaration metadata
+  - WastePreNotification: `wastePreNotificationPort`,
+    `wastePreNotificationStatus` — MARPOL Annex V waste pre-notification
+  - VoyagePlan: `voyagePlanRouteName`, `voyagePlanDeparturePort`,
+    `voyagePlanDestinationPort` — SOLAS V/34 voyage plan ports
+
+  **vessel-registry.ttl** (22 new datatype properties):
+  - CallSign: `callSignAllocatedBy` — ITU Radio Regulations allocation
+  - ClassSociety: `classSocietyName`, `classSocietyCode` — SOLAS II-1/3-1 and
+    IMO Resolution A.739(18) recognized organization data
+  - DeadweightTonnage: `deadweightSummerLoadLine` — IMO Tonnage Convention (1969)
+    load line reference
+  - FlagState: `flagStateCountryCode`, `flagStateName` — UNCLOS Article 91 flag
+    state identification
+  - Fleet: `fleetName`, `fleetOperatorName` — fleet administration data
+  - GrossTonnage: `grossTonnageConvention`, `grossTonnageUnit` — 1969 Tonnage
+    Convention measurement metadata
+  - IMONumber: `imoNumberCheckDigit`, `imoNumberAssignedBy` — IMO Resolution
+    A.1117(30) number assignment
+  - MMSI: `mmsiMidCode`, `mmsiAssignedBy` — ITU Radio Regulations Appendix 43
+    MMSI allocation
+  - NetTonnage: `netTonnageConvention` — 1969 Tonnage Convention measurement
+  - VesselCapacity: `capacityUnit`, `capacityType` — capacity measurement type
+  - VesselOperationalStatus: `operationalStatusCode`,
+    `operationalStatusDescription` — IMO Compendium Ship Status code list
+  - VesselType: `vesselTypeCode`, `vesselTypeDescription` — IMO Compendium Ship
+    Type Code
+
+  Previous version archived to `archive/1.1.0/`.
+
+# Changelog
+
+All notable changes to the Kairos Reference Models will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.27.0] - 2026-09-18
+
+### Added
+- **Enriched WCO thin-stub classes across all 5 domain modules (WCO 1.2.0 → 1.3.0).**
+  Systematic enrichment of classes that had zero or very few own properties
+  despite being referenced by other classes or the ontology structure. All new
+  properties are backed by the WCO Data Model 3.10.0, Harmonized System (HS 2022),
+  Revised Kyoto Convention (RKC), SAFE Framework of Standards, ICS2 (EU Reg.
+  2019/1929), NCTS/Common Transit Convention, ATA/Istanbul Conventions, WTO SPS
+  Agreement, WTO trade agreement references, and EU eFTI Regulation 2020/1056.
+  Archived previous version 1.2.0 before enrichment.
+
+  **customs.ttl** (30 new datatype properties):
+  - AuthorityMessage: `messageType`, `messageReference`, `messageIssueDateTime`,
+    `receivingCustomsOfficeCode` — WCO Data Model 3.10.0 message metadata
+  - DeclarationStatus: `statusCodeList`, `statusReasonCode` — WCO status code list
+    and reason
+  - EntryExitSummary: `summaryType`, `entryExitGoodsItemCount`,
+    `entryExitTotalGrossMass`, `customsOfficeEntryExitCode` — WCO ICS2 summary
+  - ExportDeclaration: `exportTypeCode`, `exportDestinationCountry`,
+    `exportDate` — WCO export declaration type and destination
+  - ImportDeclaration: `importTypeCode`, `importOriginCountry`, `importDate` —
+    WCO import declaration type and origin
+  - TransitDeclaration: `transitStatusCode`, `customsOfficeDepartureCode`,
+    `customsOfficeDestinationCode`, `transitGuaranteeAmount` — WCO/NCTS transit
+  - Filing: `filingType`, `filingStatus`, `filingCustomsOfficeCode` — WCO filing
+  - ICS2Reference: `ics2ReferenceType`, `ics2MRN`, `ics2DeclarationType` — EU
+    ICS2 entry summary declaration reference data
+  - PreferenceClaim: `preferenceTypeCode`, `preferenceCertificateReference`,
+    `preferenceCalculationMethod` — WCO preference claim data
+  - TariffClassification: `hsVersionYear`, `hsSupplementaryUnit`,
+    `hsCustomsProcedureCode` — WCO Harmonized System classification data
+
+  **documents.ttl** (24 new datatype properties):
+  - TransitDocument: `transitType`, `transitGuaranteeReference`,
+    `transitTransportMode` — WCO Data Model transit document metadata
+  - SADForm: `sadBoxDescription`, `sadFormType`, `sadFormVersion` — EU Single
+    Administrative Document box and form metadata
+  - T1Document: `t1OfficeOfDeparture`, `t1RegistrationDate` — EU T1 transit
+    departure and registration data
+  - T2Document: `t2OfficeOfDeparture`, `t2RegistrationDate` — EU T2 transit
+    departure and registration data
+  - ImportPermitDocument: `permitIssuingAuthority`, `permitType`, `permitValidFrom`,
+    `permitValidTo` — WCO Data Model import permit metadata
+  - ExportLicenseDocument: `licenseIssuingAuthority`, `licenseType`, `licenseValidFrom`,
+    `licenseValidTo`, `licenseValue` — WCO Data Model export license metadata
+  - PreferentialOriginDoc: `originIssuingAuthority`, `originCertificationDate` —
+    WCO RKC preferential origin certification
+  - ATACarnet: `carnetIssuingChamber`, `carnetType`, `voucherCount` — ATA/Istanbul
+    Convention carnet metadata
+
+  **locations.ttl** (11 new datatype properties):
+  - CustomsOffice: `officeType`, `officeCountryCode` — WCO Data Model office
+    type and country code
+  - BorderCrossing: `borderCrossingType`, `borderCountryCode` — WCO Data Model
+    crossing type and country
+  - FreeZone: `freeZoneType`, `freeZoneAreaCode`, `freeZoneAuthorizingAuthority` —
+    WCO RKC free zone classification
+  - CustomsControlledArea: `areaType`, `areaSupervisingOfficeCode` — WCO
+    controlled area classification
+  - DesignatedExportPlace: `placeType`, `placeSupervisingOfficeCode` — WCO RKC
+    export place classification
+
+  **party.ttl** (17 new datatype properties):
+  - Declarant: `declarantType`, `declarantStatus` — WCO Data Model declarant
+    type (direct/indirect) and status
+  - CustomsAuthority: `authorityJurisdiction`, `authorityType` — WCO authority
+    scope and type
+  - CustomsBroker: `brokerLicenseType`, `brokerJurisdiction`, `brokerAuthorizedScope` —
+    WCO broker license details
+  - Importer: `importerCountry`, `importerLegalStatus` — WCO/EU importer country
+    and legal status
+  - Exporter: `exporterCountry`, `exporterLegalStatus` — WCO/EU exporter country
+    and legal status
+  - AEOHolder: `aeoCertificateType`, `aeoStatus`, `aeoIssuingCountry` — WCO SAFE
+    Framework AEO certificate details
+  - FreightAgent: `agentType`, `agentReference`, `agentAuthorization` — WCO Data
+    Model agent metadata
+
+  **trade-facilitation.ttl** (24 new datatype properties):
+  - CertificateOfOrigin: `originCriterion`, `originIssuingAuthority`,
+    `originCertificationDate`, `originatingCountry` — WCO RKC origin certification
+  - SPSCertificate: `spsCertificateType`, `spsIssuingAuthority`,
+    `sanitaryMeasureType` — WTO SPS Agreement certificate metadata
+  - ImportPermit: `importPermitType`, `importPermitIssuingAuthority` — WCO Data
+    Model import permit type and authority
+  - ExportPermit: `exportPermitType`, `exportPermitIssuingAuthority` — WCO Data
+    Model export permit type and authority
+  - eFTIRecord: `eFTIRecordCreationDate`, `eFTIRecordStatus`, `eFTIDataFormat` —
+    EU eFTI Regulation 2020/1056 record metadata
+  - AEOCertification: `certificationIssueDate`, `certificationExpiryDate`,
+    `certifyingAuthority` — WCO SAFE Framework certification dates and authority
+  - TrustedTrader: `traderType`, `authorizationDate`, `authorizedScope` — WCO
+    SAFE Framework trusted trader authorization
+  - SingleWindow: `windowJurisdiction`, `windowURL` — WCO RKC/SAFE Framework
+    single window metadata
+  - TradeAgreementReference: `agreementType`, `agreementCountryCode` — WTO
+    agreement type and partner country
+
+## [1.26.0] - 2026-09-18
+
+### Added
+- **Enriched Sustainability thin-stub classes across 2 domain modules (Sustainability 1.1.0 → 1.2.0).**
+  Systematic enrichment of emission scope, fuel type, reporting, and energy
+  classes that had zero or very few own properties despite being referenced by
+  other classes. All new properties are backed by ISO 14083:2023, GLEC Framework,
+  IMO DCS, SBTi, GRI Standards, Verra/Gold Standard, and GHG Protocol.
+
+  **carbon.ttl** (11 new datatype properties):
+  - Scope1Emission: `fuelTypeConsumed` — fuel for direct emissions (ISO 14083)
+  - Scope2Emission: `energySourceType` — purchased energy type (ISO 14083)
+  - Scope3Emission: `transportModeCategory` — value chain transport mode (ISO 14083)
+  - EmissionFactor: `factorTransportMode`, `factorGeographicScope`,
+    `factorValidityPeriod` — GLEC Framework mode, region, validity data
+  - EmissionReport: `reportStatus`, `reportSubmissionDate`, `reportingEntity` —
+    GRI Standards report metadata
+  - CarbonOffset: `offsetProjectId`, `offsetVintage` — Verra/Gold Standard
+    registry project ID and vintage year
+
+  **energy.ttl** (10 new datatype properties):
+  - FuelType (HFO/VLSFO/LNG subclasses): `fossilFuelGrade`, `carbonIntensity` —
+    ISO 14083 grade-specific carbon intensity
+  - FuelType (Methanol subclass): `biofuelBlendPercentage`, `feedstockType` —
+    ISO 14083 biofuel blend and feedstock reporting
+  - Hydrogen: `hydrogenProductionMethod`, `hydrogenPurity` — ISO 14083 green/blue/grey
+    production method
+  - Electric: `gridMixPercentage`, `renewablePercentage` — ISO 14083 grid mix and
+    renewable share
+  - EnergySource: `sourceType`, `sourceMixPercentage` — ISO 14083 source classification
+
+## [1.25.0] - 2026-09-18
+
+### Added
+- **Enriched RAIL thin-stub classes across all 6 domain modules (RAIL 1.0.0 → 1.1.0).**
+  Systematic enrichment of classes that had zero or very few own properties
+  despite being referenced by other classes or the ontology structure. All new
+  properties are backed by the TAF TSI data catalogue (taf_cat_complete.xsd,
+  Commission Regulation (EU) No 1305/2012, Annex D.2 Appendix F).
+
+  **rolling-stock.ttl** (12 new datatype properties):
+  - WagonStatusMessage: `eventType`, `eventDateTime`, `loadingStatus`,
+    `messageCreationDateTime` — TAF TSI wagon event data
+  - WagonAtDeparture: `departureTimeAtLocation` — TAF TSI scheduled departure
+  - WagonTelematics: `telematicsOnBoardIndicator` — TAF TSI telematics flag
+  - TelematicsDevice: `deviceType`, `manufacturerName`, `atexCertified`,
+    `atexLevel` — TAF TSI telematics device specifications
+  - TrainCompositionMessage: `compositionMessageStatus`, `transferPoint` —
+    TAF TSI composition message metadata
+
+  **train-running.ttl** (15 new datatype properties):
+  - TrainRunningInformationMessage: `runningMessageStatus`, `responsibleRU`
+  - TrainRunningForecastMessage: `forecastMessageStatus`, `forecastResponsibleRU`
+  - TrainRunningInterruptionMessage: `interruptionMessageStatus`, `interruptionResponsibleRU`
+  - TrainRunningData: `exceptionalGaugingIndicator`, `dangerousGoodsIndicator`
+  - TrainRunningTechData: `trainType`, `trainWeight`, `trainLength`,
+    `trainMaxSpeed`, `numberOfAxles` — TAF TSI technical train data
+  - TrainLocationStatus: `bookedLocationDateTime` — TAF TSI booked timing
+
+  **path-request.ttl** (19 new datatype properties):
+  - PathRequestMessage: `pathMessageStatus`, `processType`, `typeOfInformation`
+  - PathConfirmedMessage: `pathConfirmedMessageStatus`, `pathConfirmedProcessType`,
+    `pathConfirmedTypeOfInformation`
+  - PathCanceledMessage: `pathCanceledMessageStatus`, `pathCanceledProcessType`,
+    `pathCanceledTypeOfInformation`
+  - PathNotAvailableMessage: `pathNotAvailableMessageStatus`,
+    `pathNotAvailableProcessType`, `pathNotAvailableTypeOfInformation`
+  - PathDetailsMessage: `pathDetailsMessageStatus`, `pathDetailsTypeOfInformation`
+  - PathDetailsRefusedMessage: `pathDetailsRefusedMessageStatus`,
+    `pathDetailsRefusedProcessType`, `pathDetailsRefusedTypeOfInformation`
+  - PreArrangedPath: `preArrangedPathCode` — TAF TSI pre-arranged path code
+  - OnDemandPath: `onDemandPathIndicator` — TAF TSI on-demand path flag
+  - PathInformation: `plannedCalendar` — TAF TSI bitmap calendar
+
+  **consignment.ttl** (5 new datatype properties):
+  - ConsignmentLevelData: `agreedTimeOfDelivery`, `contractNumber`
+  - ShipmentType: `shipmentTypeCode` — CIM/CUV/SMGS classification
+  - ExceptionalConsignment: `permissionNumber`, `imPartner`
+
+  **party.ttl** (2 new datatype properties):
+  - InfrastructureManager: `imCompanyCode`
+  - AllocationCompany: `allocationCompanyCode`
+
+  **shared-kernel.ttl** (4 new datatype properties):
+  - OperationalTrainIdentifier: `operationalTrainNumber`, `scheduledTimeAtHandover`
+  - ValidityPeriod: `validityStartDateTime`, `validityEndDateTime`
+
+  Previous version archived to `archive/1.0.0/`.
+
+## [1.24.0] - 2026-09-18
+
+### Added
+- **Enriched TIC thin-stub classes across 4 domain modules (TIC 1.3.0 → 1.4.0).**
+  Systematic enrichment of classes that had zero or very few own properties
+  despite being referenced by other classes or the archetype. All new
+  properties are backed by the TIC 4.0 standard (TIC4.0 Release 2025.017 /
+  BSI PAS 4000:2026, see https://tic40.org/standards/).
+
+  **events.ttl** (9 new datatype properties):
+  - GateInEvent / GateOutEvent: `gateLane`, `driverId` — TIC 4.0 gate event data
+  - VesselLoadEvent: `craneId`, `craneOperator`, `loadingSequence` — TIC 4.0 loading event
+  - VesselDischargeEvent: `dischargeSequence` — TIC 4.0 discharge event
+  - StackEvent: `stowCell`, `stowTier` — TIC 4.0 yard stack event
+
+  **terminal-infrastructure.ttl** (7 new datatype properties):
+  - Gate: `gateType`, `gateLaneCount` — TIC 4.0 gate infrastructure
+  - YardArea: `yardAreaType`, `yardAreaCapacityTEU` — TIC 4.0 yard area
+  - Berth: `quayCraneCount` — TIC 4.0 berth equipment count
+  - QuayCrane / YardCrane: `craneStatus`, `craneOutreachMetres` — TIC 4.0 crane specifications
+
+  **handling-operations.ttl** (4 new datatype properties):
+  - Order: `orderStatus`, `orderResult` — TIC 4.0 order lifecycle
+  - CarrierTrip: `transportMode`, `tripDistanceKm` — TIC 4.0 transport movement
+
+  **reefer-monitoring.ttl** (4 new datatype properties):
+  - ReeferMonitoring: `humidityLevel`, `ventilationSetting`,
+    `humidityControlActive` — TIC 4.0 (Release 2024.012) reefer monitoring data
+
+  Previous version archived to `archive/1.3.0/`.
+
+## [1.23.0] - 2026-09-18
+
+### Added
+- **Enriched MMT thin-stub classes across all 10 domain modules (MMT 2.1.0 → 2.2.0).**
+  Systematic enrichment of ~90 classes that had zero or very few own properties
+  despite being referenced by other classes or the archetype. All new properties
+  are backed by the UN/CEFACT Multi-Modal Transport Reference Data Model
+  (MMT-RDM) RABIE/BBIE property model.
+
+  **mmt.ttl** (15 new datatype properties):
+  - 9 dangerous-goods subclass classes (ExplosiveGoods, FlammableGas,
+    FlammableLiquid, FlammableSolid, OxidizingSubstance, ToxicSubstance,
+    RadioactiveMaterial, CorrosiveSubstance, MiscellaneousDangerousGoods):
+    class-specific properties (e.g., `explosiveClassCode`, `flashPoint`,
+    `radioactiveActivity`, `packingGroup`) — UN/CEFACT MMT-RDM DG types
+
+  **cargo.ttl** (24 new datatype properties):
+  - CargoInsurance: `insuranceValue`, `policyNumber`, `insuredAmount`
+  - CargoMeasurement: `measurementType`, `measurementValue`, `measurementUnit`
+  - Commodity: `hsCodeVersion`, `commodityCategory`
+  - DisposalInstructions: `disposalMethod`, `responsibleParty`
+  - Goods: `goodsDescription`, `natureOfGoods`
+  - HandlingInstructions: `handlingTemperature`, `stackingAllowed`
+  - PackageSpecification: `packageQuantity`, `packageMaterial`
+  - QuarantineInstructions: `quarantineType`, `treatmentMethod`
+  - ShippingMarks: `marksAndNumbers`, `shippingMarkType`
+  - WasteMaterial: `wasteCode`, `wasteDisposalMethod`
+  - WasteMaterialComponent: `componentName`, `componentPercentage`
+  - Weight: `weightType` (gross/net/chargeable)
+
+  **consignment.ttl** (11 new datatype properties):
+  - HouseConsignment: `houseBillNumber`, `forwardingAgentRef`
+  - MasterConsignment: `carrierBookingRef`
+  - Package: `packageQuantity`, `packageMarks`
+  - TransportRoute: `routeSequence`, `routeType`
+  - TransportService: `serviceType`, `serviceProvider`
+  - TransportServiceExecution: `executionStatus`, `executionDate`
+
+  **documents.ttl** (36 new datatype properties):
+  - 17 document subclasses enriched with document-specific reference, issue,
+    date, and type fields (AirWaybill, BillOfLading, CargoManifest,
+    CertificateOfOrigin, CommercialInvoice, CustomsDeclaration,
+    DangerousGoodsDeclaration, DeliveryInstructions, DocumentAuthentication,
+    DocumentVersion, HouseWaybill, MasterWaybill, PackingList,
+    ProductCertificate, RailConsignmentNote, RoadConsignmentNote,
+    TransportInstructions)
+
+  **equipment.ttl** (15 new datatype properties):
+  - FreightContainer: `isoContainerCode`, `containerSize`, `containerType`
+  - Pallet: `palletType`, `palletDimensions`
+  - Seal: `sealCondition`, `sealIssuer`
+  - SwapBody: `swapBodyCode`, `swapBodyDimensions`
+  - TankContainer: `tankCapacity`, `tankTypeCode`
+  - TemperatureSettingInstructions: `targetTemperature`, `humiditySetting`
+  - TrailerUnit: `trailerPlate`, `trailerType`
+
+  **events.ttl** (22 new datatype properties):
+  - 11 event subclasses enriched with 1-2 specific properties each
+    (ArrivalEvent, CustomsClearanceEvent, DeliveryEvent, DepartureEvent,
+    DischargeEvent, InspectionEvent, InspectionStatus, LoadingEvent,
+    PickupEvent, TransferEvent, WarehouseStorageEvent)
+
+  **inland-transport.ttl** (12 new datatype properties):
+  - BargeLeg: `bargeId`, `bargeCapacity`
+  - HaulageInstructions: `haulageType`, `haulageContractor`
+  - InlandCarrier: `carrierName`, `carrierType`
+  - InlandTerminal: `terminalName`, `terminalType`
+  - RailLeg: `railwayOperator`, `railDistance`
+  - RoadLeg: `roadCarrier`, `roadDistance`
+
+  **locations.ttl** (22 new datatype properties):
+  - 11 location classes enriched with name/code/type properties
+    (Location, TransportLocation, Port, Airport, RailTerminal,
+    RoadTerminal, InlandPort, BorderCrossing, Warehouse, Terminal,
+    DistributionCenter)
+
+  **party.ttl** (20 new datatype properties):
+  - 11 party classes enriched with name/ID/role-specific properties
+    (TransportParty, Consignor, Consignee, Carrier, FreightForwarder,
+    CustomsBroker, NotifyParty, TerminalOperator, WarehouseOperator,
+    TransportPartyRoleCode, TransportPartyRoleAssignment)
+
+  **transport-means.ttl** (12 new datatype properties):
+  - Aircraft: `aircraftType`, `aircraftRegistration`
+  - BargeVessel: `bargeId`, `bargeCapacity`
+  - LogisticsConvoy: `convoySize`, `convoyLeader`
+  - LogisticsMeansOfTransport: `motCategory`, `motRegistration`
+  - RailVehicle: `railwayCompany`, `railVehicleType`
+  - RoadVehicle: `roadVehicleType`, `motCarrierId`
+
+  Previous version archived to `archive/2.1.0/`.
+
+## [1.22.0] - 2026-09-18
+
+### Added
+- **Enriched DCSA thin-stub classes across 4 modules (DCSA 1.4.1 → 1.5.0).**
+  Systematic enrichment of 9 classes that had zero or very few own properties
+  despite being referenced by other classes. All new properties are backed by
+  the DCSA OpenAPI specification (DCSA-OpenAPI GitHub repo) and DCSA standards.
+
+  **demurrage-detention module** (11 new datatype properties):
+  - FreeTimeAllowance: `freetimeTypeCode` (DET/DEM/PDM/STO enum),
+    `isoEquipmentCode`, `unitOfMeasure` (CD/WD/HR/DOD enum),
+    `calculationBasis` — DCSA AN API Freetime schema
+  - PerDiemRate: `demurrageAmount`, `detentionAmount`, `currencyCode`,
+    `rateCalculationBasis`, `paymentTermCode` — DCSA D&D charges schema
+  - Waiver: `waiverReason`, `approvedBy` — Kairos extension (not in DCSA OpenAPI)
+
+  **container-operations module** (9 new datatype properties):
+  - ContainerOperationalStatus: `equipmentEventTypeCode` (17 DCSA codes),
+    `emptyIndicatorCode` (EMPTY/LADEN), `facilityTypeCode` — DCSA T&T API
+  - ContainerStripping: `equipmentReference`, `strippingEmptyIndicatorCode`,
+    `strippingFacilityTypeCode` — DCSA T&T API (STRP event)
+  - LiftOnLiftOff: `isTransshipmentMove`, `loloEquipmentEventTypeCode`
+    (LOAD/DISC), `loloTransportCallReference` — DCSA T&T API
+
+  **booking module** (13 new datatype properties):
+  - ShippingInstruction: `transportDocumentTypeCode` (BOL/SWB),
+    `isShippedOnBoardType`, `isElectronic`, `isToOrder`,
+    `freightPaymentTermCode` (PRE/COL), `numberOfOriginalsWithCharges`,
+    `numberOfCopiesWithCharges` — DCSA documentation_domain_v3.0.0
+  - UtilizedTransportEquipment: `cargoGrossWeightUTE`,
+    `cargoGrossWeightUnit`, `cargoGrossVolume`, `cargoGrossVolumeUnit`,
+    `isShipperOwned`, `isNonOperatingReefer` — DCSA _CAR variant schema
+
+  **schedule module** (1 new datatype property):
+  - CutOffTime: `cutOffDateTimeCode` (15 DCSA CS API cut-off type codes:
+    DCO, VCO, FCO, LCO, PCO, ECP, EFC, RCO, DGC, OBC, etc.)
+
+  Previous version archived to `archive/1.4.1/`.
+
+## [1.21.0] - 2026-09-17
+
+### Added
+- **Enriched BSP thin-stub classes across 4 modules (BSP 2.2.0 → 2.3.0).**
+  Systematic enrichment of classes that had zero or very few own properties
+  despite being pointed to by other classes via `rdfs:range`. All new
+  properties are backed by UN/CEFACT CCL D23B, ISO 20197-1:2024, or IPPC
+  standard elements.
+
+  **reference-data module** (15 new datatype properties):
+  - Measurement: `measurementValue`, `measurementUnit`
+  - Weight: `weightType`
+  - Volume: `volumeType`
+  - Dimension: `dimensionType`, `length`, `width`, `height`
+  - MonetaryAmount: `monetaryAmount`, `monetaryCurrency`
+  - Port: `portName`, `portType`
+  - Warehouse: `warehouseType`, `bondedIndicator`
+  - Facility: `facilityId`
+
+  **commercial module** (28 new properties, 1 new object property):
+  - TransportEquipment: `equipmentId`, `equipmentType`, `equipmentSizeType`,
+    `sealNumber`, `tareWeight`, `equipmentOwner` (→ `party:TradeParty`)
+  - Package: `packageId`, `packageTypeCode`, `marksAndNumbers`,
+    `packageGrossWeight`, `packageNetWeight`, `packageVolume`
+  - ShipmentLine: `shipmentLineId`, `lineItemNumber`, `lineQuantity`,
+    `lineDescription`
+  - SalesContract: `contractNumber`, `contractDate`, `contractTerms`
+  - SalesOrder: `salesOrderNumber`, `salesOrderDate`
+  - Quotation: `quotationNumber`, `quotationDate`, `quotationValidityDays`
+  - TransportService: `serviceType`, `transportMode`
+  - TransportLeg: `legSequence`, `legTransportMode`, `legOrigin`, `legDestination`
+
+  **documents module** (34 new datatype properties):
+  - PackingList: `packingListTotalPackages`, `packingListTotalNetWeight`,
+    `packingListTotalGrossWeight`
+  - ImportLicense: `licenseNumber`, `licenseExpiryDate`, `licenseCountryOfIssue`,
+    `licenseGoodsDescription`
+  - ExportLicense: `exportLicenseNumber`, `exportLicenseExpiryDate`,
+    `exportLicenseCountryOfIssue`, `exportLicenseGoodsDescription`
+  - InspectionCertificate: `inspectionType`, `inspectionResult`,
+    `inspectionAuthority`
+  - PhytosanitaryCertificate: `phytosanitaryOriginCountry`,
+    `phytosanitaryTreatmentMethod`, `phytosanitaryImportingCountry`
+  - HealthCertificate: `healthCertificateType`, `healthCertificateProduct`,
+    `healthCertificateAuthority`
+  - InsuranceCertificate: `insurancePolicyNumber`, `insuredAmount`,
+    `insuranceCoverageType`, `insuranceInsurer`
+  - DeliveryNote: `deliveryNoteGoodsReceived`, `deliveryNoteReceivedBy`,
+    `deliveryNoteDate`, `deliveryNoteSignatureDate`
+  - ReceiptAdvice: `receiptAdviceQuantityReceived`,
+    `receiptAdviceDiscrepancyCode`, `receiptAdviceReceivedDate`
+  - DocumentEvent: `documentEventType`, `documentEventTimestamp`,
+    `documentEventActor`
+
+  **revenue-yield module** (3 new datatype properties):
+  - CapacityUtilization: `slotUtilizationPercentage`,
+    `weightUtilizationPercentage`, `volumeUtilizationPercentage`
+
+  Previous version archived to `archive/2.2.0/`.
+
+## [1.20.2] - 2026-08-16
+
+### Added
+- **Enriched BSP Address class (BSP 2.1.0 → 2.2.0).** The `Address` class in
+  `reference-data` had only 4 string fields (`streetAddress`, `city`,
+  `stateProvince`, `postalCode`). Added: `addressCountry` (object property →
+  `:Country`), `latitude`/`longitude` (WGS84 decimal), `addressType`, `poBox`,
+  `buildingNumber`, `careOf` — all backed by UN/CEFACT CCL D23B TradeAddress
+  elements (ISO 20197-1:2024). The Address is now a self-contained, queryable
+  address concept.
+
 ## [1.20.1] - 2026-08-15
 
 ### Fixed

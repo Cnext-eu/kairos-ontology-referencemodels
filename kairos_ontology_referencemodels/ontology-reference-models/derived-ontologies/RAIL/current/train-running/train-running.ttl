@@ -14,8 +14,8 @@
     movement grain (grain 4). v1.0.0.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-08-15"^^xsd:date ;
-    dcterms:modified "2026-08-15"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd: TrainRunningInformationMessage, TrainRunningForecastMessage, TrainRunningInterruptionMessage, TrainRunningData, TrainRunningTechData, TrainLocationStatus" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
@@ -29,7 +29,8 @@
     reporting points, attainment of the agreed initial running time, a new
     divergence between nominal and actual exceeding the agreed threshold, or as
     a response to the EnquiryTrainsAtReportingLocationMessage. One train per
-    message.""" ;
+    message. Properties: messageStatus (MessageStatus), responsibleRU
+    (ResponsibleRU), reportsTrain, hasRunningData.""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element TrainRunningInformationMessage" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
@@ -37,35 +38,43 @@
     rdfs:label "Train Running Forecast Message" ;
     rdfs:comment """Message issued from the IM to the neighbouring IM upon departure or
     movement past agreed points, or from the IM to the RU when out-of-schedule
-    running is anticipated at the next stopping/handling station.""" ;
+    running is anticipated at the next stopping/handling station. Properties:
+    messageStatus (MessageStatus), responsibleRU (ResponsibleRU), forecastFor.""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element TrainRunningForecastMessage" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
 :TrainRunningInterruptionMessage a owl:Class ;
     rdfs:label "Train Running Interruption Message" ;
     rdfs:comment """Message informing about trains already interrupted, sent only for
-    trains directly interrupted by the disruption.""" ;
+    trains directly interrupted by the disruption. Properties: messageStatus
+    (MessageStatus), responsibleRU (ResponsibleRU), interruptionFor.""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element TrainRunningInterruptionMessage" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
 :TrainRunningData a owl:Class ;
     rdfs:label "Train Running Data" ;
     rdfs:comment """Running data for a train. Corresponds to TrainRunningData in
-    taf_cat_complete.xsd.""" ;
+    taf_cat_complete.xsd. Properties: exceptionalGaugingIndicator
+    (ExceptionalGaugingInd), dangerousGoodsIndicator (DangerousGoodsIndicator),
+    hasRunningTechData.""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element TrainRunningData" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
 :TrainRunningTechData a owl:Class ;
     rdfs:label "Train Running Tech Data" ;
     rdfs:comment """Technical running data for a train. Corresponds to
-    TrainRunningTechData in taf_cat_complete.xsd.""" ;
+    TrainRunningTechData in taf_cat_complete.xsd. Properties: trainType
+    (TrainType), trainWeight (TrainWeight), trainLength (TrainLength),
+    trainMaxSpeed (TrainMaxSpeed), numberOfAxles (NumberOfAxles).""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element TrainRunningTechData" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
 :TrainLocationStatus a owl:Class ;
     rdfs:label "Train Location Status" ;
     rdfs:comment """Status of a train related to the actual time at a reporting point.
-    Corresponds to TrainLocationStatus in taf_cat_complete.xsd.""" ;
+    Corresponds to TrainLocationStatus in taf_cat_complete.xsd. Properties:
+    actualArrivalTime, actualDepartureTime, bookedLocationDateTime
+    (BookedLocationDateTime), atLocation.""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element TrainLocationStatus" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
@@ -120,3 +129,87 @@
     rdfs:comment "Links a Train Running Interruption Message to the interrupted train." ;
     rdfs:domain :TrainRunningInterruptionMessage ;
     rdfs:range sk:OperationalTrainIdentifier .
+
+:runningMessageStatus a owl:DatatypeProperty ;
+    rdfs:label "running message status" ;
+    rdfs:comment "Status of the train running message (1=Creation, 2=Modification, 3=Deletion). Corresponds to MessageStatus in taf_cat_complete.xsd." ;
+    rdfs:domain :TrainRunningInformationMessage ;
+    rdfs:range xsd:string .
+
+:responsibleRU a owl:DatatypeProperty ;
+    rdfs:label "responsible RU" ;
+    rdfs:comment "Company code of the responsible railway undertaking. Corresponds to ResponsibleRU in taf_cat_complete.xsd." ;
+    rdfs:domain :TrainRunningInformationMessage ;
+    rdfs:range xsd:string .
+
+:forecastMessageStatus a owl:DatatypeProperty ;
+    rdfs:label "forecast message status" ;
+    rdfs:comment "Status of the train running forecast message (1=Creation, 2=Modification, 3=Deletion). Corresponds to MessageStatus in taf_cat_complete.xsd." ;
+    rdfs:domain :TrainRunningForecastMessage ;
+    rdfs:range xsd:string .
+
+:forecastResponsibleRU a owl:DatatypeProperty ;
+    rdfs:label "forecast responsible RU" ;
+    rdfs:comment "Company code of the responsible railway undertaking for the forecast. Corresponds to ResponsibleRU in taf_cat_complete.xsd." ;
+    rdfs:domain :TrainRunningForecastMessage ;
+    rdfs:range xsd:string .
+
+:interruptionMessageStatus a owl:DatatypeProperty ;
+    rdfs:label "interruption message status" ;
+    rdfs:comment "Status of the train running interruption message (1=Creation, 2=Modification, 3=Deletion). Corresponds to MessageStatus in taf_cat_complete.xsd." ;
+    rdfs:domain :TrainRunningInterruptionMessage ;
+    rdfs:range xsd:string .
+
+:interruptionResponsibleRU a owl:DatatypeProperty ;
+    rdfs:label "interruption responsible RU" ;
+    rdfs:comment "Company code of the responsible railway undertaking for the interruption. Corresponds to ResponsibleRU in taf_cat_complete.xsd." ;
+    rdfs:domain :TrainRunningInterruptionMessage ;
+    rdfs:range xsd:string .
+
+:exceptionalGaugingIndicator a owl:DatatypeProperty ;
+    rdfs:label "exceptional gauging indicator" ;
+    rdfs:comment "Boolean indicating whether exceptional gauging applies to the train. Corresponds to ExceptionalGaugingInd in taf_cat_complete.xsd." ;
+    rdfs:domain :TrainRunningData ;
+    rdfs:range xsd:boolean .
+
+:dangerousGoodsIndicator a owl:DatatypeProperty ;
+    rdfs:label "dangerous goods indicator" ;
+    rdfs:comment "Boolean indicating whether the train carries dangerous goods. Corresponds to DangerousGoodsIndicator in taf_cat_complete.xsd." ;
+    rdfs:domain :TrainRunningData ;
+    rdfs:range xsd:boolean .
+
+:trainType a owl:DatatypeProperty ;
+    rdfs:label "train type" ;
+    rdfs:comment "Type of the train. Corresponds to TrainType in taf_cat_complete.xsd." ;
+    rdfs:domain :TrainRunningTechData ;
+    rdfs:range xsd:string .
+
+:trainWeight a owl:DatatypeProperty ;
+    rdfs:label "train weight" ;
+    rdfs:comment "Total weight of the train in tonnes. Corresponds to TrainWeight in taf_cat_complete.xsd." ;
+    rdfs:domain :TrainRunningTechData ;
+    rdfs:range xsd:integer .
+
+:trainLength a owl:DatatypeProperty ;
+    rdfs:label "train length" ;
+    rdfs:comment "Total length of the train in metres. Corresponds to TrainLength in taf_cat_complete.xsd." ;
+    rdfs:domain :TrainRunningTechData ;
+    rdfs:range xsd:integer .
+
+:trainMaxSpeed a owl:DatatypeProperty ;
+    rdfs:label "train max speed" ;
+    rdfs:comment "Maximum speed of the train in km/h. Corresponds to TrainMaxSpeed in taf_cat_complete.xsd." ;
+    rdfs:domain :TrainRunningTechData ;
+    rdfs:range xsd:integer .
+
+:numberOfAxles a owl:DatatypeProperty ;
+    rdfs:label "number of axles" ;
+    rdfs:comment "Total number of axles of the train. Corresponds to NumberOfAxles in taf_cat_complete.xsd." ;
+    rdfs:domain :TrainRunningTechData ;
+    rdfs:range xsd:integer .
+
+:bookedLocationDateTime a owl:DatatypeProperty ;
+    rdfs:label "booked location date time" ;
+    rdfs:comment "Booked date and time at the location. Corresponds to BookedLocationDateTime in taf_cat_complete.xsd." ;
+    rdfs:domain :TrainLocationStatus ;
+    rdfs:range xsd:dateTime .

@@ -1,0 +1,164 @@
+@prefix : <https://www.kairosflow.ai/ont/dcsa/container-operations#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix equip: <https://www.kairosflow.ai/ont/dcsa/equipment#> .
+@prefix loc: <https://www.kairosflow.ai/ont/dcsa/locations#> .
+@prefix evt: <https://www.kairosflow.ai/ont/dcsa/events#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/dcsa/container-operations> a owl:Ontology ;
+    dcterms:title "DCSA Container Operations Domain" ;
+    dcterms:description """Container lifecycle and operational concepts for container shipping.
+    
+    Operational modeling patterns derived from DCSA equipment event types
+    (GTIN, GTOT, LOAD, DISC, STUF, STRP). These classes provide a lifecycle
+    abstraction over DCSA's event-driven container tracking model.
+    
+    Covers container journey tracking, operational status management,
+    stuffing/stripping operations, and Lift-on/Lift-off (LoLo) handling.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-06-12"^^xsd:date ;
+    owl:versionInfo "1.4.1" ;
+    dcterms:source "DCSA Track & Trace API v2.2 (equipment event types)" ;
+    rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
+
+#################################################################
+#    Container Operations Classes
+#################################################################
+
+:ContainerJourney a owl:Class ;
+    rdfs:label "Container Journey" ;
+    rdfs:comment """The complete lifecycle of a container from empty pickup to empty return.
+    
+    DCSA: Represents the full operational cycle of a container within a
+    single booking/shipment, covering all phases from depot release through
+    cargo stuffing, transport, unstuffing, and return to depot.""" .
+
+:ContainerOperationalStatus a owl:Class ;
+    rdfs:label "Container Operational Status" ;
+    rdfs:comment """The current operational state of a container in the shipping lifecycle.
+    
+    DCSA: Tracks whether a container is available, in-use, in-transit,
+    or returned. Used for fleet management and container tracking.""" .
+
+:ContainerStuffing a owl:Class ;
+    rdfs:label "Container Stuffing" ;
+    rdfs:comment """The process of loading cargo into a container.
+    
+    DCSA: Packing of goods into a container, typically at shipper premises
+    or a container freight station (CFS).""" .
+
+:ContainerStripping a owl:Class ;
+    rdfs:label "Container Stripping" ;
+    rdfs:comment """The process of unloading cargo from a container.
+    
+    DCSA: Unpacking of goods from a container at destination, typically
+    at consignee premises or CFS.""" .
+
+:LiftOnLiftOff a owl:Class ;
+    rdfs:label "Lift-On/Lift-Off (LoLo)" ;
+    rdfs:comment """A container handling operation where containers are lifted on or off
+    a vessel, truck, or rail car using crane equipment.
+    
+    DCSA: Standard container handling method at terminals using ship-to-shore
+    cranes, rubber-tyred gantry cranes, or reach stackers.""" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasContainerJourney a owl:ObjectProperty ;
+    rdfs:label "has container journey" ;
+    rdfs:comment "Relates a container or shipment to its container journey lifecycle." ;
+    rdfs:domain equip:Container ;
+    rdfs:range :ContainerJourney .
+
+:hasOperationalStatus a owl:ObjectProperty ;
+    rdfs:label "has operational status" ;
+    rdfs:comment "Relates a container to its current operational status." ;
+    rdfs:domain :ContainerJourney ;
+    rdfs:range :ContainerOperationalStatus .
+
+:hasStuffingOperation a owl:ObjectProperty ;
+    rdfs:label "has stuffing operation" ;
+    rdfs:comment "Relates a container journey to its stuffing operation." ;
+    rdfs:domain :ContainerJourney ;
+    rdfs:range :ContainerStuffing .
+
+:hasStrippingOperation a owl:ObjectProperty ;
+    rdfs:label "has stripping operation" ;
+    rdfs:comment "Relates a container journey to its stripping operation." ;
+    rdfs:domain :ContainerJourney ;
+    rdfs:range :ContainerStripping .
+
+:hasLoLoOperation a owl:ObjectProperty ;
+    rdfs:label "has LoLo operation" ;
+    rdfs:comment "Relates a container journey to a lift-on/lift-off operation." ;
+    rdfs:domain :ContainerJourney ;
+    rdfs:range :LiftOnLiftOff .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:journeyStatus a owl:DatatypeProperty ;
+    rdfs:label "journey status" ;
+    rdfs:comment "Current phase of container journey: EMPTY_PICKUP, STUFFING, GATE_IN, LOADED_ON_VESSEL, IN_TRANSIT, DISCHARGED, GATE_OUT, STRIPPING, EMPTY_RETURN." ;
+    rdfs:domain :ContainerJourney ;
+    rdfs:range xsd:string .
+
+:operationalStatusCode a owl:DatatypeProperty ;
+    rdfs:label "operational status code" ;
+    rdfs:comment "Code representing container operational status: AVAILABLE, IN_USE, IN_TRANSIT, AT_TERMINAL, RETURNED, MAINTENANCE." ;
+    rdfs:domain :ContainerOperationalStatus ;
+    rdfs:range xsd:string .
+
+:statusTimestamp a owl:DatatypeProperty ;
+    rdfs:label "status timestamp" ;
+    rdfs:comment "Date and time when the operational status was recorded." ;
+    rdfs:domain :ContainerOperationalStatus ;
+    rdfs:range xsd:dateTime .
+
+:stuffingDate a owl:DatatypeProperty ;
+    rdfs:label "stuffing date" ;
+    rdfs:comment "Date when container stuffing occurred or is planned." ;
+    rdfs:domain :ContainerStuffing ;
+    rdfs:range xsd:dateTime .
+
+:strippingDate a owl:DatatypeProperty ;
+    rdfs:label "stripping date" ;
+    rdfs:comment "Date when container stripping occurred or is planned." ;
+    rdfs:domain :ContainerStripping ;
+    rdfs:range xsd:dateTime .
+
+:loloType a owl:DatatypeProperty ;
+    rdfs:label "LoLo type" ;
+    rdfs:comment "Type of LoLo operation: LIFT_ON or LIFT_OFF." ;
+    rdfs:domain :LiftOnLiftOff ;
+    rdfs:range xsd:string .
+
+:loloTimestamp a owl:DatatypeProperty ;
+    rdfs:label "LoLo timestamp" ;
+    rdfs:comment "Date and time when the lift-on/lift-off operation occurred." ;
+    rdfs:domain :LiftOnLiftOff ;
+    rdfs:range xsd:dateTime .
+
+#################################################################
+#    Cross-Domain Object Properties
+#################################################################
+
+:atLocation a owl:ObjectProperty ;
+    rdfs:label "at location" ;
+    rdfs:comment "The location where this container operation takes place." ;
+    rdfs:domain :ContainerStuffing ;
+    rdfs:range loc:Location .
+
+:triggeredByEvent a owl:ObjectProperty ;
+    rdfs:label "triggered by event" ;
+    rdfs:comment "The equipment event that triggered or recorded this container operation." ;
+    rdfs:domain :ContainerStuffing ;
+    rdfs:range evt:EquipmentEvent .

@@ -1,0 +1,43 @@
+@prefix : <https://www.kairosflow.ai/ont/tic#> .
+@prefix tic-infra: <https://www.kairosflow.ai/ont/tic/terminal-infrastructure#> .
+@prefix tic-ops: <https://www.kairosflow.ai/ont/tic/handling-operations#> .
+@prefix tic-auto: <https://www.kairosflow.ai/ont/tic/automotive-services#> .
+@prefix tic-party: <https://www.kairosflow.ai/ont/tic/party#> .
+@prefix tic-loc: <https://www.kairosflow.ai/ont/tic/locations#> .
+@prefix tic-evt: <https://www.kairosflow.ai/ont/tic/events#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/tic> a owl:Ontology ;
+    dcterms:title "Kairos TIC 4.0 Terminal Industry Ontology" ;
+    dcterms:description """Terminal Industry Committee (TIC) 4.0 ontology for standardized terminal and port operations.
+
+    This ontology provides a semantic framework for terminal operations, covering:
+    - Terminal infrastructure and equipment (including electric CHE and charging stations)
+    - Cargo handling operations (carrier visits, cargo visits, moves, cycles, rail intermodal)
+    - Reefer container monitoring and alarm management
+    - KPI definitions for terminal performance measurement
+    - Automotive and vehicle processing services
+    - Party roles in terminal operations
+    - Terminal locations and positioning
+    - Operational events and milestones
+
+    Aligned with TIC4.0 Release 2025.017 / BSI PAS 4000:2026.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-06-20"^^xsd:date ;
+    owl:versionInfo "1.3.0" ;
+    dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
+    rdfs:seeAlso <https://tic40.org/standards/> ;
+    owl:imports <https://www.kairosflow.ai/ont/tic/terminal-infrastructure> ;
+    owl:imports <https://www.kairosflow.ai/ont/tic/handling-operations> ;
+    owl:imports <https://www.kairosflow.ai/ont/tic/reefer-monitoring> ;
+    owl:imports <https://www.kairosflow.ai/ont/tic/kpi> ;
+    owl:imports <https://www.kairosflow.ai/ont/tic/automotive-services> ;
+    owl:imports <https://www.kairosflow.ai/ont/tic/party> ;
+    owl:imports <https://www.kairosflow.ai/ont/tic/locations> ;
+    owl:imports <https://www.kairosflow.ai/ont/tic/events> .

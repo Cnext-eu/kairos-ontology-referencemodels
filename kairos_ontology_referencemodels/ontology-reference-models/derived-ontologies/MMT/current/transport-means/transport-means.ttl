@@ -15,8 +15,8 @@
     capacity. Based on UN/CEFACT MMT Reference Data Model.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "2.1.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "2.2.0" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
 
@@ -27,42 +27,63 @@
 :LogisticsMeansOfTransport a owl:Class ;
     rdfs:label "Logistics Means of Transport" ;
     rdfs:comment """A vehicle or vessel used to transport goods.
-    
-    UN/CEFACT MMT: The physical conveyance.""" .
+
+    Properties: carrierCode, motCategory, motRegistration.
+    UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType — carrierCode is
+    the carrier identifier (SCAC, IATA); motCategory is the category of
+    means of transport (vessel, aircraft, road, rail); motRegistration
+    is the registration number of the means of transport.""" .
 
 :Vessel a owl:Class ;
     rdfs:label "Vessel" ;
     rdfs:comment """A ship or boat used for maritime transport.
-    
-    UN/CEFACT MMT: Ocean vessels, barges, ferries.""" ;
+
+    Properties: vesselName, vesselIMO, voyageNumber.
+    UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType — vesselName is the
+    name of the vessel; vesselIMO is the IMO identifier; voyageNumber is
+    the voyage or sailing reference.""" ;
     rdfs:subClassOf :LogisticsMeansOfTransport .
 
 :Aircraft a owl:Class ;
     rdfs:label "Aircraft" ;
     rdfs:comment """An airplane or helicopter used for air freight.
-    
-    UN/CEFACT MMT: Cargo aircraft, freight planes.""" ;
+
+    Properties: flightNumber, aircraftType, aircraftRegistration.
+    UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType — flightNumber is
+    the flight number; aircraftType is the aircraft type (e.g., B747,
+    B777); aircraftRegistration is the tail registration number.""" ;
     rdfs:subClassOf :LogisticsMeansOfTransport .
 
 :RailVehicle a owl:Class ;
     rdfs:label "Rail Vehicle" ;
     rdfs:comment """A train or railcar used for rail transport.
-    
-    UN/CEFACT MMT: Freight trains, locomotives, wagons.""" ;
+
+    Properties: trainNumber, railwayCompany, railVehicleType.
+    UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType — trainNumber is
+    the rail service number; railwayCompany is the railway operating
+    company; railVehicleType is the type of rail vehicle (locomotive,
+    wagon, freight car).""" ;
     rdfs:subClassOf :LogisticsMeansOfTransport .
 
 :RoadVehicle a owl:Class ;
     rdfs:label "Road Vehicle" ;
     rdfs:comment """A truck or van used for road transport.
-    
-    UN/CEFACT MMT: Trucks, lorries, delivery vehicles.""" ;
+
+    Properties: vehicleRegistration, roadVehicleType, motCarrierId.
+    UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType —
+    vehicleRegistration is the license plate; roadVehicleType is the
+    vehicle type (truck, trailer, van); motCarrierId is the carrier
+    identifier for the road vehicle.""" ;
     rdfs:subClassOf :LogisticsMeansOfTransport .
 
 :BargeVessel a owl:Class ;
     rdfs:label "Barge Vessel" ;
     rdfs:comment """A flat-bottomed vessel for inland waterway transport.
-    
-    UN/CEFACT MMT: River and canal freight transport.""" ;
+
+    Properties: bargeId, bargeCapacity.
+    UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType — bargeId is the
+    barge identification number; bargeCapacity is the barge capacity in
+    TEU or tonnes.""" ;
     rdfs:subClassOf :Vessel .
 
 #################################################################
@@ -105,8 +126,10 @@
     rdfs:label "Logistics Convoy" ;
     rdfs:comment """A group of transport means moving together.
 
-    UN/CEFACT RABIE: LogisticsConvoyType — a convoy of vehicles, vessels,
-    or rail cars travelling together under coordinated movement.""" .
+    Properties: hasConvoyMember (object), convoySize, convoyLeader.
+    UN/CEFACT MMT-RDM: LogisticsConvoyType — convoySize is the number of
+    transport means in the convoy; convoyLeader is the identifier of the
+    leading transport means.""" .
 
 #################################################################
 #    Additional Object Properties
@@ -140,4 +163,80 @@
     rdfs:label "carrier code" ;
     rdfs:comment "SCAC, IATA, or other carrier identifier." ;
     rdfs:domain :LogisticsMeansOfTransport ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Additional Datatype Properties (UN/CEFACT MMT-RDM)
+#################################################################
+
+:motCategory a owl:DatatypeProperty ;
+    rdfs:label "MOT category" ;
+    rdfs:comment "Category of means of transport (vessel, aircraft, road, rail). UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType category." ;
+    rdfs:domain :LogisticsMeansOfTransport ;
+    rdfs:range xsd:string .
+
+:motRegistration a owl:DatatypeProperty ;
+    rdfs:label "MOT registration" ;
+    rdfs:comment "Registration number of the means of transport. UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType registration." ;
+    rdfs:domain :LogisticsMeansOfTransport ;
+    rdfs:range xsd:string .
+
+:aircraftType a owl:DatatypeProperty ;
+    rdfs:label "aircraft type" ;
+    rdfs:comment "Aircraft type (e.g., B747, B777). UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType aircraft type." ;
+    rdfs:domain :Aircraft ;
+    rdfs:range xsd:string .
+
+:aircraftRegistration a owl:DatatypeProperty ;
+    rdfs:label "aircraft registration" ;
+    rdfs:comment "Tail registration number. UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType aircraft registration." ;
+    rdfs:domain :Aircraft ;
+    rdfs:range xsd:string .
+
+:railwayCompany a owl:DatatypeProperty ;
+    rdfs:label "railway company" ;
+    rdfs:comment "Railway operating company. UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType railway company." ;
+    rdfs:domain :RailVehicle ;
+    rdfs:range xsd:string .
+
+:railVehicleType a owl:DatatypeProperty ;
+    rdfs:label "rail vehicle type" ;
+    rdfs:comment "Type of rail vehicle (locomotive, wagon, freight car). UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType rail vehicle type." ;
+    rdfs:domain :RailVehicle ;
+    rdfs:range xsd:string .
+
+:roadVehicleType a owl:DatatypeProperty ;
+    rdfs:label "road vehicle type" ;
+    rdfs:comment "Vehicle type (truck, trailer, van). UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType road vehicle type." ;
+    rdfs:domain :RoadVehicle ;
+    rdfs:range xsd:string .
+
+:motCarrierId a owl:DatatypeProperty ;
+    rdfs:label "MOT carrier ID" ;
+    rdfs:comment "Carrier identifier for the road vehicle. UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType carrier identifier." ;
+    rdfs:domain :RoadVehicle ;
+    rdfs:range xsd:string .
+
+:bargeId a owl:DatatypeProperty ;
+    rdfs:label "barge ID" ;
+    rdfs:comment "Barge identification number. UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType barge identifier." ;
+    rdfs:domain :BargeVessel ;
+    rdfs:range xsd:string .
+
+:bargeCapacity a owl:DatatypeProperty ;
+    rdfs:label "barge capacity" ;
+    rdfs:comment "Barge capacity in TEU or tonnes. UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType barge capacity." ;
+    rdfs:domain :BargeVessel ;
+    rdfs:range xsd:decimal .
+
+:convoySize a owl:DatatypeProperty ;
+    rdfs:label "convoy size" ;
+    rdfs:comment "Number of transport means in the convoy. UN/CEFACT MMT-RDM: LogisticsConvoyType convoy size." ;
+    rdfs:domain :LogisticsConvoy ;
+    rdfs:range xsd:integer .
+
+:convoyLeader a owl:DatatypeProperty ;
+    rdfs:label "convoy leader" ;
+    rdfs:comment "Identifier of the leading transport means. UN/CEFACT MMT-RDM: LogisticsConvoyType convoy leader." ;
+    rdfs:domain :LogisticsConvoy ;
     rdfs:range xsd:string .

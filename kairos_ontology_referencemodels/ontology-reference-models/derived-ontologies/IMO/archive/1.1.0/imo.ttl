@@ -1,0 +1,41 @@
+@prefix : <https://www.kairosflow.ai/ont/imo#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/imo> a owl:Ontology ;
+    dcterms:title "IMO Maritime Ontology" ;
+    dcterms:description """Root ontology for the International Maritime Organization (IMO) reference data model.
+
+    This ontology integrates nine domain modules covering the core concepts of international
+    maritime operations:
+    - Vessel Registry: vessel identification, classification, and physical characteristics
+    - Dangerous Goods: IMDG Code classification, DG declarations, stowage and segregation
+    - Port Call: voyage management, port call lifecycle, FAL forms, and maritime logistics
+    - Party: maritime stakeholders, authorities, security officers, and service providers
+    - Locations: ports, anchorages, berths, VTS zones, emission control areas
+    - Certificates & Surveys: statutory certificates (IEE, DOC, SMC, ISSC, MLC) and surveys
+    - Crew & Seafarer: seafarer identity, STCW certificates, crew/passenger lists (FAL 5/6)
+    - Environmental: SEEMP, BWMP, SOPEP, garbage management, noxious liquid substances
+    - Maritime Security: ISPS Code ship/port facility security plans, declaration of security
+
+    Aligned with the IMO Compendium, the FAL Convention, SOLAS, MARPOL, STCW, MLC 2006,
+    BWM Convention, and the ISPS Code.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-06-12"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
+    dcterms:source "IMO Compendium data set (FAL 48, 2024), FAL Convention, SOLAS, IMDG Code, MARPOL, ISM Code, STCW, MLC 2006, BWM Convention, ISPS Code" ;
+    rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> ;
+    owl:imports <https://www.kairosflow.ai/ont/imo/vessel-registry> ;
+    owl:imports <https://www.kairosflow.ai/ont/imo/dangerous-goods> ;
+    owl:imports <https://www.kairosflow.ai/ont/imo/port-call> ;
+    owl:imports <https://www.kairosflow.ai/ont/imo/party> ;
+    owl:imports <https://www.kairosflow.ai/ont/imo/locations> ;
+    owl:imports <https://www.kairosflow.ai/ont/imo/certificates-surveys> ;
+    owl:imports <https://www.kairosflow.ai/ont/imo/crew-seafarer> ;
+    owl:imports <https://www.kairosflow.ai/ont/imo/environmental> ;
+    owl:imports <https://www.kairosflow.ai/ont/imo/maritime-security> .

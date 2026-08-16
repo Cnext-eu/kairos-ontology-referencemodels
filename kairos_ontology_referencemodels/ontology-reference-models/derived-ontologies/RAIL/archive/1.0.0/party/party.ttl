@@ -1,0 +1,99 @@
+@prefix : <https://www.kairosflow.ai/ont/rail/party#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+<https://www.kairosflow.ai/ont/rail/party> a owl:Ontology ;
+    dcterms:title "RAIL Party — Railway Undertaking & Infrastructure Manager Roles" ;
+    dcterms:description """Rail-specific party roles for reservation and running messages,
+    grounded in TAF TSI: Railway Undertaking (RU), Lead RU, Infrastructure
+    Manager (IM), Coordinating IM, Allocation Company, Customer. v1.0.0.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-08-15"^^xsd:date ;
+    dcterms:modified "2026-08-15"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd: LeadRU, CoordinatingIM, AllocationCompany, CustomerCode, CompanyCode" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+#################################################################
+#    Party Classes
+#################################################################
+
+:RailwayUndertaking a owl:Class ;
+    rdfs:label "Railway Undertaking" ;
+    rdfs:comment """Railway Undertaking (RU): the entity that operates rail freight
+    services and contracts with the Infrastructure Manager for path capacity.
+    Identified by a UIC 920-1 company code (CompanyCode). Corresponds to the
+    SendingRU/ReceivingRU/LeadRU roles in TAF TSI messages.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, elements LeadRU, CompanyCode" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+:LeadRailwayUndertaking a owl:Class ;
+    rdfs:subClassOf :RailwayUndertaking ;
+    rdfs:label "Lead Railway Undertaking" ;
+    rdfs:comment """The Lead RU coordinates the RU side of an international train path
+    request. Corresponds to the LeadRU element in taf_cat_complete.xsd.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, element LeadRU" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+:InfrastructureManager a owl:Class ;
+    rdfs:label "Infrastructure Manager" ;
+    rdfs:comment """Infrastructure Manager (IM): the entity responsible for the rail
+    network and for allocating train paths. Receives PathRequestMessage from
+    RUs.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, element CoordinatingIM and IM roles" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+:CoordinatingInfrastructureManager a owl:Class ;
+    rdfs:subClassOf :InfrastructureManager ;
+    rdfs:label "Coordinating Infrastructure Manager" ;
+    rdfs:comment """The coordinating (leading) IM coordinates the agreement process for
+    the IMs and is the primary point of contact for the RUs. Corresponds to the
+    CoordinatingIM element in taf_cat_complete.xsd.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, element CoordinatingIM" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+:AllocationCompany a owl:Class ;
+    rdfs:label "allocation company" ;
+    rdfs:comment """Company responsible for allocation and maintenance of codes
+    (LocationIdent, etc.). Corresponds to the AllocationCompany element in
+    taf_cat_complete.xsd.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, element AllocationCompany" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+:RailCustomer a owl:Class ;
+    rdfs:label "rail customer" ;
+    rdfs:comment """Customer party in a Consignment Order Message. Identified by a
+    CustomerCode. Corresponds to CustomerCode in taf_cat_complete.xsd.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, element CustomerCode" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+#################################################################
+#    Properties
+#################################################################
+
+:companyCode a owl:DatatypeProperty ;
+    rdfs:label "company code" ;
+    rdfs:comment "UIC 920-1 company code identifying a Railway Undertaking." ;
+    rdfs:domain :RailwayUndertaking ;
+    rdfs:range xsd:string .
+
+:customerCodeValue a owl:DatatypeProperty ;
+    rdfs:label "customer code" ;
+    rdfs:comment "Code identifying a rail customer." ;
+    rdfs:domain :RailCustomer ;
+    rdfs:range xsd:string .
+
+:isLeadRUOf a owl:ObjectProperty ;
+    rdfs:label "is lead RU of" ;
+    rdfs:comment "Links a Lead Railway Undertaking to the train it leads." ;
+    rdfs:domain :LeadRailwayUndertaking ;
+    rdfs:range :RailwayUndertaking .
+
+:coordinatingIMFor a owl:ObjectProperty ;
+    rdfs:label "coordinating IM for" ;
+    rdfs:comment "Links a Coordinating IM to the path allocation it coordinates." ;
+    rdfs:domain :CoordinatingInfrastructureManager ;
+    rdfs:range :InfrastructureManager .

@@ -16,8 +16,8 @@
     job instructions, and move types (load, discharge, lift, horizontal).""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "1.3.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.4.0" ;
     dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
     rdfs:seeAlso <https://tic40.org/standards/> .
 
@@ -404,8 +404,8 @@
     rdfs:label "Carrier Trip" ;
     rdfs:comment """The journey context of a carrier before and after its terminal visit.
 
-    TIC 4.0 concept: carriertrip. Captures the origin, destination, and schedule
-    of the carrier's voyage, enabling ETA/ETD predictions and berth planning.""" .
+    TIC 4.0 concept: carriertrip. Captures the origin, destination, transport mode,
+    and schedule of the carrier's voyage, enabling ETA/ETD predictions and berth planning.""" .
 
 :Order a owl:Class ;
     rdfs:label "Order" ;
@@ -413,7 +413,7 @@
     collect, move, or deliver action for a cargo unit.
 
     TIC 4.0: Orders decompose a job instruction into executable steps that can be
-    individually dispatched and tracked.""" ;
+    individually dispatched and tracked. Each order has a status and a result.""" ;
     rdfs:subClassOf :Move .
 
 :hasCarrierTrip a owl:ObjectProperty ;
@@ -457,6 +457,30 @@
     rdfs:comment "Type of handling order (COLLECT, MOVE, DELIVER)." ;
     rdfs:domain :Order ;
     rdfs:range xsd:string .
+
+:orderStatus a owl:DatatypeProperty ;
+    rdfs:label "order status" ;
+    rdfs:comment "Current execution status of the order (DISPATCHED, IN_PROGRESS, COMPLETED, CANCELLED, FAILED). TIC 4.0: order lifecycle status for tracking handling directives." ;
+    rdfs:domain :Order ;
+    rdfs:range xsd:string .
+
+:orderResult a owl:DatatypeProperty ;
+    rdfs:label "order result" ;
+    rdfs:comment "Outcome of the order execution (SUCCESS, PARTIAL, FAILED, SKIPPED). TIC 4.0: result code for order completion assessment." ;
+    rdfs:domain :Order ;
+    rdfs:range xsd:string .
+
+:transportMode a owl:DatatypeProperty ;
+    rdfs:label "transport mode" ;
+    rdfs:comment "Mode of transport for the carrier trip (VESSEL, TRUCK, TRAIN, BARGE). TIC 4.0: transport mode classification for carrier trip planning." ;
+    rdfs:domain :CarrierTrip ;
+    rdfs:range xsd:string .
+
+:tripDistanceKm a owl:DatatypeProperty ;
+    rdfs:label "trip distance (km)" ;
+    rdfs:comment "Total distance of the carrier trip in kilometres. TIC 4.0: distance measure for trip planning and ETA calculation." ;
+    rdfs:domain :CarrierTrip ;
+    rdfs:range xsd:decimal .
 
 #################################################################
 #    Phase 1.4: StowagePlan

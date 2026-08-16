@@ -16,8 +16,8 @@
     Based on UN/CEFACT MMT Reference Data Model.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "2.1.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "2.2.0" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
 
@@ -28,77 +28,108 @@
 :Location a owl:Class ;
     rdfs:label "Location" ;
     rdfs:comment """A physical place relevant to transport operations.
-    
-    UN/CEFACT MMT: Ports, terminals, warehouses, etc.""" .
+
+    Properties: unLocationCode, locationName, locationType.
+    UN/CEFACT MMT-RDM: LogisticsLocationType — unLocationCode is the
+    UN/LOCODE; locationName is the name of the location; locationType
+    is the type of location (port, airport, terminal, warehouse).""" .
 
 :TransportLocation a owl:Class ;
     rdfs:label "Transport Location" ;
     rdfs:comment """A location where transport activities occur.
-    
-    UN/CEFACT MMT: Loading points, discharge points, transit locations.""" ;
+
+    Properties: locationRole, locationCode.
+    UN/CEFACT MMT-RDM: LogisticsLocationType — locationRole is the role
+    of the location (loading, discharge, transit); locationCode is the
+    code identifying the transport location.""" ;
     rdfs:subClassOf :Location .
 
 :Port a owl:Class ;
     rdfs:label "Port" ;
     rdfs:comment """A maritime facility for vessel operations.
-    
-    UN/CEFACT MMT: Seaports identified by UN/LOCODE.""" ;
+
+    Properties: portName, portType.
+    UN/CEFACT MMT-RDM: LogisticsLocationType — portName is the name of
+    the port; portType is the type of port (sea, river).""" ;
     rdfs:subClassOf :TransportLocation .
 
 :Airport a owl:Class ;
     rdfs:label "Airport" ;
     rdfs:comment """An air transport facility.
-    
-    UN/CEFACT MMT: Cargo airports identified by IATA/ICAO codes.""" ;
+
+    Properties: iataAirportCode, icaoAirportCode, airportName.
+    UN/CEFACT MMT-RDM: LogisticsLocationType — iataAirportCode is the
+    3-letter IATA code; icaoAirportCode is the 4-letter ICAO code;
+    airportName is the name of the airport.""" ;
     rdfs:subClassOf :TransportLocation .
 
 :RailTerminal a owl:Class ;
     rdfs:label "Rail Terminal" ;
     rdfs:comment """A facility for rail freight operations.
-    
-    UN/CEFACT MMT: Intermodal rail terminals, freight yards.""" ;
+
+    Properties: railTerminalCode, railTerminalName.
+    UN/CEFACT MMT-RDM: LogisticsLocationType — railTerminalCode is the
+    terminal identification code; railTerminalName is the name of the rail
+    terminal.""" ;
     rdfs:subClassOf :TransportLocation .
 
 :RoadTerminal a owl:Class ;
     rdfs:label "Road Terminal" ;
     rdfs:comment """A facility for road freight operations.
-    
-    UN/CEFACT MMT: Truck terminals, distribution centers.""" ;
+
+    Properties: roadTerminalCode, roadTerminalName.
+    UN/CEFACT MMT-RDM: LogisticsLocationType — roadTerminalCode is the
+    terminal identification code; roadTerminalName is the name of the road
+    terminal.""" ;
     rdfs:subClassOf :TransportLocation .
 
 :InlandPort a owl:Class ;
     rdfs:label "Inland Port" ;
     rdfs:comment """A port on inland waterways.
-    
-    UN/CEFACT MMT: River and canal ports.""" ;
+
+    Properties: portCode, portName.
+    UN/CEFACT MMT-RDM: LogisticsLocationType — portCode is the UN/LOCODE
+    or inland port code; portName is the name of the inland port.""" ;
     rdfs:subClassOf :TransportLocation .
 
 :BorderCrossing a owl:Class ;
     rdfs:label "Border Crossing" ;
     rdfs:comment """A location where goods cross national borders.
-    
-    UN/CEFACT MMT: Customs checkpoints, border stations.""" ;
+
+    Properties: crossingCode, crossingName.
+    UN/CEFACT MMT-RDM: LogisticsLocationType — crossingCode is the code
+    for the border crossing; crossingName is the name of the border
+    crossing.""" ;
     rdfs:subClassOf :TransportLocation .
 
 :Warehouse a owl:Class ;
     rdfs:label "Warehouse" ;
     rdfs:comment """A storage facility for goods.
-    
-    UN/CEFACT MMT: Distribution centers, storage facilities.""" ;
+
+    Properties: warehouseCode, warehouseType.
+    UN/CEFACT MMT-RDM: LogisticsLocationType — warehouseCode is the
+    warehouse identification code; warehouseType is the type of warehouse
+    (bonded, general, cold storage).""" ;
     rdfs:subClassOf :Location .
 
 :Terminal a owl:Class ;
     rdfs:label "Terminal" ;
     rdfs:comment """A facility for cargo handling and transfer.
-    
-    UN/CEFACT MMT: Container terminals, freight terminals.""" ;
+
+    Properties: terminalCode, terminalType.
+    UN/CEFACT MMT-RDM: LogisticsLocationType — terminalCode is the
+    terminal identification code; terminalType is the type of terminal
+    (container, freight, multi-purpose).""" ;
     rdfs:subClassOf :TransportLocation .
 
 :DistributionCenter a owl:Class ;
     rdfs:label "Distribution Center" ;
     rdfs:comment """A facility for sorting, consolidating, and distributing cargo.
 
-    UN/CEFACT MMT: Hub for logistics distribution operations.""" ;
+    Properties: distributionCenterCode, distributionCenterType.
+    UN/CEFACT MMT-RDM: LogisticsLocationType — distributionCenterCode is
+    the DC identification code; distributionCenterType is the type of
+    distribution center (cross-dock, fulfilment, regional hub).""" ;
     rdfs:subClassOf :Warehouse .
 
 #################################################################
@@ -131,4 +162,134 @@
     rdfs:label "ICAO airport code" ;
     rdfs:comment "4-letter ICAO airport code." ;
     rdfs:domain :Airport ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Additional Datatype Properties (UN/CEFACT MMT-RDM)
+#################################################################
+
+:locationName a owl:DatatypeProperty ;
+    rdfs:label "location name" ;
+    rdfs:comment "Name of the location. UN/CEFACT MMT-RDM: LogisticsLocationType location name." ;
+    rdfs:domain :Location ;
+    rdfs:range xsd:string .
+
+:locationType a owl:DatatypeProperty ;
+    rdfs:label "location type" ;
+    rdfs:comment "Type of location (port, airport, terminal, warehouse). UN/CEFACT MMT-RDM: LogisticsLocationType location type." ;
+    rdfs:domain :Location ;
+    rdfs:range xsd:string .
+
+:locationRole a owl:DatatypeProperty ;
+    rdfs:label "location role" ;
+    rdfs:comment "Role of the location (loading, discharge, transit). UN/CEFACT MMT-RDM: LogisticsLocationType location role." ;
+    rdfs:domain :TransportLocation ;
+    rdfs:range xsd:string .
+
+:locationCode a owl:DatatypeProperty ;
+    rdfs:label "location code" ;
+    rdfs:comment "Code identifying the transport location. UN/CEFACT MMT-RDM: LogisticsLocationType location code." ;
+    rdfs:domain :TransportLocation ;
+    rdfs:range xsd:string .
+
+:portName a owl:DatatypeProperty ;
+    rdfs:label "port name" ;
+    rdfs:comment "Name of the port. UN/CEFACT MMT-RDM: LogisticsLocationType port name." ;
+    rdfs:domain :Port ;
+    rdfs:range xsd:string .
+
+:portType a owl:DatatypeProperty ;
+    rdfs:label "port type" ;
+    rdfs:comment "Type of port (sea, river). UN/CEFACT MMT-RDM: LogisticsLocationType port type." ;
+    rdfs:domain :Port ;
+    rdfs:range xsd:string .
+
+:airportName a owl:DatatypeProperty ;
+    rdfs:label "airport name" ;
+    rdfs:comment "Name of the airport. UN/CEFACT MMT-RDM: LogisticsLocationType airport name." ;
+    rdfs:domain :Airport ;
+    rdfs:range xsd:string .
+
+:railTerminalCode a owl:DatatypeProperty ;
+    rdfs:label "rail terminal code" ;
+    rdfs:comment "Terminal identification code for rail terminal. UN/CEFACT MMT-RDM: LogisticsLocationType terminal code." ;
+    rdfs:domain :RailTerminal ;
+    rdfs:range xsd:string .
+
+:railTerminalName a owl:DatatypeProperty ;
+    rdfs:label "rail terminal name" ;
+    rdfs:comment "Name of the rail terminal. UN/CEFACT MMT-RDM: LogisticsLocationType terminal name." ;
+    rdfs:domain :RailTerminal ;
+    rdfs:range xsd:string .
+
+:roadTerminalCode a owl:DatatypeProperty ;
+    rdfs:label "road terminal code" ;
+    rdfs:comment "Terminal identification code for road terminal. UN/CEFACT MMT-RDM: LogisticsLocationType terminal code." ;
+    rdfs:domain :RoadTerminal ;
+    rdfs:range xsd:string .
+
+:roadTerminalName a owl:DatatypeProperty ;
+    rdfs:label "road terminal name" ;
+    rdfs:comment "Name of the road terminal. UN/CEFACT MMT-RDM: LogisticsLocationType terminal name." ;
+    rdfs:domain :RoadTerminal ;
+    rdfs:range xsd:string .
+
+:portCode a owl:DatatypeProperty ;
+    rdfs:label "port code" ;
+    rdfs:comment "UN/LOCODE or inland port code. UN/CEFACT MMT-RDM: LogisticsLocationType port code." ;
+    rdfs:domain :InlandPort ;
+    rdfs:range xsd:string .
+
+:inlandPortName a owl:DatatypeProperty ;
+    rdfs:label "inland port name" ;
+    rdfs:comment "Name of the inland port. UN/CEFACT MMT-RDM: LogisticsLocationType port name." ;
+    rdfs:domain :InlandPort ;
+    rdfs:range xsd:string .
+
+:crossingCode a owl:DatatypeProperty ;
+    rdfs:label "crossing code" ;
+    rdfs:comment "Code for the border crossing. UN/CEFACT MMT-RDM: LogisticsLocationType crossing code." ;
+    rdfs:domain :BorderCrossing ;
+    rdfs:range xsd:string .
+
+:crossingName a owl:DatatypeProperty ;
+    rdfs:label "crossing name" ;
+    rdfs:comment "Name of the border crossing. UN/CEFACT MMT-RDM: LogisticsLocationType crossing name." ;
+    rdfs:domain :BorderCrossing ;
+    rdfs:range xsd:string .
+
+:warehouseCode a owl:DatatypeProperty ;
+    rdfs:label "warehouse code" ;
+    rdfs:comment "Warehouse identification code. UN/CEFACT MMT-RDM: LogisticsLocationType warehouse code." ;
+    rdfs:domain :Warehouse ;
+    rdfs:range xsd:string .
+
+:warehouseType a owl:DatatypeProperty ;
+    rdfs:label "warehouse type" ;
+    rdfs:comment "Type of warehouse (bonded, general, cold storage). UN/CEFACT MMT-RDM: LogisticsLocationType warehouse type." ;
+    rdfs:domain :Warehouse ;
+    rdfs:range xsd:string .
+
+:terminalCode a owl:DatatypeProperty ;
+    rdfs:label "terminal code" ;
+    rdfs:comment "Terminal identification code. UN/CEFACT MMT-RDM: LogisticsLocationType terminal code." ;
+    rdfs:domain :Terminal ;
+    rdfs:range xsd:string .
+
+:terminalType a owl:DatatypeProperty ;
+    rdfs:label "terminal type" ;
+    rdfs:comment "Type of terminal (container, freight, multi-purpose). UN/CEFACT MMT-RDM: LogisticsLocationType terminal type." ;
+    rdfs:domain :Terminal ;
+    rdfs:range xsd:string .
+
+:distributionCenterCode a owl:DatatypeProperty ;
+    rdfs:label "distribution center code" ;
+    rdfs:comment "DC identification code. UN/CEFACT MMT-RDM: LogisticsLocationType distribution center code." ;
+    rdfs:domain :DistributionCenter ;
+    rdfs:range xsd:string .
+
+:distributionCenterType a owl:DatatypeProperty ;
+    rdfs:label "distribution center type" ;
+    rdfs:comment "Type of distribution center (cross-dock, fulfilment, regional hub). UN/CEFACT MMT-RDM: LogisticsLocationType distribution center type." ;
+    rdfs:domain :DistributionCenter ;
     rdfs:range xsd:string .

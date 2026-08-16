@@ -1,0 +1,755 @@
+@prefix : <https://www.kairosflow.ai/ont/bsp/financial#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix comm: <https://www.kairosflow.ai/ont/bsp/commercial#> .
+@prefix party: <https://www.kairosflow.ai/ont/bsp/party#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/bsp/financial> a owl:Ontology ;
+    dcterms:title "Kairos BSP Financial Domain Ontology" ;
+    dcterms:description """Financial and payment domain of the Buy-Ship-Pay Reference Data Model.
+
+    This module defines financial transaction classes covering:
+    - Invoicing: Invoice, Commercial Invoice, Proforma Invoice, Credit/Debit Notes
+    - Payment: Payment, Payment Terms, payment methods
+    - Charges: Freight charges, surcharges (BAF, CAF, THC), documentation fees
+    - Tariffs: Tariff schedules, freight rates, free-time periods
+    - Trade Finance: Letter of Credit, Documentary Collection, Bank Guarantee
+    - Settlement: Payment allocation, reconciliation, aging
+    - Events: Payment lifecycle events""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-08-13"^^xsd:date ;
+    owl:versionInfo "2.1.0" ;
+    dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/> .
+
+#################################################################
+#    PAY - Financial and Payment Classes
+#################################################################
+
+:Invoice a owl:Class ;
+    rdfs:label "Invoice" ;
+    rdfs:comment """A commercial document issued by seller to buyer indicating products, quantities, and prices owed.
+    
+    ISO BSP: Payment request document.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :invoiceNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:CommercialInvoice a owl:Class ;
+    rdfs:label "Commercial Invoice" ;
+    rdfs:comment """An invoice used in international trade documenting the transaction.
+    
+    ISO BSP: Primary customs and payment document.""" ;
+    rdfs:subClassOf :Invoice .
+
+:ProformaInvoice a owl:Class ;
+    rdfs:label "Proforma Invoice" ;
+    rdfs:comment """A preliminary invoice sent before goods are delivered.
+    
+    ISO BSP: Quote or commitment to sell at stated terms.""" ;
+    rdfs:subClassOf :Invoice .
+
+:CreditNote a owl:Class ;
+    rdfs:label "Credit Note" ;
+    rdfs:comment """A document reducing the amount owed by buyer to seller.
+    
+    ISO BSP: Invoice correction or return credit.""" .
+
+:DebitNote a owl:Class ;
+    rdfs:label "Debit Note" ;
+    rdfs:comment """A document increasing the amount owed by buyer to seller.
+    
+    ISO BSP: Additional charges or invoice adjustments.""" .
+
+:InvoiceLine a owl:Class ;
+    rdfs:label "Invoice Line" ;
+    rdfs:comment """A single line item on an invoice.
+    
+    ISO BSP: Individual charge or product entry.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :lineNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:Payment a owl:Class ;
+    rdfs:label "Payment" ;
+    rdfs:comment """A transfer of funds from buyer to seller.
+    
+    UN/CEFACT BSP: Maps to TradeSettlementPayment — discharge of obligations
+    in respect of funds transferred between parties.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TradeSettlementPayment> ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :paymentAmount ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:PaymentTerms a owl:Class ;
+    rdfs:label "Payment Terms" ;
+    rdfs:comment """Conditions under which payment must be made.
+    
+    UN/CEFACT BSP: Maps to PaymentTerms — terms and conditions by which
+    payment has been or will be made.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/PaymentTerms> .
+
+:BankGuarantee a owl:Class ;
+    rdfs:label "Bank Guarantee" ;
+    rdfs:comment """A commitment by a bank to cover a loss if a trade party fails to fulfill obligations.
+    
+    UN/CEFACT BSP: Maps to Guarantee — an official promise or assurance
+    to fulfil a financial obligation.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Guarantee> .
+
+:BankAccount a owl:Class ;
+    rdfs:label "Bank Account" ;
+    rdfs:comment """A financial account held by a trade party, identified by IBAN and BIC/SWIFT.
+
+    Modeled as a first-class entity (not scalar party attributes) because a
+    party commonly holds multiple accounts (e.g., per currency or per bank).
+    Linked to a party via :hasBankAccount (1:n).
+
+    UN/CEFACT BSP: Aligns to FinancialAccount (Creditor/Debtor financial
+    account). Entity shape inspired by FIBO FBC ClientsAndAccounts — provided
+    here as design inspiration only; FIBO is not imported.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/FinancialAccount> .
+
+#################################################################
+#    Event Classes
+#################################################################
+
+:PaymentEvent a owl:Class ;
+    rdfs:label "Payment Event" ;
+    rdfs:comment """An event in the payment process (invoice issued, payment sent, received).
+    
+    UN/CEFACT BSP: A SupplyChainEvent in the settlement domain.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/SupplyChainEvent> .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasInvoice a owl:ObjectProperty ;
+    rdfs:label "has invoice" ;
+    rdfs:comment "Relates order or shipment to invoice." ;
+    rdfs:domain comm:CommercialTransaction ;
+    rdfs:range :Invoice .
+
+:hasInvoiceLine a owl:ObjectProperty ;
+    rdfs:label "has invoice line" ;
+    rdfs:comment "Relates invoice to line items." ;
+    rdfs:domain :Invoice ;
+    rdfs:range :InvoiceLine .
+
+:hasPayment a owl:ObjectProperty ;
+    rdfs:label "has payment" ;
+    rdfs:comment "Relates invoice to payment." ;
+    rdfs:domain :Invoice ;
+    rdfs:range :Payment .
+
+:hasPaymentTerms a owl:ObjectProperty ;
+    rdfs:label "has payment terms" ;
+    rdfs:comment "Relates invoice or order to payment terms." ;
+    rdfs:domain :Invoice ;
+    rdfs:range :PaymentTerms .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:invoiceNumber a owl:DatatypeProperty ;
+    rdfs:label "invoice number" ;
+    rdfs:comment "Unique identifier for invoice." ;
+    rdfs:domain :Invoice ;
+    rdfs:range xsd:string .
+
+:invoiceDate a owl:DatatypeProperty ;
+    rdfs:label "invoice date" ;
+    rdfs:comment "Date when invoice was issued." ;
+    rdfs:domain :Invoice ;
+    rdfs:range xsd:date .
+
+:dueDate a owl:DatatypeProperty ;
+    rdfs:label "due date" ;
+    rdfs:comment "Date when payment is due." ;
+    rdfs:domain :Invoice ;
+    rdfs:range xsd:date .
+
+:lineNumber a owl:DatatypeProperty ;
+    rdfs:label "line number" ;
+    rdfs:comment "Sequential line item number." ;
+    rdfs:domain :InvoiceLine ;
+    rdfs:range xsd:integer .
+
+:totalAmount a owl:DatatypeProperty ;
+    rdfs:label "total amount" ;
+    rdfs:comment "Total monetary amount." ;
+    rdfs:domain :Invoice ;
+    rdfs:range xsd:decimal .
+
+:subtotalAmount a owl:DatatypeProperty ;
+    rdfs:label "subtotal amount" ;
+    rdfs:comment "Amount before taxes and charges." ;
+    rdfs:domain :Invoice ;
+    rdfs:range xsd:decimal .
+
+:taxAmount a owl:DatatypeProperty ;
+    rdfs:label "tax amount" ;
+    rdfs:comment "Total tax amount (VAT, sales tax, etc.)." ;
+    rdfs:domain :Invoice ;
+    rdfs:range xsd:decimal .
+
+:taxRate a owl:DatatypeProperty ;
+    rdfs:label "tax rate" ;
+    rdfs:comment "Tax percentage rate." ;
+    rdfs:domain :InvoiceLine ;
+    rdfs:range xsd:decimal .
+
+:discountAmount a owl:DatatypeProperty ;
+    rdfs:label "discount amount" ;
+    rdfs:comment "Discount applied." ;
+    rdfs:domain :Invoice ;
+    rdfs:range xsd:decimal .
+
+:paymentAmount a owl:DatatypeProperty ;
+    rdfs:label "payment amount" ;
+    rdfs:comment "Amount paid." ;
+    rdfs:domain :Payment ;
+    rdfs:range xsd:decimal .
+
+:paymentDate a owl:DatatypeProperty ;
+    rdfs:label "payment date" ;
+    rdfs:comment "Date when payment was made." ;
+    rdfs:domain :Payment ;
+    rdfs:range xsd:date .
+
+:paymentMethod a owl:DatatypeProperty ;
+    rdfs:label "payment method" ;
+    rdfs:comment "Method of payment (e.g., BANK_TRANSFER, CREDIT_CARD, L/C)." ;
+    rdfs:domain :Payment ;
+    rdfs:range xsd:string .
+
+:paymentReference a owl:DatatypeProperty ;
+    rdfs:label "payment reference" ;
+    rdfs:comment "Reference number for payment transaction." ;
+    rdfs:domain :Payment ;
+    rdfs:range xsd:string .
+
+:currency a owl:DatatypeProperty ;
+    rdfs:label "currency" ;
+    rdfs:comment "ISO 4217 currency code (e.g., USD, EUR, GBP)." ;
+    rdfs:domain :Invoice ;
+    rdfs:range xsd:string .
+
+:exchangeRate a owl:DatatypeProperty ;
+    rdfs:label "exchange rate" ;
+    rdfs:comment "Currency exchange rate." ;
+    rdfs:domain :Invoice ;
+    rdfs:range xsd:decimal .
+
+:paymentTermsDescription a owl:DatatypeProperty ;
+    rdfs:label "payment terms description" ;
+    rdfs:comment "Textual description of payment terms." ;
+    rdfs:domain :PaymentTerms ;
+    rdfs:range xsd:string .
+
+:netDays a owl:DatatypeProperty ;
+    rdfs:label "net days" ;
+    rdfs:comment "Number of days until payment is due (e.g., Net 30)." ;
+    rdfs:domain :PaymentTerms ;
+    rdfs:range xsd:integer .
+
+:customsValue a owl:DatatypeProperty ;
+    rdfs:label "customs value" ;
+    rdfs:comment "Declared value for customs purposes." ;
+    rdfs:domain :CommercialInvoice ;
+    rdfs:range xsd:decimal .
+
+#################################################################
+#    CHARGE - Charge and Surcharge Taxonomy
+#################################################################
+
+:Charge a owl:Class ;
+    rdfs:label "Charge" ;
+    rdfs:comment """A monetary amount levied for a service, product, or event.
+
+    UN/CEFACT BSP: Maps to LogisticsServiceCharge — a charge related to a
+    logistics service such as transport, handling, or storage.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/LogisticsServiceCharge> ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :chargeAmount ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:FreightCharge a owl:Class ;
+    rdfs:label "Freight Charge" ;
+    rdfs:comment """The base charge for transporting cargo from origin to destination.
+
+    UN/CEFACT BSP: Maps to TradeAllowanceCharge with freight type code —
+    the primary transport cost in ocean, air, rail, or road shipments.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TradeAllowanceCharge> ;
+    rdfs:subClassOf :Charge .
+
+:Surcharge a owl:Class ;
+    rdfs:label "Surcharge" ;
+    rdfs:comment """An additional charge applied on top of the base freight rate.
+
+    UN/CEFACT BSP: Maps to TradeAllowanceCharge with surcharge category —
+    variable or periodic adjustments to the base freight.""" ;
+    rdfs:subClassOf :Charge .
+
+:BunkerAdjustmentFactor a owl:Class ;
+    rdfs:label "Bunker Adjustment Factor" ;
+    rdfs:comment """Fuel surcharge (BAF/BUC) reflecting fluctuations in bunker fuel prices.
+
+    Industry standard surcharge applied to ocean freight to pass on fuel
+    cost variability to shippers.""" ;
+    rdfs:subClassOf :Surcharge .
+
+:CurrencyAdjustmentFactor a owl:Class ;
+    rdfs:label "Currency Adjustment Factor" ;
+    rdfs:comment """Currency surcharge (CAF) compensating for exchange rate fluctuations
+    between the billing currency and the carrier's base currency.""" ;
+    rdfs:subClassOf :Surcharge .
+
+:TerminalHandlingCharge a owl:Class ;
+    rdfs:label "Terminal Handling Charge" ;
+    rdfs:comment """Charge (THC) for handling containers at the port terminal, covering
+    loading/discharge, stacking, and movement between quay and yard.""" ;
+    rdfs:subClassOf :Surcharge .
+
+:PeakSeasonSurcharge a owl:Class ;
+    rdfs:label "Peak Season Surcharge" ;
+    rdfs:comment """Surcharge (PSS) applied during periods of high demand to reflect
+    capacity constraints and premium pricing.""" ;
+    rdfs:subClassOf :Surcharge .
+
+:EmergencyBunkerSurcharge a owl:Class ;
+    rdfs:label "Emergency Bunker Surcharge" ;
+    rdfs:comment """Extraordinary surcharge (EBS) applied when fuel prices spike
+    beyond the levels covered by standard BAF adjustments.""" ;
+    rdfs:subClassOf :Surcharge .
+
+:DocumentationFee a owl:Class ;
+    rdfs:label "Documentation Fee" ;
+    rdfs:comment """Fee for issuing, amending, or releasing transport documentation
+    such as bills of lading, waybills, or release orders.""" ;
+    rdfs:subClassOf :Charge .
+
+:HandlingCharge a owl:Class ;
+    rdfs:label "Handling Charge" ;
+    rdfs:comment """Charge for physical handling of cargo or equipment, distinct from
+    terminal handling — e.g., warehouse handling, stuffing/stripping fees.""" ;
+    rdfs:subClassOf :Charge .
+
+:StorageCharge a owl:Class ;
+    rdfs:label "Storage Charge" ;
+    rdfs:comment """Charge for storing cargo or equipment beyond the allowed free-time
+    period at a terminal, depot, or warehouse.""" ;
+    rdfs:subClassOf :Charge .
+
+#################################################################
+#    TARIFF - Pricing and Rate Structures
+#################################################################
+
+:TariffSchedule a owl:Class ;
+    rdfs:label "Tariff Schedule" ;
+    rdfs:comment """A published schedule of rates, charges, and conditions for a service.
+
+    Defines the pricing structure applied to freight, surcharges, and
+    ancillary services for a validity period.""" .
+
+:FreightRate a owl:Class ;
+    rdfs:label "Freight Rate" ;
+    rdfs:comment """A specific rate for transporting cargo on a lane, for an equipment type,
+    during a validity period. May be per-TEU, per-tonne, per-CBM, or lump-sum.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :rateAmount ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:FreeTimePeriod a owl:Class ;
+    rdfs:label "Free Time Period" ;
+    rdfs:comment """The number of days allowed before demurrage, detention, or storage
+    charges begin to accrue. Defined per tariff, port, and equipment type.""" .
+
+#################################################################
+#    TRADE FINANCE - Instruments
+#################################################################
+
+:LetterOfCredit a owl:Class ;
+    rdfs:label "Letter of Credit" ;
+    rdfs:comment """A bank-issued instrument guaranteeing payment to the seller upon
+    presentation of conforming documents.
+
+    UN/CEFACT BSP: Maps to FinancialInstitutionIdentity-related instruments —
+    a promise to pay used extensively in international trade.
+
+    Types (via lcType property): IRREVOCABLE, STANDBY, REVOLVING,
+    BACK_TO_BACK, RED_CLAUSE, GREEN_CLAUSE, TRANSFERABLE.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/FinancialInstitutionIdentity> .
+
+:DocumentaryCollection a owl:Class ;
+    rdfs:label "Documentary Collection" ;
+    rdfs:comment """A trade finance arrangement where the seller's bank collects payment
+    from the buyer through the buyer's bank, releasing documents upon payment
+    (D/P) or acceptance (D/A).
+
+    Types (via collectionType property): DOCUMENTS_AGAINST_PAYMENT,
+    DOCUMENTS_AGAINST_ACCEPTANCE.""" .
+
+:FinancingArrangement a owl:Class ;
+    rdfs:label "Financing Arrangement" ;
+    rdfs:comment """A supply chain finance arrangement between a buyer, seller, and financial
+    institution for the early payment or financing of trade receivables.
+
+    UN/CEFACT BSP: Maps to FinancingRequestDocument — covers purchase order
+    financing, factoring, forfaiting, and reverse factoring.
+
+    Types (via financingType property): FACTORING, REVERSE_FACTORING,
+    FORFAITING, PURCHASE_ORDER_FINANCING, INVOICE_DISCOUNTING.""" .
+
+:RemittanceAdvice a owl:Class ;
+    rdfs:label "Remittance Advice" ;
+    rdfs:comment """A document sent by a buyer to a seller advising that payment has been
+    or will be made, detailing which invoices the payment covers.
+
+    UN/CEFACT BSP: Maps to CrossIndustryRemittanceAdvice — a document
+    providing payment reconciliation information.""" .
+
+#################################################################
+#    SETTLEMENT - Allocation and Reconciliation
+#################################################################
+
+:PaymentAllocation a owl:Class ;
+    rdfs:label "Payment Allocation" ;
+    rdfs:comment """The assignment of a received payment to one or more invoices or
+    invoice lines. Supports partial payments and overpayments.""" .
+
+:Reconciliation a owl:Class ;
+    rdfs:label "Reconciliation" ;
+    rdfs:comment """The process of matching expected charges (from tariff/contract) with
+    actual invoiced amounts and received payments.""" .
+
+:AgingBucket a owl:Class ;
+    rdfs:label "Aging Bucket" ;
+    rdfs:comment """A classification of receivables or payables by age (e.g., current,
+    1-30 days, 31-60 days, 61-90 days, 90+ days overdue).""" .
+
+#################################################################
+#    Additional Object Properties - Charges & Tariffs
+#################################################################
+
+:hasCharge a owl:ObjectProperty ;
+    rdfs:label "has charge" ;
+    rdfs:comment "Relates a shipment, booking, or invoice to its applicable charges." ;
+    rdfs:domain :Invoice ;
+    rdfs:range :Charge .
+
+:hasSurcharge a owl:ObjectProperty ;
+    rdfs:label "has surcharge" ;
+    rdfs:comment "Relates a freight charge or invoice to applied surcharges." ;
+    rdfs:domain :FreightCharge ;
+    rdfs:range :Surcharge .
+
+:appliesTariff a owl:ObjectProperty ;
+    rdfs:label "applies tariff" ;
+    rdfs:comment "Relates a charge to the tariff schedule that defines its rate." ;
+    rdfs:domain :Charge ;
+    rdfs:range :TariffSchedule .
+
+:hasFreightRate a owl:ObjectProperty ;
+    rdfs:label "has freight rate" ;
+    rdfs:comment "Relates a tariff schedule to its freight rates." ;
+    rdfs:domain :TariffSchedule ;
+    rdfs:range :FreightRate .
+
+:hasFreeTime a owl:ObjectProperty ;
+    rdfs:label "has free time" ;
+    rdfs:comment "Relates a tariff or charge to the applicable free-time period." ;
+    rdfs:domain :Charge ;
+    rdfs:range :FreeTimePeriod .
+
+:hasAllocation a owl:ObjectProperty ;
+    rdfs:label "has allocation" ;
+    rdfs:comment "Relates a payment to its allocation across invoices." ;
+    rdfs:domain :Payment ;
+    rdfs:range :PaymentAllocation .
+
+:allocatedToInvoice a owl:ObjectProperty ;
+    rdfs:label "allocated to invoice" ;
+    rdfs:comment "Relates a payment allocation to the target invoice." ;
+    rdfs:domain :PaymentAllocation ;
+    rdfs:range :Invoice .
+
+:hasLetterOfCredit a owl:ObjectProperty ;
+    rdfs:label "has letter of credit" ;
+    rdfs:comment "Relates a commercial transaction to a letter of credit." ;
+    rdfs:domain :Invoice ;
+    rdfs:range :LetterOfCredit .
+
+:issuingBank a owl:ObjectProperty ;
+    rdfs:subPropertyOf party:hasParty ;
+    rdfs:label "issuing bank" ;
+    rdfs:comment "The bank that issues the letter of credit on behalf of the buyer. Range widened from the deprecated party:Bank overlay to party:TradeParty (BSP 2.0.0) — the banking role is carried by the property itself and, in role-assignment form, by a TradePartyRoleAssignment with PartyRoleCode BANK; party:Bank stays declared for message-level interop." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range party:TradeParty .
+
+:advisingBank a owl:ObjectProperty ;
+    rdfs:subPropertyOf party:hasParty ;
+    rdfs:label "advising bank" ;
+    rdfs:comment "The bank in the seller's country that advises the L/C to the beneficiary. Range widened from the deprecated party:Bank overlay to party:TradeParty (BSP 2.0.0) — the banking role is carried by the property itself and, in role-assignment form, by a TradePartyRoleAssignment with PartyRoleCode BANK; party:Bank stays declared for message-level interop." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range party:TradeParty .
+
+:confirmingBank a owl:ObjectProperty ;
+    rdfs:subPropertyOf party:hasParty ;
+    rdfs:label "confirming bank" ;
+    rdfs:comment "The bank that adds its confirmation (guarantee) to the L/C. Range widened from the deprecated party:Bank overlay to party:TradeParty (BSP 2.0.0) — the banking role is carried by the property itself and, in role-assignment form, by a TradePartyRoleAssignment with PartyRoleCode BANK; party:Bank stays declared for message-level interop." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range party:TradeParty .
+
+:hasFinancingArrangement a owl:ObjectProperty ;
+    rdfs:label "has financing arrangement" ;
+    rdfs:comment "Relates a commercial transaction or invoice to a financing arrangement." ;
+    rdfs:domain :Invoice ;
+    rdfs:range :FinancingArrangement .
+
+:hasRemittanceAdvice a owl:ObjectProperty ;
+    rdfs:label "has remittance advice" ;
+    rdfs:comment "Relates a payment to its remittance advice." ;
+    rdfs:domain :Payment ;
+    rdfs:range :RemittanceAdvice .
+
+#################################################################
+#    Party-Account Object Properties (v1.4.0)
+#################################################################
+
+:hasBankAccount a owl:ObjectProperty ;
+    rdfs:label "has bank account" ;
+    rdfs:comment "Relates a trade party to its bank accounts. Cardinality: 1:n." ;
+    rdfs:domain party:TradeParty ;
+    rdfs:range :BankAccount .
+
+:hasPartyPaymentTerms a owl:ObjectProperty ;
+    rdfs:label "has party payment terms" ;
+    rdfs:comment """Relates a trade party to its default/agreed payment terms.
+    Cardinality: 0..1 (the standing terms for the party). Distinct from
+    :hasPaymentTerms, which links an individual invoice to its terms.""" ;
+    rdfs:domain party:TradeParty ;
+    rdfs:range :PaymentTerms .
+
+#################################################################
+#    Additional Datatype Properties - Charges & Tariffs
+#################################################################
+
+:chargeAmount a owl:DatatypeProperty ;
+    rdfs:label "charge amount" ;
+    rdfs:comment "Monetary amount of the charge." ;
+    rdfs:domain :Charge ;
+    rdfs:range xsd:decimal .
+
+:chargeType a owl:DatatypeProperty ;
+    rdfs:label "charge type" ;
+    rdfs:comment "Classification code for the charge (e.g., FREIGHT, THC, BAF, DOC)." ;
+    rdfs:domain :Charge ;
+    rdfs:range xsd:string .
+
+:chargeBasis a owl:DatatypeProperty ;
+    rdfs:label "charge basis" ;
+    rdfs:comment "Unit basis for the charge calculation (e.g., PER_TEU, PER_TONNE, PER_CBM, LUMP_SUM)." ;
+    rdfs:domain :Charge ;
+    rdfs:range xsd:string .
+
+:rateAmount a owl:DatatypeProperty ;
+    rdfs:label "rate amount" ;
+    rdfs:comment "Monetary rate per unit." ;
+    rdfs:domain :FreightRate ;
+    rdfs:range xsd:decimal .
+
+:rateBasis a owl:DatatypeProperty ;
+    rdfs:label "rate basis" ;
+    rdfs:comment "Unit for rate application (e.g., PER_TEU, PER_FEU, PER_TONNE, PER_CBM)." ;
+    rdfs:domain :FreightRate ;
+    rdfs:range xsd:string .
+
+:validFrom a owl:DatatypeProperty ;
+    rdfs:label "valid from" ;
+    rdfs:comment "Start date of rate or tariff validity." ;
+    rdfs:domain :TariffSchedule ;
+    rdfs:range xsd:date .
+
+:validTo a owl:DatatypeProperty ;
+    rdfs:label "valid to" ;
+    rdfs:comment "End date of rate or tariff validity." ;
+    rdfs:domain :TariffSchedule ;
+    rdfs:range xsd:date .
+
+:freeDays a owl:DatatypeProperty ;
+    rdfs:label "free days" ;
+    rdfs:comment "Number of free days before charges accrue." ;
+    rdfs:domain :FreeTimePeriod ;
+    rdfs:range xsd:integer .
+
+:freeTimeType a owl:DatatypeProperty ;
+    rdfs:label "free time type" ;
+    rdfs:comment "Type of free time: DEMURRAGE, DETENTION, STORAGE, COMBINED." ;
+    rdfs:domain :FreeTimePeriod ;
+    rdfs:range xsd:string .
+
+:allocatedAmount a owl:DatatypeProperty ;
+    rdfs:label "allocated amount" ;
+    rdfs:comment "Portion of payment allocated to a specific invoice." ;
+    rdfs:domain :PaymentAllocation ;
+    rdfs:range xsd:decimal .
+
+:agingCategory a owl:DatatypeProperty ;
+    rdfs:label "aging category" ;
+    rdfs:comment "Aging classification label (e.g., CURRENT, 30_DAYS, 60_DAYS, 90_PLUS)." ;
+    rdfs:domain :AgingBucket ;
+    rdfs:range xsd:string .
+
+:creditAmount a owl:DatatypeProperty ;
+    rdfs:label "credit amount" ;
+    rdfs:comment "Value of the letter of credit or guarantee." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range xsd:decimal .
+
+:expiryDate a owl:DatatypeProperty ;
+    rdfs:label "expiry date" ;
+    rdfs:comment "Expiration date of a financial instrument or rate." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range xsd:date .
+
+#################################################################
+#    Datatype Properties — Trade Finance Enrichment (v1.3.0)
+#################################################################
+
+:lcType a owl:DatatypeProperty ;
+    rdfs:label "L/C type" ;
+    rdfs:comment "Type of letter of credit (IRREVOCABLE, STANDBY, REVOLVING, BACK_TO_BACK, RED_CLAUSE, GREEN_CLAUSE, TRANSFERABLE)." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range xsd:string .
+
+:lcStatus a owl:DatatypeProperty ;
+    rdfs:label "L/C status" ;
+    rdfs:comment "Lifecycle status of the letter of credit (ISSUED, AMENDED, DRAWN, EXPIRED, CANCELLED)." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range xsd:string .
+
+:lcIssueDate a owl:DatatypeProperty ;
+    rdfs:label "L/C issue date" ;
+    rdfs:comment "Date the letter of credit was issued." ;
+    rdfs:domain :LetterOfCredit ;
+    rdfs:range xsd:date .
+
+:collectionType a owl:DatatypeProperty ;
+    rdfs:label "collection type" ;
+    rdfs:comment "Type of documentary collection (DOCUMENTS_AGAINST_PAYMENT, DOCUMENTS_AGAINST_ACCEPTANCE)." ;
+    rdfs:domain :DocumentaryCollection ;
+    rdfs:range xsd:string .
+
+:guaranteeType a owl:DatatypeProperty ;
+    rdfs:label "guarantee type" ;
+    rdfs:comment "Type of bank guarantee (PERFORMANCE_BOND, ADVANCE_PAYMENT, BID_BOND, PAYMENT_GUARANTEE, RETENTION_GUARANTEE)." ;
+    rdfs:domain :BankGuarantee ;
+    rdfs:range xsd:string .
+
+:guaranteeAmount a owl:DatatypeProperty ;
+    rdfs:label "guarantee amount" ;
+    rdfs:comment "Monetary value of the bank guarantee." ;
+    rdfs:domain :BankGuarantee ;
+    rdfs:range xsd:decimal .
+
+:financingType a owl:DatatypeProperty ;
+    rdfs:label "financing type" ;
+    rdfs:comment "Type of financing arrangement (FACTORING, REVERSE_FACTORING, FORFAITING, PURCHASE_ORDER_FINANCING, INVOICE_DISCOUNTING)." ;
+    rdfs:domain :FinancingArrangement ;
+    rdfs:range xsd:string .
+
+:financingAmount a owl:DatatypeProperty ;
+    rdfs:label "financing amount" ;
+    rdfs:comment "Total amount being financed." ;
+    rdfs:domain :FinancingArrangement ;
+    rdfs:range xsd:decimal .
+
+:financingStatus a owl:DatatypeProperty ;
+    rdfs:label "financing status" ;
+    rdfs:comment "Status of the financing arrangement (REQUESTED, APPROVED, ACTIVE, SETTLED, CANCELLED)." ;
+    rdfs:domain :FinancingArrangement ;
+    rdfs:range xsd:string .
+
+:discountRate a owl:DatatypeProperty ;
+    rdfs:label "discount rate" ;
+    rdfs:comment "The discount rate applied to the financed amount, as a percentage." ;
+    rdfs:domain :FinancingArrangement ;
+    rdfs:range xsd:decimal .
+
+:remittanceDate a owl:DatatypeProperty ;
+    rdfs:label "remittance date" ;
+    rdfs:comment "Date of the remittance advice." ;
+    rdfs:domain :RemittanceAdvice ;
+    rdfs:range xsd:date .
+
+:remittanceAmount a owl:DatatypeProperty ;
+    rdfs:label "remittance amount" ;
+    rdfs:comment "Total amount covered by the remittance advice." ;
+    rdfs:domain :RemittanceAdvice ;
+    rdfs:range xsd:decimal .
+
+:remittanceReference a owl:DatatypeProperty ;
+    rdfs:label "remittance reference" ;
+    rdfs:comment "Payment reference number associated with the remittance." ;
+    rdfs:domain :RemittanceAdvice ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Party-Account Datatype Properties (v1.4.0)
+#################################################################
+
+:iban a owl:DatatypeProperty ;
+    rdfs:label "IBAN" ;
+    rdfs:comment "International Bank Account Number (ISO 13616) of the bank account." ;
+    rdfs:domain :BankAccount ;
+    rdfs:range xsd:string .
+
+:bic a owl:DatatypeProperty ;
+    rdfs:label "BIC/SWIFT" ;
+    rdfs:comment "Business Identifier Code / SWIFT code (ISO 9362) of the account's bank." ;
+    rdfs:domain :BankAccount ;
+    rdfs:range xsd:string .
+
+:accountNumber a owl:DatatypeProperty ;
+    rdfs:label "account number" ;
+    rdfs:comment "Local/domestic bank account number (where IBAN is not used)." ;
+    rdfs:domain :BankAccount ;
+    rdfs:range xsd:string .
+
+:accountHolderName a owl:DatatypeProperty ;
+    rdfs:label "account holder name" ;
+    rdfs:comment "Name in which the bank account is held." ;
+    rdfs:domain :BankAccount ;
+    rdfs:range xsd:string .
+
+:creditLimit a owl:DatatypeProperty ;
+    rdfs:label "credit limit" ;
+    rdfs:comment """Maximum outstanding credit extended to the party. Pair with
+    :creditLimitCurrency for the monetary context. Note: in source systems this
+    is often role/relationship-scoped rather than a single party-wide value.""" ;
+    rdfs:domain party:TradeParty ;
+    rdfs:range xsd:decimal .
+
+:creditLimitCurrency a owl:DatatypeProperty ;
+    rdfs:label "credit limit currency" ;
+    rdfs:comment "ISO 4217 currency code qualifying :creditLimit." ;
+    rdfs:domain party:TradeParty ;
+    rdfs:range xsd:string .

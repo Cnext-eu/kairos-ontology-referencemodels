@@ -11,8 +11,8 @@
     dcterms:description "Customs declarations, duty calculations, tariff classifications, and filing procedures based on the WCO Data Model 3.10.0." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-06-13"^^xsd:date ;
-    owl:versionInfo "1.2.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.3.0" ;
     dcterms:source "WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056" ;
     rdfs:seeAlso <https://www.wcoomd.org/datamodel> .
 
@@ -37,7 +37,12 @@
     rdfs:label "Entry Exit Summary" ;
     rdfs:comment """A summary declaration submitted prior to or upon arrival/departure of goods at a customs territory.
 
-    WCO: Corresponds to Entry Summary Declaration (ENS) and Exit Summary Declaration (EXS) under WCO guidelines and EU ICS2 requirements.""" ;
+    WCO (Data Model 3.10.0 + EU ICS2): Corresponds to Entry Summary Declaration (ENS) and Exit Summary
+    Declaration (EXS) under WCO guidelines and EU ICS2 requirements. Own datatype properties: summaryType
+    (arrival/departure indicator), entryExitGoodsItemCount (WCO 228 count of goods items),
+    entryExitTotalGrossMass (WCO 131 total gross mass in kg), and customsOfficeEntryExitCode (UN/LOCODE or
+    national code of the customs office at entry/exit). See https://www.wcoomd.org/datamodel and
+    EU Regulation 2019/1929 (ICS2).""" ;
     rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/transport-call#TransportCall> ;
     rdfs:subClassOf :CustomsDeclaration .
 
@@ -45,21 +50,34 @@
     rdfs:label "Import Declaration" ;
     rdfs:comment """A customs declaration for goods being imported into a customs territory for release into free circulation.
 
-    WCO: Aligns with WCO Data Model 3.10.0 Import Declaration, covering standard and simplified procedures.""" ;
+    WCO (Data Model 3.10.0): Aligns with WCO Data Model 3.10.0 Import Declaration, covering standard and
+    simplified procedures. Own datatype properties: importTypeCode (WCO D013 IM variant), importOriginCountry
+    (ISO 3166-1 alpha-2 country from which goods were dispatched), importDate (date of importation). Inherits
+    declarationNumber, declarationType and other header properties from CustomsDeclaration. See
+    https://www.wcoomd.org/datamodel.""" ;
     rdfs:subClassOf :CustomsDeclaration .
 
 :ExportDeclaration a owl:Class ;
     rdfs:label "Export Declaration" ;
     rdfs:comment """A customs declaration for goods leaving a customs territory for export to a third country.
 
-    WCO: Aligns with WCO Data Model 3.10.0 Export Declaration, including pre-departure and post-departure filings.""" ;
+    WCO (Data Model 3.10.0): Aligns with WCO Data Model 3.10.0 Export Declaration, including pre-departure
+    and post-departure filings. Own datatype properties: exportTypeCode (WCO D013 EX variant), exportDate
+    (date of exportation), exportDestinationCountry (ISO 3166-1 alpha-2 destination country). Inherits
+    declarationNumber, declarationType, totalGrossWeight and other header properties from CustomsDeclaration.
+    See https://www.wcoomd.org/datamodel.""" ;
     rdfs:subClassOf :CustomsDeclaration .
 
 :TransitDeclaration a owl:Class ;
     rdfs:label "Transit Declaration" ;
     rdfs:comment """A customs declaration for goods moving through a customs territory under a transit procedure without being released.
 
-    WCO: Aligns with WCO Data Model 3.10.0 Transit Declaration, covering common and union transit procedures.""" ;
+    WCO (Data Model 3.10.0 + EU NCTS): Aligns with WCO Data Model 3.10.0 Transit Declaration and the EU New
+    Computerised Transit System (NCTS) procedures. Own datatype properties: movementReferenceNumber (MRN),
+    transitStatusCode (T1/T2/T2F/TIR indicator per WCO T020), customsOfficeDepartureCode (office where the
+    transit movement begins), customsOfficeDestinationCode (office where the movement is discharged), and
+    transitGuaranteeAmount (monetary amount of the customs guarantee covering potential transit debt). See
+    https://www.wcoomd.org/datamodel and Common Transit Convention / NCTS specifications.""" ;
     rdfs:subClassOf :CustomsDeclaration .
 
 #################################################################
@@ -70,7 +88,11 @@
     rdfs:label "Filing" ;
     rdfs:comment """A submission event representing the act of filing a customs declaration with the relevant authority.
 
-    WCO: Captures the filing metadata including reference number, date, and submission channel as defined in the WCO Data Model.""" ;
+    WCO (Data Model 3.10.0): Captures the filing metadata including reference number, date, and submission
+    channel as defined in the WCO Data Model. Own datatype properties: filingReference, filingDate,
+    filingType (WCO 017 function/original-amendment-cancellation, or channel: electronic, paper, EDI),
+    filingStatus (received / accepted / rejected), filingCustomsOfficeCode (UN/LOCODE or national code of
+    the customs office receiving the filing). See https://www.wcoomd.org/datamodel.""" ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :filingReference ;
@@ -81,7 +103,10 @@
     rdfs:label "Authority Message" ;
     rdfs:comment """A message issued by a customs authority in response to a declaration or filing, such as acceptance, rejection, or query.
 
-    WCO: Represents official communications from customs administrations as described in the WCO messaging framework.""" .
+    WCO (Data Model 3.10.0): Represents official communications from customs administrations as described in
+    the WCO messaging framework. Own datatype properties: messageType, messageReference, messageIssueDateTime,
+    receivingCustomsOfficeCode — all backed by WCO Data Model 3.10.0 message exchange elements. See
+    https://www.wcoomd.org/datamodel.""" .
 
 :InspectionReference a owl:Class ;
     rdfs:label "Inspection Reference" ;
@@ -93,7 +118,11 @@
     rdfs:label "ICS2 Reference" ;
     rdfs:comment """A reference to data exchanged with the EU Import Control System 2 (ICS2) for advance cargo information.
 
-    WCO: Supports the EU ICS2 pre-loading and pre-arrival safety and security filing requirements under Union Customs Code.""" .
+    WCO + EU ICS2 (Reg. 2019/1929): Supports the EU ICS2 pre-loading and pre-arrival safety and security filing
+    requirements under Union Customs Code. Own datatype properties: ics2ReferenceType (ENS filing phase:
+    pre-loading / pre-arrival, or supplementary filing), ics2MRN (Movement Reference Number issued by ICS2
+    upon acceptance), ics2DeclarationType (master/house/supplementary ENS as defined in ICS2 deployment
+    phases). See https://taxation-customs.ec.europa.eu/ics2.""" .
 
 #################################################################
 #    Declaration Assessment Classes
@@ -103,7 +132,10 @@
     rdfs:label "Declaration Status" ;
     rdfs:comment """The current processing status of a customs declaration within the customs authority system.
 
-    WCO: Aligns with WCO Data Model 3.10.0 status lifecycle codes for declaration processing and release.""" .
+    WCO (Data Model 3.10.0): Aligns with WCO Data Model 3.10.0 status lifecycle codes for declaration
+    processing and release. Own datatype properties: statusCode, statusDateTime, statusCodeList (the published
+    code list governing statusCode, e.g. WCO 024 Declaration Status Code), and statusReasonCode (WCO 099,
+    reason for the current status such as rejection or query). See https://www.wcoomd.org/datamodel.""" .
 
 :DutyCalculation a owl:Class ;
     rdfs:label "Duty Calculation" ;
@@ -120,7 +152,12 @@
     rdfs:label "Tariff Classification" ;
     rdfs:comment """The classification of goods under the Harmonized System (HS) for customs tariff and statistical purposes.
 
-    WCO: Aligns with the WCO Harmonized System nomenclature and WCO Data Model 3.10.0 commodity classification elements.""" ;
+    WCO (Harmonized System + Data Model 3.10.0): Aligns with the WCO Harmonized System nomenclature and
+    WCO Data Model 3.10.0 commodity classification elements. Own datatype properties: hsCode (HS 6-digit
+    commodity code), hsVersionYear (HS Nomenclature edition year, e.g. 2022 / 2027 / 2028), hsSupplementaryUnit
+    (WCO 130 supplementary unit of measure applicable to the heading — e.g. litres, pairs, m²), and
+    hsCustomsProcedureCode (WCO 200 customs procedure code under which the classified goods are declared). See
+    https://www.wcoomd.org/hs and https://www.wcoomd.org/datamodel.""" ;
     rdfs:seeAlso <https://www.kairosflow.ai/ont/bsp/compliance#hsCode> ;
     rdfs:subClassOf [
         a owl:Restriction ;
@@ -143,7 +180,12 @@
     rdfs:label "Preference Claim" ;
     rdfs:comment """A claim for preferential tariff treatment based on rules of origin under a free trade agreement or customs union.
 
-    WCO: Aligns with WCO Rules of Origin guidelines and Data Model 3.0 preference and origin data elements.""" .
+    WCO (Data Model 3.10.0 + Rules of Origin): Aligns with WCO Rules of Origin guidelines and Data Model 3.10.0
+    preference and origin data elements. Own datatype properties: preferenceCode (WCO 144 preferential tariff
+    treatment code), preferenceTypeCode (WCO 166 type of preferential treatment — FTA / GSP / autonomous),
+    preferenceCertificateReference (reference to the proof of origin supporting the claim),
+    preferenceCalculationMethod (WCO method used to compute the preferential rate — ad-valorem reduction,
+    flat reduction, duty suspension). See https://www.wcoomd.org/datamodel.""" .
 
 #################################################################
 #    Object Properties
@@ -717,3 +759,235 @@
     rdfs:comment "Date by which special procedure obligations must be discharged." ;
     rdfs:domain :CustomsProcedure ;
     rdfs:range xsd:date .
+
+#################################################################
+#    Authority Message Datatype Properties (WCO DM 3.10.0)
+#################################################################
+
+:messageType a owl:DatatypeProperty ;
+    rdfs:label "message type" ;
+    rdfs:comment "Type of authority message per WCO Data Model 3.10.0 message exchange framework (e.g. acceptance, rejection, query, release)." ;
+    rdfs:domain :AuthorityMessage ;
+    rdfs:range xsd:string .
+
+:messageReference a owl:DatatypeProperty ;
+    rdfs:label "message reference" ;
+    rdfs:comment "Unique reference number identifying the authority message (WCO Data Model 3.10.0 message identifier)." ;
+    rdfs:domain :AuthorityMessage ;
+    rdfs:range xsd:string .
+
+:messageIssueDateTime a owl:DatatypeProperty ;
+    rdfs:label "message issue date time" ;
+    rdfs:comment "Date and time on which the customs authority issued the message (WCO Data Model 3.10.0 message date/time)." ;
+    rdfs:domain :AuthorityMessage ;
+    rdfs:range xsd:dateTime .
+
+:receivingCustomsOfficeCode a owl:DatatypeProperty ;
+    rdfs:label "receiving customs office code" ;
+    rdfs:comment "UN/LOCODE or national code of the customs office receiving the message (WCO Data Model 3.10.0)." ;
+    rdfs:domain :AuthorityMessage ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Declaration Status Datatype Properties (WCO DM 3.10.0)
+#################################################################
+
+:statusCodeList a owl:DatatypeProperty ;
+    rdfs:label "status code list" ;
+    rdfs:comment "Identifier of the code list governing statusCode (e.g. WCO 024 Declaration Status Code)." ;
+    rdfs:domain :DeclarationStatus ;
+    rdfs:range xsd:string .
+
+:statusReasonCode a owl:DatatypeProperty ;
+    rdfs:label "status reason code" ;
+    rdfs:comment "Reason code explaining the current status (WCO 099, e.g. reason for rejection, query, amendment)." ;
+    rdfs:domain :DeclarationStatus ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Entry/Exit Summary Datatype Properties (WCO DM 3.10.0 + EU ICS2)
+#################################################################
+
+:summaryType a owl:DatatypeProperty ;
+    rdfs:label "summary type" ;
+    rdfs:comment "Indicator of the summary declaration type: arrival (ENS) or departure (EXS), per WCO ICS2 / EU Reg. 2019/1929." ;
+    rdfs:domain :EntryExitSummary ;
+    rdfs:range xsd:string .
+
+:entryExitGoodsItemCount a owl:DatatypeProperty ;
+    rdfs:label "entry exit goods item count" ;
+    rdfs:comment "Total number of goods items declared in the entry/exit summary (WCO 228)." ;
+    rdfs:domain :EntryExitSummary ;
+    rdfs:range xsd:integer .
+
+:entryExitTotalGrossMass a owl:DatatypeProperty ;
+    rdfs:label "entry exit total gross mass" ;
+    rdfs:comment "Total gross mass of all goods declared in the summary, in kilograms (WCO 131)." ;
+    rdfs:domain :EntryExitSummary ;
+    rdfs:range xsd:decimal .
+
+:customsOfficeEntryExitCode a owl:DatatypeProperty ;
+    rdfs:label "customs office entry exit code" ;
+    rdfs:comment "UN/LOCODE or national code of the customs office where the goods enter or exit the customs territory (WCO Data Model 3.10.0)." ;
+    rdfs:domain :EntryExitSummary ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Import Declaration Datatype Properties (WCO DM 3.10.0)
+#################################################################
+
+:importTypeCode a owl:DatatypeProperty ;
+    rdfs:label "import type code" ;
+    rdfs:comment "Type code of the import declaration (WCO D013 IM variant: standard, simplified, supplementary)." ;
+    rdfs:domain :ImportDeclaration ;
+    rdfs:range xsd:string .
+
+:importOriginCountry a owl:DatatypeProperty ;
+    rdfs:label "import origin country" ;
+    rdfs:comment "ISO 3166-1 alpha-2 code of the country from which the goods were dispatched (WCO 062 country of origin)." ;
+    rdfs:domain :ImportDeclaration ;
+    rdfs:range xsd:string .
+
+:importDate a owl:DatatypeProperty ;
+    rdfs:label "import date" ;
+    rdfs:comment "Date on which the import declaration is effective or goods are imported into the customs territory (WCO Data Model 3.10.0)." ;
+    rdfs:domain :ImportDeclaration ;
+    rdfs:range xsd:date .
+
+#################################################################
+#    Export Declaration Datatype Properties (WCO DM 3.10.0)
+#################################################################
+
+:exportTypeCode a owl:DatatypeProperty ;
+    rdfs:label "export type code" ;
+    rdfs:comment "Type code of the export declaration (WCO D013 EX variant: pre-departure, post-departure, regular)." ;
+    rdfs:domain :ExportDeclaration ;
+    rdfs:range xsd:string .
+
+:exportDestinationCountry a owl:DatatypeProperty ;
+    rdfs:label "export destination country" ;
+    rdfs:comment "ISO 3166-1 alpha-2 code of the destination country to which the goods are exported (WCO 465)." ;
+    rdfs:domain :ExportDeclaration ;
+    rdfs:range xsd:string .
+
+:exportDate a owl:DatatypeProperty ;
+    rdfs:label "export date" ;
+    rdfs:comment "Date on which the export declaration is effective or the goods are exported from the customs territory (WCO Data Model 3.10.0)." ;
+    rdfs:domain :ExportDeclaration ;
+    rdfs:range xsd:date .
+
+#################################################################
+#    Transit Declaration Datatype Properties (WCO DM + NCTS)
+#################################################################
+
+:transitStatusCode a owl:DatatypeProperty ;
+    rdfs:label "transit status code" ;
+    rdfs:comment "Transit procedure indicator per WCO T020: T1 (external Union transit), T2 (internal Union transit), T2F, TIR." ;
+    rdfs:domain :TransitDeclaration ;
+    rdfs:range xsd:string .
+
+:customsOfficeDepartureCode a owl:DatatypeProperty ;
+    rdfs:label "customs office of departure code" ;
+    rdfs:comment "Code of the customs office at which the transit movement begins (NCTS office of departure, Common Transit Convention)." ;
+    rdfs:domain :TransitDeclaration ;
+    rdfs:range xsd:string .
+
+:customsOfficeDestinationCode a owl:DatatypeProperty ;
+    rdfs:label "customs office of destination code" ;
+    rdfs:comment "Code of the customs office at which the transit movement is discharged (NCTS office of destination, Common Transit Convention)." ;
+    rdfs:domain :TransitDeclaration ;
+    rdfs:range xsd:string .
+
+:transitGuaranteeAmount a owl:DatatypeProperty ;
+    rdfs:label "transit guarantee amount" ;
+    rdfs:comment "Monetary amount of the customs guarantee covering potential transit debt (NCTS Common Transit Convention)." ;
+    rdfs:domain :TransitDeclaration ;
+    rdfs:range xsd:decimal .
+
+#################################################################
+#    Filing Datatype Properties (WCO DM 3.10.0)
+#################################################################
+
+:filingType a owl:DatatypeProperty ;
+    rdfs:label "filing type" ;
+    rdfs:comment "Type of filing submission (WCO 017: original, amendment, cancellation) or channel (electronic, paper, EDI)." ;
+    rdfs:domain :Filing ;
+    rdfs:range xsd:string .
+
+:filingStatus a owl:DatatypeProperty ;
+    rdfs:label "filing status" ;
+    rdfs:comment "Current processing status of the filing: received, accepted, rejected (WCO Data Model 3.10.0)." ;
+    rdfs:domain :Filing ;
+    rdfs:range xsd:string .
+
+:filingCustomsOfficeCode a owl:DatatypeProperty ;
+    rdfs:label "filing customs office code" ;
+    rdfs:comment "UN/LOCODE or national code of the customs office receiving the filing (WCO Data Model 3.10.0)." ;
+    rdfs:domain :Filing ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    ICS2 Reference Datatype Properties (EU ICS2 Reg. 2019/1929)
+#################################################################
+
+:ics2ReferenceType a owl:DatatypeProperty ;
+    rdfs:label "ICS2 reference type" ;
+    rdfs:comment "Type of ICS2 reference: pre-loading / pre-arrival ENS, or supplementary filing (EU ICS2 deployment phases, Reg. 2019/1929)." ;
+    rdfs:domain :ICS2Reference ;
+    rdfs:range xsd:string .
+
+:ics2MRN a owl:DatatypeProperty ;
+    rdfs:label "ICS2 MRN" ;
+    rdfs:comment "Movement Reference Number (MRN) issued by ICS2 upon acceptance of the entry summary declaration (EU ICS2)." ;
+    rdfs:domain :ICS2Reference ;
+    rdfs:range xsd:string .
+
+:ics2DeclarationType a owl:DatatypeProperty ;
+    rdfs:label "ICS2 declaration type" ;
+    rdfs:comment "ICS2 ENS filing type: master, house, or supplementary filing as defined in EU ICS2 deployment phases." ;
+    rdfs:domain :ICS2Reference ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Preference Claim Datatype Properties (WCO DM 3.10.0 + RoO)
+#################################################################
+
+:preferenceTypeCode a owl:DatatypeProperty ;
+    rdfs:label "preference type code" ;
+    rdfs:comment "Type of preferential treatment claimed (WCO 166: FTA, GSP, autonomous, customs union)." ;
+    rdfs:domain :PreferenceClaim ;
+    rdfs:range xsd:string .
+
+:preferenceCertificateReference a owl:DatatypeProperty ;
+    rdfs:label "preference certificate reference" ;
+    rdfs:comment "Reference to the proof of origin document supporting the preference claim (WCO 145)." ;
+    rdfs:domain :PreferenceClaim ;
+    rdfs:range xsd:string .
+
+:preferenceCalculationMethod a owl:DatatypeProperty ;
+    rdfs:label "preference calculation method" ;
+    rdfs:comment "Method used to compute the preferential rate (WCO): ad-valorem reduction, flat reduction, or duty suspension." ;
+    rdfs:domain :PreferenceClaim ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Tariff Classification Datatype Properties (WCO HS + DM 3.10.0)
+#################################################################
+
+:hsVersionYear a owl:DatatypeProperty ;
+    rdfs:label "HS version year" ;
+    rdfs:comment "Year of the WCO Harmonized System nomenclature edition used for classification (e.g. 2022, 2027, 2028)." ;
+    rdfs:domain :TariffClassification ;
+    rdfs:range xsd:string .
+
+:hsSupplementaryUnit a owl:DatatypeProperty ;
+    rdfs:label "HS supplementary unit" ;
+    rdfs:comment "Supplementary unit of measure required by the HS heading for the classified goods (WCO 130, e.g. litres, pairs, m²)." ;
+    rdfs:domain :TariffClassification ;
+    rdfs:range xsd:string .
+
+:hsCustomsProcedureCode a owl:DatatypeProperty ;
+    rdfs:label "HS customs procedure code" ;
+    rdfs:comment "Customs procedure code under which the classified goods are declared (WCO 200)." ;
+    rdfs:domain :TariffClassification ;
+    rdfs:range xsd:string .

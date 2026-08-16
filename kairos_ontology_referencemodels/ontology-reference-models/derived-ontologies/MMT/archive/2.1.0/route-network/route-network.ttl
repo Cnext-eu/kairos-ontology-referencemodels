@@ -1,0 +1,77 @@
+@prefix : <https://www.kairosflow.ai/ont/mmt/route-network#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix mmt-evt: <https://www.kairosflow.ai/ont/mmt/events#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/mmt/route-network> a owl:Ontology ;
+    dcterms:title "MMT Route Network Domain" ;
+    dcterms:description """Route and transport service classes for the Kairos Multi-Modal Transport ontology.
+
+    Covers transport routes, itinerary stops, and service definitions.
+    Based on UN/CEFACT MMT Reference Data Model (TransportRouteType, TransportServiceType).""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-21"^^xsd:date ;
+    owl:versionInfo "2.1.0" ;
+    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model v1.0 (RABIE v101)" ;
+    rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
+
+#################################################################
+#    Route Classes (TransportRouteType)
+#################################################################
+
+:Route a owl:Class ;
+    rdfs:label "Route" ;
+    rdfs:comment """A defined transport path between origin and destination.
+
+    UN/CEFACT RABIE: TransportRouteType — identified by ID, has itinerary
+    stops (ItineraryStopTransportEvent), frequency, and scheduled period.""" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasItineraryStop a owl:ObjectProperty ;
+    rdfs:label "has itinerary stop" ;
+    rdfs:comment "An itinerary stop event along this route." ;
+    rdfs:domain :Route ;
+    rdfs:range mmt-evt:TransportEvent .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:routeCode a owl:DatatypeProperty ;
+    rdfs:label "route code" ;
+    rdfs:comment "Identifier code for the route (TransportRouteType.ID)." ;
+    rdfs:domain :Route ;
+    rdfs:range xsd:string .
+
+:routeDescription a owl:DatatypeProperty ;
+    rdfs:label "route description" ;
+    rdfs:comment "Description of the route." ;
+    rdfs:domain :Route ;
+    rdfs:range xsd:string .
+
+:frequencyTypeCode a owl:DatatypeProperty ;
+    rdfs:label "frequency type code" ;
+    rdfs:comment "Code indicating service frequency (TransportRouteType.FrequencyTypeCode)." ;
+    rdfs:domain :Route ;
+    rdfs:range xsd:string .
+
+:securityLevelCode a owl:DatatypeProperty ;
+    rdfs:label "security level code" ;
+    rdfs:comment "ISPS security level applicable to this route." ;
+    rdfs:domain :Route ;
+    rdfs:range xsd:string .
+
+:statusCode a owl:DatatypeProperty ;
+    rdfs:label "status code" ;
+    rdfs:comment "Operational status of the route." ;
+    rdfs:domain :Route ;
+    rdfs:range xsd:string .
+

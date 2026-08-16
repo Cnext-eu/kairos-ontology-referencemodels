@@ -1,0 +1,136 @@
+@prefix : <https://www.kairosflow.ai/ont/rail/consignment#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix party: <https://www.kairosflow.ai/ont/rail/party#> .
+
+<https://www.kairosflow.ai/ont/rail/consignment> a owl:Ontology ;
+    dcterms:title "RAIL Consignment — Consignment Order Message" ;
+    dcterms:description """Consignment-grain concepts for rail, grounded in TAF TSI:
+    Consignment Order Message (Lead RU to RU, the ORFEUS Electronic Consignment
+    Note backbone), Consignment Level Data, Consignment Identification, Shipment
+    Type, Exceptional Consignment. Binds at the carrier-reservation grain
+    (grain 3). v1.0.0.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-08-15"^^xsd:date ;
+    dcterms:modified "2026-08-15"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd: ConsignmentOrderMessage, ConsignmentLevelData, ConsignmentIdentification, ConsignmentNumber, ShipmentType, ExceptionalConsignment, PreviousConsignmentNumber" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+#################################################################
+#    Consignment Classes (reservation grain)
+#################################################################
+
+:ConsignmentOrderMessage a owl:Class ;
+    rdfs:label "Consignment Order Message" ;
+    rdfs:comment """Consignment Order Message from Lead RU to RU. The ORFEUS Electronic
+    Consignment Note backbone. Corresponds to the ConsignmentOrderMessage
+    element in taf_cat_complete.xsd.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, element ConsignmentOrderMessage" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+:ConsignmentLevelData a owl:Class ;
+    rdfs:label "Consignment Level Data" ;
+    rdfs:comment """Consignment-level data block within a Consignment Order Message.
+    Corresponds to ConsignmentLevelData in taf_cat_complete.xsd.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, element ConsignmentLevelData" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+:ConsignmentIdentification a owl:Class ;
+    rdfs:label "Consignment Identification" ;
+    rdfs:comment """Identification of a consignment (consignee, consignor, dossier
+    number). Corresponds to ConsignmentIdentification / ConsignmentIdent type
+    in taf_cat_complete.xsd.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, element ConsignmentIdentification, complexType ConsignmentIdent" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+:ShipmentType a owl:Class ;
+    rdfs:label "Shipment Type" ;
+    rdfs:comment """Classification of the shipment within a Consignment Order Message.
+    Corresponds to ShipmentType in taf_cat_complete.xsd.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, element ShipmentType" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+:ExceptionalConsignment a owl:Class ;
+    rdfs:label "Exceptional Consignment" ;
+    rdfs:comment """Exceptional consignment (out-of-gauge, heavy-load) carried under a
+    Consignment Order. Corresponds to ExceptionalConsignment in
+    taf_cat_complete.xsd.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, element ExceptionalConsignment" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+#################################################################
+#    Properties
+#################################################################
+
+:consignmentNumber a owl:DatatypeProperty ;
+    rdfs:label "consignment number" ;
+    rdfs:comment """Unique consignment number. Corresponds to ConsignmentNumber in
+    taf_cat_complete.xsd.""" ;
+    rdfs:domain :ConsignmentIdentification ;
+    rdfs:range xsd:string .
+
+:previousConsignmentNumber a owl:DatatypeProperty ;
+    rdfs:label "previous consignment number" ;
+    rdfs:comment """Reference to a prior consignment number for continuity.
+    Corresponds to PreviousConsignmentNumber in taf_cat_complete.xsd.""" ;
+    rdfs:domain :ConsignmentIdentification ;
+    rdfs:range xsd:string .
+
+:dossierNumber a owl:DatatypeProperty ;
+    rdfs:label "dossier number" ;
+    rdfs:comment "Dossier number of a Consignment Order Message (COM_Header)." ;
+    rdfs:domain :ConsignmentOrderMessage ;
+    rdfs:range xsd:string .
+
+:versionNumber a owl:DatatypeProperty ;
+    rdfs:label "version number" ;
+    rdfs:comment "Version number of a Consignment Order Message (COM_Header)." ;
+    rdfs:domain :ConsignmentOrderMessage ;
+    rdfs:range xsd:string .
+
+:comPreparationDatetime a owl:DatatypeProperty ;
+    rdfs:label "COM preparation datetime" ;
+    rdfs:comment """Preparation datetime of the Consignment Order Message
+    (COM_PreparationDatetime).""" ;
+    rdfs:domain :ConsignmentOrderMessage ;
+    rdfs:range xsd:dateTime .
+
+:hasConsignmentLevelData a owl:ObjectProperty ;
+    rdfs:label "has consignment level data" ;
+    rdfs:comment "Links a Consignment Order Message to its consignment-level data." ;
+    rdfs:domain :ConsignmentOrderMessage ;
+    rdfs:range :ConsignmentLevelData .
+
+:hasConsignmentIdentification a owl:ObjectProperty ;
+    rdfs:label "has consignment identification" ;
+    rdfs:comment "Identifies a consignment within a Consignment Order Message." ;
+    rdfs:domain :ConsignmentLevelData ;
+    rdfs:range :ConsignmentIdentification .
+
+:hasShipmentType a owl:ObjectProperty ;
+    rdfs:label "has shipment type" ;
+    rdfs:comment "Classifies the shipment type of a consignment." ;
+    rdfs:domain :ConsignmentLevelData ;
+    rdfs:range :ShipmentType .
+
+:hasExceptionalConsignment a owl:ObjectProperty ;
+    rdfs:label "has exceptional consignment" ;
+    rdfs:comment """Marks a consignment as exceptional (out-of-gauge / heavy-load).""" ;
+    rdfs:domain :ConsignmentLevelData ;
+    rdfs:range :ExceptionalConsignment .
+
+:sendingRU a owl:ObjectProperty ;
+    rdfs:label "sending RU" ;
+    rdfs:comment "The Railway Undertaking that created or amended the COM (SendingRU)." ;
+    rdfs:domain :ConsignmentOrderMessage ;
+    rdfs:range party:RailwayUndertaking .
+
+:receivingRU a owl:ObjectProperty ;
+    rdfs:label "receiving RU" ;
+    rdfs:comment "The Railway Undertaking that receives the COM (ReceivingRU)." ;
+    rdfs:domain :ConsignmentOrderMessage ;
+    rdfs:range party:RailwayUndertaking .

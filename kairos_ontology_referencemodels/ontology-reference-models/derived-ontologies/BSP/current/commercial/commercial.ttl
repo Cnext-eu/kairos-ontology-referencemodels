@@ -6,6 +6,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix fin: <https://www.kairosflow.ai/ont/bsp/financial#> .
 @prefix refdata: <https://www.kairosflow.ai/ont/bsp/reference-data#> .
+@prefix party: <https://www.kairosflow.ai/ont/bsp/party#> .
 
 # Ontology Metadata
 <https://www.kairosflow.ai/ont/bsp/commercial> a owl:Ontology ;
@@ -18,8 +19,8 @@
     - Events: Business events, order events, shipment events""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-08-13"^^xsd:date ;
-    owl:versionInfo "2.1.0" ;
+    dcterms:modified "2026-09-17"^^xsd:date ;
+    owl:versionInfo "2.3.0" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
@@ -52,14 +53,23 @@
     rdfs:label "Sales Order" ;
     rdfs:comment """An order confirmation from a seller to a buyer accepting terms and conditions.
     
-    ISO BSP: Seller's acceptance and commitment to fulfill order.""" ;
+    ISO BSP: Seller's acceptance and commitment to fulfill order.
+
+    Properties:
+    - salesOrderNumber: unique identifier for the sales order.
+    - salesOrderDate: date the sales order was confirmed.""" ;
     rdfs:subClassOf :CommercialTransaction .
 
 :Quotation a owl:Class ;
     rdfs:label "Quotation" ;
     rdfs:comment """An offer by a seller to supply goods or services at stated prices and terms.
     
-    ISO BSP: Pre-order price and terms proposal.""" ;
+    ISO BSP: Pre-order price and terms proposal.
+
+    Properties:
+    - quotationNumber: unique identifier for the quotation.
+    - quotationDate: date the quotation was issued.
+    - quotationValidityDays: number of days the quotation remains valid.""" ;
     rdfs:subClassOf :CommercialTransaction .
 
 :SalesContract a owl:Class ;
@@ -67,7 +77,12 @@
     rdfs:comment """A formal agreement between buyer and seller defining rights and obligations.
     
     UN/CEFACT BSP: Maps to Contract — an agreement between two or more
-    parties for trade purposes.""" ;
+    parties for trade purposes.
+
+    Properties:
+    - contractNumber: unique identifier for the contract.
+    - contractDate: date the contract was executed.
+    - contractTerms: textual description of key contractual terms and conditions.""" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/Contract> ;
     rdfs:subClassOf :CommercialTransaction .
 
@@ -158,20 +173,38 @@
     rdfs:label "Shipment Line" ;
     rdfs:comment """A line item within a shipment detailing specific goods being transported.
     
-    ISO BSP: Granular shipment content detail.""" .
+    UN/CEFACT BSP: Maps to SupplyChainTradeLineItem — specific goods on a shipment.
+
+    Properties:
+    - shipmentLineId: unique identifier for the shipment line.
+    - lineItemNumber: sequential line number within the shipment.
+    - lineQuantity: quantity of units on this shipment line.
+    - lineDescription: description of goods on this shipment line.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/SupplyChainTradeLineItem> .
 
 :TransportService a owl:Class ;
     rdfs:label "Transport Service" ;
     rdfs:comment """A service for moving goods from origin to destination.
     
-    ISO BSP: Logistics service offering.""" ;
+    UN/CEFACT BSP: Maps to LogisticsService — a logistics transport service offering.
+
+    Properties:
+    - serviceType: type of transport service (e.g., FTL, LTL, FCL, LCL, AIR Express, RAIL).
+    - transportMode: mode of transport (ROAD, SEA, AIR, RAIL, MULTIMODAL).""" ;
     rdfs:seeAlso <https://www.kairosflow.ai/ont/mmt/consignment#TransportService> .
 
 :TransportLeg a owl:Class ;
     rdfs:label "Transport Leg" ;
     rdfs:comment """A segment of transport journey using a single mode.
     
-    ISO BSP: Individual movement in multi-modal transport.""" ;
+    UN/CEFACT BSP: Maps to TransportMovement — individual movement in
+    multi-modal transport.
+
+    Properties:
+    - legSequence: sequence number of this leg in the overall journey.
+    - legTransportMode: mode of transport for this leg (ROAD, SEA, AIR, RAIL).
+    - legOrigin: name or identifier of the leg's origin location.
+    - legDestination: name or identifier of the leg's destination location.""" ;
     rdfs:seeAlso <https://www.kairosflow.ai/ont/mmt/consignment#TransportLeg> .
 
 :TransportEquipment a owl:Class ;
@@ -179,7 +212,15 @@
     rdfs:comment """Equipment used to transport goods (containers, pallets, etc.).
     
     UN/CEFACT BSP: Maps to LogisticsTransportEquipment — a piece of equipment
-    used to hold, protect or secure cargo for logistics purposes.""" ;
+    used to hold, protect or secure cargo for logistics purposes.
+
+    Properties:
+    - equipmentId: unique identifier (e.g., container number per ISO 6346 / BIC code).
+    - equipmentType: type code (CONTAINER, PALLET, FLAT_RACK, TANK, OPEN_TOP).
+    - equipmentSizeType: ISO 6346 size/type code (e.g., 22G1, 45G1).
+    - tareWeight: unladen weight of the equipment.
+    - sealNumber: security seal identifier.
+    - equipmentOwner: party that owns the equipment.""" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/LogisticsTransportEquipment> ;
     rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/equipment#Container> .
 
@@ -188,7 +229,16 @@
     rdfs:comment """A physical unit in which goods are packed.
     
     UN/CEFACT BSP: Maps to Package — a self-contained wrapping or container
-    within which goods can be contained for logistics purposes.""" ;
+    within which goods can be contained for logistics purposes.
+    Package type codes per UN/CEFACT Recommendation 21.
+
+    Properties:
+    - packageId: unique identifier for the package (logistics label / SSCC).
+    - packageTypeCode: UN/CEFACT Rec 21 code (BX, PL, CR, DR, etc.).
+    - marksAndNumbers: shipping marks and numbers for identification.
+    - packageGrossWeight: total weight including contents and packaging.
+    - packageNetWeight: weight of contents only.
+    - packageVolume: cubic volume the package occupies.""" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/Package> .
 
 #################################################################
@@ -269,6 +319,13 @@
     rdfs:comment "Relates shipment to transport equipment." ;
     rdfs:domain :Shipment ;
     rdfs:range :TransportEquipment .
+
+:equipmentOwner a owl:ObjectProperty ;
+    rdfs:label "equipment owner" ;
+    rdfs:comment "Party that owns the transport equipment. UN/CEFACT CCL D23B: LogisticsTransportEquipment.ownerParty." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/LogisticsTransportEquipment> ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range party:TradeParty .
 
 :hasEvent a owl:ObjectProperty ;
     rdfs:label "has event" ;
@@ -514,3 +571,206 @@
     rdfs:comment "Date the order response was issued." ;
     rdfs:domain :OrderResponse ;
     rdfs:range xsd:date .
+
+#################################################################
+#    Datatype Properties — Commercial Enrichment (BSP 2.3.0)
+#    Backed by UN/CEFACT CCL D23B and ISO 20197-1:2024 BSP
+#################################################################
+
+:equipmentId a owl:DatatypeProperty ;
+    rdfs:label "equipment ID" ;
+    rdfs:comment "Unique identifier for transport equipment (e.g., container number per ISO 6346 / BIC code). UN/CEFACT CCL D23B: LogisticsTransportEquipment.identifier." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/LogisticsTransportEquipment> ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:string .
+
+:equipmentType a owl:DatatypeProperty ;
+    rdfs:label "equipment type" ;
+    rdfs:comment "Type of transport equipment (CONTAINER, PALLET, FLAT_RACK, TANK, OPEN_TOP). UN/CEFACT CCL D23B: LogisticsTransportEquipment.typeCode." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/LogisticsTransportEquipment> ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:string .
+
+:equipmentSizeType a owl:DatatypeProperty ;
+    rdfs:label "equipment size/type" ;
+    rdfs:comment "ISO 6346 size/type code (e.g., 22G1, 45G1). UN/CEFACT CCL D23B: LogisticsTransportEquipment.categoryCode." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/LogisticsTransportEquipment> ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:string .
+
+:sealNumber a owl:DatatypeProperty ;
+    rdfs:label "seal number" ;
+    rdfs:comment "Security seal identifier. UN/CEFACT CCL D23B: LogisticsTransportEquipment.seal.identifier." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Seal> ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:string .
+
+:tareWeight a owl:DatatypeProperty ;
+    rdfs:label "tare weight" ;
+    rdfs:comment "Unladen weight of the equipment (kg). UN/CEFACT CCL D23B: LogisticsTransportEquipment.tareWeightMeasurement." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/LogisticsTransportEquipment> ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:decimal .
+
+:packageId a owl:DatatypeProperty ;
+    rdfs:label "package ID" ;
+    rdfs:comment "Unique identifier for the package (logistics label / SSCC). UN/CEFACT CCL D23B: Package.identifier." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Package> ;
+    rdfs:domain :Package ;
+    rdfs:range xsd:string .
+
+:packageTypeCode a owl:DatatypeProperty ;
+    rdfs:label "package type code" ;
+    rdfs:comment "UN/CEFACT Recommendation 21 package type code (BX, PL, CR, DR, etc.)." ;
+    rdfs:seeAlso <https://unece.org/trade/cefact/UNLOCODE> ;
+    rdfs:domain :Package ;
+    rdfs:range xsd:string .
+
+:marksAndNumbers a owl:DatatypeProperty ;
+    rdfs:label "marks and numbers" ;
+    rdfs:comment "Shipping marks and numbers for package identification. UN/CEFACT CCL D23B: Package.shippingMarks." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Package> ;
+    rdfs:domain :Package ;
+    rdfs:range xsd:string .
+
+:packageGrossWeight a owl:DatatypeProperty ;
+    rdfs:label "package gross weight" ;
+    rdfs:comment "Total weight including contents and packaging (kg). UN/CEFACT CCL D23B: Package.grossWeight." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Package> ;
+    rdfs:domain :Package ;
+    rdfs:range xsd:decimal .
+
+:packageNetWeight a owl:DatatypeProperty ;
+    rdfs:label "package net weight" ;
+    rdfs:comment "Weight of contents only (kg). UN/CEFACT CCL D23B: Package.netWeight." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Package> ;
+    rdfs:domain :Package ;
+    rdfs:range xsd:decimal .
+
+:packageVolume a owl:DatatypeProperty ;
+    rdfs:label "package volume" ;
+    rdfs:comment "Cubic volume the package occupies (m³). UN/CEFACT CCL D23B: Package.grossVolumeMeasure." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Package> ;
+    rdfs:domain :Package ;
+    rdfs:range xsd:decimal .
+
+:shipmentLineId a owl:DatatypeProperty ;
+    rdfs:label "shipment line ID" ;
+    rdfs:comment "Unique identifier for the shipment line. UN/CEFACT CCL D23B: SupplyChainTradeLineItem.identifier." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/SupplyChainTradeLineItem> ;
+    rdfs:domain :ShipmentLine ;
+    rdfs:range xsd:string .
+
+:lineItemNumber a owl:DatatypeProperty ;
+    rdfs:label "line item number" ;
+    rdfs:comment "Sequential line number within the shipment. UN/CEFACT CCL D23B: SupplyChainTradeLineItem.lineID." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/SupplyChainTradeLineItem> ;
+    rdfs:domain :ShipmentLine ;
+    rdfs:range xsd:integer .
+
+:lineQuantity a owl:DatatypeProperty ;
+    rdfs:label "line quantity" ;
+    rdfs:comment "Quantity of units on this shipment line. UN/CEFACT CCL D23B: SupplyChainTradeLineItem.billedQuantity." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/SupplyChainTradeLineItem> ;
+    rdfs:domain :ShipmentLine ;
+    rdfs:range xsd:decimal .
+
+:lineDescription a owl:DatatypeProperty ;
+    rdfs:label "line description" ;
+    rdfs:comment "Description of goods on this shipment line. UN/CEFACT CCL D23B: SupplyChainTradeLineItem.description." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/SupplyChainTradeLineItem> ;
+    rdfs:domain :ShipmentLine ;
+    rdfs:range xsd:string .
+
+:contractNumber a owl:DatatypeProperty ;
+    rdfs:label "contract number" ;
+    rdfs:comment "Unique identifier for the contract. UN/CEFACT CCL D23B: Contract.identifier." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Contract> ;
+    rdfs:domain :SalesContract ;
+    rdfs:range xsd:string .
+
+:contractDate a owl:DatatypeProperty ;
+    rdfs:label "contract date" ;
+    rdfs:comment "Date the contract was executed. UN/CEFACT CCL D23B: Contract.issueDateTime." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Contract> ;
+    rdfs:domain :SalesContract ;
+    rdfs:range xsd:date .
+
+:contractTerms a owl:DatatypeProperty ;
+    rdfs:label "contract terms" ;
+    rdfs:comment "Textual description of key contractual terms and conditions. UN/CEFACT CCL D23B: Contract.termsAndConditionsDescription." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Contract> ;
+    rdfs:domain :SalesContract ;
+    rdfs:range xsd:string .
+
+:salesOrderNumber a owl:DatatypeProperty ;
+    rdfs:label "sales order number" ;
+    rdfs:comment "Unique identifier for the sales order. ISO 20197-1:2024 BSP: SalesOrder.identifier." ;
+    rdfs:domain :SalesOrder ;
+    rdfs:range xsd:string .
+
+:salesOrderDate a owl:DatatypeProperty ;
+    rdfs:label "sales order date" ;
+    rdfs:comment "Date the sales order was confirmed. ISO 20197-1:2024 BSP: SalesOrder.issueDate." ;
+    rdfs:domain :SalesOrder ;
+    rdfs:range xsd:date .
+
+:quotationNumber a owl:DatatypeProperty ;
+    rdfs:label "quotation number" ;
+    rdfs:comment "Unique identifier for the quotation. ISO 20197-1:2024 BSP: Quotation.identifier." ;
+    rdfs:domain :Quotation ;
+    rdfs:range xsd:string .
+
+:quotationDate a owl:DatatypeProperty ;
+    rdfs:label "quotation date" ;
+    rdfs:comment "Date the quotation was issued. ISO 20197-1:2024 BSP: Quotation.issueDate." ;
+    rdfs:domain :Quotation ;
+    rdfs:range xsd:date .
+
+:quotationValidityDays a owl:DatatypeProperty ;
+    rdfs:label "quotation validity days" ;
+    rdfs:comment "Number of days the quotation remains valid. ISO 20197-1:2024 BSP: Quotation.validityPeriod." ;
+    rdfs:domain :Quotation ;
+    rdfs:range xsd:integer .
+
+:serviceType a owl:DatatypeProperty ;
+    rdfs:label "service type" ;
+    rdfs:comment "Type of transport service (FTL, LTL, FCL, LCL, AIR Express, RAIL). UN/CEFACT CCL D23B: LogisticsService.typeCode." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/LogisticsService> ;
+    rdfs:domain :TransportService ;
+    rdfs:range xsd:string .
+
+:transportMode a owl:DatatypeProperty ;
+    rdfs:label "transport mode" ;
+    rdfs:comment "Mode of transport (ROAD, SEA, AIR, RAIL, MULTIMODAL). UN/CEFACT CCL D23B: LogisticsTransportMovement.modeCode." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportMovement> ;
+    rdfs:domain :TransportService ;
+    rdfs:range xsd:string .
+
+:legSequence a owl:DatatypeProperty ;
+    rdfs:label "leg sequence" ;
+    rdfs:comment "Sequence number of this leg in the overall journey. UN/CEFACT CCL D23B: TransportMovement.sequenceNumber." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportMovement> ;
+    rdfs:domain :TransportLeg ;
+    rdfs:range xsd:integer .
+
+:legTransportMode a owl:DatatypeProperty ;
+    rdfs:label "leg transport mode" ;
+    rdfs:comment "Mode of transport for this leg (ROAD, SEA, AIR, RAIL). UN/CEFACT CCL D23B: TransportMovement.modeCode." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportMovement> ;
+    rdfs:domain :TransportLeg ;
+    rdfs:range xsd:string .
+
+:legOrigin a owl:DatatypeProperty ;
+    rdfs:label "leg origin" ;
+    rdfs:comment "Name or identifier of the leg's origin location. UN/CEFACT CCL D23B: TransportMovement.originLocation." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportMovement> ;
+    rdfs:domain :TransportLeg ;
+    rdfs:range xsd:string .
+
+:legDestination a owl:DatatypeProperty ;
+    rdfs:label "leg destination" ;
+    rdfs:comment "Name or identifier of the leg's destination location. UN/CEFACT CCL D23B: TransportMovement.destinationLocation." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportMovement> ;
+    rdfs:domain :TransportLeg ;
+    rdfs:range xsd:string .

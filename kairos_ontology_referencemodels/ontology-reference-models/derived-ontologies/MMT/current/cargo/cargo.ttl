@@ -14,8 +14,8 @@
     commodity classifications, and handling requirements. Based on UN/CEFACT MMT Reference Data Model.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "2.1.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "2.2.0" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
 
@@ -33,19 +33,28 @@
     rdfs:label "Goods" ;
     rdfs:comment """A collection of merchandise or commodities for transport.
 
-    UN/CEFACT MMT: General term for transported items.""" .
+    Properties: goodsDescription, natureOfGoods.
+    UN/CEFACT MMT-RDM: SupplyChainGoodsType — goodsDescription is the textual
+    description of the goods; natureOfGoods captures the physical nature
+    (e.g., liquid, solid, powder).""" .
 
 :PackageSpecification a owl:Class ;
     rdfs:label "Package Specification" ;
     rdfs:comment """The specification of packaging used for cargo.
 
-    UN/CEFACT MMT: Packaging type, material, and standards.""" .
+    Properties: packageQuantity, packageMaterial.
+    UN/CEFACT MMT-RDM: TransportPackageType — packageQuantity is the number
+    of packages; packageMaterial is the packaging material type (e.g.,
+    wood, plastic, metal).""" .
 
 :Weight a owl:Class ;
     rdfs:label "Weight" ;
     rdfs:comment """A weight measurement for cargo or equipment.
 
-    UN/CEFACT MMT: Gross, net, tare, chargeable weight.""" .
+    Properties: weightValue, weightUnit, weightType.
+    UN/CEFACT MMT-RDM: MeasurementType — weightType indicates gross, net,
+    or chargeable weight; weightValue and weightUnit capture the numeric
+    value and unit of measurement.""" .
 
 :Dimension a owl:Class ;
     rdfs:label "Dimension" ;
@@ -57,13 +66,20 @@
     rdfs:label "Commodity" ;
     rdfs:comment """A classification of goods by commodity type.
 
-    UN/CEFACT MMT: HS code, commodity description, trade category.""" .
+    Properties: commodityCode, commodityDescription, hsCodeVersion,
+    commodityCategory.
+    UN/CEFACT MMT-RDM: CommodityClassificationType — hsCodeVersion is the
+    Harmonized System code version year (e.g., 2022); commodityCategory is
+    the broader commodity category code.""" .
 
 :CargoMeasurement a owl:Class ;
     rdfs:label "Cargo Measurement" ;
     rdfs:comment """A measurement associated with cargo items.
 
-    UN/CEFACT MMT: Weight, volume, quantity measurements.""" .
+    Properties: measurementType, measurementValue, measurementUnit.
+    UN/CEFACT MMT-RDM: MeasurementType — measurementType indicates the kind
+    of measurement (weight, volume, dimension, quantity); measurementValue
+    is the numeric value; measurementUnit is the unit of measure.""" .
 
 #################################################################
 #    Object Properties
@@ -147,22 +163,29 @@
     rdfs:label "Handling Instructions" ;
     rdfs:comment """Instructions for cargo handling during transport.
 
-    UN/CEFACT RABIE: HandlingInstructionsType — specific requirements for
-    loading, unloading, stacking, or storage of cargo.""" .
+    Properties: handlingCode, handlingInstruction, handlingTemperature,
+    stackingIndicator.
+    UN/CEFACT RABIE: HandlingInstructionsType — handlingTemperature is the
+    required handling temperature in Celsius; stackingIndicator indicates
+    whether the cargo may be stacked.""" .
 
 :DisposalInstructions a owl:Class ;
     rdfs:label "Disposal Instructions" ;
     rdfs:comment """Instructions for the disposal of cargo or waste material.
 
-    UN/CEFACT RABIE: DisposalInstructionsType — requirements for safe
-    disposal of hazardous or regulated materials.""" .
+    Properties: disposalMethod, responsibleParty.
+    UN/CEFACT RABIE: DisposalInstructionsType — disposalMethod is the
+    prescribed disposal method code; responsibleParty identifies the party
+    responsible for disposal.""" .
 
 :QuarantineInstructions a owl:Class ;
     rdfs:label "Quarantine Instructions" ;
     rdfs:comment """Instructions for quarantine treatment of cargo.
 
-    UN/CEFACT RABIE: QuarantineInstructionsType — phytosanitary,
-    veterinary, or biosecurity treatment requirements.""" .
+    Properties: quarantineType, treatmentMethod.
+    UN/CEFACT RABIE: QuarantineInstructionsType — quarantineType is the type
+    of quarantine (phytosanitary, veterinary, biosecurity); treatmentMethod
+    is the prescribed treatment method code.""" .
 
 #################################################################
 #    Additional Cargo Classes (UN/CEFACT RABIE v101)
@@ -172,29 +195,37 @@
     rdfs:label "Waste Material" ;
     rdfs:comment """Waste material being transported.
 
-    UN/CEFACT RABIE: TransportWasteMaterialType — regulated waste
-    requiring special handling, documentation, and disposal.""" .
+    Properties: wasteCode, disposalMethod.
+    UN/CEFACT RABIE: TransportWasteMaterialType — wasteCode is the
+    regulated waste classification code (e.g., EWC, Basel code);
+    disposalMethod is the prescribed disposal method.""" .
 
 :WasteMaterialComponent a owl:Class ;
     rdfs:label "Waste Material Component" ;
     rdfs:comment """A component of waste material with specific characteristics.
 
-    UN/CEFACT RABIE: TransportWasteMaterialComponentType — individual
-    constituent of a waste consignment.""" .
+    Properties: componentName, componentPercentage.
+    UN/CEFACT RABIE: TransportWasteMaterialComponentType — componentName is
+    the name of the individual waste constituent; componentPercentage is
+    the proportion of this component within the total waste material.""" .
 
 :ShippingMarks a owl:Class ;
     rdfs:label "Shipping Marks" ;
     rdfs:comment """Marks and numbers applied to packages for identification.
 
-    UN/CEFACT RABIE: LogisticsShippingMarksType — physical markings
-    on cargo for identification, handling, and routing purposes.""" .
+    Properties: marksAndNumbers, shippingMarkType.
+    UN/CEFACT RABIE: LogisticsShippingMarksType — marksAndNumbers is the
+    physical marking text; shippingMarkType is the type of mark (e.g.,
+    shipping, handling, regulatory).""" .
 
 :CargoInsurance a owl:Class ;
     rdfs:label "Cargo Insurance" ;
     rdfs:comment """Insurance coverage for cargo during transport.
 
-    UN/CEFACT RABIE: TransportCargoInsuranceType — details of insurance
-    coverage, policy, and insured value for goods in transit.""" .
+    Properties: insuranceValue, policyNumber, insuredAmount.
+    UN/CEFACT RABIE: TransportCargoInsuranceType — insuranceValue is the
+    insured value of the cargo; policyNumber is the insurance policy
+    reference; insuredAmount is the monetary amount covered.""" .
 
 #################################################################
 #    Additional Object Properties
@@ -252,4 +283,152 @@
     rdfs:label "handling instruction" ;
     rdfs:comment "Free-text handling instruction." ;
     rdfs:domain :HandlingInstructions ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Additional Datatype Properties (UN/CEFACT MMT-RDM)
+#################################################################
+
+:insuranceValue a owl:DatatypeProperty ;
+    rdfs:label "insurance value" ;
+    rdfs:comment "Insured value of cargo. UN/CEFACT MMT-RDM: TransportCargoInsuranceType insurance value." ;
+    rdfs:domain :CargoInsurance ;
+    rdfs:range xsd:decimal .
+
+:policyNumber a owl:DatatypeProperty ;
+    rdfs:label "policy number" ;
+    rdfs:comment "Insurance policy reference number. UN/CEFACT MMT-RDM: TransportCargoInsuranceType policy number." ;
+    rdfs:domain :CargoInsurance ;
+    rdfs:range xsd:string .
+
+:insuredAmount a owl:DatatypeProperty ;
+    rdfs:label "insured amount" ;
+    rdfs:comment "Monetary amount covered by insurance. UN/CEFACT MMT-RDM: TransportCargoInsuranceType insured amount." ;
+    rdfs:domain :CargoInsurance ;
+    rdfs:range xsd:decimal .
+
+:measurementType a owl:DatatypeProperty ;
+    rdfs:label "measurement type" ;
+    rdfs:comment "Type of measurement (weight, volume, dimension, quantity). UN/CEFACT MMT-RDM: MeasurementType measurement type." ;
+    rdfs:domain :CargoMeasurement ;
+    rdfs:range xsd:string .
+
+:measurementValue a owl:DatatypeProperty ;
+    rdfs:label "measurement value" ;
+    rdfs:comment "Numeric value of the measurement. UN/CEFACT MMT-RDM: MeasurementType measured value." ;
+    rdfs:domain :CargoMeasurement ;
+    rdfs:range xsd:decimal .
+
+:measurementUnit a owl:DatatypeProperty ;
+    rdfs:label "measurement unit" ;
+    rdfs:comment "Unit of measure for the measurement. UN/CEFACT MMT-RDM: MeasurementType unit of measure." ;
+    rdfs:domain :CargoMeasurement ;
+    rdfs:range xsd:string .
+
+:hsCodeVersion a owl:DatatypeProperty ;
+    rdfs:label "HS code version" ;
+    rdfs:comment "Harmonized System code version year (e.g., 2022). UN/CEFACT MMT-RDM: CommodityClassificationType HS version." ;
+    rdfs:domain :Commodity ;
+    rdfs:range xsd:string .
+
+:commodityCategory a owl:DatatypeProperty ;
+    rdfs:label "commodity category" ;
+    rdfs:comment "Broader commodity category code. UN/CEFACT MMT-RDM: CommodityClassificationType category code." ;
+    rdfs:domain :Commodity ;
+    rdfs:range xsd:string .
+
+:disposalMethod a owl:DatatypeProperty ;
+    rdfs:label "disposal method" ;
+    rdfs:comment "Prescribed disposal method code. UN/CEFACT MMT-RDM: DisposalInstructionsType disposal method." ;
+    rdfs:domain :DisposalInstructions ;
+    rdfs:range xsd:string .
+
+:responsibleParty a owl:DatatypeProperty ;
+    rdfs:label "responsible party" ;
+    rdfs:comment "Party responsible for disposal. UN/CEFACT MMT-RDM: DisposalInstructionsType responsible party." ;
+    rdfs:domain :DisposalInstructions ;
+    rdfs:range xsd:string .
+
+:goodsDescription a owl:DatatypeProperty ;
+    rdfs:label "goods description" ;
+    rdfs:comment "Textual description of the goods. UN/CEFACT MMT-RDM: SupplyChainGoodsType goods description." ;
+    rdfs:domain :Goods ;
+    rdfs:range xsd:string .
+
+:natureOfGoods a owl:DatatypeProperty ;
+    rdfs:label "nature of goods" ;
+    rdfs:comment "Physical nature of goods (e.g., liquid, solid, powder). UN/CEFACT MMT-RDM: SupplyChainGoodsType nature of goods." ;
+    rdfs:domain :Goods ;
+    rdfs:range xsd:string .
+
+:handlingTemperature a owl:DatatypeProperty ;
+    rdfs:label "handling temperature" ;
+    rdfs:comment "Required handling temperature in Celsius. UN/CEFACT MMT-RDM: HandlingInstructionsType handling temperature." ;
+    rdfs:domain :HandlingInstructions ;
+    rdfs:range xsd:decimal .
+
+:stackingIndicator a owl:DatatypeProperty ;
+    rdfs:label "stacking indicator" ;
+    rdfs:comment "Indicates whether cargo may be stacked. UN/CEFACT MMT-RDM: HandlingInstructionsType stacking indicator." ;
+    rdfs:domain :HandlingInstructions ;
+    rdfs:range xsd:boolean .
+
+:packageQuantity a owl:DatatypeProperty ;
+    rdfs:label "package quantity" ;
+    rdfs:comment "Number of packages. UN/CEFACT MMT-RDM: TransportPackageType package quantity." ;
+    rdfs:domain :PackageSpecification ;
+    rdfs:range xsd:integer .
+
+:packageMaterial a owl:DatatypeProperty ;
+    rdfs:label "package material" ;
+    rdfs:comment "Packaging material type (e.g., wood, plastic, metal). UN/CEFACT MMT-RDM: TransportPackageType packaging material." ;
+    rdfs:domain :PackageSpecification ;
+    rdfs:range xsd:string .
+
+:quarantineType a owl:DatatypeProperty ;
+    rdfs:label "quarantine type" ;
+    rdfs:comment "Type of quarantine (phytosanitary, veterinary, biosecurity). UN/CEFACT MMT-RDM: QuarantineInstructionsType quarantine type." ;
+    rdfs:domain :QuarantineInstructions ;
+    rdfs:range xsd:string .
+
+:treatmentMethod a owl:DatatypeProperty ;
+    rdfs:label "treatment method" ;
+    rdfs:comment "Prescribed treatment method code. UN/CEFACT MMT-RDM: QuarantineInstructionsType treatment method." ;
+    rdfs:domain :QuarantineInstructions ;
+    rdfs:range xsd:string .
+
+:marksAndNumbers a owl:DatatypeProperty ;
+    rdfs:label "marks and numbers" ;
+    rdfs:comment "Physical marking text on packages. UN/CEFACT MMT-RDM: LogisticsShippingMarksType marks and numbers." ;
+    rdfs:domain :ShippingMarks ;
+    rdfs:range xsd:string .
+
+:shippingMarkType a owl:DatatypeProperty ;
+    rdfs:label "shipping mark type" ;
+    rdfs:comment "Type of mark (shipping, handling, regulatory). UN/CEFACT MMT-RDM: LogisticsShippingMarksType mark type." ;
+    rdfs:domain :ShippingMarks ;
+    rdfs:range xsd:string .
+
+:wasteCode a owl:DatatypeProperty ;
+    rdfs:label "waste code" ;
+    rdfs:comment "Regulated waste classification code (e.g., EWC, Basel). UN/CEFACT MMT-RDM: TransportWasteMaterialType waste code." ;
+    rdfs:domain :WasteMaterial ;
+    rdfs:range xsd:string .
+
+:componentName a owl:DatatypeProperty ;
+    rdfs:label "component name" ;
+    rdfs:comment "Name of the individual waste constituent. UN/CEFACT MMT-RDM: TransportWasteMaterialComponentType component name." ;
+    rdfs:domain :WasteMaterialComponent ;
+    rdfs:range xsd:string .
+
+:componentPercentage a owl:DatatypeProperty ;
+    rdfs:label "component percentage" ;
+    rdfs:comment "Proportion of this component within total waste material. UN/CEFACT MMT-RDM: TransportWasteMaterialComponentType percentage." ;
+    rdfs:domain :WasteMaterialComponent ;
+    rdfs:range xsd:decimal .
+
+:weightType a owl:DatatypeProperty ;
+    rdfs:label "weight type" ;
+    rdfs:comment "Type of weight: gross, net, or chargeable. UN/CEFACT MMT-RDM: MeasurementType weight type code." ;
+    rdfs:domain :Weight ;
     rdfs:range xsd:string .

@@ -15,8 +15,8 @@
     and dangerous goods declarations. Based on UN/CEFACT MMT Reference Data Model.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "2.1.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "2.2.0" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
 
@@ -38,80 +38,113 @@
 :BillOfLading a owl:Class ;
     rdfs:label "Bill of Lading" ;
     rdfs:comment """A transport document for ocean freight.
-    
-    UN/CEFACT MMT: Maritime transport document and document of title.""" ;
+
+    Properties: billOfLadingNumber, billOfLadingType, issuingCarrier.
+    UN/CEFACT MMT-RDM: BillOfLadingType — billOfLadingType indicates
+    original or copy; issuingCarrier identifies the carrier issuing the B/L.""" ;
     rdfs:subClassOf :TransportDocument .
 
 :AirWaybill a owl:Class ;
     rdfs:label "Air Waybill (AWB)" ;
     rdfs:comment """A transport document for air cargo.
-    
-    UN/CEFACT MMT: Air freight contract and receipt.""" ;
+
+    Properties: airWaybillNumber, issuingCarrier, airWaybillDate.
+    UN/CEFACT MMT-RDM: AirWaybillType — issuingCarrier identifies the
+    carrier issuing the AWB; airWaybillDate is the date of issue.""" ;
     rdfs:subClassOf :TransportDocument .
 
 :RailConsignmentNote a owl:Class ;
     rdfs:label "Rail Consignment Note (CIM)" ;
     rdfs:comment """A transport document for rail freight.
-    
-    UN/CEFACT MMT: International rail transport document.""" ;
+
+    Properties: railNoteNumber, issuingRailway.
+    UN/CEFACT MMT-RDM: RailConsignmentNoteType — railNoteNumber is the
+    CIM consignment note number; issuingRailway identifies the issuing
+    railway operator.""" ;
     rdfs:subClassOf :TransportDocument .
 
 :RoadConsignmentNote a owl:Class ;
     rdfs:label "Road Consignment Note (CMR)" ;
     rdfs:comment """A transport document for road freight.
-    
-    UN/CEFACT MMT: International road transport document.""" ;
+
+    Properties: roadNoteNumber, issuingCarrier.
+    UN/CEFACT MMT-RDM: RoadConsignmentNoteType — roadNoteNumber is the
+    CMR consignment note number; issuingCarrier identifies the issuing
+    road carrier.""" ;
     rdfs:subClassOf :TransportDocument .
 
 :HouseWaybill a owl:Class ;
     rdfs:label "House Waybill" ;
     rdfs:comment """A transport document issued by a freight forwarder.
-    
-    UN/CEFACT MMT: Covers house consignments within master shipments.""" ;
+
+    Properties: houseWaybillNumber, forwarderReference.
+    UN/CEFACT MMT-RDM: HouseWaybillType — houseWaybillNumber is the
+    house waybill identifier; forwarderReference is the forwarder's
+    reference.""" ;
     rdfs:subClassOf :TransportDocument .
 
 :MasterWaybill a owl:Class ;
     rdfs:label "Master Waybill" ;
     rdfs:comment """A transport document covering consolidated cargo.
-    
-    UN/CEFACT MMT: Issued by carriers for freight forwarder shipments.""" ;
+
+    Properties: masterWaybillNumber, carrierReference.
+    UN/CEFACT MMT-RDM: MasterWaybillType — masterWaybillNumber is the
+    master waybill identifier; carrierReference is the carrier's
+    reference.""" ;
     rdfs:subClassOf :TransportDocument .
 
 :CustomsDeclaration a owl:Class ;
     rdfs:label "Customs Declaration" ;
     rdfs:comment """A document declaring goods to customs authorities.
-    
-    UN/CEFACT MMT: Import/export declarations, transit documents.""" .
+
+    Properties: declarationNumber, declarationType.
+    UN/CEFACT MMT-RDM: CustomsDeclarationType — declarationNumber is the
+    customs declaration identifier; declarationType is the type (import,
+    export, transit).""" .
 
 :CommercialInvoice a owl:Class ;
     rdfs:label "Commercial Invoice" ;
     rdfs:comment """An invoice for goods being shipped.
-    
-    UN/CEFACT MMT: Required for customs clearance and payment.""" .
+
+    Properties: invoiceNumber, invoiceDate, totalAmount.
+    UN/CEFACT MMT-RDM: CommercialInvoiceType — invoiceNumber is the
+    invoice identifier; invoiceDate is the date of issue; totalAmount
+    is the total invoiced amount.""" .
 
 :PackingList a owl:Class ;
     rdfs:label "Packing List" ;
     rdfs:comment """A document detailing the contents of packages.
-    
-    UN/CEFACT MMT: Shows detailed cargo composition.""" .
+
+    Properties: packingListDate, totalPackages.
+    UN/CEFACT MMT-RDM: PackingListType — packingListDate is the date of
+    issue; totalPackages is the total number of packages listed.""" .
 
 :CertificateOfOrigin a owl:Class ;
     rdfs:label "Certificate of Origin" ;
     rdfs:comment """A document certifying the country of origin of goods.
-    
-    UN/CEFACT MMT: Required for preferential tariff treatment.""" .
+
+    Properties: originCriterion, issuingAuthority.
+    UN/CEFACT MMT-RDM: CertificateOfOriginType — originCriterion is the
+    origin criterion code (e.g., wholly obtained, substantial processing);
+    issuingAuthority is the authority that issued the certificate.""" .
 
 :DangerousGoodsDeclaration a owl:Class ;
     rdfs:label "Dangerous Goods Declaration" ;
     rdfs:comment """A declaration for hazardous materials transport.
-    
-    UN/CEFACT MMT: Required for dangerous goods shipments.""" .
+
+    Properties: dgDeclarationDate, dgTransportMode.
+    UN/CEFACT MMT-RDM: DangerousGoodsDeclarationType — dgDeclarationDate
+    is the date of the declaration; dgTransportMode is the transport mode
+    for the dangerous goods.""" .
 
 :CargoManifest a owl:Class ;
     rdfs:label "Cargo Manifest" ;
     rdfs:comment """A document listing all cargo aboard a transport means.
 
-    UN/CEFACT MMT: Required for vessel, aircraft, or train cargo reporting.""" ;
+    Properties: manifestDate, manifestTotalPackages.
+    UN/CEFACT MMT-RDM: CargoManifestType — manifestDate is the date of
+    the manifest; manifestTotalPackages is the total number of packages
+    listed. Required for vessel, aircraft, or train cargo reporting.""" ;
     rdfs:subClassOf :TransportDocument .
 
 #################################################################
@@ -122,22 +155,27 @@
     rdfs:label "Document Authentication" ;
     rdfs:comment """Authentication or signature applied to a document.
 
-    UN/CEFACT RABIE: DocumentAuthenticationType — electronic or physical
-    authentication, signatory details, and authentication date.""" .
+    Properties: authenticationType, authenticatedBy.
+    UN/CEFACT RABIE: DocumentAuthenticationType — authenticationType is
+    the type of authentication (electronic, physical signature);
+    authenticatedBy identifies the authenticating party.""" .
 
 :DocumentVersion a owl:Class ;
     rdfs:label "Document Version" ;
     rdfs:comment """A specific version of a document.
 
-    UN/CEFACT RABIE: DocumentVersionType — version identifier, issue date,
-    and revision status of a document.""" .
+    Properties: versionNumber, versionDate.
+    UN/CEFACT RABIE: DocumentVersionType — versionNumber is the version
+    identifier; versionDate is the date of this version.""" .
 
 :ProductCertificate a owl:Class ;
     rdfs:label "Product Certificate" ;
     rdfs:comment """A certificate attesting to product characteristics or compliance.
 
-    UN/CEFACT RABIE: ProductCertificateType — phytosanitary, veterinary,
-    quality, or compliance certificates for goods.""" ;
+    Properties: certificateType, certificateNumber.
+    UN/CEFACT RABIE: ProductCertificateType — certificateType is the type
+    of certificate (phytosanitary, veterinary, quality); certificateNumber
+    is the certificate identifier.""" ;
     rdfs:subClassOf :TransportDocument .
 
 #################################################################
@@ -148,15 +186,19 @@
     rdfs:label "Delivery Instructions" ;
     rdfs:comment """Instructions for delivery of consignment to receiver.
 
-    UN/CEFACT RABIE: DeliveryInstructionsType — delivery window, contact
-    details, special requirements, and proof-of-delivery needs.""" .
+    Properties: deliveryDate, deliveryParty.
+    UN/CEFACT RABIE: DeliveryInstructionsType — deliveryDate is the
+    requested or scheduled delivery date; deliveryParty identifies the
+    party to whom delivery is to be made.""" .
 
 :TransportInstructions a owl:Class ;
     rdfs:label "Transport Instructions" ;
     rdfs:comment """Instructions from shipper to carrier regarding transport execution.
 
-    UN/CEFACT RABIE: TransportInstructionsType — routing preferences,
-    handling requirements, and service level specifications.""" .
+    Properties: instructionType, instructionDate.
+    UN/CEFACT RABIE: TransportInstructionsType — instructionType is the
+    type of instruction (routing, handling, service level); instructionDate
+    is the date the instructions were issued.""" .
 
 #################################################################
 #    Additional Object Properties
@@ -201,3 +243,217 @@
     rdfs:comment "AWB number (11 digits)." ;
     rdfs:domain :AirWaybill ;
     rdfs:range xsd:string .
+
+#################################################################
+#    Additional Datatype Properties (UN/CEFACT MMT-RDM)
+#################################################################
+
+:billOfLadingType a owl:DatatypeProperty ;
+    rdfs:label "bill of lading type" ;
+    rdfs:comment "B/L type: ORIGINAL or COPY. UN/CEFACT MMT-RDM: BillOfLadingType B/L type." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:string .
+
+:issuingCarrier a owl:DatatypeProperty ;
+    rdfs:label "issuing carrier" ;
+    rdfs:comment "Carrier issuing the transport document. UN/CEFACT MMT-RDM: issuing carrier." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:string .
+
+:airWaybillDate a owl:DatatypeProperty ;
+    rdfs:label "air waybill date" ;
+    rdfs:comment "Date of AWB issue. UN/CEFACT MMT-RDM: AirWaybillType issue date." ;
+    rdfs:domain :AirWaybill ;
+    rdfs:range xsd:date .
+
+:awbIssuingCarrier a owl:DatatypeProperty ;
+    rdfs:label "AWB issuing carrier" ;
+    rdfs:comment "Carrier issuing the air waybill. UN/CEFACT MMT-RDM: AirWaybillType issuing carrier." ;
+    rdfs:domain :AirWaybill ;
+    rdfs:range xsd:string .
+
+:manifestDate a owl:DatatypeProperty ;
+    rdfs:label "manifest date" ;
+    rdfs:comment "Date of the cargo manifest. UN/CEFACT MMT-RDM: CargoManifestType manifest date." ;
+    rdfs:domain :CargoManifest ;
+    rdfs:range xsd:date .
+
+:manifestTotalPackages a owl:DatatypeProperty ;
+    rdfs:label "manifest total packages" ;
+    rdfs:comment "Total number of packages listed in the manifest. UN/CEFACT MMT-RDM: CargoManifestType total packages." ;
+    rdfs:domain :CargoManifest ;
+    rdfs:range xsd:integer .
+
+:originCriterion a owl:DatatypeProperty ;
+    rdfs:label "origin criterion" ;
+    rdfs:comment "Origin criterion code (wholly obtained, substantial processing). UN/CEFACT MMT-RDM: CertificateOfOriginType origin criterion." ;
+    rdfs:domain :CertificateOfOrigin ;
+    rdfs:range xsd:string .
+
+:issuingAuthority a owl:DatatypeProperty ;
+    rdfs:label "issuing authority" ;
+    rdfs:comment "Authority that issued the certificate. UN/CEFACT MMT-RDM: CertificateOfOriginType issuing authority." ;
+    rdfs:domain :CertificateOfOrigin ;
+    rdfs:range xsd:string .
+
+:invoiceNumber a owl:DatatypeProperty ;
+    rdfs:label "invoice number" ;
+    rdfs:comment "Commercial invoice identifier. UN/CEFACT MMT-RDM: CommercialInvoiceType invoice number." ;
+    rdfs:domain :CommercialInvoice ;
+    rdfs:range xsd:string .
+
+:invoiceDate a owl:DatatypeProperty ;
+    rdfs:label "invoice date" ;
+    rdfs:comment "Date of the commercial invoice. UN/CEFACT MMT-RDM: CommercialInvoiceType invoice date." ;
+    rdfs:domain :CommercialInvoice ;
+    rdfs:range xsd:date .
+
+:totalAmount a owl:DatatypeProperty ;
+    rdfs:label "total amount" ;
+    rdfs:comment "Total invoiced amount. UN/CEFACT MMT-RDM: CommercialInvoiceType total amount." ;
+    rdfs:domain :CommercialInvoice ;
+    rdfs:range xsd:decimal .
+
+:declarationNumber a owl:DatatypeProperty ;
+    rdfs:label "declaration number" ;
+    rdfs:comment "Customs declaration identifier. UN/CEFACT MMT-RDM: CustomsDeclarationType declaration number." ;
+    rdfs:domain :CustomsDeclaration ;
+    rdfs:range xsd:string .
+
+:declarationType a owl:DatatypeProperty ;
+    rdfs:label "declaration type" ;
+    rdfs:comment "Type of declaration (import, export, transit). UN/CEFACT MMT-RDM: CustomsDeclarationType declaration type." ;
+    rdfs:domain :CustomsDeclaration ;
+    rdfs:range xsd:string .
+
+:dgDeclarationDate a owl:DatatypeProperty ;
+    rdfs:label "DG declaration date" ;
+    rdfs:comment "Date of the dangerous goods declaration. UN/CEFACT MMT-RDM: DangerousGoodsDeclarationType declaration date." ;
+    rdfs:domain :DangerousGoodsDeclaration ;
+    rdfs:range xsd:date .
+
+:dgTransportMode a owl:DatatypeProperty ;
+    rdfs:label "DG transport mode" ;
+    rdfs:comment "Transport mode for the dangerous goods. UN/CEFACT MMT-RDM: DangerousGoodsDeclarationType transport mode." ;
+    rdfs:domain :DangerousGoodsDeclaration ;
+    rdfs:range xsd:string .
+
+:deliveryDate a owl:DatatypeProperty ;
+    rdfs:label "delivery date" ;
+    rdfs:comment "Requested or scheduled delivery date. UN/CEFACT MMT-RDM: DeliveryInstructionsType delivery date." ;
+    rdfs:domain :DeliveryInstructions ;
+    rdfs:range xsd:date .
+
+:deliveryParty a owl:DatatypeProperty ;
+    rdfs:label "delivery party" ;
+    rdfs:comment "Party to whom delivery is to be made. UN/CEFACT MMT-RDM: DeliveryInstructionsType delivery party." ;
+    rdfs:domain :DeliveryInstructions ;
+    rdfs:range xsd:string .
+
+:authenticationType a owl:DatatypeProperty ;
+    rdfs:label "authentication type" ;
+    rdfs:comment "Type of authentication (electronic, physical signature). UN/CEFACT MMT-RDM: DocumentAuthenticationType authentication type." ;
+    rdfs:domain :DocumentAuthentication ;
+    rdfs:range xsd:string .
+
+:authenticatedBy a owl:DatatypeProperty ;
+    rdfs:label "authenticated by" ;
+    rdfs:comment "Party that authenticated the document. UN/CEFACT MMT-RDM: DocumentAuthenticationType authenticated by." ;
+    rdfs:domain :DocumentAuthentication ;
+    rdfs:range xsd:string .
+
+:versionNumber a owl:DatatypeProperty ;
+    rdfs:label "version number" ;
+    rdfs:comment "Document version identifier. UN/CEFACT MMT-RDM: DocumentVersionType version number." ;
+    rdfs:domain :DocumentVersion ;
+    rdfs:range xsd:string .
+
+:versionDate a owl:DatatypeProperty ;
+    rdfs:label "version date" ;
+    rdfs:comment "Date of this document version. UN/CEFACT MMT-RDM: DocumentVersionType version date." ;
+    rdfs:domain :DocumentVersion ;
+    rdfs:range xsd:date .
+
+:houseWaybillNumber a owl:DatatypeProperty ;
+    rdfs:label "house waybill number" ;
+    rdfs:comment "House waybill identifier. UN/CEFACT MMT-RDM: HouseWaybillType house waybill number." ;
+    rdfs:domain :HouseWaybill ;
+    rdfs:range xsd:string .
+
+:forwarderReference a owl:DatatypeProperty ;
+    rdfs:label "forwarder reference" ;
+    rdfs:comment "Freight forwarder's reference. UN/CEFACT MMT-RDM: HouseWaybillType forwarder reference." ;
+    rdfs:domain :HouseWaybill ;
+    rdfs:range xsd:string .
+
+:masterWaybillNumber a owl:DatatypeProperty ;
+    rdfs:label "master waybill number" ;
+    rdfs:comment "Master waybill identifier. UN/CEFACT MMT-RDM: MasterWaybillType master waybill number." ;
+    rdfs:domain :MasterWaybill ;
+    rdfs:range xsd:string .
+
+:carrierReference a owl:DatatypeProperty ;
+    rdfs:label "carrier reference" ;
+    rdfs:comment "Carrier's reference for the master waybill. UN/CEFACT MMT-RDM: MasterWaybillType carrier reference." ;
+    rdfs:domain :MasterWaybill ;
+    rdfs:range xsd:string .
+
+:packingListDate a owl:DatatypeProperty ;
+    rdfs:label "packing list date" ;
+    rdfs:comment "Date of the packing list. UN/CEFACT MMT-RDM: PackingListType list date." ;
+    rdfs:domain :PackingList ;
+    rdfs:range xsd:date .
+
+:totalPackages a owl:DatatypeProperty ;
+    rdfs:label "total packages" ;
+    rdfs:comment "Total number of packages listed. UN/CEFACT MMT-RDM: PackingListType total packages." ;
+    rdfs:domain :PackingList ;
+    rdfs:range xsd:integer .
+
+:certificateType a owl:DatatypeProperty ;
+    rdfs:label "certificate type" ;
+    rdfs:comment "Type of certificate (phytosanitary, veterinary, quality). UN/CEFACT MMT-RDM: ProductCertificateType certificate type." ;
+    rdfs:domain :ProductCertificate ;
+    rdfs:range xsd:string .
+
+:certificateNumber a owl:DatatypeProperty ;
+    rdfs:label "certificate number" ;
+    rdfs:comment "Product certificate identifier. UN/CEFACT MMT-RDM: ProductCertificateType certificate number." ;
+    rdfs:domain :ProductCertificate ;
+    rdfs:range xsd:string .
+
+:railNoteNumber a owl:DatatypeProperty ;
+    rdfs:label "rail note number" ;
+    rdfs:comment "CIM rail consignment note number. UN/CEFACT MMT-RDM: RailConsignmentNoteType note number." ;
+    rdfs:domain :RailConsignmentNote ;
+    rdfs:range xsd:string .
+
+:issuingRailway a owl:DatatypeProperty ;
+    rdfs:label "issuing railway" ;
+    rdfs:comment "Issuing railway operator. UN/CEFACT MMT-RDM: RailConsignmentNoteType issuing railway." ;
+    rdfs:domain :RailConsignmentNote ;
+    rdfs:range xsd:string .
+
+:roadNoteNumber a owl:DatatypeProperty ;
+    rdfs:label "road note number" ;
+    rdfs:comment "CMR road consignment note number. UN/CEFACT MMT-RDM: RoadConsignmentNoteType note number." ;
+    rdfs:domain :RoadConsignmentNote ;
+    rdfs:range xsd:string .
+
+:roadIssuingCarrier a owl:DatatypeProperty ;
+    rdfs:label "road issuing carrier" ;
+    rdfs:comment "Issuing road carrier. UN/CEFACT MMT-RDM: RoadConsignmentNoteType issuing carrier." ;
+    rdfs:domain :RoadConsignmentNote ;
+    rdfs:range xsd:string .
+
+:instructionType a owl:DatatypeProperty ;
+    rdfs:label "instruction type" ;
+    rdfs:comment "Type of instruction (routing, handling, service level). UN/CEFACT MMT-RDM: TransportInstructionsType instruction type." ;
+    rdfs:domain :TransportInstructions ;
+    rdfs:range xsd:string .
+
+:instructionDate a owl:DatatypeProperty ;
+    rdfs:label "instruction date" ;
+    rdfs:comment "Date the instructions were issued. UN/CEFACT MMT-RDM: TransportInstructionsType instruction date." ;
+    rdfs:domain :TransportInstructions ;
+    rdfs:range xsd:date .

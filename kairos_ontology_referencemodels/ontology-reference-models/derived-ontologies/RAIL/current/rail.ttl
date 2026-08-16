@@ -27,8 +27,8 @@
     v1.0.0: Initial release authored against taf_cat_complete.xsd.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-08-15"^^xsd:date ;
-    dcterms:modified "2026-08-15"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
     dcterms:source "TAF TSI — Commission Regulation (EU) No 1305/2012, Annex D.2 Appendix F (Data Catalogue); taf_cat_complete.xsd" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> ;
     owl:imports <https://www.kairosflow.ai/ont/rail/consignment> ,
