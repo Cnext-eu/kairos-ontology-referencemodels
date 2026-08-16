@@ -12,8 +12,8 @@
     Manager (IM), Coordinating IM, Allocation Company, Customer. v1.0.0.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-08-15"^^xsd:date ;
-    dcterms:modified "2026-08-15"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd: LeadRU, CoordinatingIM, AllocationCompany, CustomerCode, CompanyCode" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
@@ -42,7 +42,7 @@
     rdfs:label "Infrastructure Manager" ;
     rdfs:comment """Infrastructure Manager (IM): the entity responsible for the rail
     network and for allocating train paths. Receives PathRequestMessage from
-    RUs.""" ;
+    RUs. Identified by a company code (CompanyCode).""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element CoordinatingIM and IM roles" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
@@ -58,8 +58,8 @@
 :AllocationCompany a owl:Class ;
     rdfs:label "allocation company" ;
     rdfs:comment """Company responsible for allocation and maintenance of codes
-    (LocationIdent, etc.). Corresponds to the AllocationCompany element in
-    taf_cat_complete.xsd.""" ;
+    (LocationIdent, etc.). Identified by a company code (CompanyCode).
+    Corresponds to the AllocationCompany element in taf_cat_complete.xsd.""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element AllocationCompany" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
@@ -97,3 +97,15 @@
     rdfs:comment "Links a Coordinating IM to the path allocation it coordinates." ;
     rdfs:domain :CoordinatingInfrastructureManager ;
     rdfs:range :InfrastructureManager .
+
+:imCompanyCode a owl:DatatypeProperty ;
+    rdfs:label "IM company code" ;
+    rdfs:comment "UIC 920-1 company code identifying an Infrastructure Manager. Corresponds to CompanyCode in taf_cat_complete.xsd." ;
+    rdfs:domain :InfrastructureManager ;
+    rdfs:range xsd:string .
+
+:allocationCompanyCode a owl:DatatypeProperty ;
+    rdfs:label "allocation company code" ;
+    rdfs:comment "Company code identifying an Allocation Company. Corresponds to CompanyCode in taf_cat_complete.xsd." ;
+    rdfs:domain :AllocationCompany ;
+    rdfs:range xsd:string .

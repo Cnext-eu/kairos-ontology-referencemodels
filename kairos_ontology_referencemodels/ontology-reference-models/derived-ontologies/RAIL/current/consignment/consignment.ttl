@@ -15,8 +15,8 @@
     (grain 3). v1.0.0.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-08-15"^^xsd:date ;
-    dcterms:modified "2026-08-15"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd: ConsignmentOrderMessage, ConsignmentLevelData, ConsignmentIdentification, ConsignmentNumber, ShipmentType, ExceptionalConsignment, PreviousConsignmentNumber" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
@@ -35,7 +35,9 @@
 :ConsignmentLevelData a owl:Class ;
     rdfs:label "Consignment Level Data" ;
     rdfs:comment """Consignment-level data block within a Consignment Order Message.
-    Corresponds to ConsignmentLevelData in taf_cat_complete.xsd.""" ;
+    Corresponds to ConsignmentLevelData in taf_cat_complete.xsd. Properties:
+    agreedTimeOfDelivery (AgreedTimeOfDelivery), contractNumber (ContractNumber),
+    hasConsignmentIdentification, hasShipmentType, hasExceptionalConsignment.""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element ConsignmentLevelData" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
@@ -50,7 +52,8 @@
 :ShipmentType a owl:Class ;
     rdfs:label "Shipment Type" ;
     rdfs:comment """Classification of the shipment within a Consignment Order Message.
-    Corresponds to ShipmentType in taf_cat_complete.xsd.""" ;
+    Corresponds to ShipmentType in taf_cat_complete.xsd. Properties:
+    shipmentTypeCode (ShipmentType — enumeration: CIM, CUV, SMGS).""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element ShipmentType" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
@@ -58,7 +61,8 @@
     rdfs:label "Exceptional Consignment" ;
     rdfs:comment """Exceptional consignment (out-of-gauge, heavy-load) carried under a
     Consignment Order. Corresponds to ExceptionalConsignment in
-    taf_cat_complete.xsd.""" ;
+    taf_cat_complete.xsd. Properties: permissionNumber (PermissionNumber),
+    imPartner (IM_Partner).""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element ExceptionalConsignment" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
@@ -134,3 +138,33 @@
     rdfs:comment "The Railway Undertaking that receives the COM (ReceivingRU)." ;
     rdfs:domain :ConsignmentOrderMessage ;
     rdfs:range party:RailwayUndertaking .
+
+:agreedTimeOfDelivery a owl:DatatypeProperty ;
+    rdfs:label "agreed time of delivery" ;
+    rdfs:comment "Agreed date and time of delivery for the consignment. Corresponds to AgreedTimeOfDelivery in taf_cat_complete.xsd." ;
+    rdfs:domain :ConsignmentLevelData ;
+    rdfs:range xsd:dateTime .
+
+:contractNumber a owl:DatatypeProperty ;
+    rdfs:label "contract number" ;
+    rdfs:comment "Contract number associated with the consignment. Corresponds to ContractNumber in taf_cat_complete.xsd." ;
+    rdfs:domain :ConsignmentLevelData ;
+    rdfs:range xsd:string .
+
+:shipmentTypeCode a owl:DatatypeProperty ;
+    rdfs:label "shipment type code" ;
+    rdfs:comment "Code classifying the shipment type (CIM, CUV, SMGS). Corresponds to ShipmentType in taf_cat_complete.xsd." ;
+    rdfs:domain :ShipmentType ;
+    rdfs:range xsd:string .
+
+:permissionNumber a owl:DatatypeProperty ;
+    rdfs:label "permission number" ;
+    rdfs:comment "Permission number for the exceptional consignment. Corresponds to PermissionNumber in taf_cat_complete.xsd." ;
+    rdfs:domain :ExceptionalConsignment ;
+    rdfs:range xsd:string .
+
+:imPartner a owl:DatatypeProperty ;
+    rdfs:label "IM partner" ;
+    rdfs:comment "Infrastructure Manager partner involved in the exceptional consignment. Corresponds to IM_Partner in taf_cat_complete.xsd." ;
+    rdfs:domain :ExceptionalConsignment ;
+    rdfs:range xsd:string .

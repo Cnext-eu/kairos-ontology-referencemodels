@@ -1,0 +1,245 @@
+@prefix : <https://www.kairosflow.ai/ont/imo/party#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix loc: <https://www.kairosflow.ai/ont/imo/locations#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/imo/party> a owl:Ontology ;
+    dcterms:title "IMO Party Ontology" ;
+    dcterms:description """Maritime party and stakeholder domain ontology aligned with the IMO Compendium.
+
+    Defines the roles and responsibilities of parties involved in maritime operations including
+    flag authorities, port authorities, classification societies, vessel masters, owners, operators,
+    managers, agents, and service providers. Supports the IMO FAL Convention requirements for
+    identifying responsible parties in port call and vessel registration processes.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-21"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
+    dcterms:source "IMO Compendium data set, FAL Convention, ISM Code, STCW Convention" ;
+    rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> ;
+    owl:imports <https://www.kairosflow.ai/ont/imo/locations> .
+
+#################################################################
+#    Classes
+#################################################################
+
+:MaritimeParty a owl:Class ;
+    rdfs:label "Maritime Party" ;
+    rdfs:comment """An organization or individual that fulfils a role in maritime operations,
+    vessel registration, or port call processes.""" .
+
+:FlagAuthority a owl:Class ;
+    rdfs:label "Flag Authority" ;
+    rdfs:comment """The national maritime administration of a flag state, responsible for
+    registering vessels, issuing certificates, and ensuring compliance with
+    international maritime conventions (SOLAS, MARPOL, MLC).""" ;
+    rdfs:subClassOf :MaritimeParty ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :authorityCountryCode ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:PortAuthority a owl:Class ;
+    rdfs:label "Port Authority" ;
+    rdfs:comment """The authority responsible for the administration, management, and regulation
+    of a port, including vessel traffic management, berth allocation, and port security.
+
+    Acts as the primary point of contact for FAL Convention data exchange.""" ;
+    rdfs:subClassOf :MaritimeParty .
+
+:ClassificationSociety a owl:Class ;
+    rdfs:label "Classification Society" ;
+    rdfs:comment """An organization recognized by a flag state to carry out statutory surveys
+    and issue certificates on its behalf. Members of IACS (International Association
+    of Classification Societies) include Lloyd's Register, DNV, Bureau Veritas, etc.""" ;
+    rdfs:subClassOf :MaritimeParty .
+
+:MasterOfVessel a owl:Class ;
+    rdfs:label "Master of Vessel" ;
+    rdfs:comment """The person having command of a vessel, responsible for its safe navigation,
+    crew welfare, and compliance with international maritime regulations.
+
+    Under SOLAS, the master has overriding authority to make decisions for safety.""" ;
+    rdfs:subClassOf :MaritimeParty ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :certificateOfCompetency ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:ShipOwner a owl:Class ;
+    rdfs:label "Ship Owner" ;
+    rdfs:comment """The registered owner of a vessel as recorded in the ship registry.
+    The owner bears ultimate responsibility for the vessel and may delegate
+    management to a ship manager or operator under ISM Code requirements.""" ;
+    rdfs:subClassOf :MaritimeParty .
+
+:ShipManager a owl:Class ;
+    rdfs:label "Ship Manager" ;
+    rdfs:comment """A company that manages the technical and/or crew operations of a vessel
+    on behalf of the ship owner, as defined under the ISM Code.
+
+    Responsible for maintenance, crewing, and regulatory compliance.""" ;
+    rdfs:subClassOf :MaritimeParty .
+
+:ShipOperator a owl:Class ;
+    rdfs:label "Ship Operator" ;
+    rdfs:comment """A company responsible for the commercial operation of a vessel, including
+    voyage planning, cargo booking, and chartering. May be the owner, time charterer,
+    or a third-party operator.""" ;
+    rdfs:subClassOf :MaritimeParty .
+
+:MaritimeAgent a owl:Class ;
+    rdfs:label "Maritime Agent" ;
+    rdfs:comment """A local representative acting on behalf of a vessel's owner or operator
+    at a port. Handles port call formalities, cargo documentation, customs clearance,
+    and coordination with port authorities and service providers.""" ;
+    rdfs:subClassOf :MaritimeParty .
+
+:PilotService a owl:Class ;
+    rdfs:label "Pilot Service" ;
+    rdfs:comment """An organization providing maritime pilotage services — the boarding of a
+    qualified pilot to navigate vessels through port approaches, channels, and
+    restricted waterways.""" ;
+    rdfs:subClassOf :MaritimeParty .
+
+:TowageProvider a owl:Class ;
+    rdfs:label "Towage Provider" ;
+    rdfs:comment """An organization providing tug-assisted towage services for vessels during
+    port entry, departure, shifting, and emergency situations.""" ;
+    rdfs:subClassOf :MaritimeParty .
+
+#################################################################
+#    Security Officer Roles (ISPS Code)
+#################################################################
+
+:CompanySecurityOfficer a owl:Class ;
+    rdfs:label "Company Security Officer" ;
+    rdfs:comment """The person designated by a shipping company to ensure the ship security
+    assessment is carried out and the ship security plan is developed, submitted
+    for approval, and implemented (ISPS Code Part A, Section 11).
+
+    The CSO also ensures coordination between the SSO and relevant port
+    facility security officers.""" ;
+    rdfs:subClassOf :MaritimeParty .
+
+:ShipSecurityOfficer a owl:Class ;
+    rdfs:label "Ship Security Officer" ;
+    rdfs:comment """A person on board the ship, accountable to the master, designated by the
+    company as responsible for the security of the ship (ISPS Code Part A,
+    Section 12). Must hold a Certificate of Proficiency for SSO (STCW VI/5).""" ;
+    rdfs:subClassOf :MaritimeParty .
+
+:PortFacilitySecurityOfficer a owl:Class ;
+    rdfs:label "Port Facility Security Officer" ;
+    rdfs:comment """The person designated as responsible for the development, implementation,
+    revision, and maintenance of the port facility security plan and for
+    liaison with ship security officers and company security officers
+    (ISPS Code Part A, Section 17).""" ;
+    rdfs:subClassOf :MaritimeParty .
+
+:PortStateControlOfficer a owl:Class ;
+    rdfs:label "Port State Control Officer" ;
+    rdfs:comment """A qualified inspector authorized by a port state to conduct inspections
+    on foreign-flag ships to verify compliance with international conventions
+    (SOLAS, MARPOL, STCW, MLC, LL, COLREG).
+
+    Operates under regional MoU frameworks (Paris MoU, Tokyo MoU, etc.).""" ;
+    rdfs:subClassOf :MaritimeParty .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:actsOnBehalfOf a owl:ObjectProperty ;
+    rdfs:label "acts on behalf of" ;
+    rdfs:comment "Indicates that a party acts as a representative for another party." ;
+    rdfs:domain :MaritimeParty ;
+    rdfs:range :MaritimeParty .
+
+:employs a owl:ObjectProperty ;
+    rdfs:label "employs" ;
+    rdfs:comment "Associates a ship owner or manager with a master or crew member." ;
+    rdfs:domain :MaritimeParty ;
+    rdfs:range :MasterOfVessel .
+
+:managesVesselFor a owl:ObjectProperty ;
+    rdfs:label "manages vessel for" ;
+    rdfs:comment "Associates a ship manager with the ship owner on whose behalf it manages vessels." ;
+    rdfs:domain :ShipManager ;
+    rdfs:range :ShipOwner .
+
+:operatesVesselFor a owl:ObjectProperty ;
+    rdfs:label "operates vessel for" ;
+    rdfs:comment "Associates a ship operator with the ship owner on whose behalf it operates vessels." ;
+    rdfs:domain :ShipOperator ;
+    rdfs:range :ShipOwner .
+
+:recognizedBy a owl:ObjectProperty ;
+    rdfs:label "recognized by" ;
+    rdfs:comment "Associates a classification society with the flag authority that has granted it recognition." ;
+    rdfs:domain :ClassificationSociety ;
+    rdfs:range :FlagAuthority .
+
+:providesServiceAt a owl:ObjectProperty ;
+    rdfs:label "provides service at" ;
+    rdfs:comment "Associates a service provider (pilot, towage) with the port or location where it operates." ;
+    rdfs:domain :MaritimeParty ;
+    rdfs:range loc:MaritimeLocation .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:partyName a owl:DatatypeProperty ;
+    rdfs:label "party name" ;
+    rdfs:comment "The registered or trading name of the maritime party." ;
+    rdfs:domain :MaritimeParty ;
+    rdfs:range xsd:string .
+
+:partyIdentifier a owl:DatatypeProperty ;
+    rdfs:label "party identifier" ;
+    rdfs:comment "A unique identifier for the party (e.g., IMO company number, GLN, or national ID)." ;
+    rdfs:domain :MaritimeParty ;
+    rdfs:range xsd:string .
+
+:authorityCountryCode a owl:DatatypeProperty ;
+    rdfs:label "authority country code" ;
+    rdfs:comment "The ISO 3166-1 alpha-2 country code of the flag authority." ;
+    rdfs:domain :FlagAuthority ;
+    rdfs:range xsd:string .
+
+:imoCompanyNumber a owl:DatatypeProperty ;
+    rdfs:label "IMO company number" ;
+    rdfs:comment "The IMO unique company and registered owner identification number as per Resolution MSC.160(78)." ;
+    rdfs:domain :MaritimeParty ;
+    rdfs:range xsd:string .
+
+:certificateOfCompetency a owl:DatatypeProperty ;
+    rdfs:label "certificate of competency" ;
+    rdfs:comment "The STCW certificate of competency number held by the master." ;
+    rdfs:domain :MasterOfVessel ;
+    rdfs:range xsd:string .
+
+:contactEmail a owl:DatatypeProperty ;
+    rdfs:label "contact email" ;
+    rdfs:comment "Primary email address of the maritime party." ;
+    rdfs:domain :MaritimeParty ;
+    rdfs:range xsd:string .
+
+:contactPhone a owl:DatatypeProperty ;
+    rdfs:label "contact phone" ;
+    rdfs:comment "Primary telephone number of the maritime party." ;
+    rdfs:domain :MaritimeParty ;
+    rdfs:range xsd:string .
+
+:portOfOperation a owl:DatatypeProperty ;
+    rdfs:label "port of operation" ;
+    rdfs:comment "The UN/LOCODE or name of the port where a service provider operates." ;
+    rdfs:domain :MaritimeParty ;
+    rdfs:range xsd:string .

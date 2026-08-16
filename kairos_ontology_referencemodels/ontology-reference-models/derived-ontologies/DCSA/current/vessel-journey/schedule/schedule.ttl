@@ -17,8 +17,8 @@
     defined in DCSA's Operational Vessel Schedules (OVS) API standard.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-06-12"^^xsd:date ;
-    owl:versionInfo "1.4.1" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.5.0" ;
     dcterms:source "DCSA Operational Vessel Schedules (OVS) API" ;
     rdfs:seeAlso <https://dcsa.org/standards/operational-vessel-schedules/> .
 
@@ -42,7 +42,11 @@
     rdfs:label "Cut-Off Time" ;
     rdfs:comment """A deadline before which cargo must be delivered to the terminal.
 
-    DCSA OVS: Documentation cut-off, cargo receiving cut-off, VGM cut-off.""" .
+    DCSA OVS: Documentation cut-off, cargo receiving cut-off, VGM cut-off.
+    DCSA CS API: cutOffDateTimeCode defines 15 cut-off types: DCO (Documentation),
+    VCO (VGM), FCO (Full Container), LCO (Late Container), PCO (Pre-Carriage),
+    ECP (Empty Container Pickup), EFC (Empty Full Container), RCO (Reefer),
+    DGC (Dangerous Goods), OBC (Out of Bounds Cargo), TCO, etc.""" .
 
 :TransitTime a owl:Class ;
     rdfs:label "Transit Time" ;
@@ -123,3 +127,17 @@
     rdfs:comment "Number of hours for transit." ;
     rdfs:domain :TransitTime ;
     rdfs:range xsd:integer .
+
+#################################################################
+#    Enriched Properties — DCSA CS API
+#################################################################
+
+:cutOffDateTimeCode a owl:DatatypeProperty ;
+    rdfs:label "cut-off date time code" ;
+    rdfs:comment """DCSA CS API: specific cut-off type code (15 values).
+    DCO (Documentation Cut-off), VCO (VGM Cut-off), FCO (Full Container Cut-off),
+    LCO (Late Container Cut-off), PCO (Pre-Carriage Cut-off), ECP (Empty Container
+    Pickup), EFC (Empty Full Container), RCO (Reefer Cut-off), DGC (Dangerous Goods
+    Cut-off), OBC (Out of Bounds Cargo), TCO, etc.""" ;
+    rdfs:domain :CutOffTime ;
+    rdfs:range xsd:string .

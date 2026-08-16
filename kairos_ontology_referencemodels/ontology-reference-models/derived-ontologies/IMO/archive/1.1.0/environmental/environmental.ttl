@@ -1,0 +1,167 @@
+@prefix : <https://www.kairosflow.ai/ont/imo/environmental#> .
+@prefix imo-vr: <https://www.kairosflow.ai/ont/imo/vessel-registry#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/imo/environmental> a owl:Ontology ;
+    dcterms:title "IMO Environmental Compliance Ontology" ;
+    dcterms:description """Environmental compliance and energy efficiency domain ontology aligned with
+    MARPOL 73/78 (all 6 annexes) and the BWM Convention.
+
+    Covers ship energy efficiency management plans (SEEMP), ballast water management
+    plans (BWMP), oil pollution emergency plans (SOPEP), and energy efficiency metrics
+    (EEDI/EEXI/CII). Energy efficiency values are recorded on the International Energy
+    Efficiency Certificate (in the certificates-surveys module).
+
+    Design note: MARPOL record books (Oil Record Book, Garbage Record Book, Ballast Water
+    Record Book) are operational log entries, not reference-model entities. They are
+    excluded in favour of the management plans that govern them. Environmental zones
+    (Emission Control Areas, MARPOL Special Areas) are in the locations module.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-06-12"^^xsd:date ;
+    dcterms:modified "2026-06-12"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
+    dcterms:source "MARPOL 73/78, BWM Convention 2004, MARPOL Annex VI Chapter 4" ;
+    rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
+
+#################################################################
+#    Management Plan Classes
+#################################################################
+
+:ShipEnergyEfficiencyManagementPlan a owl:Class ;
+    rdfs:label "Ship Energy Efficiency Management Plan" ;
+    rdfs:comment """The SEEMP required under MARPOL Annex VI Regulation 22.
+
+    Since 2023, the SEEMP consists of three parts:
+    - Part I: Ship-specific measures for energy efficiency improvement
+    - Part II: Ship Fuel Oil Consumption Data Collection Plan (for IMO DCS)
+    - Part III: Ship Operational Carbon Intensity Plan (CII improvement plan)
+
+    Every ship of 5000 GT and above must carry an approved SEEMP on board.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :planApprovalDate ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:BallastWaterManagementPlan a owl:Class ;
+    rdfs:label "Ballast Water Management Plan" ;
+    rdfs:comment """The BWMP required under the BWM Convention Regulation B-1.
+
+    Must be specific to each ship, describing operational procedures for ballast water
+    management, treatment system operation, and record-keeping requirements.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :planApprovalDate ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:ShipboardOilPollutionEmergencyPlan a owl:Class ;
+    rdfs:label "Shipboard Oil Pollution Emergency Plan" ;
+    rdfs:comment """The SOPEP required under MARPOL Annex I Regulation 37.
+
+    Provides procedures for reporting oil discharge incidents, steps to control the
+    discharge, and coordination with port and coastal authorities. All oil tankers of
+    150 GT and above and all ships of 400 GT and above must carry an approved SOPEP.""" .
+
+:GarbageManagementPlan a owl:Class ;
+    rdfs:label "Garbage Management Plan" ;
+    rdfs:comment """The waste management plan required under MARPOL Annex V Regulation 10.
+
+    Describes procedures for collecting, storing, processing, and disposing of garbage
+    generated on board. Required for all ships of 100 GT and above and all ships
+    certified to carry 15 or more persons.""" .
+
+#################################################################
+#    Substance Classification Classes
+#################################################################
+
+:NoxiousLiquidSubstance a owl:Class ;
+    rdfs:label "Noxious Liquid Substance" ;
+    rdfs:comment """A substance classified under MARPOL Annex II for carriage in bulk.
+
+    Categories:
+    - Category X: Major hazard to marine resources or human health
+    - Category Y: Hazard to marine resources or human health
+    - Category Z: Minor hazard to marine resources or human health
+    - Category OS: Other Substances — no harm identified""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :nlsCategory ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:appliesToVessel a owl:ObjectProperty ;
+    rdfs:label "applies to vessel" ;
+    rdfs:comment "Links an environmental management plan to the vessel it applies to." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :ShipEnergyEfficiencyManagementPlan :BallastWaterManagementPlan :ShipboardOilPollutionEmergencyPlan :GarbageManagementPlan )
+    ] ;
+    rdfs:range imo-vr:Vessel .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:planApprovalDate a owl:DatatypeProperty ;
+    rdfs:label "plan approval date" ;
+    rdfs:comment "Date when the management plan was approved by the flag state or RO." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :ShipEnergyEfficiencyManagementPlan :BallastWaterManagementPlan :ShipboardOilPollutionEmergencyPlan :GarbageManagementPlan )
+    ] ;
+    rdfs:range xsd:date .
+
+:planRevisionDate a owl:DatatypeProperty ;
+    rdfs:label "plan revision date" ;
+    rdfs:comment "Date of the most recent revision to the management plan." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :ShipEnergyEfficiencyManagementPlan :BallastWaterManagementPlan :ShipboardOilPollutionEmergencyPlan :GarbageManagementPlan )
+    ] ;
+    rdfs:range xsd:date .
+
+:seemPartIStatus a owl:DatatypeProperty ;
+    rdfs:label "SEEM Part I status" ;
+    rdfs:comment "Status of SEEMP Part I (APPROVED, PENDING_REVISION)." ;
+    rdfs:domain :ShipEnergyEfficiencyManagementPlan ;
+    rdfs:range xsd:string .
+
+:seemPartIIStatus a owl:DatatypeProperty ;
+    rdfs:label "SEEM Part II status" ;
+    rdfs:comment "Status of SEEMP Part II — fuel oil data collection plan (APPROVED, PENDING_REVISION)." ;
+    rdfs:domain :ShipEnergyEfficiencyManagementPlan ;
+    rdfs:range xsd:string .
+
+:seemPartIIIStatus a owl:DatatypeProperty ;
+    rdfs:label "SEEM Part III status" ;
+    rdfs:comment "Status of SEEMP Part III — CII improvement plan (APPROVED, PENDING_REVISION)." ;
+    rdfs:domain :ShipEnergyEfficiencyManagementPlan ;
+    rdfs:range xsd:string .
+
+:bwmsTreatmentType a owl:DatatypeProperty ;
+    rdfs:label "BWMS treatment type" ;
+    rdfs:comment "Type of ballast water management system (UV, ELECTROLYSIS, CHEMICAL, FILTRATION, NONE)." ;
+    rdfs:domain :BallastWaterManagementPlan ;
+    rdfs:range xsd:string .
+
+:nlsCategory a owl:DatatypeProperty ;
+    rdfs:label "NLS category" ;
+    rdfs:comment "MARPOL Annex II category of the noxious liquid substance (X, Y, Z, OS)." ;
+    rdfs:domain :NoxiousLiquidSubstance ;
+    rdfs:range xsd:string .
+
+:nlsName a owl:DatatypeProperty ;
+    rdfs:label "NLS name" ;
+    rdfs:comment "Name of the noxious liquid substance as listed in the IBC Code." ;
+    rdfs:domain :NoxiousLiquidSubstance ;
+    rdfs:range xsd:string .

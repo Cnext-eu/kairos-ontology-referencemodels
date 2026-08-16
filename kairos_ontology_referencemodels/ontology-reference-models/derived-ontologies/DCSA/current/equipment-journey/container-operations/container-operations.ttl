@@ -21,8 +21,8 @@
     stuffing/stripping operations, and Lift-on/Lift-off (LoLo) handling.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-06-12"^^xsd:date ;
-    owl:versionInfo "1.4.1" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.5.0" ;
     dcterms:source "DCSA Track & Trace API v2.2 (equipment event types)" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
 
@@ -43,7 +43,10 @@
     rdfs:comment """The current operational state of a container in the shipping lifecycle.
     
     DCSA: Tracks whether a container is available, in-use, in-transit,
-    or returned. Used for fleet management and container tracking.""" .
+    or returned. Used for fleet management and container tracking.
+    DCSA Track & Trace: operational status is derived from equipmentEventTypeCode
+    (17 codes: LOAD, DISC, GTIN, GTOT, STUF, STRP, PICK, etc.), eventClassifierCode
+    (ACT/PLN/EST), emptyIndicatorCode (EMPTY/LADEN), and facilityTypeCode.""" .
 
 :ContainerStuffing a owl:Class ;
     rdfs:label "Container Stuffing" ;
@@ -57,7 +60,8 @@
     rdfs:comment """The process of unloading cargo from a container.
     
     DCSA: Unpacking of goods from a container at destination, typically
-    at consignee premises or CFS.""" .
+    at consignee premises or CFS. Corresponds to DCSA equipmentEventTypeCode
+    STRP in the Track & Trace API.""" .
 
 :LiftOnLiftOff a owl:Class ;
     rdfs:label "Lift-On/Lift-Off (LoLo)" ;
@@ -65,7 +69,10 @@
     a vessel, truck, or rail car using crane equipment.
     
     DCSA: Standard container handling method at terminals using ship-to-shore
-    cranes, rubber-tyred gantry cranes, or reach stackers.""" .
+    cranes, rubber-tyred gantry cranes, or reach stackers. Corresponds to DCSA
+    equipmentEventTypeCode LOAD (lift-on) or DISC (lift-off/discharge) in the
+    Track & Trace API. The isTransshipmentMove flag distinguishes transshipment
+    lifts from origin/destination lifts.""" .
 
 #################################################################
 #    Object Properties
@@ -162,3 +169,62 @@
     rdfs:comment "The equipment event that triggered or recorded this container operation." ;
     rdfs:domain :ContainerStuffing ;
     rdfs:range evt:EquipmentEvent .
+
+#################################################################
+#    Enriched Properties — DCSA Track & Trace API
+#################################################################
+
+:equipmentEventTypeCode a owl:DatatypeProperty ;
+    rdfs:label "equipment event type code" ;
+    rdfs:comment """DCSA Track & Trace: type code for the equipment event.
+    DCSA enum: LOAD, DISC, GTIN, GTOT, STUF, STRP, PICK, etc. (17 codes total).""" ;
+    rdfs:domain :ContainerOperationalStatus ;
+    rdfs:range xsd:string .
+
+:emptyIndicatorCode a owl:DatatypeProperty ;
+    rdfs:label "empty indicator code" ;
+    rdfs:comment "DCSA Track & Trace: indicates whether the container is EMPTY or LADEN at the time of the event." ;
+    rdfs:domain :ContainerOperationalStatus ;
+    rdfs:range xsd:string .
+
+:facilityTypeCode a owl:DatatypeProperty ;
+    rdfs:label "facility type code" ;
+    rdfs:comment "DCSA Track & Trace: type of facility where the event occurred (e.g., TRM, PRT, RLY)." ;
+    rdfs:domain :ContainerOperationalStatus ;
+    rdfs:range xsd:string .
+
+:isTransshipmentMove a owl:DatatypeProperty ;
+    rdfs:label "is transshipment move" ;
+    rdfs:comment "DCSA Track & Trace: boolean indicating whether this LoLo or event is a transshipment move (vessel-to-vessel)." ;
+    rdfs:domain :LiftOnLiftOff ;
+    rdfs:range xsd:boolean .
+
+:equipmentReference a owl:DatatypeProperty ;
+    rdfs:label "equipment reference" ;
+    rdfs:comment "DCSA Track & Trace: unique reference identifying the container equipment involved in the stripping/LoLo operation." ;
+    rdfs:domain :ContainerStripping ;
+    rdfs:range xsd:string .
+
+:strippingEmptyIndicatorCode a owl:DatatypeProperty ;
+    rdfs:label "stripping empty indicator code" ;
+    rdfs:comment "DCSA Track & Trace: empty/laden indicator for the container at stripping time (EMPTY/LADEN)." ;
+    rdfs:domain :ContainerStripping ;
+    rdfs:range xsd:string .
+
+:strippingFacilityTypeCode a owl:DatatypeProperty ;
+    rdfs:label "stripping facility type code" ;
+    rdfs:comment "DCSA Track & Trace: facility type where stripping occurred (e.g., CFS, TRM)." ;
+    rdfs:domain :ContainerStripping ;
+    rdfs:range xsd:string .
+
+:loloEquipmentEventTypeCode a owl:DatatypeProperty ;
+    rdfs:label "LoLo equipment event type code" ;
+    rdfs:comment "DCSA Track & Trace: event type code for this LoLo operation (LOAD for lift-on, DISC for lift-off)." ;
+    rdfs:domain :LiftOnLiftOff ;
+    rdfs:range xsd:string .
+
+:loloTransportCallReference a owl:DatatypeProperty ;
+    rdfs:label "LoLo transport call reference" ;
+    rdfs:comment "DCSA Track & Trace: reference to the transport call (vessel/voyage) associated with this LoLo operation." ;
+    rdfs:domain :LiftOnLiftOff ;
+    rdfs:range xsd:string .

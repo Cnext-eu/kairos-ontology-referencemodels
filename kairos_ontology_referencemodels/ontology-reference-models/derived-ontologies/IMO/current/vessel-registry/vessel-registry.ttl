@@ -15,8 +15,8 @@
     Scheme (Resolution A.1117(30)) and related SOLAS requirements.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "IMO Compendium data set, SOLAS XI-1/3, Resolution A.1117(30), 1969 Tonnage Convention" ;
     rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
 
@@ -56,6 +56,8 @@
     Used to group vessels under a common owner, operator, or manager for
     administrative and operational purposes.
 
+    Properties: hasMember, fleetName, fleetOperatorName.
+
     NOTE: This is a modeling convenience class — 'Fleet' is not a named entity in any
     IMO Compendium data set or FAL Convention instrument. Consider using a client-specific
     ontology for fleet management concepts.""" .
@@ -65,50 +67,82 @@
     rdfs:comment """A unique seven-digit identifier permanently assigned to a vessel by IHS Markit on behalf of IMO.
 
     The number remains unchanged upon transfer of flag and is prefixed with 'IMO'
-    (e.g., IMO 9074729). Governed by IMO Resolution A.1117(30).""" .
+    (e.g., IMO 9074729). Governed by IMO Resolution A.1117(30).
+
+    Properties: imoNumberCheckDigit, imoNumberAssignedBy.
+
+    Source: IMO Resolution A.1117(30), SOLAS XI-1/3.""" .
 
 :MMSI a owl:Class ;
     rdfs:label "MMSI" ;
     rdfs:comment """Maritime Mobile Service Identity — a nine-digit number used in digital
     selective calling (DSC), AIS, and GMDSS radio communications.
 
-    Assigned by the flag state administration in accordance with ITU Radio Regulations.""" .
+    Assigned by the flag state administration in accordance with ITU Radio Regulations.
+
+    Properties: mmsiMidCode, mmsiAssignedBy.
+
+    Source: ITU Radio Regulations Appendix 43.""" .
 
 :CallSign a owl:Class ;
     rdfs:label "Call Sign" ;
     rdfs:comment """A unique radio call sign allocated to a vessel by its flag state for
-    maritime communication purposes, in accordance with ITU Radio Regulations.""" .
+    maritime communication purposes, in accordance with ITU Radio Regulations.
+
+    Properties: callSignAllocatedBy.
+
+    Source: ITU Radio Regulations Article 19, Appendix 42.""" .
 
 :FlagState a owl:Class ;
     rdfs:label "Flag State" ;
     rdfs:comment """The state whose flag a vessel is entitled to fly. The flag state has
     jurisdiction and control over administrative, technical, and social matters
-    aboard the vessel as per UNCLOS Article 94.""" .
+    aboard the vessel as per UNCLOS Article 94.
+
+    Properties: flagStateCountryCode, flagStateName.
+
+    Source: UNCLOS Article 91 (Nationality of ships), Article 94 (Flag State jurisdiction).""" .
 
 :ClassSociety a owl:Class ;
     rdfs:label "Classification Society" ;
     rdfs:comment """An organization that establishes and maintains technical standards for the
     construction and operation of ships. Recognized classification societies act
-    on behalf of flag states (e.g., Lloyd's Register, DNV, Bureau Veritas).""" .
+    on behalf of flag states (e.g., Lloyd's Register, DNV, Bureau Veritas).
+
+    Properties: classSocietyName, classSocietyCode.
+
+    Source: SOLAS II-1/3-1, IMO Resolution A.739(18) — Recognized Organizations.""" .
 
 :VesselType a owl:Class ;
     rdfs:label "Vessel Type" ;
     rdfs:comment """A classification of vessels by their design and intended purpose,
     such as bulk carrier, container ship, tanker, passenger vessel, or ro-ro cargo ship.
 
-    Aligned with IMO vessel type codes used in FAL forms.""" .
+    Aligned with IMO vessel type codes used in FAL forms.
+
+    Properties: vesselTypeCode, vesselTypeDescription.
+
+    Source: IMO Compendium Ship Type Code, FAL Convention Form 2.""" .
 
 :VesselCapacity a owl:Class ;
     rdfs:label "Vessel Capacity" ;
     rdfs:comment """A measurable capacity attribute of a vessel, including tonnage values,
-    TEU capacity, passenger capacity, or cargo volume.""" .
+    TEU capacity, passenger capacity, or cargo volume.
+
+    Properties: capacityUnit, capacityType.
+
+    Source: IMO Compendium data set, 1969 Tonnage Convention.""" .
 
 :GrossTonnage a owl:Class ;
     rdfs:label "Gross Tonnage" ;
     rdfs:comment """A non-linear measure of a vessel's overall internal volume as defined by
     the International Convention on Tonnage Measurement of Ships (1969).
 
-    Expressed as GT and used for regulatory, safety, and manning requirements.""" ;
+    Expressed as GT and used for regulatory, safety, and manning requirements.
+
+    Properties: grossTonnageValue, grossTonnageConvention, grossTonnageUnit.
+
+    Source: International Convention on Tonnage Measurement of Ships (1969), Article 3.""" ;
     rdfs:subClassOf :VesselCapacity .
 
 :NetTonnage a owl:Class ;
@@ -116,7 +150,11 @@
     rdfs:comment """A measure of the useful capacity of a vessel derived from gross tonnage
     by deducting non-cargo spaces, as defined by the 1969 Tonnage Convention.
 
-    Used for port dues and canal toll calculations.""" ;
+    Used for port dues and canal toll calculations.
+
+    Properties: netTonnageValue, netTonnageConvention.
+
+    Source: International Convention on Tonnage Measurement of Ships (1969), Article 4.""" ;
     rdfs:subClassOf :VesselCapacity .
 
 :DeadweightTonnage a owl:Class ;
@@ -124,13 +162,21 @@
     rdfs:comment """The maximum weight a vessel can carry including cargo, fuel, fresh water,
     ballast, provisions, passengers, and crew, measured in metric tonnes.
 
-    DWT = displacement at summer load line minus lightweight.""" ;
+    DWT = displacement at summer load line minus lightweight.
+
+    Properties: deadweightTonnageValue, deadweightSummerLoadLine.
+
+    Source: IMO Tonnage Convention (1969), IACS Unified Requirements.""" ;
     rdfs:subClassOf :VesselCapacity .
 
 :VesselOperationalStatus a owl:Class ;
     rdfs:label "Vessel Operational Status" ;
     rdfs:comment """The current operational state of a vessel, such as in service, laid up,
-    under repair, scrapped, or broken up. Used for fleet management and reporting.""" .
+    under repair, scrapped, or broken up. Used for fleet management and reporting.
+
+    Properties: statusCode, statusDescription.
+
+    Source: IMO Compendium data set — Ship Status code list.""" .
 
 #################################################################
 #    Object Properties
@@ -264,4 +310,135 @@
     rdfs:label "port of registry" ;
     rdfs:comment "The port where the vessel is registered (home port)." ;
     rdfs:domain :Vessel ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Enriched Datatype Properties (IMO — vessel-registry module)
+#    Added in v1.2.0 — backed by cited IMO standards
+#################################################################
+
+:callSignAllocatedBy a owl:DatatypeProperty ;
+    rdfs:label "call sign allocated by" ;
+    rdfs:comment "Administration that allocated the radio call sign, per ITU Radio Regulations Article 19." ;
+    rdfs:domain :CallSign ;
+    rdfs:range xsd:string .
+
+:classSocietyName a owl:DatatypeProperty ;
+    rdfs:label "classification society name" ;
+    rdfs:comment "Full name of the classification society, per SOLAS II-1/3-1 recognized organizations." ;
+    rdfs:domain :ClassSociety ;
+    rdfs:range xsd:string .
+
+:classSocietyCode a owl:DatatypeProperty ;
+    rdfs:label "classification society code" ;
+    rdfs:comment "Short code identifying the classification society (e.g., LR, DNV, BV), per IMO Resolution A.739(18)." ;
+    rdfs:domain :ClassSociety ;
+    rdfs:range xsd:string .
+
+:deadweightSummerLoadLine a owl:DatatypeProperty ;
+    rdfs:label "deadweight summer load line" ;
+    rdfs:comment "Summer load line reference used for DWT calculation, per IMO Tonnage Convention (1969)." ;
+    rdfs:domain :DeadweightTonnage ;
+    rdfs:range xsd:string .
+
+:flagStateCountryCode a owl:DatatypeProperty ;
+    rdfs:label "flag state country code" ;
+    rdfs:comment "ISO 3166-1 alpha-2 country code of the flag state, per UNCLOS Article 91." ;
+    rdfs:domain :FlagState ;
+    rdfs:range xsd:string .
+
+:flagStateName a owl:DatatypeProperty ;
+    rdfs:label "flag state name" ;
+    rdfs:comment "Name of the flag state under whose jurisdiction the vessel is registered, per UNCLOS Article 91." ;
+    rdfs:domain :FlagState ;
+    rdfs:range xsd:string .
+
+:fleetName a owl:DatatypeProperty ;
+    rdfs:label "fleet name" ;
+    rdfs:comment "Name assigned to the fleet for administrative purposes." ;
+    rdfs:domain :Fleet ;
+    rdfs:range xsd:string .
+
+:fleetOperatorName a owl:DatatypeProperty ;
+    rdfs:label "fleet operator name" ;
+    rdfs:comment "Name of the operating entity managing the fleet." ;
+    rdfs:domain :Fleet ;
+    rdfs:range xsd:string .
+
+:grossTonnageConvention a owl:DatatypeProperty ;
+    rdfs:label "gross tonnage convention" ;
+    rdfs:comment "Convention under which gross tonnage was measured (e.g., 1969 Tonnage Convention), per Article 3." ;
+    rdfs:domain :GrossTonnage ;
+    rdfs:range xsd:string .
+
+:grossTonnageUnit a owl:DatatypeProperty ;
+    rdfs:label "gross tonnage unit" ;
+    rdfs:comment "Unit of measurement for gross tonnage (GT), per 1969 Tonnage Convention." ;
+    rdfs:domain :GrossTonnage ;
+    rdfs:range xsd:string .
+
+:imoNumberCheckDigit a owl:DatatypeProperty ;
+    rdfs:label "IMO number check digit" ;
+    rdfs:comment "Check digit of the IMO number, computed per the IMO number algorithm in Resolution A.1117(30)." ;
+    rdfs:domain :IMONumber ;
+    rdfs:range xsd:integer .
+
+:imoNumberAssignedBy a owl:DatatypeProperty ;
+    rdfs:label "IMO number assigned by" ;
+    rdfs:comment "Entity that assigned the IMO number (IHS Markit on behalf of IMO), per Resolution A.1117(30)." ;
+    rdfs:domain :IMONumber ;
+    rdfs:range xsd:string .
+
+:mmsiMidCode a owl:DatatypeProperty ;
+    rdfs:label "MMSI MID code" ;
+    rdfs:comment "Maritime Identification Digits (MID) embedded in the MMSI identifying the assigning administration, per ITU Radio Regulations Appendix 43." ;
+    rdfs:domain :MMSI ;
+    rdfs:range xsd:string .
+
+:mmsiAssignedBy a owl:DatatypeProperty ;
+    rdfs:label "MMSI assigned by" ;
+    rdfs:comment "Administration that assigned the MMSI, per ITU Radio Regulations Appendix 43." ;
+    rdfs:domain :MMSI ;
+    rdfs:range xsd:string .
+
+:netTonnageConvention a owl:DatatypeProperty ;
+    rdfs:label "net tonnage convention" ;
+    rdfs:comment "Convention under which net tonnage was measured (e.g., 1969 Tonnage Convention), per Article 4." ;
+    rdfs:domain :NetTonnage ;
+    rdfs:range xsd:string .
+
+:capacityUnit a owl:DatatypeProperty ;
+    rdfs:label "capacity unit" ;
+    rdfs:comment "Unit of measurement for the capacity value (e.g., GT, NT, DWT, TEU, passengers)." ;
+    rdfs:domain :VesselCapacity ;
+    rdfs:range xsd:string .
+
+:capacityType a owl:DatatypeProperty ;
+    rdfs:label "capacity type" ;
+    rdfs:comment "Type of capacity measurement (e.g., gross tonnage, net tonnage, deadweight, container slots)." ;
+    rdfs:domain :VesselCapacity ;
+    rdfs:range xsd:string .
+
+:operationalStatusCode a owl:DatatypeProperty ;
+    rdfs:label "operational status code" ;
+    rdfs:comment "Coded operational status value from the IMO Compendium Ship Status code list." ;
+    rdfs:domain :VesselOperationalStatus ;
+    rdfs:range xsd:string .
+
+:operationalStatusDescription a owl:DatatypeProperty ;
+    rdfs:label "operational status description" ;
+    rdfs:comment "Human-readable description of the vessel's operational status." ;
+    rdfs:domain :VesselOperationalStatus ;
+    rdfs:range xsd:string .
+
+:vesselTypeCode a owl:DatatypeProperty ;
+    rdfs:label "vessel type code" ;
+    rdfs:comment "IMO vessel type code (e.g., BC for bulk carrier, CT for container ship), per IMO Compendium Ship Type Code." ;
+    rdfs:domain :VesselType ;
+    rdfs:range xsd:string .
+
+:vesselTypeDescription a owl:DatatypeProperty ;
+    rdfs:label "vessel type description" ;
+    rdfs:comment "Human-readable description of the vessel type, per FAL Convention Form 2." ;
+    rdfs:domain :VesselType ;
     rdfs:range xsd:string .

@@ -15,8 +15,8 @@
     Path. Binds at the carrier-reservation grain (grain 3). v1.0.0.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-08-15"^^xsd:date ;
-    dcterms:modified "2026-08-15"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd: PathRequestMessage, PathConfirmedMessage, PathCanceledMessage, PathNotAvailableMessage, PathDetailsMessage, PathDetailsRefusedMessage, PreArrangedPath, OnDemandPath, PathInformation" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
@@ -28,56 +28,71 @@
     rdfs:label "Path Request Message" ;
     rdfs:comment """Message serving to request a train path, sent from the RU to each IM
     involved. Corresponds to the PathRequestMessage element in
-    taf_cat_complete.xsd.""" ;
+    taf_cat_complete.xsd. Properties: pathMessageStatus (MessageStatus),
+    processType (ProcessType), typeOfInformation (TypeOfInformation),
+    typeOfRequest, hasPathInformation, requestedBy.""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element PathRequestMessage" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
 :PathConfirmedMessage a owl:Class ;
     rdfs:label "Path Confirmed Message" ;
     rdfs:comment """Message confirming a train path offered/booked by the IM(s).
-    Corresponds to PathConfirmedMessage in taf_cat_complete.xsd.""" ;
+    Corresponds to PathConfirmedMessage in taf_cat_complete.xsd. Properties:
+    pathConfirmedMessageStatus (MessageStatus), pathConfirmedProcessType
+    (ProcessType), pathConfirmedTypeOfInformation (TypeOfInformation),
+    confirmedBy, offersPath.""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element PathConfirmedMessage" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
 :PathCanceledMessage a owl:Class ;
     rdfs:label "Path Canceled Message" ;
     rdfs:comment """Message canceling a previously confirmed train path.
-    Corresponds to PathCanceledMessage in taf_cat_complete.xsd.""" ;
+    Corresponds to PathCanceledMessage in taf_cat_complete.xsd. Properties:
+    pathCanceledMessageStatus (MessageStatus), pathCanceledProcessType
+    (ProcessType), pathCanceledTypeOfInformation (TypeOfInformation).""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element PathCanceledMessage" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
 :PathNotAvailableMessage a owl:Class ;
     rdfs:label "Path Not Available Message" ;
     rdfs:comment """Message indicating a requested train path is not available.
-    Corresponds to PathNotAvailableMessage in taf_cat_complete.xsd.""" ;
+    Corresponds to PathNotAvailableMessage in taf_cat_complete.xsd. Properties:
+    pathNotAvailableMessageStatus (MessageStatus), pathNotAvailableProcessType
+    (ProcessType), pathNotAvailableTypeOfInformation (TypeOfInformation).""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element PathNotAvailableMessage" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
 :PathDetailsMessage a owl:Class ;
     rdfs:label "Path Details Message" ;
     rdfs:comment """Message providing details of a requested or offered train path.
-    Corresponds to PathDetailsMessage in taf_cat_complete.xsd.""" ;
+    Corresponds to PathDetailsMessage in taf_cat_complete.xsd. Properties:
+    pathDetailsMessageStatus (MessageStatus), pathDetailsTypeOfInformation
+    (TypeOfInformation).""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element PathDetailsMessage" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
 :PathDetailsRefusedMessage a owl:Class ;
     rdfs:label "Path Details Refused Message" ;
     rdfs:comment """Message refusing requested path details. Corresponds to
-    PathDetailsRefusedMessage in taf_cat_complete.xsd.""" ;
+    PathDetailsRefusedMessage in taf_cat_complete.xsd. Properties:
+    pathDetailsRefusedMessageStatus (MessageStatus), pathDetailsRefusedProcessType
+    (ProcessType), pathDetailsRefusedTypeOfInformation (TypeOfInformation).""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element PathDetailsRefusedMessage" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
 :PreArrangedPath a owl:Class ;
     rdfs:label "Pre-Arranged Path" ;
     rdfs:comment """A pre-arranged train path. Corresponds to the PreArrangedPath element
-    in taf_cat_complete.xsd.""" ;
+    in taf_cat_complete.xsd. Properties: preArrangedPathCode (PreArrangedPath —
+    path code 1-9 characters).""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element PreArrangedPath" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
 :OnDemandPath a owl:Class ;
     rdfs:label "On-Demand Path" ;
     rdfs:comment """An on-demand train path. Corresponds to the OnDemandPath element in
-    taf_cat_complete.xsd.""" ;
+    taf_cat_complete.xsd. Properties: onDemandPathIndicator (OnDemandPath —
+    boolean for use of on-demand or optional path).""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element OnDemandPath" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
@@ -85,7 +100,8 @@
     rdfs:label "Path Information" ;
     rdfs:comment """Information provided by the RU for a requested journey section or by
     the IM for an offered/booked path section. Corresponds to PathInformation
-    in taf_cat_complete.xsd.""" ;
+    in taf_cat_complete.xsd. Properties: pathValidityPeriod, plannedCalendar
+    (PlannedCalendar).""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element PathInformation" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
@@ -136,3 +152,123 @@
     rdfs:comment "Validity period of an offered or confirmed path." ;
     rdfs:domain :PathInformation ;
     rdfs:range sk:ValidityPeriod .
+
+:pathMessageStatus a owl:DatatypeProperty ;
+    rdfs:label "path message status" ;
+    rdfs:comment "Status of the path request message (1=Creation, 2=Modification, 3=Deletion). Corresponds to MessageStatus in taf_cat_complete.xsd." ;
+    rdfs:domain :PathRequestMessage ;
+    rdfs:range xsd:string .
+
+:processType a owl:DatatypeProperty ;
+    rdfs:label "process type" ;
+    rdfs:comment "Type of process for the path request (e.g. Path Optimization). Corresponds to ProcessType in taf_cat_complete.xsd." ;
+    rdfs:domain :PathRequestMessage ;
+    rdfs:range xsd:string .
+
+:typeOfInformation a owl:DatatypeProperty ;
+    rdfs:label "type of information" ;
+    rdfs:comment "Type of information indicating the process step (path study, pre-arranged/catalogue, draft offer, final offer, booked, deleted). Corresponds to TypeOfInformation in taf_cat_complete.xsd." ;
+    rdfs:domain :PathRequestMessage ;
+    rdfs:range xsd:string .
+
+:pathConfirmedMessageStatus a owl:DatatypeProperty ;
+    rdfs:label "path confirmed message status" ;
+    rdfs:comment "Status of the path confirmed message (1=Creation, 2=Modification, 3=Deletion). Corresponds to MessageStatus in taf_cat_complete.xsd." ;
+    rdfs:domain :PathConfirmedMessage ;
+    rdfs:range xsd:string .
+
+:pathConfirmedProcessType a owl:DatatypeProperty ;
+    rdfs:label "path confirmed process type" ;
+    rdfs:comment "Type of process for the path confirmation. Corresponds to ProcessType in taf_cat_complete.xsd." ;
+    rdfs:domain :PathConfirmedMessage ;
+    rdfs:range xsd:string .
+
+:pathConfirmedTypeOfInformation a owl:DatatypeProperty ;
+    rdfs:label "path confirmed type of information" ;
+    rdfs:comment "Type of information for the path confirmation. Corresponds to TypeOfInformation in taf_cat_complete.xsd." ;
+    rdfs:domain :PathConfirmedMessage ;
+    rdfs:range xsd:string .
+
+:pathCanceledMessageStatus a owl:DatatypeProperty ;
+    rdfs:label "path canceled message status" ;
+    rdfs:comment "Status of the path canceled message (1=Creation, 2=Modification, 3=Deletion). Corresponds to MessageStatus in taf_cat_complete.xsd." ;
+    rdfs:domain :PathCanceledMessage ;
+    rdfs:range xsd:string .
+
+:pathCanceledProcessType a owl:DatatypeProperty ;
+    rdfs:label "path canceled process type" ;
+    rdfs:comment "Type of process for the path cancellation. Corresponds to ProcessType in taf_cat_complete.xsd." ;
+    rdfs:domain :PathCanceledMessage ;
+    rdfs:range xsd:string .
+
+:pathCanceledTypeOfInformation a owl:DatatypeProperty ;
+    rdfs:label "path canceled type of information" ;
+    rdfs:comment "Type of information for the path cancellation. Corresponds to TypeOfInformation in taf_cat_complete.xsd." ;
+    rdfs:domain :PathCanceledMessage ;
+    rdfs:range xsd:string .
+
+:pathNotAvailableMessageStatus a owl:DatatypeProperty ;
+    rdfs:label "path not available message status" ;
+    rdfs:comment "Status of the path not available message (1=Creation, 2=Modification, 3=Deletion). Corresponds to MessageStatus in taf_cat_complete.xsd." ;
+    rdfs:domain :PathNotAvailableMessage ;
+    rdfs:range xsd:string .
+
+:pathNotAvailableProcessType a owl:DatatypeProperty ;
+    rdfs:label "path not available process type" ;
+    rdfs:comment "Type of process for the path not available message. Corresponds to ProcessType in taf_cat_complete.xsd." ;
+    rdfs:domain :PathNotAvailableMessage ;
+    rdfs:range xsd:string .
+
+:pathNotAvailableTypeOfInformation a owl:DatatypeProperty ;
+    rdfs:label "path not available type of information" ;
+    rdfs:comment "Type of information for the path not available message. Corresponds to TypeOfInformation in taf_cat_complete.xsd." ;
+    rdfs:domain :PathNotAvailableMessage ;
+    rdfs:range xsd:string .
+
+:pathDetailsMessageStatus a owl:DatatypeProperty ;
+    rdfs:label "path details message status" ;
+    rdfs:comment "Status of the path details message (1=Creation, 2=Modification, 3=Deletion). Corresponds to MessageStatus in taf_cat_complete.xsd." ;
+    rdfs:domain :PathDetailsMessage ;
+    rdfs:range xsd:string .
+
+:pathDetailsTypeOfInformation a owl:DatatypeProperty ;
+    rdfs:label "path details type of information" ;
+    rdfs:comment "Type of information for the path details. Corresponds to TypeOfInformation in taf_cat_complete.xsd." ;
+    rdfs:domain :PathDetailsMessage ;
+    rdfs:range xsd:string .
+
+:pathDetailsRefusedMessageStatus a owl:DatatypeProperty ;
+    rdfs:label "path details refused message status" ;
+    rdfs:comment "Status of the path details refused message (1=Creation, 2=Modification, 3=Deletion). Corresponds to MessageStatus in taf_cat_complete.xsd." ;
+    rdfs:domain :PathDetailsRefusedMessage ;
+    rdfs:range xsd:string .
+
+:pathDetailsRefusedProcessType a owl:DatatypeProperty ;
+    rdfs:label "path details refused process type" ;
+    rdfs:comment "Type of process for the path details refusal. Corresponds to ProcessType in taf_cat_complete.xsd." ;
+    rdfs:domain :PathDetailsRefusedMessage ;
+    rdfs:range xsd:string .
+
+:pathDetailsRefusedTypeOfInformation a owl:DatatypeProperty ;
+    rdfs:label "path details refused type of information" ;
+    rdfs:comment "Type of information for the path details refusal. Corresponds to TypeOfInformation in taf_cat_complete.xsd." ;
+    rdfs:domain :PathDetailsRefusedMessage ;
+    rdfs:range xsd:string .
+
+:preArrangedPathCode a owl:DatatypeProperty ;
+    rdfs:label "pre-arranged path code" ;
+    rdfs:comment "Code identifying a pre-arranged path offered by IMs with pre-defined frequencies (1-9 characters). Corresponds to PreArrangedPath in taf_cat_complete.xsd." ;
+    rdfs:domain :PreArrangedPath ;
+    rdfs:range xsd:string .
+
+:onDemandPathIndicator a owl:DatatypeProperty ;
+    rdfs:label "on-demand path indicator" ;
+    rdfs:comment "Boolean indicating the use of an on-demand or optional path. Corresponds to OnDemandPath in taf_cat_complete.xsd." ;
+    rdfs:domain :OnDemandPath ;
+    rdfs:range xsd:boolean .
+
+:plannedCalendar a owl:DatatypeProperty ;
+    rdfs:label "planned calendar" ;
+    rdfs:comment "Bitmap calendar defining the days on which the path is requested or offered. Corresponds to PlannedCalendar in taf_cat_complete.xsd." ;
+    rdfs:domain :PathInformation ;
+    rdfs:range xsd:string .

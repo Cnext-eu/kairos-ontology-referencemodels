@@ -16,8 +16,8 @@
     and MARPOL Annex III for the safe carriage of dangerous goods by sea.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "IMDG Code (Amendment 41-22), SOLAS Chapter VII, IMO Compendium data set" ;
     rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
 
@@ -47,32 +47,53 @@
     rdfs:comment """One of the nine hazard classes (and their divisions) defined by the IMDG Code,
     e.g., Class 1 Explosives, Class 3 Flammable Liquids, Class 7 Radioactive Material.
 
-    Determines applicable transport, stowage, and emergency response requirements.""" .
+    Determines applicable transport, stowage, and emergency response requirements.
+
+    Properties: hasSegregationRule, hazardClassCode, hazardClassName, hazardClassDivision.
+
+    Source: IMDG Code (Amendment 41-22) Part 2, Dangerous Goods List.""" .
 
 :UNNumber a owl:Class ;
     rdfs:label "UN Number" ;
     rdfs:comment """A four-digit identifier assigned by the UN Committee of Experts to a dangerous
     substance or article (e.g., UN 1203 for gasoline). Used universally for DG identification
-    across all transport modes.""" .
+    across all transport modes.
+
+    Properties: unNumberValue, unProperShippingName.
+
+    Source: UN Recommendations on the Transport of Dangerous Goods, IMDG Code Dangerous Goods List.""" .
 
 :PackingGroup a owl:Class ;
     rdfs:label "Packing Group" ;
     rdfs:comment """A classification indicating the degree of danger presented by a substance.
 
     Packing Group I — high danger; Packing Group II — medium danger;
-    Packing Group III — low danger. Determines packaging requirements.""" .
+    Packing Group III — low danger. Determines packaging requirements.
+
+    Properties: packingGroupCode, packingGroupDangerLevel.
+
+    Source: IMDG Code Part 2, UN Recommendations on the Transport of Dangerous Goods.""" .
 
 :FlashPoint a owl:Class ;
     rdfs:label "Flash Point" ;
     rdfs:comment """The lowest temperature at which a substance gives off sufficient vapour to
     form an ignitable mixture with air. Critical for classification of flammable liquids
-    under the IMDG Code.""" .
+    under the IMDG Code.
+
+    Properties: flashPointValue, flashPointTestMethod, flashPointUnit.
+
+    Source: IMDG Code Part 2, Class 3 Flammable Liquids, 2.3.1.""" .
 
 :EmergencySchedule a owl:Class ;
     rdfs:label "Emergency Schedule" ;
     rdfs:comment """The EmS (Emergency Schedule) number assigned to dangerous goods specifying
     fire-fighting and spillage procedures. Formatted as F-x (fire) and S-x (spillage),
-    as per the IMO/ILO/UNECE guidelines.""" .
+    as per the IMO/ILO/UNECE guidelines.
+
+    Properties: emsFireSchedule, emsSpillageSchedule, emsScheduleTitle.
+
+    Source: IMDG Code Supplement, EmS Guide (Emergency Response Procedures for Ships
+    Carrying Dangerous Goods).""" .
 
 :SegregationRule a owl:Class ;
     rdfs:label "Segregation Rule" ;
@@ -80,18 +101,30 @@
     dangerous goods classes during stowage aboard a vessel.
 
     Defined in IMDG Code Chapter 7.2 with categories: away from, separated from,
-    separated by a complete compartment from, etc.""" .
+    separated by a complete compartment from, etc.
+
+    Properties: segregationTerm, segregationDescription.
+
+    Source: IMDG Code Chapter 7.2, Segregation Table.""" .
 
 :StowageCategory a owl:Class ;
     rdfs:label "Stowage Category" ;
     rdfs:comment """A stowage category code (A through E) assigned by the IMDG Code indicating
-    whether dangerous goods may be stowed on deck, under deck, or have other stowage restrictions.""" .
+    whether dangerous goods may be stowed on deck, under deck, or have other stowage restrictions.
+
+    Properties: stowageCategoryCode, stowageCategoryDescription.
+
+    Source: IMDG Code Part 7, Chapter 7.1, Stowage and Segregation.""" .
 
 :EmergencyContact a owl:Class ;
     rdfs:label "Emergency Contact" ;
     rdfs:comment """A designated 24-hour emergency contact point for dangerous goods incidents,
     as required by IMDG Code section 5.4.1.7. Typically provided by the shipper or
-    a contracted emergency response service.""" .
+    a contracted emergency response service.
+
+    Properties: contactName, contactPhone, contactOrganization, contactAvailable24h.
+
+    Source: IMDG Code Section 5.4.1.7, Emergency Response Information.""" .
 
 :DGDeclaration a owl:Class ;
     rdfs:label "Dangerous Goods Declaration" ;
@@ -233,3 +266,85 @@
     rdfs:comment "24-hour telephone number of the emergency contact." ;
     rdfs:domain :EmergencyContact ;
     rdfs:range xsd:string .
+
+#################################################################
+#    Datatype Properties — Enrichment (IMDG Code)
+#################################################################
+
+:hazardClassName a owl:DatatypeProperty ;
+    rdfs:label "hazard class name" ;
+    rdfs:comment "Name of the IMDG hazard class (e.g., 'Flammable Liquids', 'Corrosive Substances')." ;
+    rdfs:domain :HazardClass ;
+    rdfs:range xsd:string .
+
+:hazardClassDivision a owl:DatatypeProperty ;
+    rdfs:label "hazard class division" ;
+    rdfs:comment "Subdivision number of the hazard class (e.g., '2.1' for Flammable Gas, '6.2' for Infectious Substances)." ;
+    rdfs:domain :HazardClass ;
+    rdfs:range xsd:string .
+
+:unProperShippingName a owl:DatatypeProperty ;
+    rdfs:label "UN proper shipping name" ;
+    rdfs:comment "The proper shipping name associated with this UN number as listed in the IMDG Code Dangerous Goods List (Column 2)." ;
+    rdfs:domain :UNNumber ;
+    rdfs:range xsd:string .
+
+:packingGroupDangerLevel a owl:DatatypeProperty ;
+    rdfs:label "packing group danger level" ;
+    rdfs:comment "Textual description of the danger level (e.g., 'high danger', 'medium danger', 'low danger')." ;
+    rdfs:domain :PackingGroup ;
+    rdfs:range xsd:string .
+
+:flashPointTestMethod a owl:DatatypeProperty ;
+    rdfs:label "flash point test method" ;
+    rdfs:comment "Test method used to determine the flash point (e.g., 'Closed cup' / 'Open cup'). IMDG Code 2.3.1." ;
+    rdfs:domain :FlashPoint ;
+    rdfs:range xsd:string .
+
+:flashPointUnit a owl:DatatypeProperty ;
+    rdfs:label "flash point unit" ;
+    rdfs:comment "Unit of measurement for the flash point temperature (e.g., '°C')." ;
+    rdfs:domain :FlashPoint ;
+    rdfs:range xsd:string .
+
+:emsScheduleTitle a owl:DatatypeProperty ;
+    rdfs:label "EmS schedule title" ;
+    rdfs:comment "Title of the EmS schedule (e.g., 'Fire Schedule F-E, Engine Room Cargo Space')" ;
+    rdfs:domain :EmergencySchedule ;
+    rdfs:range xsd:string .
+
+:segregationTerm a owl:DatatypeProperty ;
+    rdfs:label "segregation term" ;
+    rdfs:comment "The segregation term code: '1' (away from), '2' (separated from), '3' (separated by a complete compartment from), '4' (separated longitudinally by an intervening complete compartment from). IMDG Code 7.2." ;
+    rdfs:domain :SegregationRule ;
+    rdfs:range xsd:string .
+
+:segregationDescription a owl:DatatypeProperty ;
+    rdfs:label "segregation description" ;
+    rdfs:comment "Human-readable description of the segregation requirement. IMDG Code Chapter 7.2 Segregation Table." ;
+    rdfs:domain :SegregationRule ;
+    rdfs:range xsd:string .
+
+:stowageCategoryCode a owl:DatatypeProperty ;
+    rdfs:label "stowage category code" ;
+    rdfs:comment "Single-letter stowage category code (A-E). IMDG Code 7.1." ;
+    rdfs:domain :StowageCategory ;
+    rdfs:range xsd:string .
+
+:stowageCategoryDescription a owl:DatatypeProperty ;
+    rdfs:label "stowage category description" ;
+    rdfs:comment "Description of the stowage category (e.g., 'On deck only', 'On deck or under deck'). IMDG Code 7.1." ;
+    rdfs:domain :StowageCategory ;
+    rdfs:range xsd:string .
+
+:contactOrganization a owl:DatatypeProperty ;
+    rdfs:label "contact organization" ;
+    rdfs:comment "Name of the emergency response organization providing the 24-hour service. IMDG Code 5.4.1.7." ;
+    rdfs:domain :EmergencyContact ;
+    rdfs:range xsd:string .
+
+:contactAvailable24h a owl:DatatypeProperty ;
+    rdfs:label "contact available 24h" ;
+    rdfs:comment "Whether the emergency contact is available 24 hours a day. IMDG Code 5.4.1.7." ;
+    rdfs:domain :EmergencyContact ;
+    rdfs:range xsd:boolean .

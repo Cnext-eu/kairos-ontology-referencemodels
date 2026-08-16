@@ -1,0 +1,128 @@
+@prefix : <https://www.kairosflow.ai/ont/rail/rolling-stock#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix sk: <https://www.kairosflow.ai/ont/rail/shared-kernel#> .
+
+<https://www.kairosflow.ai/ont/rail/rolling-stock> a owl:Ontology ;
+    dcterms:title "RAIL Rolling Stock — Wagon, Telematics, WagonStatus" ;
+    dcterms:description """Rolling-stock and wagon-level concepts for rail, grounded in TAF
+    TSI: Wagon Status Message, Wagon Location Status, Wagon At Departure,
+    Wagon Telematics, Telematics Device, Telematics On Board, and the
+    TrainCompositionMessage that defines the proposed train composition.
+    Binds at the movement grain (grain 4). v1.0.0.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-08-15"^^xsd:date ;
+    dcterms:modified "2026-08-15"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd: WagonStatusMessage, WagonLocationStatus, WagonAtDeparture, WagonTelematics, TelematicsDevice, TelematicsOnBoard, TrainCompositionMessage" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+#################################################################
+#    Rolling Stock Classes (movement grain)
+#################################################################
+
+:WagonStatusMessage a owl:Class ;
+    rdfs:label "Wagon Status Message" ;
+    rdfs:comment """Message describing one event of one wagon. Corresponds to
+    WagonStatusMessage in taf_cat_complete.xsd.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, element WagonStatusMessage" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+:WagonLocationStatus a owl:Class ;
+    rdfs:label "Wagon Location Status" ;
+    rdfs:comment """Identifies the status of a wagon related to the actual time at a
+    reporting point. Corresponds to WagonLocationStatus in
+    taf_cat_complete.xsd.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, element WagonLocationStatus" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+:WagonAtDeparture a owl:Class ;
+    rdfs:label "Wagon At Departure" ;
+    rdfs:comment """Wagon data at departure. Corresponds to WagonAtDeparture in
+    taf_cat_complete.xsd.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, element WagonAtDeparture" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+:WagonTelematics a owl:Class ;
+    rdfs:label "Wagon Telematics" ;
+    rdfs:comment """Telematics data for a wagon (load dimensions, telematics devices).
+    Corresponds to WagonTelematics in taf_cat_complete.xsd.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, element WagonTelematics" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+:TelematicsDevice a owl:Class ;
+    rdfs:label "Telematics Device" ;
+    rdfs:comment """A telematics device fitted to a wagon. Corresponds to
+    TelematicsDevice in taf_cat_complete.xsd.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, element TelematicsDevice" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+:TelematicsOnBoard a owl:Class ;
+    rdfs:label "Telematics On Board" ;
+    rdfs:comment """Telematics on board a wagon. Corresponds to TelematicsOnBoard in
+    taf_cat_complete.xsd.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, element TelematicsOnBoard" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+:TrainCompositionMessage a owl:Class ;
+    rdfs:label "Train Composition Message" ;
+    rdfs:comment """Message sent from an RU to an IM defining the composition of the
+    proposed train. Corresponds to TrainCompositionMessage in
+    taf_cat_complete.xsd.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, element TrainCompositionMessage" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+#################################################################
+#    Properties
+#################################################################
+
+:wagonNumber a owl:DatatypeProperty ;
+    rdfs:label "wagon number" ;
+    rdfs:comment """Unique wagon number (UIC 12-digit vehicle number).""" ;
+    rdfs:domain :WagonAtDeparture ;
+    rdfs:range xsd:string .
+
+:hasWagonAtDeparture a owl:ObjectProperty ;
+    rdfs:label "has wagon at departure" ;
+    rdfs:comment "Links a Train Composition Message to its wagon-at-departure entries." ;
+    rdfs:domain :TrainCompositionMessage ;
+    rdfs:range :WagonAtDeparture .
+
+:hasWagonTelematics a owl:ObjectProperty ;
+    rdfs:label "has wagon telematics" ;
+    rdfs:comment "Links a wagon to its telematics data." ;
+    rdfs:domain :WagonAtDeparture ;
+    rdfs:range :WagonTelematics .
+
+:hasTelematicsDevice a owl:ObjectProperty ;
+    rdfs:label "has telematics device" ;
+    rdfs:comment "Links telematics data to the fitted telematics device." ;
+    rdfs:domain :WagonTelematics ;
+    rdfs:range :TelematicsDevice .
+
+:reportsWagon a owl:ObjectProperty ;
+    rdfs:label "reports wagon" ;
+    rdfs:comment "Identifies the wagon a Wagon Status Message reports." ;
+    rdfs:domain :WagonStatusMessage ;
+    rdfs:range :WagonAtDeparture .
+
+:wagonLocation a owl:ObjectProperty ;
+    rdfs:label "wagon location" ;
+    rdfs:comment "Reporting point a Wagon Location Status refers to." ;
+    rdfs:domain :WagonLocationStatus ;
+    rdfs:range sk:RailLocationIdentifier .
+
+:wagonActualTime a owl:DatatypeProperty ;
+    rdfs:label "wagon actual time" ;
+    rdfs:comment "Actual time of the wagon event at the reporting point." ;
+    rdfs:domain :WagonLocationStatus ;
+    rdfs:range xsd:dateTime .
+
+:compositionFor a owl:ObjectProperty ;
+    rdfs:label "composition for" ;
+    rdfs:comment "Identifies the planned train the composition message defines." ;
+    rdfs:domain :TrainCompositionMessage ;
+    rdfs:range sk:PlannedTrainIdentifier .

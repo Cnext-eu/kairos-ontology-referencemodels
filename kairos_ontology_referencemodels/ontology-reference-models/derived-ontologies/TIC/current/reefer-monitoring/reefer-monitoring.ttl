@@ -18,8 +18,8 @@
     and 2025.014 (Reefer additional data).""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-07-15"^^xsd:date ;
-    dcterms:modified "2026-07-15"^^xsd:date ;
-    owl:versionInfo "1.3.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.4.0" ;
     dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
     rdfs:seeAlso <https://tic40.org/standards/> .
 
@@ -32,8 +32,9 @@
     rdfs:comment """A monitoring record for a reefer container's environmental conditions at the terminal.
 
     TIC 4.0 subject: reefermonitoring. Captures set-point temperatures, actual readings,
-    supply/return temperatures, power state, and alarm status. Recorded periodically by
-    the terminal's reefer monitoring system or at gate-in/gate-out checkpoints.""" ;
+    supply/return temperatures, humidity level, ventilation setting, gas concentration
+    (O2/CO2), power state, and alarm status. Recorded periodically by the terminal's reefer
+    monitoring system or at gate-in/gate-out checkpoints.""" ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :monitoringTimestamp ;
@@ -148,6 +149,24 @@
     rdfs:comment "Carbon dioxide concentration in controlled atmosphere reefer, as percentage." ;
     rdfs:domain :ReeferMonitoring ;
     rdfs:range xsd:decimal .
+
+:humidityLevel a owl:DatatypeProperty ;
+    rdfs:label "humidity level" ;
+    rdfs:comment "Relative humidity level inside the reefer container, as percentage. TIC 4.0 (Release 2024.012): cargo|@|air|humiditylevel|output|actual|value — humidity in the air inside the cargo." ;
+    rdfs:domain :ReeferMonitoring ;
+    rdfs:range xsd:decimal .
+
+:ventilationSetting a owl:DatatypeProperty ;
+    rdfs:label "ventilation setting" ;
+    rdfs:comment "Ventilation level at which the reefer ventilation system is running, as cubic metres per hour. TIC 4.0 (Release 2024.012): cargo|@|powersource|@|ventilationsystem|running|load|output|actual|value." ;
+    rdfs:domain :ReeferMonitoring ;
+    rdfs:range xsd:decimal .
+
+:humidityControlActive a owl:DatatypeProperty ;
+    rdfs:label "humidity control active" ;
+    rdfs:comment "Indicates whether the reefer humidity control system is active. TIC 4.0 (Release 2024.012): cargo|@|powersource|@|humuditysystem|@|active|status|output|actual|value." ;
+    rdfs:domain :ReeferMonitoring ;
+    rdfs:range xsd:boolean .
 
 :containerReference a owl:DatatypeProperty ;
     rdfs:label "container reference" ;

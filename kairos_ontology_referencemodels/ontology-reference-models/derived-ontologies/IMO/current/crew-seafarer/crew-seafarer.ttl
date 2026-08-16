@@ -22,8 +22,8 @@
     operational/commercial rather than reference-model entities.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-06-12"^^xsd:date ;
-    dcterms:modified "2026-06-12"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "STCW Convention 1978 (Manila 2010), MLC 2006, FAL Convention Forms 5 & 6, SOLAS V/14" ;
     rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
 
@@ -66,7 +66,10 @@
     One of the 7 mandatory FAL Convention forms. Must be submitted as part of the
     pre-arrival notification to the port authority via the Maritime Single Window.
 
-    IMO Compendium Data Set DS4.""" ;
+    Properties: hasCrewMember, totalCrewCount, listDate, crewListFlagState,
+    crewListVoyageNumber.
+
+    IMO Compendium Data Set DS4. Source: FAL Convention Standard 2.1, Form 5.""" ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :hasCrewMember ;
@@ -95,14 +98,24 @@
 
     STCW: CoP for ship security officer (SSO), GMDSS restricted operator,
     advanced firefighting, medical first aid, proficiency in survival craft,
-    tanker operations (oil/chemical/gas).""" .
+    tanker operations (oil/chemical/gas).
+
+    Properties: copFunction, copCertificateNumber, copIssueDate, copExpiryDate,
+    copTrainingProvider.
+
+    Source: STCW Convention 1978 (Manila 2010), Regulations I/6, VI/2-VI/6.""" .
 
 :PassengerList a owl:Class ;
     rdfs:label "Passenger List" ;
     rdfs:comment """The list of all passengers aboard a vessel for a port call (FAL Form 6).
 
     One of the 7 mandatory FAL Convention forms. IMO Compendium Data Set DS5.
-    Required for passenger ships and vessels carrying more than 12 passengers.""" .
+    Required for passenger ships and vessels carrying more than 12 passengers.
+
+    Properties: hasPassenger, totalPassengerCount, listDate, passengerListFlagState,
+    passengerListVoyageNumber.
+
+    Source: FAL Convention Standard 2.1, Form 6.""" .
 
 :Passenger a owl:Class ;
     rdfs:label "Passenger" ;
@@ -305,3 +318,55 @@
     rdfs:comment "Total number of passengers on the list." ;
     rdfs:domain :PassengerList ;
     rdfs:range xsd:integer .
+
+#################################################################
+#    Datatype Properties — Enrichment (STCW / FAL Convention)
+#################################################################
+
+:copCertificateNumber a owl:DatatypeProperty ;
+    rdfs:label "CoP certificate number" ;
+    rdfs:comment "Unique identifier of the certificate of proficiency (STCW Regulation I/2)." ;
+    rdfs:domain :CertificateOfProficiency ;
+    rdfs:range xsd:string .
+
+:copIssueDate a owl:DatatypeProperty ;
+    rdfs:label "CoP issue date" ;
+    rdfs:comment "Date when the certificate of proficiency was issued (STCW Regulation I/2)." ;
+    rdfs:domain :CertificateOfProficiency ;
+    rdfs:range xsd:date .
+
+:copExpiryDate a owl:DatatypeProperty ;
+    rdfs:label "CoP expiry date" ;
+    rdfs:comment "Date when the certificate of proficiency expires (STCW Regulation I/2)." ;
+    rdfs:domain :CertificateOfProficiency ;
+    rdfs:range xsd:date .
+
+:copTrainingProvider a owl:DatatypeProperty ;
+    rdfs:label "CoP training provider" ;
+    rdfs:comment "Name of the training institution that provided the competency training (STCW Regulation I/6)." ;
+    rdfs:domain :CertificateOfProficiency ;
+    rdfs:range xsd:string .
+
+:crewListFlagState a owl:DatatypeProperty ;
+    rdfs:label "crew list flag state" ;
+    rdfs:comment "ISO 3166-1 alpha-2 flag state of the vessel whose crew list is submitted (FAL Form 5)." ;
+    rdfs:domain :CrewList ;
+    rdfs:range xsd:string .
+
+:crewListVoyageNumber a owl:DatatypeProperty ;
+    rdfs:label "crew list voyage number" ;
+    rdfs:comment "Voyage number associated with the crew list submission (FAL Form 5)." ;
+    rdfs:domain :CrewList ;
+    rdfs:range xsd:string .
+
+:passengerListFlagState a owl:DatatypeProperty ;
+    rdfs:label "passenger list flag state" ;
+    rdfs:comment "ISO 3166-1 alpha-2 flag state of the vessel whose passenger list is submitted (FAL Form 6)." ;
+    rdfs:domain :PassengerList ;
+    rdfs:range xsd:string .
+
+:passengerListVoyageNumber a owl:DatatypeProperty ;
+    rdfs:label "passenger list voyage number" ;
+    rdfs:comment "Voyage number associated with the passenger list submission (FAL Form 6)." ;
+    rdfs:domain :PassengerList ;
+    rdfs:range xsd:string .

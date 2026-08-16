@@ -21,8 +21,8 @@
     transport routes, legs, and movements. Based on UN/CEFACT MMT Reference Data Model.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-06-20"^^xsd:date ;
-    owl:versionInfo "2.1.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "2.2.0" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
 
@@ -33,21 +33,30 @@
 :TransportService a owl:Class ;
     rdfs:label "Transport Service" ;
     rdfs:comment """A service for the transport of goods or persons from one location to another.
-    
-    UN/CEFACT MMT: Core service offering for freight movement.""" .
+
+    Properties: hasConsignment, hasRoute, serviceType, serviceProvider.
+    UN/CEFACT MMT-RDM: TransportServiceType — serviceType is the type of
+    transport service (e.g., door-to-door, port-to-port); serviceProvider
+    identifies the party providing the service.""" .
 
 :TransportServiceExecution a owl:Class ;
     rdfs:label "Transport Service Execution" ;
     rdfs:comment """The actual execution of a transport service.
-    
-    UN/CEFACT MMT: Represents the operational delivery of transport services.""" ;
+
+    Properties: executionStatus, executionDate.
+    UN/CEFACT MMT-RDM: TransportServiceExecutionType — executionStatus is
+    the operational status of the service execution (e.g., PLANNED, IN_PROGRESS,
+    COMPLETED, CANCELLED); executionDate is the date of execution.""" ;
     rdfs:subClassOf :TransportService .
 
 :TransportRoute a owl:Class ;
     rdfs:label "Transport Route" ;
     rdfs:comment """A defined path for transport between origin and destination.
-    
-    UN/CEFACT MMT: May include multiple transport legs and modes.""" .
+
+    Properties: hasTransportLeg, routeSequence, routeType.
+    UN/CEFACT MMT-RDM: TransportRouteType — routeSequence is the sequence
+    number of this route within a multi-leg journey; routeType is the type
+    of route (e.g., direct, indirect, circular).""" .
 
 :TransportLeg a owl:Class ;
     rdfs:label "Transport Leg" ;
@@ -89,15 +98,20 @@
 :MasterConsignment a owl:Class ;
     rdfs:label "Master Consignment" ;
     rdfs:comment """A consignment that may contain multiple house consignments.
-    
-    UN/CEFACT MMT: Used by freight forwarders consolidating shipments.""" ;
+
+    Properties: hasHouseConsignment, masterReferenceNumber, carrierBookingReference.
+    UN/CEFACT MMT-RDM: MasterConsignmentType — carrierBookingReference is the
+    booking reference assigned by the carrier for the master consignment.""" ;
     rdfs:subClassOf :Consignment .
 
 :HouseConsignment a owl:Class ;
     rdfs:label "House Consignment" ;
     rdfs:comment """An individual shipper's consignment within a master consignment.
-    
-    UN/CEFACT MMT: Represents individual shipments in consolidated freight.""" ;
+
+    Properties: houseReferenceNumber, houseBillNumber, forwardingAgentReference.
+    UN/CEFACT MMT-RDM: HouseConsignmentType — houseBillNumber is the house
+    bill of lading number; forwardingAgentReference is the reference assigned
+    by the forwarding agent.""" ;
     rdfs:subClassOf :Consignment .
 
 :ConsignmentItem a owl:Class ;
@@ -120,8 +134,10 @@
 :Package a owl:Class ;
     rdfs:label "Package" ;
     rdfs:comment """A physical unit in which goods are packed for transport.
-    
-    UN/CEFACT MMT: Cartons, pallets, crates, etc.""" .
+
+    Properties: packageCode, packageType, packageQuantity, packageMarks.
+    UN/CEFACT MMT-RDM: TransportPackageType — packageQuantity is the number
+    of packages; packageMarks is the marks and numbers on the package.""" .
 
 #################################################################
 #    Object Properties
@@ -511,4 +527,74 @@
     rdfs:comment "Status of the transport movement." ;
     rdfs:domain :TransportMovement ;
     rdfs:range xsd:string .
+
+#################################################################
+#    Additional Datatype Properties (UN/CEFACT MMT-RDM)
+#################################################################
+
+:houseBillNumber a owl:DatatypeProperty ;
+    rdfs:label "house bill number" ;
+    rdfs:comment "House bill of lading number. UN/CEFACT MMT-RDM: HouseConsignmentType house bill number." ;
+    rdfs:domain :HouseConsignment ;
+    rdfs:range xsd:string .
+
+:forwardingAgentReference a owl:DatatypeProperty ;
+    rdfs:label "forwarding agent reference" ;
+    rdfs:comment "Reference assigned by the forwarding agent. UN/CEFACT MMT-RDM: HouseConsignmentType forwarding agent reference." ;
+    rdfs:domain :HouseConsignment ;
+    rdfs:range xsd:string .
+
+:carrierBookingReference a owl:DatatypeProperty ;
+    rdfs:label "carrier booking reference" ;
+    rdfs:comment "Booking reference assigned by the carrier. UN/CEFACT MMT-RDM: MasterConsignmentType carrier booking reference." ;
+    rdfs:domain :MasterConsignment ;
+    rdfs:range xsd:string .
+
+:packageQuantity a owl:DatatypeProperty ;
+    rdfs:label "package quantity" ;
+    rdfs:comment "Number of packages. UN/CEFACT MMT-RDM: TransportPackageType package quantity." ;
+    rdfs:domain :Package ;
+    rdfs:range xsd:integer .
+
+:packageMarks a owl:DatatypeProperty ;
+    rdfs:label "package marks" ;
+    rdfs:comment "Marks and numbers on the package. UN/CEFACT MMT-RDM: TransportPackageType marks and numbers." ;
+    rdfs:domain :Package ;
+    rdfs:range xsd:string .
+
+:routeSequence a owl:DatatypeProperty ;
+    rdfs:label "route sequence" ;
+    rdfs:comment "Sequence number of this route within a multi-leg journey. UN/CEFACT MMT-RDM: TransportRouteType sequence." ;
+    rdfs:domain :TransportRoute ;
+    rdfs:range xsd:integer .
+
+:routeType a owl:DatatypeProperty ;
+    rdfs:label "route type" ;
+    rdfs:comment "Type of route (direct, indirect, circular). UN/CEFACT MMT-RDM: TransportRouteType route type." ;
+    rdfs:domain :TransportRoute ;
+    rdfs:range xsd:string .
+
+:serviceType a owl:DatatypeProperty ;
+    rdfs:label "service type" ;
+    rdfs:comment "Type of transport service (door-to-door, port-to-port). UN/CEFACT MMT-RDM: TransportServiceType service type." ;
+    rdfs:domain :TransportService ;
+    rdfs:range xsd:string .
+
+:serviceProvider a owl:DatatypeProperty ;
+    rdfs:label "service provider" ;
+    rdfs:comment "Party providing the transport service. UN/CEFACT MMT-RDM: TransportServiceType service provider." ;
+    rdfs:domain :TransportService ;
+    rdfs:range xsd:string .
+
+:executionStatus a owl:DatatypeProperty ;
+    rdfs:label "execution status" ;
+    rdfs:comment "Operational status of the service execution. UN/CEFACT MMT-RDM: TransportServiceExecutionType execution status." ;
+    rdfs:domain :TransportServiceExecution ;
+    rdfs:range xsd:string .
+
+:executionDate a owl:DatatypeProperty ;
+    rdfs:label "execution date" ;
+    rdfs:comment "Date of the service execution. UN/CEFACT MMT-RDM: TransportServiceExecutionType execution date." ;
+    rdfs:domain :TransportServiceExecution ;
+    rdfs:range xsd:date .
 

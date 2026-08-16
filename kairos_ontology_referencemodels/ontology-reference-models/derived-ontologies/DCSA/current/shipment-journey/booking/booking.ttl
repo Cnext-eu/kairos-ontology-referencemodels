@@ -26,8 +26,8 @@
     discovery using the documented fit-gap analysis.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-06-21"^^xsd:date ;
-    owl:versionInfo "1.4.1" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.5.0" ;
     dcterms:source "DCSA Booking API (BKG) v2.0.4, DCSA Domain v3.1.0" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
 
@@ -64,7 +64,10 @@
     rdfs:label "Shipping Instruction" ;
     rdfs:comment """Detailed instructions from shipper to carrier on cargo handling and documentation requirements.
     
-    DCSA: Provides all information needed to create the Bill of Lading.""" ;
+    DCSA: Provides all information needed to create the Bill of Lading.
+    DCSA documentation_domain_v3.0.0 schema: transportDocumentTypeCode (BOL/SWB),
+    isShippedOnBoardType, isElectronic, isToOrder, freightPaymentTermCode (PRE/COL),
+    numberOfCopiesWithCharges, numberOfOriginalsWithCharges, placeOfIssue, sendToPlatform.""" ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :shippingInstructionReference ;
@@ -109,7 +112,9 @@
     rdfs:label "Utilized Transport Equipment" ;
     rdfs:comment """Actual container equipment allocated and used for cargo transport.
     
-    DCSA: Containers actually assigned with specific container numbers.""" ;
+    DCSA: Containers actually assigned with specific container numbers.
+    DCSA _CAR variant schema: cargoGrossWeight, cargoGrossWeightUnit, cargoGrossVolume,
+    cargoGrossVolumeUnit, isShipperOwned, isNonOperatingReefer, seals, activeReeferSettings.""" ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :equipmentReference ;
@@ -558,3 +563,89 @@
     rdfs:comment "Planned arrival date for this transport leg." ;
     rdfs:domain :TransportPlanLeg ;
     rdfs:range xsd:dateTime .
+
+#################################################################
+#    Enriched Properties — DCSA Documentation Domain v3.0.0
+#################################################################
+
+:transportDocumentTypeCode a owl:DatatypeProperty ;
+    rdfs:label "transport document type code" ;
+    rdfs:comment "DCSA documentation_domain_v3.0.0: type of transport document (BOL for Bill of Lading, SWB for Sea Waybill)." ;
+    rdfs:domain :ShippingInstruction ;
+    rdfs:range xsd:string .
+
+:isShippedOnBoardType a owl:DatatypeProperty ;
+    rdfs:label "is shipped on board type" ;
+    rdfs:comment "DCSA documentation_domain_v3.0.0: indicates whether the transport document is a shipped on board type." ;
+    rdfs:domain :ShippingInstruction ;
+    rdfs:range xsd:boolean .
+
+:isElectronic a owl:DatatypeProperty ;
+    rdfs:label "is electronic" ;
+    rdfs:comment "DCSA documentation_domain_v3.0.0: indicates whether the shipping instruction is for an electronic transport document." ;
+    rdfs:domain :ShippingInstruction ;
+    rdfs:range xsd:boolean .
+
+:isToOrder a owl:DatatypeProperty ;
+    rdfs:label "is to order" ;
+    rdfs:comment "DCSA documentation_domain_v3.0.0: indicates whether the transport document is a to-order type (negotiable)." ;
+    rdfs:domain :ShippingInstruction ;
+    rdfs:range xsd:boolean .
+
+:freightPaymentTermCode a owl:DatatypeProperty ;
+    rdfs:label "freight payment term code" ;
+    rdfs:comment "DCSA documentation_domain_v3.0.0: freight payment terms code (PRE for prepaid, COL for collect)." ;
+    rdfs:domain :ShippingInstruction ;
+    rdfs:range xsd:string .
+
+:numberOfOriginalsWithCharges a owl:DatatypeProperty ;
+    rdfs:label "number of originals with charges" ;
+    rdfs:comment "DCSA documentation_domain_v3.0.0: number of original transport documents with charges shown." ;
+    rdfs:domain :ShippingInstruction ;
+    rdfs:range xsd:integer .
+
+:numberOfCopiesWithCharges a owl:DatatypeProperty ;
+    rdfs:label "number of copies with charges" ;
+    rdfs:comment "DCSA documentation_domain_v3.0.0: number of copy transport documents with charges shown." ;
+    rdfs:domain :ShippingInstruction ;
+    rdfs:range xsd:integer .
+
+#################################################################
+#    Enriched Properties — DCSA _CAR Variant Schema
+#################################################################
+
+:cargoGrossWeightUTE a owl:DatatypeProperty ;
+    rdfs:label "cargo gross weight (UTE)" ;
+    rdfs:comment "DCSA _CAR variant: total gross weight of cargo in the utilized transport equipment (kg)." ;
+    rdfs:domain :UtilizedTransportEquipment ;
+    rdfs:range xsd:decimal .
+
+:cargoGrossWeightUnit a owl:DatatypeProperty ;
+    rdfs:label "cargo gross weight unit" ;
+    rdfs:comment "DCSA _CAR variant: unit of measure for cargo gross weight (e.g., KGM, LBR)." ;
+    rdfs:domain :UtilizedTransportEquipment ;
+    rdfs:range xsd:string .
+
+:cargoGrossVolume a owl:DatatypeProperty ;
+    rdfs:label "cargo gross volume" ;
+    rdfs:comment "DCSA _CAR variant: total gross volume of cargo in the utilized transport equipment." ;
+    rdfs:domain :UtilizedTransportEquipment ;
+    rdfs:range xsd:decimal .
+
+:cargoGrossVolumeUnit a owl:DatatypeProperty ;
+    rdfs:label "cargo gross volume unit" ;
+    rdfs:comment "DCSA _CAR variant: unit of measure for cargo gross volume (e.g., MTQ, FTQ)." ;
+    rdfs:domain :UtilizedTransportEquipment ;
+    rdfs:range xsd:string .
+
+:isShipperOwned a owl:DatatypeProperty ;
+    rdfs:label "is shipper owned" ;
+    rdfs:comment "DCSA _CAR variant: indicates whether the equipment is shipper-owned (not carrier-owned)." ;
+    rdfs:domain :UtilizedTransportEquipment ;
+    rdfs:range xsd:boolean .
+
+:isNonOperatingReefer a owl:DatatypeProperty ;
+    rdfs:label "is non-operating reefer" ;
+    rdfs:comment "DCSA _CAR variant: indicates whether the reefer container is non-operating (no refrigeration)." ;
+    rdfs:domain :UtilizedTransportEquipment ;
+    rdfs:range xsd:boolean .
