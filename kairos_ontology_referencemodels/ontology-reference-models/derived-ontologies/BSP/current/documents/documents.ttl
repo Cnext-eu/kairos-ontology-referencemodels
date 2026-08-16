@@ -19,8 +19,8 @@
     - Events: Document lifecycle events""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-05-22"^^xsd:date ;
-    owl:versionInfo "2.1.0" ;
+    dcterms:modified "2026-09-17"^^xsd:date ;
+    owl:versionInfo "2.3.0" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
@@ -62,7 +62,14 @@
     rdfs:label "Packing List" ;
     rdfs:comment """A document detailing the contents of packages.
     
-    ISO BSP: Required for customs and cargo handling.""" ;
+    UN/CEFACT BSP: Maps to PackingList — a document that provides a detailed
+    breakdown of the contents of each package in a shipment.
+
+    Properties:
+    - packingListTotalPackages: total number of packages listed.
+    - packingListTotalNetWeight: total net weight of all packages (kg).
+    - packingListTotalGrossWeight: total gross weight of all packages (kg).""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/PackingList> ;
     rdfs:subClassOf :Document .
 
 :CertificateOfOrigin a owl:Class ;
@@ -84,56 +91,106 @@
     rdfs:label "Import License" ;
     rdfs:comment """A permit authorizing importation of specified goods.
     
-    ISO BSP: Required for restricted products.""" ;
+    UN/CEFACT BSP: Maps to Certificate/Permit for import authorization.
+
+    Properties:
+    - licenseNumber: unique identifier for the import license.
+    - licenseExpiryDate: date the import license expires.
+    - licenseCountryOfIssue: country that issued the import license.
+    - licenseGoodsDescription: description of the goods authorized for import.""" ;
     rdfs:subClassOf :Document .
 
 :ExportLicense a owl:Class ;
     rdfs:label "Export License" ;
     rdfs:comment """A permit authorizing exportation of specified goods.
     
-    ISO BSP: Required for controlled exports.""" ;
+    UN/CEFACT BSP: Maps to Certificate/Permit for export authorization.
+
+    Properties:
+    - exportLicenseNumber: unique identifier for the export license.
+    - exportLicenseExpiryDate: date the export license expires.
+    - exportLicenseCountryOfIssue: country that issued the export license.
+    - exportLicenseGoodsDescription: description of the goods authorized for export.""" ;
     rdfs:subClassOf :Document .
 
 :InspectionCertificate a owl:Class ;
     rdfs:label "Inspection Certificate" ;
     rdfs:comment """A document certifying goods have been inspected.
     
-    ISO BSP: Quality, quantity, or condition verification.""" ;
+    UN/CEFACT BSP: Maps to Certificate — document certifying quality, quantity, or condition.
+
+    Properties:
+    - inspectionType: type of inspection (QUANTITY, QUALITY, CONDITION, PRE_SHIPMENT).
+    - inspectionResult: outcome of the inspection (PASS, FAIL, CONDITIONAL).
+    - inspectionAuthority: name of the body that performed the inspection.""" ;
     rdfs:subClassOf :Document .
 
 :PhytosanitaryCertificate a owl:Class ;
     rdfs:label "Phytosanitary Certificate" ;
     rdfs:comment """A certificate that plants/plant products meet import requirements.
     
-    ISO BSP: Required for agricultural shipments.""" ;
+    UN/CEFACT BSP: Maps to Certificate — phytosanitary compliance document per
+    IPPC International Plant Protection Convention model.
+
+    Properties:
+    - phytosanitaryOriginCountry: country of origin of the plant products.
+    - phytosanitaryTreatmentMethod: treatment method applied (FUMIGATION, COLD_TREATMENT, HOT_WATER).
+    - phytosanitaryImportingCountry: country requiring the certificate.""" ;
     rdfs:subClassOf :Document .
 
 :HealthCertificate a owl:Class ;
     rdfs:label "Health Certificate" ;
     rdfs:comment """A certificate that goods meet health standards.
     
-    ISO BSP: For food, animal, pharmaceutical products.""" ;
+    UN/CEFACT BSP: Maps to Certificate — health/sanitary compliance document
+    for food, animal, and pharmaceutical products.
+
+    Properties:
+    - healthCertificateType: type of health certificate (FOOD_SAFETY, ANIMAL_HEALTH, VETERINARY).
+    - healthCertificateProduct: description of the product certified.
+    - healthCertificateAuthority: authority that issued the certificate.""" ;
     rdfs:subClassOf :Document .
 
 :InsuranceCertificate a owl:Class ;
     rdfs:label "Insurance Certificate" ;
     rdfs:comment """A document evidencing cargo insurance coverage.
     
-    ISO BSP: Proof of insurance for goods in transit.""" ;
+    UN/CEFACT BSP: Maps to Certificate — document evidencing insurance coverage
+    for goods in transit.
+
+    Properties:
+    - insurancePolicyNumber: policy number the certificate evidences.
+    - insuredAmount: amount of coverage provided.
+    - insuranceCoverageType: type of coverage (ALL_RISKS, NAMED_PERILS, TOTAL_LOSS_ONLY).
+    - insuranceInsurer: name of the insurer providing coverage.""" ;
     rdfs:subClassOf :Document .
 
 :DeliveryNote a owl:Class ;
     rdfs:label "Delivery Note" ;
     rdfs:comment """A document accompanying goods delivery.
     
-    ISO BSP: Proof of delivery (POD) when signed.""" ;
+    UN/CEFACT BSP: Maps to DeliveryNote — document accompanying a delivery
+    and serving as proof of delivery (POD) when signed.
+
+    Properties:
+    - deliveryNoteGoodsReceived: whether goods were received in good condition.
+    - deliveryNoteReceivedBy: name of the person who received the delivery.
+    - deliveryNoteDate: date the delivery was made.
+    - deliveryNoteSignatureDate: date the proof-of-delivery was signed.""" ;
     rdfs:subClassOf :Document .
 
 :ReceiptAdvice a owl:Class ;
     rdfs:label "Receipt Advice" ;
     rdfs:comment """A document confirming receipt of goods.
     
-    ISO BSP: Acknowledgment from consignee.""" ;
+    UN/CEFACT BSP: Maps to ReceiptAdvice — a document by which a buyer
+    or consignee confirms the receipt of goods. UN/CEFACT CCL D23B
+    ReceiptAdvice includes:
+
+    Properties:
+    - receiptAdviceQuantityReceived: quantity actually received.
+    - receiptAdviceDiscrepancyCode: discrepancy code if applicable (SHORTAGE, DAMAGE, OVERAGE, NONE).
+    - receiptAdviceReceivedDate: date goods were received.""" ;
     rdfs:subClassOf :Document .
 
 #################################################################
@@ -144,7 +201,12 @@
     rdfs:label "Document Event" ;
     rdfs:comment """An event related to document lifecycle.
     
-    ISO BSP: Issued, submitted, approved, rejected.""" .
+    UN/CEFACT BSP: Maps to DocumentEvent — lifecycle events for trade documents.
+
+    Properties:
+    - documentEventType: type of document event (ISSUED, SUBMITTED, APPROVED, REJECTED, AMENDED, SURRENDERED).
+    - documentEventTimestamp: date and time when the document event occurred.
+    - documentEventActor: party that performed the action.""" .
 
 #################################################################
 #    Object Properties
@@ -341,3 +403,234 @@
     rdfs:comment "Date when customs released the goods for import/export." ;
     rdfs:domain :CustomsDeclaration ;
     rdfs:range xsd:date .
+
+#################################################################
+#    Datatype Properties — Document Enrichment (BSP 2.3.0)
+#    Backed by UN/CEFACT CCL D23B and ISO 20197-1:2024 BSP
+#################################################################
+
+:packingListTotalPackages a owl:DatatypeProperty ;
+    rdfs:label "packing list total packages" ;
+    rdfs:comment "Total number of packages listed on the packing list. UN/CEFACT CCL D23B: PackingList.totalPackageQuantity." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/PackingList> ;
+    rdfs:domain :PackingList ;
+    rdfs:range xsd:integer .
+
+:packingListTotalNetWeight a owl:DatatypeProperty ;
+    rdfs:label "packing list total net weight" ;
+    rdfs:comment "Total net weight of all packages (kg). UN/CEFACT CCL D23B: PackingList.totalNetWeight." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/PackingList> ;
+    rdfs:domain :PackingList ;
+    rdfs:range xsd:decimal .
+
+:packingListTotalGrossWeight a owl:DatatypeProperty ;
+    rdfs:label "packing list total gross weight" ;
+    rdfs:comment "Total gross weight of all packages (kg). UN/CEFACT CCL D23B: PackingList.totalGrossWeight." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/PackingList> ;
+    rdfs:domain :PackingList ;
+    rdfs:range xsd:decimal .
+
+:licenseNumber a owl:DatatypeProperty ;
+    rdfs:label "license number" ;
+    rdfs:comment "Unique identifier for an import license. UN/CEFACT CCL D23B: Certificate.identifier." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Certificate> ;
+    rdfs:domain :ImportLicense ;
+    rdfs:range xsd:string .
+
+:licenseExpiryDate a owl:DatatypeProperty ;
+    rdfs:label "license expiry date" ;
+    rdfs:comment "Date the import license expires. UN/CEFACT CCL D23B: Certificate.expiryDate." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Certificate> ;
+    rdfs:domain :ImportLicense ;
+    rdfs:range xsd:date .
+
+:licenseCountryOfIssue a owl:DatatypeProperty ;
+    rdfs:label "license country of issue" ;
+    rdfs:comment "Country that issued the import license. UN/CEFACT CCL D23B: Certificate.issueLocation." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Certificate> ;
+    rdfs:domain :ImportLicense ;
+    rdfs:range xsd:string .
+
+:licenseGoodsDescription a owl:DatatypeProperty ;
+    rdfs:label "license goods description" ;
+    rdfs:comment "Description of the goods authorized for import. UN/CEFACT CCL D23B: Certificate.subjectDescription." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Certificate> ;
+    rdfs:domain :ImportLicense ;
+    rdfs:range xsd:string .
+
+:exportLicenseNumber a owl:DatatypeProperty ;
+    rdfs:label "export license number" ;
+    rdfs:comment "Unique identifier for an export license. UN/CEFACT CCL D23B: Certificate.identifier." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Certificate> ;
+    rdfs:domain :ExportLicense ;
+    rdfs:range xsd:string .
+
+:exportLicenseExpiryDate a owl:DatatypeProperty ;
+    rdfs:label "export license expiry date" ;
+    rdfs:comment "Date the export license expires. UN/CEFACT CCL D23B: Certificate.expiryDate." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Certificate> ;
+    rdfs:domain :ExportLicense ;
+    rdfs:range xsd:date .
+
+:exportLicenseCountryOfIssue a owl:DatatypeProperty ;
+    rdfs:label "export license country of issue" ;
+    rdfs:comment "Country that issued the export license. UN/CEFACT CCL D23B: Certificate.issueLocation." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Certificate> ;
+    rdfs:domain :ExportLicense ;
+    rdfs:range xsd:string .
+
+:exportLicenseGoodsDescription a owl:DatatypeProperty ;
+    rdfs:label "export license goods description" ;
+    rdfs:comment "Description of the goods authorized for export. UN/CEFACT CCL D23B: Certificate.subjectDescription." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Certificate> ;
+    rdfs:domain :ExportLicense ;
+    rdfs:range xsd:string .
+
+:inspectionType a owl:DatatypeProperty ;
+    rdfs:label "inspection type" ;
+    rdfs:comment "Type of inspection (QUANTITY, QUALITY, CONDITION, PRE_SHIPMENT). ISO 20197-1:2024 BSP: InspectionCertificate.type." ;
+    rdfs:domain :InspectionCertificate ;
+    rdfs:range xsd:string .
+
+:inspectionResult a owl:DatatypeProperty ;
+    rdfs:label "inspection result" ;
+    rdfs:comment "Outcome of the inspection (PASS, FAIL, CONDITIONAL). ISO 20197-1:2024 BSP: InspectionCertificate.result." ;
+    rdfs:domain :InspectionCertificate ;
+    rdfs:range xsd:string .
+
+:inspectionAuthority a owl:DatatypeProperty ;
+    rdfs:label "inspection authority" ;
+    rdfs:comment "Name of the body that performed the inspection. ISO 20197-1:2024 BSP: InspectionCertificate.authority." ;
+    rdfs:domain :InspectionCertificate ;
+    rdfs:range xsd:string .
+
+:phytosanitaryOriginCountry a owl:DatatypeProperty ;
+    rdfs:label "phytosanitary origin country" ;
+    rdfs:comment "Country of origin of the plant products. IPPC: PhytosanitaryCertificate.originCountry." ;
+    rdfs:domain :PhytosanitaryCertificate ;
+    rdfs:range xsd:string .
+
+:phytosanitaryTreatmentMethod a owl:DatatypeProperty ;
+    rdfs:label "phytosanitary treatment method" ;
+    rdfs:comment "Treatment method applied (FUMIGATION, COLD_TREATMENT, HOT_WATER). IPPC: PhytosanitaryCertificate.treatment." ;
+    rdfs:domain :PhytosanitaryCertificate ;
+    rdfs:range xsd:string .
+
+:phytosanitaryImportingCountry a owl:DatatypeProperty ;
+    rdfs:label "phytosanitary importing country" ;
+    rdfs:comment "Country requiring the certificate. IPPC: PhytosanitaryCertificate.importingCountry." ;
+    rdfs:domain :PhytosanitaryCertificate ;
+    rdfs:range xsd:string .
+
+:healthCertificateType a owl:DatatypeProperty ;
+    rdfs:label "health certificate type" ;
+    rdfs:comment "Type of health certificate (FOOD_SAFETY, ANIMAL_HEALTH, VETERINARY). ISO 20197-1:2024 BSP: HealthCertificate.type." ;
+    rdfs:domain :HealthCertificate ;
+    rdfs:range xsd:string .
+
+:healthCertificateProduct a owl:DatatypeProperty ;
+    rdfs:label "health certificate product" ;
+    rdfs:comment "Description of the product certified. ISO 20197-1:2024 BSP: HealthCertificate.productDescription." ;
+    rdfs:domain :HealthCertificate ;
+    rdfs:range xsd:string .
+
+:healthCertificateAuthority a owl:DatatypeProperty ;
+    rdfs:label "health certificate authority" ;
+    rdfs:comment "Authority that issued the certificate. ISO 20197-1:2024 BSP: HealthCertificate.authority." ;
+    rdfs:domain :HealthCertificate ;
+    rdfs:range xsd:string .
+
+:insurancePolicyNumber a owl:DatatypeProperty ;
+    rdfs:label "insurance policy number" ;
+    rdfs:comment "Policy number the certificate evidences. UN/CEFACT CCL D23B: Certificate.reference." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Certificate> ;
+    rdfs:domain :InsuranceCertificate ;
+    rdfs:range xsd:string .
+
+:insuredAmount a owl:DatatypeProperty ;
+    rdfs:label "insured amount" ;
+    rdfs:comment "Amount of coverage provided. UN/CEFACT CCL D23B: Insurance.coveredAmount." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Insurance> ;
+    rdfs:domain :InsuranceCertificate ;
+    rdfs:range xsd:decimal .
+
+:insuranceCoverageType a owl:DatatypeProperty ;
+    rdfs:label "insurance coverage type" ;
+    rdfs:comment "Type of coverage (ALL_RISKS, NAMED_PERILS, TOTAL_LOSS_ONLY). UN/CEFACT CCL D23B: Insurance.coverageTypeCode." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Insurance> ;
+    rdfs:domain :InsuranceCertificate ;
+    rdfs:range xsd:string .
+
+:insuranceInsurer a owl:DatatypeProperty ;
+    rdfs:label "insurance insurer" ;
+    rdfs:comment "Name of the insurer providing coverage. UN/CEFACT CCL D23B: Insurance.insurerParty." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Insurance> ;
+    rdfs:domain :InsuranceCertificate ;
+    rdfs:range xsd:string .
+
+:deliveryNoteGoodsReceived a owl:DatatypeProperty ;
+    rdfs:label "delivery note goods received" ;
+    rdfs:comment "Whether goods were received in good condition. UN/CEFACT CCL D23B: DeliveryNote.receivedIndicator." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/DeliveryNote> ;
+    rdfs:domain :DeliveryNote ;
+    rdfs:range xsd:boolean .
+
+:deliveryNoteReceivedBy a owl:DatatypeProperty ;
+    rdfs:label "delivery note received by" ;
+    rdfs:comment "Name of the person who received the delivery. UN/CEFACT CCL D23B: DeliveryNote.receiver." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/DeliveryNote> ;
+    rdfs:domain :DeliveryNote ;
+    rdfs:range xsd:string .
+
+:deliveryNoteDate a owl:DatatypeProperty ;
+    rdfs:label "delivery note date" ;
+    rdfs:comment "Date the delivery was made. UN/CEFACT CCL D23B: DeliveryNote.actualDeliveryDate." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/DeliveryNote> ;
+    rdfs:domain :DeliveryNote ;
+    rdfs:range xsd:date .
+
+:deliveryNoteSignatureDate a owl:DatatypeProperty ;
+    rdfs:label "delivery note signature date" ;
+    rdfs:comment "Date the proof-of-delivery was signed. UN/CEFACT CCL D23B: DeliveryNote.signatureDate." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/DeliveryNote> ;
+    rdfs:domain :DeliveryNote ;
+    rdfs:range xsd:date .
+
+:receiptAdviceQuantityReceived a owl:DatatypeProperty ;
+    rdfs:label "receipt advice quantity received" ;
+    rdfs:comment "Quantity actually received. UN/CEFACT CCL D23B: ReceiptAdvice.receivedQuantity." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/ReceiptAdvice> ;
+    rdfs:domain :ReceiptAdvice ;
+    rdfs:range xsd:decimal .
+
+:receiptAdviceDiscrepancyCode a owl:DatatypeProperty ;
+    rdfs:label "receipt advice discrepancy code" ;
+    rdfs:comment "Discrepancy code if applicable (SHORTAGE, DAMAGE, OVERAGE, NONE). UN/CEFACT CCL D23B: ReceiptAdvice.discrepancyCode." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/ReceiptAdvice> ;
+    rdfs:domain :ReceiptAdvice ;
+    rdfs:range xsd:string .
+
+:receiptAdviceReceivedDate a owl:DatatypeProperty ;
+    rdfs:label "receipt advice received date" ;
+    rdfs:comment "Date goods were received. UN/CEFACT CCL D23B: ReceiptAdvice.receivedDate." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/ReceiptAdvice> ;
+    rdfs:domain :ReceiptAdvice ;
+    rdfs:range xsd:date .
+
+:documentEventType a owl:DatatypeProperty ;
+    rdfs:label "document event type" ;
+    rdfs:comment "Type of document event (ISSUED, SUBMITTED, APPROVED, REJECTED, AMENDED, SURRENDERED). ISO 20197-1:2024 BSP: DocumentEvent.type." ;
+    rdfs:domain :DocumentEvent ;
+    rdfs:range xsd:string .
+
+:documentEventTimestamp a owl:DatatypeProperty ;
+    rdfs:label "document event timestamp" ;
+    rdfs:comment "Date and time when the document event occurred. ISO 20197-1:2024 BSP: DocumentEvent.timestamp." ;
+    rdfs:domain :DocumentEvent ;
+    rdfs:range xsd:dateTime .
+
+:documentEventActor a owl:DatatypeProperty ;
+    rdfs:label "document event actor" ;
+    rdfs:comment "Party that performed the action. ISO 20197-1:2024 BSP: DocumentEvent.actor." ;
+    rdfs:domain :DocumentEvent ;
+    rdfs:range xsd:string .

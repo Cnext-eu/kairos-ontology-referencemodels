@@ -414,7 +414,12 @@ records:
   uri: https://www.kairosflow.ai/ont/bsp/commercial#OrderResponse
 - comments:
   - "A physical unit in which goods are packed.\n    \n    UN/CEFACT BSP: Maps to Package — a self-contained\
-    \ wrapping or container\n    within which goods can be contained for logistics purposes."
+    \ wrapping or container\n    within which goods can be contained for logistics purposes.\n    Package\
+    \ type codes per UN/CEFACT Recommendation 21.\n\n    Properties:\n    - packageId: unique identifier\
+    \ for the package (logistics label / SSCC).\n    - packageTypeCode: UN/CEFACT Rec 21 code (BX, PL,\
+    \ CR, DR, etc.).\n    - marksAndNumbers: shipping marks and numbers for identification.\n    - packageGrossWeight:\
+    \ total weight including contents and packaging.\n    - packageNetWeight: weight of contents only.\n\
+    \    - packageVolume: cubic volume the package occupies."
   domains: []
   kind: class
   labels:
@@ -454,7 +459,9 @@ records:
   uri: https://www.kairosflow.ai/ont/bsp/commercial#PurchaseOrder
 - comments:
   - "An offer by a seller to supply goods or services at stated prices and terms.\n    \n    ISO BSP:\
-    \ Pre-order price and terms proposal."
+    \ Pre-order price and terms proposal.\n\n    Properties:\n    - quotationNumber: unique identifier\
+    \ for the quotation.\n    - quotationDate: date the quotation was issued.\n    - quotationValidityDays:\
+    \ number of days the quotation remains valid."
   domains: []
   kind: class
   labels:
@@ -483,7 +490,10 @@ records:
   uri: https://www.kairosflow.ai/ont/bsp/commercial#RequestForQuotation
 - comments:
   - "A formal agreement between buyer and seller defining rights and obligations.\n    \n    UN/CEFACT\
-    \ BSP: Maps to Contract — an agreement between two or more\n    parties for trade purposes."
+    \ BSP: Maps to Contract — an agreement between two or more\n    parties for trade purposes.\n\n  \
+    \  Properties:\n    - contractNumber: unique identifier for the contract.\n    - contractDate: date\
+    \ the contract was executed.\n    - contractTerms: textual description of key contractual terms and\
+    \ conditions."
   domains: []
   kind: class
   labels:
@@ -497,7 +507,8 @@ records:
   uri: https://www.kairosflow.ai/ont/bsp/commercial#SalesContract
 - comments:
   - "An order confirmation from a seller to a buyer accepting terms and conditions.\n    \n    ISO BSP:\
-    \ Seller's acceptance and commitment to fulfill order."
+    \ Seller's acceptance and commitment to fulfill order.\n\n    Properties:\n    - salesOrderNumber:\
+    \ unique identifier for the sales order.\n    - salesOrderDate: date the sales order was confirmed."
   domains: []
   kind: class
   labels:
@@ -536,8 +547,11 @@ records:
   - https://www.kairosflow.ai/ont/bsp/commercial#BusinessEvent
   uri: https://www.kairosflow.ai/ont/bsp/commercial#ShipmentEvent
 - comments:
-  - "A line item within a shipment detailing specific goods being transported.\n    \n    ISO BSP: Granular\
-    \ shipment content detail."
+  - "A line item within a shipment detailing specific goods being transported.\n    \n    UN/CEFACT BSP:\
+    \ Maps to SupplyChainTradeLineItem — specific goods on a shipment.\n\n    Properties:\n    - shipmentLineId:\
+    \ unique identifier for the shipment line.\n    - lineItemNumber: sequential line number within the\
+    \ shipment.\n    - lineQuantity: quantity of units on this shipment line.\n    - lineDescription:\
+    \ description of goods on this shipment line."
   domains: []
   kind: class
   labels:
@@ -565,7 +579,11 @@ records:
 - comments:
   - "Equipment used to transport goods (containers, pallets, etc.).\n    \n    UN/CEFACT BSP: Maps to\
     \ LogisticsTransportEquipment — a piece of equipment\n    used to hold, protect or secure cargo for\
-    \ logistics purposes."
+    \ logistics purposes.\n\n    Properties:\n    - equipmentId: unique identifier (e.g., container number\
+    \ per ISO 6346 / BIC code).\n    - equipmentType: type code (CONTAINER, PALLET, FLAT_RACK, TANK, OPEN_TOP).\n\
+    \    - equipmentSizeType: ISO 6346 size/type code (e.g., 22G1, 45G1).\n    - tareWeight: unladen weight\
+    \ of the equipment.\n    - sealNumber: security seal identifier.\n    - equipmentOwner: party that\
+    \ owns the equipment."
   domains: []
   kind: class
   labels:
@@ -577,8 +595,11 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#TransportEquipment
 - comments:
-  - "A segment of transport journey using a single mode.\n    \n    ISO BSP: Individual movement in multi-modal\
-    \ transport."
+  - "A segment of transport journey using a single mode.\n    \n    UN/CEFACT BSP: Maps to TransportMovement\
+    \ — individual movement in\n    multi-modal transport.\n\n    Properties:\n    - legSequence: sequence\
+    \ number of this leg in the overall journey.\n    - legTransportMode: mode of transport for this leg\
+    \ (ROAD, SEA, AIR, RAIL).\n    - legOrigin: name or identifier of the leg's origin location.\n   \
+    \ - legDestination: name or identifier of the leg's destination location."
   domains: []
   kind: class
   labels:
@@ -590,7 +611,10 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#TransportLeg
 - comments:
-  - "A service for moving goods from origin to destination.\n    \n    ISO BSP: Logistics service offering."
+  - "A service for moving goods from origin to destination.\n    \n    UN/CEFACT BSP: Maps to LogisticsService\
+    \ — a logistics transport service offering.\n\n    Properties:\n    - serviceType: type of transport\
+    \ service (e.g., FTL, LTL, FCL, LCL, AIR Express, RAIL).\n    - transportMode: mode of transport (ROAD,\
+    \ SEA, AIR, RAIL, MULTIMODAL)."
   domains: []
   kind: class
   labels:
@@ -643,6 +667,105 @@ records:
   sources: *id002
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#changeReason
+- comments:
+  - 'Date the contract was executed. UN/CEFACT CCL D23B: Contract.issueDateTime.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#SalesContract
+  kind: datatype_property
+  labels:
+  - contract date
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#date
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#contractDate
+- comments:
+  - 'Unique identifier for the contract. UN/CEFACT CCL D23B: Contract.identifier.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#SalesContract
+  kind: datatype_property
+  labels:
+  - contract number
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#contractNumber
+- comments:
+  - 'Textual description of key contractual terms and conditions. UN/CEFACT CCL D23B: Contract.termsAndConditionsDescription.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#SalesContract
+  kind: datatype_property
+  labels:
+  - contract terms
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#contractTerms
+- comments:
+  - 'Unique identifier for transport equipment (e.g., container number per ISO 6346 / BIC code). UN/CEFACT
+    CCL D23B: LogisticsTransportEquipment.identifier.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#TransportEquipment
+  kind: datatype_property
+  labels:
+  - equipment ID
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#equipmentId
+- comments:
+  - 'Party that owns the transport equipment. UN/CEFACT CCL D23B: LogisticsTransportEquipment.ownerParty.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#TransportEquipment
+  kind: object_property
+  labels:
+  - equipment owner
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - https://www.kairosflow.ai/ont/bsp/party#TradeParty
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#equipmentOwner
+- comments:
+  - 'ISO 6346 size/type code (e.g., 22G1, 45G1). UN/CEFACT CCL D23B: LogisticsTransportEquipment.categoryCode.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#TransportEquipment
+  kind: datatype_property
+  labels:
+  - equipment size/type
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#equipmentSizeType
+- comments:
+  - 'Type of transport equipment (CONTAINER, PALLET, FLAT_RACK, TANK, OPEN_TOP). UN/CEFACT CCL D23B: LogisticsTransportEquipment.typeCode.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#TransportEquipment
+  kind: datatype_property
+  labels:
+  - equipment type
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#equipmentType
 - comments:
   - "Estimated date of delivery of the shipment.\n\n    UN/CEFACT web vocabulary: HeaderTradeDelivery\
     \ carries estimatedDeliveryEvent\n    (alongside actualDeliveryEvent / plannedDeliveryEvent / requestedDeliveryEvent);\n\
@@ -845,6 +968,62 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#incoterm
 - comments:
+  - 'Name or identifier of the leg''s destination location. UN/CEFACT CCL D23B: TransportMovement.destinationLocation.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#TransportLeg
+  kind: datatype_property
+  labels:
+  - leg destination
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#legDestination
+- comments:
+  - 'Name or identifier of the leg''s origin location. UN/CEFACT CCL D23B: TransportMovement.originLocation.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#TransportLeg
+  kind: datatype_property
+  labels:
+  - leg origin
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#legOrigin
+- comments:
+  - 'Sequence number of this leg in the overall journey. UN/CEFACT CCL D23B: TransportMovement.sequenceNumber.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#TransportLeg
+  kind: datatype_property
+  labels:
+  - leg sequence
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#integer
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#legSequence
+- comments:
+  - 'Mode of transport for this leg (ROAD, SEA, AIR, RAIL). UN/CEFACT CCL D23B: TransportMovement.modeCode.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#TransportLeg
+  kind: datatype_property
+  labels:
+  - leg transport mode
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#legTransportMode
+- comments:
   - Total amount for line (quantity × unit price).
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#OrderLine
@@ -859,6 +1038,34 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#lineAmount
 - comments:
+  - 'Description of goods on this shipment line. UN/CEFACT CCL D23B: SupplyChainTradeLineItem.description.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#ShipmentLine
+  kind: datatype_property
+  labels:
+  - line description
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#lineDescription
+- comments:
+  - 'Sequential line number within the shipment. UN/CEFACT CCL D23B: SupplyChainTradeLineItem.lineID.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#ShipmentLine
+  kind: datatype_property
+  labels:
+  - line item number
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#integer
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#lineItemNumber
+- comments:
   - Sequential line item number.
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#OrderLine
@@ -872,6 +1079,34 @@ records:
   sources: *id002
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#lineNumber
+- comments:
+  - 'Quantity of units on this shipment line. UN/CEFACT CCL D23B: SupplyChainTradeLineItem.billedQuantity.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#ShipmentLine
+  kind: datatype_property
+  labels:
+  - line quantity
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#lineQuantity
+- comments:
+  - 'Shipping marks and numbers for package identification. UN/CEFACT CCL D23B: Package.shippingMarks.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#Package
+  kind: datatype_property
+  labels:
+  - marks and numbers
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#marksAndNumbers
 - comments:
   - Weight of goods only (kg).
   domains:
@@ -957,6 +1192,48 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#orderedProduct
 - comments:
+  - 'Total weight including contents and packaging (kg). UN/CEFACT CCL D23B: Package.grossWeight.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#Package
+  kind: datatype_property
+  labels:
+  - package gross weight
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#packageGrossWeight
+- comments:
+  - 'Unique identifier for the package (logistics label / SSCC). UN/CEFACT CCL D23B: Package.identifier.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#Package
+  kind: datatype_property
+  labels:
+  - package ID
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#packageId
+- comments:
+  - 'Weight of contents only (kg). UN/CEFACT CCL D23B: Package.netWeight.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#Package
+  kind: datatype_property
+  labels:
+  - package net weight
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#packageNetWeight
+- comments:
   - Type of packaging (e.g., CARTON, PALLET, CRATE).
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#Shipment
@@ -970,6 +1247,34 @@ records:
   sources: *id002
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#packageType
+- comments:
+  - UN/CEFACT Recommendation 21 package type code (BX, PL, CR, DR, etc.).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#Package
+  kind: datatype_property
+  labels:
+  - package type code
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#packageTypeCode
+- comments:
+  - 'Cubic volume the package occupies (m³). UN/CEFACT CCL D23B: Package.grossVolumeMeasure.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#Package
+  kind: datatype_property
+  labels:
+  - package volume
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#packageVolume
 - comments:
   - Identifier for product (SKU, GTIN, etc.).
   domains:
@@ -1026,6 +1331,48 @@ records:
   sources: *id002
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#quantity
+- comments:
+  - 'Date the quotation was issued. ISO 20197-1:2024 BSP: Quotation.issueDate.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#Quotation
+  kind: datatype_property
+  labels:
+  - quotation date
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#date
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#quotationDate
+- comments:
+  - 'Unique identifier for the quotation. ISO 20197-1:2024 BSP: Quotation.identifier.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#Quotation
+  kind: datatype_property
+  labels:
+  - quotation number
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#quotationNumber
+- comments:
+  - 'Number of days the quotation remains valid. ISO 20197-1:2024 BSP: Quotation.validityPeriod.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#Quotation
+  kind: datatype_property
+  labels:
+  - quotation validity days
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#integer
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#quotationValidityDays
 - comments:
   - Links shipment or invoice to originating order.
   domains:
@@ -1167,6 +1514,62 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#rfqResponseDeadline
 - comments:
+  - 'Date the sales order was confirmed. ISO 20197-1:2024 BSP: SalesOrder.issueDate.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#SalesOrder
+  kind: datatype_property
+  labels:
+  - sales order date
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#date
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#salesOrderDate
+- comments:
+  - 'Unique identifier for the sales order. ISO 20197-1:2024 BSP: SalesOrder.identifier.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#SalesOrder
+  kind: datatype_property
+  labels:
+  - sales order number
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#salesOrderNumber
+- comments:
+  - 'Security seal identifier. UN/CEFACT CCL D23B: LogisticsTransportEquipment.seal.identifier.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#TransportEquipment
+  kind: datatype_property
+  labels:
+  - seal number
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#sealNumber
+- comments:
+  - 'Type of transport service (FTL, LTL, FCL, LCL, AIR Express, RAIL). UN/CEFACT CCL D23B: LogisticsService.typeCode.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#TransportService
+  kind: datatype_property
+  labels:
+  - service type
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#serviceType
+- comments:
   - Date when shipment occurs.
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#Shipment
@@ -1181,6 +1584,20 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#shipmentDate
 - comments:
+  - 'Unique identifier for the shipment line. UN/CEFACT CCL D23B: SupplyChainTradeLineItem.identifier.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#ShipmentLine
+  kind: datatype_property
+  labels:
+  - shipment line ID
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#shipmentLineId
+- comments:
   - Unique identifier for shipment.
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#Shipment
@@ -1194,6 +1611,34 @@ records:
   sources: *id002
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#shipmentNumber
+- comments:
+  - 'Unladen weight of the equipment (kg). UN/CEFACT CCL D23B: LogisticsTransportEquipment.tareWeightMeasurement.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#TransportEquipment
+  kind: datatype_property
+  labels:
+  - tare weight
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#tareWeight
+- comments:
+  - 'Mode of transport (ROAD, SEA, AIR, RAIL, MULTIMODAL). UN/CEFACT CCL D23B: LogisticsTransportMovement.modeCode.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/commercial#TransportService
+  kind: datatype_property
+  labels:
+  - transport mode
+  module_uri: https://www.kairosflow.ai/ont/bsp/commercial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
+  sources: *id002
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/commercial#transportMode
 - comments:
   - Unit in which quantity is expressed (e.g., EA, KG, M).
   domains:
@@ -2014,7 +2459,11 @@ records:
   - https://www.kairosflow.ai/ont/bsp/documents#Document
   uri: https://www.kairosflow.ai/ont/bsp/documents#CustomsDeclaration
 - comments:
-  - "A document accompanying goods delivery.\n    \n    ISO BSP: Proof of delivery (POD) when signed."
+  - "A document accompanying goods delivery.\n    \n    UN/CEFACT BSP: Maps to DeliveryNote — document\
+    \ accompanying a delivery\n    and serving as proof of delivery (POD) when signed.\n\n    Properties:\n\
+    \    - deliveryNoteGoodsReceived: whether goods were received in good condition.\n    - deliveryNoteReceivedBy:\
+    \ name of the person who received the delivery.\n    - deliveryNoteDate: date the delivery was made.\n\
+    \    - deliveryNoteSignatureDate: date the proof-of-delivery was signed."
   domains: []
   kind: class
   labels:
@@ -2040,7 +2489,10 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/documents#Document
 - comments:
-  - "An event related to document lifecycle.\n    \n    ISO BSP: Issued, submitted, approved, rejected."
+  - "An event related to document lifecycle.\n    \n    UN/CEFACT BSP: Maps to DocumentEvent — lifecycle\
+    \ events for trade documents.\n\n    Properties:\n    - documentEventType: type of document event\
+    \ (ISSUED, SUBMITTED, APPROVED, REJECTED, AMENDED, SURRENDERED).\n    - documentEventTimestamp: date\
+    \ and time when the document event occurred.\n    - documentEventActor: party that performed the action."
   domains: []
   kind: class
   labels:
@@ -2052,8 +2504,11 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/documents#DocumentEvent
 - comments:
-  - "A permit authorizing exportation of specified goods.\n    \n    ISO BSP: Required for controlled\
-    \ exports."
+  - "A permit authorizing exportation of specified goods.\n    \n    UN/CEFACT BSP: Maps to Certificate/Permit\
+    \ for export authorization.\n\n    Properties:\n    - exportLicenseNumber: unique identifier for the\
+    \ export license.\n    - exportLicenseExpiryDate: date the export license expires.\n    - exportLicenseCountryOfIssue:\
+    \ country that issued the export license.\n    - exportLicenseGoodsDescription: description of the\
+    \ goods authorized for export."
   domains: []
   kind: class
   labels:
@@ -2066,8 +2521,11 @@ records:
   - https://www.kairosflow.ai/ont/bsp/documents#Document
   uri: https://www.kairosflow.ai/ont/bsp/documents#ExportLicense
 - comments:
-  - "A certificate that goods meet health standards.\n    \n    ISO BSP: For food, animal, pharmaceutical\
-    \ products."
+  - "A certificate that goods meet health standards.\n    \n    UN/CEFACT BSP: Maps to Certificate — health/sanitary\
+    \ compliance document\n    for food, animal, and pharmaceutical products.\n\n    Properties:\n   \
+    \ - healthCertificateType: type of health certificate (FOOD_SAFETY, ANIMAL_HEALTH, VETERINARY).\n\
+    \    - healthCertificateProduct: description of the product certified.\n    - healthCertificateAuthority:\
+    \ authority that issued the certificate."
   domains: []
   kind: class
   labels:
@@ -2080,8 +2538,11 @@ records:
   - https://www.kairosflow.ai/ont/bsp/documents#Document
   uri: https://www.kairosflow.ai/ont/bsp/documents#HealthCertificate
 - comments:
-  - "A permit authorizing importation of specified goods.\n    \n    ISO BSP: Required for restricted\
-    \ products."
+  - "A permit authorizing importation of specified goods.\n    \n    UN/CEFACT BSP: Maps to Certificate/Permit\
+    \ for import authorization.\n\n    Properties:\n    - licenseNumber: unique identifier for the import\
+    \ license.\n    - licenseExpiryDate: date the import license expires.\n    - licenseCountryOfIssue:\
+    \ country that issued the import license.\n    - licenseGoodsDescription: description of the goods\
+    \ authorized for import."
   domains: []
   kind: class
   labels:
@@ -2094,8 +2555,11 @@ records:
   - https://www.kairosflow.ai/ont/bsp/documents#Document
   uri: https://www.kairosflow.ai/ont/bsp/documents#ImportLicense
 - comments:
-  - "A document certifying goods have been inspected.\n    \n    ISO BSP: Quality, quantity, or condition\
-    \ verification."
+  - "A document certifying goods have been inspected.\n    \n    UN/CEFACT BSP: Maps to Certificate —\
+    \ document certifying quality, quantity, or condition.\n\n    Properties:\n    - inspectionType: type\
+    \ of inspection (QUANTITY, QUALITY, CONDITION, PRE_SHIPMENT).\n    - inspectionResult: outcome of\
+    \ the inspection (PASS, FAIL, CONDITIONAL).\n    - inspectionAuthority: name of the body that performed\
+    \ the inspection."
   domains: []
   kind: class
   labels:
@@ -2108,8 +2572,11 @@ records:
   - https://www.kairosflow.ai/ont/bsp/documents#Document
   uri: https://www.kairosflow.ai/ont/bsp/documents#InspectionCertificate
 - comments:
-  - "A document evidencing cargo insurance coverage.\n    \n    ISO BSP: Proof of insurance for goods\
-    \ in transit."
+  - "A document evidencing cargo insurance coverage.\n    \n    UN/CEFACT BSP: Maps to Certificate — document\
+    \ evidencing insurance coverage\n    for goods in transit.\n\n    Properties:\n    - insurancePolicyNumber:\
+    \ policy number the certificate evidences.\n    - insuredAmount: amount of coverage provided.\n  \
+    \  - insuranceCoverageType: type of coverage (ALL_RISKS, NAMED_PERILS, TOTAL_LOSS_ONLY).\n    - insuranceInsurer:\
+    \ name of the insurer providing coverage."
   domains: []
   kind: class
   labels:
@@ -2122,8 +2589,11 @@ records:
   - https://www.kairosflow.ai/ont/bsp/documents#Document
   uri: https://www.kairosflow.ai/ont/bsp/documents#InsuranceCertificate
 - comments:
-  - "A document detailing the contents of packages.\n    \n    ISO BSP: Required for customs and cargo\
-    \ handling."
+  - "A document detailing the contents of packages.\n    \n    UN/CEFACT BSP: Maps to PackingList — a\
+    \ document that provides a detailed\n    breakdown of the contents of each package in a shipment.\n\
+    \n    Properties:\n    - packingListTotalPackages: total number of packages listed.\n    - packingListTotalNetWeight:\
+    \ total net weight of all packages (kg).\n    - packingListTotalGrossWeight: total gross weight of\
+    \ all packages (kg)."
   domains: []
   kind: class
   labels:
@@ -2136,8 +2606,11 @@ records:
   - https://www.kairosflow.ai/ont/bsp/documents#Document
   uri: https://www.kairosflow.ai/ont/bsp/documents#PackingList
 - comments:
-  - "A certificate that plants/plant products meet import requirements.\n    \n    ISO BSP: Required for\
-    \ agricultural shipments."
+  - "A certificate that plants/plant products meet import requirements.\n    \n    UN/CEFACT BSP: Maps\
+    \ to Certificate — phytosanitary compliance document per\n    IPPC International Plant Protection\
+    \ Convention model.\n\n    Properties:\n    - phytosanitaryOriginCountry: country of origin of the\
+    \ plant products.\n    - phytosanitaryTreatmentMethod: treatment method applied (FUMIGATION, COLD_TREATMENT,\
+    \ HOT_WATER).\n    - phytosanitaryImportingCountry: country requiring the certificate."
   domains: []
   kind: class
   labels:
@@ -2150,7 +2623,11 @@ records:
   - https://www.kairosflow.ai/ont/bsp/documents#Document
   uri: https://www.kairosflow.ai/ont/bsp/documents#PhytosanitaryCertificate
 - comments:
-  - "A document confirming receipt of goods.\n    \n    ISO BSP: Acknowledgment from consignee."
+  - "A document confirming receipt of goods.\n    \n    UN/CEFACT BSP: Maps to ReceiptAdvice — a document\
+    \ by which a buyer\n    or consignee confirms the receipt of goods. UN/CEFACT CCL D23B\n    ReceiptAdvice\
+    \ includes:\n\n    Properties:\n    - receiptAdviceQuantityReceived: quantity actually received.\n\
+    \    - receiptAdviceDiscrepancyCode: discrepancy code if applicable (SHORTAGE, DAMAGE, OVERAGE, NONE).\n\
+    \    - receiptAdviceReceivedDate: date goods were received."
   domains: []
   kind: class
   labels:
@@ -2246,6 +2723,62 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/documents#declarationType
 - comments:
+  - 'Date the delivery was made. UN/CEFACT CCL D23B: DeliveryNote.actualDeliveryDate.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#DeliveryNote
+  kind: datatype_property
+  labels:
+  - delivery note date
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#date
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#deliveryNoteDate
+- comments:
+  - 'Whether goods were received in good condition. UN/CEFACT CCL D23B: DeliveryNote.receivedIndicator.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#DeliveryNote
+  kind: datatype_property
+  labels:
+  - delivery note goods received
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#boolean
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#deliveryNoteGoodsReceived
+- comments:
+  - 'Name of the person who received the delivery. UN/CEFACT CCL D23B: DeliveryNote.receiver.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#DeliveryNote
+  kind: datatype_property
+  labels:
+  - delivery note received by
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#deliveryNoteReceivedBy
+- comments:
+  - 'Date the proof-of-delivery was signed. UN/CEFACT CCL D23B: DeliveryNote.signatureDate.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#DeliveryNote
+  kind: datatype_property
+  labels:
+  - delivery note signature date
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#date
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#deliveryNoteSignatureDate
+- comments:
   - IATA 3-letter code of the airport of destination.
   domains:
   - https://www.kairosflow.ai/ont/bsp/documents#AirWaybill
@@ -2273,6 +2806,49 @@ records:
   sources: *id005
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/documents#documentDate
+- comments:
+  - 'Party that performed the action. ISO 20197-1:2024 BSP: DocumentEvent.actor.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#DocumentEvent
+  kind: datatype_property
+  labels:
+  - document event actor
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#documentEventActor
+- comments:
+  - 'Date and time when the document event occurred. ISO 20197-1:2024 BSP: DocumentEvent.timestamp.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#DocumentEvent
+  kind: datatype_property
+  labels:
+  - document event timestamp
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#dateTime
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#documentEventTimestamp
+- comments:
+  - 'Type of document event (ISSUED, SUBMITTED, APPROVED, REJECTED, AMENDED, SURRENDERED). ISO 20197-1:2024
+    BSP: DocumentEvent.type.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#DocumentEvent
+  kind: datatype_property
+  labels:
+  - document event type
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#documentEventType
 - comments:
   - Unique identifier for document.
   domains:
@@ -2330,6 +2906,62 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/documents#executingCarrier
 - comments:
+  - 'Country that issued the export license. UN/CEFACT CCL D23B: Certificate.issueLocation.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#ExportLicense
+  kind: datatype_property
+  labels:
+  - export license country of issue
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#exportLicenseCountryOfIssue
+- comments:
+  - 'Date the export license expires. UN/CEFACT CCL D23B: Certificate.expiryDate.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#ExportLicense
+  kind: datatype_property
+  labels:
+  - export license expiry date
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#date
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#exportLicenseExpiryDate
+- comments:
+  - 'Description of the goods authorized for export. UN/CEFACT CCL D23B: Certificate.subjectDescription.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#ExportLicense
+  kind: datatype_property
+  labels:
+  - export license goods description
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#exportLicenseGoodsDescription
+- comments:
+  - 'Unique identifier for an export license. UN/CEFACT CCL D23B: Certificate.identifier.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#ExportLicense
+  kind: datatype_property
+  labels:
+  - export license number
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#exportLicenseNumber
+- comments:
   - Location where freight charges are payable (ORIGIN, DESTINATION).
   domains:
   - https://www.kairosflow.ai/ont/bsp/documents#BillOfLading
@@ -2386,6 +3018,146 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/documents#hasTransportDocument
 - comments:
+  - 'Authority that issued the certificate. ISO 20197-1:2024 BSP: HealthCertificate.authority.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#HealthCertificate
+  kind: datatype_property
+  labels:
+  - health certificate authority
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#healthCertificateAuthority
+- comments:
+  - 'Description of the product certified. ISO 20197-1:2024 BSP: HealthCertificate.productDescription.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#HealthCertificate
+  kind: datatype_property
+  labels:
+  - health certificate product
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#healthCertificateProduct
+- comments:
+  - 'Type of health certificate (FOOD_SAFETY, ANIMAL_HEALTH, VETERINARY). ISO 20197-1:2024 BSP: HealthCertificate.type.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#HealthCertificate
+  kind: datatype_property
+  labels:
+  - health certificate type
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#healthCertificateType
+- comments:
+  - 'Name of the body that performed the inspection. ISO 20197-1:2024 BSP: InspectionCertificate.authority.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#InspectionCertificate
+  kind: datatype_property
+  labels:
+  - inspection authority
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#inspectionAuthority
+- comments:
+  - 'Outcome of the inspection (PASS, FAIL, CONDITIONAL). ISO 20197-1:2024 BSP: InspectionCertificate.result.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#InspectionCertificate
+  kind: datatype_property
+  labels:
+  - inspection result
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#inspectionResult
+- comments:
+  - 'Type of inspection (QUANTITY, QUALITY, CONDITION, PRE_SHIPMENT). ISO 20197-1:2024 BSP: InspectionCertificate.type.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#InspectionCertificate
+  kind: datatype_property
+  labels:
+  - inspection type
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#inspectionType
+- comments:
+  - 'Type of coverage (ALL_RISKS, NAMED_PERILS, TOTAL_LOSS_ONLY). UN/CEFACT CCL D23B: Insurance.coverageTypeCode.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#InsuranceCertificate
+  kind: datatype_property
+  labels:
+  - insurance coverage type
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#insuranceCoverageType
+- comments:
+  - 'Name of the insurer providing coverage. UN/CEFACT CCL D23B: Insurance.insurerParty.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#InsuranceCertificate
+  kind: datatype_property
+  labels:
+  - insurance insurer
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#insuranceInsurer
+- comments:
+  - 'Policy number the certificate evidences. UN/CEFACT CCL D23B: Certificate.reference.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#InsuranceCertificate
+  kind: datatype_property
+  labels:
+  - insurance policy number
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#insurancePolicyNumber
+- comments:
+  - 'Amount of coverage provided. UN/CEFACT CCL D23B: Insurance.coveredAmount.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#InsuranceCertificate
+  kind: datatype_property
+  labels:
+  - insured amount
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#insuredAmount
+- comments:
   - Name of the chamber of commerce or authority that issued the certificate.
   domains:
   - https://www.kairosflow.ai/ont/bsp/documents#CertificateOfOrigin
@@ -2427,6 +3199,62 @@ records:
   sources: *id005
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/documents#issuingParty
+- comments:
+  - 'Country that issued the import license. UN/CEFACT CCL D23B: Certificate.issueLocation.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#ImportLicense
+  kind: datatype_property
+  labels:
+  - license country of issue
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#licenseCountryOfIssue
+- comments:
+  - 'Date the import license expires. UN/CEFACT CCL D23B: Certificate.expiryDate.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#ImportLicense
+  kind: datatype_property
+  labels:
+  - license expiry date
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#date
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#licenseExpiryDate
+- comments:
+  - 'Description of the goods authorized for import. UN/CEFACT CCL D23B: Certificate.subjectDescription.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#ImportLicense
+  kind: datatype_property
+  labels:
+  - license goods description
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#licenseGoodsDescription
+- comments:
+  - 'Unique identifier for an import license. UN/CEFACT CCL D23B: Certificate.identifier.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#ImportLicense
+  kind: datatype_property
+  labels:
+  - license number
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#licenseNumber
 - comments:
   - Whether this B/L is negotiable (true) or a non-negotiable sea waybill (false).
   domains:
@@ -2498,6 +3326,90 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/documents#originCriterion
 - comments:
+  - 'Total gross weight of all packages (kg). UN/CEFACT CCL D23B: PackingList.totalGrossWeight.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#PackingList
+  kind: datatype_property
+  labels:
+  - packing list total gross weight
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#packingListTotalGrossWeight
+- comments:
+  - 'Total net weight of all packages (kg). UN/CEFACT CCL D23B: PackingList.totalNetWeight.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#PackingList
+  kind: datatype_property
+  labels:
+  - packing list total net weight
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#packingListTotalNetWeight
+- comments:
+  - 'Total number of packages listed on the packing list. UN/CEFACT CCL D23B: PackingList.totalPackageQuantity.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#PackingList
+  kind: datatype_property
+  labels:
+  - packing list total packages
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#integer
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#packingListTotalPackages
+- comments:
+  - 'Country requiring the certificate. IPPC: PhytosanitaryCertificate.importingCountry.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#PhytosanitaryCertificate
+  kind: datatype_property
+  labels:
+  - phytosanitary importing country
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#phytosanitaryImportingCountry
+- comments:
+  - 'Country of origin of the plant products. IPPC: PhytosanitaryCertificate.originCountry.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#PhytosanitaryCertificate
+  kind: datatype_property
+  labels:
+  - phytosanitary origin country
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#phytosanitaryOriginCountry
+- comments:
+  - 'Treatment method applied (FUMIGATION, COLD_TREATMENT, HOT_WATER). IPPC: PhytosanitaryCertificate.treatment.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#PhytosanitaryCertificate
+  kind: datatype_property
+  labels:
+  - phytosanitary treatment method
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#phytosanitaryTreatmentMethod
+- comments:
   - Location (city or UN/LOCODE) where the bill of lading was issued.
   domains:
   - https://www.kairosflow.ai/ont/bsp/documents#BillOfLading
@@ -2539,6 +3451,48 @@ records:
   sources: *id005
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/documents#procedureCode
+- comments:
+  - 'Discrepancy code if applicable (SHORTAGE, DAMAGE, OVERAGE, NONE). UN/CEFACT CCL D23B: ReceiptAdvice.discrepancyCode.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#ReceiptAdvice
+  kind: datatype_property
+  labels:
+  - receipt advice discrepancy code
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#receiptAdviceDiscrepancyCode
+- comments:
+  - 'Quantity actually received. UN/CEFACT CCL D23B: ReceiptAdvice.receivedQuantity.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#ReceiptAdvice
+  kind: datatype_property
+  labels:
+  - receipt advice quantity received
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#receiptAdviceQuantityReceived
+- comments:
+  - 'Date goods were received. UN/CEFACT CCL D23B: ReceiptAdvice.receivedDate.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/documents#ReceiptAdvice
+  kind: datatype_property
+  labels:
+  - receipt advice received date
+  module_uri: https://www.kairosflow.ai/ont/bsp/documents
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#date
+  source_file: derived-ontologies/BSP/current/documents/documents.ttl
+  sources: *id005
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/documents#receiptAdviceReceivedDate
 - comments:
   - Date when customs released the goods for import/export.
   domains:
@@ -4653,8 +5607,19 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/party#taxIdentificationNumber
 - comments:
-  - "A structured postal or physical address.\n    \n    UN/CEFACT BSP: Maps to TradeAddress — the location\
-    \ at which a trade\n    related organization or person may be found."
+  - "A structured postal or physical address.\n\n    UN/CEFACT BSP: Maps to TradeAddress — the location\
+    \ at which a trade\n    related organization or person may be found. Backed by UN/CEFACT CCL\n   \
+    \ D23B TradeAddress elements (ISO 20197-1:2024).\n\n    Properties:\n    - streetAddress: full street\
+    \ line (name + number) — backward-compatible\n      coarse-grained field; buildingNumber is a finer-grained\
+    \ alternative.\n    - buildingNumber: building/house number (UN/CEFACT BuildingNumber).\n    - city:\
+    \ city/town name (UN/CEFACT CityName).\n    - stateProvince: state or province name/code (UN/CEFACT\
+    \ CountrySub-DivisionName).\n    - postalCode: ZIP or postal code (UN/CEFACT PostcodeCode).\n    -\
+    \ addressCountry: links to :Country (UN/CEFACT TradeAddress Country) — typed\n      reference to the\
+    \ existing Country class with its ISO 3166 countryCode.\n    - poBox: post office box number (UN/CEFACT\
+    \ PostOfficeBox).\n    - careOf: c/o (care of) addressee forwarding line (UN/CEFACT CareOf).\n   \
+    \ - addressType: address purpose code — business, residential, registered,\n      etc. (UN/CEFACT\
+    \ TradeAddress typeCode).\n    - latitude/longitude: WGS84 decimal coordinates for geo queries.\n\
+    \    Inherits unLocationCode, and city from parent :Location class."
   domains: []
   kind: class
   labels:
@@ -4695,7 +5660,10 @@ records:
   - https://www.kairosflow.ai/ont/bsp/reference-data#Location
   uri: https://www.kairosflow.ai/ont/bsp/reference-data#Country
 - comments:
-  - "A linear measurement.\n    \n    ISO BSP: Length, width, height."
+  - "A linear measurement.\n    \n    UN/CEFACT BSP (CCL D23B): External dimension (ABH), internal dimension\
+    \ (ABI).\n    \n    Properties:\n    - length, width, height: linear measures in the given unit.\n\
+    \    - dimensionType: EXTERNAL, INTERNAL (UN/CEFACT CCL D23B dimension qualifiers).\n    - unit: UN/CEFACT\
+    \ Rec 20 unit code (MTR, CMT, MMT, INH)."
   domains: []
   kind: class
   labels:
@@ -4736,7 +5704,8 @@ records:
   uri: https://www.kairosflow.ai/ont/bsp/reference-data#Location
 - comments:
   - "A facility where goods are produced.\n    \n    UN/CEFACT BSP: Maps to ProductionFacility — a man\
-    \ made physical structure\n    in which something is produced."
+    \ made physical structure\n    in which something is produced.\n    \n    Properties:\n    - facilityId:\
+    \ unique identifier for the production facility (UN/CEFACT ProductionFacility identifier)."
   domains: []
   kind: class
   labels:
@@ -4750,7 +5719,9 @@ records:
   uri: https://www.kairosflow.ai/ont/bsp/reference-data#ManufacturingPlant
 - comments:
   - "A quantified observation or dimension.\n    \n    UN/CEFACT BSP: Maps to Measurement — an amount,\
-    \ size, or extent\n    as established by measuring."
+    \ size, or extent\n    as established by measuring.\n\n    Properties:\n    - value: the numeric magnitude\
+    \ (UN/CEFACT Measurement_VALUE).\n    - unit: the unit of measure code (UN/CEFACT Rec 20, e.g., KGM,\
+    \ MTR, MTQ)."
   domains: []
   kind: class
   labels:
@@ -4762,7 +5733,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/reference-data#Measurement
 - comments:
-  - "A sum of money.\n    \n    ISO BSP: Invoice amount, payment amount, duty amount."
+  - "A sum of money.\n    \n    UN/CEFACT BSP (CCL D23B): Amount with an explicit or implied currency.\n\
+    \    \n    Properties:\n    - amount: numeric monetary value (UN/CEFACT Amount).\n    - currency:\
+    \ ISO 4217 currency code (UN/CEFACT CurrencyCode)."
   domains: []
   kind: class
   labels:
@@ -4775,7 +5748,10 @@ records:
   - https://www.kairosflow.ai/ont/bsp/reference-data#Measurement
   uri: https://www.kairosflow.ai/ont/bsp/reference-data#MonetaryAmount
 - comments:
-  - "A maritime facility for vessel operations.\n    \n    ISO BSP: Seaport identified by UN/LOCODE."
+  - "A maritime facility for vessel operations.\n    \n    ISO BSP (UN/LOCODE): Seaport identified by\
+    \ UN/LOCODE (inherited from :Location\n    via :unLocationCode). \n    \n    Properties:\n    - portName:\
+    \ official name of the port (UN/LOCODE name).\n    - portType: UN/LOCODE function classifier — e.g.,\
+    \ SEA, RIVER, FISHING, CARGO."
   domains: []
   kind: class
   labels:
@@ -4788,7 +5764,9 @@ records:
   - https://www.kairosflow.ai/ont/bsp/reference-data#Facility
   uri: https://www.kairosflow.ai/ont/bsp/reference-data#Port
 - comments:
-  - "A measurement of three-dimensional space.\n    \n    ISO BSP: Cubic meters, cubic feet."
+  - "A measurement of three-dimensional space.\n    \n    UN/CEFACT BSP (CCL D23B Rec 20): Gross volume\
+    \ (AAW), net volume (AAX).\n    \n    Properties:\n    - value: numeric volume.\n    - unit: UN/CEFACT\
+    \ Rec 20 unit code (MTQ, LTR).\n    - volumeType: GROSS, NET (UN/CEFACT CCL D23B volume qualifiers)."
   domains: []
   kind: class
   labels:
@@ -4801,7 +5779,9 @@ records:
   - https://www.kairosflow.ai/ont/bsp/reference-data#Measurement
   uri: https://www.kairosflow.ai/ont/bsp/reference-data#Volume
 - comments:
-  - "A storage facility for goods.\n    \n    ISO BSP: Distribution center, depot."
+  - "A storage facility for goods.\n    \n    ISO BSP: Distribution center, depot, bonded warehouse.\n\
+    \    \n    Properties:\n    - warehouseType: GENERAL, BONDED, FREE_ZONE, COLD_STORAGE, DISTRIBUTION_CENTER.\n\
+    \    - bondedIndicator: whether the warehouse is customs-bonded (WCO Customs Warehousing)."
   domains: []
   kind: class
   labels:
@@ -4814,7 +5794,10 @@ records:
   - https://www.kairosflow.ai/ont/bsp/reference-data#Facility
   uri: https://www.kairosflow.ai/ont/bsp/reference-data#Warehouse
 - comments:
-  - "A measurement of mass.\n    \n    ISO BSP: Gross weight, net weight, chargeable weight."
+  - "A measurement of mass.\n    \n    UN/CEFACT BSP (CCL D23B Rec 20): Gross weight (AAB), net weight\
+    \ (AAA),\n    tare weight, chargeable weight.\n    \n    Properties:\n    - value: numeric mass (inherited\
+    \ semantics from :Measurement).\n    - unit: UN/CEFACT Rec 20 unit code (KGM, TNE, LBR).\n    - weightType:\
+    \ GROSS, NET, TARE, CHARGEABLE (UN/CEFACT CCL D23B weight qualifiers)."
   domains: []
   kind: class
   labels:
@@ -4826,6 +5809,77 @@ records:
   superclasses:
   - https://www.kairosflow.ai/ont/bsp/reference-data#Measurement
   uri: https://www.kairosflow.ai/ont/bsp/reference-data#Weight
+- comments:
+  - Links an Address to its Country (UN/CEFACT CCL D23B TradeAddress Country).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#Address
+  kind: object_property
+  labels:
+  - address country
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#Country
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#addressCountry
+- comments:
+  - "Address purpose code (UN/CEFACT CCL D23B TradeAddress typeCode).\n    Typical values: business, residential,\
+    \ registered, billing, shipping."
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#Address
+  kind: datatype_property
+  labels:
+  - address type
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#addressType
+- comments:
+  - Whether the warehouse is customs-bonded (WCO Customs Warehousing regime).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#Warehouse
+  kind: datatype_property
+  labels:
+  - bonded indicator
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#boolean
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#bondedIndicator
+- comments:
+  - Building or house number (UN/CEFACT CCL D23B BuildingNumber).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#Address
+  kind: datatype_property
+  labels:
+  - building number
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#buildingNumber
+- comments:
+  - c/o addressee forwarding line (UN/CEFACT CCL D23B CareOf).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#Address
+  kind: datatype_property
+  labels:
+  - care of
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#careOf
 - comments:
   - City name.
   domains:
@@ -4855,6 +5909,34 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/reference-data#countryCode
 - comments:
+  - 'Dimension qualifier: EXTERNAL, INTERNAL (UN/CEFACT CCL D23B dimension type codes ABH/ABI).'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#Dimension
+  kind: datatype_property
+  labels:
+  - dimension type
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#dimensionType
+- comments:
+  - Unique identifier for the production facility (UN/CEFACT CCL D23B ProductionFacility identifier).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#ManufacturingPlant
+  kind: datatype_property
+  labels:
+  - facility identifier
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#facilityId
+- comments:
   - Identifies destination location.
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#Shipment
@@ -4883,6 +5965,20 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/reference-data#hasOriginLocation
 - comments:
+  - Linear height measure (UN/CEFACT CCL D23B Dimension Height).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#Dimension
+  kind: datatype_property
+  labels:
+  - height
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#height
+- comments:
   - 3-letter IATA code.
   domains:
   - https://www.kairosflow.ai/ont/bsp/reference-data#Airport
@@ -4896,6 +5992,146 @@ records:
   sources: *id008
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/reference-data#iataAirportCode
+- comments:
+  - WGS84 latitude coordinate of the address.
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#Address
+  kind: datatype_property
+  labels:
+  - latitude
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#latitude
+- comments:
+  - Linear length measure (UN/CEFACT CCL D23B Dimension Length).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#Dimension
+  kind: datatype_property
+  labels:
+  - length
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#length
+- comments:
+  - WGS84 longitude coordinate of the address.
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#Address
+  kind: datatype_property
+  labels:
+  - longitude
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#longitude
+- comments:
+  - Unit of measure code per UN/CEFACT Recommendation 20 (e.g., KGM, MTR, MTQ, LTR).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#Measurement
+  kind: datatype_property
+  labels:
+  - measurement unit
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#measurementUnit
+- comments:
+  - Numeric magnitude of the measurement (UN/CEFACT CCL D23B Measurement VALUE).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#Measurement
+  kind: datatype_property
+  labels:
+  - measurement value
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#measurementValue
+- comments:
+  - Numeric monetary value (UN/CEFACT CCL D23B Amount).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#MonetaryAmount
+  kind: datatype_property
+  labels:
+  - monetary amount
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#monetaryAmount
+- comments:
+  - ISO 4217 currency code for the monetary amount (UN/CEFACT CCL D23B CurrencyCode).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#MonetaryAmount
+  kind: datatype_property
+  labels:
+  - monetary currency
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#monetaryCurrency
+- comments:
+  - Post office box number (UN/CEFACT CCL D23B PostOfficeBox).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#Address
+  kind: datatype_property
+  labels:
+  - P.O box
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#poBox
+- comments:
+  - Official name of the port (UN/LOCODE name field).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#Port
+  kind: datatype_property
+  labels:
+  - port name
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#portName
+- comments:
+  - Port function classifier per UN/LOCODE function code (SEA, RIVER, FISHING, CARGO).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#Port
+  kind: datatype_property
+  labels:
+  - port type
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#portType
 - comments:
   - ZIP or postal code.
   domains:
@@ -4953,6 +6189,63 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/reference-data#unLocationCode
 - comments:
+  - 'Volume qualifier: GROSS, NET (UN/CEFACT CCL D23B volume type codes AAW/AAX).'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#Volume
+  kind: datatype_property
+  labels:
+  - volume type
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#volumeType
+- comments:
+  - 'Type of warehouse: GENERAL, BONDED, FREE_ZONE, COLD_STORAGE, DISTRIBUTION_CENTER (WCO Customs Warehousing
+    codes).'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#Warehouse
+  kind: datatype_property
+  labels:
+  - warehouse type
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#warehouseType
+- comments:
+  - 'Weight qualifier: GROSS, NET, TARE, CHARGEABLE (UN/CEFACT CCL D23B weight type codes AAB/AAA).'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#Weight
+  kind: datatype_property
+  labels:
+  - weight type
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#weightType
+- comments:
+  - Linear width measure (UN/CEFACT CCL D23B Dimension Width).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/reference-data#Dimension
+  kind: datatype_property
+  labels:
+  - width
+  module_uri: https://www.kairosflow.ai/ont/bsp/reference-data
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/reference-data/reference-data.ttl
+  sources: *id008
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/reference-data#width
+- comments:
   - "Revenue from non-freight services: demurrage/detention charges,\n    documentation fees, VAS (value-added\
     \ services), storage, etc."
   domains: []
@@ -4969,7 +6262,10 @@ records:
   uri: https://www.kairosflow.ai/ont/bsp/revenue-yield#AncillaryRevenue
 - comments:
   - "Detailed capacity measurement showing slots/TEU filled vs available,\n    weight utilization, and\
-    \ volume utilization for a service or asset."
+    \ volume utilization for a service or asset.\n\n    ISO 20197-1:2024 BSP: CapacityUtilization — granular\
+    \ utilization metrics.\n\n    Properties:\n    - slotUtilizationPercentage: percentage of available\
+    \ slots/TEU filled (0–100).\n    - weightUtilizationPercentage: percentage of available weight capacity\
+    \ used (0–100).\n    - volumeUtilizationPercentage: percentage of available volume capacity used (0–100)."
   domains: []
   kind: class
   labels:
@@ -5429,6 +6725,20 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/revenue-yield#scopeType
 - comments:
+  - 'Percentage of available slots/TEU filled (0–100). ISO 20197-1:2024 BSP: CapacityUtilization.slotPercentage.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/revenue-yield#CapacityUtilization
+  kind: datatype_property
+  labels:
+  - slot utilization percentage
+  module_uri: https://www.kairosflow.ai/ont/bsp/revenue-yield
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/revenue-yield/revenue-yield.ttl
+  sources: *id009
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/revenue-yield#slotUtilizationPercentage
+- comments:
   - Total revenue for the yield analysis scope and period.
   domains:
   - https://www.kairosflow.ai/ont/bsp/revenue-yield#YieldAnalysis
@@ -5484,6 +6794,34 @@ records:
   sources: *id009
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/revenue-yield#validTo
+- comments:
+  - 'Percentage of available volume capacity used (0–100). ISO 20197-1:2024 BSP: CapacityUtilization.volumePercentage.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/revenue-yield#CapacityUtilization
+  kind: datatype_property
+  labels:
+  - volume utilization percentage
+  module_uri: https://www.kairosflow.ai/ont/bsp/revenue-yield
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/revenue-yield/revenue-yield.ttl
+  sources: *id009
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/revenue-yield#volumeUtilizationPercentage
+- comments:
+  - 'Percentage of available weight capacity used (0–100). ISO 20197-1:2024 BSP: CapacityUtilization.weightPercentage.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/revenue-yield#CapacityUtilization
+  kind: datatype_property
+  labels:
+  - weight utilization percentage
+  module_uri: https://www.kairosflow.ai/ont/bsp/revenue-yield
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/revenue-yield/revenue-yield.ttl
+  sources: *id009
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/revenue-yield#weightUtilizationPercentage
 - comments:
   - Calculated revenue per transport unit.
   domains:

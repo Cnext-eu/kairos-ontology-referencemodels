@@ -24,8 +24,8 @@
     and margin perspective.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-22"^^xsd:date ;
-    dcterms:modified "2026-09-17"^^xsd:date ;
-    owl:versionInfo "2.3.0" ;
+    dcterms:modified "2026-05-22"^^xsd:date ;
+    owl:versionInfo "2.1.0" ;
     dcterms:source "Industry Practice, UN/CEFACT CCL" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
@@ -86,14 +86,7 @@
 :CapacityUtilization a owl:Class ;
     rdfs:label "Capacity Utilization" ;
     rdfs:comment """Detailed capacity measurement showing slots/TEU filled vs available,
-    weight utilization, and volume utilization for a service or asset.
-
-    ISO 20197-1:2024 BSP: CapacityUtilization — granular utilization metrics.
-
-    Properties:
-    - slotUtilizationPercentage: percentage of available slots/TEU filled (0–100).
-    - weightUtilizationPercentage: percentage of available weight capacity used (0–100).
-    - volumeUtilizationPercentage: percentage of available volume capacity used (0–100).""" .
+    weight utilization, and volume utilization for a service or asset.""" .
 
 #################################################################
 #    Pricing and Rate Card
@@ -315,26 +308,3 @@
     rdfs:comment "End date of rate card validity." ;
     rdfs:domain :RateCard ;
     rdfs:range xsd:date .
-
-#################################################################
-#    Datatype Properties — Capacity Utilization (BSP 2.3.0)
-#    Backed by ISO 20197-1:2024 BSP
-#################################################################
-
-:slotUtilizationPercentage a owl:DatatypeProperty ;
-    rdfs:label "slot utilization percentage" ;
-    rdfs:comment "Percentage of available slots/TEU filled (0–100). ISO 20197-1:2024 BSP: CapacityUtilization.slotPercentage." ;
-    rdfs:domain :CapacityUtilization ;
-    rdfs:range xsd:decimal .
-
-:weightUtilizationPercentage a owl:DatatypeProperty ;
-    rdfs:label "weight utilization percentage" ;
-    rdfs:comment "Percentage of available weight capacity used (0–100). ISO 20197-1:2024 BSP: CapacityUtilization.weightPercentage." ;
-    rdfs:domain :CapacityUtilization ;
-    rdfs:range xsd:decimal .
-
-:volumeUtilizationPercentage a owl:DatatypeProperty ;
-    rdfs:label "volume utilization percentage" ;
-    rdfs:comment "Percentage of available volume capacity used (0–100). ISO 20197-1:2024 BSP: CapacityUtilization.volumePercentage." ;
-    rdfs:domain :CapacityUtilization ;
-    rdfs:range xsd:decimal .

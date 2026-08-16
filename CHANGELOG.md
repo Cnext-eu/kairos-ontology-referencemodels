@@ -5,6 +5,77 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.21.0] - 2026-09-17
+
+### Added
+- **Enriched BSP thin-stub classes across 4 modules (BSP 2.2.0 → 2.3.0).**
+  Systematic enrichment of classes that had zero or very few own properties
+  despite being pointed to by other classes via `rdfs:range`. All new
+  properties are backed by UN/CEFACT CCL D23B, ISO 20197-1:2024, or IPPC
+  standard elements.
+
+  **reference-data module** (15 new datatype properties):
+  - Measurement: `measurementValue`, `measurementUnit`
+  - Weight: `weightType`
+  - Volume: `volumeType`
+  - Dimension: `dimensionType`, `length`, `width`, `height`
+  - MonetaryAmount: `monetaryAmount`, `monetaryCurrency`
+  - Port: `portName`, `portType`
+  - Warehouse: `warehouseType`, `bondedIndicator`
+  - Facility: `facilityId`
+
+  **commercial module** (28 new properties, 1 new object property):
+  - TransportEquipment: `equipmentId`, `equipmentType`, `equipmentSizeType`,
+    `sealNumber`, `tareWeight`, `equipmentOwner` (→ `party:TradeParty`)
+  - Package: `packageId`, `packageTypeCode`, `marksAndNumbers`,
+    `packageGrossWeight`, `packageNetWeight`, `packageVolume`
+  - ShipmentLine: `shipmentLineId`, `lineItemNumber`, `lineQuantity`,
+    `lineDescription`
+  - SalesContract: `contractNumber`, `contractDate`, `contractTerms`
+  - SalesOrder: `salesOrderNumber`, `salesOrderDate`
+  - Quotation: `quotationNumber`, `quotationDate`, `quotationValidityDays`
+  - TransportService: `serviceType`, `transportMode`
+  - TransportLeg: `legSequence`, `legTransportMode`, `legOrigin`, `legDestination`
+
+  **documents module** (34 new datatype properties):
+  - PackingList: `packingListTotalPackages`, `packingListTotalNetWeight`,
+    `packingListTotalGrossWeight`
+  - ImportLicense: `licenseNumber`, `licenseExpiryDate`, `licenseCountryOfIssue`,
+    `licenseGoodsDescription`
+  - ExportLicense: `exportLicenseNumber`, `exportLicenseExpiryDate`,
+    `exportLicenseCountryOfIssue`, `exportLicenseGoodsDescription`
+  - InspectionCertificate: `inspectionType`, `inspectionResult`,
+    `inspectionAuthority`
+  - PhytosanitaryCertificate: `phytosanitaryOriginCountry`,
+    `phytosanitaryTreatmentMethod`, `phytosanitaryImportingCountry`
+  - HealthCertificate: `healthCertificateType`, `healthCertificateProduct`,
+    `healthCertificateAuthority`
+  - InsuranceCertificate: `insurancePolicyNumber`, `insuredAmount`,
+    `insuranceCoverageType`, `insuranceInsurer`
+  - DeliveryNote: `deliveryNoteGoodsReceived`, `deliveryNoteReceivedBy`,
+    `deliveryNoteDate`, `deliveryNoteSignatureDate`
+  - ReceiptAdvice: `receiptAdviceQuantityReceived`,
+    `receiptAdviceDiscrepancyCode`, `receiptAdviceReceivedDate`
+  - DocumentEvent: `documentEventType`, `documentEventTimestamp`,
+    `documentEventActor`
+
+  **revenue-yield module** (3 new datatype properties):
+  - CapacityUtilization: `slotUtilizationPercentage`,
+    `weightUtilizationPercentage`, `volumeUtilizationPercentage`
+
+  Previous version archived to `archive/2.2.0/`.
+
+## [1.20.2] - 2026-08-16
+
+### Added
+- **Enriched BSP Address class (BSP 2.1.0 → 2.2.0).** The `Address` class in
+  `reference-data` had only 4 string fields (`streetAddress`, `city`,
+  `stateProvince`, `postalCode`). Added: `addressCountry` (object property →
+  `:Country`), `latitude`/`longitude` (WGS84 decimal), `addressType`, `poBox`,
+  `buildingNumber`, `careOf` — all backed by UN/CEFACT CCL D23B TradeAddress
+  elements (ISO 20197-1:2024). The Address is now a self-contained, queryable
+  address concept.
+
 ## [1.20.1] - 2026-08-15
 
 ### Fixed
