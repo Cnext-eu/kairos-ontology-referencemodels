@@ -15592,7 +15592,7 @@ records:
     \ under the FAL Convention and various national port\n    regulations (typically 24-96 hours before\
     \ ETA).\n\n    Contains vessel identification, voyage details, cargo summary, crew/passenger\n   \
     \ lists, health and security declarations, and waste notification.\n\n    Properties: preArrivalStatus,\
-    \ preArrivalSubmittedDate, preArrivalETA,\n    preArrivalNotificationPort.\n\n    Source: FAL Convention\
+    \ preArrivalSubmittedDate, estimatedArrival,\n    preArrivalNotificationPort.\n\n    Source: FAL Convention\
     \ Standard 2.1, SOLAS XI-2/9.2."
   domains: []
   kind: class
@@ -15877,6 +15877,21 @@ records:
   sources: *id027
   superclasses: []
   uri: https://www.kairosflow.ai/ont/imo/port-call#crewMemberCount
+- comments:
+  - Estimated time of arrival at the port, as declared in the pre-arrival notification under FAL Convention
+    Standard 2.1.
+  domains:
+  - https://www.kairosflow.ai/ont/imo/port-call#PreArrivalNotification
+  kind: datatype_property
+  labels:
+  - estimated arrival
+  module_uri: https://www.kairosflow.ai/ont/imo/port-call
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#dateTime
+  source_file: derived-ontologies/IMO/current/port-call/port-call.ttl
+  sources: *id027
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/imo/port-call#estimatedArrival
 - comments:
   - The estimated date and time of arrival at the port.
   domains:
@@ -16297,21 +16312,6 @@ records:
   sources: *id027
   superclasses: []
   uri: https://www.kairosflow.ai/ont/imo/port-call#plannedSpeed
-- comments:
-  - Estimated time of arrival at the port, as declared in the pre-arrival notification under FAL Convention
-    Standard 2.1.
-  domains:
-  - https://www.kairosflow.ai/ont/imo/port-call#PreArrivalNotification
-  kind: datatype_property
-  labels:
-  - pre-arrival ETA
-  module_uri: https://www.kairosflow.ai/ont/imo/port-call
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#dateTime
-  source_file: derived-ontologies/IMO/current/port-call/port-call.ttl
-  sources: *id027
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/imo/port-call#preArrivalETA
 - comments:
   - Port for which the pre-arrival notification is submitted.
   domains:
@@ -21387,9 +21387,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/equipment#transportMovementStatusCode
 - comments:
-  - "Transport means arriving at a location.\n\n    Properties: arrivalType, actualArrivalDateTime.\n\
-    \    UN/CEFACT MMT-RDM: TransportEventType — arrivalType is the type of\n    arrival (e.g., actual,\
-    \ estimated); actualArrivalDateTime is the\n    actual arrival time."
+  - "Transport means arriving at a location.\n\n    Properties: arrivalType, actualArrival.\n    UN/CEFACT\
+    \ MMT-RDM: TransportEventType — arrivalType is the type of\n    arrival (e.g., actual, estimated);\
+    \ actualArrival is the\n    actual arrival time."
   domains: []
   kind: class
   labels:
@@ -21433,9 +21433,9 @@ records:
   - https://www.kairosflow.ai/ont/mmt/events#TransportEvent
   uri: https://www.kairosflow.ai/ont/mmt/events#DeliveryEvent
 - comments:
-  - "Transport means departing from a location.\n\n    Properties: departureType, actualDepartureDateTime.\n\
-    \    UN/CEFACT MMT-RDM: TransportEventType — departureType is the type of\n    departure (e.g., actual,\
-    \ estimated); actualDepartureDateTime is the\n    actual departure time."
+  - "Transport means departing from a location.\n\n    Properties: departureType, actualDeparture.\n \
+    \   UN/CEFACT MMT-RDM: TransportEventType — departureType is the type of\n    departure (e.g., actual,\
+    \ estimated); actualDeparture is the\n    actual departure time."
   domains: []
   kind: class
   labels:
@@ -21566,33 +21566,33 @@ records:
   - https://www.kairosflow.ai/ont/mmt/events#TransportEvent
   uri: https://www.kairosflow.ai/ont/mmt/events#WarehouseStorageEvent
 - comments:
-  - 'Actual arrival date and time. UN/CEFACT MMT-RDM: TransportEventType actual arrival.'
+  - 'Actual date and time of arrival. UN/CEFACT MMT-RDM: TransportEventType actual arrival.'
   domains:
   - https://www.kairosflow.ai/ont/mmt/events#ArrivalEvent
   kind: datatype_property
   labels:
-  - actual arrival date time
+  - actual arrival
   module_uri: https://www.kairosflow.ai/ont/mmt/events
   ranges:
   - http://www.w3.org/2001/XMLSchema#dateTime
   source_file: derived-ontologies/MMT/current/events/events.ttl
   sources: *id034
   superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt/events#actualArrivalDateTime
+  uri: https://www.kairosflow.ai/ont/mmt/events#actualArrival
 - comments:
-  - 'Actual departure date and time. UN/CEFACT MMT-RDM: TransportEventType actual departure.'
+  - 'Actual date and time of departure. UN/CEFACT MMT-RDM: TransportEventType actual departure.'
   domains:
   - https://www.kairosflow.ai/ont/mmt/events#DepartureEvent
   kind: datatype_property
   labels:
-  - actual departure date time
+  - actual departure
   module_uri: https://www.kairosflow.ai/ont/mmt/events
   ranges:
   - http://www.w3.org/2001/XMLSchema#dateTime
   source_file: derived-ontologies/MMT/current/events/events.ttl
   sources: *id034
   superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt/events#actualDepartureDateTime
+  uri: https://www.kairosflow.ai/ont/mmt/events#actualDeparture
 - comments:
   - 'Type of arrival (e.g., actual, estimated). UN/CEFACT MMT-RDM: TransportEventType arrival type.'
   domains:

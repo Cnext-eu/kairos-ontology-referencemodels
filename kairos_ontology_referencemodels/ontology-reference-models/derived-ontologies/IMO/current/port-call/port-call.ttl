@@ -165,7 +165,7 @@
     Contains vessel identification, voyage details, cargo summary, crew/passenger
     lists, health and security declarations, and waste notification.
 
-    Properties: preArrivalStatus, preArrivalSubmittedDate, preArrivalETA,
+    Properties: preArrivalStatus, preArrivalSubmittedDate, estimatedArrival,
     preArrivalNotificationPort.
 
     Source: FAL Convention Standard 2.1, SOLAS XI-2/9.2.""" .
@@ -605,8 +605,8 @@
     rdfs:domain :CrewChange ;
     rdfs:range xsd:string .
 
-:preArrivalETA a owl:DatatypeProperty ;
-    rdfs:label "pre-arrival ETA" ;
+:estimatedArrival a owl:DatatypeProperty ;
+    rdfs:label "estimated arrival" ;
     rdfs:comment "Estimated time of arrival at the port, as declared in the pre-arrival notification under FAL Convention Standard 2.1." ;
     rdfs:domain :PreArrivalNotification ;
     rdfs:range xsd:dateTime .

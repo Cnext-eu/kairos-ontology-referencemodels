@@ -59,9 +59,9 @@
     rdfs:label "Departure Event" ;
     rdfs:comment """Transport means departing from a location.
 
-    Properties: departureType, actualDepartureDateTime.
+    Properties: departureType, actualDeparture.
     UN/CEFACT MMT-RDM: TransportEventType — departureType is the type of
-    departure (e.g., actual, estimated); actualDepartureDateTime is the
+    departure (e.g., actual, estimated); actualDeparture is the
     actual departure time.""" ;
     rdfs:subClassOf :TransportEvent .
 
@@ -69,9 +69,9 @@
     rdfs:label "Arrival Event" ;
     rdfs:comment """Transport means arriving at a location.
 
-    Properties: arrivalType, actualArrivalDateTime.
+    Properties: arrivalType, actualArrival.
     UN/CEFACT MMT-RDM: TransportEventType — arrivalType is the type of
-    arrival (e.g., actual, estimated); actualArrivalDateTime is the
+    arrival (e.g., actual, estimated); actualArrival is the
     actual arrival time.""" ;
     rdfs:subClassOf :TransportEvent .
 
@@ -200,9 +200,9 @@
     rdfs:domain :DepartureEvent ;
     rdfs:range xsd:string .
 
-:actualDepartureDateTime a owl:DatatypeProperty ;
-    rdfs:label "actual departure date time" ;
-    rdfs:comment "Actual departure date and time. UN/CEFACT MMT-RDM: TransportEventType actual departure." ;
+:actualDeparture a owl:DatatypeProperty ;
+    rdfs:label "actual departure" ;
+    rdfs:comment "Actual date and time of departure. UN/CEFACT MMT-RDM: TransportEventType actual departure." ;
     rdfs:domain :DepartureEvent ;
     rdfs:range xsd:dateTime .
 
@@ -212,9 +212,9 @@
     rdfs:domain :ArrivalEvent ;
     rdfs:range xsd:string .
 
-:actualArrivalDateTime a owl:DatatypeProperty ;
-    rdfs:label "actual arrival date time" ;
-    rdfs:comment "Actual arrival date and time. UN/CEFACT MMT-RDM: TransportEventType actual arrival." ;
+:actualArrival a owl:DatatypeProperty ;
+    rdfs:label "actual arrival" ;
+    rdfs:comment "Actual date and time of arrival. UN/CEFACT MMT-RDM: TransportEventType actual arrival." ;
     rdfs:domain :ArrivalEvent ;
     rdfs:range xsd:dateTime .
 
