@@ -213,6 +213,16 @@ groups:
               codes on the container subset — not a second anchor; bind container units to the
               mmt classes and cite the dcsa codes. Container-anchored archetypes
               (shipping-carrier) anchor this side instead.
+          - uri: "https://www.kairosflow.ai/ont/dcsa/container-operations#"
+            module: "DCSA / Container Operations"
+            provides: "Container journey, operational status, stuffing, stripping, LoLo operations"
+            note: >
+              Container lifecycle operations — stuffing, stripping, status tracking. The
+              LiftOnLiftOff class overlaps conceptually with tic/handling-operations#LiftMove;
+              resolution: container-operations owns the container-lifecycle grain (what was
+              done to a container), handling-operations owns the terminal-move grain (which
+              crane performed the move). Bind stuffing/stripping/journey here; bind physical
+              moves to TIC.
         standards:
           - "UN/CEFACT MMT-RDM"
           - "DCSA API Standards"
@@ -256,6 +266,14 @@ groups:
             module: "RAIL / Rolling Stock"
             provides: "Wagon, locomotive, train composition, wagon technical data"
             mode: rail
+          - uri: "https://www.kairosflow.ai/ont/rail/shared-kernel#"
+            module: "RAIL / Shared Kernel"
+            provides: "Planned and operational train identifiers, rail location identifiers, validity period"
+            mode: rail
+            note: >
+              Required dependency of rail/train-running — train-running references
+              sk:OperationalTrainIdentifier and sk:RailLocationIdentifier in its property
+              ranges. Without this import those classes are unresolvable.
         standards:
           - "UN/CEFACT MMT-RDM"
           - "TAF TSI (EU Regulation 1305/2012, Annex D.2 Appendix F)"
@@ -320,6 +338,14 @@ groups:
           - uri: "https://www.kairosflow.ai/ont/tic/kpi#"
             module: "TIC / KPI"
             provides: "KPI definitions, berth productivity, crane productivity, dwell time, yard utilization"
+          - uri: "https://www.kairosflow.ai/ont/tic/reefer-monitoring#"
+            module: "TIC / Reefer Monitoring"
+            provides: "Reefer rack, slot, monitoring data — terminal-side reefer power, temperature, alarms"
+            note: >
+              Covers the terminal-side of reefer management (racks, slots, power supply,
+              alarms). The equipment-side — reefer container temperature settings — is in
+              mmt/equipment#ReeferContainer, imported by the equipment domain. Different grain;
+              both coexist without overlap.
         standards:
           - "TIC 4.0"
           - "BSI PAS 4000:2026"

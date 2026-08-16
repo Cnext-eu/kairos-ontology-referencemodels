@@ -5,6 +5,33 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.29.1] - 2026-08-16
+
+### Added
+- **Three missing module imports in data-domains.yaml** (accelerator-pack
+  contract change, no ontology content change):
+  - `rail/shared-kernel` → `intermodal` domain. Fixes dangling references:
+    `rail/train-running` (already imported) uses `sk:OperationalTrainIdentifier`
+    and `sk:RailLocationIdentifier` in its property ranges, but the shared-kernel
+    module that defines them was never imported. Zero overlap with existing imports.
+  - `tic/reefer-monitoring` → `terminal-operations` domain. Adds terminal-side
+    reefer management (ReeferMonitoring, ReeferRack, ReeferSlot + 21 properties).
+    Equipment-side reefer settings remain in `mmt/equipment#ReeferContainer`
+    (equipment domain) — different grain, no overlap.
+  - `dcsa/container-operations` → `equipment` domain. Adds container lifecycle
+    operations (ContainerJourney, ContainerOperationalStatus, ContainerStuffing,
+    ContainerStripping, LiftOnLiftOff). Overlap note: LiftOnLiftOff overlaps
+    conceptually with `tic/handling-operations#LiftMove`; resolution documented
+    in the import note (container-operations owns lifecycle grain, handling-
+    operations owns terminal-move grain).
+
+### Audit
+- Challenged all 11 catalog modules missing from data-domains.yaml. 5 skipped
+  due to excessive overlap (dcsa/party, mmt/locations, mmt/transport-means,
+  tic/party, IATA code-lists). 3 wrapper ontologies correctly excluded
+  (dcsa/equipment-journey, dcsa/track-and-trace, dcsa/shared-kernel — zero own
+  classes).
+
 ## [1.29.0] - 2026-08-14
 
 ### Added
