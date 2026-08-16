@@ -5,6 +5,21 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.1] - 2026-08-16
+
+### Fixed
+- **Re-tagged release with squashed merge content.** The v1.28.0 tag was
+  created on a pre-squash-merge commit, so the release workflow ran against
+  stale pack docs and failed the `generate_pack_docs.py --check` gate —
+  no wheel artifact was published. v1.28.1 is tagged on the actual merge
+  commit (be7fab8) which includes all post-merge fixes: toolkit pin update
+  to 5.3.0, regenerated pack docs, and temporal-quartet pattern conformance
+  fixes (IMO `preArrivalETA → estimatedArrival`, MMT
+  `actualArrivalDateTime → actualArrival`, `actualDepartureDateTime →
+  actualDeparture`).
+- **Removed duplicate CHANGELOG header** (line 169) introduced during
+  prior session's PowerShell string manipulation.
+
 ## [1.28.0] - 2026-09-18
 
 ### Added
@@ -133,7 +148,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     MARPOL Annex V waste delivery receipt
   - CrewChange: `crewChangeDirection`, `crewChangeNationalities` — FAL
     Convention crew change data
-  - PreArrivalNotification: `preArrivalETA`, `preArrivalNotificationPort` — FAL
+  - PreArrivalNotification: `estimatedArrival`, `preArrivalNotificationPort` — FAL
     Convention pre-arrival notification
   - PortHealthDeclaration: `phdSSCReference`, `phdVaccinationRequired` — IHR
     (2005) health declaration metadata
@@ -165,13 +180,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     Type Code
 
   Previous version archived to `archive/1.1.0/`.
-
-# Changelog
-
-All notable changes to the Kairos Reference Models will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.27.0] - 2026-09-18
 
