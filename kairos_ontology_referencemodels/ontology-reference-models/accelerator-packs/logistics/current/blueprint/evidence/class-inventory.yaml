@@ -25899,6 +25899,21 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/supply-chain#callsAtTerminal
 - comments:
+  - Links an MMT TransportMovement to the DCSA TransportCall that executes it. Per-stop operational data
+    (arrival/departure times, facility, mode) lives at TransportCall grain, not at the ServiceLoop rotation
+    grain that scheduledVia addresses.
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/consignment#TransportMovement
+  kind: object_property
+  labels:
+  - calls at transport call
+  module_uri: https://www.kairosflow.ai/ont/supply-chain
+  ranges:
+  - https://www.kairosflow.ai/ont/dcsa/transport-call#TransportCall
+  source_file: derived-ontologies/SupplyChain/current/supply-chain.ttl
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/supply-chain#callsAtTransportCall
+- comments:
   - Links a BSP Invoice to the MMT Consignment it charges for.
   domains:
   - https://www.kairosflow.ai/ont/bsp/financial#Invoice
@@ -26071,6 +26086,21 @@ records:
   source_file: derived-ontologies/SupplyChain/current/supply-chain.ttl
   superclasses: []
   uri: https://www.kairosflow.ai/ont/supply-chain#hasMovementEmission
+- comments:
+  - Links an IMO Vessel to the DCSA Events that relate to it — the inverse of eventRelatesToVessel. Enables
+    vessel-maritime domain to reach event classes (e.g., DischargedFromVesselEvent) without importing
+    the events module directly.
+  domains:
+  - https://www.kairosflow.ai/ont/imo/vessel-registry#Vessel
+  kind: object_property
+  labels:
+  - has vessel event
+  module_uri: https://www.kairosflow.ai/ont/supply-chain
+  ranges:
+  - https://www.kairosflow.ai/ont/dcsa/events#Event
+  source_file: derived-ontologies/SupplyChain/current/supply-chain.ttl
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/supply-chain#hasVesselEvent
 - comments:
   - Links an MMT Consignment to the BSP Invoice raised for settlement.
   domains:

@@ -28,7 +28,7 @@ The Logistics Accelerator bundles **9 ontologies** via **11 `owl:imports`** (som
 | IMO | International Maritime Organization | `1.2.0` | Vessel registry, dangerous goods, port-call, crew, environmental, maritime security |
 | WCO | World Customs Organization | `1.3.0` | Customs declarations, goods items, procedures, trade facilitation |
 | Sustainability | Sustainability & Carbon | `1.2.0` | Emissions, energy, ESG reporting |
-| supply-chain | Supply Chain | `1.2.0` | Cross-standard bridge properties linking DCSA, MMT, BSP, TIC, IMO, and WCO |
+| supply-chain | Supply Chain | `1.3.0` | Cross-standard bridge properties linking DCSA, MMT, BSP, TIC, IMO, and WCO |
 | RAIL | TAF TSI Rail | `1.1.0` | EU rail freight reservation & running (path request, consignment order, train running, rolling stock) |
 
 Reference-only — catalogued and bindable, deliberately **not** imported:
