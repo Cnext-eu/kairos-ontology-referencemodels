@@ -15,8 +15,8 @@
     Binds at the movement grain (grain 4). v1.0.0.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-08-15"^^xsd:date ;
-    dcterms:modified "2026-08-15"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd: WagonStatusMessage, WagonLocationStatus, WagonAtDeparture, WagonTelematics, TelematicsDevice, TelematicsOnBoard, TrainCompositionMessage" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
@@ -27,7 +27,10 @@
 :WagonStatusMessage a owl:Class ;
     rdfs:label "Wagon Status Message" ;
     rdfs:comment """Message describing one event of one wagon. Corresponds to
-    WagonStatusMessage in taf_cat_complete.xsd.""" ;
+    WagonStatusMessage in taf_cat_complete.xsd. Properties: reportingRU
+    (ReportingRU), messageCreationDateTime (MessageCreationDateTime),
+    eventType (EventType), eventDateTime (EventDateTime), loadingStatus
+    (LoadingStatus).""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element WagonStatusMessage" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
@@ -35,35 +38,41 @@
     rdfs:label "Wagon Location Status" ;
     rdfs:comment """Identifies the status of a wagon related to the actual time at a
     reporting point. Corresponds to WagonLocationStatus in
-    taf_cat_complete.xsd.""" ;
+    taf_cat_complete.xsd. Properties: wagonLocation, wagonActualTime.""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element WagonLocationStatus" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
 :WagonAtDeparture a owl:Class ;
     rdfs:label "Wagon At Departure" ;
-    rdfs:comment """Wagon data at departure. Corresponds to WagonAtDeparture in
-    taf_cat_complete.xsd.""" ;
+    rdfs:comment """Departure point of a wagon with location and departure time.
+    Corresponds to WagonAtDeparture in taf_cat_complete.xsd. Properties:
+    wagonNumber, departureTimeAtLocation (DepartureTimeAtLocation).""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element WagonAtDeparture" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
 :WagonTelematics a owl:Class ;
     rdfs:label "Wagon Telematics" ;
-    rdfs:comment """Telematics data for a wagon (load dimensions, telematics devices).
-    Corresponds to WagonTelematics in taf_cat_complete.xsd.""" ;
-    dcterms:source "TAF TSI — taf_cat_complete.xsd, element WagonTelematics" ;
+    rdfs:comment """Telematics data for a wagon (telematics on-board indicator and
+    telematics devices). Corresponds to WagonTelematics complex type in
+    taf_cat_complete.xsd. Properties: telematicsOnBoardIndicator
+    (TelematicsOnBoard), hasTelematicsDevice.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, complexType WagonTelematics" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
 :TelematicsDevice a owl:Class ;
     rdfs:label "Telematics Device" ;
     rdfs:comment """A telematics device fitted to a wagon. Corresponds to
-    TelematicsDevice in taf_cat_complete.xsd.""" ;
+    TelematicsDevice in taf_cat_complete.xsd. Properties: deviceType
+    (DeviceType), componentMounted (ComponentMounted), manufacturerName
+    (ManufacturerName), atexCertified (ATEXCertified).""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element TelematicsDevice" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
 :TelematicsOnBoard a owl:Class ;
     rdfs:label "Telematics On Board" ;
-    rdfs:comment """Telematics on board a wagon. Corresponds to TelematicsOnBoard in
-    taf_cat_complete.xsd.""" ;
+    rdfs:comment """Telematics on board a wagon — boolean indication of whether a
+    wagon is equipped with a telematics device. Corresponds to
+    TelematicsOnBoard in taf_cat_complete.xsd.""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element TelematicsOnBoard" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
@@ -71,7 +80,8 @@
     rdfs:label "Train Composition Message" ;
     rdfs:comment """Message sent from an RU to an IM defining the composition of the
     proposed train. Corresponds to TrainCompositionMessage in
-    taf_cat_complete.xsd.""" ;
+    taf_cat_complete.xsd. Properties: messageStatus (MessageStatus),
+    transferPoint (TransferPoint), hasWagonAtDeparture, compositionFor.""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, element TrainCompositionMessage" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
@@ -126,3 +136,75 @@
     rdfs:comment "Identifies the planned train the composition message defines." ;
     rdfs:domain :TrainCompositionMessage ;
     rdfs:range sk:PlannedTrainIdentifier .
+
+:eventType a owl:DatatypeProperty ;
+    rdfs:label "event type" ;
+    rdfs:comment "Type of wagon event (e.g. 10=Wagon Ready To Pull, 20=Wagon Pulled). Corresponds to EventType in taf_cat_complete.xsd." ;
+    rdfs:domain :WagonStatusMessage ;
+    rdfs:range xsd:string .
+
+:eventDateTime a owl:DatatypeProperty ;
+    rdfs:label "event date time" ;
+    rdfs:comment "Date and time the wagon event occurred. Corresponds to EventDateTime in taf_cat_complete.xsd." ;
+    rdfs:domain :WagonStatusMessage ;
+    rdfs:range xsd:dateTime .
+
+:loadingStatus a owl:DatatypeProperty ;
+    rdfs:label "loading status" ;
+    rdfs:comment "Loading status of the wagon (0=Empty, 1=Loaded). Corresponds to LoadingStatus in taf_cat_complete.xsd." ;
+    rdfs:domain :WagonStatusMessage ;
+    rdfs:range xsd:string .
+
+:messageCreationDateTime a owl:DatatypeProperty ;
+    rdfs:label "message creation date time" ;
+    rdfs:comment "Date and time the message was created. Corresponds to MessageCreationDateTime in taf_cat_complete.xsd." ;
+    rdfs:domain :WagonStatusMessage ;
+    rdfs:range xsd:dateTime .
+
+:departureTimeAtLocation a owl:DatatypeProperty ;
+    rdfs:label "departure time at location" ;
+    rdfs:comment "Scheduled departure date and time at a defined location. Corresponds to DepartureTimeAtLocation in taf_cat_complete.xsd." ;
+    rdfs:domain :WagonAtDeparture ;
+    rdfs:range xsd:dateTime .
+
+:telematicsOnBoardIndicator a owl:DatatypeProperty ;
+    rdfs:label "telematics on board indicator" ;
+    rdfs:comment "Boolean indication of whether a wagon is equipped with telematics. Corresponds to TelematicsOnBoard in taf_cat_complete.xsd." ;
+    rdfs:domain :WagonTelematics ;
+    rdfs:range xsd:boolean .
+
+:deviceType a owl:DatatypeProperty ;
+    rdfs:label "device type" ;
+    rdfs:comment "Type of telematics device (e.g. Telematics Unit, Sensor). Corresponds to DeviceType in taf_cat_complete.xsd." ;
+    rdfs:domain :TelematicsDevice ;
+    rdfs:range xsd:string .
+
+:manufacturerName a owl:DatatypeProperty ;
+    rdfs:label "manufacturer name" ;
+    rdfs:comment "Name of the telematics device manufacturer. Corresponds to ManufacturerName in taf_cat_complete.xsd." ;
+    rdfs:domain :TelematicsDevice ;
+    rdfs:range xsd:string .
+
+:atexCertified a owl:DatatypeProperty ;
+    rdfs:label "ATEX certified" ;
+    rdfs:comment "Boolean indicating whether the telematics device is ATEX certified. Corresponds to ATEXCertified in taf_cat_complete.xsd." ;
+    rdfs:domain :TelematicsDevice ;
+    rdfs:range xsd:boolean .
+
+:atexLevel a owl:DatatypeProperty ;
+    rdfs:label "ATEX level" ;
+    rdfs:comment "ATEX certification level of the telematics device. Corresponds to ATEXLevel in taf_cat_complete.xsd." ;
+    rdfs:domain :TelematicsDevice ;
+    rdfs:range xsd:string .
+
+:compositionMessageStatus a owl:DatatypeProperty ;
+    rdfs:label "composition message status" ;
+    rdfs:comment "Status of the train composition message (1=Creation, 2=Modification, 3=Deletion). Corresponds to MessageStatus in taf_cat_complete.xsd." ;
+    rdfs:domain :TrainCompositionMessage ;
+    rdfs:range xsd:string .
+
+:transferPoint a owl:DatatypeProperty ;
+    rdfs:label "transfer point" ;
+    rdfs:comment "Location identifier of the transfer point for the train composition. Corresponds to TransferPoint in taf_cat_complete.xsd." ;
+    rdfs:domain :TrainCompositionMessage ;
+    rdfs:range xsd:string .

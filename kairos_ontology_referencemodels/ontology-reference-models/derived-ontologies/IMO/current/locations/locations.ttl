@@ -15,8 +15,8 @@
     system and IMO requirements for vessel traffic management and port operations.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-16"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "IMO Compendium data set, FAL Convention, COLREG Rule 10, Resolution A.857(20)" ;
     rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
 
@@ -49,7 +49,11 @@
     rdfs:comment """A designated area within port waters or its approaches where vessels may anchor
     while awaiting berth availability, pilotage, or port clearance.
 
-    Anchorages are charted and may be assigned by the port authority or VTS.""" ;
+    Anchorages are charted and may be assigned by the port authority or VTS.
+
+    Properties: anchorageName, anchorageType, anchorageMaxVesselSize, anchorageHoldingGround.
+
+    Source: SOLAS V/12, IMO Resolution A.857(20) VTS Guidelines.""" ;
     rdfs:subClassOf :MaritimeLocation .
 
 :VTSZone a owl:Class ;
@@ -58,7 +62,11 @@
     shore-based VTS authority in accordance with IMO Resolution A.857(20).
 
     Vessels entering a VTS zone must report to the VTS centre and comply with
-    traffic management instructions.""" ;
+    traffic management instructions.
+
+    Properties: vtsAuthority, vtsChannel, vtsReportingRequirements, vtsServiceArea.
+
+    Source: SOLAS V/12, IMO Resolution A.857(20) Guidelines for VTS.""" ;
     rdfs:subClassOf :MaritimeLocation ;
     rdfs:subClassOf [
         a owl:Restriction ;
@@ -69,7 +77,11 @@
 :PilotBoardingPlace a owl:Class ;
     rdfs:label "Pilot Boarding Place" ;
     rdfs:comment """The designated geographical position where a maritime pilot boards or disembarks
-    a vessel. Defined by coordinates and published in nautical publications (Admiralty Pilot).""" ;
+    a vessel. Defined by coordinates and published in nautical publications (Admiralty Pilot).
+
+    Properties: pilotBoardingProcedure, pilotBoardingTime, pilotLadderRequired.
+
+    Source: SOLAS V/10, IMO Resolution A.960(23) Pilotage Procedures.""" ;
     rdfs:subClassOf :MaritimeLocation ;
     rdfs:subClassOf [
         a owl:Restriction ;
@@ -106,7 +118,11 @@
     rdfs:label "Traffic Separation Scheme" ;
     rdfs:comment """A routing measure adopted by IMO under COLREG Rule 10 to separate opposing
     streams of vessel traffic using traffic lanes, separation zones, and inshore
-    traffic zones. Reduces the risk of collision in congested or convergent areas.""" ;
+    traffic zones. Reduces the risk of collision in congested or convergent areas.
+
+    Properties: tssSchemeType, tssTrafficLaneDirection, tssSeparationZoneWidth.
+
+    Source: COLREGS 1972 Rule 10, IMO Resolution A.572(15) General Provisions on Routing.""" ;
     rdfs:subClassOf :MaritimeLocation .
 
 #################################################################
@@ -249,7 +265,11 @@
     Baltic Sea, North Sea, North American, and US Caribbean areas. NOx ECAs include
     the North American and US Caribbean areas.
 
-    Within ECAs, fuel sulphur content must not exceed 0.10% (vs. 0.50% globally).""" ;
+    Within ECAs, fuel sulphur content must not exceed 0.10% (vs. 0.50% globally).
+
+    Properties: ecaDesignation, ecaName, ecaSulphurLimit, ecaApplicableAnnex.
+
+    Source: MARPOL Annex VI Regulation 14.""" ;
     rdfs:subClassOf :MaritimeLocation ;
     rdfs:subClassOf [
         a owl:Restriction ;
@@ -264,7 +284,11 @@
 
     Special areas exist under MARPOL Annexes I (oil), II (NLS), IV (sewage),
     V (garbage), and VI (SOx). Examples include the Mediterranean Sea,
-    Baltic Sea, Black Sea, Red Sea, and Antarctic area.""" ;
+    Baltic Sea, Black Sea, Red Sea, and Antarctic area.
+
+    Properties: specialAreaAnnex, specialAreaName, specialAreaDischargeRestrictions, specialAreaEffectiveDate.
+
+    Source: MARPOL 73/78, Annexes I-VI Special Area designations.""" ;
     rdfs:subClassOf :MaritimeLocation .
 
 :PortReceptionFacility a owl:Class ;
@@ -272,7 +296,11 @@
     rdfs:comment """A shore-based facility for receiving ship-generated waste and cargo residues.
 
     MARPOL requires all ports to provide adequate reception facilities for the wastes
-    covered by its annexes. Ships must be able to deliver waste before departing.""" ;
+    covered by its annexes. Ships must be able to deliver waste before departing.
+
+    Properties: wasteTypesAccepted, prfFacilityCapacity, prfNotificationRequired.
+
+    Source: MARPOL Annexes I/IV/V/VI, Regulation on Port Reception Facilities.""" ;
     rdfs:subClassOf :MaritimeLocation .
 
 # Environmental zone properties
@@ -306,3 +334,109 @@
     rdfs:comment "Types of ship-generated waste the port reception facility accepts (OIL, GARBAGE, SEWAGE, NLS, EXHAUST)." ;
     rdfs:domain :PortReceptionFacility ;
     rdfs:range xsd:string .
+
+#################################################################
+#    Datatype Properties — Enrichment (MARPOL / SOLAS / COLREGS)
+#################################################################
+
+:anchorageType a owl:DatatypeProperty ;
+    rdfs:label "anchorage type" ;
+    rdfs:comment "Type of anchorage (e.g., 'Designated', 'Emergency', 'Quarantine', 'Deep water'). SOLAS V/12." ;
+    rdfs:domain :Anchorage ;
+    rdfs:range xsd:string .
+
+:anchorageMaxVesselSize a owl:DatatypeProperty ;
+    rdfs:label "anchorage max vessel size" ;
+    rdfs:comment "Maximum vessel size (LOA in metres) permitted at the anchorage. Port authority designation." ;
+    rdfs:domain :Anchorage ;
+    rdfs:range xsd:decimal .
+
+:anchorageHoldingGround a owl:DatatypeProperty ;
+    rdfs:label "anchorage holding ground" ;
+    rdfs:comment "Description of the seabed holding ground type (e.g., 'Mud', 'Sand', 'Clay'). Charted anchorage information." ;
+    rdfs:domain :Anchorage ;
+    rdfs:range xsd:string .
+
+:vtsReportingRequirements a owl:DatatypeProperty ;
+    rdfs:label "VTS reporting requirements" ;
+    rdfs:comment "Description of vessel reporting requirements upon entering the VTS zone. SOLAS V/12, Resolution A.857(20)." ;
+    rdfs:domain :VTSZone ;
+    rdfs:range xsd:string .
+
+:vtsServiceArea a owl:DatatypeProperty ;
+    rdfs:label "VTS service area" ;
+    rdfs:comment "Description of the geographic scope of the VTS service area. Resolution A.857(20)." ;
+    rdfs:domain :VTSZone ;
+    rdfs:range xsd:string .
+
+:pilotBoardingProcedure a owl:DatatypeProperty ;
+    rdfs:label "pilot boarding procedure" ;
+    rdfs:comment "Description of the pilot boarding procedure at this boarding place. SOLAS V/10." ;
+    rdfs:domain :PilotBoardingPlace ;
+    rdfs:range xsd:string .
+
+:pilotBoardingTime a owl:DatatypeProperty ;
+    rdfs:label "pilot boarding time" ;
+    rdfs:comment "Scheduled or expected time for pilot boarding operations. SOLAS V/10." ;
+    rdfs:domain :PilotBoardingPlace ;
+    rdfs:range xsd:dateTime .
+
+:pilotLadderRequired a owl:DatatypeProperty ;
+    rdfs:label "pilot ladder required" ;
+    rdfs:comment "Whether a pilot ladder is required for boarding at this location. SOLAS V/10, Regulation 17." ;
+    rdfs:domain :PilotBoardingPlace ;
+    rdfs:range xsd:boolean .
+
+:tssSchemeType a owl:DatatypeProperty ;
+    rdfs:label "TSS scheme type" ;
+    rdfs:comment "Type of traffic separation scheme (e.g., 'Roundabout', 'Routing', 'Precautionary area'). COLREGS Rule 10." ;
+    rdfs:domain :TrafficSeparationScheme ;
+    rdfs:range xsd:string .
+
+:tssTrafficLaneDirection a owl:DatatypeProperty ;
+    rdfs:label "TSS traffic lane direction" ;
+    rdfs:comment "Description of the traffic lane direction(s) in the TSS. COLREGS Rule 10." ;
+    rdfs:domain :TrafficSeparationScheme ;
+    rdfs:range xsd:string .
+
+:tssSeparationZoneWidth a owl:DatatypeProperty ;
+    rdfs:label "TSS separation zone width" ;
+    rdfs:comment "Width of the separation zone between opposing traffic lanes, in nautical miles. COLREGS Rule 10." ;
+    rdfs:domain :TrafficSeparationScheme ;
+    rdfs:range xsd:decimal .
+
+:ecaSulphurLimit a owl:DatatypeProperty ;
+    rdfs:label "ECA sulphur limit" ;
+    rdfs:comment "Maximum fuel sulphur content permitted within the ECA (e.g., '0.10%' for SOx ECAs). MARPOL Annex VI Regulation 14.4." ;
+    rdfs:domain :EmissionControlArea ;
+    rdfs:range xsd:string .
+
+:ecaApplicableAnnex a owl:DatatypeProperty ;
+    rdfs:label "ECA applicable annex" ;
+    rdfs:comment "MARPOL annex number under which the ECA is designated (e.g., 'VI'). MARPOL Annex VI Regulation 14." ;
+    rdfs:domain :EmissionControlArea ;
+    rdfs:range xsd:string .
+
+:specialAreaDischargeRestrictions a owl:DatatypeProperty ;
+    rdfs:label "special area discharge restrictions" ;
+    rdfs:comment "Description of the discharge restrictions applying within the MARPOL special area. MARPOL Annexes I-VI." ;
+    rdfs:domain :MARPOLSpecialArea ;
+    rdfs:range xsd:string .
+
+:specialAreaEffectiveDate a owl:DatatypeProperty ;
+    rdfs:label "special area effective date" ;
+    rdfs:comment "Date when the special area designation became effective. MARPOL Annexes I-VI." ;
+    rdfs:domain :MARPOLSpecialArea ;
+    rdfs:range xsd:date .
+
+:prfFacilityCapacity a owl:DatatypeProperty ;
+    rdfs:label "PRF facility capacity" ;
+    rdfs:comment "Description of the waste reception capacity of the facility. MARPOL Annexes I/IV/V/VI." ;
+    rdfs:domain :PortReceptionFacility ;
+    rdfs:range xsd:string .
+
+:prfNotificationRequired a owl:DatatypeProperty ;
+    rdfs:label "PRF notification required" ;
+    rdfs:comment "Whether advance notification is required before delivering waste to the PRF. MARPOL Annex V Regulation 7, Annex VI Regulation 17." ;
+    rdfs:domain :PortReceptionFacility ;
+    rdfs:range xsd:boolean .

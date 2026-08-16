@@ -1,0 +1,516 @@
+@prefix : <https://www.kairosflow.ai/ont/bsp/commercial#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix fin: <https://www.kairosflow.ai/ont/bsp/financial#> .
+@prefix refdata: <https://www.kairosflow.ai/ont/bsp/reference-data#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/bsp/commercial> a owl:Ontology ;
+    dcterms:title "Kairos BSP Commercial Domain Ontology" ;
+    dcterms:description """Commercial and logistics domain of the Buy-Ship-Pay Reference Data Model.
+
+    This module defines commercial transaction and shipment classes covering:
+    - Buy: Purchase orders, sales orders, quotations, contracts, order lines, products
+    - Ship: Shipments, consignments, transport services, legs, equipment, packages
+    - Events: Business events, order events, shipment events""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-08-13"^^xsd:date ;
+    owl:versionInfo "2.2.0" ;
+    dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/> .
+
+#################################################################
+#    BUY - Commercial Transaction Classes
+#################################################################
+
+:CommercialTransaction a owl:Class ;
+    rdfs:label "Commercial Transaction" ;
+    rdfs:comment """A business transaction involving the exchange of goods or services for payment.
+    
+    UN/CEFACT BSP: Maps to SupplyChainTradeTransaction — a group of trade
+    line items, agreement, delivery and settlement details.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/SupplyChainTradeTransaction> .
+
+:PurchaseOrder a owl:Class ;
+    rdfs:label "Purchase Order" ;
+    rdfs:comment """A commercial document issued by a buyer to a seller indicating products, quantities, and agreed prices.
+    
+    UN/CEFACT BSP: An ExchangedDocument with order function type code.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/ExchangedDocument> ;
+    rdfs:subClassOf :CommercialTransaction ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :purchaseOrderNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:SalesOrder a owl:Class ;
+    rdfs:label "Sales Order" ;
+    rdfs:comment """An order confirmation from a seller to a buyer accepting terms and conditions.
+    
+    ISO BSP: Seller's acceptance and commitment to fulfill order.""" ;
+    rdfs:subClassOf :CommercialTransaction .
+
+:Quotation a owl:Class ;
+    rdfs:label "Quotation" ;
+    rdfs:comment """An offer by a seller to supply goods or services at stated prices and terms.
+    
+    ISO BSP: Pre-order price and terms proposal.""" ;
+    rdfs:subClassOf :CommercialTransaction .
+
+:SalesContract a owl:Class ;
+    rdfs:label "Sales Contract" ;
+    rdfs:comment """A formal agreement between buyer and seller defining rights and obligations.
+    
+    UN/CEFACT BSP: Maps to Contract — an agreement between two or more
+    parties for trade purposes.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Contract> ;
+    rdfs:subClassOf :CommercialTransaction .
+
+:RequestForQuotation a owl:Class ;
+    rdfs:label "Request for Quotation" ;
+    rdfs:comment """A document issued by a buyer requesting a supplier to provide a price
+    quotation for specified goods or services.
+
+    UN/CEFACT BSP: Maps to CrossIndustryRequestforQuotation — a request from
+    a potential buyer to a seller for pricing, availability, and delivery terms.""" ;
+    rdfs:subClassOf :CommercialTransaction .
+
+:OrderChange a owl:Class ;
+    rdfs:label "Order Change" ;
+    rdfs:comment """A request by the buyer to amend a previously issued purchase order.
+
+    UN/CEFACT BSP: Maps to CrossIndustryOrderChange — modifications to quantities,
+    delivery dates, specifications, or other order terms. Must reference the
+    original purchase order.""" ;
+    rdfs:subClassOf :CommercialTransaction .
+
+:OrderResponse a owl:Class ;
+    rdfs:label "Order Response" ;
+    rdfs:comment """A seller's response to a purchase order or order change, indicating
+    acceptance, rejection, or counter-proposal.
+
+    UN/CEFACT BSP: Maps to CrossIndustryOrderResponse — may accept the order
+    in full, accept with amendments, or reject.""" ;
+    rdfs:subClassOf :CommercialTransaction .
+
+:OrderLine a owl:Class ;
+    rdfs:label "Order Line" ;
+    rdfs:comment """A single line item within a purchase or sales order.
+    
+    UN/CEFACT BSP: Maps to SupplyChainTradeLineItem — a collection of
+    information specific to an item for supply chain trade purposes.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/SupplyChainTradeLineItem> ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :lineNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:Product a owl:Class ;
+    rdfs:label "Product" ;
+    rdfs:comment """A good or service offered for sale.
+    
+    UN/CEFACT BSP: Maps to TradeProduct — any tangible output or service
+    produced by human or mechanical effort for trade purposes.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TradeProduct> ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/sustainability/carbon#CarbonEmission> .
+
+:TradeItem a owl:Class ;
+    rdfs:label "Trade Item" ;
+    rdfs:comment """Any item (product or service) upon which there is a need to retrieve pre-defined information.
+    
+    ISO BSP: Standardized product identifier (e.g., GTIN).""" ;
+    rdfs:subClassOf :Product .
+
+#################################################################
+#    SHIP - Shipment and Logistics Classes
+#################################################################
+
+:Shipment a owl:Class ;
+    rdfs:label "Shipment" ;
+    rdfs:comment """The transport of goods from seller to buyer.
+    
+    ISO BSP: Execution of physical delivery.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :shipmentNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/booking#Shipment> ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/sustainability/carbon#CarbonFootprint> .
+
+:Consignment a owl:Class ;
+    rdfs:label "Consignment" ;
+    rdfs:comment """A batch of goods shipped together from one consignor to one consignee.
+    
+    UN/CEFACT BSP: Maps to Consignment — a separately identifiable collection
+    of goods items to be transported via one or more modes of transport.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Consignment> ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/mmt/consignment#Consignment> ;
+    rdfs:subClassOf :Shipment .
+
+:ShipmentLine a owl:Class ;
+    rdfs:label "Shipment Line" ;
+    rdfs:comment """A line item within a shipment detailing specific goods being transported.
+    
+    ISO BSP: Granular shipment content detail.""" .
+
+:TransportService a owl:Class ;
+    rdfs:label "Transport Service" ;
+    rdfs:comment """A service for moving goods from origin to destination.
+    
+    ISO BSP: Logistics service offering.""" ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/mmt/consignment#TransportService> .
+
+:TransportLeg a owl:Class ;
+    rdfs:label "Transport Leg" ;
+    rdfs:comment """A segment of transport journey using a single mode.
+    
+    ISO BSP: Individual movement in multi-modal transport.""" ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/mmt/consignment#TransportLeg> .
+
+:TransportEquipment a owl:Class ;
+    rdfs:label "Transport Equipment" ;
+    rdfs:comment """Equipment used to transport goods (containers, pallets, etc.).
+    
+    UN/CEFACT BSP: Maps to LogisticsTransportEquipment — a piece of equipment
+    used to hold, protect or secure cargo for logistics purposes.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/LogisticsTransportEquipment> ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/equipment#Container> .
+
+:Package a owl:Class ;
+    rdfs:label "Package" ;
+    rdfs:comment """A physical unit in which goods are packed.
+    
+    UN/CEFACT BSP: Maps to Package — a self-contained wrapping or container
+    within which goods can be contained for logistics purposes.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Package> .
+
+#################################################################
+#    Event Classes
+#################################################################
+
+:BusinessEvent a owl:Class ;
+    rdfs:label "Business Event" ;
+    rdfs:comment """An occurrence in the trade lifecycle.
+    
+    UN/CEFACT BSP: Maps to SupplyChainEvent — a significant occurrence
+    or happening in a supply chain.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/SupplyChainEvent> ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :eventDateTime ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:OrderEvent a owl:Class ;
+    rdfs:label "Order Event" ;
+    rdfs:comment """An event in the ordering process.
+    
+    ISO BSP: Order placed, confirmed, modified, cancelled.""" ;
+    rdfs:subClassOf :BusinessEvent .
+
+:ShipmentEvent a owl:Class ;
+    rdfs:label "Shipment Event" ;
+    rdfs:comment """An event in the shipping process.
+    
+    UN/CEFACT BSP: Maps to TransportEvent — a significant occurrence
+    or happening during transport.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportEvent> ;
+    rdfs:subClassOf :BusinessEvent .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasPurchaseOrder a owl:ObjectProperty ;
+    rdfs:label "has purchase order" ;
+    rdfs:comment "Relates transaction to its purchase order." ;
+    rdfs:domain :CommercialTransaction ;
+    rdfs:range :PurchaseOrder .
+
+:hasOrderLine a owl:ObjectProperty ;
+    rdfs:label "has order line" ;
+    rdfs:comment "Relates order to its line items." ;
+    rdfs:domain :PurchaseOrder ;
+    rdfs:range :OrderLine .
+
+:orderedProduct a owl:ObjectProperty ;
+    rdfs:label "ordered product" ;
+    rdfs:comment "Relates order line to product." ;
+    rdfs:domain :OrderLine ;
+    rdfs:range :Product .
+
+:hasShipment a owl:ObjectProperty ;
+    rdfs:label "has shipment" ;
+    rdfs:comment "Relates order or transaction to shipment." ;
+    rdfs:domain :CommercialTransaction ;
+    rdfs:range :Shipment .
+
+:hasShipmentLine a owl:ObjectProperty ;
+    rdfs:label "has shipment line" ;
+    rdfs:comment "Relates shipment to line items." ;
+    rdfs:domain :Shipment ;
+    rdfs:range :ShipmentLine .
+
+:hasPackage a owl:ObjectProperty ;
+    rdfs:label "has package" ;
+    rdfs:comment "Relates shipment to packages." ;
+    rdfs:domain :Shipment ;
+    rdfs:range :Package .
+
+:hasTransportEquipment a owl:ObjectProperty ;
+    rdfs:label "has transport equipment" ;
+    rdfs:comment "Relates shipment to transport equipment." ;
+    rdfs:domain :Shipment ;
+    rdfs:range :TransportEquipment .
+
+:hasEvent a owl:ObjectProperty ;
+    rdfs:label "has event" ;
+    rdfs:comment "Relates entity to business events." ;
+    rdfs:domain :CommercialTransaction ;
+    rdfs:range :BusinessEvent .
+
+:occursAtLocation a owl:ObjectProperty ;
+    rdfs:label "occurs at location" ;
+    rdfs:comment "Relates event to location." ;
+    rdfs:domain :BusinessEvent ;
+    rdfs:range refdata:Location .
+
+:relatedToOrder a owl:ObjectProperty ;
+    rdfs:label "related to order" ;
+    rdfs:comment "Links shipment or invoice to originating order." ;
+    rdfs:domain :Shipment ;
+    rdfs:range :PurchaseOrder .
+
+:relatedToShipment a owl:ObjectProperty ;
+    rdfs:label "related to shipment" ;
+    rdfs:comment "Links invoice to associated shipment." ;
+    rdfs:domain fin:Invoice ;
+    rdfs:range :Shipment .
+
+:respondsToOrder a owl:ObjectProperty ;
+    rdfs:label "responds to order" ;
+    rdfs:comment "Links an order response to the purchase order it responds to." ;
+    rdfs:domain :OrderResponse ;
+    rdfs:range :PurchaseOrder .
+
+:amendsOrder a owl:ObjectProperty ;
+    rdfs:label "amends order" ;
+    rdfs:comment "Links an order change to the original purchase order being amended." ;
+    rdfs:domain :OrderChange ;
+    rdfs:range :PurchaseOrder .
+
+:respondsToRFQ a owl:ObjectProperty ;
+    rdfs:label "responds to RFQ" ;
+    rdfs:comment "Links a quotation to the request for quotation it responds to." ;
+    rdfs:domain :Quotation ;
+    rdfs:range :RequestForQuotation .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:purchaseOrderNumber a owl:DatatypeProperty ;
+    rdfs:label "purchase order number" ;
+    rdfs:comment "Unique identifier for purchase order." ;
+    rdfs:domain :PurchaseOrder ;
+    rdfs:range xsd:string .
+
+:orderDate a owl:DatatypeProperty ;
+    rdfs:label "order date" ;
+    rdfs:comment "Date when order was placed." ;
+    rdfs:domain :PurchaseOrder ;
+    rdfs:range xsd:date .
+
+:requestedDeliveryDate a owl:DatatypeProperty ;
+    rdfs:label "requested delivery date" ;
+    rdfs:comment "Date when delivery is requested." ;
+    rdfs:domain :PurchaseOrder ;
+    rdfs:range xsd:date .
+
+:lineNumber a owl:DatatypeProperty ;
+    rdfs:label "line number" ;
+    rdfs:comment "Sequential line item number." ;
+    rdfs:domain :OrderLine ;
+    rdfs:range xsd:integer .
+
+:quantity a owl:DatatypeProperty ;
+    rdfs:label "quantity" ;
+    rdfs:comment "Number of units." ;
+    rdfs:domain :OrderLine ;
+    rdfs:range xsd:decimal .
+
+:unitOfMeasure a owl:DatatypeProperty ;
+    rdfs:label "unit of measure" ;
+    rdfs:comment "Unit in which quantity is expressed (e.g., EA, KG, M)." ;
+    rdfs:domain :OrderLine ;
+    rdfs:range xsd:string .
+
+:unitPrice a owl:DatatypeProperty ;
+    rdfs:label "unit price" ;
+    rdfs:comment "Price per unit." ;
+    rdfs:domain :OrderLine ;
+    rdfs:range xsd:decimal .
+
+:lineAmount a owl:DatatypeProperty ;
+    rdfs:label "line amount" ;
+    rdfs:comment "Total amount for line (quantity × unit price)." ;
+    rdfs:domain :OrderLine ;
+    rdfs:range xsd:decimal .
+
+:productCode a owl:DatatypeProperty ;
+    rdfs:label "product code" ;
+    rdfs:comment "Identifier for product (SKU, GTIN, etc.)." ;
+    rdfs:domain :Product ;
+    rdfs:range xsd:string .
+
+:productDescription a owl:DatatypeProperty ;
+    rdfs:label "product description" ;
+    rdfs:comment "Description of the product." ;
+    rdfs:domain :Product ;
+    rdfs:range xsd:string .
+
+:gtin a owl:DatatypeProperty ;
+    rdfs:label "GTIN" ;
+    rdfs:comment "Global Trade Item Number (barcode)." ;
+    rdfs:domain :TradeItem ;
+    rdfs:range xsd:string .
+
+:shipmentNumber a owl:DatatypeProperty ;
+    rdfs:label "shipment number" ;
+    rdfs:comment "Unique identifier for shipment." ;
+    rdfs:domain :Shipment ;
+    rdfs:range xsd:string .
+
+:shipmentDate a owl:DatatypeProperty ;
+    rdfs:label "shipment date" ;
+    rdfs:comment "Date when shipment occurs." ;
+    rdfs:domain :Shipment ;
+    rdfs:range xsd:date .
+
+:estimatedDeliveryDate a owl:DatatypeProperty ;
+    rdfs:label "estimated delivery date" ;
+    rdfs:comment """Estimated date of delivery of the shipment.
+
+    UN/CEFACT web vocabulary: HeaderTradeDelivery carries estimatedDeliveryEvent
+    (alongside actualDeliveryEvent / plannedDeliveryEvent / requestedDeliveryEvent);
+    the date itself is the event's occurrenceDateTime. This property flattens that
+    event -> date pair to a single xsd:date — a deliberate modelling simplification,
+    matching :actualDeliveryDate. Renamed from :expectedDeliveryDate in BSP 2.0.0
+    (issue #50): 'estimated' is the source's own qualifier; no expected* delivery
+    element exists in the UN/CEFACT vocabulary.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/estimatedDeliveryEvent> ;
+    rdfs:domain :Shipment ;
+    rdfs:range xsd:date .
+
+:actualDeliveryDate a owl:DatatypeProperty ;
+    rdfs:label "actual delivery date" ;
+    rdfs:comment "Actual date of delivery." ;
+    rdfs:domain :Shipment ;
+    rdfs:range xsd:date .
+
+:incoterm a owl:DatatypeProperty ;
+    rdfs:label "Incoterm" ;
+    rdfs:comment "International Commercial Terms (e.g., FOB, CIF, EXW, DDP)." ;
+    rdfs:domain :CommercialTransaction ;
+    rdfs:range xsd:string .
+
+:eventDateTime a owl:DatatypeProperty ;
+    rdfs:label "event date time" ;
+    rdfs:comment "Date and time when event occurred." ;
+    rdfs:domain :BusinessEvent ;
+    rdfs:range xsd:dateTime .
+
+:eventType a owl:DatatypeProperty ;
+    rdfs:label "event type" ;
+    rdfs:comment "Type of business event." ;
+    rdfs:domain :BusinessEvent ;
+    rdfs:range xsd:string .
+
+:eventStatus a owl:DatatypeProperty ;
+    rdfs:label "event status" ;
+    rdfs:comment "Status of event (e.g., PLANNED, ACTUAL, ESTIMATED)." ;
+    rdfs:domain :BusinessEvent ;
+    rdfs:range xsd:string .
+
+:numberOfPackages a owl:DatatypeProperty ;
+    rdfs:label "number of packages" ;
+    rdfs:comment "Total number of packages." ;
+    rdfs:domain :Shipment ;
+    rdfs:range xsd:integer .
+
+:packageType a owl:DatatypeProperty ;
+    rdfs:label "package type" ;
+    rdfs:comment "Type of packaging (e.g., CARTON, PALLET, CRATE)." ;
+    rdfs:domain :Shipment ;
+    rdfs:range xsd:string .
+
+:grossWeight a owl:DatatypeProperty ;
+    rdfs:label "gross weight" ;
+    rdfs:comment "Total weight including packaging (kg)." ;
+    rdfs:domain :Shipment ;
+    rdfs:range xsd:decimal .
+
+:netWeight a owl:DatatypeProperty ;
+    rdfs:label "net weight" ;
+    rdfs:comment "Weight of goods only (kg)." ;
+    rdfs:domain :Shipment ;
+    rdfs:range xsd:decimal .
+
+:volumeMeasure a owl:DatatypeProperty ;
+    rdfs:label "volume measure" ;
+    rdfs:comment "Volume in cubic meters." ;
+    rdfs:domain :Shipment ;
+    rdfs:range xsd:decimal .
+
+#################################################################
+#    Datatype Properties — Procurement Lifecycle (v1.3.0)
+#################################################################
+
+:rfqNumber a owl:DatatypeProperty ;
+    rdfs:label "RFQ number" ;
+    rdfs:comment "Unique identifier for the request for quotation." ;
+    rdfs:domain :RequestForQuotation ;
+    rdfs:range xsd:string .
+
+:rfqDate a owl:DatatypeProperty ;
+    rdfs:label "RFQ date" ;
+    rdfs:comment "Date the request for quotation was issued." ;
+    rdfs:domain :RequestForQuotation ;
+    rdfs:range xsd:date .
+
+:rfqResponseDeadline a owl:DatatypeProperty ;
+    rdfs:label "RFQ response deadline" ;
+    rdfs:comment "Deadline for suppliers to respond to the RFQ." ;
+    rdfs:domain :RequestForQuotation ;
+    rdfs:range xsd:date .
+
+:orderChangeNumber a owl:DatatypeProperty ;
+    rdfs:label "order change number" ;
+    rdfs:comment "Unique identifier for the order change request." ;
+    rdfs:domain :OrderChange ;
+    rdfs:range xsd:string .
+
+:changeReason a owl:DatatypeProperty ;
+    rdfs:label "change reason" ;
+    rdfs:comment "Reason for the order change (QUANTITY_CHANGE, DATE_CHANGE, SPECIFICATION_CHANGE, CANCELLATION)." ;
+    rdfs:domain :OrderChange ;
+    rdfs:range xsd:string .
+
+:responseStatus a owl:DatatypeProperty ;
+    rdfs:label "response status" ;
+    rdfs:comment "Status of the order response (ACCEPTED, ACCEPTED_WITH_AMENDMENTS, REJECTED, PENDING)." ;
+    rdfs:domain :OrderResponse ;
+    rdfs:range xsd:string .
+
+:responseDate a owl:DatatypeProperty ;
+    rdfs:label "response date" ;
+    rdfs:comment "Date the order response was issued." ;
+    rdfs:domain :OrderResponse ;
+    rdfs:range xsd:date .

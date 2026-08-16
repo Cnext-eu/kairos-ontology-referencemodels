@@ -13,8 +13,8 @@
     primitives. v1.0.0.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-08-15"^^xsd:date ;
-    dcterms:modified "2026-08-15"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd: LocationIdent, CompositIdentifierPlannedType, CompositIdentifierOperationalType, ValidityPeriodType, BitmapDays" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
@@ -41,7 +41,9 @@
 :OperationalTrainIdentifier a owl:Class ;
     rdfs:label "operational train identifier" ;
     rdfs:comment """Composite identifier for an operational (running) train.
-    Corresponds to CompositIdentifierOperationalType in taf_cat_complete.xsd.""" ;
+    Corresponds to CompositIdentifierOperationalType in taf_cat_complete.xsd.
+    Properties: operationalTrainNumber (OperationalTrainNumberIdentifier),
+    scheduledTimeAtHandover (ScheduledTimeAtHandover).""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, complexType CompositIdentifierOperationalType" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
@@ -49,7 +51,8 @@
     rdfs:label "validity period" ;
     rdfs:comment """Validity period for a path or timetable entry. Corresponds to
     ValidityPeriodType in taf_cat_complete.xsd. Uses BitmapDays for the
-    days-of-week pattern.""" ;
+    days-of-week pattern. Properties: startDateTime (StartDateTime),
+    endDateTime (EndDateTime), bitmapDays.""" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd, complexType ValidityPeriodType; element BitmapDays" ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
@@ -88,3 +91,27 @@
     one character per day.""" ;
     rdfs:domain :ValidityPeriod ;
     rdfs:range xsd:string .
+
+:operationalTrainNumber a owl:DatatypeProperty ;
+    rdfs:label "operational train number" ;
+    rdfs:comment "Operational train number identifying the train for traffic management. Corresponds to OperationalTrainNumberIdentifier in taf_cat_complete.xsd." ;
+    rdfs:domain :OperationalTrainIdentifier ;
+    rdfs:range xsd:string .
+
+:scheduledTimeAtHandover a owl:DatatypeProperty ;
+    rdfs:label "scheduled time at handover" ;
+    rdfs:comment "Referenced date and time of departure or entrance at the border between two different IMs. Corresponds to ScheduledTimeAtHandover in taf_cat_complete.xsd." ;
+    rdfs:domain :OperationalTrainIdentifier ;
+    rdfs:range xsd:dateTime .
+
+:validityStartDateTime a owl:DatatypeProperty ;
+    rdfs:label "validity start date time" ;
+    rdfs:comment "Start date and time of the validity period. Corresponds to StartDateTime in taf_cat_complete.xsd." ;
+    rdfs:domain :ValidityPeriod ;
+    rdfs:range xsd:dateTime .
+
+:validityEndDateTime a owl:DatatypeProperty ;
+    rdfs:label "validity end date time" ;
+    rdfs:comment "End date and time of the validity period. Corresponds to EndDateTime in taf_cat_complete.xsd." ;
+    rdfs:domain :ValidityPeriod ;
+    rdfs:range xsd:dateTime .

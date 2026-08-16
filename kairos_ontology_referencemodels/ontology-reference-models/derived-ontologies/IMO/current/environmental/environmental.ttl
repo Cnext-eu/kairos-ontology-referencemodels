@@ -23,8 +23,8 @@
     (Emission Control Areas, MARPOL Special Areas) are in the locations module.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-06-12"^^xsd:date ;
-    dcterms:modified "2026-06-12"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "MARPOL 73/78, BWM Convention 2004, MARPOL Annex VI Chapter 4" ;
     rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
 
@@ -53,7 +53,12 @@
     rdfs:comment """The BWMP required under the BWM Convention Regulation B-1.
 
     Must be specific to each ship, describing operational procedures for ballast water
-    management, treatment system operation, and record-keeping requirements.""" ;
+    management, treatment system operation, and record-keeping requirements.
+
+    Properties: bwmsTreatmentType, bwmsD2ComplianceStandard, bwmsExchangeMethod,
+    bwmsApprovalAuthority.
+
+    Source: BWM Convention 2004, Regulation B-1 and D-2 standard.""" ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :planApprovalDate ;
@@ -66,7 +71,11 @@
 
     Provides procedures for reporting oil discharge incidents, steps to control the
     discharge, and coordination with port and coastal authorities. All oil tankers of
-    150 GT and above and all ships of 400 GT and above must carry an approved SOPEP.""" .
+    150 GT and above and all ships of 400 GT and above must carry an approved SOPEP.
+
+    Properties: sopepReportingProcedures, sopepContactAuthorities, sopepExercisesDate.
+
+    Source: MARPOL Annex I Regulation 37, IMO Resolution MEPC.54(32) Guidelines.""" .
 
 :GarbageManagementPlan a owl:Class ;
     rdfs:label "Garbage Management Plan" ;
@@ -74,7 +83,11 @@
 
     Describes procedures for collecting, storing, processing, and disposing of garbage
     generated on board. Required for all ships of 100 GT and above and all ships
-    certified to carry 15 or more persons.""" .
+    certified to carry 15 or more persons.
+
+    Properties: gmpWasteCategories, gmpDesignatedOfficer, gmpPlacardPosted.
+
+    Source: MARPOL Annex V Regulation 10, MEPC.295(71) Amendments.""" .
 
 #################################################################
 #    Substance Classification Classes
@@ -88,7 +101,11 @@
     - Category X: Major hazard to marine resources or human health
     - Category Y: Hazard to marine resources or human health
     - Category Z: Minor hazard to marine resources or human health
-    - Category OS: Other Substances — no harm identified""" ;
+    - Category OS: Other Substances — no harm identified
+
+    Properties: nlsCategory, nlsName, nlsIbcShipType, nlsPollutionCategory.
+
+    Source: MARPOL Annex II, IBC Code Chapter 17.""" ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :nlsCategory ;
@@ -163,5 +180,75 @@
 :nlsName a owl:DatatypeProperty ;
     rdfs:label "NLS name" ;
     rdfs:comment "Name of the noxious liquid substance as listed in the IBC Code." ;
+    rdfs:domain :NoxiousLiquidSubstance ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Datatype Properties — Enrichment (BWM Convention / MARPOL)
+#################################################################
+
+:bwmsD2ComplianceStandard a owl:DatatypeProperty ;
+    rdfs:label "BWMS D-2 compliance standard" ;
+    rdfs:comment "Indicates whether the BWMS complies with the D-2 discharge standard (treated ballast water organism limits). BWM Convention Regulation D-2." ;
+    rdfs:domain :BallastWaterManagementPlan ;
+    rdfs:range xsd:boolean .
+
+:bwmsExchangeMethod a owl:DatatypeProperty ;
+    rdfs:label "BWMS exchange method" ;
+    rdfs:comment "Ballast water exchange method used (e.g., 'Sequential', 'Flow-through'). BWM Convention Regulation B-4." ;
+    rdfs:domain :BallastWaterManagementPlan ;
+    rdfs:range xsd:string .
+
+:bwmsApprovalAuthority a owl:DatatypeProperty ;
+    rdfs:label "BWMS approval authority" ;
+    rdfs:comment "Name of the administration that approved the ballast water management system. BWM Convention Regulation B-1." ;
+    rdfs:domain :BallastWaterManagementPlan ;
+    rdfs:range xsd:string .
+
+:sopepReportingProcedures a owl:DatatypeProperty ;
+    rdfs:label "SOPEP reporting procedures" ;
+    rdfs:comment "Description of the procedures for reporting oil pollution incidents to coastal state authorities. MARPOL Annex I Regulation 37." ;
+    rdfs:domain :ShipboardOilPollutionEmergencyPlan ;
+    rdfs:range xsd:string .
+
+:sopepContactAuthorities a owl:DatatypeProperty ;
+    rdfs:label "SOPEP contact authorities" ;
+    rdfs:comment "List of coastal state and port authority contacts to be notified in case of oil pollution incident. MARPOL Annex I Regulation 37." ;
+    rdfs:domain :ShipboardOilPollutionEmergencyPlan ;
+    rdfs:range xsd:string .
+
+:sopepExercisesDate a owl:DatatypeProperty ;
+    rdfs:label "SOPEP exercises date" ;
+    rdfs:comment "Date of the most recent SOPEP exercise carried out by the crew. MARPOL Annex I Regulation 37." ;
+    rdfs:domain :ShipboardOilPollutionEmergencyPlan ;
+    rdfs:range xsd:date .
+
+:gmpWasteCategories a owl:DatatypeProperty ;
+    rdfs:label "GMP waste categories" ;
+    rdfs:comment "List of garbage categories covered by the Garbage Management Plan (A-Plastics, B-Food wastes, C-Domestic waste, etc.). MARPOL Annex V Regulation 10, Appendix." ;
+    rdfs:domain :GarbageManagementPlan ;
+    rdfs:range xsd:string .
+
+:gmpDesignatedOfficer a owl:DatatypeProperty ;
+    rdfs:label "GMP designated officer" ;
+    rdfs:comment "Name or rank of the officer designated responsible for implementing the Garbage Management Plan. MARPOL Annex V Regulation 10.2." ;
+    rdfs:domain :GarbageManagementPlan ;
+    rdfs:range xsd:string .
+
+:gmpPlacardPosted a owl:DatatypeProperty ;
+    rdfs:label "GMP placard posted" ;
+    rdfs:comment "Whether the required garbage disposal placard is posted on board. MARPOL Annex V Regulation 10.3." ;
+    rdfs:domain :GarbageManagementPlan ;
+    rdfs:range xsd:boolean .
+
+:nlsIbcShipType a owl:DatatypeProperty ;
+    rdfs:label "NLS IBC ship type" ;
+    rdfs:comment "IBC Code ship type required to carry the substance (1, 2, 3 or 'N/A'). IBC Code Chapter 17." ;
+    rdfs:domain :NoxiousLiquidSubstance ;
+    rdfs:range xsd:string .
+
+:nlsPollutionCategory a owl:DatatypeProperty ;
+    rdfs:label "NLS pollution category" ;
+    rdfs:comment "MARPOL Annex II pollution category description (X, Y, Z, or OS). MARPOL Annex II Appendix I." ;
     rdfs:domain :NoxiousLiquidSubstance ;
     rdfs:range xsd:string .

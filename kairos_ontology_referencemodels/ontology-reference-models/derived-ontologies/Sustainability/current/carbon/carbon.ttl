@@ -14,8 +14,8 @@
     dcterms:description "Carbon emissions, greenhouse gas accounting, and environmental compliance for transport and logistics based on ISO 14083:2023 and the GLEC Framework." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "ISO 14083:2023, GLEC Framework, EU MRV Regulation, IMO DCS, EU ETS Maritime" ;
     rdfs:seeAlso <https://www.iso.org/standard/78864.html> ,
                  <https://www.smartfreightcentre.org/en/how-to-implement-glec-framework/> ;
@@ -56,21 +56,24 @@
     rdfs:label "Scope 1 Emission" ;
     rdfs:comment """Direct emissions from owned or controlled sources.
 
-    GHG Protocol: Direct emissions from owned or controlled sources.""" ;
+    GHG Protocol: Direct emissions from owned or controlled sources.
+    Properties: fuel type consumed, direct source description.""" ;
     rdfs:subClassOf :CarbonEmission .
 
 :Scope2Emission a owl:Class ;
     rdfs:label "Scope 2 Emission" ;
     rdfs:comment """Indirect emissions from purchased electricity, steam, heating, and cooling.
 
-    GHG Protocol: Indirect emissions from purchased electricity, steam, heating, and cooling.""" ;
+    GHG Protocol: Indirect emissions from purchased electricity, steam, heating, and cooling.
+    Properties: energy source type, purchased energy quantity.""" ;
     rdfs:subClassOf :CarbonEmission .
 
 :Scope3Emission a owl:Class ;
     rdfs:label "Scope 3 Emission" ;
     rdfs:comment """All other indirect emissions in a company's value chain.
 
-    GHG Protocol: All other indirect emissions in a company's value chain.""" ;
+    GHG Protocol: All other indirect emissions in a company's value chain.
+    Properties: transport mode category, value chain stage.""" ;
     rdfs:subClassOf :CarbonEmission .
 
 #################################################################
@@ -81,7 +84,9 @@
     rdfs:label "Emission Factor" ;
     rdfs:comment """A conversion factor to calculate GHG emissions from activity data.
 
-    GLEC: Conversion factor to calculate GHG emissions from activity data.""" ;
+    GLEC: Conversion factor to calculate GHG emissions from activity data.
+    Properties: factor value, factor unit, factor source, transport mode,
+    geographic scope, factor validity period.""" ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :factorValue ;
@@ -134,7 +139,10 @@
     rdfs:label "Emission Report" ;
     rdfs:comment """A formal report of verified emissions over a reporting period.
 
-    EU MRV: Formal report of verified emissions over a reporting period.""" ;
+    EU MRV: Formal report of verified emissions over a reporting period.
+    GRI: Report status, report submission date, reporting entity.
+    Properties: reporting period, verification status, report status,
+    report submission date, reporting entity.""" ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :reportingPeriod ;
@@ -186,7 +194,10 @@
     rdfs:label "Carbon Offset" ;
     rdfs:comment """A verified emission reduction credit used to compensate for GHG emissions.
 
-    Verified emission reduction credit used to compensate for GHG emissions.""" ;
+    Verified emission reduction credit used to compensate for GHG emissions.
+    Verra/Gold Standard: offset project ID, offset vintage, certification standard.
+    Properties: offset quantity, offset standard, offset project ID,
+    offset vintage.""" ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :offsetQuantity ;
@@ -377,3 +388,69 @@
     rdfs:comment "Percentage emission reduction from modal shift." ;
     rdfs:domain :ModalShiftMetric ;
     rdfs:range xsd:decimal .
+
+:fuelTypeConsumed a owl:DatatypeProperty ;
+    rdfs:label "fuel type consumed" ;
+    rdfs:comment "Type of fuel consumed for direct Scope 1 emissions (e.g. diesel, HFO, LNG). ISO 14083:2023 requires fuel-specific emission factors for Scope 1 direct emissions from owned/controlled sources." ;
+    rdfs:domain :Scope1Emission ;
+    rdfs:range xsd:string .
+
+:energySourceType a owl:DatatypeProperty ;
+    rdfs:label "energy source type" ;
+    rdfs:comment "Type of purchased energy source for Scope 2 indirect emissions (e.g. grid electricity, district heating, steam). ISO 14083:2023: Scope 2 covers indirect emissions from purchased electricity, steam, heating, and cooling." ;
+    rdfs:domain :Scope2Emission ;
+    rdfs:range xsd:string .
+
+:transportModeCategory a owl:DatatypeProperty ;
+    rdfs:label "transport mode category" ;
+    rdfs:comment "Transport mode for value chain emissions (e.g. road, rail, sea, air). ISO 14083:2023: Scope 3 includes all other indirect emissions in the value chain, categorized by transport mode." ;
+    rdfs:domain :Scope3Emission ;
+    rdfs:range xsd:string .
+
+:factorTransportMode a owl:DatatypeProperty ;
+    rdfs:label "factor transport mode" ;
+    rdfs:comment "Transport mode the emission factor applies to (e.g. road, rail, sea, air, inland waterways). GLEC Framework: emission factors are provided per transport mode." ;
+    rdfs:domain :EmissionFactor ;
+    rdfs:range xsd:string .
+
+:factorGeographicScope a owl:DatatypeProperty ;
+    rdfs:label "factor geographic scope" ;
+    rdfs:comment "Geographic region the emission factor applies to (e.g. global, Europe, North America). GLEC Framework: factors are regionalized for up to 8 global regions." ;
+    rdfs:domain :EmissionFactor ;
+    rdfs:range xsd:string .
+
+:factorValidityPeriod a owl:DatatypeProperty ;
+    rdfs:label "factor validity period" ;
+    rdfs:comment "Period during which the emission factor is valid (ISO 8601 period). GLEC Framework: factors have publication dates and validity periods." ;
+    rdfs:domain :EmissionFactor ;
+    rdfs:range xsd:string .
+
+:offsetProjectId a owl:DatatypeProperty ;
+    rdfs:label "offset project ID" ;
+    rdfs:comment "Unique identifier of the carbon offset project in the registry (e.g. VCS project ID, GS ID). Verra/Gold Standard: each project has a unique ID in the registry." ;
+    rdfs:domain :CarbonOffset ;
+    rdfs:range xsd:string .
+
+:offsetVintage a owl:DatatypeProperty ;
+    rdfs:label "offset vintage" ;
+    rdfs:comment "Vintage year of the carbon offset credit, i.e. the year in which the emission reduction occurred. Verra/Gold Standard: vintage is encoded in the credit serial number." ;
+    rdfs:domain :CarbonOffset ;
+    rdfs:range xsd:gYear .
+
+:reportStatus a owl:DatatypeProperty ;
+    rdfs:label "report status" ;
+    rdfs:comment "Status of the emission report (e.g. draft, submitted, verified, rejected). GRI Standards: report status indicates compliance level with reporting standards." ;
+    rdfs:domain :EmissionReport ;
+    rdfs:range xsd:string .
+
+:reportSubmissionDate a owl:DatatypeProperty ;
+    rdfs:label "report submission date" ;
+    rdfs:comment "Date the emission report was submitted for verification. GRI Standards: reporting entity must state the publication date of the report." ;
+    rdfs:domain :EmissionReport ;
+    rdfs:range xsd:date .
+
+:reportingEntity a owl:DatatypeProperty ;
+    rdfs:label "reporting entity" ;
+    rdfs:comment "Name of the organisation preparing the emission report. GRI Standards: the reporting entity must be clearly identified with its boundaries." ;
+    rdfs:domain :EmissionReport ;
+    rdfs:range xsd:string .

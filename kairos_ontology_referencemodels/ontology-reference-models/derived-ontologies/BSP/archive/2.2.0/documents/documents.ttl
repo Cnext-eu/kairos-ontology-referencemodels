@@ -1,0 +1,343 @@
+@prefix : <https://www.kairosflow.ai/ont/bsp/documents#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix comm: <https://www.kairosflow.ai/ont/bsp/commercial#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/bsp/documents> a owl:Ontology ;
+    dcterms:title "Kairos BSP Documents Domain Ontology" ;
+    dcterms:description """Trade document domain of the Buy-Ship-Pay Reference Data Model.
+
+    This module defines trade and transport document classes covering:
+    - Transport Documents: Bill of Lading, Air Waybill
+    - Trade Documents: Packing List, Delivery Note, Receipt Advice
+    - Certificates: Certificate of Origin, Inspection, Phytosanitary, Health, Insurance
+    - Regulatory Documents: Customs Declaration, Import/Export Licenses
+    - Events: Document lifecycle events""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-05-22"^^xsd:date ;
+    owl:versionInfo "2.2.0" ;
+    dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/> .
+
+#################################################################
+#    Document Classes
+#################################################################
+
+:Document a owl:Class ;
+    rdfs:label "Document" ;
+    rdfs:comment """A written, printed, or electronic record.
+    
+    UN/CEFACT BSP: Maps to ExchangedDocument — a collection of data for a
+    piece of written, printed or electronic matter exchanged between parties.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/ExchangedDocument> .
+
+:TransportDocument a owl:Class ;
+    rdfs:label "Transport Document" ;
+    rdfs:comment """A document evidencing a contract of carriage.
+    
+    ISO BSP: Bill of lading, air waybill, CMR.""" ;
+    rdfs:subClassOf :Document .
+
+:BillOfLading a owl:Class ;
+    rdfs:label "Bill of Lading" ;
+    rdfs:comment """A transport document for ocean freight.
+    
+    ISO BSP: Receipt, contract, and document of title.""" ;
+    rdfs:subClassOf :TransportDocument ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/transport-documents#TransportDocument> .
+
+:AirWaybill a owl:Class ;
+    rdfs:label "Air Waybill (AWB)" ;
+    rdfs:comment """A transport document for air cargo.
+    
+    ISO BSP: Non-negotiable air freight contract.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+:PackingList a owl:Class ;
+    rdfs:label "Packing List" ;
+    rdfs:comment """A document detailing the contents of packages.
+    
+    ISO BSP: Required for customs and cargo handling.""" ;
+    rdfs:subClassOf :Document .
+
+:CertificateOfOrigin a owl:Class ;
+    rdfs:label "Certificate of Origin" ;
+    rdfs:comment """A document certifying where goods were produced.
+    
+    ISO BSP: Required for preferential tariff treatment.""" ;
+    rdfs:subClassOf :Document .
+
+:CustomsDeclaration a owl:Class ;
+    rdfs:label "Customs Declaration" ;
+    rdfs:comment """A document declaring goods to customs authorities.
+    
+    ISO BSP: Import/export declaration.""" ;
+    rdfs:subClassOf :Document ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/wco/customs#CustomsDeclaration> .
+
+:ImportLicense a owl:Class ;
+    rdfs:label "Import License" ;
+    rdfs:comment """A permit authorizing importation of specified goods.
+    
+    ISO BSP: Required for restricted products.""" ;
+    rdfs:subClassOf :Document .
+
+:ExportLicense a owl:Class ;
+    rdfs:label "Export License" ;
+    rdfs:comment """A permit authorizing exportation of specified goods.
+    
+    ISO BSP: Required for controlled exports.""" ;
+    rdfs:subClassOf :Document .
+
+:InspectionCertificate a owl:Class ;
+    rdfs:label "Inspection Certificate" ;
+    rdfs:comment """A document certifying goods have been inspected.
+    
+    ISO BSP: Quality, quantity, or condition verification.""" ;
+    rdfs:subClassOf :Document .
+
+:PhytosanitaryCertificate a owl:Class ;
+    rdfs:label "Phytosanitary Certificate" ;
+    rdfs:comment """A certificate that plants/plant products meet import requirements.
+    
+    ISO BSP: Required for agricultural shipments.""" ;
+    rdfs:subClassOf :Document .
+
+:HealthCertificate a owl:Class ;
+    rdfs:label "Health Certificate" ;
+    rdfs:comment """A certificate that goods meet health standards.
+    
+    ISO BSP: For food, animal, pharmaceutical products.""" ;
+    rdfs:subClassOf :Document .
+
+:InsuranceCertificate a owl:Class ;
+    rdfs:label "Insurance Certificate" ;
+    rdfs:comment """A document evidencing cargo insurance coverage.
+    
+    ISO BSP: Proof of insurance for goods in transit.""" ;
+    rdfs:subClassOf :Document .
+
+:DeliveryNote a owl:Class ;
+    rdfs:label "Delivery Note" ;
+    rdfs:comment """A document accompanying goods delivery.
+    
+    ISO BSP: Proof of delivery (POD) when signed.""" ;
+    rdfs:subClassOf :Document .
+
+:ReceiptAdvice a owl:Class ;
+    rdfs:label "Receipt Advice" ;
+    rdfs:comment """A document confirming receipt of goods.
+    
+    ISO BSP: Acknowledgment from consignee.""" ;
+    rdfs:subClassOf :Document .
+
+#################################################################
+#    Event Classes
+#################################################################
+
+:DocumentEvent a owl:Class ;
+    rdfs:label "Document Event" ;
+    rdfs:comment """An event related to document lifecycle.
+    
+    ISO BSP: Issued, submitted, approved, rejected.""" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasDocument a owl:ObjectProperty ;
+    rdfs:label "has document" ;
+    rdfs:comment "Relates entity to associated documents." ;
+    rdfs:domain comm:CommercialTransaction ;
+    rdfs:range :Document .
+
+:hasTransportDocument a owl:ObjectProperty ;
+    rdfs:label "has transport document" ;
+    rdfs:comment "Relates shipment to transport documents." ;
+    rdfs:domain comm:Shipment ;
+    rdfs:range :TransportDocument .
+
+:hasCustomsDeclaration a owl:ObjectProperty ;
+    rdfs:label "has customs declaration" ;
+    rdfs:comment "Relates shipment to customs documents." ;
+    rdfs:domain comm:Shipment ;
+    rdfs:range :CustomsDeclaration .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:documentNumber a owl:DatatypeProperty ;
+    rdfs:label "document number" ;
+    rdfs:comment "Unique identifier for document." ;
+    rdfs:domain :Document ;
+    rdfs:range xsd:string .
+
+:documentDate a owl:DatatypeProperty ;
+    rdfs:label "document date" ;
+    rdfs:comment "Date when document was issued." ;
+    rdfs:domain :Document ;
+    rdfs:range xsd:date .
+
+:documentType a owl:DatatypeProperty ;
+    rdfs:label "document type" ;
+    rdfs:comment "Type or category of document." ;
+    rdfs:domain :Document ;
+    rdfs:range xsd:string .
+
+:billOfLadingNumber a owl:DatatypeProperty ;
+    rdfs:label "bill of lading number" ;
+    rdfs:comment "B/L number." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:string .
+
+:airWaybillNumber a owl:DatatypeProperty ;
+    rdfs:label "air waybill number" ;
+    rdfs:comment "AWB number (11 digits)." ;
+    rdfs:domain :AirWaybill ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Datatype Properties — Document Lifecycle (shared)
+#################################################################
+
+:documentStatus a owl:DatatypeProperty ;
+    rdfs:label "document status" ;
+    rdfs:comment "Lifecycle status of the document (DRAFT, ISSUED, AMENDED, SURRENDERED, ACCOMPLISHED, CANCELLED)." ;
+    rdfs:domain :Document ;
+    rdfs:range xsd:string .
+
+:issuingParty a owl:DatatypeProperty ;
+    rdfs:label "issuing party" ;
+    rdfs:comment "Name or identifier of the party that issued the document." ;
+    rdfs:domain :Document ;
+    rdfs:range xsd:string .
+
+:signatoryName a owl:DatatypeProperty ;
+    rdfs:label "signatory name" ;
+    rdfs:comment "Name of the person who signed the document." ;
+    rdfs:domain :Document ;
+    rdfs:range xsd:string .
+
+:issuingDate a owl:DatatypeProperty ;
+    rdfs:label "issuing date" ;
+    rdfs:comment "Date and time the document was formally issued (may differ from documentDate)." ;
+    rdfs:domain :Document ;
+    rdfs:range xsd:dateTime .
+
+#################################################################
+#    Datatype Properties — Bill of Lading
+#################################################################
+
+:placeOfIssue a owl:DatatypeProperty ;
+    rdfs:label "place of issue" ;
+    rdfs:comment "Location (city or UN/LOCODE) where the bill of lading was issued." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:string .
+
+:numberOfOriginals a owl:DatatypeProperty ;
+    rdfs:label "number of originals" ;
+    rdfs:comment "Number of original B/L copies issued (typically 3)." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:integer .
+
+:onBoardDate a owl:DatatypeProperty ;
+    rdfs:label "on board date" ;
+    rdfs:comment "Date when the cargo was loaded on board the vessel (shipped on board notation)." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:date .
+
+:negotiable a owl:DatatypeProperty ;
+    rdfs:label "negotiable" ;
+    rdfs:comment "Whether this B/L is negotiable (true) or a non-negotiable sea waybill (false)." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:boolean .
+
+:freightPayableAt a owl:DatatypeProperty ;
+    rdfs:label "freight payable at" ;
+    rdfs:comment "Location where freight charges are payable (ORIGIN, DESTINATION)." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Datatype Properties — Air Waybill
+#################################################################
+
+:originAirport a owl:DatatypeProperty ;
+    rdfs:label "origin airport" ;
+    rdfs:comment "IATA 3-letter code of the airport of departure." ;
+    rdfs:domain :AirWaybill ;
+    rdfs:range xsd:string .
+
+:destinationAirport a owl:DatatypeProperty ;
+    rdfs:label "destination airport" ;
+    rdfs:comment "IATA 3-letter code of the airport of destination." ;
+    rdfs:domain :AirWaybill ;
+    rdfs:range xsd:string .
+
+:executingCarrier a owl:DatatypeProperty ;
+    rdfs:label "executing carrier" ;
+    rdfs:comment "IATA 2-letter code of the airline operating the first flight." ;
+    rdfs:domain :AirWaybill ;
+    rdfs:range xsd:string .
+
+:chargeableWeight a owl:DatatypeProperty ;
+    rdfs:label "chargeable weight" ;
+    rdfs:comment "The weight used for freight charges, in kilograms (greater of actual or volumetric weight)." ;
+    rdfs:domain :AirWaybill ;
+    rdfs:range xsd:decimal .
+
+#################################################################
+#    Datatype Properties — Certificate of Origin
+#################################################################
+
+:preferentialIndicator a owl:DatatypeProperty ;
+    rdfs:label "preferential indicator" ;
+    rdfs:comment "Whether this certificate claims preferential tariff treatment under a trade agreement." ;
+    rdfs:domain :CertificateOfOrigin ;
+    rdfs:range xsd:boolean .
+
+:issuingAuthority a owl:DatatypeProperty ;
+    rdfs:label "issuing authority" ;
+    rdfs:comment "Name of the chamber of commerce or authority that issued the certificate." ;
+    rdfs:domain :CertificateOfOrigin ;
+    rdfs:range xsd:string .
+
+:originCriterion a owl:DatatypeProperty ;
+    rdfs:label "origin criterion" ;
+    rdfs:comment "The origin criterion met (WHOLLY_OBTAINED, SUBSTANTIAL_TRANSFORMATION, CHANGE_IN_TARIFF, VALUE_ADDED)." ;
+    rdfs:domain :CertificateOfOrigin ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Datatype Properties — Customs Declaration
+#################################################################
+
+:declarationType a owl:DatatypeProperty ;
+    rdfs:label "declaration type" ;
+    rdfs:comment "Type of customs declaration (IMPORT, EXPORT, TRANSIT, TEMPORARY_ADMISSION, RE_EXPORT)." ;
+    rdfs:domain :CustomsDeclaration ;
+    rdfs:range xsd:string .
+
+:customsOffice a owl:DatatypeProperty ;
+    rdfs:label "customs office" ;
+    rdfs:comment "Identifier of the customs office where the declaration is lodged." ;
+    rdfs:domain :CustomsDeclaration ;
+    rdfs:range xsd:string .
+
+:procedureCode a owl:DatatypeProperty ;
+    rdfs:label "procedure code" ;
+    rdfs:comment "Customs procedure code (CPC) indicating the customs treatment applied to the goods." ;
+    rdfs:domain :CustomsDeclaration ;
+    rdfs:range xsd:string .
+
+:releaseDate a owl:DatatypeProperty ;
+    rdfs:label "release date" ;
+    rdfs:comment "Date when customs released the goods for import/export." ;
+    rdfs:domain :CustomsDeclaration ;
+    rdfs:range xsd:date .

@@ -26,8 +26,8 @@
     BWM Convention, and the ISPS Code.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-06-12"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "IMO Compendium data set (FAL 48, 2024), FAL Convention, SOLAS, IMDG Code, MARPOL, ISM Code, STCW, MLC 2006, BWM Convention, ISPS Code" ;
     rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> ;
     owl:imports <https://www.kairosflow.ai/ont/imo/vessel-registry> ;

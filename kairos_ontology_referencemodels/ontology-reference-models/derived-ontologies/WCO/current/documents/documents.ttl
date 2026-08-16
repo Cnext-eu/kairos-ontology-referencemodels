@@ -12,8 +12,8 @@
     dcterms:description "Customs and trade documents including declarations, permits, transit documents, and international trade carnets based on the WCO Data Model 3.10.0." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-06-13"^^xsd:date ;
-    owl:versionInfo "1.2.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.3.0" ;
     dcterms:source "WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056" ;
     rdfs:seeAlso <https://www.wcoomd.org/datamodel> .
 
@@ -38,14 +38,20 @@
     rdfs:label "Transit Document" ;
     rdfs:comment """Document authorizing the movement of goods under customs control between two customs offices.
 
-    WCO: Document authorizing the movement of goods under customs control between two customs offices.""" ;
+    WCO (Data Model 3.10.0): Document authorizing the movement of goods under customs control between two
+    customs offices. Own datatype properties: transitType (WCO T020 type of transit procedure: T1, T2, T2F, TIR),
+    transitGuaranteeReference (reference to the customs guarantee covering the transit movement), and
+    transitTransportMode (WCO T020 mode of transport used for the transit movement).""" ;
     rdfs:subClassOf :CustomsDeclarationDocument .
 
 :SADForm a owl:Class ;
     rdfs:label "Single Administrative Document (SAD)" ;
     rdfs:comment """Single Administrative Document used for customs declarations within the EU.
 
-    WCO: Single Administrative Document used for customs declarations within the EU.""" ;
+    WCO + EU SAD (Council Reg. 2286/2003): Single Administrative Document used for customs declarations
+    within the EU. Own datatype properties: sadBoxNumber, sadBoxDescription (text description for the
+    populated SAD box), sadFormType (type of SAD form: import/export/transit), sadFormVersion (version
+    of the SAD form template in use).""" ;
     rdfs:subClassOf :CustomsDeclarationDocument ;
     rdfs:subClassOf [
         a owl:Restriction ;
@@ -57,14 +63,20 @@
     rdfs:label "T1 Document" ;
     rdfs:comment """External Union transit document for non-EU goods moving through the EU customs territory.
 
-    WCO: External Union transit document for non-EU goods moving through the EU customs territory.""" ;
+    WCO + EU T1 transit (Common Transit Convention / NCTS): External Union transit document for non-EU
+    goods moving through the EU customs territory. Own datatype properties: t1OfficeOfDeparture (code of
+    the customs office where the T1 transit movement begins), and t1RegistrationDate (date on which the T1
+    transit declaration was registered by the customs office of departure).""" ;
     rdfs:subClassOf :TransitDocument .
 
 :T2Document a owl:Class ;
     rdfs:label "T2 Document" ;
     rdfs:comment """Internal Union transit document for EU goods moving through non-EU countries.
 
-    WCO: Internal Union transit document for EU goods moving through non-EU countries.""" ;
+    WCO + EU T2 transit (Common Transit Convention / NCTS): Internal Union transit document for EU goods
+    moving through non-EU countries. Own datatype properties: t2OfficeOfDeparture (code of the customs
+    office where the T2 transit movement begins), and t2RegistrationDate (date on which the T2 transit
+    declaration was registered by the customs office of departure).""" ;
     rdfs:subClassOf :TransitDocument .
 
 #################################################################
@@ -75,7 +87,10 @@
     rdfs:label "Import Permit Document" ;
     rdfs:comment """Document authorizing the importation of specific goods.
 
-    WCO: Document authorizing the importation of specific goods.""" ;
+    WCO (Data Model 3.10.0): Document authorizing the importation of specific goods. Own datatype
+    properties: permitNumber, permitIssuingAuthority (name/code of the authority issuing the permit),
+    permitType (type of import permit — e.g. quota, non-quota, surveillance), permitValidFrom (start date
+    of the permit validity period), and permitValidTo (end date of the permit validity period).""" ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :permitNumber ;
@@ -86,7 +101,10 @@
     rdfs:label "Export License Document" ;
     rdfs:comment """Document authorizing the exportation of controlled or strategic goods.
 
-    WCO: Document authorizing the exportation of controlled or strategic goods.""" ;
+    WCO (Data Model 3.10.0): Document authorizing the exportation of controlled or strategic goods. Own
+    datatype properties: licenseNumber, licenseIssuingAuthority (name/code of the authority issuing the
+    license),     licenseType (type of export license — e.g. individual, global, special), licenseValidFrom, licenseValidTo,
+    and licenseValue (monetary value of goods covered by the license).""" ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :licenseNumber ;
@@ -97,7 +115,10 @@
     rdfs:label "Preferential Origin Document" ;
     rdfs:comment """Document certifying the origin of goods for preferential tariff treatment under trade agreements.
 
-    WCO: Document certifying the origin of goods for preferential tariff treatment under trade agreements.""" ;
+    WCO (Revised Kyoto Convention + Rules of Origin): Document certifying the origin of goods for
+    preferential tariff treatment under trade agreements. Own datatype properties: originCriterion,
+    originIssuingAuthority (authority that issued the proof of origin), and originCertificationDate (date
+    on which the proof of origin was certified).""" ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :originCriterion ;
@@ -112,7 +133,12 @@
     rdfs:label "ATA Carnet" ;
     rdfs:comment """International customs document for temporary admission of goods across borders.
 
-    WCO: International customs document for temporary admission of goods across borders.""" ;
+    WCO (ATA/Istanbul Conventions): International customs document for temporary admission of goods across
+    borders, issued under the WCO ATA Convention and Istanbul Convention. Own datatype properties:
+    carnetNumber, carnetExpiryDate, carnetIssuingChamber (name/code of the National Guaranteeing Association /
+    Chamber of Commerce that issued the carnet), carnetType (type of ATA carnet per ATA Convention: goods /
+    professional equipment / commercial samples), and voucherCount (number of vouchers — yellow/white/blue —
+    contained in the carnet).""" ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :carnetNumber ;
@@ -265,4 +291,176 @@
         a owl:Class ;
         owl:unionOf ( :CustomsDeclarationDocument :ImportPermitDocument :ExportLicenseDocument :PreferentialOriginDoc :ATACarnet :TIRCarnet )
     ] ;
+    rdfs:range xsd:integer .
+
+#################################################################
+#    Transit Document Datatype Properties (WCO DM 3.10.0)
+#################################################################
+
+:transitType a owl:DatatypeProperty ;
+    rdfs:label "transit type" ;
+    rdfs:comment "Type of transit procedure for the document (WCO T020: T1, T2, T2F, TIR)." ;
+    rdfs:domain :TransitDocument ;
+    rdfs:range xsd:string .
+
+:transitGuaranteeReference a owl:DatatypeProperty ;
+    rdfs:label "transit guarantee reference" ;
+    rdfs:comment "Reference to the customs guarantee covering the transit movement described by the document (WCO Data Model 3.10.0)." ;
+    rdfs:domain :TransitDocument ;
+    rdfs:range xsd:string .
+
+:transitTransportMode a owl:DatatypeProperty ;
+    rdfs:label "transit transport mode" ;
+    rdfs:comment "Mode of transport used for the transit movement (WCO T020: 1=sea, 2=rail, 3=road, 4=air, 7=pipeline, 8=inland waterway)." ;
+    rdfs:domain :TransitDocument ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    SAD Form Datatype Properties (EU SAD, Council Reg. 2286/2003)
+#################################################################
+
+:sadBoxDescription a owl:DatatypeProperty ;
+    rdfs:label "SAD box description" ;
+    rdfs:comment "Textual description of the contents of the referenced SAD box (EU SAD Annex B box descriptions)." ;
+    rdfs:domain :SADForm ;
+    rdfs:range xsd:string .
+
+:sadFormType a owl:DatatypeProperty ;
+    rdfs:label "SAD form type" ;
+    rdfs:comment "Type of SAD form: import, export, or transit (EU Single Administrative Document)." ;
+    rdfs:domain :SADForm ;
+    rdfs:range xsd:string .
+
+:sadFormVersion a owl:DatatypeProperty ;
+    rdfs:label "SAD form version" ;
+    rdfs:comment "Version of the SAD form template in use (EU Single Administrative Document)." ;
+    rdfs:domain :SADForm ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    T1 / T2 Document Datatype Properties (EU NCTS / Common Transit Convention)
+#################################################################
+
+:t1OfficeOfDeparture a owl:DatatypeProperty ;
+    rdfs:label "T1 office of departure" ;
+    rdfs:comment "Code of the customs office where the T1 external Union transit movement begins (EU NCTS)." ;
+    rdfs:domain :T1Document ;
+    rdfs:range xsd:string .
+
+:t1RegistrationDate a owl:DatatypeProperty ;
+    rdfs:label "T1 registration date" ;
+    rdfs:comment "Date on which the T1 transit declaration was registered by the customs office of departure (EU NCTS)." ;
+    rdfs:domain :T1Document ;
+    rdfs:range xsd:date .
+
+:t2OfficeOfDeparture a owl:DatatypeProperty ;
+    rdfs:label "T2 office of departure" ;
+    rdfs:comment "Code of the customs office where the T2 internal Union transit movement begins (EU NCTS)." ;
+    rdfs:domain :T2Document ;
+    rdfs:range xsd:string .
+
+:t2RegistrationDate a owl:DatatypeProperty ;
+    rdfs:label "T2 registration date" ;
+    rdfs:comment "Date on which the T2 transit declaration was registered by the customs office of departure (EU NCTS)." ;
+    rdfs:domain :T2Document ;
+    rdfs:range xsd:date .
+
+#################################################################
+#    Import Permit Document Datatype Properties (WCO DM 3.10.0)
+#################################################################
+
+:permitIssuingAuthority a owl:DatatypeProperty ;
+    rdfs:label "permit issuing authority" ;
+    rdfs:comment "Name or code of the authority that issued the import permit (WCO Data Model 3.10.0)." ;
+    rdfs:domain :ImportPermitDocument ;
+    rdfs:range xsd:string .
+
+:permitType a owl:DatatypeProperty ;
+    rdfs:label "permit type" ;
+    rdfs:comment "Type of import permit — e.g. quota, non-quota, surveillance (WCO Data Model 3.10.0)." ;
+    rdfs:domain :ImportPermitDocument ;
+    rdfs:range xsd:string .
+
+:permitValidFrom a owl:DatatypeProperty ;
+    rdfs:label "permit valid from" ;
+    rdfs:comment "Start date of the import permit validity period (WCO Data Model 3.10.0)." ;
+    rdfs:domain :ImportPermitDocument ;
+    rdfs:range xsd:date .
+
+:permitValidTo a owl:DatatypeProperty ;
+    rdfs:label "permit valid to" ;
+    rdfs:comment "End date of the import permit validity period (WCO Data Model 3.10.0)." ;
+    rdfs:domain :ImportPermitDocument ;
+    rdfs:range xsd:date .
+
+#################################################################
+#    Export License Document Datatype Properties (WCO DM 3.10.0)
+#################################################################
+
+:licenseIssuingAuthority a owl:DatatypeProperty ;
+    rdfs:label "license issuing authority" ;
+    rdfs:comment "Name or code of the authority that issued the export license (WCO Data Model 3.10.0)." ;
+    rdfs:domain :ExportLicenseDocument ;
+    rdfs:range xsd:string .
+
+:licenseType a owl:DatatypeProperty ;
+    rdfs:label "license type" ;
+    rdfs:comment "Type of export license — e.g. individual, global, special (WCO Data Model 3.10.0)." ;
+    rdfs:domain :ExportLicenseDocument ;
+    rdfs:range xsd:string .
+
+:licenseValidFrom a owl:DatatypeProperty ;
+    rdfs:label "license valid from" ;
+    rdfs:comment "Start date of the export license validity period (WCO Data Model 3.10.0)." ;
+    rdfs:domain :ExportLicenseDocument ;
+    rdfs:range xsd:date .
+
+:licenseValidTo a owl:DatatypeProperty ;
+    rdfs:label "license valid to" ;
+    rdfs:comment "End date of the export license validity period (WCO Data Model 3.10.0)." ;
+    rdfs:domain :ExportLicenseDocument ;
+    rdfs:range xsd:date .
+
+:licenseValue a owl:DatatypeProperty ;
+    rdfs:label "license value" ;
+    rdfs:comment "Monetary value of the goods covered by the export license (WCO Data Model 3.10.0)." ;
+    rdfs:domain :ExportLicenseDocument ;
+    rdfs:range xsd:decimal .
+
+#################################################################
+#    Preferential Origin Document Datatype Properties (WCO RKC + RoO)
+#################################################################
+
+:originIssuingAuthority a owl:DatatypeProperty ;
+    rdfs:label "origin issuing authority" ;
+    rdfs:comment "Authority that issued the proof of origin (WCO Revised Kyoto Convention)." ;
+    rdfs:domain :PreferentialOriginDoc ;
+    rdfs:range xsd:string .
+
+:originCertificationDate a owl:DatatypeProperty ;
+    rdfs:label "origin certification date" ;
+    rdfs:comment "Date on which the proof of origin was certified by the issuing authority (WCO Revised Kyoto Convention)." ;
+    rdfs:domain :PreferentialOriginDoc ;
+    rdfs:range xsd:date .
+
+#################################################################
+#    ATA Carnet Datatype Properties (WCO ATA/Istanbul Conventions)
+#################################################################
+
+:carnetIssuingChamber a owl:DatatypeProperty ;
+    rdfs:label "carnet issuing chamber" ;
+    rdfs:comment "Name or code of the National Guaranteeing Association / Chamber of Commerce that issued the ATA Carnet (WCO ATA Convention)." ;
+    rdfs:domain :ATACarnet ;
+    rdfs:range xsd:string .
+
+:carnetType a owl:DatatypeProperty ;
+    rdfs:label "carnet type" ;
+    rdfs:comment "Type of ATA Carnet per the ATA Convention: goods for fairs/exhibitions, professional equipment, or commercial samples." ;
+    rdfs:domain :ATACarnet ;
+    rdfs:range xsd:string .
+
+:voucherCount a owl:DatatypeProperty ;
+    rdfs:label "voucher count" ;
+    rdfs:comment "Number of vouchers — yellow (re-export/re-import), white (import/export), blue (transit) — contained in the ATA Carnet." ;
+    rdfs:domain :ATACarnet ;
     rdfs:range xsd:integer .

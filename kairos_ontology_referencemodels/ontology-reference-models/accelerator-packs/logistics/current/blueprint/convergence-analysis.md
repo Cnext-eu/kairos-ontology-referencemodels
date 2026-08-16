@@ -63,6 +63,17 @@ The current machine register deliberately records every cluster as `unresolved`.
 Stakeholders should choose one of the supported dispositions only after reviewing the
 following constraints.
 
+> **Property-level overlap note (2026-09-18 enrichment).** The fleet enrichment
+> enriched ~240 classes with ~576 new standard-backed datatype properties across 7
+> domains. This widened property-level duplication: 143 datatype-property local names
+> are now shared across 2+ domains (e.g. `partyName` in BSP/IMO/MMT/TIC,
+> `eventDateTime` in BSP/DCSA/MMT/RAIL, `documentNumber` in BSP/MMT/WCO). These
+> duplicates are expected: each domain is a separate standard's interpretation and
+> must define its own properties under its own namespace to preserve standards
+> fidelity. The class-level overlap register (`overlap-register.yaml`) tracks
+> canonical-class convergence; property-level convergence is a hub-side mapping
+> concern and does not affect the accelerator's class-level dispositions.
+
 | Cluster | Must remain distinct | Candidate alignment |
 |---|---|---|
 | Party | Identity versus Carrier, Shipper, Consignee, Booking Party, Freight Forwarder, Importer, and Exporter roles | Cross-standard role mappings, never duplicate party masters |

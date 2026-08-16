@@ -13,8 +13,8 @@
     dcterms:description "Energy consumption, fuel types, and energy efficiency for transport and logistics based on EU MRV Regulation and IMO DCS." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "ISO 14083:2023, GLEC Framework, EU MRV Regulation, IMO DCS, EU ETS Maritime" ;
     rdfs:seeAlso <https://www.iso.org/standard/78864.html> ;
     owl:imports <https://www.kairosflow.ai/ont/imo/vessel-registry> ,
@@ -28,7 +28,9 @@
     rdfs:label "Energy Consumption" ;
     rdfs:comment """Measured energy consumption for a transport activity or voyage.
 
-    EU MRV: Measured energy consumption for a transport activity or voyage.""" ;
+    EU MRV: Measured energy consumption for a transport activity or voyage.
+    ISO 14083: Energy amount, energy unit, and transport leg identifier.
+    Properties: consumption value, consumption unit.""" ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :consumptionValue ;
@@ -43,22 +45,34 @@
 
 :HFO a owl:Class ;
     rdfs:label "HFO" ;
-    rdfs:comment "Heavy Fuel Oil, a residual marine fuel with high sulphur content." ;
+    rdfs:comment """Heavy Fuel Oil, a residual marine fuel with high sulphur content.
+
+    IMO DCS: Heavy Fuel Oil, a residual marine fuel with high sulphur content.
+    Properties: fossil fuel grade, carbon intensity.""" ;
     rdfs:subClassOf :FuelType .
 
 :VLSFO a owl:Class ;
     rdfs:label "VLSFO" ;
-    rdfs:comment "Very Low Sulphur Fuel Oil compliant with IMO 2020 sulphur cap." ;
+    rdfs:comment """Very Low Sulphur Fuel Oil compliant with IMO 2020 sulphur cap.
+
+    IMO DCS: Very Low Sulphur Fuel Oil compliant with IMO 2020 sulphur cap.
+    Properties: fossil fuel grade, carbon intensity.""" ;
     rdfs:subClassOf :FuelType .
 
 :LNG a owl:Class ;
     rdfs:label "LNG" ;
-    rdfs:comment "Liquefied Natural Gas used as a lower-emission marine fuel." ;
+    rdfs:comment """Liquefied Natural Gas used as a lower-emission marine fuel.
+
+    ISO 14083: Liquefied Natural Gas used as a lower-emission marine fuel.
+    Properties: fossil fuel grade, carbon intensity.""" ;
     rdfs:subClassOf :FuelType .
 
 :Methanol a owl:Class ;
     rdfs:label "Methanol" ;
-    rdfs:comment "Methanol used as an alternative marine fuel, potentially carbon-neutral when bio- or e-sourced." ;
+    rdfs:comment """Methanol used as an alternative marine fuel, potentially carbon-neutral when bio- or e-sourced.
+
+    ISO 14083: Methanol used as an alternative marine fuel. When bio-sourced, biofuel blend percentage and feedstock type apply.
+    Properties: biofuel blend percentage, feedstock type.""" ;
     rdfs:subClassOf :FuelType .
 
 :Ammonia a owl:Class ;
@@ -68,12 +82,18 @@
 
 :Electric a owl:Class ;
     rdfs:label "Electric" ;
-    rdfs:comment "Battery-electric propulsion or auxiliary power." ;
+    rdfs:comment """Battery-electric propulsion or auxiliary power.
+
+    ISO 14083: Battery-electric propulsion or auxiliary power. Emissions depend on the electricity source grid mix.
+    Properties: grid mix percentage, renewable percentage.""" ;
     rdfs:subClassOf :FuelType .
 
 :Hydrogen a owl:Class ;
     rdfs:label "Hydrogen" ;
-    rdfs:comment "Hydrogen fuel for fuel cell or combustion propulsion." ;
+    rdfs:comment """Hydrogen fuel for fuel cell or combustion propulsion.
+
+    ISO 14083: Hydrogen fuel for fuel cell or combustion propulsion. Production method (green/blue/grey) determines carbon intensity.
+    Properties: hydrogen production method, hydrogen purity.""" ;
     rdfs:subClassOf :FuelType .
 
 #################################################################
@@ -82,7 +102,10 @@
 
 :EnergySource a owl:Class ;
     rdfs:label "Energy Source" ;
-    rdfs:comment "Classification of the primary energy source (fossil, renewable, nuclear)." .
+    rdfs:comment """Classification of the primary energy source (fossil, renewable, nuclear).
+
+    ISO 14083: Classification of the primary energy source.
+    Properties: source type, source mix percentage.""" .
 
 :RenewableEnergy a owl:Class ;
     rdfs:label "Renewable Energy" ;
@@ -321,3 +344,63 @@
     rdfs:comment "Textual description of the energy performance indicator." ;
     rdfs:domain :EnergyPerformanceIndicator ;
     rdfs:range xsd:string .
+
+:fossilFuelGrade a owl:DatatypeProperty ;
+    rdfs:label "fossil fuel grade" ;
+    rdfs:comment "Grade classification of the fossil fuel (e.g. HFO, VLSFO, MGO, LNG). ISO 14083:2023 requires grade-specific emission factors for fossil fuels as different grades have variant carbon intensities." ;
+    rdfs:domain :FuelType ;
+    rdfs:range xsd:string .
+
+:carbonIntensity a owl:DatatypeProperty ;
+    rdfs:label "carbon intensity" ;
+    rdfs:comment "Carbon intensity of the fuel in gCO2e per MJ. ISO 14083:2023: carbon intensity in CO2-equivalent per unit energy, covering both direct and upstream emissions." ;
+    rdfs:domain :FuelType ;
+    rdfs:range xsd:decimal .
+
+:biofuelBlendPercentage a owl:DatatypeProperty ;
+    rdfs:label "biofuel blend percentage" ;
+    rdfs:comment "Percentage of biofuel in the blend (e.g. B20 = 20% biodiesel). ISO 14083:2023 requires explicit reporting of blend percentage as it significantly impacts carbon intensity." ;
+    rdfs:domain :FuelType ;
+    rdfs:range xsd:decimal .
+
+:feedstockType a owl:DatatypeProperty ;
+    rdfs:label "feedstock type" ;
+    rdfs:comment "Type of biofuel feedstock (e.g. waste cooking oil, crop, tallow, algae). ISO 14083:2023 requires reporting of feedstock type due to large variability in life-cycle emissions among biofuels." ;
+    rdfs:domain :FuelType ;
+    rdfs:range xsd:string .
+
+:hydrogenProductionMethod a owl:DatatypeProperty ;
+    rdfs:label "hydrogen production method" ;
+    rdfs:comment "Method of hydrogen production (green, blue, grey). ISO 14083:2023 / GLEC Framework: hydrogen must be categorized by production route because carbon intensity varies dramatically (green = electrolysis with renewables, blue = SMR with CCS, grey = SMR without CCS)." ;
+    rdfs:domain :Hydrogen ;
+    rdfs:range xsd:string .
+
+:hydrogenPurity a owl:DatatypeProperty ;
+    rdfs:label "hydrogen purity" ;
+    rdfs:comment "Purity of the hydrogen fuel as a percentage. ISO 14083:2023: fuel quality documentation for accurate emission factor application." ;
+    rdfs:domain :Hydrogen ;
+    rdfs:range xsd:decimal .
+
+:gridMixPercentage a owl:DatatypeProperty ;
+    rdfs:label "grid mix percentage" ;
+    rdfs:comment "Percentage of the electricity grid mix applicable to the electric propulsion. ISO 14083:2023: emissions from electric transport depend on the regional grid mix." ;
+    rdfs:domain :Electric ;
+    rdfs:range xsd:decimal .
+
+:renewablePercentage a owl:DatatypeProperty ;
+    rdfs:label "renewable percentage" ;
+    rdfs:comment "Percentage of renewable energy in the electricity source. ISO 14083:2023: renewable share affects the emission factor for electricity-based transport." ;
+    rdfs:domain :Electric ;
+    rdfs:range xsd:decimal .
+
+:sourceType a owl:DatatypeProperty ;
+    rdfs:label "source type" ;
+    rdfs:comment "Type of energy source (e.g. fossil, renewable, nuclear, grid electricity). ISO 14083:2023: classification of the primary energy source for emission factor selection." ;
+    rdfs:domain :EnergySource ;
+    rdfs:range xsd:string .
+
+:sourceMixPercentage a owl:DatatypeProperty ;
+    rdfs:label "source mix percentage" ;
+    rdfs:comment "Percentage of this energy source in the overall mix. ISO 14083:2023: energy source mix percentage for calculating blended emission factors." ;
+    rdfs:domain :EnergySource ;
+    rdfs:range xsd:decimal .

@@ -16,8 +16,8 @@
     Based on UN/CEFACT MMT Reference Data Model.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-08-15"^^xsd:date ;
-    owl:versionInfo "2.1.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "2.2.0" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
 
@@ -39,70 +39,94 @@
 :TransportParty a owl:Class ;
     rdfs:label "Transport Party" ;
     rdfs:comment """An organization or person playing a role in transport operations.
-    
-    UN/CEFACT MMT: Abstract parent for all party roles.""" .
+
+    Properties: partyId, partyName.
+    UN/CEFACT MMT-RDM: TradePartyType — partyId is the party identification
+    (e.g., SCAC, LEI); partyName is the name of the party.""" .
 
 :Consignor a owl:Class ;
     rdfs:label "Consignor" ;
     rdfs:comment """The party consigning goods to a carrier (shipper).
-    
-    UN/CEFACT MMT: Party sending the goods.""" ;
+
+    Properties: consignorId, consignorName.
+    UN/CEFACT MMT-RDM: ConsignorTradeParty — consignorId is the consignor
+    identification; consignorName is the name of the consignor.""" ;
     rdfs:subClassOf :TransportParty ;
     owl:deprecated true .
 
 :Consignee a owl:Class ;
     rdfs:label "Consignee" ;
     rdfs:comment """The party to whom goods are consigned.
-    
-    UN/CEFACT MMT: Party receiving the goods.""" ;
+
+    Properties: consigneeId, consigneeName.
+    UN/CEFACT MMT-RDM: ConsigneeTradeParty — consigneeId is the consignee
+    identification; consigneeName is the name of the consignee.""" ;
     rdfs:subClassOf :TransportParty ;
     owl:deprecated true .
 
 :Carrier a owl:Class ;
     rdfs:label "Carrier" ;
     rdfs:comment """The party undertaking to perform or procure transport.
-    
-    UN/CEFACT MMT: Transport service provider.""" ;
+
+    Properties: carrierCode, carrierName.
+    UN/CEFACT MMT-RDM: CarrierTradeParty — carrierCode is the carrier
+    identification code (e.g., SCAC); carrierName is the name of the
+    carrier.""" ;
     rdfs:subClassOf :TransportParty ;
     owl:deprecated true .
 
 :FreightForwarder a owl:Class ;
     rdfs:label "Freight Forwarder" ;
     rdfs:comment """A party arranging transport on behalf of shippers.
-    
-    UN/CEFACT MMT: Logistics service provider, NVOCC.""" ;
+
+    Properties: forwarderCode, forwarderName.
+    UN/CEFACT MMT-RDM: FreightForwarderTradeParty — forwarderCode is the
+    forwarder identification code; forwarderName is the name of the
+    forwarder.""" ;
     rdfs:subClassOf :TransportParty ;
     owl:deprecated true .
 
 :CustomsBroker a owl:Class ;
     rdfs:label "Customs Broker" ;
     rdfs:comment """A party handling customs clearance procedures.
-    
-    UN/CEFACT MMT: Facilitates cross-border trade.""" ;
+
+    Properties: brokerLicense, brokerName.
+    UN/CEFACT MMT-RDM: CustomsBrokerTradeParty — brokerLicense is the
+    broker license or registration number; brokerName is the name of the
+    customs broker.""" ;
     rdfs:subClassOf :TransportParty ;
     owl:deprecated true .
 
 :NotifyParty a owl:Class ;
     rdfs:label "Notify Party" ;
     rdfs:comment """A party to be notified of cargo arrival.
-    
-    UN/CEFACT MMT: Often the consignee or their agent.""" ;
+
+    Properties: notifyPartyName, notifyMethod.
+    UN/CEFACT MMT-RDM: NotifyPartyTradeParty — notifyPartyName is the
+    name of the notify party; notifyMethod is the notification method
+    (email, phone, fax).""" ;
     rdfs:subClassOf :TransportParty ;
     owl:deprecated true .
 
 :TerminalOperator a owl:Class ;
     rdfs:label "Terminal Operator" ;
     rdfs:comment """A party operating a cargo terminal.
-    
-    UN/CEFACT MMT: Port, airport, or rail terminal operator.""" ;
+
+    Properties: operatorCode, operatorName.
+    UN/CEFACT MMT-RDM: TerminalOperatorTradeParty — operatorCode is the
+    operator identification code; operatorName is the name of the
+    terminal operator.""" ;
     rdfs:subClassOf :TransportParty ;
     owl:deprecated true .
 
 :WarehouseOperator a owl:Class ;
     rdfs:label "Warehouse Operator" ;
     rdfs:comment """A party operating a warehouse or storage facility.
-    
-    UN/CEFACT MMT: Provides storage and inventory services.""" ;
+
+    Properties: warehouseOperatorCode, warehouseOperatorName.
+    UN/CEFACT MMT-RDM: WarehouseOperatorTradeParty — warehouseOperatorCode
+    is the operator identification code; warehouseOperatorName is the
+    name of the warehouse operator.""" ;
     rdfs:subClassOf :TransportParty ;
     owl:deprecated true .
 
@@ -121,14 +145,24 @@
     rdfs:comment """Governed code list of transport-party roles (Consignor, Consignee,
     Carrier, FreightForwarder, CustomsBroker, NotifyParty, TerminalOperator,
     WarehouseOperator). Named per blueprints/patterns/governed-code-list
-    (<Dimension>Code); value governance is a pack-level MDM concern.""" .
+    (<Dimension>Code); value governance is a pack-level MDM concern.
+
+    Properties: roleCodeValue, roleDescription.
+    UN/CEFACT MMT-RDM: TransportPartyRoleCodeType — roleCodeValue is the
+    code value (e.g., CGN, CNE); roleDescription is the description of
+    the role.""" .
 
 :TransportPartyRoleAssignment a owl:Class ;
     rdfs:label "Transport Party Role Assignment" ;
     rdfs:comment """The (identity, role, context, validity) link entity: one durable
     TransportParty playing one role in one context for some period. Named per
     blueprints/patterns/qualified-role-assignment (<Identity>RoleAssignment).
-    This — not the deprecated role subclasses — is the shape hubs reuse.""" .
+    This — not the deprecated role subclasses — is the shape hubs reuse.
+
+    Properties: assignedToTransportParty (object), hasRole (object),
+    roleValidFrom, roleValidTo.
+    UN/CEFACT MMT-RDM: Role assignment validity — roleValidFrom is the
+    role start date; roleValidTo is the role end date.""" .
 
 :assignedToTransportParty a owl:ObjectProperty ;
     rdfs:label "assigned to transport party" ;
@@ -168,3 +202,127 @@
     the assignment's validity period; absent while the assignment holds.""" ;
     schema:domainIncludes :TransportPartyRoleAssignment ;
     rdfs:range xsd:dateTime .
+
+#################################################################
+#    Additional Datatype Properties (UN/CEFACT MMT-RDM)
+#################################################################
+
+:partyId a owl:DatatypeProperty ;
+    rdfs:label "party ID" ;
+    rdfs:comment "Party identification (e.g., SCAC, LEI). UN/CEFACT MMT-RDM: TradePartyType party identifier." ;
+    rdfs:domain :TransportParty ;
+    rdfs:range xsd:string .
+
+:partyName a owl:DatatypeProperty ;
+    rdfs:label "party name" ;
+    rdfs:comment "Name of the party. UN/CEFACT MMT-RDM: TradePartyType party name." ;
+    rdfs:domain :TransportParty ;
+    rdfs:range xsd:string .
+
+:consignorId a owl:DatatypeProperty ;
+    rdfs:label "consignor ID" ;
+    rdfs:comment "Consignor identification. UN/CEFACT MMT-RDM: ConsignorTradeParty consignor identifier." ;
+    rdfs:domain :Consignor ;
+    rdfs:range xsd:string .
+
+:consignorName a owl:DatatypeProperty ;
+    rdfs:label "consignor name" ;
+    rdfs:comment "Name of the consignor. UN/CEFACT MMT-RDM: ConsignorTradeParty consignor name." ;
+    rdfs:domain :Consignor ;
+    rdfs:range xsd:string .
+
+:consigneeId a owl:DatatypeProperty ;
+    rdfs:label "consignee ID" ;
+    rdfs:comment "Consignee identification. UN/CEFACT MMT-RDM: ConsigneeTradeParty consignee identifier." ;
+    rdfs:domain :Consignee ;
+    rdfs:range xsd:string .
+
+:consigneeName a owl:DatatypeProperty ;
+    rdfs:label "consignee name" ;
+    rdfs:comment "Name of the consignee. UN/CEFACT MMT-RDM: ConsigneeTradeParty consignee name." ;
+    rdfs:domain :Consignee ;
+    rdfs:range xsd:string .
+
+:carrierCode a owl:DatatypeProperty ;
+    rdfs:label "carrier code" ;
+    rdfs:comment "Carrier identification code (e.g., SCAC). UN/CEFACT MMT-RDM: CarrierTradeParty carrier code." ;
+    rdfs:domain :Carrier ;
+    rdfs:range xsd:string .
+
+:carrierName a owl:DatatypeProperty ;
+    rdfs:label "carrier name" ;
+    rdfs:comment "Name of the carrier. UN/CEFACT MMT-RDM: CarrierTradeParty carrier name." ;
+    rdfs:domain :Carrier ;
+    rdfs:range xsd:string .
+
+:forwarderCode a owl:DatatypeProperty ;
+    rdfs:label "forwarder code" ;
+    rdfs:comment "Forwarder identification code. UN/CEFACT MMT-RDM: FreightForwarderTradeParty forwarder code." ;
+    rdfs:domain :FreightForwarder ;
+    rdfs:range xsd:string .
+
+:forwarderName a owl:DatatypeProperty ;
+    rdfs:label "forwarder name" ;
+    rdfs:comment "Name of the forwarder. UN/CEFACT MMT-RDM: FreightForwarderTradeParty forwarder name." ;
+    rdfs:domain :FreightForwarder ;
+    rdfs:range xsd:string .
+
+:brokerLicense a owl:DatatypeProperty ;
+    rdfs:label "broker license" ;
+    rdfs:comment "Broker license or registration number. UN/CEFACT MMT-RDM: CustomsBrokerTradeParty broker license." ;
+    rdfs:domain :CustomsBroker ;
+    rdfs:range xsd:string .
+
+:brokerName a owl:DatatypeProperty ;
+    rdfs:label "broker name" ;
+    rdfs:comment "Name of the customs broker. UN/CEFACT MMT-RDM: CustomsBrokerTradeParty broker name." ;
+    rdfs:domain :CustomsBroker ;
+    rdfs:range xsd:string .
+
+:notifyPartyName a owl:DatatypeProperty ;
+    rdfs:label "notify party name" ;
+    rdfs:comment "Name of the notify party. UN/CEFACT MMT-RDM: NotifyPartyTradeParty notify party name." ;
+    rdfs:domain :NotifyParty ;
+    rdfs:range xsd:string .
+
+:notifyMethod a owl:DatatypeProperty ;
+    rdfs:label "notify method" ;
+    rdfs:comment "Notification method (email, phone, fax). UN/CEFACT MMT-RDM: NotifyPartyTradeParty notify method." ;
+    rdfs:domain :NotifyParty ;
+    rdfs:range xsd:string .
+
+:operatorCode a owl:DatatypeProperty ;
+    rdfs:label "operator code" ;
+    rdfs:comment "Operator identification code. UN/CEFACT MMT-RDM: TerminalOperatorTradeParty operator code." ;
+    rdfs:domain :TerminalOperator ;
+    rdfs:range xsd:string .
+
+:operatorName a owl:DatatypeProperty ;
+    rdfs:label "operator name" ;
+    rdfs:comment "Name of the terminal operator. UN/CEFACT MMT-RDM: TerminalOperatorTradeParty operator name." ;
+    rdfs:domain :TerminalOperator ;
+    rdfs:range xsd:string .
+
+:warehouseOperatorCode a owl:DatatypeProperty ;
+    rdfs:label "warehouse operator code" ;
+    rdfs:comment "Operator identification code. UN/CEFACT MMT-RDM: WarehouseOperatorTradeParty operator code." ;
+    rdfs:domain :WarehouseOperator ;
+    rdfs:range xsd:string .
+
+:warehouseOperatorName a owl:DatatypeProperty ;
+    rdfs:label "warehouse operator name" ;
+    rdfs:comment "Name of the warehouse operator. UN/CEFACT MMT-RDM: WarehouseOperatorTradeParty operator name." ;
+    rdfs:domain :WarehouseOperator ;
+    rdfs:range xsd:string .
+
+:roleCodeValue a owl:DatatypeProperty ;
+    rdfs:label "role code value" ;
+    rdfs:comment "Code value (e.g., CGN, CNE). UN/CEFACT MMT-RDM: TransportPartyRoleCodeType role code value." ;
+    rdfs:domain :TransportPartyRoleCode ;
+    rdfs:range xsd:string .
+
+:roleDescription a owl:DatatypeProperty ;
+    rdfs:label "role description" ;
+    rdfs:comment "Description of the role. UN/CEFACT MMT-RDM: TransportPartyRoleCodeType role description." ;
+    rdfs:domain :TransportPartyRoleCode ;
+    rdfs:range xsd:string .

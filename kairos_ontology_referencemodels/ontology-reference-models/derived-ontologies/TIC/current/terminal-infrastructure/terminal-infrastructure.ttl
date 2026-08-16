@@ -16,8 +16,8 @@
     yard cranes, reach stackers, and terminal tractors.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "1.3.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.4.0" ;
     dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
     rdfs:seeAlso <https://tic40.org/standards/> .
 
@@ -41,7 +41,8 @@
     rdfs:label "Berth" ;
     rdfs:comment """A designated location alongside a quay where a vessel can be moored for loading or discharging cargo.
 
-    TIC 4.0: Berths are identified by number and have length, depth, and crane coverage attributes.""" ;
+    TIC 4.0: Berths are identified by number and have length, depth, crane coverage, and
+    quay crane count attributes.""" ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :belongsToTerminal ;
@@ -59,7 +60,8 @@
     rdfs:comment """The controlled entry and exit point of a terminal for road transport vehicles.
 
     TIC 4.0: Gates consist of multiple lanes and perform identification, security, and
-    condition checks on vehicles and cargo units.""" ;
+    condition checks on vehicles and cargo units. Each gate has a type (in/out) and a
+    defined number of lanes.""" ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :hasGateLane ;
@@ -98,7 +100,8 @@
     rdfs:label "Quay Crane" ;
     rdfs:comment """A large crane positioned on the quay wall used to load and discharge containers from vessels.
 
-    TIC 4.0: Ship-to-shore (STS) cranes with defined outreach, lift capacity, and cycle times.""" ;
+    TIC 4.0: Ship-to-shore (STS) cranes with defined outreach, lift capacity, crane status,
+    and cycle times.""" ;
     rdfs:subClassOf :TerminalEquipment ;
     rdfs:subClassOf [
         a owl:Restriction ;
@@ -110,7 +113,8 @@
     rdfs:label "Yard Crane" ;
     rdfs:comment """A crane operating within the yard area to stack, retrieve, and rearrange containers.
 
-    TIC 4.0: Includes rubber-tyred gantry (RTG) and rail-mounted gantry (RMG) cranes.""" ;
+    TIC 4.0: Includes rubber-tyred gantry (RTG) and rail-mounted gantry (RMG) cranes.
+    Each yard crane has a defined capacity, outreach, and operational status.""" ;
     rdfs:subClassOf :TerminalEquipment .
 
 :ReachStacker a owl:Class ;
@@ -255,6 +259,51 @@
     rdfs:comment "Maximum throughput of trucks per hour through the gate." ;
     rdfs:domain :Gate ;
     rdfs:range xsd:integer .
+
+:gateType a owl:DatatypeProperty ;
+    rdfs:label "gate type" ;
+    rdfs:comment "Type of gate indicating its operational direction (IN, OUT, COMBINED). TIC 4.0: gate type classification for entry/exit control." ;
+    rdfs:domain :Gate ;
+    rdfs:range xsd:string .
+
+:gateLaneCount a owl:DatatypeProperty ;
+    rdfs:label "gate lane count" ;
+    rdfs:comment "Total number of lanes available at the gate. TIC 4.0: count of processing lanes for gate throughput planning." ;
+    rdfs:domain :Gate ;
+    rdfs:range xsd:integer .
+
+:yardAreaType a owl:DatatypeProperty ;
+    rdfs:label "yard area type" ;
+    rdfs:comment "Classification of the yard area by cargo type (IMPORT, EXPORT, EMPTY, REEFER, HAZARDOUS, OOG). TIC 4.0: yard area type for storage zone planning." ;
+    rdfs:domain :YardArea ;
+    rdfs:range xsd:string .
+
+:yardAreaCapacityTEU a owl:DatatypeProperty ;
+    rdfs:label "yard area capacity (TEU)" ;
+    rdfs:comment "Maximum storage capacity of the yard area in TEU. TIC 4.0: capacity measure for yard space utilization analysis." ;
+    rdfs:domain :YardArea ;
+    rdfs:range xsd:integer .
+
+:quayCraneCount a owl:DatatypeProperty ;
+    rdfs:label "quay crane count" ;
+    rdfs:comment "Number of quay cranes available at the berth for vessel operations. TIC 4.0: crane coverage count for berth productivity planning." ;
+    rdfs:domain :Berth ;
+    rdfs:range xsd:integer .
+
+:craneStatus a owl:DatatypeProperty ;
+    rdfs:label "crane status" ;
+    rdfs:comment "Operational status of the crane (OPERATIONAL, DEGRADED, FAULT, OUT_OF_SERVICE). TIC 4.0: real-time crane status for equipment availability tracking." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :QuayCrane :YardCrane )
+    ] ;
+    rdfs:range xsd:string .
+
+:craneOutreachMetres a owl:DatatypeProperty ;
+    rdfs:label "crane outreach (metres)" ;
+    rdfs:comment "Maximum outreach of a yard crane across the stacking area in metres. TIC 4.0: outreach dimension for yard crane coverage." ;
+    rdfs:domain :YardCrane ;
+    rdfs:range xsd:decimal .
 
 #################################################################
 #    Phase 2.1: Additional CHE Types

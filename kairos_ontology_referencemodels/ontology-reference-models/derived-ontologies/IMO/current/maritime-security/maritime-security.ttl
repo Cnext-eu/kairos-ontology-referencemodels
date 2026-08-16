@@ -22,8 +22,8 @@
     are real-time operational data and are excluded from the reference model.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-06-12"^^xsd:date ;
-    dcterms:modified "2026-06-12"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "ISPS Code 2002, SOLAS Chapter XI-2" ;
     rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
 
@@ -45,7 +45,12 @@
     - Duties of shipboard personnel with security responsibilities
 
     Approved by the flag state administration or a Recognized Security Organization (RSO).
-    Reviewed and updated at least once every 5 years.""" ;
+    Reviewed and updated at least once every 5 years.
+
+    Properties: appliesToVessel, approvalDate, reviewDueDate, securityLevel,
+    rsoName, ispsComplianceStatus, sspReviewDate, sspSecurityMeasures.
+
+    Source: ISPS Code Part A Section 9, SOLAS Chapter XI-2.""" ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :approvalDate ;
@@ -59,7 +64,12 @@
 
     Must address security measures for each of the three MARSEC security levels
     and include provisions for access control, restricted areas, cargo handling,
-    delivery of ship's stores, and handling unaccompanied baggage.""" ;
+    delivery of ship's stores, and handling unaccompanied baggage.
+
+    Properties: appliesToFacility, approvalDate, reviewDueDate, securityLevel,
+    rsoName, ispsComplianceStatus, pfspReviewDate, pfspSecurityMeasures.
+
+    Source: ISPS Code Part A Section 16, SOLAS Chapter XI-2.""" ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :approvalDate ;
@@ -171,4 +181,32 @@
         a owl:Class ;
         owl:unionOf ( :ShipSecurityPlan :PortFacilitySecurityPlan )
     ] ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Datatype Properties — Enrichment (ISPS Code)
+#################################################################
+
+:sspReviewDate a owl:DatatypeProperty ;
+    rdfs:label "SSP review date" ;
+    rdfs:comment "Date of the most recent review of the Ship Security Plan. ISPS Code Part A Section 9.4." ;
+    rdfs:domain :ShipSecurityPlan ;
+    rdfs:range xsd:date .
+
+:sspSecurityMeasures a owl:DatatypeProperty ;
+    rdfs:label "SSP security measures" ;
+    rdfs:comment "Description of the security measures implemented on board the ship. ISPS Code Part A Section 9.3." ;
+    rdfs:domain :ShipSecurityPlan ;
+    rdfs:range xsd:string .
+
+:pfspReviewDate a owl:DatatypeProperty ;
+    rdfs:label "PFSP review date" ;
+    rdfs:comment "Date of the most recent review of the Port Facility Security Plan. ISPS Code Part A Section 16.4." ;
+    rdfs:domain :PortFacilitySecurityPlan ;
+    rdfs:range xsd:date .
+
+:pfspSecurityMeasures a owl:DatatypeProperty ;
+    rdfs:label "PFSP security measures" ;
+    rdfs:comment "Description of the security measures implemented at the port facility. ISPS Code Part A Section 16.3." ;
+    rdfs:domain :PortFacilitySecurityPlan ;
     rdfs:range xsd:string .

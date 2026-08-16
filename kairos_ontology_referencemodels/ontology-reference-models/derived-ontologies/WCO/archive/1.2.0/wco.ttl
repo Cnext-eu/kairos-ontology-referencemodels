@@ -1,0 +1,40 @@
+@prefix : <https://www.kairosflow.ai/ont/wco#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix wco-customs: <https://www.kairosflow.ai/ont/wco/customs#> .
+@prefix wco-tf: <https://www.kairosflow.ai/ont/wco/trade-facilitation#> .
+@prefix wco-party: <https://www.kairosflow.ai/ont/wco/party#> .
+@prefix wco-loc: <https://www.kairosflow.ai/ont/wco/locations#> .
+@prefix wco-doc: <https://www.kairosflow.ai/ont/wco/documents#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/wco> a owl:Ontology ;
+    dcterms:title "Kairos WCO Customs Ontology" ;
+    dcterms:description """World Customs Organization (WCO) ontology for international customs procedures and trade facilitation.
+
+    This ontology provides a semantic framework for customs operations, covering:
+    - Customs declarations, goods items, and filing procedures
+    - Customs procedure codes (CPC) including special procedures
+    - Tariff classification, customs valuation with adjustments, and duty calculations
+    - Trade facilitation certificates, permits, and AEO programmes
+    - Party roles including declarant, consignee, consignor, and guarantee providers
+    - Customs locations, border crossings, and controlled areas
+    - Customs and trade documents including transit and carnets
+    - Risk-based inspection and selectivity channels
+    - Cross-domain alignment with DCSA, MMT, BSP, and IMO ontologies
+
+    Fully aligned with WCO Data Model 3.10.0, WTO Customs Valuation Agreement, and eFTI Regulation (EU) 2020/1056.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-06-13"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
+    dcterms:source "WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056" ;
+    rdfs:seeAlso <https://www.wcoomd.org/datamodel> ;
+    owl:imports <https://www.kairosflow.ai/ont/wco/customs> ,
+                <https://www.kairosflow.ai/ont/wco/trade-facilitation> ,
+                <https://www.kairosflow.ai/ont/wco/party> ,
+                <https://www.kairosflow.ai/ont/wco/locations> ,
+                <https://www.kairosflow.ai/ont/wco/documents> .
