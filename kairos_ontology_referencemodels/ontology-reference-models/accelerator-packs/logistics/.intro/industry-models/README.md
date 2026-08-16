@@ -17,7 +17,7 @@ pack ships is listed; a module with no sheet yet is shown as such rather than om
 | IMO | [imo.md](imo.md) | 1.2.0 |
 | WCO | [wco.md](wco.md) | 1.3.0 |
 | Sustainability | [sustainability.md](sustainability.md) | 1.2.0 |
-| supply-chain | [supply-chain-integration.md](supply-chain-integration.md) | 1.2.0 |
+| supply-chain | [supply-chain-integration.md](supply-chain-integration.md) | 1.3.0 |
 | RAIL | [rail-taf-tsi.md](rail-taf-tsi.md) | 1.1.0 |
 | IATA | [iata-one-record.md](iata-one-record.md) | 3.3.0 RC1 (2026-08 standard) |
 <!-- END GENERATED: sheets -->
@@ -35,7 +35,7 @@ pack ships is listed; a module with no sheet yet is shown as such rather than om
 | IMO | 1.2.0 |
 | WCO | 1.3.0 |
 | Sustainability | 1.2.0 |
-| supply-chain | 1.2.0 |
+| supply-chain | 1.3.0 |
 | RAIL | 1.1.0 |
 | IATA | 3.3.0 RC1 (2026-08 standard) |
 <!-- END GENERATED: versions -->

@@ -582,6 +582,15 @@ cross_domain_relationships:
     description: "Links an MMT TransportService to a DCSA ServiceLoop."
     status: new-bridge
 
+  - id: consignment-to-transport-call
+    source_domain: consignment
+    target_domain: route-schedule
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#callsAtTransportCall"
+    domain_class_uri: "https://www.kairosflow.ai/ont/mmt/consignment#TransportMovement"
+    range_class_uri: "https://www.kairosflow.ai/ont/dcsa/transport-call#TransportCall"
+    description: "Links an MMT TransportMovement to the DCSA TransportCall that executes it. Per-stop operational data (arrival/departure, facility, mode) lives at TransportCall grain, not at the ServiceLoop rotation grain."
+    status: new-bridge
+
   # ── Equipment ↔ Terminal ───────────────────────────────────────────────
 
   - id: equipment-to-terminal
@@ -654,6 +663,16 @@ cross_domain_relationships:
     range_class_uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#Vessel"
     description: "Links a DCSA Event to the IMO Vessel it relates to."
     status: new-bridge
+
+  - id: vessel-to-event
+    source_domain: vessel-maritime
+    target_domain: events
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#hasVesselEvent"
+    domain_class_uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#Vessel"
+    range_class_uri: "https://www.kairosflow.ai/ont/dcsa/events#Event"
+    description: "Links an IMO Vessel to the DCSA Events that relate to it — the inverse of eventRelatesToVessel. Enables the vessel-maritime domain to reach event classes (e.g., DischargedFromVesselEvent) without importing the events module directly."
+    status: new-bridge
+    inverse_of: "https://www.kairosflow.ai/ont/supply-chain#eventRelatesToVessel"
 
   - id: terminal-event-to-equipment
     source_domain: events

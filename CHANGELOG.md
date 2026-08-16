@@ -5,6 +5,38 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.29.0] - 2026-08-14
+
+### Added
+- **New SupplyChain bridge properties for unanchored-table fix (SupplyChain 1.2.0 → 1.3.0).**
+  Two new cross-domain object properties to address the 9 unanchored tables
+  identified in client hub mapping analysis (306 columns across 9 tables):
+  - `callsAtTransportCall` — links MMT `TransportMovement` → DCSA `TransportCall`.
+    Fixes 237 of 306 unanchored columns (77%): the consignment domain's `stops`/
+    `stops_table` tables need TransportCall, which lives in `dcsa/transport-call`
+    (owned by route-schedule). The existing `consignment-to-schedule` bridge only
+    reaches `ServiceLoop` (planned rotation grain), not `TransportCall` (per-stop
+    arrival/departure grain). This bridge closes that gap without changing import
+    boundaries.
+  - `hasVesselEvent` — links IMO `Vessel` → DCSA `Event`, as `owl:inverseOf`
+    `eventRelatesToVessel`. Fixes 10 columns: vessel-maritime domain's
+    `fleet_competition` table needs `DischargedFromVesselEvent` from
+    `dcsa/track-and-trace/events`, but the existing bridge was one-directional
+    (events → vessel). The inverse enables vessel-maritime to reach event
+    classes without importing the events module.
+  - Registered both as new cross-domain relationships in
+    `accelerator-packs/logistics/client-hub-blueprint/data-domains.yaml`.
+  - Added `dcsa/transport-call` to SupplyChain's `owl:imports` closure.
+
+### Deferred
+- Tables 3 (`resource_calendar_events`, 25 cols), 4 (`empty-units-1b-dropoff`,
+  16 cols), 7 (`3-drop-off-details`, 6 cols): check enrichment coverage after
+  hub upgrade before deciding whether bridges are needed.
+- Tables 6 (`haulier-driver-keys`, 8 cols), 8 (`equipmentcode_fix`, 2 cols),
+  9 (`__Stappenplan`, 2 cols): NOT reference model gaps — wrong anchor class,
+  missing class, or misclassified table. Client extension or new class outside
+  this scope.
+
 ## [1.28.1] - 2026-08-16
 
 ### Fixed
