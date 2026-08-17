@@ -129,7 +129,7 @@
     rdfs:comment """A measurable capacity attribute of a vessel, including tonnage values,
     TEU capacity, passenger capacity, or cargo volume.
 
-    Properties: capacityUnit, capacityType.
+    Properties: capacityValue, capacityUnit, capacityType.
 
     Source: IMO Compendium data set, 1969 Tonnage Convention.""" .
 
@@ -406,6 +406,12 @@
     rdfs:comment "Convention under which net tonnage was measured (e.g., 1969 Tonnage Convention), per Article 4." ;
     rdfs:domain :NetTonnage ;
     rdfs:range xsd:string .
+
+:capacityValue a owl:DatatypeProperty ;
+    rdfs:label "capacity value" ;
+    rdfs:comment "Numeric value of the capacity measurement, qualified by :capacityType and :capacityUnit (e.g., 5000 TEU, 3200 lane metres, 1800 passengers). Completes the value/unit/type triad the tonnage classes already carry, per the IMO Compendium data set." ;
+    rdfs:domain :VesselCapacity ;
+    rdfs:range xsd:decimal .
 
 :capacityUnit a owl:DatatypeProperty ;
     rdfs:label "capacity unit" ;

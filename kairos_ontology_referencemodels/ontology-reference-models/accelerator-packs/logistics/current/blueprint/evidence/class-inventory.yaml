@@ -3565,6 +3565,24 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/financial#BankGuarantee
 - comments:
+  - "A single line item on a billing document — an invoice, a credit note or a\n    debit note — carrying\
+    \ the line-grain measures all three branches share: amount,\n    quantity and its unit, unit price,\
+    \ tax amount and description.\n\n    Not intended for direct instantiation: bind to :InvoiceLine,\
+    \ :CreditNoteLine or\n    :DebitNoteLine, each of which is rdfs:subClassOf this class. Line numbering\
+    \ and\n    line tax rate remain branch-specific properties.\n\n    UN/CEFACT BSP: Maps to SupplyChainTradeLineItem,\
+    \ which the standard defines once\n    for all settlement document types (UN/EDIFACT code list 1001\
+    \ type codes 380, 381\n    and 383)."
+  domains: []
+  kind: class
+  labels:
+  - Billing Document Line
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges: []
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#BillingDocumentLine
+- comments:
   - "Fuel surcharge (BAF/BUC) reflecting fluctuations in bunker fuel prices.\n\n    Industry standard\
     \ surcharge applied to ocean freight to pass on fuel\n    cost variability to shippers."
   domains: []
@@ -3619,6 +3637,21 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/financial#CreditNote
 - comments:
+  - "A single line item on a credit note.\n\n    ISO BSP: Individual credited charge or returned product\
+    \ entry.\n\n    UN/CEFACT BSP: Maps to SupplyChainTradeLineItem on a type-381 (credit note)\n    document,\
+    \ UN/EDIFACT code list 1001 — the credit-note counterpart of\n    :InvoiceLine."
+  domains: []
+  kind: class
+  labels:
+  - Credit Note Line
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges: []
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses:
+  - https://www.kairosflow.ai/ont/bsp/financial#BillingDocumentLine
+  uri: https://www.kairosflow.ai/ont/bsp/financial#CreditNoteLine
+- comments:
   - "Currency surcharge (CAF) compensating for exchange rate fluctuations\n    between the billing currency\
     \ and the carrier's base currency."
   domains: []
@@ -3645,6 +3678,21 @@ records:
   sources: *id006
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/financial#DebitNote
+- comments:
+  - "A single line item on a debit note.\n\n    ISO BSP: Individual additional charge or invoice-adjustment\
+    \ entry.\n\n    UN/CEFACT BSP: Maps to SupplyChainTradeLineItem on a type-383 (debit note)\n    document,\
+    \ UN/EDIFACT code list 1001 — the debit-note counterpart of\n    :InvoiceLine."
+  domains: []
+  kind: class
+  labels:
+  - Debit Note Line
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges: []
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses:
+  - https://www.kairosflow.ai/ont/bsp/financial#BillingDocumentLine
+  uri: https://www.kairosflow.ai/ont/bsp/financial#DebitNoteLine
 - comments:
   - "A trade finance arrangement where the seller's bank collects payment\n    from the buyer through\
     \ the buyer's bank, releasing documents upon payment\n    (D/P) or acceptance (D/A).\n\n    Types\
@@ -3781,7 +3829,8 @@ records:
   ranges: []
   source_file: derived-ontologies/BSP/current/financial/financial.ttl
   sources: *id006
-  superclasses: []
+  superclasses:
+  - https://www.kairosflow.ai/ont/bsp/financial#BillingDocumentLine
   uri: https://www.kairosflow.ai/ont/bsp/financial#InvoiceLine
 - comments:
   - "A bank-issued instrument guaranteeing payment to the seller upon\n    presentation of conforming\
@@ -4062,6 +4111,22 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/financial#appliesTariff
 - comments:
+  - "The invoice that this credit or debit note corrects or adjusts.\n\n    UN/CEFACT BSP: the preceding-invoice\
+    \ reference carried as a ReferencedDocument\n    on the settlement header of a type-381 or type-383\
+    \ document (UN/EDIFACT code\n    list 1001). Domained on the union of the two note classes rather\
+    \ than on a\n    shared parent, so :Invoice and its subclasses are unaffected."
+  domains: []
+  kind: object_property
+  labels:
+  - applies to invoice
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - https://www.kairosflow.ai/ont/bsp/financial#Invoice
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#appliesToInvoice
+- comments:
   - Business Identifier Code / SWIFT code (ISO 9362) of the account's bank.
   domains:
   - https://www.kairosflow.ai/ont/bsp/financial#BankAccount
@@ -4193,6 +4258,119 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/financial#creditLimitCurrency
 - comments:
+  - ISO 4217 currency code of the credit note amounts (e.g., USD, EUR, GBP).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#CreditNote
+  kind: datatype_property
+  labels:
+  - credit note currency
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#creditNoteCurrency
+- comments:
+  - Date on which the credit note was issued.
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#CreditNote
+  kind: datatype_property
+  labels:
+  - credit note date
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#date
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#creditNoteDate
+- comments:
+  - Sequential line item number on the credit note. Counterpart of :lineNumber on :InvoiceLine.
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#CreditNoteLine
+  kind: datatype_property
+  labels:
+  - credit note line number
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#integer
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#creditNoteLineNumber
+- comments:
+  - Tax percentage rate applied to the credit note line. Counterpart of :taxRate on :InvoiceLine.
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#CreditNoteLine
+  kind: datatype_property
+  labels:
+  - credit note line tax rate
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#creditNoteLineTaxRate
+- comments:
+  - Unique identifier for the credit note. Counterpart of :invoiceNumber on the type-381 document (UN/EDIFACT
+    code list 1001).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#CreditNote
+  kind: datatype_property
+  labels:
+  - credit note number
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#creditNoteNumber
+- comments:
+  - Credited amount before taxes and charges.
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#CreditNote
+  kind: datatype_property
+  labels:
+  - credit note subtotal amount
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#creditNoteSubtotalAmount
+- comments:
+  - Total tax amount credited (VAT, sales tax, etc.).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#CreditNote
+  kind: datatype_property
+  labels:
+  - credit note tax amount
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#creditNoteTaxAmount
+- comments:
+  - Total monetary amount credited, taxes included.
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#CreditNote
+  kind: datatype_property
+  labels:
+  - credit note total amount
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#creditNoteTotalAmount
+- comments:
   - ISO 4217 currency code (e.g., USD, EUR, GBP).
   domains:
   - https://www.kairosflow.ai/ont/bsp/financial#Invoice
@@ -4220,6 +4398,119 @@ records:
   sources: *id006
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/financial#customsValue
+- comments:
+  - ISO 4217 currency code of the debit note amounts (e.g., USD, EUR, GBP).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#DebitNote
+  kind: datatype_property
+  labels:
+  - debit note currency
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#debitNoteCurrency
+- comments:
+  - Date on which the debit note was issued.
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#DebitNote
+  kind: datatype_property
+  labels:
+  - debit note date
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#date
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#debitNoteDate
+- comments:
+  - Sequential line item number on the debit note. Counterpart of :lineNumber on :InvoiceLine.
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#DebitNoteLine
+  kind: datatype_property
+  labels:
+  - debit note line number
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#integer
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#debitNoteLineNumber
+- comments:
+  - Tax percentage rate applied to the debit note line. Counterpart of :taxRate on :InvoiceLine.
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#DebitNoteLine
+  kind: datatype_property
+  labels:
+  - debit note line tax rate
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#debitNoteLineTaxRate
+- comments:
+  - Unique identifier for the debit note. Counterpart of :invoiceNumber on the type-383 document (UN/EDIFACT
+    code list 1001).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#DebitNote
+  kind: datatype_property
+  labels:
+  - debit note number
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#debitNoteNumber
+- comments:
+  - Debited amount before taxes and charges.
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#DebitNote
+  kind: datatype_property
+  labels:
+  - debit note subtotal amount
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#debitNoteSubtotalAmount
+- comments:
+  - Total tax amount debited (VAT, sales tax, etc.).
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#DebitNote
+  kind: datatype_property
+  labels:
+  - debit note tax amount
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#debitNoteTaxAmount
+- comments:
+  - Total monetary amount debited, taxes included.
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#DebitNote
+  kind: datatype_property
+  labels:
+  - debit note total amount
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#debitNoteTotalAmount
 - comments:
   - Discount applied.
   domains:
@@ -4431,6 +4722,34 @@ records:
   sources: *id006
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/financial#hasCharge
+- comments:
+  - Relates a credit note to its line items. Credit-note counterpart of :hasInvoiceLine.
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#CreditNote
+  kind: object_property
+  labels:
+  - has credit note line
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - https://www.kairosflow.ai/ont/bsp/financial#CreditNoteLine
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#hasCreditNoteLine
+- comments:
+  - Relates a debit note to its line items. Debit-note counterpart of :hasInvoiceLine.
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#DebitNote
+  kind: object_property
+  labels:
+  - has debit note line
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - https://www.kairosflow.ai/ont/bsp/financial#DebitNoteLine
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#hasDebitNoteLine
 - comments:
   - Relates a commercial transaction or invoice to a financing arrangement.
   domains:
@@ -4689,6 +5008,36 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/financial#lcType
 - comments:
+  - 'Net monetary amount charged or credited for this line, before document-level charges and allowances.
+    UN/CEFACT BSP: SupplyChainTradeLineItem line total amount.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#BillingDocumentLine
+  kind: datatype_property
+  labels:
+  - line amount
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#lineAmount
+- comments:
+  - 'Free-text description of the product or service the line charges for. UN/CEFACT BSP: SupplyChainTradeLineItem
+    item description.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#BillingDocumentLine
+  kind: datatype_property
+  labels:
+  - line description
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#lineDescription
+- comments:
   - Sequential line item number.
   domains:
   - https://www.kairosflow.ai/ont/bsp/financial#InvoiceLine
@@ -4702,6 +5051,66 @@ records:
   sources: *id006
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/financial#lineNumber
+- comments:
+  - 'Quantity billed on this line. Always qualify with :lineQuantityUnit — a bare quantity states no unit
+    of measure. UN/CEFACT BSP: SupplyChainTradeLineItem BilledQuantity.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#BillingDocumentLine
+  kind: datatype_property
+  labels:
+  - line quantity
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#lineQuantity
+- comments:
+  - 'Unit of measure qualifying :lineQuantity, as a UN/ECE Recommendation 20 unit code (e.g., KGM, TNE,
+    MTQ, EA, DAY). UN/CEFACT BSP: the unitCode attribute the standard carries on BilledQuantity.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#BillingDocumentLine
+  kind: datatype_property
+  labels:
+  - line quantity unit
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#lineQuantityUnit
+- comments:
+  - 'Tax amount applying to this line, at the rate given by the branch''s line tax-rate property. UN/CEFACT
+    BSP: SupplyChainTradeLineItem line-level trade tax amount.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#BillingDocumentLine
+  kind: datatype_property
+  labels:
+  - line tax amount
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#lineTaxAmount
+- comments:
+  - 'Price for one unit of :lineQuantity, expressed in the document currency. UN/CEFACT BSP: SupplyChainTradeLineItem
+    net price per unit.'
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#BillingDocumentLine
+  kind: datatype_property
+  labels:
+  - line unit price
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#lineUnitPrice
 - comments:
   - Number of days until payment is due (e.g., Net 30).
   domains:
@@ -16832,8 +17241,8 @@ records:
   uri: https://www.kairosflow.ai/ont/imo/vessel-registry#Vessel
 - comments:
   - "A measurable capacity attribute of a vessel, including tonnage values,\n    TEU capacity, passenger\
-    \ capacity, or cargo volume.\n\n    Properties: capacityUnit, capacityType.\n\n    Source: IMO Compendium\
-    \ data set, 1969 Tonnage Convention."
+    \ capacity, or cargo volume.\n\n    Properties: capacityValue, capacityUnit, capacityType.\n\n   \
+    \ Source: IMO Compendium data set, 1969 Tonnage Convention."
   domains: []
   kind: class
   labels:
@@ -16943,6 +17352,22 @@ records:
   sources: *id028
   superclasses: []
   uri: https://www.kairosflow.ai/ont/imo/vessel-registry#capacityUnit
+- comments:
+  - Numeric value of the capacity measurement, qualified by :capacityType and :capacityUnit (e.g., 5000
+    TEU, 3200 lane metres, 1800 passengers). Completes the value/unit/type triad the tonnage classes already
+    carry, per the IMO Compendium data set.
+  domains:
+  - https://www.kairosflow.ai/ont/imo/vessel-registry#VesselCapacity
+  kind: datatype_property
+  labels:
+  - capacity value
+  module_uri: https://www.kairosflow.ai/ont/imo/vessel-registry
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/IMO/current/vessel-registry/vessel-registry.ttl
+  sources: *id028
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/imo/vessel-registry#capacityValue
 - comments:
   - Short code identifying the classification society (e.g., LR, DNV, BV), per IMO Resolution A.739(18).
   domains:
