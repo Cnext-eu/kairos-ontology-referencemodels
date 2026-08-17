@@ -5,6 +5,23 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.31.0] - 2026-08-17
+
+### Added
+
+- **`accelerator-packs/<pack>/client-hub-blueprint/entity-projections.yaml`** — a new pack-scoped contract surface, beside `data-domains.yaml`, declaring how a group of source columns is recognised as a denormalised projection of another entity: part kinds, role qualifiers, context tokens, target class candidates and relationship naming.
+
+  This exists because the consuming toolkit had compiled that vocabulary into itself (toolkit DD-188). Its role list was an e-commerce one — `billing`, `shipping`, `mailing`, `home`, `work` — with no `pickup`, `origin` or `destination`, so on a logistics hub `delivery_location_city` was recognised as an address part and `pickup_location_city` was not. Vocabulary of that kind is pack knowledge, not engine knowledge.
+
+  `logistics` ships one projection, `postal-address`, targeting `bsp/reference-data#Address` with 20 role qualifiers including the nine freight roles the toolkit was missing.
+
+- **`accelerator-packs/_schema/entity-projections.schema.json`** — authored once beside `data-domains.schema.json`, since the document is pack-scoped but its shape is shared. `additionalProperties: false` throughout, so a typo fails validation rather than being silently ignored by a loader. Enforced by `scripts/validate_structure.py`, which also applies three coherence checks JSON Schema cannot express — duplicate projection ids, duplicate part kinds within a projection, and configurations that validate structurally but can never detect anything.
+
+### Notes
+
+- **`financial-services` deliberately ships no such file.** Nothing in that pack evidences which role qualifiers its columns carry, and authoring them from intuition about banking would relocate the defect rather than fix it. A pack without the file yields no candidates at all — there is no built-in fallback — and a test pins that absence as intentional.
+- `house_number` carries no bare `tokens`, only the compact forms `housenumber`/`houseno`: the bare token `house` also matches unrelated business terms such as `clearingHouse`. The schema therefore allows an empty `tokens` list, while an `anyOf` still requires every part kind to be matchable by `tokens` or `compact` — a kind matchable by neither can never fire and would silently lower the effective part count.
+
 ## [1.30.0] - 2026-08-17
 
 Three gaps found by adopting these modules on a real client hub (CLdN, logistics

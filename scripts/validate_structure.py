@@ -11,6 +11,10 @@ Checks:
   5. Each domain subfolder has a .ttl file
   6. Each .ttl file has owl:versionInfo
   7. VERSION file matches owl:versionInfo in the root .ttl
+  9. Each accelerator pack's client-hub-blueprint/entity-projections.yaml, WHEN PRESENT,
+     validates against accelerator-packs/_schema/entity-projections.schema.json
+     and is internally coherent. The file is optional by design — a pack that
+     ships none yields no candidates, and the toolkit has no fallback (DD-188).
 
 Advisory (warnings only, never fail the build):
   8. Relationship explicitness — flags likely *implicit* relationships:
@@ -41,6 +45,14 @@ SCAN_DIRS = [
 ]
 
 ACCELERATOR_SUPPORT_DIRS = {"blueprint", "profiles", "contracts", "examples", "docs"}
+PACKS_DIR = ONTOLOGY_ROOT / "accelerator-packs"
+ENTITY_PROJECTIONS_SCHEMA = PACKS_DIR / "_schema" / "entity-projections.schema.json"
+#: Relative to a pack directory. Mirrors the contract-manifest.yaml glob
+#: ``accelerator-packs/*/client-hub-blueprint/entity-projections.yaml``. It sits beside
+#: data-domains.yaml, not under ``current/blueprint/``: that directory is the logistics
+#: blueprint dossier and financial-services has no such directory at all, so a path under
+#: it could not express the two-packs-two-vocabularies point of DD-188.
+ENTITY_PROJECTIONS_REL = Path("client-hub-blueprint") / "entity-projections.yaml"
 BLUEPRINTS_DIR = ONTOLOGY_ROOT / "blueprints"
 ARCHETYPES_DIR = BLUEPRINTS_DIR / "archetypes"
 ARCHETYPE_SCHEMA = ARCHETYPES_DIR / "_schema" / "archetype.schema.json"
@@ -732,6 +744,145 @@ def validate_blueprints(verbose: bool) -> ValidationResult:
     return r
 
 
+def entity_projection_errors(data, schema):
+    """Validate one parsed ``entity-projections.yaml`` against its schema, plus
+    the coherence rules JSON Schema cannot express.
+
+    Returns a list of human-readable error strings (empty = valid). Split out so
+    tests can drive it against known-bad shapes without touching the tree.
+
+    Beyond the schema, three unsatisfiable-configuration checks. All three are
+    files that validate structurally and then detect nothing at runtime, which is
+    the worst outcome here: the pack looks configured and silently is not.
+
+      1. Duplicate projection ``id`` — the toolkit keys candidates on it, so the
+         second entry would shadow the first.
+      2. Duplicate ``kind`` inside one projection — ``kind`` is the unit
+         ``min_complementary_parts`` counts over, so a repeat lets one column
+         type satisfy the threshold twice. (``uniqueItems`` on the list cannot
+         see this: the two entries differ in their tokens.)
+      3. A kind that can never count — ``requires: context`` with no
+         ``context_tokens`` declared, or fewer ``part_kinds`` than
+         ``min_complementary_parts``.
+    """
+    import jsonschema
+
+    validator = jsonschema.Draft202012Validator(schema)
+    errors = []
+    for err in sorted(validator.iter_errors(data), key=lambda e: list(e.absolute_path)):
+        path = "/".join(str(p) for p in err.absolute_path) or "<root>"
+        errors.append(f"{path}: {err.message}")
+    if errors:
+        # Coherence checks below assume the shape held; reporting both sets at
+        # once would bury the real error under type confusion.
+        return errors
+
+    seen_ids = set()
+    for index, projection in enumerate(data["projections"]):
+        where = f"projections/{index}"
+        projection_id = projection["id"]
+        if projection_id in seen_ids:
+            errors.append(f"{where}: duplicate projection id '{projection_id}'")
+        seen_ids.add(projection_id)
+
+        part_kinds = projection["part_kinds"]
+        kinds = [part["kind"] for part in part_kinds]
+        for kind in sorted({k for k in kinds if kinds.count(k) > 1}):
+            errors.append(
+                f"{where} ('{projection_id}'): duplicate part kind '{kind}' — kind is the "
+                "unit min_complementary_parts counts over"
+            )
+
+        minimum = projection["min_complementary_parts"]
+        if len(set(kinds)) < minimum:
+            errors.append(
+                f"{where} ('{projection_id}'): declares {len(set(kinds))} distinct part "
+                f"kind(s) but requires {minimum} — the projection can never fire"
+            )
+
+        if not projection.get("context_tokens"):
+            for part in part_kinds:
+                if part.get("requires") == "context":
+                    errors.append(
+                        f"{where} ('{projection_id}'): part kind '{part['kind']}' requires a "
+                        "context token but the projection declares no context_tokens — that "
+                        "kind can never count"
+                    )
+    return errors
+
+
+def validate_entity_projections(verbose: bool) -> ValidationResult:
+    """Validate every accelerator pack's ``entity-projections.yaml``, if it has one.
+
+    The file carries the column-recognition vocabulary the toolkit's alignment
+    stage used to hardcode (toolkit DD-188, reference-models #94). It is
+    OPTIONAL by design: a pack that ships none yields no candidates, and the
+    toolkit has no built-in fallback vocabulary to fall back to. So an absent
+    file passes and says so out loud — absent is a decision, and it should be
+    visible in the log rather than inferred from silence. A file that is present
+    is fully binding.
+    """
+    r = ValidationResult()
+    r.messages.append("\n── accelerator-packs/*/client-hub-blueprint/entity-projections.yaml ──")
+
+    if not PACKS_DIR.is_dir():
+        r.warn("accelerator-packs/ directory not present — skipping")
+        return r
+
+    packs = sorted(
+        d for d in PACKS_DIR.iterdir()
+        if d.is_dir() and not d.name.startswith(".") and d.name != "_schema"
+    )
+    present = [p for p in packs if (p / ENTITY_PROJECTIONS_REL).is_file()]
+
+    if not present:
+        r.ok("No pack ships entity-projections.yaml (valid: no config, no candidates)")
+        return r
+
+    if ENTITY_PROJECTIONS_SCHEMA.is_file():
+        r.ok("accelerator-packs/_schema/entity-projections.schema.json exists", verbose, is_verbose=True)
+    else:
+        r.fail(
+            "accelerator-packs/_schema/entity-projections.schema.json missing, but "
+            f"{len(present)} pack(s) ship an entity-projections.yaml"
+        )
+        return r
+
+    try:
+        import json
+        import yaml  # PyYAML
+        import jsonschema  # noqa: F401 — probe only; used via entity_projection_errors
+    except ImportError as exc:
+        r.warn(f"{exc.name} not installed — entity-projections validation skipped (CI installs it)")
+        return r
+
+    schema = json.loads(ENTITY_PROJECTIONS_SCHEMA.read_text(encoding="utf-8"))
+
+    for pack in packs:
+        path = pack / ENTITY_PROJECTIONS_REL
+        rel = path.relative_to(ONTOLOGY_ROOT)
+        if not path.is_file():
+            r.ok(f"{pack.name}: ships no entity-projections.yaml (no config, no candidates)")
+            continue
+        try:
+            data = yaml.safe_load(path.read_text(encoding="utf-8"))
+        except yaml.YAMLError as e:
+            r.fail(f"{rel}: invalid YAML — {e}")
+            continue
+        if not isinstance(data, dict):
+            r.fail(f"{rel}: top-level YAML must be a mapping")
+            continue
+        schema_errors = entity_projection_errors(data, schema)
+        if schema_errors:
+            for err in schema_errors:
+                r.fail(f"{rel}: {err}")
+        else:
+            ids = ", ".join(p["id"] for p in data["projections"])
+            r.ok(f"{rel}: validates against entity-projections.schema.json ({ids})")
+
+    return r
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Validate Kairos ontology repository structure conventions."
@@ -775,6 +926,12 @@ def main():
         print(msg)
     total_pass += blueprint_result.passes
     total_fail += blueprint_result.failures
+
+    projection_result = validate_entity_projections(args.verbose)
+    for msg in projection_result.messages:
+        print(msg)
+    total_pass += projection_result.passes
+    total_fail += projection_result.failures
 
     print(f"\n{'─' * 50}")
     if total_fail:

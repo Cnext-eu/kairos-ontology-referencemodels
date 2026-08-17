@@ -1,0 +1,128 @@
+# Entity Projections — Logistics Accelerator Pack
+#
+# Recognition vocabulary for column groups that are a flattened *projection* of
+# some other entity: `stops.pickup_location_street` is not a property of a
+# TransportCall, it is one part of an Address that happens to have been
+# denormalised onto the stop row.
+#
+# Why this lives here and not in the toolkit
+# ------------------------------------------
+# Toolkit DD-188: ontology semantics live in the reference models, never
+# compiled into the engine. Until this file existed the toolkit carried its own
+# address vocabulary with an e-commerce role list — billing, shipping, mailing,
+# home, work — and no pickup, origin or destination, so a live logistics hub's
+# three location clusters were invisible to it. Role vocabulary is exactly where
+# the packs diverge, which is why the file is pack-scoped rather than global
+# (reference-models #94, open question 2/3).
+#
+# The schema is a list so that cargo, equipment and party projections can be
+# authored as siblings later. Only `postal-address` is authored in this round.
+#
+# Contract notes
+# --------------
+# * Validated against accelerator-packs/_schema/entity-projections.schema.json —
+#   registered in contract-manifest.yaml, enforced by scripts/validate_structure.py
+#   and tests/test_contract_manifest.py.
+# * A pack that ships NO entity-projections.yaml yields NO candidates. There is
+#   deliberately no built-in fallback vocabulary in the toolkit; absent is a
+#   valid, honest state, not a gap to be filled by a default.
+# * Everything derived from this file is advisory
+#   (requires_human_confirmation: true) and never changes a disposition.
+# * Not a blueprints/patterns/ entry: a recognition rule has nothing to conform
+#   to in a TTL, so validate_pattern_conformance.py does not apply.
+
+schema_version: 1
+
+projections:
+
+  # ── Address ────────────────────────────────────────────────────────────────
+  # Fires when a table carries two or more complementary address parts sharing
+  # one role. Two is the floor that stops `country_of_origin` alone — or a bare
+  # `city` — from being read as an address.
+  - id: postal-address
+    target_concept: Address
+    target_candidates:
+      # Resolved in order against the DOMAIN's import closure; first hit wins.
+      # bsp/reference-data is imported by the reference-data domain in
+      # client-hub-blueprint/data-domains.yaml ("Code list, location, country,
+      # currency, UoM, address"), and :Address is declared there as a subclass
+      # of :Location, mapped to UN/CEFACT TradeAddress.
+      - https://www.kairosflow.ai/ont/bsp/reference-data#Address
+    min_complementary_parts: 2
+    relationship_naming: "has{Role}Address"
+    default_relationship: hasAddress
+    cardinality: "1:n"
+
+    part_kinds:
+      - kind: street
+        tokens: [street]
+
+      - kind: house_number
+        # `house` is deliberately NOT a bare token: it matches unrelated business
+        # terms (e.g. `clearingHouse` tokenizes to {clearing, house}). The compact
+        # forms below are unambiguous, and were what the pre-DD-188 gate required.
+        tokens: []
+        # `compact` is matched against the compacted (separator-stripped) column
+        # name only, so `housenumber` hits without `house` having to appear as
+        # its own token.
+        compact: [housenumber, houseno]
+
+      - kind: postal
+        tokens: [zip, postal, postcode]
+        compact: [postalcode, zipcode]
+
+      - kind: city
+        # Weak: a `city` column is as often a citizenship, birthplace or
+        # office-location attribute as it is an address part.
+        tokens: [city, town]
+        weak: true
+
+      - kind: state
+        # Stricter than weak: `state` is overwhelmingly a status column in
+        # logistics source systems (`shipment_state`, `leg_state`), so a role
+        # qualifier is not enough — only a context token admits it.
+        tokens: [state, province, region]
+        requires: context
+
+      - kind: country
+        # Weak: the guard that stops a bare `country` column being read as an
+        # address when it is citizenship or country of manufacture.
+        tokens: [country]
+        weak: true
+
+      - kind: address_line
+        tokens: [address, addressline]
+
+    # The role of a column is the first (sorted) qualifier present in its name,
+    # else "default". Grouped below by provenance; ordering here is presentation
+    # only — the toolkit sorts before matching.
+    role_qualifiers:
+      # Transport document parties (MMT / DCSA consignment vocabulary).
+      - shipper
+      - consignee
+      # Commercial and correspondence roles that logistics shares with the
+      # generic case.
+      - billing
+      - shipping
+      - delivery
+      - invoice
+      - mailing
+      - registered
+      - home
+      - work
+      - contact
+      # Movement endpoints. The reason this file exists: a hub's stops table
+      # clusters on pickup/delivery, and an order clusters on origin/destination.
+      - pickup
+      - collection
+      - origin
+      - destination
+      # Terminal, depot and port operations (TIC / IMO vocabulary).
+      - loading
+      - unloading
+      - depot
+      - terminal
+      - port
+
+    # Satisfy `weak`, and are the ONLY thing that satisfies `requires: context`.
+    context_tokens: [location, premises, site, facility]

@@ -99,6 +99,37 @@ surfaces:
       this file is a coordinated two-repository change and must use expand/contract — see
       CONTRACT.md, Deprecation. `owns`/`does_not_own` are classifier input, not decoration.
 
+  - id: entity-projections
+    path: accelerator-packs/*/client-hub-blueprint/entity-projections.yaml
+    schema: accelerator-packs/_schema/entity-projections.schema.json
+    consumers:
+      - kairos_ontology.core.propose_alignment (column-cluster recognition, address projection)
+    reads:
+      - projections[].{id,target_concept,target_candidates,min_complementary_parts}
+      - projections[].{relationship_naming,default_relationship,cardinality}
+      - projections[].part_kinds[].{kind,tokens,compact,weak,requires}
+      - projections[].{role_qualifiers,context_tokens}
+    enforced_by:
+      - scripts/validate_structure.py (schema + unsatisfiable-configuration checks)
+      - tests/test_validate_structure.py::test_every_shipped_entity_projection_validates
+      - tests/test_contract_manifest.py::test_declared_schema_validates_every_matching_file
+    notes: >
+      Optional per pack, and absence is contract too: a pack that ships no file yields NO
+      candidates, because the toolkit deliberately has no vocabulary of its own to fall back on
+      (DD-188 — ontology semantics live here, never compiled into the engine). Only logistics
+      ships one today; financial-services is absent on purpose, its role vocabulary being
+      unevidenced rather than empty. The tokens, role_qualifiers and context_tokens ARE the
+      detector, so an edit here changes what a hub detects — same class of behavioural file as
+      data-domains.yaml's owns/does_not_own prose. It is deliberately paired with that file: same
+      client-hub-blueprint/ directory, same shared accelerator-packs/_schema/ for the schema. An
+      earlier draft put it under current/blueprint/, which is the logistics blueprint dossier and
+      does not exist in financial-services at all — a path the second pack could not use, in a
+      change whose whole point is two packs shipping different vocabularies. Pack-scoped document,
+      pack-agnostic shape: the schema is authored once. Candidates derived from it are advisory
+      (requires_human_confirmation: true) and never change a disposition. Not a
+      blueprints/patterns/ entry: a recognition rule has nothing to conform to in a TTL, so
+      validate_pattern_conformance.py does not apply.
+
   - id: discovery-docs
     path: accelerator-packs/*/discovery/*.md
     schema: null
@@ -119,7 +150,7 @@ surfaces:
       - scripts/version_manager.py check (VERSION matches owl:versionInfo)
       - scripts/validate_structure.py
       - tests/test_model_registration.py
-      - tests/test_bundle_conformance.py::test_inventory_filenames_are_injective
+      - tests/test_bundle_conformance.py::test_every_source_resolves_its_import_closure
       - tests/test_bundle_conformance.py::test_every_bundled_ttl_is_classified
     notes: >
       Module document IRIs and their owl:versionInfo are contract; a hub resolves modules by
