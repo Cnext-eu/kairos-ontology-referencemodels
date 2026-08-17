@@ -59,6 +59,27 @@ Or, if working locally, point your tool at:
 ontology-reference-models/accelerator-packs/logistics/current/logistics-accelerator.ttl
 ```
 
+## Client hub blueprint
+
+Pack-scoped inputs a client hub is scaffolded from. Both are read by the toolkit, so they are
+contract rather than documentation — see [CONTRACT.md](../../CONTRACT.md) and
+[`contract-manifest.yaml`](../../contract-manifest.yaml).
+
+- **[data-domains.yaml](client-hub-blueprint/data-domains.yaml)** — the domain registry: what each
+  domain owns and does not own, and which reference modules it imports.
+- **[entity-projections.yaml](client-hub-blueprint/entity-projections.yaml)** — the pack's
+  column-recognition vocabulary: which groups of source columns are a flattened projection of
+  another entity, and what relationship connects them. Role vocabulary is exactly where the packs
+  diverge — logistics needs `pickup`/`origin`/`destination`, financial services would need its own
+  — which is why it is pack-scoped rather than compiled into the toolkit. Candidates derived from
+  it are advisory. A pack that ships no such file yields no candidates; there is deliberately no
+  built-in fallback.
+
+Both validate against schemas in the shared
+[`accelerator-packs/_schema/`](../_schema/) rather than against a pack-local `_schema/`: the
+documents are pack-scoped but their shapes are not, so each schema is authored once and is binding
+on every pack's copy.
+
 ## Version
 
 <!-- BEGIN GENERATED: version -->

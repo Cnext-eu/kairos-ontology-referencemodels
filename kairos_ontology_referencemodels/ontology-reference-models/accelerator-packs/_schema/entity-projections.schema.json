@@ -1,0 +1,188 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.kairosflow.ai/schema/accelerator/entity-projections.schema.json",
+  "title": "Accelerator pack entity-projection registry",
+  "$comment": "Contract file. Sits beside data-domains.schema.json for the same reason, and validates a document that sits beside data-domains.yaml (accelerator-packs/<pack>/client-hub-blueprint/entity-projections.yaml): the document is pack-scoped but its SHAPE is shared by every pack, so the schema is authored once here rather than copied into each pack. Read by the toolkit's alignment stage, which recognises denormalised column clusters and proposes a relationship to the projected entity (toolkit DD-188, reference-models #94). The vocabulary is not decoration: tokens, role_qualifiers and context_tokens ARE the detector, so an edit here changes what a hub detects. additionalProperties is false throughout, so a typo'd key fails here rather than being silently ignored by the loader. A pack that ships no such file yields no candidates at all; there is deliberately no built-in fallback vocabulary in the toolkit, and this schema never applies to an absent file.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "projections"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "$comment": "Integer, not the dotted string data-domains.yaml uses. Bumping it is a coordinated two-repository change: the toolkit loader pins the version it understands, so a bump must land with the consumer that reads it."
+    },
+    "projections": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/projection"
+      },
+      "$comment": "A list so cargo, equipment and party projections can be authored as siblings of postal-address without a second file or a schema change."
+    }
+  },
+  "$defs": {
+    "iri": {
+      "type": "string",
+      "pattern": "^https?://",
+      "minLength": 1
+    },
+    "token": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*$",
+      "$comment": "Matched against a lower-cased, separator-stripped column name, so a token may never itself contain a separator or upper case — 'address_line' would never match anything and must be written 'addressline'."
+    },
+    "projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "target_concept",
+        "target_candidates",
+        "min_complementary_parts",
+        "relationship_naming",
+        "default_relationship",
+        "cardinality",
+        "part_kinds"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+          "$comment": "Stable and kebab-case; the toolkit cites it in the candidate rationale, so renaming one is a visible change to hub output."
+        },
+        "target_concept": {
+          "type": "string",
+          "minLength": 1,
+          "$comment": "Human-facing label used in the rationale. Not resolved; target_candidates carries the machine half."
+        },
+        "target_candidates": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/iri"
+          },
+          "$comment": "Walked in order against the domain's import closure; first hit wins. If none resolve the toolkit still emits the candidate with target_resolved: false and says so — never guess, never drop. minItems is 1 because an empty list makes the projection permanently inert."
+        },
+        "min_complementary_parts": {
+          "type": "integer",
+          "minimum": 2,
+          "$comment": "Distinct part_kinds a cluster needs before it fires. Floored at 2 on purpose: at 1 a single 'country_of_origin' column becomes an address, which is the false positive this whole mechanism exists to avoid."
+        },
+        "relationship_naming": {
+          "type": "string",
+          "pattern": "^[a-z][A-Za-z0-9]*\\{Role\\}[A-Za-z0-9]*$",
+          "$comment": "{Role} is substituted with the title-cased role ('pickup' -> 'hasPickupAddress'). The placeholder is required: a template without it would name every role's relationship identically."
+        },
+        "default_relationship": {
+          "type": "string",
+          "pattern": "^[a-z][A-Za-z0-9]*$",
+          "$comment": "Used when the extracted role is 'default' — i.e. the column names carry no role qualifier at all."
+        },
+        "cardinality": {
+          "type": "string",
+          "pattern": "^(0|1|n):(1|n)$",
+          "$comment": "Colon notation, fixed by the cross-repo contract. Deliberately NOT the '1..n' dotted form used by the logistics blueprint registries: this string is read by the toolkit, not by validate_logistics_blueprint.py, and the two notations must not be conflated."
+        },
+        "part_kinds": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/part_kind"
+          },
+          "$comment": "minItems 2 mirrors the min_complementary_parts floor — a projection that declares fewer kinds than it requires can never fire."
+        },
+        "role_qualifiers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/token"
+          },
+          "$comment": "Where the packs genuinely diverge: logistics needs pickup/origin/destination/port, financial-services would need its own set. The role of a column is the first (sorted) qualifier present in its name, so file order is presentation only. May be empty — an empty list means every cluster resolves to the default relationship — but omitting the key entirely is also legal and means the same thing."
+        },
+        "context_tokens": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/token"
+          },
+          "$comment": "Admit a weak kind, and are the ONLY thing that admits a requires: context kind. If a projection declares a kind with requires: context and no context_tokens, that kind can never count."
+        }
+      }
+    },
+    "part_kind": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(_[a-z0-9]+)*$",
+          "$comment": "snake_case, unique within the projection. It is the unit the min_complementary_parts count is taken over, so two entries sharing a kind would let one column type satisfy the threshold twice."
+        },
+        "tokens": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/token"
+          },
+          "$comment": "Matched as name segments. MAY be empty when `compact` carries the kind on its own — e.g. house_number, whose bare token `house` also matches unrelated business terms such as clearingHouse. anyOf below still requires the kind to be matchable by something."
+        },
+        "compact": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/token"
+          },
+          "$comment": "Matched against the compacted (separator-stripped) name only, so 'housenumber' hits without 'house' having to stand as its own segment."
+        },
+        "weak": {
+          "const": true,
+          "$comment": "The kind alone is not evidence: it counts only if the column name also carries a role_qualifier or a context_token. This is the guard that stops a bare 'country' column being read as an address when it is citizenship. Only true is expressible — 'weak: false' is the default and writing it invites the reader to think the key is a dial. Mutually exclusive with 'requires'."
+        },
+        "requires": {
+          "enum": [
+            "context"
+          ],
+          "$comment": "Stricter than weak: a role qualifier does NOT satisfy it, only a context_token does. Single-valued enum rather than a boolean so a future stricter mode is additive."
+        }
+      },
+      "not": {
+        "required": [
+          "weak",
+          "requires"
+        ]
+      },
+      "$comment": "'weak' and 'requires' cannot both be present: 'requires: context' already subsumes 'weak', and carrying both would leave the intended strictness ambiguous to a reader and to any future loader. A part kind must be matchable: at least one of `tokens` or `compact` must be non-empty, or the kind can never fire and silently lowers the effective part count.",
+      "anyOf": [
+        {
+          "properties": {
+            "tokens": {
+              "minItems": 1
+            }
+          },
+          "required": [
+            "tokens"
+          ]
+        },
+        {
+          "properties": {
+            "compact": {
+              "minItems": 1
+            }
+          },
+          "required": [
+            "compact"
+          ]
+        }
+      ]
+    }
+  }
+}
