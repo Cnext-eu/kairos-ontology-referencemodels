@@ -1,0 +1,651 @@
+@prefix : <https://www.kairosflow.ai/ont/dcsa/booking#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix td: <https://www.kairosflow.ai/ont/dcsa/transport-documents#> .
+@prefix equip: <https://www.kairosflow.ai/ont/dcsa/equipment#> .
+@prefix party: <https://www.kairosflow.ai/ont/dcsa/party#> .
+@prefix loc: <https://www.kairosflow.ai/ont/dcsa/locations#> .
+@prefix evt: <https://www.kairosflow.ai/ont/dcsa/events#> .
+@prefix tc: <https://www.kairosflow.ai/ont/dcsa/transport-call#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/dcsa/booking> a owl:Ontology ;
+    dcterms:title "DCSA Booking Domain" ;
+    dcterms:description """Booking and shipping instruction concepts for container shipping.
+    
+    Covers booking requests, confirmed bookings, shipping instructions,
+    shipments, cargo items, commodities, requested equipment, and
+    utilized transport equipment.
+
+    v1.3.0: Added selected high-value DCSA Domain v3.1.0 fit-gap properties
+    for booking lifecycle timestamps and dangerous-goods commodity details.
+    Additional DCSA Domain v3.1.0 fields may be mapped through full domain
+    discovery using the documented fit-gap analysis.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.5.0" ;
+    dcterms:source "DCSA Booking API (BKG) v2.0.4, DCSA Domain v3.1.0" ;
+    rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
+
+#################################################################
+#    Booking and Shipping Classes
+#################################################################
+
+:Booking a owl:Class ;
+    rdfs:label "Booking" ;
+    rdfs:comment """A request by a shipper or booking party to reserve container space and equipment for cargo transport.
+    
+    DCSA: The initial request to the ocean carrier for transport service.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :carrierBookingReference ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:BookingRequest a owl:Class ;
+    rdfs:label "Booking Request" ;
+    rdfs:comment """A formal request submitted by a shipper to book cargo space with an ocean carrier.
+    
+    DCSA: Initial booking submission with cargo details and equipment requirements.""" ;
+    rdfs:subClassOf :Booking .
+
+:ConfirmedBooking a owl:Class ;
+    rdfs:label "Confirmed Booking" ;
+    rdfs:comment """A booking that has been accepted and confirmed by the ocean carrier.
+    
+    DCSA: Carrier-confirmed space and equipment allocation.""" ;
+    rdfs:subClassOf :Booking .
+
+:ShippingInstruction a owl:Class ;
+    rdfs:label "Shipping Instruction" ;
+    rdfs:comment """Detailed instructions from shipper to carrier on cargo handling and documentation requirements.
+    
+    DCSA: Provides all information needed to create the Bill of Lading.
+    DCSA documentation_domain_v3.0.0 schema: transportDocumentTypeCode (BOL/SWB),
+    isShippedOnBoardType, isElectronic, isToOrder, freightPaymentTermCode (PRE/COL),
+    numberOfCopiesWithCharges, numberOfOriginalsWithCharges, placeOfIssue, sendToPlatform.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :shippingInstructionReference ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:Shipment a owl:Class ;
+    rdfs:label "Shipment" ;
+    rdfs:comment """The transport of cargo from origin to destination under a transport contract.
+    
+    DCSA: Represents the complete shipping transaction.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :carrierBookingReference ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:CargoItem a owl:Class ;
+    rdfs:label "Cargo Item" ;
+    rdfs:comment """An item of cargo within a booking or shipment with specific characteristics.
+    
+    DCSA: Represents individual cargo line items.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :cargoLineItemNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:Commodity a owl:Class ;
+    rdfs:label "Commodity" ;
+    rdfs:comment """A type of goods being shipped.
+    
+    DCSA: Describes the nature of cargo with HS codes and descriptions.""" .
+
+:RequestedEquipment a owl:Class ;
+    rdfs:label "Requested Equipment" ;
+    rdfs:comment """Container equipment requested by shipper in a booking.
+    
+    DCSA: Specifies container types, quantities, and special requirements.""" .
+
+:UtilizedTransportEquipment a owl:Class ;
+    rdfs:label "Utilized Transport Equipment" ;
+    rdfs:comment """Actual container equipment allocated and used for cargo transport.
+    
+    DCSA: Containers actually assigned with specific container numbers.
+    DCSA _CAR variant schema: cargoGrossWeight, cargoGrossWeightUnit, cargoGrossVolume,
+    cargoGrossVolumeUnit, isShipperOwned, isNonOperatingReefer, seals, activeReeferSettings.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :equipmentReference ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasBooking a owl:ObjectProperty ;
+    rdfs:label "has booking" ;
+    rdfs:comment "Relates a shipment to its booking." ;
+    rdfs:domain :Shipment ;
+    rdfs:range :Booking .
+
+:hasShippingInstruction a owl:ObjectProperty ;
+    rdfs:label "has shipping instruction" ;
+    rdfs:comment "Relates a booking to its shipping instructions." ;
+    rdfs:domain :Booking ;
+    rdfs:range :ShippingInstruction .
+
+:hasTransportDocument a owl:ObjectProperty ;
+    rdfs:label "has transport document" ;
+    rdfs:comment "Relates a shipment to its transport document." ;
+    rdfs:domain :Shipment ;
+    rdfs:range td:TransportDocument .
+
+:hasCargoItem a owl:ObjectProperty ;
+    rdfs:label "has cargo item" ;
+    rdfs:comment "Relates a booking or shipment to cargo items." ;
+    rdfs:domain :Booking ;
+    rdfs:range :CargoItem .
+
+:hasCommodity a owl:ObjectProperty ;
+    rdfs:label "has commodity" ;
+    rdfs:comment "Relates cargo item to commodity type." ;
+    rdfs:domain :CargoItem ;
+    rdfs:range :Commodity .
+
+:hasRequestedEquipment a owl:ObjectProperty ;
+    rdfs:label "has requested equipment" ;
+    rdfs:comment "Relates booking to requested containers." ;
+    rdfs:domain :Booking ;
+    rdfs:range :RequestedEquipment .
+
+:hasUtilizedEquipment a owl:ObjectProperty ;
+    rdfs:label "has utilized equipment" ;
+    rdfs:comment "Relates shipment to actual containers used." ;
+    rdfs:domain :Shipment ;
+    rdfs:range :UtilizedTransportEquipment .
+
+:hasContainer a owl:ObjectProperty ;
+    rdfs:label "has container" ;
+    rdfs:comment "Relates equipment to specific container." ;
+    rdfs:domain :UtilizedTransportEquipment ;
+    rdfs:range equip:Container .
+
+:hasParty a owl:ObjectProperty ;
+    rdfs:label "has party" ;
+    rdfs:comment """Relates a shipment or booking to one of its shipping parties.
+    Cardinality: 1:n. The typed roles :hasShipper, :hasConsignee, :hasCarrier,
+    :hasBookingParty and :hasNotifyParty are specialisations of this relationship.""" ;
+    rdfs:domain [ a owl:Class ; owl:unionOf ( :Shipment :Booking ) ] ;
+    rdfs:range party:ShippingParty .
+
+:hasShipper a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
+    rdfs:label "has shipper" ;
+    rdfs:comment "Identifies the shipper." ;
+    rdfs:domain :Shipment ;
+    rdfs:range party:Shipper .
+
+:hasConsignee a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
+    rdfs:label "has consignee" ;
+    rdfs:comment "Identifies the consignee." ;
+    rdfs:domain :Shipment ;
+    rdfs:range party:Consignee .
+
+:hasCarrier a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
+    rdfs:label "has carrier" ;
+    rdfs:comment "Identifies the ocean carrier." ;
+    rdfs:domain :Shipment ;
+    rdfs:range party:Carrier .
+
+:hasBookingParty a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
+    rdfs:label "has booking party" ;
+    rdfs:comment "Identifies the booking party." ;
+    rdfs:domain :Booking ;
+    rdfs:range party:BookingParty .
+
+:hasNotifyParty a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasParty ;
+    rdfs:label "has notify party" ;
+    rdfs:comment "Identifies a notify party." ;
+    rdfs:domain :Shipment ;
+    rdfs:range party:NotifyParty .
+
+:hasLocation a owl:ObjectProperty ;
+    rdfs:label "has location" ;
+    rdfs:comment """Relates a booking to one of its routing locations. Cardinality: 1:n.
+    The typed roles :hasPlaceOfReceipt, :hasPortOfLoading, :hasPortOfDischarge,
+    :hasPlaceOfDelivery and :hasTransshipmentPort are specialisations of it.""" ;
+    rdfs:domain :Booking ;
+    rdfs:range loc:Location .
+
+:hasPlaceOfReceipt a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasLocation ;
+    rdfs:label "has place of receipt" ;
+    rdfs:comment "Identifies place where cargo is received." ;
+    rdfs:domain :Booking ;
+    rdfs:range loc:PlaceOfReceipt .
+
+:hasPortOfLoading a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasLocation ;
+    rdfs:label "has port of loading" ;
+    rdfs:comment "Identifies port of loading." ;
+    rdfs:domain :Booking ;
+    rdfs:range loc:PortOfLoading .
+
+:hasPortOfDischarge a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasLocation ;
+    rdfs:label "has port of discharge" ;
+    rdfs:comment "Identifies port of discharge." ;
+    rdfs:domain :Booking ;
+    rdfs:range loc:PortOfDischarge .
+
+:hasPlaceOfDelivery a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasLocation ;
+    rdfs:label "has place of delivery" ;
+    rdfs:comment "Identifies place of final delivery." ;
+    rdfs:domain :Booking ;
+    rdfs:range loc:PlaceOfDelivery .
+
+:hasTransshipmentPort a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasLocation ;
+    rdfs:label "has transshipment port" ;
+    rdfs:comment "Identifies a transshipment port." ;
+    rdfs:domain :Booking ;
+    rdfs:range loc:TransshipmentPort .
+
+:hasEvent a owl:ObjectProperty ;
+    rdfs:label "has event" ;
+    rdfs:comment "Relates shipment or container to events." ;
+    rdfs:domain :Shipment ;
+    rdfs:range evt:Event .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:carrierBookingReference a owl:DatatypeProperty ;
+    rdfs:label "carrier booking reference" ;
+    rdfs:comment "Unique booking reference assigned by carrier." ;
+    rdfs:domain :Booking ;
+    rdfs:range xsd:string .
+
+:shippingInstructionReference a owl:DatatypeProperty ;
+    rdfs:label "shipping instruction reference" ;
+    rdfs:comment "Unique identifier for shipping instructions." ;
+    rdfs:domain :ShippingInstruction ;
+    rdfs:range xsd:string .
+
+:bookingStatus a owl:DatatypeProperty ;
+    rdfs:label "booking status" ;
+    rdfs:comment "Status: RECEIVED, PENDING UPDATE, UPDATE RECEIVED, CONFIRMED, REJECTED, DECLINED, CANCELLED." ;
+    rdfs:domain :Booking ;
+    rdfs:range xsd:string .
+
+:bookingRequestDateTime a owl:DatatypeProperty ;
+    rdfs:label "booking request date time" ;
+    rdfs:comment """The date and time when the booking was created.
+    Source: DCSA Domain v3.1.0 `bookingRequestDateTime`.
+    Note: this shared DCSA Domain field is not exposed in the latest released
+    BKG v2.0.4 API payload.""" ;
+    rdfs:domain :Booking ;
+    rdfs:range xsd:dateTime .
+
+:bookingUpdatedDateTime a owl:DatatypeProperty ;
+    rdfs:label "booking updated date time" ;
+    rdfs:comment """Last date and time when the booking was updated.
+    Source: DCSA Domain v3.1.0 `bookingUpdatedDateTime`.
+    Note: this shared DCSA Domain field is not exposed in the latest released
+    BKG v2.0.4 API payload.""" ;
+    rdfs:domain :Booking ;
+    rdfs:range xsd:dateTime .
+
+:cargoLineItemNumber a owl:DatatypeProperty ;
+    rdfs:label "cargo line item number" ;
+    rdfs:comment "Sequential number of cargo item." ;
+    rdfs:domain :CargoItem ;
+    rdfs:range xsd:integer .
+
+:equipmentReference a owl:DatatypeProperty ;
+    rdfs:label "equipment reference" ;
+    rdfs:comment "Reference to specific equipment." ;
+    rdfs:domain :UtilizedTransportEquipment ;
+    rdfs:range xsd:string .
+
+:numberOfPackages a owl:DatatypeProperty ;
+    rdfs:label "number of packages" ;
+    rdfs:comment "Total number of packages." ;
+    rdfs:domain :CargoItem ;
+    rdfs:range xsd:integer .
+
+:packageCode a owl:DatatypeProperty ;
+    rdfs:label "package code" ;
+    rdfs:comment "UN/CEFACT package type code." ;
+    rdfs:domain :CargoItem ;
+    rdfs:range xsd:string .
+
+:volume a owl:DatatypeProperty ;
+    rdfs:label "volume" ;
+    rdfs:comment "Volume in cubic meters." ;
+    rdfs:domain :CargoItem ;
+    rdfs:range xsd:decimal .
+
+:weight a owl:DatatypeProperty ;
+    rdfs:label "weight" ;
+    rdfs:comment "Weight in kilograms." ;
+    rdfs:domain :CargoItem ;
+    rdfs:range xsd:decimal .
+
+:hsCode a owl:DatatypeProperty ;
+    rdfs:label "HS code" ;
+    rdfs:comment "Harmonized System commodity classification code." ;
+    rdfs:domain :Commodity ;
+    rdfs:range xsd:string .
+
+:commodityDescription a owl:DatatypeProperty ;
+    rdfs:label "commodity description" ;
+    rdfs:comment "Description of the goods." ;
+    rdfs:domain :Commodity ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Dangerous Goods Commodity Properties
+#################################################################
+
+:unNumber a owl:DatatypeProperty ;
+    rdfs:label "UN number" ;
+    rdfs:comment """United Nations Dangerous Goods Identifier assigned by the
+    UN Sub-Committee of Experts on the Transport of Dangerous Goods and shown
+    in the IMO IMDG Code.""" ;
+    rdfs:domain :Commodity ;
+    rdfs:range xsd:string .
+
+:imoClass a owl:DatatypeProperty ;
+    rdfs:label "IMO class" ;
+    rdfs:comment "Hazard class code of the referenced dangerous goods according to the specified regulation." ;
+    rdfs:domain :Commodity ;
+    rdfs:range xsd:string .
+
+:properShippingName a owl:DatatypeProperty ;
+    rdfs:label "proper shipping name" ;
+    rdfs:comment "Proper shipping name for dangerous goods under the applicable maritime code." ;
+    rdfs:domain :Commodity ;
+    rdfs:range xsd:string .
+
+:technicalName a owl:DatatypeProperty ;
+    rdfs:label "technical name" ;
+    rdfs:comment "Recognized chemical, biological, or other technical name for the referenced dangerous goods." ;
+    rdfs:domain :Commodity ;
+    rdfs:range xsd:string .
+
+:packingGroup a owl:DatatypeProperty ;
+    rdfs:label "packing group" ;
+    rdfs:comment "Packing group according to the UN Recommendations on the Transport of Dangerous Goods and IMO IMDG Code." ;
+    rdfs:domain :Commodity ;
+    rdfs:range xsd:integer .
+
+:flashPoint a owl:DatatypeProperty ;
+    rdfs:label "flash point" ;
+    rdfs:comment "Lowest temperature at which a chemical can vaporize to form an ignitable mixture in air." ;
+    rdfs:domain :Commodity ;
+    rdfs:range xsd:decimal .
+
+:isMarinePollutant a owl:DatatypeProperty ;
+    rdfs:label "is marine pollutant" ;
+    rdfs:comment "Indicates whether the goods belong to the classification of Marine Pollutant." ;
+    rdfs:domain :Commodity ;
+    rdfs:range xsd:boolean .
+
+:isLimitedQuantity a owl:DatatypeProperty ;
+    rdfs:label "is limited quantity" ;
+    rdfs:comment "Indicates whether the dangerous goods can be transported as limited quantity in accordance with Chapter 3.4 of the IMO IMDG Code." ;
+    rdfs:domain :Commodity ;
+    rdfs:range xsd:boolean .
+
+:isReportableQuantity a owl:DatatypeProperty ;
+    rdfs:label "is reportable quantity" ;
+    rdfs:comment "Indicates whether hazardous material is at the reportable quantity level requiring authority reporting in case of spill." ;
+    rdfs:domain :Commodity ;
+    rdfs:range xsd:boolean .
+
+:cargoGrossWeight a owl:DatatypeProperty ;
+    rdfs:label "cargo gross weight" ;
+    rdfs:comment "Total weight of cargo in kg." ;
+    rdfs:domain :Shipment ;
+    rdfs:range xsd:decimal .
+
+:freightPaymentTerm a owl:DatatypeProperty ;
+    rdfs:label "freight payment term" ;
+    rdfs:comment "Freight payment terms: PREPAID, COLLECT." ;
+    rdfs:domain :Booking ;
+    rdfs:range xsd:string .
+
+:incoterm a owl:DatatypeProperty ;
+    rdfs:label "Incoterm" ;
+    rdfs:comment "International Commercial Terms code (e.g., FOB, CIF, FCA)." ;
+    rdfs:domain :Booking ;
+    rdfs:range xsd:string .
+
+:serviceContractReference a owl:DatatypeProperty ;
+    rdfs:label "service contract reference" ;
+    rdfs:comment "Reference to carrier service contract." ;
+    rdfs:domain :Booking ;
+    rdfs:range xsd:string .
+
+:vesselName a owl:DatatypeProperty ;
+    rdfs:label "vessel name" ;
+    rdfs:comment "Name of the ocean vessel." ;
+    rdfs:domain :Shipment ;
+    rdfs:range xsd:string .
+
+:vesselIMONumber a owl:DatatypeProperty ;
+    rdfs:label "vessel IMO number" ;
+    rdfs:comment "International Maritime Organization vessel identifier." ;
+    rdfs:domain :Shipment ;
+    rdfs:range xsd:string .
+
+:voyageNumber a owl:DatatypeProperty ;
+    rdfs:label "voyage number" ;
+    rdfs:comment "Voyage or sailing reference." ;
+    rdfs:domain :Shipment ;
+    rdfs:range xsd:string .
+
+:carrierCode a owl:DatatypeProperty ;
+    rdfs:label "carrier code" ;
+    rdfs:comment "SCAC (Standard Carrier Alpha Code) or other carrier identifier." ;
+    rdfs:domain :Booking ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Inland & Intermodal Booking Properties
+#################################################################
+
+:receiptTypeAtOrigin a owl:DatatypeProperty ;
+    rdfs:label "receipt type at origin" ;
+    rdfs:comment """How cargo is received at origin.
+    DCSA BKG formal enum: CY (Container Yard), SD (Store Door),
+    CFS (Container Freight Station).""" ;
+    rdfs:domain :Booking ;
+    rdfs:range xsd:string .
+
+:deliveryTypeAtDestination a owl:DatatypeProperty ;
+    rdfs:label "delivery type at destination" ;
+    rdfs:comment """How cargo is delivered at destination.
+    DCSA BKG formal enum: CY (Container Yard), SD (Store Door),
+    CFS (Container Freight Station).""" ;
+    rdfs:domain :Booking ;
+    rdfs:range xsd:string .
+
+:requestedPreCarriageModeOfTransport a owl:DatatypeProperty ;
+    rdfs:label "requested pre-carriage mode of transport" ;
+    rdfs:comment """Requested transport mode for pre-carriage (origin to port of loading).
+    DCSA BKG v2.0.2 values: VESSEL, RAIL, TRUCK, BARGE, RAIL_TRUCK,
+    BARGE_TRUCK, BARGE_RAIL, MULTIMODAL.""" ;
+    rdfs:domain :Booking ;
+    rdfs:range xsd:string .
+
+:requestedOnCarriageModeOfTransport a owl:DatatypeProperty ;
+    rdfs:label "requested on-carriage mode of transport" ;
+    rdfs:comment """Requested transport mode for on-carriage (port of discharge to destination).
+    DCSA BKG v2.0.2 values: VESSEL, RAIL, TRUCK, BARGE, RAIL_TRUCK,
+    BARGE_TRUCK, BARGE_RAIL, MULTIMODAL.""" ;
+    rdfs:domain :Booking ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Transport Plan Leg
+#################################################################
+
+:TransportPlanLeg a owl:Class ;
+    rdfs:label "Transport Plan Leg" ;
+    rdfs:comment """A single leg in the confirmed booking's transport plan.
+
+    DCSA BKG 'Transport' schema: represents one segment of the planned
+    transport chain, classified by stage (pre-carriage, main-carriage,
+    or on-carriage) and mode of transport.""" .
+
+:hasTransportPlan a owl:ObjectProperty ;
+    rdfs:label "has transport plan" ;
+    rdfs:comment "Relates a confirmed booking to its transport plan legs." ;
+    rdfs:domain :ConfirmedBooking ;
+    rdfs:range :TransportPlanLeg .
+
+:hasLoadLocation a owl:ObjectProperty ;
+    rdfs:label "has load location" ;
+    rdfs:comment "The location where cargo is loaded for this transport leg." ;
+    rdfs:domain :TransportPlanLeg ;
+    rdfs:range loc:Location .
+
+:hasDischargeLocation a owl:ObjectProperty ;
+    rdfs:label "has discharge location" ;
+    rdfs:comment "The location where cargo is discharged for this transport leg." ;
+    rdfs:domain :TransportPlanLeg ;
+    rdfs:range loc:Location .
+
+:legHasTransportCall a owl:ObjectProperty ;
+    rdfs:label "has transport call" ;
+    rdfs:comment "The transport call associated with this plan leg." ;
+    rdfs:domain :TransportPlanLeg ;
+    rdfs:range tc:TransportCall .
+
+:legTransportPlanStage a owl:DatatypeProperty ;
+    rdfs:label "transport plan stage" ;
+    rdfs:comment """The stage of transport for this leg.
+    DCSA formal enum: PRC (Pre-Carriage), MNC (Main Carriage), ONC (On-Carriage).""" ;
+    rdfs:domain :TransportPlanLeg ;
+    rdfs:range xsd:string .
+
+:legTransportPlanStageSequenceNumber a owl:DatatypeProperty ;
+    rdfs:label "transport plan stage sequence number" ;
+    rdfs:comment "Sequence number within the transport plan stage." ;
+    rdfs:domain :TransportPlanLeg ;
+    rdfs:range xsd:integer .
+
+:legModeOfTransport a owl:DatatypeProperty ;
+    rdfs:label "mode of transport" ;
+    rdfs:comment "Transport mode for this leg (VESSEL, RAIL, TRUCK, BARGE)." ;
+    rdfs:domain :TransportPlanLeg ;
+    rdfs:range xsd:string .
+
+:plannedDepartureDate a owl:DatatypeProperty ;
+    rdfs:label "planned departure date" ;
+    rdfs:comment "Planned departure date for this transport leg." ;
+    rdfs:domain :TransportPlanLeg ;
+    rdfs:range xsd:dateTime .
+
+:plannedArrivalDate a owl:DatatypeProperty ;
+    rdfs:label "planned arrival date" ;
+    rdfs:comment "Planned arrival date for this transport leg." ;
+    rdfs:domain :TransportPlanLeg ;
+    rdfs:range xsd:dateTime .
+
+#################################################################
+#    Enriched Properties — DCSA Documentation Domain v3.0.0
+#################################################################
+
+:transportDocumentTypeCode a owl:DatatypeProperty ;
+    rdfs:label "transport document type code" ;
+    rdfs:comment "DCSA documentation_domain_v3.0.0: type of transport document (BOL for Bill of Lading, SWB for Sea Waybill)." ;
+    rdfs:domain :ShippingInstruction ;
+    rdfs:range xsd:string .
+
+:isShippedOnBoardType a owl:DatatypeProperty ;
+    rdfs:label "is shipped on board type" ;
+    rdfs:comment "DCSA documentation_domain_v3.0.0: indicates whether the transport document is a shipped on board type." ;
+    rdfs:domain :ShippingInstruction ;
+    rdfs:range xsd:boolean .
+
+:isElectronic a owl:DatatypeProperty ;
+    rdfs:label "is electronic" ;
+    rdfs:comment "DCSA documentation_domain_v3.0.0: indicates whether the shipping instruction is for an electronic transport document." ;
+    rdfs:domain :ShippingInstruction ;
+    rdfs:range xsd:boolean .
+
+:isToOrder a owl:DatatypeProperty ;
+    rdfs:label "is to order" ;
+    rdfs:comment "DCSA documentation_domain_v3.0.0: indicates whether the transport document is a to-order type (negotiable)." ;
+    rdfs:domain :ShippingInstruction ;
+    rdfs:range xsd:boolean .
+
+:freightPaymentTermCode a owl:DatatypeProperty ;
+    rdfs:label "freight payment term code" ;
+    rdfs:comment "DCSA documentation_domain_v3.0.0: freight payment terms code (PRE for prepaid, COL for collect)." ;
+    rdfs:domain :ShippingInstruction ;
+    rdfs:range xsd:string .
+
+:numberOfOriginalsWithCharges a owl:DatatypeProperty ;
+    rdfs:label "number of originals with charges" ;
+    rdfs:comment "DCSA documentation_domain_v3.0.0: number of original transport documents with charges shown." ;
+    rdfs:domain :ShippingInstruction ;
+    rdfs:range xsd:integer .
+
+:numberOfCopiesWithCharges a owl:DatatypeProperty ;
+    rdfs:label "number of copies with charges" ;
+    rdfs:comment "DCSA documentation_domain_v3.0.0: number of copy transport documents with charges shown." ;
+    rdfs:domain :ShippingInstruction ;
+    rdfs:range xsd:integer .
+
+#################################################################
+#    Enriched Properties — DCSA _CAR Variant Schema
+#################################################################
+
+:cargoGrossWeightUTE a owl:DatatypeProperty ;
+    rdfs:label "cargo gross weight (UTE)" ;
+    rdfs:comment "DCSA _CAR variant: total gross weight of cargo in the utilized transport equipment (kg)." ;
+    rdfs:domain :UtilizedTransportEquipment ;
+    rdfs:range xsd:decimal .
+
+:cargoGrossWeightUnit a owl:DatatypeProperty ;
+    rdfs:label "cargo gross weight unit" ;
+    rdfs:comment "DCSA _CAR variant: unit of measure for cargo gross weight (e.g., KGM, LBR)." ;
+    rdfs:domain :UtilizedTransportEquipment ;
+    rdfs:range xsd:string .
+
+:cargoGrossVolume a owl:DatatypeProperty ;
+    rdfs:label "cargo gross volume" ;
+    rdfs:comment "DCSA _CAR variant: total gross volume of cargo in the utilized transport equipment." ;
+    rdfs:domain :UtilizedTransportEquipment ;
+    rdfs:range xsd:decimal .
+
+:cargoGrossVolumeUnit a owl:DatatypeProperty ;
+    rdfs:label "cargo gross volume unit" ;
+    rdfs:comment "DCSA _CAR variant: unit of measure for cargo gross volume (e.g., MTQ, FTQ)." ;
+    rdfs:domain :UtilizedTransportEquipment ;
+    rdfs:range xsd:string .
+
+:isShipperOwned a owl:DatatypeProperty ;
+    rdfs:label "is shipper owned" ;
+    rdfs:comment "DCSA _CAR variant: indicates whether the equipment is shipper-owned (not carrier-owned)." ;
+    rdfs:domain :UtilizedTransportEquipment ;
+    rdfs:range xsd:boolean .
+
+:isNonOperatingReefer a owl:DatatypeProperty ;
+    rdfs:label "is non-operating reefer" ;
+    rdfs:comment "DCSA _CAR variant: indicates whether the reefer container is non-operating (no refrigeration)." ;
+    rdfs:domain :UtilizedTransportEquipment ;
+    rdfs:range xsd:boolean .

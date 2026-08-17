@@ -54,10 +54,20 @@ The BSP ontology uses `rdfs:seeAlso` annotations to reference equivalent concept
 
 ## Design Principles
 
-- **No cross-imports** between domain modules — each module is self-contained
-- The **root `bsp.ttl`** imports all eight domains via `owl:imports`
+- **A module imports what it domains on** — a property asserting `rdfs:domain` against a
+  class from another module requires that module in this module's `owl:imports` closure.
+  Six such imports were added at 2.5.0 (gh#97); before that the classes were untyped here
+  and could not be anchored in the consuming data domain.
+- The **root `bsp.ttl`** imports all eight domains via `owl:imports`; a leaf must never
+  import the root.
 - Each module uses its own namespace: `https://www.kairosflow.ai/ont/bsp/<domain>#`
-- Cross-domain alignment via `rdfs:seeAlso` — hub ontologies compose via `owl:imports`
+- **The module graph is acyclic, deliberately.** `:relatedToShipment` moved to
+  `bsp/financial` at 2.5.0 — it is domained on `fin:Invoice`, so it belongs there — which
+  removed the only `commercial → financial → commercial` cycle. The cycle was harmless to
+  the graph but made all four BSP modules mutually reachable, so any data domain importing
+  one was offered all four.
+- Cross-domain `rdfs:range` alignment stays unimported by design — see the MMT README for
+  why. Annotation-only links use `rdfs:seeAlso`.
 - Properties are distributed to the domain of their primary class
 
 ## Source

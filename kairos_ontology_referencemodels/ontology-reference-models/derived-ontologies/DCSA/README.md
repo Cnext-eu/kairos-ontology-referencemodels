@@ -77,7 +77,7 @@ Common entities referenced across all journeys:
 
 1. **Journey-based grouping** — Follows DCSA Information Model 2024.Q4 decomposition by journey type
 2. **Stable namespaces** — Module IRIs remain entity-based (`dcsa/booking#`, `dcsa/events#`) for backwards compatibility
-3. **Cross-domain references** — Leaf modules use prefixes to reference shared-kernel entities (equipment, party, locations, transport-call). Journey-level .ttl files handle composition via `owl:imports`
+3. **Cross-domain references** — Leaf modules use prefixes to reference shared-kernel entities (equipment, party, locations, transport-call). A leaf that asserts `rdfs:domain` against one declares its own `owl:imports` for it; journey-level composition does not substitute for that (`container-operations` needed its own import of `dcsa/equipment` at 1.6.0, gh#97). Unimported `rdfs:range` references remain intentional.
 4. **Import hierarchy** — `dcsa.ttl` → journey .ttl → leaf module .ttl
 5. **Consistent metadata** — All modules use `dcterms:` for metadata; `owl:versionInfo` for versioning
 

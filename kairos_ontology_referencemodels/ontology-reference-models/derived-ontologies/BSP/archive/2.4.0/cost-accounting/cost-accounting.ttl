@@ -1,0 +1,267 @@
+@prefix : <https://www.kairosflow.ai/ont/bsp/cost-accounting#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/bsp/cost-accounting> a owl:Ontology ;
+    dcterms:title "Kairos BSP Cost Accounting Domain Ontology" ;
+    dcterms:description """Operational cost accounting domain for logistics and transport companies.
+
+    This module defines classes for transport cost allocation, cost-to-serve analysis,
+    budgeting, and variance tracking. It provides the semantic foundation for:
+    - Cost allocation to consignments, legs, routes, and customers
+    - Cost-per-unit metrics (per TEU, per tonne-km, per move)
+    - Budget planning and budget-vs-actual variance analysis
+    - Cost center attribution and overhead allocation
+
+    Designed for logistics operational finance — complements BSP/Financial (which
+    covers invoicing and settlement) with the cost management perspective.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-22"^^xsd:date ;
+    dcterms:modified "2026-05-22"^^xsd:date ;
+    owl:versionInfo "2.4.0" ;
+    dcterms:source "UN/CEFACT CCL, Industry Practice" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/> .
+
+#################################################################
+#    Cost Allocation Classes
+#################################################################
+
+:CostAllocation a owl:Class ;
+    rdfs:label "Cost Allocation" ;
+    rdfs:comment """The assignment of a transport or operational cost to a specific scope
+    (consignment, transport leg, route, customer, or cost center).
+
+    Enables cost-to-serve analysis by attributing costs to the entities that
+    caused or benefited from the expenditure.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :allocatedAmount ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:CostCenter a owl:Class ;
+    rdfs:label "Cost Center" ;
+    rdfs:comment """An organizational unit or functional area to which costs are attributed
+    for management accounting purposes (e.g., vessel operations, terminal,
+    inland transport, administration).""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :costCenterCode ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:TransportCostItem a owl:Class ;
+    rdfs:label "Transport Cost Item" ;
+    rdfs:comment """An individual cost line representing a specific type of transport
+    expenditure (e.g., fuel, port fees, stevedoring, chassis hire,
+    documentation, insurance, customs brokerage).
+
+    UN/CEFACT: Aligns with LogisticsServiceCharge on the cost/payable side.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :costAmount ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:CostPerUnit a owl:Class ;
+    rdfs:label "Cost Per Unit" ;
+    rdfs:comment """A calculated cost metric expressing cost relative to a transport unit.
+    Common units: per TEU, per FEU, per tonne-km, per CBM, per move,
+    per container-day, per voyage-day.
+
+    Used for benchmarking, cost control, and profitability analysis.""" .
+
+:CostToServe a owl:Class ;
+    rdfs:label "Cost to Serve" ;
+    rdfs:comment """The aggregated total cost of serving a specific customer, lane, trade,
+    or service over a period. Combines all allocated cost items to give a
+    full-cost view of a commercial relationship or route.
+
+    Key metric for customer profitability and network optimization.""" .
+
+#################################################################
+#    Budget and Variance Classes
+#################################################################
+
+:BudgetItem a owl:Class ;
+    rdfs:label "Budget Item" ;
+    rdfs:comment """A planned cost amount for a specific period, cost center, and cost type.
+    Used as the baseline for variance analysis (budget vs actual).""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :budgetAmount ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:CostVariance a owl:Class ;
+    rdfs:label "Cost Variance" ;
+    rdfs:comment """The difference between budgeted and actual costs for a scope and period.
+    Positive variance = over budget (unfavorable), negative = under budget (favorable).
+
+    Drives cost control actions and forecasting adjustments.""" .
+
+#################################################################
+#    Overhead and Indirect Cost
+#################################################################
+
+:OverheadAllocation a owl:Class ;
+    rdfs:label "Overhead Allocation" ;
+    rdfs:comment """The distribution of indirect/overhead costs (e.g., vessel depreciation,
+    IT systems, management) to operational units using an allocation basis
+    (e.g., TEU volume, revenue share, headcount).""" ;
+    rdfs:subClassOf :CostAllocation .
+
+:AllocationBasis a owl:Class ;
+    rdfs:label "Allocation Basis" ;
+    rdfs:comment """The method or driver used to distribute costs (e.g., TEU volume,
+    weight handled, revenue proportion, headcount, vessel-days).""" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:allocatedTo a owl:ObjectProperty ;
+    rdfs:label "allocated to" ;
+    rdfs:comment "Relates a cost allocation to its target scope (consignment, route, customer, etc.)." ;
+    rdfs:domain :CostAllocation ;
+    rdfs:range owl:Thing .
+
+:hasCostCenter a owl:ObjectProperty ;
+    rdfs:label "has cost center" ;
+    rdfs:comment "Relates a cost item or allocation to its cost center." ;
+    rdfs:domain :TransportCostItem ;
+    rdfs:range :CostCenter .
+
+:hasCostItem a owl:ObjectProperty ;
+    rdfs:label "has cost item" ;
+    rdfs:comment "Relates a cost allocation to the underlying cost item." ;
+    rdfs:domain :CostAllocation ;
+    rdfs:range :TransportCostItem .
+
+:hasBudget a owl:ObjectProperty ;
+    rdfs:label "has budget" ;
+    rdfs:comment "Relates a cost center or scope to its budget item." ;
+    rdfs:domain :CostCenter ;
+    rdfs:range :BudgetItem .
+
+:hasVariance a owl:ObjectProperty ;
+    rdfs:label "has variance" ;
+    rdfs:comment "Relates a budget item to its variance record." ;
+    rdfs:domain :BudgetItem ;
+    rdfs:range :CostVariance .
+
+:usesAllocationBasis a owl:ObjectProperty ;
+    rdfs:label "uses allocation basis" ;
+    rdfs:comment "Relates an overhead allocation to the driver used for distribution." ;
+    rdfs:domain :OverheadAllocation ;
+    rdfs:range :AllocationBasis .
+
+:hasCostPerUnit a owl:ObjectProperty ;
+    rdfs:label "has cost per unit" ;
+    rdfs:comment "Relates a scope to its calculated cost-per-unit metric." ;
+    rdfs:domain :CostAllocation ;
+    rdfs:range :CostPerUnit .
+
+:hasCostToServe a owl:ObjectProperty ;
+    rdfs:label "has cost to serve" ;
+    rdfs:comment "Relates a customer or lane to its cost-to-serve calculation." ;
+    rdfs:domain :CostCenter ;
+    rdfs:range :CostToServe .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:allocatedAmount a owl:DatatypeProperty ;
+    rdfs:label "allocated amount" ;
+    rdfs:comment "Monetary amount allocated." ;
+    rdfs:domain :CostAllocation ;
+    rdfs:range xsd:decimal .
+
+:costAmount a owl:DatatypeProperty ;
+    rdfs:label "cost amount" ;
+    rdfs:comment "Monetary amount of the cost item." ;
+    rdfs:domain :TransportCostItem ;
+    rdfs:range xsd:decimal .
+
+:costType a owl:DatatypeProperty ;
+    rdfs:label "cost type" ;
+    rdfs:comment "Classification of cost (e.g., FUEL, PORT_FEES, STEVEDORING, CHASSIS_HIRE, DOCUMENTATION, INSURANCE)." ;
+    rdfs:domain :TransportCostItem ;
+    rdfs:range xsd:string .
+
+:costCenterCode a owl:DatatypeProperty ;
+    rdfs:label "cost center code" ;
+    rdfs:comment "Identifier code for the cost center." ;
+    rdfs:domain :CostCenter ;
+    rdfs:range xsd:string .
+
+:costCenterName a owl:DatatypeProperty ;
+    rdfs:label "cost center name" ;
+    rdfs:comment "Human-readable name of the cost center." ;
+    rdfs:domain :CostCenter ;
+    rdfs:range xsd:string .
+
+:unitCost a owl:DatatypeProperty ;
+    rdfs:label "unit cost" ;
+    rdfs:comment "Calculated cost per transport unit." ;
+    rdfs:domain :CostPerUnit ;
+    rdfs:range xsd:decimal .
+
+:costUnit a owl:DatatypeProperty ;
+    rdfs:label "cost unit" ;
+    rdfs:comment "Transport unit used as denominator (e.g., TEU, FEU, TONNE_KM, CBM, MOVE, CONTAINER_DAY)." ;
+    rdfs:domain :CostPerUnit ;
+    rdfs:range xsd:string .
+
+:budgetAmount a owl:DatatypeProperty ;
+    rdfs:label "budget amount" ;
+    rdfs:comment "Planned monetary amount for the budget period." ;
+    rdfs:domain :BudgetItem ;
+    rdfs:range xsd:decimal .
+
+:actualAmount a owl:DatatypeProperty ;
+    rdfs:label "actual amount" ;
+    rdfs:comment "Actual monetary amount spent in the period." ;
+    rdfs:domain :CostVariance ;
+    rdfs:range xsd:decimal .
+
+:varianceAmount a owl:DatatypeProperty ;
+    rdfs:label "variance amount" ;
+    rdfs:comment "Difference between actual and budget (actual - budget). Positive = over budget." ;
+    rdfs:domain :CostVariance ;
+    rdfs:range xsd:decimal .
+
+:variancePercentage a owl:DatatypeProperty ;
+    rdfs:label "variance percentage" ;
+    rdfs:comment "Variance expressed as percentage of budget." ;
+    rdfs:domain :CostVariance ;
+    rdfs:range xsd:decimal .
+
+:period a owl:DatatypeProperty ;
+    rdfs:label "period" ;
+    rdfs:comment "Time period for the cost, budget, or metric (e.g., 2026-Q1, 2026-03, 2026-W12)." ;
+    rdfs:domain :BudgetItem ;
+    rdfs:range xsd:string .
+
+:currency a owl:DatatypeProperty ;
+    rdfs:label "currency" ;
+    rdfs:comment "ISO 4217 currency code." ;
+    rdfs:domain :TransportCostItem ;
+    rdfs:range xsd:string .
+
+:totalCostToServe a owl:DatatypeProperty ;
+    rdfs:label "total cost to serve" ;
+    rdfs:comment "Aggregated cost-to-serve amount for the scope and period." ;
+    rdfs:domain :CostToServe ;
+    rdfs:range xsd:decimal .
+
+:allocationBasisType a owl:DatatypeProperty ;
+    rdfs:label "allocation basis type" ;
+    rdfs:comment "Method used for allocation (e.g., TEU_VOLUME, REVENUE_SHARE, HEADCOUNT, VESSEL_DAYS)." ;
+    rdfs:domain :AllocationBasis ;
+    rdfs:range xsd:string .

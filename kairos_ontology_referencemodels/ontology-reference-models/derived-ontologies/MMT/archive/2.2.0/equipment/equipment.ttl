@@ -1,0 +1,340 @@
+@prefix : <https://www.kairosflow.ai/ont/mmt/equipment#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix mmt-evt: <https://www.kairosflow.ai/ont/mmt/events#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/mmt/equipment> a owl:Ontology ;
+    dcterms:title "MMT Equipment Domain" ;
+    dcterms:description """Transport equipment classes for the Kairos Multi-Modal Transport ontology.
+
+    Covers freight containers, reefer containers, tank containers, pallets, swap bodies,
+    trailers, and equipment properties. Based on UN/CEFACT MMT Reference Data Model.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "2.2.0" ;
+    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
+    rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
+
+#################################################################
+#    Transport Equipment Classes
+#################################################################
+
+:TransportEquipment a owl:Class ;
+    rdfs:label "Transport Equipment" ;
+    rdfs:comment """Equipment used to transport goods.
+    
+    UN/CEFACT MMT: Containers, swap bodies, pallets, vehicles.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :equipmentIdentifier ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:FreightContainer a owl:Class ;
+    rdfs:label "Freight Container" ;
+    rdfs:comment """An ISO freight container for intermodal transport.
+
+    Properties: isoContainerCode, containerSize, containerType.
+    UN/CEFACT MMT-RDM: LogisticsTransportEquipmentType — isoContainerCode
+    is the ISO 6346 container code; containerSize is the size (e.g., 20ft,
+    40ft); containerType is the type code (e.g., GP, HC, OT).""" ;
+    rdfs:subClassOf :TransportEquipment .
+
+:ReeferContainer a owl:Class ;
+    rdfs:label "Reefer Container" ;
+    rdfs:comment """A temperature-controlled freight container.
+
+    UN/CEFACT MMT: For perishable or temperature-sensitive cargo.
+
+    Overlaps by name with dcsa/equipment#ReeferContainer (different vocabulary:
+    DCSA carries ISO codes, humidity/ventilation). Binding rule: follow the
+    archetype's equipment anchor — this class for mmt-anchored (mixed/
+    non-containerised) fleets, the DCSA twin for container carriers; never
+    bind one physical unit to both. See the logistics blueprint's equipment
+    domain note and canonical-class-registry.yaml equipment-asset.""" ;
+    rdfs:subClassOf :FreightContainer .
+
+:TankContainer a owl:Class ;
+    rdfs:label "Tank Container" ;
+    rdfs:comment """A container for liquid or gas cargo.
+
+    Properties: tankCapacity, tankTypeCode.
+    UN/CEFACT MMT-RDM: LogisticsTransportEquipmentType — tankCapacity is
+    the tank capacity in litres; tankTypeCode is the tank type code (e.g.,
+    IMO 1, IMO 2, UN portable tank).
+
+    Overlaps by name with dcsa/equipment#TankContainer. Binding rule: follow
+    the archetype's equipment anchor — this class for mmt-anchored (mixed/
+    non-containerised) fleets, the DCSA twin for container carriers; never
+    bind one physical unit to both. See the logistics blueprint's equipment
+    domain note and canonical-class-registry.yaml equipment-asset.""" ;
+    rdfs:subClassOf :FreightContainer .
+
+:Pallet a owl:Class ;
+    rdfs:label "Pallet" ;
+    rdfs:comment """A portable platform for storing and moving goods.
+
+    Properties: palletType, palletDimensions.
+    UN/CEFACT MMT-RDM: LogisticsTransportEquipmentType — palletType is the
+    pallet type code (e.g., EUR, US, ISO); palletDimensions is the
+    dimension specification of the pallet.""" ;
+    rdfs:subClassOf :TransportEquipment .
+
+:SwapBody a owl:Class ;
+    rdfs:label "Swap Body" ;
+    rdfs:comment """An intermodal freight container for road and rail.
+
+    Properties: swapBodyCode, swapBodyDimensions.
+    UN/CEFACT MMT-RDM: LogisticsTransportEquipmentType — swapBodyCode is
+    the swap body identification code; swapBodyDimensions is the
+    dimension specification of the swap body.""" ;
+    rdfs:subClassOf :TransportEquipment .
+
+:TrailerUnit a owl:Class ;
+    rdfs:label "Trailer Unit" ;
+    rdfs:comment """A road trailer used for freight transport.
+
+    Properties: trailerPlate, trailerType.
+    UN/CEFACT MMT-RDM: LogisticsTransportEquipmentType — trailerPlate is
+    the trailer license plate or registration; trailerType is the type of
+    trailer (semi-trailer, full trailer).""" ;
+    rdfs:subClassOf :TransportEquipment .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:involvesEquipment a owl:ObjectProperty ;
+    rdfs:label "involves equipment" ;
+    rdfs:comment "Relates event to equipment involved." ;
+    rdfs:domain mmt-evt:TransportEvent ;
+    rdfs:range :TransportEquipment .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:equipmentIdentifier a owl:DatatypeProperty ;
+    rdfs:label "equipment identifier" ;
+    rdfs:comment "Unique identifier for transport equipment (e.g., container number)." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:string .
+
+:equipmentSizeType a owl:DatatypeProperty ;
+    rdfs:label "equipment size type" ;
+    rdfs:comment "ISO 6346 equipment size and type code." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:string .
+
+:tareWeight a owl:DatatypeProperty ;
+    rdfs:label "tare weight" ;
+    rdfs:comment "Empty equipment weight (kg)." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:decimal .
+
+:maxGrossWeight a owl:DatatypeProperty ;
+    rdfs:label "maximum gross weight" ;
+    rdfs:comment "Maximum allowed weight (kg)." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:decimal .
+
+:sealNumber a owl:DatatypeProperty ;
+    rdfs:label "seal number" ;
+    rdfs:comment "Security seal identifier." ;
+    rdfs:domain :Seal ;
+    rdfs:range xsd:string .
+
+:sealType a owl:DatatypeProperty ;
+    rdfs:label "seal type" ;
+    rdfs:comment "Type of seal: CARRIER, CUSTOMS, SHIPPER." ;
+    rdfs:domain :Seal ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Temperature Instruction Class (UN/CEFACT RABIE v101)
+#################################################################
+
+:TemperatureSettingInstructions a owl:Class ;
+    rdfs:label "Temperature Setting Instructions" ;
+    rdfs:comment """Instructions for temperature control of reefer equipment.
+
+    Properties: targetTemperature, humiditySetting.
+    UN/CEFACT RABIE: TemperatureSettingInstructionsType — targetTemperature
+    is the target temperature in Celsius; humiditySetting is the required
+    relative humidity percentage.""" .
+
+#################################################################
+#    Seal Class (UN/CEFACT RABIE v101)
+#################################################################
+
+:Seal a owl:Class ;
+    rdfs:label "Seal" ;
+    rdfs:comment """A security seal applied to transport equipment.
+
+    Properties: sealNumber, sealType, sealCondition, sealIssuer.
+    UN/CEFACT RABIE: LogisticsSealType — sealNumber is the seal identifier;
+    sealType is the type (carrier, customs, shipper); sealCondition is the
+    condition of the seal (intact, broken); sealIssuer is the party that
+    issued the seal.""" .
+
+#################################################################
+#    Additional Object Properties
+#################################################################
+
+:hasTemperatureInstructions a owl:ObjectProperty ;
+    rdfs:label "has temperature instructions" ;
+    rdfs:comment "Temperature control instructions for this equipment." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range :TemperatureSettingInstructions .
+
+:hasSeal a owl:ObjectProperty ;
+    rdfs:label "has seal" ;
+    rdfs:comment "Security seal applied to this equipment." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range :Seal .
+
+:temperatureSetting a owl:DatatypeProperty ;
+    rdfs:label "temperature setting" ;
+    rdfs:comment "Required temperature in Celsius." ;
+    rdfs:domain :ReeferContainer ;
+    rdfs:range xsd:decimal .
+
+:minimumTemperature a owl:DatatypeProperty ;
+    rdfs:label "minimum temperature" ;
+    rdfs:comment "Minimum allowed temperature in Celsius." ;
+    rdfs:domain :ReeferContainer ;
+    rdfs:range xsd:decimal .
+
+:maximumTemperature a owl:DatatypeProperty ;
+    rdfs:label "maximum temperature" ;
+    rdfs:comment "Maximum allowed temperature in Celsius." ;
+    rdfs:domain :ReeferContainer ;
+    rdfs:range xsd:decimal .
+
+:isShipperOwned a owl:DatatypeProperty ;
+    rdfs:label "is shipper owned (SOC)" ;
+    rdfs:comment "Indicates if equipment is shipper-owned." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:boolean .
+
+#################################################################
+#    Additional Properties (UN/CEFACT RABIE v101)
+#################################################################
+
+:categoryCode a owl:DatatypeProperty ;
+    rdfs:label "category code" ;
+    rdfs:comment "Equipment category code (LogisticsTransportEquipmentType.CategoryCode)." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:string .
+
+:operationalStatusCode a owl:DatatypeProperty ;
+    rdfs:label "operational status code" ;
+    rdfs:comment "Operational status of the equipment (e.g., EMPTY, LOADED, DAMAGED)." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:string .
+
+:transportMovementStatusCode a owl:DatatypeProperty ;
+    rdfs:label "transport movement status code" ;
+    rdfs:comment "Status of equipment relative to transport movement." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Additional Datatype Properties (UN/CEFACT MMT-RDM)
+#################################################################
+
+:isoContainerCode a owl:DatatypeProperty ;
+    rdfs:label "ISO container code" ;
+    rdfs:comment "ISO 6346 container identification code. UN/CEFACT MMT-RDM: LogisticsTransportEquipmentType ISO code." ;
+    rdfs:domain :FreightContainer ;
+    rdfs:range xsd:string .
+
+:containerSize a owl:DatatypeProperty ;
+    rdfs:label "container size" ;
+    rdfs:comment "Container size (e.g., 20ft, 40ft). UN/CEFACT MMT-RDM: LogisticsTransportEquipmentType container size." ;
+    rdfs:domain :FreightContainer ;
+    rdfs:range xsd:string .
+
+:containerType a owl:DatatypeProperty ;
+    rdfs:label "container type" ;
+    rdfs:comment "Container type code (e.g., GP, HC, OT). UN/CEFACT MMT-RDM: LogisticsTransportEquipmentType container type." ;
+    rdfs:domain :FreightContainer ;
+    rdfs:range xsd:string .
+
+:palletType a owl:DatatypeProperty ;
+    rdfs:label "pallet type" ;
+    rdfs:comment "Pallet type code (e.g., EUR, US, ISO). UN/CEFACT MMT-RDM: LogisticsTransportEquipmentType pallet type." ;
+    rdfs:domain :Pallet ;
+    rdfs:range xsd:string .
+
+:palletDimensions a owl:DatatypeProperty ;
+    rdfs:label "pallet dimensions" ;
+    rdfs:comment "Dimension specification of the pallet. UN/CEFACT MMT-RDM: LogisticsTransportEquipmentType pallet dimensions." ;
+    rdfs:domain :Pallet ;
+    rdfs:range xsd:string .
+
+:sealCondition a owl:DatatypeProperty ;
+    rdfs:label "seal condition" ;
+    rdfs:comment "Condition of the seal (intact, broken). UN/CEFACT MMT-RDM: LogisticsSealType seal condition." ;
+    rdfs:domain :Seal ;
+    rdfs:range xsd:string .
+
+:sealIssuer a owl:DatatypeProperty ;
+    rdfs:label "seal issuer" ;
+    rdfs:comment "Party that issued the seal. UN/CEFACT MMT-RDM: LogisticsSealType seal issuer." ;
+    rdfs:domain :Seal ;
+    rdfs:range xsd:string .
+
+:swapBodyCode a owl:DatatypeProperty ;
+    rdfs:label "swap body code" ;
+    rdfs:comment "Swap body identification code. UN/CEFACT MMT-RDM: LogisticsTransportEquipmentType swap body code." ;
+    rdfs:domain :SwapBody ;
+    rdfs:range xsd:string .
+
+:swapBodyDimensions a owl:DatatypeProperty ;
+    rdfs:label "swap body dimensions" ;
+    rdfs:comment "Dimension specification of the swap body. UN/CEFACT MMT-RDM: LogisticsTransportEquipmentType swap body dimensions." ;
+    rdfs:domain :SwapBody ;
+    rdfs:range xsd:string .
+
+:tankCapacity a owl:DatatypeProperty ;
+    rdfs:label "tank capacity" ;
+    rdfs:comment "Tank capacity in litres. UN/CEFACT MMT-RDM: LogisticsTransportEquipmentType tank capacity." ;
+    rdfs:domain :TankContainer ;
+    rdfs:range xsd:decimal .
+
+:tankTypeCode a owl:DatatypeProperty ;
+    rdfs:label "tank type code" ;
+    rdfs:comment "Tank type code (e.g., IMO 1, IMO 2, UN portable tank). UN/CEFACT MMT-RDM: LogisticsTransportEquipmentType tank type code." ;
+    rdfs:domain :TankContainer ;
+    rdfs:range xsd:string .
+
+:targetTemperature a owl:DatatypeProperty ;
+    rdfs:label "target temperature" ;
+    rdfs:comment "Target temperature in Celsius. UN/CEFACT MMT-RDM: TemperatureSettingInstructionsType target temperature." ;
+    rdfs:domain :TemperatureSettingInstructions ;
+    rdfs:range xsd:decimal .
+
+:humiditySetting a owl:DatatypeProperty ;
+    rdfs:label "humidity setting" ;
+    rdfs:comment "Required relative humidity percentage. UN/CEFACT MMT-RDM: TemperatureSettingInstructionsType humidity setting." ;
+    rdfs:domain :TemperatureSettingInstructions ;
+    rdfs:range xsd:decimal .
+
+:trailerPlate a owl:DatatypeProperty ;
+    rdfs:label "trailer plate" ;
+    rdfs:comment "Trailer license plate or registration. UN/CEFACT MMT-RDM: LogisticsTransportEquipmentType trailer plate." ;
+    rdfs:domain :TrailerUnit ;
+    rdfs:range xsd:string .
+
+:trailerType a owl:DatatypeProperty ;
+    rdfs:label "trailer type" ;
+    rdfs:comment "Type of trailer (semi-trailer, full trailer). UN/CEFACT MMT-RDM: LogisticsTransportEquipmentType trailer type." ;
+    rdfs:domain :TrailerUnit ;
+    rdfs:range xsd:string .
+

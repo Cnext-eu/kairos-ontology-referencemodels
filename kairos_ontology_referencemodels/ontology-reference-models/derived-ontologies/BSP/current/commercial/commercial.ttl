@@ -20,7 +20,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-09-17"^^xsd:date ;
-    owl:versionInfo "2.4.0" ;
+    owl:versionInfo "2.5.0" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
@@ -346,10 +346,21 @@
     rdfs:range :PurchaseOrder .
 
 :relatedToShipment a owl:ObjectProperty ;
-    rdfs:label "related to shipment" ;
-    rdfs:comment "Links invoice to associated shipment." ;
-    rdfs:domain fin:Invoice ;
-    rdfs:range :Shipment .
+    rdfs:label "related to shipment (deprecated — moved to bsp/financial)" ;
+    rdfs:comment """DEPRECATED at BSP 2.5.0. Use financial:relatedToShipment instead.
+
+    This property is domained on fin:Invoice, so by this pack's own rule that a property
+    lives in the module of its primary domain class it belongs in bsp/financial. Left here
+    as a resolvable stub for one major.
+
+    It was the single assertion making the BSP import graph cyclic: commercial needed
+    financial for this domain, while financial needs commercial for :hasInvoice. That
+    cycle was harmless to the graph (both loaders guard on visited paths) but not to
+    scoping — the consumer derives each data domain's alignment pool from the transitive
+    owl:imports closure, so a cycle made all four BSP modules mutually reachable and any
+    domain importing one was offered all four.""" ;
+    owl:deprecated true ;
+    rdfs:seeAlso fin:relatedToShipment .
 
 :respondsToOrder a owl:ObjectProperty ;
     rdfs:label "responds to order" ;

@@ -5,6 +5,73 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.32.0] - 2026-08-17
+
+### Fixed
+
+- **50 orphaned `rdfs:domain` assertions across 13 modules in 4 vendor trees** (#97). A
+  module asserted `rdfs:domain` against a class it neither declared nor `owl:imports`, so
+  that class was never typed in the module's own graph. 15 `owl:imports` added; no term
+  added, renamed or re-domained.
+
+  Measured on the `bsp/financial` entry point — which the `financial` data domain loads:
+  `party:TradeParty` and `commercial:CommercialTransaction` were **not `owl:Class`**
+  there before the fix, so a hub working in that domain could not offer either as an
+  anchor. Both are typed now, and `TradeParty` carries 13 properties in that closure
+  rather than 4.
+
+  Note for anyone reading #97: its worked example overstates the defect and the issue has
+  been annotated accordingly. From the vendor root — the closure a hub actually loads,
+  since the accelerator imports `ont/bsp` — `creditLimit`, `creditLimitCurrency`,
+  `hasBankAccount` and `hasPartyPaymentTerms` all resolved on `TradeParty` *before* this
+  change. Their absence from a `bsp/party`-only closure is correct behaviour, not a
+  defect: they are financial-domain facts, exactly as the standards assessment concluded.
+
+- **The BSP module graph is now acyclic.** `:relatedToShipment` moves from `bsp/commercial`
+  to `bsp/financial`, where its `rdfs:domain fin:Invoice` says it belongs; the old IRI
+  stays as an `owl:deprecated` stub for one major.
+
+  This is not cosmetic. That single edge closed a `commercial → financial → commercial`
+  cycle, and while a cycle is harmless to the graph — both this repo's loader and the
+  consumer's guard on visited paths — it made all four BSP modules mutually reachable.
+  Since the consuming toolkit derives each data domain's alignment pool from the
+  *transitive* `owl:imports` closure, any domain importing one BSP module was offered all
+  four: 352 classes of widening from one misplaced property.
+
+### Added
+
+- **`validate_structure.py` check 10 — import closure.** Blocking for `rdfs:domain`,
+  advisory for `rdfs:range`, and blocking on a leaf module importing its vendor root.
+  Union domains (`rdfs:domain [ owl:unionOf ( … ) ]`) are checked; a simple
+  `rdfs:domain <prefixed-name>` regex would skip every one of them silently.
+
+  **The domain/range asymmetry is deliberate and was measured.** Requiring imports for
+  ranges too meant 70 imports rather than 15, and pushed the classes offered across the
+  logistics data domains from 729 to 1805 (2.48×) — handing `compliance` 92 classes where
+  it had 5, most from modules it has no relationship with. Domain-only costs 1.19×, and
+  that widening is real dependency: `financial` sees `CommercialTransaction` because its
+  properties are domained on it. The "cross-domain references use untyped ranges"
+  convention in the vendor READMEs exists to keep those closures narrow; it is
+  load-bearing, not stale, and the 54 range warnings should not be bulk-fixed.
+
+- **`tests/test_import_closure.py`** — 17 tests, none previously covering this validator.
+  Includes negative controls for both blocking rules, and pins the asymmetry: an
+  unimported range warns and does not fail.
+
+- **A cross-module reference section in `CONTRIBUTING.md`** covering the import rule, why
+  range is treated differently, and why a cycle is worth avoiding even though the gate
+  tolerates it.
+
+### Changed
+
+- `validate_structure.py` property completeness now exempts properties marked
+  `owl:deprecated true`. A retiring stub that kept its foreign `rdfs:domain` would also
+  keep the `owl:imports` edge it exists to remove.
+- MMT, BSP and DCSA READMEs: the "no cross-imports between domain modules" principle was
+  already false in the shipped files (`bsp/party` has imported `bsp/reference-data` since
+  1.5.0). Restated as the rule the gate now enforces, with the untyped-range convention
+  kept and its rationale written down.
+
 ## [1.31.0] - 2026-08-17
 
 ### Added

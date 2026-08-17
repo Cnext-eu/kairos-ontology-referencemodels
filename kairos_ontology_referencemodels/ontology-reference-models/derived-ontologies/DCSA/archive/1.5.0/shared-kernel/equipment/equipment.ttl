@@ -1,0 +1,169 @@
+@prefix : <https://www.kairosflow.ai/ont/dcsa/equipment#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/dcsa/equipment> a owl:Ontology ;
+    dcterms:title "DCSA Equipment Domain" ;
+    dcterms:description """Container equipment types and specifications for container shipping.
+    
+    Covers ISO freight containers including dry, reefer, tank, flat rack,
+    open top, and platform containers with their physical properties
+    and identifiers.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-08-15"^^xsd:date ;
+    owl:versionInfo "1.5.0" ;
+    dcterms:source "DCSA Booking API (BKG) v2.0, ISO 6346" ;
+    rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
+
+#################################################################
+#    Container Equipment Classes
+#################################################################
+
+:Container a owl:Class ;
+    rdfs:label "Container" ;
+    rdfs:comment """An ISO freight container used for ocean shipping.
+    
+    DCSA: Standard intermodal container with unique identifier.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :containerNumber ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:DryContainer a owl:Class ;
+    rdfs:label "Dry Container" ;
+    rdfs:comment """A standard enclosed container for general dry cargo.
+    
+    DCSA: Most common type (20ft, 40ft, 40ft High Cube).""" ;
+    rdfs:subClassOf :Container .
+
+:ReeferContainer a owl:Class ;
+    rdfs:label "Reefer Container" ;
+    rdfs:comment """A refrigerated container for temperature-controlled cargo.
+
+    DCSA: Temperature-controlled container for perishables and pharmaceuticals.
+
+    Overlaps by name with mmt/equipment#ReeferContainer (different vocabulary:
+    MMT covers the non-container fleet and models Seal as a class). Binding
+    rule: follow the archetype's equipment anchor — this class for container
+    carriers, the MMT twin for mmt-anchored (mixed/non-containerised) fleets,
+    which cite this module for ISO 6346 codes only; never bind one physical
+    unit to both. See the logistics blueprint's equipment domain note and
+    canonical-class-registry.yaml equipment-asset.""" ;
+    rdfs:subClassOf :Container .
+
+:TankContainer a owl:Class ;
+    rdfs:label "Tank Container" ;
+    rdfs:comment """A container designed for liquid bulk cargo transport.
+
+    DCSA: For chemicals, food-grade liquids, and other liquid products.
+
+    Overlaps by name with mmt/equipment#TankContainer. Binding rule: follow
+    the archetype's equipment anchor — this class for container carriers, the
+    MMT twin for mmt-anchored (mixed/non-containerised) fleets, which cite
+    this module for ISO 6346 codes only; never bind one physical unit to
+    both. See the logistics blueprint's equipment domain note and
+    canonical-class-registry.yaml equipment-asset.""" ;
+    rdfs:subClassOf :Container .
+
+:FlatRackContainer a owl:Class ;
+    rdfs:label "Flat Rack Container" ;
+    rdfs:comment """A container with collapsible or fixed ends for oversized cargo.
+    
+    DCSA: For machinery, vehicles, and out-of-gauge cargo.""" ;
+    rdfs:subClassOf :Container .
+
+:OpenTopContainer a owl:Class ;
+    rdfs:label "Open Top Container" ;
+    rdfs:comment """A container with removable top for easy loading from above.
+    
+    DCSA: For cargo that cannot be loaded through standard doors.""" ;
+    rdfs:subClassOf :Container .
+
+:PlatformContainer a owl:Class ;
+    rdfs:label "Platform Container" ;
+    rdfs:comment """A flat platform container without sides or top.
+    
+    DCSA: For heavy or oversized cargo requiring top and side access.""" ;
+    rdfs:subClassOf :Container .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:containerNumber a owl:DatatypeProperty ;
+    rdfs:label "container number" ;
+    rdfs:comment "Unique 11-character container identifier (ISO 6346)." ;
+    rdfs:domain :Container ;
+    rdfs:range xsd:string .
+
+:isoEquipmentCode a owl:DatatypeProperty ;
+    rdfs:label "ISO equipment code" ;
+    rdfs:comment "ISO 6346 container type code (4 characters)." ;
+    rdfs:domain :Container ;
+    rdfs:range xsd:string .
+
+:containerSizeType a owl:DatatypeProperty ;
+    rdfs:label "container size type" ;
+    rdfs:comment "Size and type code (e.g., 22G1 for 20ft standard dry)." ;
+    rdfs:domain :Container ;
+    rdfs:range xsd:string .
+
+:sealNumber a owl:DatatypeProperty ;
+    rdfs:label "seal number" ;
+    rdfs:comment "Security seal number on container." ;
+    rdfs:domain :Container ;
+    rdfs:range xsd:string .
+
+:verifiedGrossMass a owl:DatatypeProperty ;
+    rdfs:label "verified gross mass (VGM)" ;
+    rdfs:comment "Verified weight of packed container in kg (SOLAS requirement)." ;
+    rdfs:domain :Container ;
+    rdfs:range xsd:decimal .
+
+:tareWeight a owl:DatatypeProperty ;
+    rdfs:label "tare weight" ;
+    rdfs:comment "Empty container weight in kg." ;
+    rdfs:domain :Container ;
+    rdfs:range xsd:decimal .
+
+:temperatureSetting a owl:DatatypeProperty ;
+    rdfs:label "temperature setting" ;
+    rdfs:comment "Required temperature for reefer container in Celsius." ;
+    rdfs:domain :ReeferContainer ;
+    rdfs:range xsd:decimal .
+
+:temperatureUnit a owl:DatatypeProperty ;
+    rdfs:label "temperature unit" ;
+    rdfs:comment "Unit: CEL (Celsius) or FAH (Fahrenheit)." ;
+    rdfs:domain :ReeferContainer ;
+    rdfs:range xsd:string .
+
+:humidityPercent a owl:DatatypeProperty ;
+    rdfs:label "humidity percent" ;
+    rdfs:comment "Required humidity percentage." ;
+    rdfs:domain :ReeferContainer ;
+    rdfs:range xsd:decimal .
+
+:ventilationSetting a owl:DatatypeProperty ;
+    rdfs:label "ventilation setting" ;
+    rdfs:comment "Ventilation in cubic meters per hour." ;
+    rdfs:domain :ReeferContainer ;
+    rdfs:range xsd:decimal .
+
+:isShipperOwned a owl:DatatypeProperty ;
+    rdfs:label "is shipper owned (SOC)" ;
+    rdfs:comment "Indicates if container is shipper-owned (true) or carrier-owned (false)." ;
+    rdfs:domain :Container ;
+    rdfs:range xsd:boolean .
+
+:emptyIndicator a owl:DatatypeProperty ;
+    rdfs:label "empty indicator" ;
+    rdfs:comment "Indicates if container is empty." ;
+    rdfs:domain :Container ;
+    rdfs:range xsd:boolean .
