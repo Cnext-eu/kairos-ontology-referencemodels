@@ -77,9 +77,19 @@ Common entities referenced across all journeys:
 
 1. **Journey-based grouping** — Follows DCSA Information Model 2024.Q4 decomposition by journey type
 2. **Stable namespaces** — Module IRIs remain entity-based (`dcsa/booking#`, `dcsa/events#`) for backwards compatibility
-3. **Cross-domain references** — Leaf modules use prefixes to reference shared-kernel entities (equipment, party, locations, transport-call). Journey-level .ttl files handle composition via `owl:imports`
-4. **Import hierarchy** — `dcsa.ttl` → journey .ttl → leaf module .ttl
+3. **Cross-domain references** — A leaf module that asserts `rdfs:domain` or `rdfs:range`
+   against a shared-kernel entity (equipment, party, locations, transport-call) declares
+   its own `owl:imports` for that module. Enforced by `validate_structure.py` check 10.
+4. **Import hierarchy** — `dcsa.ttl` → journey .ttl → leaf module .ttl. The hierarchy
+   composes the bundle; it does not substitute for a leaf's own imports. A leaf must
+   never import the `dcsa.ttl` root.
 5. **Consistent metadata** — All modules use `dcterms:` for metadata; `owl:versionInfo` for versioning
+
+> **Changed in 1.6.0.** Principle 3 previously said journey-level files "handle composition
+> via `owl:imports`", implying leaves need none of their own. They did:
+> `equipment-journey.ttl` imported `container-operations` but not `equipment`, so
+> `container-operations`' `rdfs:domain equip:Container` was dangling even one level up, and
+> twenty such assertions across seven leaves were invisible to consumers (gh#97).
 
 ## Version
 - **Ontology version:** 1.3.0

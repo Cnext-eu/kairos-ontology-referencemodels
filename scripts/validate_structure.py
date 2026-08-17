@@ -15,6 +15,13 @@ Checks:
      validates against accelerator-packs/_schema/entity-projections.schema.json
      and is internally coherent. The file is optional by design — a pack that
      ships none yields no candidates, and the toolkit has no fallback (DD-188).
+ 10. Import closure (gh#97). Every rdfs:domain / rdfs:range naming a class in a
+     foreign Kairos namespace must have that class's module in the asserting
+     module's transitive owl:imports closure; and a leaf module must not import a
+     vendor root. Without this, a property domained on a class the module never
+     imports is left dangling: the class is never typed in that module's graph, so
+     the property is invisible to any consumer resolving "which properties does
+     class X carry" — which produced a false reference-model gap report.
 
 Advisory (warnings only, never fail the build):
   8. Relationship explicitness — flags likely *implicit* relationships:
@@ -82,6 +89,20 @@ DOMAIN_SIMPLE_RE = re.compile(
     r'rdfs:domain\s+(?P<domain>[A-Za-z][\w-]*:[A-Za-z][\w-]*|:[A-Za-z][\w-]*)\s*[;.]'
 )
 REUSABLE_NO_DOMAIN_RE = re.compile(r'REUSABLE\s+—\s+no rdfs:domain by design')
+
+KAIROS_NS_PREFIX = "https://www.kairosflow.ai/ont/"
+#: ``@prefix foo: <...> .`` — captures the prefix label (empty for the default ``:``).
+#: MULTILINE: these anchor per line, not at the start of the file.
+PREFIX_DECL_RE = re.compile(
+    r'^\s*@prefix\s+(?P<label>[A-Za-z][\w.-]*)?:\s*<(?P<ns>[^>]+)>\s*\.', re.MULTILINE
+)
+#: The ontology's own IRI, e.g. ``<https://.../ont/mmt/cargo> a owl:Ontology ;``
+ONTOLOGY_IRI_RE = re.compile(r'^\s*<(?P<iri>[^>]+)>\s+a\s+owl:Ontology\b', re.MULTILINE)
+#: An individual ``owl:imports`` target IRI. Unlike OWL_IMPORTS_RE (presence-only,
+#: used by check 3) this captures each IRI, including comma-continuation members.
+OWL_IMPORTS_IRI_RE = re.compile(r'owl:imports\s+((?:<[^>]+>\s*,\s*)*<[^>]+>)')
+#: A prefixed name in a domain/range span, e.g. ``mmt-evt:TransportEvent``.
+PREFIXED_NAME_RE = re.compile(r'\b(?P<label>[A-Za-z][\w.-]*)?:(?P<local>[A-Za-z][\w-]*)\b')
 
 # Matches Turtle string literals: triple-quoted ("""..."""), single-quoted ("..."),
 # and their single-quote analogues ('''...''', '...'). Used to strip literals
@@ -416,6 +437,165 @@ def _extract_property_blocks(lines):
         )
         index += 1
     return blocks
+
+
+def _prefix_map(text: str) -> dict[str, str]:
+    """Map prefix label -> namespace IRI. The default ``:`` prefix has label ``""``."""
+    out = {}
+    for match in PREFIX_DECL_RE.finditer(text):
+        out[match.group("label") or ""] = match.group("ns")
+    return out
+
+
+def _ontology_iri(text: str) -> str | None:
+    match = ONTOLOGY_IRI_RE.search(text)
+    return match.group("iri") if match else None
+
+
+def _declared_imports(code_text: str) -> set[str]:
+    out = set()
+    for match in OWL_IMPORTS_IRI_RE.finditer(code_text):
+        out.update(re.findall(r'<([^>]+)>', match.group(1)))
+    return out
+
+
+def _domain_range_spans(code_text: str):
+    """Yield (predicate, span_text) for each rdfs:domain / rdfs:range assertion.
+
+    The span runs to the statement terminator at bracket depth 0, so a union
+    domain/range (``rdfs:range [ owl:unionOf ( a:X b:Y ) ]``) yields all its
+    members rather than being skipped the way a simple ``rdfs:range X`` regex
+    would skip it.
+    """
+    for match in re.finditer(r'\brdfs:(domain|range)\b', code_text):
+        predicate = f"rdfs:{match.group(1)}"
+        depth = 0
+        index = match.end()
+        while index < len(code_text):
+            char = code_text[index]
+            if char in "[(":
+                depth += 1
+            elif char in "])":
+                depth -= 1
+            elif char in ";." and depth <= 0:
+                break
+            index += 1
+        yield predicate, code_text[match.end():index]
+
+
+def _is_vendor_root(iri: str) -> bool:
+    """True for a vendor aggregator IRI such as .../ont/mmt (no module segment)."""
+    if not iri.startswith(KAIROS_NS_PREFIX):
+        return False
+    return "/" not in iri[len(KAIROS_NS_PREFIX):].strip("/")
+
+
+def _module_iri_of_namespace(namespace: str) -> str:
+    return namespace.rstrip("#").rstrip("/")
+
+
+def validate_import_closure(verbose: bool, scan_roots=None) -> ValidationResult:
+    """Check 10 (gh#97): every foreign domain/range target is in the import closure.
+
+    Repo-scoped rather than folder-scoped because the closure legitimately crosses
+    vendor trees (Sustainability/carbon imports three IMO modules), so a per-folder
+    view could not tell a missing import from a cross-vendor one.
+
+    *scan_roots* overrides the directories scanned; the first entry is treated as the
+    derived-ontologies tree for the leaf-must-not-import-a-vendor-root rule. Tests pass
+    a tmp_path so the rules can be exercised without the real corpus.
+    """
+    r = ValidationResult()
+    r.messages.append("\n── Import Closure (gh#97) ──")
+
+    if scan_roots is None:
+        scan_roots = list(SCAN_DIRS) + [BLUEPRINTS_DIR / "ontology"]
+    scan_roots = list(scan_roots)
+    derived_root = scan_roots[0] if scan_roots else None
+    docs = {}  # ontology IRI -> record
+
+    for scan_root in scan_roots:
+        if not scan_root.exists():
+            continue
+        for ttl_file in sorted(scan_root.rglob("*.ttl")):
+            if "archive" in ttl_file.relative_to(scan_root).parts:
+                continue
+            text = ttl_file.read_text(encoding="utf-8")
+            code_text = _strip_turtle_literals_and_comments(text)
+            iri = _ontology_iri(code_text)
+            if iri is None:
+                continue
+            prefixes = _prefix_map(text)
+            own_ns = prefixes.get("", "")
+            targets = {}  # target module IRI -> list of "predicate prefix:Local"
+            for predicate, span in _domain_range_spans(code_text):
+                for match in PREFIXED_NAME_RE.finditer(span):
+                    label = match.group("label") or ""
+                    namespace = prefixes.get(label)
+                    if namespace is None or not namespace.startswith(KAIROS_NS_PREFIX):
+                        continue
+                    if namespace == own_ns:
+                        continue
+                    target = _module_iri_of_namespace(namespace)
+                    token = f"{label}:{match.group('local')}"
+                    targets.setdefault(target, []).append(f"{predicate} {token}")
+            try:
+                rel_path = ttl_file.relative_to(ONTOLOGY_ROOT)
+            except ValueError:
+                rel_path = ttl_file.relative_to(scan_root)
+            docs[iri] = {
+                "path": rel_path,
+                "in_derived": scan_root == derived_root,
+                "imports": _declared_imports(code_text),
+                "targets": targets,
+            }
+
+    def closure(iri: str) -> set[str]:
+        seen = set()
+        stack = list(docs.get(iri, {}).get("imports", ()))
+        while stack:
+            current = stack.pop()
+            if current in seen:
+                continue
+            seen.add(current)
+            stack.extend(docs.get(current, {}).get("imports", ()))
+        return seen
+
+    for iri, record in sorted(docs.items()):
+        rel = record["path"]
+        reachable = closure(iri)
+        unresolved = {
+            target: evidence
+            for target, evidence in record["targets"].items()
+            if target != iri and target not in reachable
+        }
+        if unresolved:
+            for target, evidence in sorted(unresolved.items()):
+                r.fail(
+                    f"{rel}: {', '.join(sorted(set(evidence)))} names a class in "
+                    f"<{target}>, which is not in this module's owl:imports closure — "
+                    f"the assertion is dangling and invisible to consumers"
+                )
+        elif record["targets"]:
+            r.ok(
+                f"{rel}: {len(record['targets'])} foreign module reference(s) all in closure",
+                verbose,
+                is_verbose=True,
+            )
+
+        # A leaf module must not import a vendor root: that would pull the whole
+        # vendor tree into every consumer and defeat per-domain import scoping.
+        # Accelerator packs and vendor roots are aggregators and may do so.
+        if record["in_derived"] and not _is_vendor_root(iri):
+            for imported in sorted(record["imports"]):
+                if _is_vendor_root(imported):
+                    r.fail(
+                        f"{rel}: imports vendor root <{imported}> — a leaf module must "
+                        f"import the specific sibling module(s) it references, not the "
+                        f"vendor aggregator"
+                    )
+
+    return r
 
 
 def validate_relationship_explicitness(folder: Path, verbose: bool) -> ValidationResult:
@@ -920,6 +1100,12 @@ def main():
                 print(msg)
             total_pass += relationship_result.passes
             total_fail += relationship_result.failures
+
+    closure_result = validate_import_closure(args.verbose)
+    for msg in closure_result.messages:
+        print(msg)
+    total_pass += closure_result.passes
+    total_fail += closure_result.failures
 
     blueprint_result = validate_blueprints(args.verbose)
     for msg in blueprint_result.messages:

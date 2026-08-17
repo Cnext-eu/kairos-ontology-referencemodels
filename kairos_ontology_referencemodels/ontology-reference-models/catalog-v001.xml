@@ -78,6 +78,7 @@
     <uri name="https://www.kairosflow.ai/ont/mmt" uri="derived-ontologies/MMT/current/mmt.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/mmt/cargo" uri="derived-ontologies/MMT/current/cargo/cargo.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/mmt/consignment" uri="derived-ontologies/MMT/current/consignment/consignment.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/mmt/dangerous-goods" uri="derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/mmt/documents" uri="derived-ontologies/MMT/current/documents/documents.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/mmt/equipment" uri="derived-ontologies/MMT/current/equipment/equipment.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/mmt/events" uri="derived-ontologies/MMT/current/events/events.ttl"/>

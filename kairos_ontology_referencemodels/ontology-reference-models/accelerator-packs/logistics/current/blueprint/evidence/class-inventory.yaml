@@ -82,6 +82,8 @@ modules:
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
 - ontology_uri: https://www.kairosflow.ai/ont/mmt/consignment
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
+- ontology_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
 - ontology_uri: https://www.kairosflow.ai/ont/mmt/documents
   source_file: derived-ontologies/MMT/current/documents/documents.ttl
 - ontology_uri: https://www.kairosflow.ai/ont/mmt/equipment
@@ -17889,495 +17891,6 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/imo/vessel-registry#yearBuilt
 - comments:
-  - "Corrosive substances.\n\n    Properties: corrosionRate, packingGroup (inherited from DangerousGoods).\n\
-    \    UN/CEFACT MMT-RDM: DangerousGoods — corrosionRate indicates the rate of\n    corrosion for packing\
-    \ group determination. UN TDG Recommendations,\n    Part 2, §2.8: Class 8 dangerous goods."
-  domains: []
-  kind: class
-  labels:
-  - Corrosive Substance (Class 8)
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges: []
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: &id029
-  - UN/CEFACT Multi-Modal Transport Reference Data Model v1.0 (RABIE v101)
-  superclasses:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
-  uri: https://www.kairosflow.ai/ont/mmt#CorrosiveSubstance
-- comments:
-  - "Hazardous materials requiring special handling.\n    \n    UN/CEFACT BSP D23B: Corresponds to unece:DangerousGoods\
-    \ — goods which may contain\n    a substance which poses risks to people and/or the environment during\
-    \ transportation.\n    The BSP model uses hazardClassificationId to distinguish classes; the subclasses\
-    \ below\n    reify the UN TDG hazard class taxonomy as OWL classes for semantic expressiveness."
-  domains: []
-  kind: class
-  labels:
-  - Dangerous Goods
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges: []
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#DangerousGoods
-- comments:
-  - "Explosive substances and articles.\n\n    Properties: explosionCode (compatibility group), netExplosiveMass.\n\
-    \    UN/CEFACT MMT-RDM: DangerousGoods — explosionCode maps to the UN TDG\n    compatibility group\
-    \ letter; netExplosiveMass is the net explosive content\n    quantity. UN TDG Recommendations, Part\
-    \ 2, §2.1: Class 1."
-  domains: []
-  kind: class
-  labels:
-  - Explosive Goods (Class 1)
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges: []
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
-  uri: https://www.kairosflow.ai/ont/mmt#ExplosiveGoods
-- comments:
-  - "Flammable gases.\n\n    Properties: gasPressure, vaporPressure.\n    UN/CEFACT MMT-RDM: DangerousGoods\
-    \ — gasPressure and vaporPressure capture\n    the pressure thresholds relevant for flammable gas\
-    \ transport. UN TDG\n    Recommendations, Part 2, §2.2: Class 2.1 dangerous goods."
-  domains: []
-  kind: class
-  labels:
-  - Flammable Gas (Class 2.1)
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges: []
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
-  uri: https://www.kairosflow.ai/ont/mmt#FlammableGas
-- comments:
-  - "Flammable liquids.\n\n    Properties: boilingPoint, flashPoint (inherited from DangerousGoods).\n\
-    \    UN/CEFACT MMT-RDM: DangerousGoods — boilingPoint is the temperature at\n    which the liquid's\
-    \ vapor pressure equals ambient pressure. UN TDG\n    Recommendations, Part 2, §2.3: Class 3 dangerous\
-    \ goods."
-  domains: []
-  kind: class
-  labels:
-  - Flammable Liquid (Class 3)
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges: []
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
-  uri: https://www.kairosflow.ai/ont/mmt#FlammableLiquid
-- comments:
-  - "Flammable solids.\n\n    Properties: selfReactiveIndicator, pyrophoricIndicator.\n    UN/CEFACT MMT-RDM:\
-    \ DangerousGoods — selfReactiveIndicator and\n    pyrophoricIndicator flag self-reactive and pyrophoric\
-    \ substances within\n    Class 4. UN TDG Recommendations, Part 2, §2.4: Class 4 dangerous goods."
-  domains: []
-  kind: class
-  labels:
-  - Flammable Solid (Class 4)
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges: []
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
-  uri: https://www.kairosflow.ai/ont/mmt#FlammableSolid
-- comments:
-  - "Miscellaneous dangerous substances and articles.\n\n    Properties: miscellaneousHazardCode, environmentallyHazardousIndicator.\n\
-    \    UN/CEFACT MMT-RDM: DangerousGoods — miscellaneousHazardCode captures the\n    specific Class\
-    \ 9 hazard identifier; environmentallyHazardousIndicator\n    flags environmentally hazardous substances\
-    \ (UN 3077/3082). UN TDG\n    Recommendations, Part 2, §2.9: Class 9 dangerous goods."
-  domains: []
-  kind: class
-  labels:
-  - Miscellaneous Dangerous Goods (Class 9)
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges: []
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
-  uri: https://www.kairosflow.ai/ont/mmt#MiscellaneousDangerousGoods
-- comments:
-  - "Oxidizing substances and organic peroxides.\n\n    Properties: organicPeroxideIndicator, selfAcceleratingTemperature.\n\
-    \    UN/CEFACT MMT-RDM: DangerousGoods — organicPeroxideIndicator distinguishes\n    Class 5.2 organic\
-    \ peroxides; selfAcceleratingTemperature is the\n    self-accelerating decomposition temperature.\
-    \ UN TDG Recommendations,\n    Part 2, §2.5: Class 5 dangerous goods."
-  domains: []
-  kind: class
-  labels:
-  - Oxidizing Substance (Class 5)
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges: []
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
-  uri: https://www.kairosflow.ai/ont/mmt#OxidizingSubstance
-- comments:
-  - "Radioactive materials.\n\n    Properties: radioactivityLevel, criticalitySafetyIndex.\n    UN/CEFACT\
-    \ MMT-RDM: DangerousGoods — radioactivityLevel is the activity\n    concentration or A2/A1 value;\
-    \ criticalitySafetyIndex applies to fissile\n    material. UN TDG Recommendations, Part 2, §2.7: Class\
-    \ 7 dangerous goods.\n    Also exists as standalone unece:RadioactiveMaterial in BSP D23B."
-  domains: []
-  kind: class
-  labels:
-  - Radioactive Material (Class 7)
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges: []
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
-  uri: https://www.kairosflow.ai/ont/mmt#RadioactiveMaterial
-- comments:
-  - "Toxic and infectious substances.\n\n    Properties: infectiousSubstanceIndicator, toxicInhalationHazardIndicator.\n\
-    \    UN/CEFACT MMT-RDM: DangerousGoods — infectiousSubstanceIndicator flags\n    Class 6.2 infectious\
-    \ substances; toxicInhalationHazardIndicator flags\n    toxic-inhalation hazards within Class 6.1.\
-    \ UN TDG Recommendations,\n    Part 2, §2.6: Class 6 dangerous goods."
-  domains: []
-  kind: class
-  labels:
-  - Toxic Substance (Class 6)
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges: []
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
-  uri: https://www.kairosflow.ai/ont/mmt#ToxicSubstance
-- comments:
-  - 'Boiling point temperature in Celsius. UN/CEFACT MMT-RDM: DangerousGoods boiling point.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#FlammableLiquid
-  kind: datatype_property
-  labels:
-  - boiling point
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#decimal
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#boilingPoint
-- comments:
-  - 'Corrosion rate on steel or aluminium in mm/year. UN/CEFACT MMT-RDM: DangerousGoods corrosion rate.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#CorrosiveSubstance
-  kind: datatype_property
-  labels:
-  - corrosion rate
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#decimal
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#corrosionRate
-- comments:
-  - 'Criticality safety index value for fissile radioactive material. UN/CEFACT MMT-RDM: DangerousGoods
-    CSI.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#RadioactiveMaterial
-  kind: datatype_property
-  labels:
-  - criticality safety index
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#decimal
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#criticalitySafetyIndex
-- comments:
-  - 24-hour emergency phone number for dangerous goods.
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
-  kind: datatype_property
-  labels:
-  - emergency contact number
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#string
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#emergencyContactNumber
-- comments:
-  - 'Indicates whether the substance is environmentally hazardous (UN 3077/3082). UN/CEFACT MMT-RDM: DangerousGoods
-    environmentally hazardous flag.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#MiscellaneousDangerousGoods
-  kind: datatype_property
-  labels:
-  - environmentally hazardous indicator
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#boolean
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#environmentallyHazardousIndicator
-- comments:
-  - 'UN TDG compatibility group letter for Class 1 explosive goods. UN/CEFACT MMT-RDM: DangerousGoods
-    compatibility group.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#ExplosiveGoods
-  kind: datatype_property
-  labels:
-  - explosion code
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#string
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#explosionCode
-- comments:
-  - Flash point temperature in Celsius for flammable goods.
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
-  kind: datatype_property
-  labels:
-  - flash point
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#decimal
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#flashPoint
-- comments:
-  - 'Gas pressure in bar at reference temperature. UN/CEFACT MMT-RDM: DangerousGoods gas pressure.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#FlammableGas
-  kind: datatype_property
-  labels:
-  - gas pressure
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#decimal
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#gasPressure
-- comments:
-  - UN dangerous goods class (1-9).
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
-  kind: datatype_property
-  labels:
-  - hazard class
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#string
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#hazardClass
-- comments:
-  - 'Indicates whether the substance is infectious (Class 6.2). UN/CEFACT MMT-RDM: DangerousGoods infectious
-    substance flag.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#ToxicSubstance
-  kind: datatype_property
-  labels:
-  - infectious substance indicator
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#boolean
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#infectiousSubstanceIndicator
-- comments:
-  - 'Specific hazard identifier code for Class 9 miscellaneous dangerous goods. UN/CEFACT MMT-RDM: DangerousGoods
-    miscellaneous hazard code.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#MiscellaneousDangerousGoods
-  kind: datatype_property
-  labels:
-  - miscellaneous hazard code
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#string
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#miscellaneousHazardCode
-- comments:
-  - 'Net explosive content mass in kilograms. UN/CEFACT MMT-RDM: DangerousGoods net explosive quantity.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#ExplosiveGoods
-  kind: datatype_property
-  labels:
-  - net explosive mass
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#decimal
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#netExplosiveMass
-- comments:
-  - 'Indicates whether the substance is an organic peroxide (Class 5.2). UN/CEFACT MMT-RDM: DangerousGoods
-    organic peroxide flag.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#OxidizingSubstance
-  kind: datatype_property
-  labels:
-  - organic peroxide indicator
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#boolean
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#organicPeroxideIndicator
-- comments:
-  - 'Packing group: I (high danger), II (medium), III (low).'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
-  kind: datatype_property
-  labels:
-  - packing group
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#string
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#packingGroup
-- comments:
-  - Official UN name for dangerous goods.
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
-  kind: datatype_property
-  labels:
-  - proper shipping name
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#string
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#properShippingName
-- comments:
-  - 'Indicates whether the substance is pyrophoric (ignites in air). UN/CEFACT MMT-RDM: DangerousGoods
-    pyrophoric flag.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#FlammableSolid
-  kind: datatype_property
-  labels:
-  - pyrophoric indicator
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#boolean
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#pyrophoricIndicator
-- comments:
-  - 'Activity concentration in Bq/g or A1/A2 value in TBq. UN/CEFACT MMT-RDM: DangerousGoods radioactivity
-    level.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#RadioactiveMaterial
-  kind: datatype_property
-  labels:
-  - radioactivity level
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#decimal
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#radioactivityLevel
-- comments:
-  - 'Self-accelerating decomposition temperature in Celsius. UN/CEFACT MMT-RDM: DangerousGoods SADT.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#OxidizingSubstance
-  kind: datatype_property
-  labels:
-  - self-accelerating decomposition temperature
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#decimal
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#selfAcceleratingTemperature
-- comments:
-  - 'Indicates whether the substance is self-reactive. UN/CEFACT MMT-RDM: DangerousGoods self-reactive
-    flag.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#FlammableSolid
-  kind: datatype_property
-  labels:
-  - self-reactive indicator
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#boolean
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#selfReactiveIndicator
-- comments:
-  - Chemical or technical name of dangerous goods.
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
-  kind: datatype_property
-  labels:
-  - technical name
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#string
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#technicalName
-- comments:
-  - 'Indicates whether the substance presents a toxic inhalation hazard. UN/CEFACT MMT-RDM: DangerousGoods
-    toxic inhalation flag.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#ToxicSubstance
-  kind: datatype_property
-  labels:
-  - toxic inhalation hazard indicator
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#boolean
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#toxicInhalationHazardIndicator
-- comments:
-  - UN dangerous goods identification number.
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
-  kind: datatype_property
-  labels:
-  - UN number
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#string
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#unNumber
-- comments:
-  - 'Vapor pressure in kPa at 50°C. UN/CEFACT MMT-RDM: DangerousGoods vapor pressure.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#FlammableGas
-  kind: datatype_property
-  labels:
-  - vapor pressure
-  module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#decimal
-  source_file: derived-ontologies/MMT/current/mmt.ttl
-  sources: *id029
-  superclasses: []
-  uri: https://www.kairosflow.ai/ont/mmt#vaporPressure
-- comments:
   - "Insurance coverage for cargo during transport.\n\n    Properties: insuranceValue, policyNumber, insuredAmount.\n\
     \    UN/CEFACT RABIE: TransportCargoInsuranceType — insuranceValue is the\n    insured value of the\
     \ cargo; policyNumber is the insurance policy\n    reference; insuredAmount is the monetary amount\
@@ -18389,7 +17902,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/cargo
   ranges: []
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: &id030
+  sources: &id029
   - UN/CEFACT Multi-Modal Transport Reference Data Model
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#CargoInsurance
@@ -18403,7 +17916,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/cargo
   ranges: []
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#CargoItem
 - comments:
@@ -18418,7 +17931,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/cargo
   ranges: []
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#CargoMeasurement
 - comments:
@@ -18433,7 +17946,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/cargo
   ranges: []
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#Commodity
 - comments:
@@ -18445,7 +17958,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/cargo
   ranges: []
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#Dimension
 - comments:
@@ -18459,7 +17972,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/cargo
   ranges: []
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#DisposalInstructions
 - comments:
@@ -18473,7 +17986,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/cargo
   ranges: []
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#Goods
 - comments:
@@ -18488,7 +18001,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/cargo
   ranges: []
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#HandlingInstructions
 - comments:
@@ -18502,7 +18015,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/cargo
   ranges: []
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#PackageSpecification
 - comments:
@@ -18516,7 +18029,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/cargo
   ranges: []
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#QuarantineInstructions
 - comments:
@@ -18530,7 +18043,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/cargo
   ranges: []
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#ShippingMarks
 - comments:
@@ -18544,7 +18057,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/cargo
   ranges: []
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#WasteMaterial
 - comments:
@@ -18559,7 +18072,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/cargo
   ranges: []
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#WasteMaterialComponent
 - comments:
@@ -18573,7 +18086,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/cargo
   ranges: []
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#Weight
 - comments:
@@ -18587,7 +18100,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#cargoDescription
 - comments:
@@ -18601,7 +18114,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#commodityCategory
 - comments:
@@ -18615,7 +18128,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#commodityCode
 - comments:
@@ -18629,7 +18142,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#commodityDescription
 - comments:
@@ -18644,7 +18157,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#componentName
 - comments:
@@ -18659,7 +18172,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#decimal
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#componentPercentage
 - comments:
@@ -18673,7 +18186,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#dimensionUnit
 - comments:
@@ -18687,7 +18200,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#disposalMethod
 - comments:
@@ -18701,7 +18214,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#goodsDescription
 - comments:
@@ -18715,7 +18228,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#handlingCode
 - comments:
@@ -18729,7 +18242,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#handlingInstruction
 - comments:
@@ -18743,7 +18256,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#decimal
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#handlingTemperature
 - comments:
@@ -18757,7 +18270,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/cargo#Commodity
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#hasCommodity
 - comments:
@@ -18771,7 +18284,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/cargo#Dimension
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#hasDimension
 - comments:
@@ -18785,7 +18298,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/cargo#HandlingInstructions
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#hasHandlingInstructions
 - comments:
@@ -18799,7 +18312,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/cargo#HandlingInstructions
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#hasHandlingRequirement
 - comments:
@@ -18813,7 +18326,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/cargo#CargoInsurance
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#hasInsurance
 - comments:
@@ -18827,7 +18340,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/cargo#CargoMeasurement
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#hasMeasurement
 - comments:
@@ -18841,7 +18354,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/cargo#PackageSpecification
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#hasPackageSpecification
 - comments:
@@ -18855,7 +18368,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/cargo#ShippingMarks
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#hasShippingMarks
 - comments:
@@ -18869,7 +18382,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/cargo#Weight
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#hasWeight
 - comments:
@@ -18883,7 +18396,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#decimal
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#heightValue
 - comments:
@@ -18898,7 +18411,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#hsCodeVersion
 - comments:
@@ -18912,7 +18425,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#decimal
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#insuranceValue
 - comments:
@@ -18926,7 +18439,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#decimal
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#insuredAmount
 - comments:
@@ -18940,7 +18453,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#decimal
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#lengthValue
 - comments:
@@ -18954,7 +18467,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#marksAndNumbers
 - comments:
@@ -18969,7 +18482,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#measurementType
 - comments:
@@ -18983,7 +18496,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#measurementUnit
 - comments:
@@ -18997,7 +18510,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#decimal
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#measurementValue
 - comments:
@@ -19012,7 +18525,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#natureOfGoods
 - comments:
@@ -19027,7 +18540,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#packageMaterial
 - comments:
@@ -19041,7 +18554,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#integer
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#packageQuantity
 - comments:
@@ -19055,7 +18568,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#policyNumber
 - comments:
@@ -19070,7 +18583,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#quarantineType
 - comments:
@@ -19084,7 +18597,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#responsibleParty
 - comments:
@@ -19099,7 +18612,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#shippingMarkType
 - comments:
@@ -19113,7 +18626,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#boolean
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#stackingIndicator
 - comments:
@@ -19127,7 +18640,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#treatmentMethod
 - comments:
@@ -19142,7 +18655,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#wasteCode
 - comments:
@@ -19156,7 +18669,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#weightType
 - comments:
@@ -19170,7 +18683,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#weightUnit
 - comments:
@@ -19184,7 +18697,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#decimal
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#weightValue
 - comments:
@@ -19198,7 +18711,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#decimal
   source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
-  sources: *id030
+  sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#widthValue
 - comments:
@@ -19211,7 +18724,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/consignment
   ranges: []
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: &id031
+  sources: &id030
   - UN/CEFACT Multi-Modal Transport Reference Data Model
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#Consignment
@@ -19225,7 +18738,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/consignment
   ranges: []
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#ConsignmentItem
 - comments:
@@ -19238,7 +18751,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/consignment
   ranges: []
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#GoodsItem
 - comments:
@@ -19253,7 +18766,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/consignment
   ranges: []
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses:
   - https://www.kairosflow.ai/ont/mmt/consignment#Consignment
   uri: https://www.kairosflow.ai/ont/mmt/consignment#HouseConsignment
@@ -19268,7 +18781,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/consignment
   ranges: []
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses:
   - https://www.kairosflow.ai/ont/mmt/consignment#Consignment
   uri: https://www.kairosflow.ai/ont/mmt/consignment#MasterConsignment
@@ -19283,7 +18796,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/consignment
   ranges: []
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#Package
 - comments:
@@ -19296,7 +18809,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/consignment
   ranges: []
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#TransportLeg
 - comments:
@@ -19309,7 +18822,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/consignment
   ranges: []
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#TransportMovement
 - comments:
@@ -19324,7 +18837,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/consignment
   ranges: []
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#TransportRoute
 - comments:
@@ -19339,7 +18852,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/consignment
   ranges: []
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#TransportService
 - comments:
@@ -19354,7 +18867,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/consignment
   ranges: []
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses:
   - https://www.kairosflow.ai/ont/mmt/consignment#TransportService
   uri: https://www.kairosflow.ai/ont/mmt/consignment#TransportServiceExecution
@@ -19370,7 +18883,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#dateTime
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#actualArrival
 - comments:
@@ -19385,7 +18898,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#dateTime
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#actualDeparture
 - comments:
@@ -19399,7 +18912,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/locations#TransportLocation
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#arrivalLocation
 - comments:
@@ -19415,7 +18928,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#dateTime
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#availabilityDueDateTime
 - comments:
@@ -19429,7 +18942,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#dateTime
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#carrierAcceptanceDateTime
 - comments:
@@ -19443,7 +18956,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#carrierAssignedID
 - comments:
@@ -19458,7 +18971,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#carrierBookingReference
 - comments:
@@ -19472,7 +18985,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#decimal
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#chargeableWeight
 - comments:
@@ -19486,7 +18999,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#consigneeAssignedID
 - comments:
@@ -19500,7 +19013,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#consignmentReference
 - comments:
@@ -19514,7 +19027,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#consignorAssignedID
 - comments:
@@ -19528,7 +19041,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#boolean
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#containerizationIndicator
 - comments:
@@ -19542,7 +19055,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/consignment#GoodsItem
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#containsGoods
 - comments:
@@ -19556,7 +19069,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#countryOfOrigin
 - comments:
@@ -19570,7 +19083,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#currency
 - comments:
@@ -19584,7 +19097,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#customsID
 - comments:
@@ -19598,7 +19111,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#decimal
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#customsValue
 - comments:
@@ -19612,7 +19125,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/locations#TransportLocation
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#departureLocation
 - comments:
@@ -19627,7 +19140,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#dateTime
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#estimatedArrival
 - comments:
@@ -19642,7 +19155,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#dateTime
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#estimatedDeparture
 - comments:
@@ -19656,7 +19169,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#date
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#executionDate
 - comments:
@@ -19671,7 +19184,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#executionStatus
 - comments:
@@ -19685,7 +19198,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#dateTime
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#exportExitDateTime
 - comments:
@@ -19700,7 +19213,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#forwardingAgentReference
 - comments:
@@ -19714,7 +19227,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#freightForwarderAssignedID
 - comments:
@@ -19728,7 +19241,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#freightTerms
 - comments:
@@ -19742,7 +19255,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#goodsDescription
 - comments:
@@ -19756,7 +19269,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#decimal
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#grossWeight
 - comments:
@@ -19770,7 +19283,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/party#Carrier
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#hasCarrier
 - comments:
@@ -19784,7 +19297,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/party#Consignee
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#hasConsignee
 - comments:
@@ -19798,7 +19311,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/consignment#Consignment
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#hasConsignment
 - comments:
@@ -19812,7 +19325,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/consignment#ConsignmentItem
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#hasConsignmentItem
 - comments:
@@ -19826,7 +19339,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/party#Consignor
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#hasConsignor
 - comments:
@@ -19840,7 +19353,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/documents#CustomsDeclaration
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#hasCustomsDeclaration
 - comments:
@@ -19852,9 +19365,9 @@ records:
   - has dangerous goods
   module_uri: https://www.kairosflow.ai/ont/mmt/consignment
   ranges:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#DangerousGoods
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#hasDangerousGoods
 - comments:
@@ -19868,7 +19381,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/events#TransportEvent
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#hasEvent
 - comments:
@@ -19882,7 +19395,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/party#FreightForwarder
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#hasFreightForwarder
 - comments:
@@ -19896,7 +19409,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/consignment#HouseConsignment
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#hasHouseConsignment
 - comments:
@@ -19911,7 +19424,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/locations#TransportLocation
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#hasLocation
 - comments:
@@ -19925,7 +19438,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/party#NotifyParty
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#hasNotifyParty
 - comments:
@@ -19939,7 +19452,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/consignment#Package
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#hasPackage
 - comments:
@@ -19955,7 +19468,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/party#TransportParty
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#hasParty
 - comments:
@@ -19969,7 +19482,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/consignment#TransportRoute
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#hasRoute
 - comments:
@@ -19983,7 +19496,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/documents#TransportDocument
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#hasTransportDocument
 - comments:
@@ -19997,7 +19510,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#hasTransportEquipment
 - comments:
@@ -20011,7 +19524,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/consignment#TransportLeg
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#hasTransportLeg
 - comments:
@@ -20025,7 +19538,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#houseBillNumber
 - comments:
@@ -20039,7 +19552,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#houseReferenceNumber
 - comments:
@@ -20053,7 +19566,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#hsCode
 - comments:
@@ -20067,7 +19580,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#incoterm
 - comments:
@@ -20081,7 +19594,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#boolean
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#isHazardous
 - comments:
@@ -20095,7 +19608,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#integer
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#itemSequenceNumber
 - comments:
@@ -20109,7 +19622,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#loadedInEquipment
 - comments:
@@ -20123,7 +19636,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#integer
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#loadingSequenceNumeric
 - comments:
@@ -20137,7 +19650,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#masterReferenceNumber
 - comments:
@@ -20152,7 +19665,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#modeCode
 - comments:
@@ -20166,7 +19679,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#movementStatusCode
 - comments:
@@ -20180,7 +19693,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#decimal
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#netWeight
 - comments:
@@ -20194,7 +19707,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#integer
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#numberOfPackages
 - comments:
@@ -20208,7 +19721,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#packageCode
 - comments:
@@ -20222,7 +19735,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#packageMarks
 - comments:
@@ -20236,7 +19749,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#integer
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#packageQuantity
 - comments:
@@ -20250,7 +19763,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#packageType
 - comments:
@@ -20264,7 +19777,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#integer
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#routeSequence
 - comments:
@@ -20278,7 +19791,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#routeType
 - comments:
@@ -20292,7 +19805,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#serviceProvider
 - comments:
@@ -20307,7 +19820,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#serviceType
 - comments:
@@ -20321,7 +19834,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#stageCode
 - comments:
@@ -20339,7 +19852,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#string
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#transportMode
 - comments:
@@ -20353,7 +19866,7 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#boolean
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#transshipmentPermissionIndicator
 - comments:
@@ -20367,7 +19880,7 @@ records:
   ranges:
   - https://www.kairosflow.ai/ont/mmt/transport-means#LogisticsMeansOfTransport
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#usesTransportMeans
 - comments:
@@ -20381,9 +19894,499 @@ records:
   ranges:
   - http://www.w3.org/2001/XMLSchema#decimal
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
-  sources: *id031
+  sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#volume
+- comments:
+  - "Corrosive substances.\n\n    Properties: corrosionRate, packingGroup (inherited from DangerousGoods).\n\
+    \    UN/CEFACT MMT-RDM: DangerousGoods — corrosionRate indicates the rate of\n    corrosion for packing\
+    \ group determination. UN TDG Recommendations,\n    Part 2, §2.8: Class 8 dangerous goods."
+  domains: []
+  kind: class
+  labels:
+  - Corrosive Substance (Class 8)
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges: []
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: &id031
+  - UN/CEFACT Multi-Modal Transport Reference Data Model; UN Recommendations on the Transport of Dangerous
+    Goods (Orange Book), 23rd revised edition
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#DangerousGoods
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#CorrosiveSubstance
+- comments:
+  - "Hazardous materials requiring special handling.\n\n    UN/CEFACT BSP D23B: Corresponds to unece:DangerousGoods\
+    \ — goods which may contain\n    a substance which poses risks to people and/or the environment during\
+    \ transportation.\n    The BSP model uses hazardClassificationId to distinguish classes; the subclasses\
+    \ below\n    reify the UN TDG hazard class taxonomy as OWL classes for semantic expressiveness."
+  domains: []
+  kind: class
+  labels:
+  - Dangerous Goods
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges: []
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#DangerousGoods
+- comments:
+  - "Explosive substances and articles.\n\n    Properties: explosionCode (compatibility group), netExplosiveMass.\n\
+    \    UN/CEFACT MMT-RDM: DangerousGoods — explosionCode maps to the UN TDG\n    compatibility group\
+    \ letter; netExplosiveMass is the net explosive content\n    quantity. UN TDG Recommendations, Part\
+    \ 2, §2.1: Class 1."
+  domains: []
+  kind: class
+  labels:
+  - Explosive Goods (Class 1)
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges: []
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#DangerousGoods
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#ExplosiveGoods
+- comments:
+  - "Flammable gases.\n\n    Properties: gasPressure, vaporPressure.\n    UN/CEFACT MMT-RDM: DangerousGoods\
+    \ — gasPressure and vaporPressure capture\n    the pressure thresholds relevant for flammable gas\
+    \ transport. UN TDG\n    Recommendations, Part 2, §2.2: Class 2.1 dangerous goods."
+  domains: []
+  kind: class
+  labels:
+  - Flammable Gas (Class 2.1)
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges: []
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#DangerousGoods
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#FlammableGas
+- comments:
+  - "Flammable liquids.\n\n    Properties: boilingPoint, flashPoint (inherited from DangerousGoods).\n\
+    \    UN/CEFACT MMT-RDM: DangerousGoods — boilingPoint is the temperature at\n    which the liquid's\
+    \ vapor pressure equals ambient pressure. UN TDG\n    Recommendations, Part 2, §2.3: Class 3 dangerous\
+    \ goods."
+  domains: []
+  kind: class
+  labels:
+  - Flammable Liquid (Class 3)
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges: []
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#DangerousGoods
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#FlammableLiquid
+- comments:
+  - "Flammable solids.\n\n    Properties: selfReactiveIndicator, pyrophoricIndicator.\n    UN/CEFACT MMT-RDM:\
+    \ DangerousGoods — selfReactiveIndicator and\n    pyrophoricIndicator flag self-reactive and pyrophoric\
+    \ substances within\n    Class 4. UN TDG Recommendations, Part 2, §2.4: Class 4 dangerous goods."
+  domains: []
+  kind: class
+  labels:
+  - Flammable Solid (Class 4)
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges: []
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#DangerousGoods
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#FlammableSolid
+- comments:
+  - "Miscellaneous dangerous substances and articles.\n\n    Properties: miscellaneousHazardCode, environmentallyHazardousIndicator.\n\
+    \    UN/CEFACT MMT-RDM: DangerousGoods — miscellaneousHazardCode captures the\n    specific Class\
+    \ 9 hazard identifier; environmentallyHazardousIndicator\n    flags environmentally hazardous substances\
+    \ (UN 3077/3082). UN TDG\n    Recommendations, Part 2, §2.9: Class 9 dangerous goods."
+  domains: []
+  kind: class
+  labels:
+  - Miscellaneous Dangerous Goods (Class 9)
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges: []
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#DangerousGoods
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#MiscellaneousDangerousGoods
+- comments:
+  - "Oxidizing substances and organic peroxides.\n\n    Properties: organicPeroxideIndicator, selfAcceleratingTemperature.\n\
+    \    UN/CEFACT MMT-RDM: DangerousGoods — organicPeroxideIndicator distinguishes\n    Class 5.2 organic\
+    \ peroxides; selfAcceleratingTemperature is the\n    self-accelerating decomposition temperature.\
+    \ UN TDG Recommendations,\n    Part 2, §2.5: Class 5 dangerous goods."
+  domains: []
+  kind: class
+  labels:
+  - Oxidizing Substance (Class 5)
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges: []
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#DangerousGoods
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#OxidizingSubstance
+- comments:
+  - "Radioactive materials.\n\n    Properties: radioactivityLevel, criticalitySafetyIndex.\n    UN/CEFACT\
+    \ MMT-RDM: DangerousGoods — radioactivityLevel is the activity\n    concentration or A2/A1 value;\
+    \ criticalitySafetyIndex applies to fissile\n    material. UN TDG Recommendations, Part 2, §2.7: Class\
+    \ 7 dangerous goods.\n    Also exists as standalone unece:RadioactiveMaterial in BSP D23B."
+  domains: []
+  kind: class
+  labels:
+  - Radioactive Material (Class 7)
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges: []
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#DangerousGoods
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#RadioactiveMaterial
+- comments:
+  - "Toxic and infectious substances.\n\n    Properties: infectiousSubstanceIndicator, toxicInhalationHazardIndicator.\n\
+    \    UN/CEFACT MMT-RDM: DangerousGoods — infectiousSubstanceIndicator flags\n    Class 6.2 infectious\
+    \ substances; toxicInhalationHazardIndicator flags\n    toxic-inhalation hazards within Class 6.1.\
+    \ UN TDG Recommendations,\n    Part 2, §2.6: Class 6 dangerous goods."
+  domains: []
+  kind: class
+  labels:
+  - Toxic Substance (Class 6)
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges: []
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#DangerousGoods
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#ToxicSubstance
+- comments:
+  - 'Boiling point temperature in Celsius. UN/CEFACT MMT-RDM: DangerousGoods boiling point.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#FlammableLiquid
+  kind: datatype_property
+  labels:
+  - boiling point
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#boilingPoint
+- comments:
+  - 'Corrosion rate on steel or aluminium in mm/year. UN/CEFACT MMT-RDM: DangerousGoods corrosion rate.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#CorrosiveSubstance
+  kind: datatype_property
+  labels:
+  - corrosion rate
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#corrosionRate
+- comments:
+  - 'Criticality safety index value for fissile radioactive material. UN/CEFACT MMT-RDM: DangerousGoods
+    CSI.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#RadioactiveMaterial
+  kind: datatype_property
+  labels:
+  - criticality safety index
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#criticalitySafetyIndex
+- comments:
+  - 24-hour emergency phone number for dangerous goods.
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#DangerousGoods
+  kind: datatype_property
+  labels:
+  - emergency contact number
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#emergencyContactNumber
+- comments:
+  - 'Indicates whether the substance is environmentally hazardous (UN 3077/3082). UN/CEFACT MMT-RDM: DangerousGoods
+    environmentally hazardous flag.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#MiscellaneousDangerousGoods
+  kind: datatype_property
+  labels:
+  - environmentally hazardous indicator
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#boolean
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#environmentallyHazardousIndicator
+- comments:
+  - 'UN TDG compatibility group letter for Class 1 explosive goods. UN/CEFACT MMT-RDM: DangerousGoods
+    compatibility group.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#ExplosiveGoods
+  kind: datatype_property
+  labels:
+  - explosion code
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#explosionCode
+- comments:
+  - Flash point temperature in Celsius for flammable goods.
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#DangerousGoods
+  kind: datatype_property
+  labels:
+  - flash point
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#flashPoint
+- comments:
+  - 'Gas pressure in bar at reference temperature. UN/CEFACT MMT-RDM: DangerousGoods gas pressure.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#FlammableGas
+  kind: datatype_property
+  labels:
+  - gas pressure
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#gasPressure
+- comments:
+  - UN dangerous goods class (1-9).
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#DangerousGoods
+  kind: datatype_property
+  labels:
+  - hazard class
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#hazardClass
+- comments:
+  - 'Indicates whether the substance is infectious (Class 6.2). UN/CEFACT MMT-RDM: DangerousGoods infectious
+    substance flag.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#ToxicSubstance
+  kind: datatype_property
+  labels:
+  - infectious substance indicator
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#boolean
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#infectiousSubstanceIndicator
+- comments:
+  - 'Specific hazard identifier code for Class 9 miscellaneous dangerous goods. UN/CEFACT MMT-RDM: DangerousGoods
+    miscellaneous hazard code.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#MiscellaneousDangerousGoods
+  kind: datatype_property
+  labels:
+  - miscellaneous hazard code
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#miscellaneousHazardCode
+- comments:
+  - 'Net explosive content mass in kilograms. UN/CEFACT MMT-RDM: DangerousGoods net explosive quantity.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#ExplosiveGoods
+  kind: datatype_property
+  labels:
+  - net explosive mass
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#netExplosiveMass
+- comments:
+  - 'Indicates whether the substance is an organic peroxide (Class 5.2). UN/CEFACT MMT-RDM: DangerousGoods
+    organic peroxide flag.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#OxidizingSubstance
+  kind: datatype_property
+  labels:
+  - organic peroxide indicator
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#boolean
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#organicPeroxideIndicator
+- comments:
+  - 'Packing group: I (high danger), II (medium), III (low).'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#DangerousGoods
+  kind: datatype_property
+  labels:
+  - packing group
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#packingGroup
+- comments:
+  - Official UN name for dangerous goods.
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#DangerousGoods
+  kind: datatype_property
+  labels:
+  - proper shipping name
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#properShippingName
+- comments:
+  - 'Indicates whether the substance is pyrophoric (ignites in air). UN/CEFACT MMT-RDM: DangerousGoods
+    pyrophoric flag.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#FlammableSolid
+  kind: datatype_property
+  labels:
+  - pyrophoric indicator
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#boolean
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#pyrophoricIndicator
+- comments:
+  - 'Activity concentration in Bq/g or A1/A2 value in TBq. UN/CEFACT MMT-RDM: DangerousGoods radioactivity
+    level.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#RadioactiveMaterial
+  kind: datatype_property
+  labels:
+  - radioactivity level
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#radioactivityLevel
+- comments:
+  - 'Self-accelerating decomposition temperature in Celsius. UN/CEFACT MMT-RDM: DangerousGoods SADT.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#OxidizingSubstance
+  kind: datatype_property
+  labels:
+  - self-accelerating decomposition temperature
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#selfAcceleratingTemperature
+- comments:
+  - 'Indicates whether the substance is self-reactive. UN/CEFACT MMT-RDM: DangerousGoods self-reactive
+    flag.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#FlammableSolid
+  kind: datatype_property
+  labels:
+  - self-reactive indicator
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#boolean
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#selfReactiveIndicator
+- comments:
+  - Chemical or technical name of dangerous goods.
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#DangerousGoods
+  kind: datatype_property
+  labels:
+  - technical name
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#technicalName
+- comments:
+  - 'Indicates whether the substance presents a toxic inhalation hazard. UN/CEFACT MMT-RDM: DangerousGoods
+    toxic inhalation flag.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#ToxicSubstance
+  kind: datatype_property
+  labels:
+  - toxic inhalation hazard indicator
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#boolean
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#toxicInhalationHazardIndicator
+- comments:
+  - UN dangerous goods identification number.
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#DangerousGoods
+  kind: datatype_property
+  labels:
+  - UN number
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#unNumber
+- comments:
+  - 'Vapor pressure in kPa at 50°C. UN/CEFACT MMT-RDM: DangerousGoods vapor pressure.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/dangerous-goods#FlammableGas
+  kind: datatype_property
+  labels:
+  - vapor pressure
+  module_uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/MMT/current/dangerous-goods/dangerous-goods.ttl
+  sources: *id031
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/dangerous-goods#vaporPressure
 - comments:
   - "A transport document for air cargo.\n\n    Properties: airWaybillNumber, issuingCarrier, airWaybillDate.\n\
     \    UN/CEFACT MMT-RDM: AirWaybillType — issuingCarrier identifies the\n    carrier issuing the AWB;\
@@ -26495,6 +26498,72 @@ records:
   source_file: derived-ontologies/SupplyChain/current/supply-chain.ttl
   superclasses: []
   uri: https://www.kairosflow.ai/ont/supply-chain#hasEnergyConsumption
+- comments:
+  - "Links an MMT TransportEquipment to an MMT Dimension value object.\n\n    Integration-layer bridge\
+    \ (gh#98): grants the `equipment` data domain reach to\n    mmt/cargo#Dimension. Not a subproperty\
+    \ of cargo:hasDimension — that property is\n    domained on cargo:CargoItem, and inheriting it would\
+    \ infer that equipment is\n    cargo. Carries no exterior/capacity qualifier: which dimensions an\
+    \ adopter\n    means is a mapping decision, not one this property encodes."
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment
+  kind: object_property
+  labels:
+  - has equipment dimension
+  module_uri: https://www.kairosflow.ai/ont/supply-chain
+  ranges:
+  - https://www.kairosflow.ai/ont/mmt/cargo#Dimension
+  source_file: derived-ontologies/SupplyChain/current/supply-chain.ttl
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/supply-chain#hasEquipmentDimension
+- comments:
+  - "Links an MMT consignment GoodsItem to an MMT Dimension value object.\n\n    Integration-layer bridge\
+    \ (gh#98): grants the `consignment` data domain reach to\n    mmt/cargo#Dimension. Whether consignment:GoodsItem\
+    \ and cargo:CargoItem denote one\n    standard entity is unresolved; this property deliberately does\
+    \ not assert either\n    equivalence or containment between them."
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/consignment#GoodsItem
+  kind: object_property
+  labels:
+  - has goods dimension
+  module_uri: https://www.kairosflow.ai/ont/supply-chain
+  ranges:
+  - https://www.kairosflow.ai/ont/mmt/cargo#Dimension
+  source_file: derived-ontologies/SupplyChain/current/supply-chain.ttl
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/supply-chain#hasGoodsDimension
+- comments:
+  - "Links an MMT consignment GoodsItem to an MMT CargoMeasurement value object.\n\n    Integration-layer\
+    \ bridge (gh#98): grants the `consignment` data domain reach to\n    mmt/cargo#CargoMeasurement, covering\
+    \ volumes and load measures. The qualifier\n    lives in the measurement object's measurementType;\
+    \ note that a free-form\n    measurementType value is not by itself sufficient governance for an\n\
+    \    ordered-versus-actual distinction, which remains an open modelling question."
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/consignment#GoodsItem
+  kind: object_property
+  labels:
+  - has goods measurement
+  module_uri: https://www.kairosflow.ai/ont/supply-chain
+  ranges:
+  - https://www.kairosflow.ai/ont/mmt/cargo#CargoMeasurement
+  source_file: derived-ontologies/SupplyChain/current/supply-chain.ttl
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/supply-chain#hasGoodsMeasurement
+- comments:
+  - "Links an MMT consignment GoodsItem to an MMT Weight value object.\n\n    Integration-layer bridge\
+    \ (gh#98): grants the `consignment` data domain reach to\n    mmt/cargo#Weight. The weight type (gross,\
+    \ net, tare) is carried by the Weight\n    object's own weightType property, not by separate scalar\
+    \ properties here."
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/consignment#GoodsItem
+  kind: object_property
+  labels:
+  - has goods weight
+  module_uri: https://www.kairosflow.ai/ont/supply-chain
+  ranges:
+  - https://www.kairosflow.ai/ont/mmt/cargo#Weight
+  source_file: derived-ontologies/SupplyChain/current/supply-chain.ttl
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/supply-chain#hasGoodsWeight
 - comments:
   - Links an MMT TransportMovement to the carbon footprint of that specific movement leg. Operational
     emissions data is commonly captured at movement/trip grain rather than at the consignment or transport-service

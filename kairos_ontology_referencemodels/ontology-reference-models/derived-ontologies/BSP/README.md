@@ -54,11 +54,26 @@ The BSP ontology uses `rdfs:seeAlso` annotations to reference equivalent concept
 
 ## Design Principles
 
-- **No cross-imports** between domain modules — each module is self-contained
-- The **root `bsp.ttl`** imports all eight domains via `owl:imports`
+- **A module imports every module it references** — a property asserting `rdfs:domain`
+  or `rdfs:range` against a class from another module requires that module in this
+  module's transitive `owl:imports` closure. Enforced by `validate_structure.py` check 10.
+- The **root `bsp.ttl`** is a pure aggregator: it declares no terms and imports all eight
+  domains. A leaf module must never import the root.
 - Each module uses its own namespace: `https://www.kairosflow.ai/ont/bsp/<domain>#`
-- Cross-domain alignment via `rdfs:seeAlso` — hub ontologies compose via `owl:imports`
+- **Sibling imports may be cyclic, and that is accepted.** BSP genuinely cycles:
+  `commercial → financial → commercial`, caused by `:relatedToShipment rdfs:domain
+  fin:Invoice` living in the commercial module rather than the financial one. Both this
+  repo's loader and the consumer's guard on already-visited paths, so a cycle costs at
+  most one diagnostic and cannot drop triples. Relocating that property is tracked
+  separately; it is a modelling change, not an import fix.
 - Properties are distributed to the domain of their primary class
+
+> **Changed in 2.5.0.** The first bullet previously read "no cross-imports between domain
+> modules — each module is self-contained", with cross-domain alignment via `rdfs:seeAlso`.
+> That was already untrue — `party.ttl` has imported `bsp/reference-data` since 1.5.0 — and
+> the nineteen `rdfs:domain`/`rdfs:range` assertions against unimported sibling classes were
+> silently dropped, making `financial#creditLimit`, `creditLimitCurrency`, `hasBankAccount`
+> and `hasPartyPaymentTerms` unreachable from `party#TradeParty` (gh#97).
 
 ## Source
 

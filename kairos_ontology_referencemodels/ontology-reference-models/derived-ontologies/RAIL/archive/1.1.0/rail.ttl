@@ -1,0 +1,39 @@
+@prefix : <https://www.kairosflow.ai/ont/rail#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/rail> a owl:Ontology ;
+    dcterms:title "Kairos RAIL Ontology — TAF TSI Rail Reservation & Running Model" ;
+    dcterms:description """Derived ontology for rail transport, grounded in the EU TAF TSI
+    (Technical Specification for Interoperability — Telematics Applications for
+    Freight) data catalogue (Commission Regulation (EU) No 1305/2012, Annex D.2
+    Appendix F). Specialises the carrier-reservation grain (path allocation,
+    consignment order) and the movement grain (train running, wagon status) for
+    rail. Mode never lives on the order grain; order-level consignment is
+    covered by mmt/documents#RailConsignmentNote (CIM).
+
+    Modules:
+    1. Consignment — Consignment Order Message (ORFEUS ECN)
+    2. Path Request — Path allocation requests and confirmations (PCS)
+    3. Train Running — Running data, forecasts, interruptions
+    4. Rolling Stock — Wagon, locomotive, telematics
+    5. Party — Railway Undertaking (RU), Infrastructure Manager (IM)
+    6. Shared Kernel — Location, timing, identifiers
+
+    v1.0.0: Initial release authored against taf_cat_complete.xsd.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-08-15"^^xsd:date ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
+    dcterms:source "TAF TSI — Commission Regulation (EU) No 1305/2012, Annex D.2 Appendix F (Data Catalogue); taf_cat_complete.xsd" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> ;
+    owl:imports <https://www.kairosflow.ai/ont/rail/consignment> ,
+                <https://www.kairosflow.ai/ont/rail/path-request> ,
+                <https://www.kairosflow.ai/ont/rail/train-running> ,
+                <https://www.kairosflow.ai/ont/rail/rolling-stock> ,
+                <https://www.kairosflow.ai/ont/rail/party> ,
+                <https://www.kairosflow.ai/ont/rail/shared-kernel> .

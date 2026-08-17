@@ -1,0 +1,57 @@
+Cargo
+
+
+Original versus changes
+>
+
+
+for sustainablotu > recommended
+Financial > required
+
+
+
+Documents:
+waste management - document type 
+Annex 7 
+│ MMT /cargo         │ WasteMaterial, WasteMaterialComponent — with wasteCode (EWC, Basel) │ UN/CEFACT RABIE   
+
+
+* Transport Unit:
+containers and trailers , not pallets
+
+
+Locations:
+focus on MMT and leave out DCS ports
+
+
+transport calls
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/transport-call#RailTransportCall",    tier: optional,    label: "Rail Transport Call" }
+  - { uri: "https://www.kairosflow.ai/ont/dcsa/transport-call#BargeTransportCall",   tier: optional,    label: "Barge Transport Call" }
+
+make required
+
+
+
+
+-------------
+vessel:
+mainly IMO adn Voyage
+
+\
+{ uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#Vessel",          tier: recommended, label: "Vessel (IMO registry)" }
+
+
+  - { uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#Vessel",          tier: recommended, label: "Vessel (IMO registry)" }
+
+Road
+
+------------
+Chassis from the triuck
+
+
+No standalone  Chassis  class exists anywhere. The only reference is  chassisLicencePlate  as a datatype property on DCSA's  TruckTransportCall . If you need to track chassis as a distinct piece of equipment (with its own ID, plate, and lifecycle), that would be new modelling.
+
++++++++
+ # ─── 17. Trade facilitation ───────
+remove no owmnership of goods
+

@@ -1,0 +1,660 @@
+@prefix : <https://www.kairosflow.ai/ont/imo/port-call#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/imo/port-call> a owl:Ontology ;
+    dcterms:title "IMO Port Call Ontology" ;
+    dcterms:description """Port call, voyage, and maritime logistics operations domain ontology aligned with
+    the IMO Compendium and the FAL Convention.
+
+    Covers the complete port call lifecycle including arrival/departure notifications, berth stays,
+    pilotage, towage, bunkering, waste disposal, and crew changes. Supports the IMO Reference Data
+    Model for port calls and the FAL Convention electronic data exchange requirements.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.3.0" ;
+    dcterms:source "IMO Compendium data set, FAL Convention (2023 amendments)" ;
+    rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
+
+#################################################################
+#    Classes
+#################################################################
+
+:Voyage a owl:Class ;
+    rdfs:label "Voyage" ;
+    rdfs:comment """A complete journey of a vessel from its port of departure to its final port
+    of destination, consisting of one or more sea legs and port calls.
+
+    IMO: The voyage concept supports the FAL Convention requirement for
+    pre-arrival and pre-departure information exchange.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :voyageNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:SeaLeg a owl:Class ;
+    rdfs:label "Sea Leg" ;
+    rdfs:comment """A segment of a voyage between two consecutive ports. Each sea leg has
+    a departure port and an arrival port with associated timestamps.
+
+    Properties: seaLegDeparturePort, seaLegArrivalPort, seaLegDistance.
+
+    Source: IMO Compendium data set, FAL Convention.""" .
+
+:PortCall a owl:Class ;
+    rdfs:label "Port Call" ;
+    rdfs:comment """A vessel's visit to a port, encompassing arrival, berth stay(s), and departure.
+
+    The port call is the central concept for information exchange under the FAL Convention
+    and the IMO Compendium. Each port call requires submission of FAL forms.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :hasPortCallStatus ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/transport-call#TransportCall> .
+
+:BerthStay a owl:Class ;
+    rdfs:label "Berth Stay" ;
+    rdfs:comment """The period during which a vessel occupies a berth at a port terminal.
+
+    A port call may involve multiple berth stays (e.g., shifting between berths).
+    Berth stays are the basis for cargo operations, bunkering, and provisioning.
+
+    Properties: berthArrivalTime, berthDepartureTime, berthStayPurpose, berthStaySequence.
+
+    Source: IMO Compendium data set, FAL Convention.""" .
+
+:ArrivalNotice a owl:Class ;
+    rdfs:label "Arrival Notice" ;
+    rdfs:comment """A notification submitted by a vessel or its agent to the port authority
+    prior to arrival, containing vessel particulars, ETA, crew list, cargo manifest,
+    and other FAL Convention-required information.""" .
+
+:DepartureNotice a owl:Class ;
+    rdfs:label "Departure Notice" ;
+    rdfs:comment """A notification submitted by a vessel or its agent to the port authority
+    prior to departure, including ETD, updated crew list, and departure cargo manifest.""" .
+
+:FALForm a owl:Class ;
+    rdfs:label "FAL Form" ;
+    rdfs:comment """One of the standardized documents defined by the IMO FAL Convention for
+    facilitating international maritime traffic. Includes FAL Forms 1-7 covering
+    general declaration, cargo, stores, crew, passengers, and dangerous goods.
+
+    Properties: falFormNumber, falFormType, falFormSubmissionMethod, falFormStatus.
+
+    Source: FAL Convention Standard 2.1, Forms 1-7.""" .
+
+:PortCallStatus a owl:Class ;
+    rdfs:label "Port Call Status" ;
+    rdfs:comment """The current status of a port call within its lifecycle, e.g., planned,
+    requested, confirmed, arriving, at berth, departing, completed, cancelled.
+
+    Properties: statusCode, statusDescription.
+
+    Source: IMO Compendium data set — Port Call Status code list.""" .
+
+:PilotageRequest a owl:Class ;
+    rdfs:label "Pilotage Request" ;
+    rdfs:comment """A request for pilotage services submitted by a vessel or its agent to the
+    port's pilot service. Contains vessel details, requested pilot boarding time/place,
+    and any special requirements.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :requestedTime ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:TowageRequest a owl:Class ;
+    rdfs:label "Towage Request" ;
+    rdfs:comment """A request for towage services (tug assistance) submitted for a vessel's
+    arrival, departure, or shifting manoeuvre within port waters.
+
+    Properties: requestedTime, towageType, towageTugCount.
+
+    Source: Commercial practice, port authority towage regulations.""" .
+
+:BunkeringOperation a owl:Class ;
+    rdfs:label "Bunkering Operation" ;
+    rdfs:comment """A fuel supply operation during a port call, covering the delivery of marine
+    fuel (bunkers) to a vessel. Subject to MARPOL Annex VI fuel quality and
+    documentation requirements.
+
+    Properties: bunkerQuantity, bunkerFuelType, bunkerSupplierName.
+
+    Source: MARPOL Annex VI Regulation 18, Fuel Oil Delivery Note (FODN) requirements.""" .
+
+:WasteDisposal a owl:Class ;
+    rdfs:label "Waste Disposal" ;
+    rdfs:comment """The discharge of ship-generated waste to port reception facilities during
+    a port call, as required by MARPOL. Includes oily waste, garbage, sewage,
+    and cargo residues.
+
+    Properties: wasteType, wasteQuantity, wasteDisposalFacility, wasteDisposalReceiptNumber.
+
+    Source: MARPOL Annex V Regulation 7, Annex I Regulation 12.""" .
+
+:CrewChange a owl:Class ;
+    rdfs:label "Crew Change" ;
+    rdfs:comment """An embarkation or disembarkation of crew members during a port call.
+
+    Subject to port state immigration requirements and FAL Convention provisions
+    for facilitating crew transit.
+
+    Properties: crewMemberCount, crewChangeDirection, crewChangeNationalities.
+
+    Source: FAL Convention Standard 4.27, ILO Convention 185.""" .
+
+#################################################################
+#    Port Call Document Classes (FAL Convention & SOLAS)
+#################################################################
+
+:PreArrivalNotification a owl:Class ;
+    rdfs:label "Pre-Arrival Notification" ;
+    rdfs:comment """Advance notification submitted by or on behalf of a vessel prior to arrival
+    at a port. Required under the FAL Convention and various national port
+    regulations (typically 24-96 hours before ETA).
+
+    Contains vessel identification, voyage details, cargo summary, crew/passenger
+    lists, health and security declarations, and waste notification.
+
+    Properties: preArrivalStatus, preArrivalSubmittedDate, estimatedArrival,
+    preArrivalNotificationPort.
+
+    Source: FAL Convention Standard 2.1, SOLAS XI-2/9.2.""" .
+
+:PortHealthDeclaration a owl:Class ;
+    rdfs:label "Port Health Declaration" ;
+    rdfs:comment """The Maritime Declaration of Health submitted by the master before arrival,
+    declaring the health status of persons on board.
+
+    IHR (2005) Article 37 / FAL Convention: Required to be submitted to health
+    authorities before the first port of call in the territory of the state and
+    at subsequent ports when coming from an affected area.
+
+    Properties: healthDeclarationDate, healthIssuesReported, phdSSCReference,
+    phdVaccinationRequired.
+
+    Source: IHR (2005) Article 37, FAL Form 3 (Maritime Declaration of Health).""" .
+
+:WastePreNotification a owl:Class ;
+    rdfs:label "Waste Pre-Notification" ;
+    rdfs:comment """Advance notification of waste to be delivered to port reception facilities.
+
+    EU Directive 2019/883 (and similar national regulations): Ships must notify
+    the port of the types and quantities of ship-generated waste and cargo residues
+    to be delivered, at least 24 hours before arrival.
+
+    Properties: estimatedWasteVolume, wasteNotificationDate, wastePreNotificationPort,
+    wastePreNotificationStatus.
+
+    Source: MARPOL Annex V Regulation 7, EU Directive 2019/883.""" .
+
+:VoyagePlan a owl:Class ;
+    rdfs:label "Voyage Plan" ;
+    rdfs:comment """A planned route for a vessel's voyage, required under SOLAS Chapter V
+    Regulation 34. Must cover berth-to-berth including port approach, ocean passage,
+    and coastal navigation.
+
+    Includes waypoints, course lines, safe water boundaries, no-go areas, and
+    contingency planning for weather and emergencies.
+
+    Properties: hasWaypoint, voyagePlanApprovalDate, voyagePlanRouteName,
+    voyagePlanDeparturePort, voyagePlanDestinationPort.
+
+    Source: SOLAS Chapter V Regulation 34, IMO Resolution A.893(21).""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :hasWaypoint ;
+        owl:minCardinality "2"^^xsd:nonNegativeInteger
+    ] .
+
+:RouteWaypoint a owl:Class ;
+    rdfs:label "Route Waypoint" ;
+    rdfs:comment """A geographic point on a voyage plan route. Defined by latitude/longitude,
+    with optional course to next waypoint, planned speed, and ETA.""" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasSeaLeg a owl:ObjectProperty ;
+    rdfs:label "has sea leg" ;
+    rdfs:comment "Associates a voyage with a sea leg segment." ;
+    rdfs:domain :Voyage ;
+    rdfs:range :SeaLeg .
+
+:hasPortCall a owl:ObjectProperty ;
+    rdfs:label "has port call" ;
+    rdfs:comment "Associates a voyage with a port call." ;
+    rdfs:domain :Voyage ;
+    rdfs:range :PortCall .
+
+:hasBerthStay a owl:ObjectProperty ;
+    rdfs:label "has berth stay" ;
+    rdfs:comment "Associates a port call with a berth stay." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :BerthStay .
+
+:hasArrivalNotice a owl:ObjectProperty ;
+    rdfs:label "has arrival notice" ;
+    rdfs:comment "Associates a port call with its arrival notification." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :ArrivalNotice .
+
+:hasDepartureNotice a owl:ObjectProperty ;
+    rdfs:label "has departure notice" ;
+    rdfs:comment "Associates a port call with its departure notification." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :DepartureNotice .
+
+:hasFALForm a owl:ObjectProperty ;
+    rdfs:label "has FAL form" ;
+    rdfs:comment "Associates a port call with a submitted FAL form." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :FALForm .
+
+:hasPortCallStatus a owl:ObjectProperty ;
+    rdfs:label "has port call status" ;
+    rdfs:comment "Associates a port call with its current lifecycle status." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :PortCallStatus .
+
+:hasPilotageRequest a owl:ObjectProperty ;
+    rdfs:label "has pilotage request" ;
+    rdfs:comment "Associates a port call with a pilotage request." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :PilotageRequest .
+
+:hasTowageRequest a owl:ObjectProperty ;
+    rdfs:label "has towage request" ;
+    rdfs:comment "Associates a port call with a towage request." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :TowageRequest .
+
+:hasBunkeringOperation a owl:ObjectProperty ;
+    rdfs:label "has bunkering operation" ;
+    rdfs:comment "Associates a port call with a bunkering (fuel supply) operation." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :BunkeringOperation .
+
+:hasWasteDisposal a owl:ObjectProperty ;
+    rdfs:label "has waste disposal" ;
+    rdfs:comment "Associates a port call with a waste disposal operation." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :WasteDisposal .
+
+:hasCrewChange a owl:ObjectProperty ;
+    rdfs:label "has crew change" ;
+    rdfs:comment "Associates a port call with a crew change event." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :CrewChange .
+
+:partOfVoyage a owl:ObjectProperty ;
+    rdfs:label "part of voyage" ;
+    rdfs:comment "Associates a port call or sea leg with its parent voyage." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :PortCall :SeaLeg )
+    ] ;
+    rdfs:range :Voyage ;
+    owl:inverseOf :hasPortCall .
+
+:hasPreArrivalNotification a owl:ObjectProperty ;
+    rdfs:label "has pre-arrival notification" ;
+    rdfs:comment "Associates a port call with its pre-arrival notification." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :PreArrivalNotification .
+
+:hasPortHealthDeclaration a owl:ObjectProperty ;
+    rdfs:label "has port health declaration" ;
+    rdfs:comment "Associates a port call with a maritime declaration of health." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :PortHealthDeclaration .
+
+:hasWastePreNotification a owl:ObjectProperty ;
+    rdfs:label "has waste pre-notification" ;
+    rdfs:comment "Associates a port call with a waste delivery pre-notification." ;
+    rdfs:domain :PortCall ;
+    rdfs:range :WastePreNotification .
+
+:hasVoyagePlan a owl:ObjectProperty ;
+    rdfs:label "has voyage plan" ;
+    rdfs:comment "Associates a voyage with its approved voyage plan." ;
+    rdfs:domain :Voyage ;
+    rdfs:range :VoyagePlan .
+
+:hasWaypoint a owl:ObjectProperty ;
+    rdfs:label "has waypoint" ;
+    rdfs:comment "Associates a voyage plan with a route waypoint." ;
+    rdfs:domain :VoyagePlan ;
+    rdfs:range :RouteWaypoint .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:voyageNumber a owl:DatatypeProperty ;
+    rdfs:label "voyage number" ;
+    rdfs:comment "The identifier assigned to a voyage by the vessel operator." ;
+    rdfs:domain :Voyage ;
+    rdfs:range xsd:string .
+
+:estimatedTimeOfArrival a owl:DatatypeProperty ;
+    rdfs:label "estimated time of arrival" ;
+    rdfs:comment "The estimated date and time of arrival at the port." ;
+    rdfs:domain :PortCall ;
+    rdfs:range xsd:dateTime .
+
+:actualTimeOfArrival a owl:DatatypeProperty ;
+    rdfs:label "actual time of arrival" ;
+    rdfs:comment "The actual date and time the vessel arrived at the port." ;
+    rdfs:domain :PortCall ;
+    rdfs:range xsd:dateTime .
+
+:estimatedTimeOfDeparture a owl:DatatypeProperty ;
+    rdfs:label "estimated time of departure" ;
+    rdfs:comment "The estimated date and time of departure from the port." ;
+    rdfs:domain :PortCall ;
+    rdfs:range xsd:dateTime .
+
+:actualTimeOfDeparture a owl:DatatypeProperty ;
+    rdfs:label "actual time of departure" ;
+    rdfs:comment "The actual date and time the vessel departed the port." ;
+    rdfs:domain :PortCall ;
+    rdfs:range xsd:dateTime .
+
+:berthArrivalTime a owl:DatatypeProperty ;
+    rdfs:label "berth arrival time" ;
+    rdfs:comment "The date and time the vessel was all fast at the berth." ;
+    rdfs:domain :BerthStay ;
+    rdfs:range xsd:dateTime .
+
+:berthDepartureTime a owl:DatatypeProperty ;
+    rdfs:label "berth departure time" ;
+    rdfs:comment "The date and time the vessel cast off from the berth." ;
+    rdfs:domain :BerthStay ;
+    rdfs:range xsd:dateTime .
+
+:requestedTime a owl:DatatypeProperty ;
+    rdfs:label "requested time" ;
+    rdfs:comment "The requested date and time for a service (pilotage, towage, etc.)." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :PilotageRequest :TowageRequest )
+    ] ;
+    rdfs:range xsd:dateTime .
+
+:falFormNumber a owl:DatatypeProperty ;
+    rdfs:label "FAL form number" ;
+    rdfs:comment "The FAL form type number (1 through 7)." ;
+    rdfs:domain :FALForm ;
+    rdfs:range xsd:integer .
+
+:bunkerQuantity a owl:DatatypeProperty ;
+    rdfs:label "bunker quantity" ;
+    rdfs:comment "Quantity of fuel delivered or requested, in metric tonnes." ;
+    rdfs:domain :BunkeringOperation ;
+    rdfs:range xsd:decimal .
+
+:wasteType a owl:DatatypeProperty ;
+    rdfs:label "waste type" ;
+    rdfs:comment "Type of ship-generated waste (e.g., oily waste, garbage, sewage)." ;
+    rdfs:domain :WasteDisposal ;
+    rdfs:range xsd:string .
+
+:wasteQuantity a owl:DatatypeProperty ;
+    rdfs:label "waste quantity" ;
+    rdfs:comment "Quantity of waste to be discharged, in cubic metres or metric tonnes." ;
+    rdfs:domain :WasteDisposal ;
+    rdfs:range xsd:decimal .
+
+:crewMemberCount a owl:DatatypeProperty ;
+    rdfs:label "crew member count" ;
+    rdfs:comment "Number of crew members embarking or disembarking." ;
+    rdfs:domain :CrewChange ;
+    rdfs:range xsd:integer .
+
+#################################################################
+#    Datatype Properties — New Classes (v1.1.0)
+#################################################################
+
+:falFormType a owl:DatatypeProperty ;
+    rdfs:label "FAL form type" ;
+    rdfs:comment "The type of FAL form as code (GENERAL_DECLARATION, CARGO_DECLARATION, STORES_DECLARATION, CREW_LIST, PASSENGER_LIST, DANGEROUS_GOODS_MANIFEST, HEALTH_DECLARATION)." ;
+    rdfs:domain :FALForm ;
+    rdfs:range xsd:string .
+
+:preArrivalSubmittedDate a owl:DatatypeProperty ;
+    rdfs:label "pre-arrival submitted date" ;
+    rdfs:comment "Date and time when the pre-arrival notification was submitted." ;
+    rdfs:domain :PreArrivalNotification ;
+    rdfs:range xsd:dateTime .
+
+:preArrivalStatus a owl:DatatypeProperty ;
+    rdfs:label "pre-arrival status" ;
+    rdfs:comment "Status of the pre-arrival notification (SUBMITTED, ACCEPTED, REJECTED, AMENDED)." ;
+    rdfs:domain :PreArrivalNotification ;
+    rdfs:range xsd:string .
+
+:healthDeclarationDate a owl:DatatypeProperty ;
+    rdfs:label "health declaration date" ;
+    rdfs:comment "Date the Maritime Declaration of Health was signed by the master." ;
+    rdfs:domain :PortHealthDeclaration ;
+    rdfs:range xsd:date .
+
+:healthIssuesReported a owl:DatatypeProperty ;
+    rdfs:label "health issues reported" ;
+    rdfs:comment "Whether any health issues are reported on board (true/false)." ;
+    rdfs:domain :PortHealthDeclaration ;
+    rdfs:range xsd:boolean .
+
+:wasteNotificationDate a owl:DatatypeProperty ;
+    rdfs:label "waste notification date" ;
+    rdfs:comment "Date the waste pre-notification was submitted to the port." ;
+    rdfs:domain :WastePreNotification ;
+    rdfs:range xsd:dateTime .
+
+:estimatedWasteVolume a owl:DatatypeProperty ;
+    rdfs:label "estimated waste volume" ;
+    rdfs:comment "Total estimated volume of waste to be delivered, in cubic metres." ;
+    rdfs:domain :WastePreNotification ;
+    rdfs:range xsd:decimal .
+
+:voyagePlanApprovalDate a owl:DatatypeProperty ;
+    rdfs:label "voyage plan approval date" ;
+    rdfs:comment "Date and time the voyage plan was approved by the master." ;
+    rdfs:domain :VoyagePlan ;
+    rdfs:range xsd:dateTime .
+
+:waypointLatitude a owl:DatatypeProperty ;
+    rdfs:label "waypoint latitude" ;
+    rdfs:comment "Latitude of the route waypoint in decimal degrees." ;
+    rdfs:domain :RouteWaypoint ;
+    rdfs:range xsd:decimal .
+
+:waypointLongitude a owl:DatatypeProperty ;
+    rdfs:label "waypoint longitude" ;
+    rdfs:comment "Longitude of the route waypoint in decimal degrees." ;
+    rdfs:domain :RouteWaypoint ;
+    rdfs:range xsd:decimal .
+
+:waypointSequence a owl:DatatypeProperty ;
+    rdfs:label "waypoint sequence" ;
+    rdfs:comment "Sequential position of this waypoint in the voyage plan route." ;
+    rdfs:domain :RouteWaypoint ;
+    rdfs:range xsd:integer .
+
+:plannedSpeed a owl:DatatypeProperty ;
+    rdfs:label "planned speed" ;
+    rdfs:comment "Planned vessel speed from this waypoint to the next, in knots." ;
+    rdfs:domain :RouteWaypoint ;
+    rdfs:range xsd:decimal .
+
+#################################################################
+#    Enriched Datatype Properties (IMO — port-call module)
+#    Added in v1.2.0 — backed by cited IMO standards
+#################################################################
+
+:berthStayPurpose a owl:DatatypeProperty ;
+    rdfs:label "berth stay purpose" ;
+    rdfs:comment "Purpose of the berth stay, e.g., cargo loading/discharging, bunkering, awaiting orders." ;
+    rdfs:domain :BerthStay ;
+    rdfs:range xsd:string .
+
+:berthStaySequence a owl:DatatypeProperty ;
+    rdfs:label "berth stay sequence" ;
+    rdfs:comment "Sequential number of this berth stay within the port call." ;
+    rdfs:domain :BerthStay ;
+    rdfs:range xsd:integer .
+
+:seaLegDeparturePort a owl:DatatypeProperty ;
+    rdfs:label "sea leg departure port" ;
+    rdfs:comment "Port of departure for this sea leg, as identified in the FAL General Declaration." ;
+    rdfs:domain :SeaLeg ;
+    rdfs:range xsd:string .
+
+:seaLegArrivalPort a owl:DatatypeProperty ;
+    rdfs:label "sea leg arrival port" ;
+    rdfs:comment "Port of arrival for this sea leg, as identified in the FAL General Declaration." ;
+    rdfs:domain :SeaLeg ;
+    rdfs:range xsd:string .
+
+:seaLegDistance a owl:DatatypeProperty ;
+    rdfs:label "sea leg distance" ;
+    rdfs:comment "Distance of the sea leg in nautical miles." ;
+    rdfs:domain :SeaLeg ;
+    rdfs:range xsd:decimal .
+
+:falFormSubmissionMethod a owl:DatatypeProperty ;
+    rdfs:label "FAL form submission method" ;
+    rdfs:comment "Method by which the FAL form was submitted (e.g., electronic, paper, via SW)." ;
+    rdfs:domain :FALForm ;
+    rdfs:range xsd:string .
+
+:falFormStatus a owl:DatatypeProperty ;
+    rdfs:label "FAL form status" ;
+    rdfs:comment "Status of the FAL form within the submission process (DRAFT, SUBMITTED, ACCEPTED, REJECTED)." ;
+    rdfs:domain :FALForm ;
+    rdfs:range xsd:string .
+
+:statusCode a owl:DatatypeProperty ;
+    rdfs:label "status code" ;
+    rdfs:comment "Coded status value from the IMO Compendium Port Call Status code list." ;
+    rdfs:domain :PortCallStatus ;
+    rdfs:range xsd:string .
+
+:statusDescription a owl:DatatypeProperty ;
+    rdfs:label "status description" ;
+    rdfs:comment "Human-readable description of the port call status." ;
+    rdfs:domain :PortCallStatus ;
+    rdfs:range xsd:string .
+
+:towageType a owl:DatatypeProperty ;
+    rdfs:label "towage type" ;
+    rdfs:comment "Type of towage service requested (e.g., arrival, departure, shifting, emergency)." ;
+    rdfs:domain :TowageRequest ;
+    rdfs:range xsd:string .
+
+:towageTugCount a owl:DatatypeProperty ;
+    rdfs:label "towage tug count" ;
+    rdfs:comment "Number of tugs requested for the towage operation." ;
+    rdfs:domain :TowageRequest ;
+    rdfs:range xsd:integer .
+
+:bunkerFuelType a owl:DatatypeProperty ;
+    rdfs:label "bunker fuel type" ;
+    rdfs:comment "Type of marine fuel supplied (e.g., VLSFO, HSFO, MGO, MDO, LNG). Per MARPOL Annex VI Regulation 18." ;
+    rdfs:domain :BunkeringOperation ;
+    rdfs:range xsd:string .
+
+:bunkerSupplierName a owl:DatatypeProperty ;
+    rdfs:label "bunker supplier name" ;
+    rdfs:comment "Name of the bunker fuel supplier, as recorded on the Fuel Oil Delivery Note (FODN) required by MARPOL Annex VI." ;
+    rdfs:domain :BunkeringOperation ;
+    rdfs:range xsd:string .
+
+:wasteDisposalFacility a owl:DatatypeProperty ;
+    rdfs:label "waste disposal facility" ;
+    rdfs:comment "Name or identifier of the port reception facility receiving the waste, per MARPOL Annex V Regulation 7." ;
+    rdfs:domain :WasteDisposal ;
+    rdfs:range xsd:string .
+
+:wasteDisposalReceiptNumber a owl:DatatypeProperty ;
+    rdfs:label "waste disposal receipt number" ;
+    rdfs:comment "Receipt number issued by the port reception facility for waste delivered, per MARPOL Annex V Regulation 7." ;
+    rdfs:domain :WasteDisposal ;
+    rdfs:range xsd:string .
+
+:crewChangeDirection a owl:DatatypeProperty ;
+    rdfs:label "crew change direction" ;
+    rdfs:comment "Direction of crew change: ON_SIGNER (embarkation) or OFF_SIGNER (disembarkation). Per FAL Convention crew facilitation provisions." ;
+    rdfs:domain :CrewChange ;
+    rdfs:range xsd:string .
+
+:crewChangeNationalities a owl:DatatypeProperty ;
+    rdfs:label "crew change nationalities" ;
+    rdfs:comment "Comma-separated list of nationalities of crew members joining or leaving the vessel." ;
+    rdfs:domain :CrewChange ;
+    rdfs:range xsd:string .
+
+:estimatedArrival a owl:DatatypeProperty ;
+    rdfs:label "estimated arrival" ;
+    rdfs:comment "Estimated time of arrival at the port, as declared in the pre-arrival notification under FAL Convention Standard 2.1." ;
+    rdfs:domain :PreArrivalNotification ;
+    rdfs:range xsd:dateTime .
+
+:preArrivalNotificationPort a owl:DatatypeProperty ;
+    rdfs:label "pre-arrival notification port" ;
+    rdfs:comment "Port for which the pre-arrival notification is submitted." ;
+    rdfs:domain :PreArrivalNotification ;
+    rdfs:range xsd:string .
+
+:phdSSCReference a owl:DatatypeProperty ;
+    rdfs:label "PHD SSC reference" ;
+    rdfs:comment "Reference to the Ship Sanitation Certificate (SSC) issued under IHR (2005) Article 39." ;
+    rdfs:domain :PortHealthDeclaration ;
+    rdfs:range xsd:string .
+
+:phdVaccinationRequired a owl:DatatypeProperty ;
+    rdfs:label "PHD vaccination required" ;
+    rdfs:comment "Whether vaccination is required for crew/passengers, per IHR (2005) health measures." ;
+    rdfs:domain :PortHealthDeclaration ;
+    rdfs:range xsd:boolean .
+
+:wastePreNotificationPort a owl:DatatypeProperty ;
+    rdfs:label "waste pre-notification port" ;
+    rdfs:comment "Port at which waste will be delivered to reception facilities, per MARPOL Annex V Regulation 7." ;
+    rdfs:domain :WastePreNotification ;
+    rdfs:range xsd:string .
+
+:wastePreNotificationStatus a owl:DatatypeProperty ;
+    rdfs:label "waste pre-notification status" ;
+    rdfs:comment "Status of the waste pre-notification (SUBMITTED, ACKNOWLEDGED, COMPLETED)." ;
+    rdfs:domain :WastePreNotification ;
+    rdfs:range xsd:string .
+
+:voyagePlanRouteName a owl:DatatypeProperty ;
+    rdfs:label "voyage plan route name" ;
+    rdfs:comment "Name or identifier assigned to the voyage plan route, per SOLAS V/34 voyage planning requirements." ;
+    rdfs:domain :VoyagePlan ;
+    rdfs:range xsd:string .
+
+:voyagePlanDeparturePort a owl:DatatypeProperty ;
+    rdfs:label "voyage plan departure port" ;
+    rdfs:comment "Port of departure for the voyage plan, per SOLAS V/34 berth-to-berth planning." ;
+    rdfs:domain :VoyagePlan ;
+    rdfs:range xsd:string .
+
+:voyagePlanDestinationPort a owl:DatatypeProperty ;
+    rdfs:label "voyage plan destination port" ;
+    rdfs:comment "Port of destination for the voyage plan, per SOLAS V/34 berth-to-berth planning." ;
+    rdfs:domain :VoyagePlan ;
+    rdfs:range xsd:string .

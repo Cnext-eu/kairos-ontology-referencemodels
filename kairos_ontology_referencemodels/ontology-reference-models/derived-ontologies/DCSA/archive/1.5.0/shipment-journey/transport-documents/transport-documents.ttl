@@ -1,0 +1,192 @@
+@prefix : <https://www.kairosflow.ai/ont/dcsa/transport-documents#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix party: <https://www.kairosflow.ai/ont/dcsa/party#> .
+@prefix loc: <https://www.kairosflow.ai/ont/dcsa/locations#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/dcsa/transport-documents> a owl:Ontology ;
+    dcterms:title "DCSA Transport Documents Domain" ;
+    dcterms:description """Transport document concepts for container shipping.
+    
+    Covers Bills of Lading (including electronic eBL), Sea Waybills,
+    and their associated properties such as document status, negotiability,
+    and reference numbers.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-06-20"^^xsd:date ;
+    owl:versionInfo "1.5.0" ;
+    dcterms:source "DCSA Electronic Bill of Lading (EBL) API v3.0" ;
+    rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
+
+#################################################################
+#    Transport Document Classes
+#################################################################
+
+:TransportDocument a owl:Class ;
+    rdfs:label "Transport Document" ;
+    rdfs:comment """A document evidencing a contract of carriage and receipt of cargo.
+    
+    DCSA: Bill of Lading or Sea Waybill.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :transportDocumentReference ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:BillOfLading a owl:Class ;
+    rdfs:label "Bill of Lading" ;
+    rdfs:comment """A transport document serving as receipt, contract, and document of title for ocean freight.
+    
+    DCSA: Traditional negotiable shipping document.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+:ElectronicBillOfLading a owl:Class ;
+    rdfs:label "Electronic Bill of Lading (eBL)" ;
+    rdfs:comment """A digital, legally equivalent version of a paper Bill of Lading.
+    
+    DCSA: Standardized electronic B/L with same legal force as paper document.""" ;
+    rdfs:subClassOf :BillOfLading .
+
+:SeaWaybill a owl:Class ;
+    rdfs:label "Sea Waybill" ;
+    rdfs:comment """A non-negotiable transport document for ocean freight.
+    
+    DCSA: Simpler alternative to B/L, cargo released to named consignee without presenting original.""" ;
+    rdfs:subClassOf :TransportDocument .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:transportDocumentReference a owl:DatatypeProperty ;
+    rdfs:label "transport document reference" ;
+    rdfs:comment "Unique B/L or Sea Waybill number." ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range xsd:string .
+
+:billOfLadingNumber a owl:DatatypeProperty ;
+    rdfs:label "bill of lading number" ;
+    rdfs:comment "Unique B/L number." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:string .
+
+:documentStatus a owl:DatatypeProperty ;
+    rdfs:label "document status" ;
+    rdfs:comment "Status: DRAFT, PENDING APPROVAL, APPROVED, ISSUED, SURRENDERED, VOID." ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range xsd:string .
+
+:isNegotiable a owl:DatatypeProperty ;
+    rdfs:label "is negotiable" ;
+    rdfs:comment "Indicates if B/L is negotiable (document of title)." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:boolean .
+
+:numberOfOriginals a owl:DatatypeProperty ;
+    rdfs:label "number of originals" ;
+    rdfs:comment "Number of original B/L copies issued." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:integer .
+
+:isElectronic a owl:DatatypeProperty ;
+    rdfs:label "is electronic" ;
+    rdfs:comment "Indicates if document is electronic." ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range xsd:boolean .
+
+#################################################################
+#    Cross-Domain Object Properties
+#################################################################
+
+:hasDocumentParty a owl:ObjectProperty ;
+    rdfs:label "has document party" ;
+    rdfs:comment """A party named on this transport document. Cardinality: 1:n.
+    :hasDocumentShipper, :hasDocumentConsignee and :hasDocumentNotifyParty are
+    specialisations of this generic relationship.""" ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range party:ShippingParty .
+
+:hasDocumentShipper a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasDocumentParty ;
+    rdfs:label "has document shipper" ;
+    rdfs:comment "The shipper named on this transport document." ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range party:Shipper .
+
+:hasDocumentConsignee a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasDocumentParty ;
+    rdfs:label "has document consignee" ;
+    rdfs:comment "The consignee named on this transport document." ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range party:Consignee .
+
+:hasDocumentNotifyParty a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasDocumentParty ;
+    rdfs:label "has document notify party" ;
+    rdfs:comment "A notify party named on this transport document." ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range party:NotifyParty .
+
+:hasDocumentLocation a owl:ObjectProperty ;
+    rdfs:label "has document location" ;
+    rdfs:comment """A routing location stated on this transport document. Cardinality: 1:n.
+    :hasPortOfLoading, :hasPortOfDischarge, :hasPlaceOfReceipt and
+    :hasPlaceOfDelivery are specialisations of this generic relationship.""" ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range loc:Location .
+
+:hasPortOfLoading a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasDocumentLocation ;
+    rdfs:label "has port of loading" ;
+    rdfs:comment "Port of loading stated on the transport document." ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range loc:PortOfLoading .
+
+:hasPortOfDischarge a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasDocumentLocation ;
+    rdfs:label "has port of discharge" ;
+    rdfs:comment "Port of discharge stated on the transport document." ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range loc:PortOfDischarge .
+
+:hasPlaceOfReceipt a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasDocumentLocation ;
+    rdfs:label "has place of receipt" ;
+    rdfs:comment "Place of receipt stated on the transport document." ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range loc:PlaceOfReceipt .
+
+:hasPlaceOfDelivery a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasDocumentLocation ;
+    rdfs:label "has place of delivery" ;
+    rdfs:comment "Place of delivery stated on the transport document." ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range loc:PlaceOfDelivery .
+
+#################################################################
+#    Pre/On-Carriage Properties
+#################################################################
+
+:preCarriageBy a owl:DatatypeProperty ;
+    rdfs:label "pre-carriage by" ;
+    rdfs:comment """Mode of transport for pre-carriage (origin to port of loading).
+    DCSA EBL v3 values: VESSEL, RAIL, TRUCK, BARGE, MULTIMODAL.""" ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range xsd:string .
+
+:onCarriageBy a owl:DatatypeProperty ;
+    rdfs:label "on-carriage by" ;
+    rdfs:comment """Mode of transport for on-carriage (port of discharge to destination).
+    DCSA EBL v3 values: VESSEL, RAIL, TRUCK, BARGE, MULTIMODAL.""" ;
+    rdfs:domain :TransportDocument ;
+    rdfs:range xsd:string .
+
+:shippedOnBoardDate a owl:DatatypeProperty ;
+    rdfs:label "shipped on board date" ;
+    rdfs:comment "Date when cargo was loaded on board the vessel." ;
+    rdfs:domain :BillOfLading ;
+    rdfs:range xsd:date .

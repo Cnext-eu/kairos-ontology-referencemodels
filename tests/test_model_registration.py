@@ -42,6 +42,7 @@ PACKS_DIR = ONTOLOGY_ROOT / "accelerator-packs"
 
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 from catalog_utils import CatalogResolver  # noqa: E402
+from logistics_blueprint_common import load_import_closure  # noqa: E402
 
 
 #: Pre-existing financial-services gaps, recorded so this file can land without silently
@@ -116,6 +117,7 @@ def pack(request) -> dict:
 
     dd_path = pack_dir / "client-hub-blueprint" / "data-domains.yaml"
     domain_uris: set[str] = set()
+    bridge_class_uris: set[str] = set()
     if dd_path.is_file():
         dd = yaml.safe_load(dd_path.read_text(encoding="utf-8")) or {}
         for group in dd.get("groups", []) or []:
@@ -128,6 +130,14 @@ def pack(request) -> dict:
             for key in ("property_uri", "inverse_of"):
                 if rel.get(key):
                     domain_uris.add(_norm(str(rel[key]).split("#", 1)[0]))
+        # The class endpoints are a separate obligation from the property's module:
+        # a bridge grants reach to its range_class_uri, so that class's module has to
+        # be in the bundle or the widened alignment pool references something the hub
+        # cannot resolve (gh#98).
+        for rel in dd.get("cross_domain_relationships", []) or []:
+            for key in ("domain_class_uri", "range_class_uri"):
+                if rel.get(key):
+                    bridge_class_uris.add(_norm(str(rel[key]).split("#", 1)[0]))
 
     return {
         "name": pack_dir.name,
@@ -135,6 +145,7 @@ def pack(request) -> dict:
         "manifest": manifest,
         "imports": imports,
         "domain_uris": domain_uris,
+        "bridge_class_uris": bridge_class_uris,
     }
 
 
@@ -272,4 +283,94 @@ def test_every_include_reaches_data_domains(pack) -> None:
         f"{pack['name']}: modules in the bundle that data-domains.yaml never references: "
         f"{unreached}. Wire them into a domain's imports, or declare 'data_domain_status' "
         "on the manifest entry with a reason."
+    )
+
+
+def test_every_bridge_class_endpoint_is_in_the_bundle(pack, resolver) -> None:
+    """A bridge's class endpoints must resolve, not just its property's module.
+
+    The fixture already folded ``property_uri``/``inverse_of`` into ``domain_uris``,
+    but that only proves the *property* is catalogued. A declared bridge widens the
+    source domain's alignment pool with its ``range_class_uri``, so if that class's
+    module is absent from the bundle the hub is offered an anchor it cannot resolve.
+    Added with the gh#98 measurement bridges, where the property lives in
+    ``supply-chain#`` while the classes live in ``mmt/cargo#`` and
+    ``mmt/consignment#`` — two different modules with two different obligations.
+    """
+    unresolved = sorted(
+        uri for uri in pack["bridge_class_uris"] if resolver.resolve(uri) is None
+    )
+    assert not unresolved, (
+        f"{pack['name']}: cross_domain_relationships reference classes in modules that "
+        f"catalog-v001.xml cannot resolve: {unresolved}"
+    )
+
+
+#: Modules that declare terms yet are deliberately not routed to any data domain.
+#: The rule below auto-exempts pure aggregators (a module declaring no terms of its own),
+#: so an entry here is a real, argued exception.
+UNROUTED_BY_DESIGN: dict[str, str] = {
+    "https://www.kairosflow.ai/ont/supply-chain": (
+        "Integration module: its terms are cross-standard bridge properties, reached "
+        "through cross_domain_relationships[].property_uri rather than by a domain "
+        "importing the module. Routing it to a domain would assign one domain ownership "
+        "of every bridge in the pack."
+    ),
+}
+
+
+def test_every_term_declaring_module_reaches_a_data_domain(pack) -> None:
+    """A shipped module that declares terms must be routed to at least one data domain.
+
+    This is the gap that let gh#98 through, and it is a granularity gap rather than a
+    missing test. ``test_every_include_reaches_data_domains`` above was written for
+    exactly this failure (the RAIL regression) but checks ``manifest.yaml`` *includes*,
+    which are vendor-level (``ont/mmt#``), and passes on a prefix match against any
+    routed module. That prefix match is required for FIBO, where the manifest names
+    module *groups* — and it is precisely what made per-module gaps invisible: MMT
+    counted as "reaching data-domains" on the strength of ``mmt/cargo`` alone while
+    ``mmt/locations``, ``mmt/transport-means`` and the dangerous-goods terms were
+    routed nowhere.
+
+    An unrouted module is invisible to the consumer's alignment pool, so a hub can
+    neither anchor to its classes nor be told they exist — the same silent-drop failure
+    as gh#97, one layer up.
+
+    Aggregators are auto-exempt: a module that declares no terms of its own exists to
+    compose others, and the composition surface is the accelerator, not a data domain.
+    That keeps the rule self-maintaining rather than requiring an allowlist entry per
+    vendor root.
+    """
+    dd_path = pack["dir"] / "client-hub-blueprint" / "data-domains.yaml"
+    if not dd_path.is_file():
+        pytest.skip(f"{pack['name']} ships no data-domains.yaml")
+
+    # Scope to what THIS pack bundles — its accelerator's transitive owl:imports closure —
+    # not the whole catalog. financial-services must not be asked to route logistics
+    # modules, and logistics must not be asked to route FIBO.
+    accelerator = next((pack["dir"] / "current").glob("*-accelerator.ttl"))
+    closure = load_import_closure(accelerator, CATALOG_PATH)
+
+    routed = {_norm(uri) for uri in pack["domain_uris"]}
+    unrouted: list[str] = []
+    for document in closure:
+        iri = _norm(document.ontology_uri)
+        if not iri.startswith("https://www.kairosflow.ai/ont/"):
+            continue
+        if iri in UNROUTED_BY_DESIGN or document.ontology_uri in UNROUTED_BY_DESIGN:
+            continue
+        namespace = iri + "#"
+        declares_terms = any(
+            str(subject).startswith(namespace) for subject in set(document.graph.subjects())
+        )
+        if not declares_terms:
+            continue  # aggregator: composes others, so a data domain is the wrong surface
+        if iri not in routed:
+            unrouted.append(iri)
+
+    assert not unrouted, (
+        f"{pack['name']}: modules that declare terms but no data domain imports: "
+        f"{sorted(unrouted)}. A hub cannot anchor to a class it cannot reach. Add the "
+        f"module to the owning domain's imports, or record it in UNROUTED_BY_DESIGN "
+        f"with a reason."
     )

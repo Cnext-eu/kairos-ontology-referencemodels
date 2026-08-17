@@ -71,7 +71,7 @@ ISPS Code security framework: Ship Security Plan, Port Facility Security Plan, a
 
 ## Cross-Domain Alignment
 
-The IMO ontology uses `rdfs:seeAlso` annotations to reference related concepts in other Kairos reference models without creating `owl:imports` dependencies:
+The IMO ontology uses `rdfs:seeAlso` annotations to reference related concepts in other Kairos reference models without creating `owl:imports` dependencies. This applies to *annotation* alignment only — where an IMO module asserts `rdfs:domain` or `rdfs:range` against a class in another module, it declares an `owl:imports` for it, as `party.ttl` has for `imo/locations` since 1.1.0 and as the four modules corrected in 1.4.0 now do (gh#97). Enforced by `validate_structure.py` check 10.
 
 | IMO Concept | Related Concept | Relationship |
 |---|---|---|

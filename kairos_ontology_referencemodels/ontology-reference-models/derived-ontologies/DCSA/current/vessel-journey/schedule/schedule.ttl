@@ -18,8 +18,10 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "1.5.0" ;
+    owl:versionInfo "1.6.0" ;
     dcterms:source "DCSA Operational Vessel Schedules (OVS) API" ;
+    owl:imports <https://www.kairosflow.ai/ont/dcsa/locations> ,
+                <https://www.kairosflow.ai/ont/dcsa/transport-call> ;
     rdfs:seeAlso <https://dcsa.org/standards/operational-vessel-schedules/> .
 
 #################################################################

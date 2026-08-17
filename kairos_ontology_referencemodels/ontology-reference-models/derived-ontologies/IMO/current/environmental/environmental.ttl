@@ -24,8 +24,9 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-06-12"^^xsd:date ;
     dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "1.3.0" ;
+    owl:versionInfo "1.4.0" ;
     dcterms:source "MARPOL 73/78, BWM Convention 2004, MARPOL Annex VI Chapter 4" ;
+    owl:imports <https://www.kairosflow.ai/ont/imo/vessel-registry> ;
     rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
 
 #################################################################

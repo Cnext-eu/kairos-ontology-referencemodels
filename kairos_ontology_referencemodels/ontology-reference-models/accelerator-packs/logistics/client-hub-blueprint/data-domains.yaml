@@ -36,11 +36,28 @@ groups:
             module: "RAIL / Party"
             provides: "Railway undertaking (RU), infrastructure manager (IM), lead RU, wagon keeper"
             mode: rail
+          - uri: "https://www.kairosflow.ai/ont/tic/party#"
+            module: "TIC / Party"
+            provides: "Terminal party, terminal operator, stevedore"
+            note: >
+              Added for gh#98. Found by the module-level routing check, not by the archetype
+              check: no archetype core concept names a tic/party class, so concept-level
+              reachability could not see it. Nine terms were unroutable while every other
+              vendor's party module was routed here.
+          - uri: "https://www.kairosflow.ai/ont/dcsa/party#"
+            module: "DCSA / Party"
+            provides: "Booking party, controlling party, shipper, consignee, notify party (DCSA role vocabulary)"
+            note: >
+              Added for gh#98. BSP, MMT, IMO and RAIL party modules were all routed here
+              but DCSA's was not, leaving four tier-required archetype core concepts
+              unreachable from every domain even though dcsa/party#BookingParty is the
+              range of an existing declared bridge.
         standards:
           - "UN/CEFACT CCL"
           - "ISO 20197-1:2024 BSP-RDM"
           - "IMO Compendium"
           - "TAF TSI (EU Regulation 1305/2012, Annex D.2 Appendix F)"
+          - "DCSA API Standards"
 
       - id: commercial
         name: "Customer, Contract & Commercial Agreement"
@@ -223,6 +240,17 @@ groups:
               done to a container), handling-operations owns the terminal-move grain (which
               crane performed the move). Bind stuffing/stripping/journey here; bind physical
               moves to TIC.
+          - uri: "https://www.kairosflow.ai/ont/mmt/transport-means#"
+            module: "MMT / Transport Means"
+            provides: "Road vehicle (tractor unit), rail vehicle, logistics means of transport"
+            note: >
+              Added for gh#98 — see the note on the same import under vessel-maritime. This
+              domain takes the road/rail fleet-asset grain: RoadVehicle is tier: required for
+              unit-load-carrier (the tractor unit pulling the trailer) and this domain is named
+              "Cargo Equipment & Fleet Equipment". Note the tension with this domain's own
+              does_not_own "Vessel fleet": a module-level import cannot exclude Vessel, so the
+              boundary statement remains the governing rule — do not anchor vessel tables here,
+              use vessel-maritime.
         standards:
           - "UN/CEFACT MMT-RDM"
           - "DCSA API Standards"
@@ -274,6 +302,13 @@ groups:
               Required dependency of rail/train-running — train-running references
               sk:OperationalTrainIdentifier and sk:RailLocationIdentifier in its property
               ranges. Without this import those classes are unresolvable.
+          - uri: "https://www.kairosflow.ai/ont/mmt/transport-means#"
+            module: "MMT / Transport Means"
+            provides: "Rail vehicle, barge vessel, logistics convoy, logistics means of transport"
+            note: >
+              Added for gh#98 — see the note on the same import under vessel-maritime. This
+              domain takes the inland conveyance grain: RailVehicle, BargeVessel and
+              LogisticsConvoy (a convoy is the composition concept behind train running).
         standards:
           - "UN/CEFACT MMT-RDM"
           - "TAF TSI (EU Regulation 1305/2012, Annex D.2 Appendix F)"
@@ -317,9 +352,24 @@ groups:
           - uri: "https://www.kairosflow.ai/ont/imo/locations#"
             module: "IMO / Locations"
             provides: "Port, emission control area, MARPOL special area, port reception facility"
+          - uri: "https://www.kairosflow.ai/ont/mmt/transport-means#"
+            module: "MMT / Transport Means"
+            provides: "Vessel, barge vessel, logistics means of transport (MMT conveyance grain)"
+            note: >
+              Added for gh#98. mmt/transport-means was imported by no domain at all, leaving
+              eleven archetype core concepts unreachable — including mmt/transport-means#Vessel
+              at tier: required for shipping-carrier. The module spans every mode, so it is
+              deliberately imported by three domains along mode lines rather than assigned one
+              owner: this domain for Vessel and BargeVessel, equipment for the road/rail fleet
+              assets, intermodal for inland conveyances. Precedent: mmt/cargo# is imported by
+              both cargo and roro. Consequence to be aware of: a module-level import exposes
+              all seven classes here, so Aircraft and the road/rail vehicles are visible to
+              this domain too — bind vessel identity to imo/vessel-registry#Vessel, which
+              remains the authority (this module's Vessel carries an rdfs:seeAlso to it).
         standards:
           - "IMO Compendium / FAL"
           - "DCSA API Standards"
+          - "UN/CEFACT MMT-RDM"
 
       - id: terminal-operations
         name: "Terminal, Yard, Berth, Gate & Handling Operations"
@@ -390,9 +440,19 @@ groups:
           - uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#"
             module: "IMO / Dangerous Goods"
             provides: "DG item, hazard class, UN number, IMDG classification, restrictions"
+          - uri: "https://www.kairosflow.ai/ont/mmt/dangerous-goods#"
+            module: "MMT / Dangerous Goods"
+            provides: "UN TDG hazard class taxonomy (classes 1-9), UN number, packing group, proper shipping name, hazard-class physical properties"
+            note: >
+              Extracted from the MMT root namespace at MMT 3.0.0. While these terms lived in
+              `ont/mmt#` no data domain imported them, so the UN TDG taxonomy was unreachable
+              from every client hub. The IMO import provides IMDG transport-documentation
+              concepts; this one provides the UN TDG substance classification. They are
+              complementary grains, not an overlap.
         standards:
           - "IMDG Code"
           - "IMO Compendium"
+          - "UN Recommendations on the Transport of Dangerous Goods (Orange Book)"
 
       - id: customs
         name: "Customs, Border & Regulatory Declarations"
@@ -517,6 +577,15 @@ groups:
           - uri: "https://www.kairosflow.ai/ont/bsp/reference-data#"
             module: "BSP / Reference Data"
             provides: "Code list, location, country, currency, UoM, address"
+          - uri: "https://www.kairosflow.ai/ont/mmt/locations#"
+            module: "MMT / Locations"
+            provides: "Location, transport location, road terminal, geographic reference"
+            note: >
+              Added for gh#98. Every other vendor's locations module was routed
+              (dcsa/locations here, imo/locations to vessel-maritime, tic/locations to
+              terminal-operations, wco/locations to customs) but MMT's was not, leaving
+              five tier-required archetype core concepts — including mmt/locations#Location
+              — unreachable from every domain.
           - uri: "https://www.kairosflow.ai/ont/dcsa/locations#"
             module: "DCSA / Locations"
             provides: "Facility, UN location code, address"
@@ -813,3 +882,54 @@ cross_domain_relationships:
     range_class_uri: "https://www.kairosflow.ai/ont/dcsa/party#BookingParty"
     description: "Already defined in DCSA: links Booking to BookingParty."
     status: existing
+
+  # --- Cargo measurement reach for equipment and consignment (gh#98) ---
+  # MMT owns Dimension, Weight and CargoMeasurement in mmt/cargo, and the cargo
+  # domain's overlap register resolved them there on purpose. But mmt/cargo routes
+  # to `cargo` and `roro` only, so `equipment` and `consignment` could not reach
+  # those classes at all — a class can be correctly modelled, correctly imported by
+  # one domain, and still be unreachable from the domain that needs it.
+  #
+  # A bridge rather than an import: importing mmt/cargo into equipment would read
+  # as co-ownership and trip the cross-domain duplicate check, whereas a bridge says
+  # "may reference, does not own". One entry per (class, domain) pair, because the
+  # consumer exposes exactly the bridge's range_class_uri, not its whole module.
+  #
+  # These are integration-layer declarations. They do NOT assert that UN/CEFACT
+  # associates a spatial dimension with transport equipment or with a consignment
+  # goods item; that remains open pending the versioned MMT-RDM audit.
+  - id: equipment-to-cargo-dimension
+    source_domain: equipment
+    target_domain: cargo
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#hasEquipmentDimension"
+    domain_class_uri: "https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment"
+    range_class_uri: "https://www.kairosflow.ai/ont/mmt/cargo#Dimension"
+    description: "Enables the equipment domain to reach the MMT Dimension value object (length/width/height plus unit) without importing mmt/cargo. Carries no exterior/capacity qualifier — that distinction is a mapping decision pending the MMT-RDM audit."
+    status: new-bridge
+
+  - id: consignment-to-cargo-dimension
+    source_domain: consignment
+    target_domain: cargo
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#hasGoodsDimension"
+    domain_class_uri: "https://www.kairosflow.ai/ont/mmt/consignment#GoodsItem"
+    range_class_uri: "https://www.kairosflow.ai/ont/mmt/cargo#Dimension"
+    description: "Enables the consignment domain to reach the MMT Dimension value object. Asserts no equivalence or containment between consignment#GoodsItem and cargo#CargoItem."
+    status: new-bridge
+
+  - id: consignment-to-cargo-weight
+    source_domain: consignment
+    target_domain: cargo
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#hasGoodsWeight"
+    domain_class_uri: "https://www.kairosflow.ai/ont/mmt/consignment#GoodsItem"
+    range_class_uri: "https://www.kairosflow.ai/ont/mmt/cargo#Weight"
+    description: "Enables the consignment domain to reach the MMT Weight value object. Gross/net/tare is carried by the Weight object's weightType, not by separate scalars."
+    status: new-bridge
+
+  - id: consignment-to-cargo-measurement
+    source_domain: consignment
+    target_domain: cargo
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#hasGoodsMeasurement"
+    domain_class_uri: "https://www.kairosflow.ai/ont/mmt/consignment#GoodsItem"
+    range_class_uri: "https://www.kairosflow.ai/ont/mmt/cargo#CargoMeasurement"
+    description: "Enables the consignment domain to reach the MMT CargoMeasurement value object, covering volumes and load measures. The qualifier lives in measurementType."
+    status: new-bridge

@@ -1,0 +1,284 @@
+@prefix : <https://www.kairosflow.ai/ont/mmt/dangerous-goods#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/mmt/dangerous-goods> a owl:Ontology ;
+    dcterms:title "MMT Dangerous Goods Domain" ;
+    dcterms:description """Dangerous goods and hazardous cargo classes for the Kairos Multi-Modal Transport ontology.
+
+    Covers the UN TDG hazard class taxonomy (classes 1-9), UN numbers, packing groups,
+    proper shipping names, and the hazard-class-specific physical properties.
+
+    Extracted from the MMT root ontology at MMT 3.0.0. The terms previously lived in the
+    root namespace `https://www.kairosflow.ai/ont/mmt#`, which no data domain imports, so
+    they were unreachable from every client hub domain. See the MMT README for the full
+    IRI mapping table.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-08-17"^^xsd:date ;
+    owl:versionInfo "3.0.0" ;
+    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model; UN Recommendations on the Transport of Dangerous Goods (Orange Book), 23rd revised edition" ;
+    rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
+
+#################################################################
+#    Dangerous Goods Classes
+#    Source: UN Recommendations on the Transport of Dangerous Goods
+#    ("Orange Book"), 23rd revised edition. The parent DangerousGoods
+#    class corresponds to unece:DangerousGoods in BSP D23B.
+#    Subclasses reify the 9 hazard classes as OWL types; the BSP model
+#    uses a single flat class with hazardClassificationId instead.
+#    (A separate IMO ontology covers DG transport documentation.)
+#################################################################
+
+:DangerousGoods a owl:Class ;
+    rdfs:label "Dangerous Goods" ;
+    rdfs:comment """Hazardous materials requiring special handling.
+
+    UN/CEFACT BSP D23B: Corresponds to unece:DangerousGoods — goods which may contain
+    a substance which poses risks to people and/or the environment during transportation.
+    The BSP model uses hazardClassificationId to distinguish classes; the subclasses below
+    reify the UN TDG hazard class taxonomy as OWL classes for semantic expressiveness.""" .
+
+:ExplosiveGoods a owl:Class ;
+    rdfs:label "Explosive Goods (Class 1)" ;
+    rdfs:comment """Explosive substances and articles.
+
+    Properties: explosionCode (compatibility group), netExplosiveMass.
+    UN/CEFACT MMT-RDM: DangerousGoods — explosionCode maps to the UN TDG
+    compatibility group letter; netExplosiveMass is the net explosive content
+    quantity. UN TDG Recommendations, Part 2, §2.1: Class 1.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:FlammableGas a owl:Class ;
+    rdfs:label "Flammable Gas (Class 2.1)" ;
+    rdfs:comment """Flammable gases.
+
+    Properties: gasPressure, vaporPressure.
+    UN/CEFACT MMT-RDM: DangerousGoods — gasPressure and vaporPressure capture
+    the pressure thresholds relevant for flammable gas transport. UN TDG
+    Recommendations, Part 2, §2.2: Class 2.1 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:FlammableLiquid a owl:Class ;
+    rdfs:label "Flammable Liquid (Class 3)" ;
+    rdfs:comment """Flammable liquids.
+
+    Properties: boilingPoint, flashPoint (inherited from DangerousGoods).
+    UN/CEFACT MMT-RDM: DangerousGoods — boilingPoint is the temperature at
+    which the liquid's vapor pressure equals ambient pressure. UN TDG
+    Recommendations, Part 2, §2.3: Class 3 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:FlammableSolid a owl:Class ;
+    rdfs:label "Flammable Solid (Class 4)" ;
+    rdfs:comment """Flammable solids.
+
+    Properties: selfReactiveIndicator, pyrophoricIndicator.
+    UN/CEFACT MMT-RDM: DangerousGoods — selfReactiveIndicator and
+    pyrophoricIndicator flag self-reactive and pyrophoric substances within
+    Class 4. UN TDG Recommendations, Part 2, §2.4: Class 4 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:OxidizingSubstance a owl:Class ;
+    rdfs:label "Oxidizing Substance (Class 5)" ;
+    rdfs:comment """Oxidizing substances and organic peroxides.
+
+    Properties: organicPeroxideIndicator, selfAcceleratingTemperature.
+    UN/CEFACT MMT-RDM: DangerousGoods — organicPeroxideIndicator distinguishes
+    Class 5.2 organic peroxides; selfAcceleratingTemperature is the
+    self-accelerating decomposition temperature. UN TDG Recommendations,
+    Part 2, §2.5: Class 5 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:ToxicSubstance a owl:Class ;
+    rdfs:label "Toxic Substance (Class 6)" ;
+    rdfs:comment """Toxic and infectious substances.
+
+    Properties: infectiousSubstanceIndicator, toxicInhalationHazardIndicator.
+    UN/CEFACT MMT-RDM: DangerousGoods — infectiousSubstanceIndicator flags
+    Class 6.2 infectious substances; toxicInhalationHazardIndicator flags
+    toxic-inhalation hazards within Class 6.1. UN TDG Recommendations,
+    Part 2, §2.6: Class 6 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:RadioactiveMaterial a owl:Class ;
+    rdfs:label "Radioactive Material (Class 7)" ;
+    rdfs:comment """Radioactive materials.
+
+    Properties: radioactivityLevel, criticalitySafetyIndex.
+    UN/CEFACT MMT-RDM: DangerousGoods — radioactivityLevel is the activity
+    concentration or A2/A1 value; criticalitySafetyIndex applies to fissile
+    material. UN TDG Recommendations, Part 2, §2.7: Class 7 dangerous goods.
+    Also exists as standalone unece:RadioactiveMaterial in BSP D23B.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:CorrosiveSubstance a owl:Class ;
+    rdfs:label "Corrosive Substance (Class 8)" ;
+    rdfs:comment """Corrosive substances.
+
+    Properties: corrosionRate, packingGroup (inherited from DangerousGoods).
+    UN/CEFACT MMT-RDM: DangerousGoods — corrosionRate indicates the rate of
+    corrosion for packing group determination. UN TDG Recommendations,
+    Part 2, §2.8: Class 8 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+:MiscellaneousDangerousGoods a owl:Class ;
+    rdfs:label "Miscellaneous Dangerous Goods (Class 9)" ;
+    rdfs:comment """Miscellaneous dangerous substances and articles.
+
+    Properties: miscellaneousHazardCode, environmentallyHazardousIndicator.
+    UN/CEFACT MMT-RDM: DangerousGoods — miscellaneousHazardCode captures the
+    specific Class 9 hazard identifier; environmentallyHazardousIndicator
+    flags environmentally hazardous substances (UN 3077/3082). UN TDG
+    Recommendations, Part 2, §2.9: Class 9 dangerous goods.""" ;
+    rdfs:subClassOf :DangerousGoods .
+
+#################################################################
+#    Dangerous Goods Datatype Properties
+#################################################################
+
+:unNumber a owl:DatatypeProperty ;
+    rdfs:label "UN number" ;
+    rdfs:comment "UN dangerous goods identification number." ;
+    rdfs:domain :DangerousGoods ;
+    rdfs:range xsd:string .
+
+:hazardClass a owl:DatatypeProperty ;
+    rdfs:label "hazard class" ;
+    rdfs:comment "UN dangerous goods class (1-9)." ;
+    rdfs:domain :DangerousGoods ;
+    rdfs:range xsd:string .
+
+:packingGroup a owl:DatatypeProperty ;
+    rdfs:label "packing group" ;
+    rdfs:comment "Packing group: I (high danger), II (medium), III (low)." ;
+    rdfs:domain :DangerousGoods ;
+    rdfs:range xsd:string .
+
+:properShippingName a owl:DatatypeProperty ;
+    rdfs:label "proper shipping name" ;
+    rdfs:comment "Official UN name for dangerous goods." ;
+    rdfs:domain :DangerousGoods ;
+    rdfs:range xsd:string .
+
+:technicalName a owl:DatatypeProperty ;
+    rdfs:label "technical name" ;
+    rdfs:comment "Chemical or technical name of dangerous goods." ;
+    rdfs:domain :DangerousGoods ;
+    rdfs:range xsd:string .
+
+:flashPoint a owl:DatatypeProperty ;
+    rdfs:label "flash point" ;
+    rdfs:comment "Flash point temperature in Celsius for flammable goods." ;
+    rdfs:domain :DangerousGoods ;
+    rdfs:range xsd:decimal .
+
+:emergencyContactNumber a owl:DatatypeProperty ;
+    rdfs:label "emergency contact number" ;
+    rdfs:comment "24-hour emergency phone number for dangerous goods." ;
+    rdfs:domain :DangerousGoods ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    DG Subclass-Specific Properties (UN/CEFACT MMT-RDM)
+#################################################################
+
+:explosionCode a owl:DatatypeProperty ;
+    rdfs:label "explosion code" ;
+    rdfs:comment "UN TDG compatibility group letter for Class 1 explosive goods. UN/CEFACT MMT-RDM: DangerousGoods compatibility group." ;
+    rdfs:domain :ExplosiveGoods ;
+    rdfs:range xsd:string .
+
+:netExplosiveMass a owl:DatatypeProperty ;
+    rdfs:label "net explosive mass" ;
+    rdfs:comment "Net explosive content mass in kilograms. UN/CEFACT MMT-RDM: DangerousGoods net explosive quantity." ;
+    rdfs:domain :ExplosiveGoods ;
+    rdfs:range xsd:decimal .
+
+:gasPressure a owl:DatatypeProperty ;
+    rdfs:label "gas pressure" ;
+    rdfs:comment "Gas pressure in bar at reference temperature. UN/CEFACT MMT-RDM: DangerousGoods gas pressure." ;
+    rdfs:domain :FlammableGas ;
+    rdfs:range xsd:decimal .
+
+:vaporPressure a owl:DatatypeProperty ;
+    rdfs:label "vapor pressure" ;
+    rdfs:comment "Vapor pressure in kPa at 50°C. UN/CEFACT MMT-RDM: DangerousGoods vapor pressure." ;
+    rdfs:domain :FlammableGas ;
+    rdfs:range xsd:decimal .
+
+:boilingPoint a owl:DatatypeProperty ;
+    rdfs:label "boiling point" ;
+    rdfs:comment "Boiling point temperature in Celsius. UN/CEFACT MMT-RDM: DangerousGoods boiling point." ;
+    rdfs:domain :FlammableLiquid ;
+    rdfs:range xsd:decimal .
+
+:selfReactiveIndicator a owl:DatatypeProperty ;
+    rdfs:label "self-reactive indicator" ;
+    rdfs:comment "Indicates whether the substance is self-reactive. UN/CEFACT MMT-RDM: DangerousGoods self-reactive flag." ;
+    rdfs:domain :FlammableSolid ;
+    rdfs:range xsd:boolean .
+
+:pyrophoricIndicator a owl:DatatypeProperty ;
+    rdfs:label "pyrophoric indicator" ;
+    rdfs:comment "Indicates whether the substance is pyrophoric (ignites in air). UN/CEFACT MMT-RDM: DangerousGoods pyrophoric flag." ;
+    rdfs:domain :FlammableSolid ;
+    rdfs:range xsd:boolean .
+
+:organicPeroxideIndicator a owl:DatatypeProperty ;
+    rdfs:label "organic peroxide indicator" ;
+    rdfs:comment "Indicates whether the substance is an organic peroxide (Class 5.2). UN/CEFACT MMT-RDM: DangerousGoods organic peroxide flag." ;
+    rdfs:domain :OxidizingSubstance ;
+    rdfs:range xsd:boolean .
+
+:selfAcceleratingTemperature a owl:DatatypeProperty ;
+    rdfs:label "self-accelerating decomposition temperature" ;
+    rdfs:comment "Self-accelerating decomposition temperature in Celsius. UN/CEFACT MMT-RDM: DangerousGoods SADT." ;
+    rdfs:domain :OxidizingSubstance ;
+    rdfs:range xsd:decimal .
+
+:infectiousSubstanceIndicator a owl:DatatypeProperty ;
+    rdfs:label "infectious substance indicator" ;
+    rdfs:comment "Indicates whether the substance is infectious (Class 6.2). UN/CEFACT MMT-RDM: DangerousGoods infectious substance flag." ;
+    rdfs:domain :ToxicSubstance ;
+    rdfs:range xsd:boolean .
+
+:toxicInhalationHazardIndicator a owl:DatatypeProperty ;
+    rdfs:label "toxic inhalation hazard indicator" ;
+    rdfs:comment "Indicates whether the substance presents a toxic inhalation hazard. UN/CEFACT MMT-RDM: DangerousGoods toxic inhalation flag." ;
+    rdfs:domain :ToxicSubstance ;
+    rdfs:range xsd:boolean .
+
+:radioactivityLevel a owl:DatatypeProperty ;
+    rdfs:label "radioactivity level" ;
+    rdfs:comment "Activity concentration in Bq/g or A1/A2 value in TBq. UN/CEFACT MMT-RDM: DangerousGoods radioactivity level." ;
+    rdfs:domain :RadioactiveMaterial ;
+    rdfs:range xsd:decimal .
+
+:criticalitySafetyIndex a owl:DatatypeProperty ;
+    rdfs:label "criticality safety index" ;
+    rdfs:comment "Criticality safety index value for fissile radioactive material. UN/CEFACT MMT-RDM: DangerousGoods CSI." ;
+    rdfs:domain :RadioactiveMaterial ;
+    rdfs:range xsd:decimal .
+
+:corrosionRate a owl:DatatypeProperty ;
+    rdfs:label "corrosion rate" ;
+    rdfs:comment "Corrosion rate on steel or aluminium in mm/year. UN/CEFACT MMT-RDM: DangerousGoods corrosion rate." ;
+    rdfs:domain :CorrosiveSubstance ;
+    rdfs:range xsd:decimal .
+
+:miscellaneousHazardCode a owl:DatatypeProperty ;
+    rdfs:label "miscellaneous hazard code" ;
+    rdfs:comment "Specific hazard identifier code for Class 9 miscellaneous dangerous goods. UN/CEFACT MMT-RDM: DangerousGoods miscellaneous hazard code." ;
+    rdfs:domain :MiscellaneousDangerousGoods ;
+    rdfs:range xsd:string .
+
+:environmentallyHazardousIndicator a owl:DatatypeProperty ;
+    rdfs:label "environmentally hazardous indicator" ;
+    rdfs:comment "Indicates whether the substance is environmentally hazardous (UN 3077/3082). UN/CEFACT MMT-RDM: DangerousGoods environmentally hazardous flag." ;
+    rdfs:domain :MiscellaneousDangerousGoods ;
+    rdfs:range xsd:boolean .

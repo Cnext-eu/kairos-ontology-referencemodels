@@ -22,8 +22,11 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "1.5.0" ;
+    owl:versionInfo "1.6.0" ;
     dcterms:source "DCSA Track & Trace API v2.2 (equipment event types)" ;
+    owl:imports <https://www.kairosflow.ai/ont/dcsa/equipment> ,
+                <https://www.kairosflow.ai/ont/dcsa/events> ,
+                <https://www.kairosflow.ai/ont/dcsa/locations> ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
 
 #################################################################

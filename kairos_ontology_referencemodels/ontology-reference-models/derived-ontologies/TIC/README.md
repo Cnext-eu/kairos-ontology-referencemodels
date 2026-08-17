@@ -49,6 +49,12 @@ The TIC ontology uses `rdfs:seeAlso` annotations to document semantic alignment 
 
 Hub ontologies should compose via `owl:imports` at integration time to connect these domains.
 
+Within the TIC tree, a module that asserts `rdfs:domain` or `rdfs:range` against a sibling
+TIC class declares its own `owl:imports` for that module — twelve such assertions across six
+modules were dangling and invisible to consumers until 1.5.0 (gh#97). Enforced by
+`validate_structure.py` check 10. Cross-*vendor* alignment stays annotation-only, via the
+`rdfs:seeAlso` table above.
+
 ## Standards Alignment
 
 - TIC4.0 Release 2025.017 / BSI PAS 4000:2026

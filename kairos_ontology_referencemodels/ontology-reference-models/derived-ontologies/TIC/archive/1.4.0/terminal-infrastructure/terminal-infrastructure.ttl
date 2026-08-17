@@ -1,0 +1,625 @@
+@prefix : <https://www.kairosflow.ai/ont/tic/terminal-infrastructure#> .
+@prefix tic-loc: <https://www.kairosflow.ai/ont/tic/locations#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/tic/terminal-infrastructure> a owl:Ontology ;
+    dcterms:title "TIC 4.0 Terminal Infrastructure Ontology" ;
+    dcterms:description """Terminal infrastructure and equipment domain of the TIC 4.0 ontology.
+
+    Covers physical terminal assets, berths, yard areas, gate complexes, storage zones,
+    intermodal connections (rail, barge), and cargo handling equipment such as quay cranes,
+    yard cranes, reach stackers, and terminal tractors.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.4.0" ;
+    dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
+    rdfs:seeAlso <https://tic40.org/standards/> .
+
+#################################################################
+#    Infrastructure Classes
+#################################################################
+
+:Terminal a owl:Class ;
+    rdfs:label "Terminal" ;
+    rdfs:comment """A port or inland facility where cargo is transferred between transport modes.
+
+    TIC 4.0: The top-level physical entity encompassing berths, yards, gates, and all
+    associated infrastructure for cargo handling operations.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :terminalCode ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:Berth a owl:Class ;
+    rdfs:label "Berth" ;
+    rdfs:comment """A designated location alongside a quay where a vessel can be moored for loading or discharging cargo.
+
+    TIC 4.0: Berths are identified by number and have length, depth, crane coverage, and
+    quay crane count attributes.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :belongsToTerminal ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:YardArea a owl:Class ;
+    rdfs:label "Yard Area" ;
+    rdfs:comment """A demarcated zone within the terminal used for temporary storage and organization of cargo units.
+
+    TIC 4.0: Yard areas are divided into blocks, rows, bays, and tiers for container stacking.""" .
+
+:Gate a owl:Class ;
+    rdfs:label "Gate" ;
+    rdfs:comment """The controlled entry and exit point of a terminal for road transport vehicles.
+
+    TIC 4.0: Gates consist of multiple lanes and perform identification, security, and
+    condition checks on vehicles and cargo units. Each gate has a type (in/out) and a
+    defined number of lanes.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :hasGateLane ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:StorageZone a owl:Class ;
+    rdfs:label "Storage Zone" ;
+    rdfs:comment """A designated area within a terminal for specialized storage such as reefer, hazardous, or out-of-gauge cargo.
+
+    TIC 4.0: Storage zones have specific environmental controls, capacity limits, and safety requirements.""" .
+
+:RailHead a owl:Class ;
+    rdfs:label "Rail Head" ;
+    rdfs:comment """The rail infrastructure within or adjacent to a terminal for intermodal rail transfers.
+
+    TIC 4.0: Includes tracks, rail-mounted gantry cranes, and loading/unloading areas.""" .
+
+:BargeConnection a owl:Class ;
+    rdfs:label "Barge Connection" ;
+    rdfs:comment """A quay or mooring point within the terminal dedicated to inland waterway barge operations.
+
+    TIC 4.0: Supports intermodal transfer between deep-sea terminals and inland barge networks.""" .
+
+#################################################################
+#    Equipment Classes
+#################################################################
+
+:TerminalEquipment a owl:Class ;
+    rdfs:label "Terminal Equipment" ;
+    rdfs:comment """A piece of mechanical equipment used for cargo handling within the terminal.
+
+    TIC 4.0: Abstract superclass for all terminal handling equipment types.""" .
+
+:QuayCrane a owl:Class ;
+    rdfs:label "Quay Crane" ;
+    rdfs:comment """A large crane positioned on the quay wall used to load and discharge containers from vessels.
+
+    TIC 4.0: Ship-to-shore (STS) cranes with defined outreach, lift capacity, crane status,
+    and cycle times.""" ;
+    rdfs:subClassOf :TerminalEquipment ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :liftCapacityTonnes ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:YardCrane a owl:Class ;
+    rdfs:label "Yard Crane" ;
+    rdfs:comment """A crane operating within the yard area to stack, retrieve, and rearrange containers.
+
+    TIC 4.0: Includes rubber-tyred gantry (RTG) and rail-mounted gantry (RMG) cranes.
+    Each yard crane has a defined capacity, outreach, and operational status.""" ;
+    rdfs:subClassOf :TerminalEquipment .
+
+:ReachStacker a owl:Class ;
+    rdfs:label "Reach Stacker" ;
+    rdfs:comment """A mobile handling machine used to lift and move containers within the yard or at rail/barge interfaces.
+
+    TIC 4.0: Versatile equipment for low-to-medium density container stacking operations.""" ;
+    rdfs:subClassOf :TerminalEquipment .
+
+:TerminalTractor a owl:Class ;
+    rdfs:label "Terminal Tractor" ;
+    rdfs:comment """A specialized vehicle used for horizontal transport of cargo units between quay, yard, and gate areas.
+
+    TIC 4.0: Also known as yard trucks or tug masters; paired with trailers or chassis.""" ;
+    rdfs:subClassOf :TerminalEquipment .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:belongsToTerminal a owl:ObjectProperty ;
+    rdfs:label "belongs to terminal" ;
+    rdfs:comment "Links an infrastructure element to its parent terminal." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :Berth :YardArea :Gate :StorageZone :RailHead :BargeConnection )
+    ] ;
+    rdfs:range :Terminal .
+
+:hasBerth a owl:ObjectProperty ;
+    rdfs:label "has berth" ;
+    rdfs:comment "Links a terminal to one of its berths." ;
+    rdfs:domain :Terminal ;
+    rdfs:range :Berth ;
+    owl:inverseOf :belongsToTerminal .
+
+:hasYardArea a owl:ObjectProperty ;
+    rdfs:label "has yard area" ;
+    rdfs:comment "Links a terminal to one of its yard areas." ;
+    rdfs:domain :Terminal ;
+    rdfs:range :YardArea .
+
+:hasGate a owl:ObjectProperty ;
+    rdfs:label "has gate" ;
+    rdfs:comment "Links a terminal to one of its gate complexes." ;
+    rdfs:domain :Terminal ;
+    rdfs:range :Gate .
+
+:hasGateLane a owl:ObjectProperty ;
+    rdfs:label "has gate lane" ;
+    rdfs:comment "Links a gate to an individual lane." ;
+    rdfs:domain :Gate ;
+    rdfs:range tic-loc:GateLane .
+
+:hasStorageZone a owl:ObjectProperty ;
+    rdfs:label "has storage zone" ;
+    rdfs:comment "Links a terminal or yard area to a storage zone." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :Terminal :YardArea )
+    ] ;
+    rdfs:range :StorageZone .
+
+:hasRailHead a owl:ObjectProperty ;
+    rdfs:label "has rail head" ;
+    rdfs:comment "Links a terminal to its rail intermodal connection." ;
+    rdfs:domain :Terminal ;
+    rdfs:range :RailHead .
+
+:hasBargeConnection a owl:ObjectProperty ;
+    rdfs:label "has barge connection" ;
+    rdfs:comment "Links a terminal to its barge quay connection." ;
+    rdfs:domain :Terminal ;
+    rdfs:range :BargeConnection .
+
+:assignedEquipment a owl:ObjectProperty ;
+    rdfs:label "assigned equipment" ;
+    rdfs:comment "Links a terminal area to equipment assigned for operations." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :Berth :YardArea :Gate :StorageZone :RailHead :BargeConnection )
+    ] ;
+    rdfs:range :TerminalEquipment .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:terminalCode a owl:DatatypeProperty ;
+    rdfs:label "terminal code" ;
+    rdfs:comment "Unique identifier code for the terminal (e.g., UN/LOCODE extension)." ;
+    rdfs:domain :Terminal ;
+    rdfs:range xsd:string .
+
+:terminalName a owl:DatatypeProperty ;
+    rdfs:label "terminal name" ;
+    rdfs:comment "Human-readable name of the terminal." ;
+    rdfs:domain :Terminal ;
+    rdfs:range xsd:string .
+
+:berthNumber a owl:DatatypeProperty ;
+    rdfs:label "berth number" ;
+    rdfs:comment "Identifier number of the berth within a terminal." ;
+    rdfs:domain :Berth ;
+    rdfs:range xsd:string .
+
+:berthLengthMetres a owl:DatatypeProperty ;
+    rdfs:label "berth length (metres)" ;
+    rdfs:comment "Length of the berth in metres." ;
+    rdfs:domain :Berth ;
+    rdfs:range xsd:decimal .
+
+:berthDepthMetres a owl:DatatypeProperty ;
+    rdfs:label "berth depth (metres)" ;
+    rdfs:comment "Water depth at the berth in metres." ;
+    rdfs:domain :Berth ;
+    rdfs:range xsd:decimal .
+
+:liftCapacityTonnes a owl:DatatypeProperty ;
+    rdfs:label "lift capacity (tonnes)" ;
+    rdfs:comment "Maximum lifting capacity of the equipment in metric tonnes." ;
+    rdfs:domain :TerminalEquipment ;
+    rdfs:range xsd:decimal .
+
+:outreachMetres a owl:DatatypeProperty ;
+    rdfs:label "outreach (metres)" ;
+    rdfs:comment "Maximum outreach of a quay crane across the vessel in metres." ;
+    rdfs:domain :QuayCrane ;
+    rdfs:range xsd:decimal .
+
+:stackingCapacity a owl:DatatypeProperty ;
+    rdfs:label "stacking capacity" ;
+    rdfs:comment "Maximum number of container tiers a yard area or crane can handle." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :YardArea :YardCrane )
+    ] ;
+    rdfs:range xsd:integer .
+
+:gateCapacityTrucksPerHour a owl:DatatypeProperty ;
+    rdfs:label "gate capacity (trucks/hour)" ;
+    rdfs:comment "Maximum throughput of trucks per hour through the gate." ;
+    rdfs:domain :Gate ;
+    rdfs:range xsd:integer .
+
+:gateType a owl:DatatypeProperty ;
+    rdfs:label "gate type" ;
+    rdfs:comment "Type of gate indicating its operational direction (IN, OUT, COMBINED). TIC 4.0: gate type classification for entry/exit control." ;
+    rdfs:domain :Gate ;
+    rdfs:range xsd:string .
+
+:gateLaneCount a owl:DatatypeProperty ;
+    rdfs:label "gate lane count" ;
+    rdfs:comment "Total number of lanes available at the gate. TIC 4.0: count of processing lanes for gate throughput planning." ;
+    rdfs:domain :Gate ;
+    rdfs:range xsd:integer .
+
+:yardAreaType a owl:DatatypeProperty ;
+    rdfs:label "yard area type" ;
+    rdfs:comment "Classification of the yard area by cargo type (IMPORT, EXPORT, EMPTY, REEFER, HAZARDOUS, OOG). TIC 4.0: yard area type for storage zone planning." ;
+    rdfs:domain :YardArea ;
+    rdfs:range xsd:string .
+
+:yardAreaCapacityTEU a owl:DatatypeProperty ;
+    rdfs:label "yard area capacity (TEU)" ;
+    rdfs:comment "Maximum storage capacity of the yard area in TEU. TIC 4.0: capacity measure for yard space utilization analysis." ;
+    rdfs:domain :YardArea ;
+    rdfs:range xsd:integer .
+
+:quayCraneCount a owl:DatatypeProperty ;
+    rdfs:label "quay crane count" ;
+    rdfs:comment "Number of quay cranes available at the berth for vessel operations. TIC 4.0: crane coverage count for berth productivity planning." ;
+    rdfs:domain :Berth ;
+    rdfs:range xsd:integer .
+
+:craneStatus a owl:DatatypeProperty ;
+    rdfs:label "crane status" ;
+    rdfs:comment "Operational status of the crane (OPERATIONAL, DEGRADED, FAULT, OUT_OF_SERVICE). TIC 4.0: real-time crane status for equipment availability tracking." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :QuayCrane :YardCrane )
+    ] ;
+    rdfs:range xsd:string .
+
+:craneOutreachMetres a owl:DatatypeProperty ;
+    rdfs:label "crane outreach (metres)" ;
+    rdfs:comment "Maximum outreach of a yard crane across the stacking area in metres. TIC 4.0: outreach dimension for yard crane coverage." ;
+    rdfs:domain :YardCrane ;
+    rdfs:range xsd:decimal .
+
+#################################################################
+#    Phase 2.1: Additional CHE Types
+#################################################################
+
+:StraddleCarrier a owl:Class ;
+    rdfs:label "Straddle Carrier" ;
+    rdfs:comment """A mobile gantry crane that straddles containers for yard transport and stacking.
+
+    TIC 4.0: Used in straddle-carrier-based terminal layouts for both horizontal transport
+    and container stacking (typically 1-over-3 or 1-over-4 configurations).""" ;
+    rdfs:subClassOf :TerminalEquipment .
+
+:AutomatedGuidedVehicle a owl:Class ;
+    rdfs:label "Automated Guided Vehicle" ;
+    rdfs:comment """An autonomous vehicle used for horizontal transport of containers within automated terminals.
+
+    TIC 4.0: AGVs follow predefined routes or use dynamic navigation; key component of
+    fully automated terminal operations (e.g., APMT Maasvlakte II, TTI Algeciras).""" ;
+    rdfs:subClassOf :TerminalEquipment .
+
+:EmptyContainerHandler a owl:Class ;
+    rdfs:label "Empty Container Handler" ;
+    rdfs:comment """A front-loader machine specialized for handling empty containers in stack operations.
+
+    TIC 4.0: Typically stacks empties 6-8 high; lighter and more cost-effective than
+    reach stackers for empty depot operations.""" ;
+    rdfs:subClassOf :TerminalEquipment .
+
+#################################################################
+#    Phase 2.2: Equipment Components
+#################################################################
+
+:Spreader a owl:Class ;
+    rdfs:label "Spreader" ;
+    rdfs:comment """The attachment on a crane or CHE that locks onto a container's corner castings for lifting.
+
+    TIC 4.0 sub-subject: spreader. The critical interface between handling equipment and
+    cargo unit. Spreader types include fixed, telescopic (20'/40'/45'), and twin-lift.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :spreaderId ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:PowerSource a owl:Class ;
+    rdfs:label "Power Source" ;
+    rdfs:comment """The energy supply system of a piece of terminal equipment.
+
+    TIC 4.0 sub-subject: powersource. Tracks fuel type, consumption, and energy metrics.
+    Critical for fleet management and sustainability reporting (diesel, electric, battery,
+    hydrogen, hybrid transitions).""" .
+
+:EquipmentHealth a owl:Class ;
+    rdfs:label "Equipment Health" ;
+    rdfs:comment """Operational health and maintenance status of a piece of terminal equipment.
+
+    TIC 4.0 sub-subject: health. Provides fault monitoring, alarm tracking, and
+    predictive maintenance indicators (hours to next service, condition assessment).""" .
+
+:hasSpreader a owl:ObjectProperty ;
+    rdfs:label "has spreader" ;
+    rdfs:comment "Links a piece of handling equipment to its spreader attachment." ;
+    rdfs:domain :TerminalEquipment ;
+    rdfs:range :Spreader .
+
+:hasPowerSource a owl:ObjectProperty ;
+    rdfs:label "has power source" ;
+    rdfs:comment "Links a piece of handling equipment to its power source." ;
+    rdfs:domain :TerminalEquipment ;
+    rdfs:range :PowerSource .
+
+:hasHealthStatus a owl:ObjectProperty ;
+    rdfs:label "has health status" ;
+    rdfs:comment "Links a piece of handling equipment to its health/maintenance status." ;
+    rdfs:domain :TerminalEquipment ;
+    rdfs:range :EquipmentHealth .
+
+# Spreader properties
+:spreaderId a owl:DatatypeProperty ;
+    rdfs:label "spreader ID" ;
+    rdfs:comment "Unique identifier of the spreader." ;
+    rdfs:domain :Spreader ;
+    rdfs:range xsd:string .
+
+:spreaderType a owl:DatatypeProperty ;
+    rdfs:label "spreader type" ;
+    rdfs:comment "Type of spreader (FIXED, TELESCOPIC, TWIN_LIFT, TANDEM)." ;
+    rdfs:domain :Spreader ;
+    rdfs:range xsd:string .
+
+:spreaderSize a owl:DatatypeProperty ;
+    rdfs:label "spreader size" ;
+    rdfs:comment "Current extension size in feet (20, 40, 45)." ;
+    rdfs:domain :Spreader ;
+    rdfs:range xsd:integer .
+
+:lockStatus a owl:DatatypeProperty ;
+    rdfs:label "lock status" ;
+    rdfs:comment "Twist-lock engagement status (LOCKED, UNLOCKED, FAULT)." ;
+    rdfs:domain :Spreader ;
+    rdfs:range xsd:string .
+
+# PowerSource properties
+:powerType a owl:DatatypeProperty ;
+    rdfs:label "power type" ;
+    rdfs:comment "Type of power source (DIESEL, ELECTRIC, BATTERY, HYDROGEN, HYBRID)." ;
+    rdfs:domain :PowerSource ;
+    rdfs:range xsd:string .
+
+:fuelLevel a owl:DatatypeProperty ;
+    rdfs:label "fuel level" ;
+    rdfs:comment "Current fuel or charge level as percentage (0-100)." ;
+    rdfs:domain :PowerSource ;
+    rdfs:range xsd:decimal .
+
+:energyConsumptionKWh a owl:DatatypeProperty ;
+    rdfs:label "energy consumption (kWh)" ;
+    rdfs:comment "Cumulative energy consumption in kilowatt-hours." ;
+    rdfs:domain :PowerSource ;
+    rdfs:range xsd:decimal .
+
+# EquipmentHealth properties
+:faultCode a owl:DatatypeProperty ;
+    rdfs:label "fault code" ;
+    rdfs:comment "Active fault or error code reported by the equipment." ;
+    rdfs:domain :EquipmentHealth ;
+    rdfs:range xsd:string .
+
+:alarmCode a owl:DatatypeProperty ;
+    rdfs:label "alarm code" ;
+    rdfs:comment "Active alarm code indicating a condition requiring attention." ;
+    rdfs:domain :EquipmentHealth ;
+    rdfs:range xsd:string .
+
+:hoursToNextService a owl:DatatypeProperty ;
+    rdfs:label "hours to next service" ;
+    rdfs:comment "Remaining operating hours until next scheduled maintenance." ;
+    rdfs:domain :EquipmentHealth ;
+    rdfs:range xsd:decimal .
+
+:equipmentCondition a owl:DatatypeProperty ;
+    rdfs:label "equipment condition" ;
+    rdfs:comment "Overall condition assessment (OPERATIONAL, DEGRADED, FAULT, OUT_OF_SERVICE)." ;
+    rdfs:domain :EquipmentHealth ;
+    rdfs:range xsd:string .
+
+# Additional CHE-type-specific properties
+:stackingHeight a owl:DatatypeProperty ;
+    rdfs:label "stacking height" ;
+    rdfs:comment "Maximum number of container tiers the equipment can stack." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :StraddleCarrier :EmptyContainerHandler )
+    ] ;
+    rdfs:range xsd:integer .
+
+:navigationMode a owl:DatatypeProperty ;
+    rdfs:label "navigation mode" ;
+    rdfs:comment "Navigation method used by automated equipment (MAGNETIC, LASER, GPS, LIDAR)." ;
+    rdfs:domain :AutomatedGuidedVehicle ;
+    rdfs:range xsd:string .
+
+:equipmentSpeed a owl:DatatypeProperty ;
+    rdfs:label "equipment speed" ;
+    rdfs:comment "Maximum operational speed of the equipment in km/h." ;
+    rdfs:domain :TerminalEquipment ;
+    rdfs:range xsd:decimal .
+
+#################################################################
+#    Phase 2.3: Quay
+#################################################################
+
+:Quay a owl:Class ;
+    rdfs:label "Quay" ;
+    rdfs:comment """The physical quay wall structure where vessels berth for loading and discharging.
+
+    TIC 4.0 (Release 2026.018): Distinct from Berth — Quay is the permanent infrastructure
+    (quay wall, fenders, bollards), while Berth is the operational allocation of quay space
+    to a specific vessel call.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :quayId ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:hasQuay a owl:ObjectProperty ;
+    rdfs:label "has quay" ;
+    rdfs:comment "Links a terminal to one of its quay structures." ;
+    rdfs:domain :Terminal ;
+    rdfs:range :Quay .
+
+:quayId a owl:DatatypeProperty ;
+    rdfs:label "quay ID" ;
+    rdfs:comment "Unique identifier of the quay structure within the terminal." ;
+    rdfs:domain :Quay ;
+    rdfs:range xsd:string .
+
+:quayLengthMetres a owl:DatatypeProperty ;
+    rdfs:label "quay length (metres)" ;
+    rdfs:comment "Total length of the quay wall in metres." ;
+    rdfs:domain :Quay ;
+    rdfs:range xsd:decimal .
+
+:quayDepthMetres a owl:DatatypeProperty ;
+    rdfs:label "quay depth (metres)" ;
+    rdfs:comment "Water depth alongside the quay wall in metres." ;
+    rdfs:domain :Quay ;
+    rdfs:range xsd:decimal .
+
+:numberOfBerths a owl:DatatypeProperty ;
+    rdfs:label "number of berths" ;
+    rdfs:comment "Number of berth allocations the quay can accommodate simultaneously." ;
+    rdfs:domain :Quay ;
+    rdfs:range xsd:integer .
+
+#################################################################
+#    Phase 3.3: Electric CHE Concepts
+#################################################################
+
+:ElectricTerminalTractor a owl:Class ;
+    rdfs:label "Electric Terminal Tractor" ;
+    rdfs:comment """A battery-powered terminal tractor for horizontal transport of cargo units.
+
+    TIC 4.0 (Release 2025.017): Part of the eCHE (electric CHE) initiative for terminal
+    decarbonization. Replaces diesel terminal tractors with battery-electric alternatives.""" ;
+    rdfs:subClassOf :TerminalTractor .
+
+:Battery a owl:Class ;
+    rdfs:label "Battery" ;
+    rdfs:comment """A rechargeable battery pack installed in electric terminal equipment.
+
+    TIC 4.0 (Release 2025.017/2026.018): Tracks battery capacity, state of charge,
+    state of health, and temperature for fleet energy management.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :batteryId ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:ChargingStation a owl:Class ;
+    rdfs:label "Charging Station" ;
+    rdfs:comment """A fixed infrastructure point for recharging electric terminal equipment batteries.
+
+    TIC 4.0 (Release 2026.018): Supports various charger types (slow, fast, opportunity,
+    battery swap) with defined power output and availability status.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :stationId ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:hasBattery a owl:ObjectProperty ;
+    rdfs:label "has battery" ;
+    rdfs:comment "Links a piece of electric terminal equipment to its battery." ;
+    rdfs:domain :TerminalEquipment ;
+    rdfs:range :Battery .
+
+:servesEquipment a owl:ObjectProperty ;
+    rdfs:label "serves equipment" ;
+    rdfs:comment "Links a charging station to the equipment it can serve." ;
+    rdfs:domain :ChargingStation ;
+    rdfs:range :TerminalEquipment .
+
+# Battery properties
+:batteryId a owl:DatatypeProperty ;
+    rdfs:label "battery ID" ;
+    rdfs:comment "Unique identifier of the battery pack." ;
+    rdfs:domain :Battery ;
+    rdfs:range xsd:string .
+
+:capacityKWh a owl:DatatypeProperty ;
+    rdfs:label "capacity (kWh)" ;
+    rdfs:comment "Nominal energy capacity of the battery in kilowatt-hours." ;
+    rdfs:domain :Battery ;
+    rdfs:range xsd:decimal .
+
+:stateOfCharge a owl:DatatypeProperty ;
+    rdfs:label "state of charge" ;
+    rdfs:comment "Current state of charge as percentage (0-100)." ;
+    rdfs:domain :Battery ;
+    rdfs:range xsd:decimal .
+
+:stateOfHealth a owl:DatatypeProperty ;
+    rdfs:label "state of health" ;
+    rdfs:comment "Battery health indicator as percentage of original capacity (0-100)." ;
+    rdfs:domain :Battery ;
+    rdfs:range xsd:decimal .
+
+:batteryTemperature a owl:DatatypeProperty ;
+    rdfs:label "battery temperature" ;
+    rdfs:comment "Current battery temperature in degrees Celsius." ;
+    rdfs:domain :Battery ;
+    rdfs:range xsd:decimal .
+
+# ChargingStation properties
+:stationId a owl:DatatypeProperty ;
+    rdfs:label "station ID" ;
+    rdfs:comment "Unique identifier of the charging station." ;
+    rdfs:domain :ChargingStation ;
+    rdfs:range xsd:string .
+
+:chargerType a owl:DatatypeProperty ;
+    rdfs:label "charger type" ;
+    rdfs:comment "Type of charger (SLOW, FAST, OPPORTUNITY, BATTERY_SWAP)." ;
+    rdfs:domain :ChargingStation ;
+    rdfs:range xsd:string .
+
+:chargerPowerKW a owl:DatatypeProperty ;
+    rdfs:label "charger power (kW)" ;
+    rdfs:comment "Maximum power output of the charging station in kilowatts." ;
+    rdfs:domain :ChargingStation ;
+    rdfs:range xsd:decimal .
+
+:stationStatus a owl:DatatypeProperty ;
+    rdfs:label "station status" ;
+    rdfs:comment "Operational status of the charging station (AVAILABLE, IN_USE, FAULT, MAINTENANCE)." ;
+    rdfs:domain :ChargingStation ;
+    rdfs:range xsd:string .

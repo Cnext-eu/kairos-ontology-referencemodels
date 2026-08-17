@@ -1,0 +1,303 @@
+@prefix : <https://www.kairosflow.ai/ont/mmt/events#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/mmt/events> a owl:Ontology ;
+    dcterms:title "MMT Events Domain" ;
+    dcterms:description """Transport event classes for the Kairos Multi-Modal Transport ontology.
+
+    Covers departure, arrival, loading, discharge, pickup, delivery, transfer,
+    customs clearance, warehouse storage, and inspection events.
+    Based on UN/CEFACT MMT Reference Data Model.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "2.2.0" ;
+    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
+    rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
+
+#################################################################
+#    Event Classes
+#################################################################
+
+:TransportEvent a owl:Class ;
+    rdfs:label "Transport Event" ;
+    rdfs:comment """An occurrence in the transport lifecycle.
+    
+    UN/CEFACT MMT: Base class for all transport events.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :eventDateTime ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:LoadingEvent a owl:Class ;
+    rdfs:label "Loading Event" ;
+    rdfs:comment """Cargo being loaded onto transport means.
+
+    Properties: loadingMethod, loadingEquipmentRef.
+    UN/CEFACT MMT-RDM: TransportEventType — loadingMethod is the method of
+    loading (e.g., manual, crane, forklift); loadingEquipmentRef is the
+    reference to equipment loaded.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:DischargeEvent a owl:Class ;
+    rdfs:label "Discharge Event" ;
+    rdfs:comment """Cargo being discharged from transport means.
+
+    Properties: dischargeMethod, dischargeEquipmentRef.
+    UN/CEFACT MMT-RDM: TransportEventType — dischargeMethod is the method
+    of discharge (e.g., manual, crane, gravity); dischargeEquipmentRef is
+    the reference to equipment discharged.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:DepartureEvent a owl:Class ;
+    rdfs:label "Departure Event" ;
+    rdfs:comment """Transport means departing from a location.
+
+    Properties: departureType, actualDeparture.
+    UN/CEFACT MMT-RDM: TransportEventType — departureType is the type of
+    departure (e.g., actual, estimated); actualDeparture is the
+    actual departure time.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:ArrivalEvent a owl:Class ;
+    rdfs:label "Arrival Event" ;
+    rdfs:comment """Transport means arriving at a location.
+
+    Properties: arrivalType, actualArrival.
+    UN/CEFACT MMT-RDM: TransportEventType — arrivalType is the type of
+    arrival (e.g., actual, estimated); actualArrival is the
+    actual arrival time.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:PickupEvent a owl:Class ;
+    rdfs:label "Pickup Event" ;
+    rdfs:comment """Cargo picked up from consignor.
+
+    Properties: pickupType, pickupParty.
+    UN/CEFACT MMT-RDM: TransportEventType — pickupType is the type of
+    pickup (e.g., door, terminal); pickupParty is the party that
+    handed over the goods.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:DeliveryEvent a owl:Class ;
+    rdfs:label "Delivery Event" ;
+    rdfs:comment """Cargo delivered to consignee.
+
+    Properties: deliveryType, receivedByParty.
+    UN/CEFACT MMT-RDM: TransportEventType — deliveryType is the type of
+    delivery (e.g., door, terminal); receivedByParty is the party that
+    received the goods.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:TransferEvent a owl:Class ;
+    rdfs:label "Transfer Event" ;
+    rdfs:comment """Cargo transferred between transport means.
+
+    Properties: transferType, transferFromParty.
+    UN/CEFACT MMT-RDM: TransportEventType — transferType is the type of
+    transfer (e.g., transshipment, intermodal); transferFromParty is the
+    party that handed over the goods for transfer.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:CustomsClearanceEvent a owl:Class ;
+    rdfs:label "Customs Clearance Event" ;
+    rdfs:comment """Cargo cleared through customs.
+
+    Properties: clearanceStatus, customsOffice.
+    UN/CEFACT MMT-RDM: TransportEventType — clearanceStatus is the
+    customs clearance status (e.g., pending, cleared, held);
+    customsOffice is the customs office code.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:WarehouseStorageEvent a owl:Class ;
+    rdfs:label "Warehouse Storage Event" ;
+    rdfs:comment """Cargo entering or leaving warehouse storage.
+
+    Properties: storageLocation, storageDuration.
+    UN/CEFACT MMT-RDM: TransportEventType — storageLocation is the
+    warehouse location identifier; storageDuration is the storage
+    duration in days.""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:InspectionEvent a owl:Class ;
+    rdfs:label "Inspection Event" ;
+    rdfs:comment """Cargo inspection by authorities or parties.
+
+    Properties: inspectionType, inspectionResult.
+    UN/CEFACT MMT-RDM: TransportEventType — inspectionType is the type
+    of inspection (e.g., customs, security, quality); inspectionResult
+    is the result of the inspection (e.g., pass, fail, conditional).""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:InspectionStatus a owl:Class ;
+    rdfs:label "Inspection Status" ;
+    rdfs:comment """The status result of a cargo or equipment inspection.
+
+    Properties: inspectionStatusCode, inspectionDate.
+    UN/CEFACT MMT-RDM: InspectionStatusType — inspectionStatusCode is
+    the status code (pass, fail, conditional, pending); inspectionDate
+    is the date of inspection.""" .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:eventDateTime a owl:DatatypeProperty ;
+    rdfs:label "event date time" ;
+    rdfs:comment "Date and time when event occurred or is scheduled." ;
+    rdfs:domain :TransportEvent ;
+    rdfs:range xsd:dateTime .
+
+:eventType a owl:DatatypeProperty ;
+    rdfs:label "event type" ;
+    rdfs:comment "Type of transport event." ;
+    rdfs:domain :TransportEvent ;
+    rdfs:range xsd:string .
+
+:eventStatus a owl:DatatypeProperty ;
+    rdfs:label "event status" ;
+    rdfs:comment "Status: ACTUAL, ESTIMATED, PLANNED, CANCELLED." ;
+    rdfs:domain :TransportEvent ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Additional Datatype Properties (UN/CEFACT MMT-RDM)
+#################################################################
+
+:loadingMethod a owl:DatatypeProperty ;
+    rdfs:label "loading method" ;
+    rdfs:comment "Method of loading (e.g., manual, crane, forklift). UN/CEFACT MMT-RDM: TransportEventType loading method." ;
+    rdfs:domain :LoadingEvent ;
+    rdfs:range xsd:string .
+
+:loadingEquipmentRef a owl:DatatypeProperty ;
+    rdfs:label "loading equipment reference" ;
+    rdfs:comment "Reference to equipment loaded. UN/CEFACT MMT-RDM: TransportEventType loading equipment reference." ;
+    rdfs:domain :LoadingEvent ;
+    rdfs:range xsd:string .
+
+:dischargeMethod a owl:DatatypeProperty ;
+    rdfs:label "discharge method" ;
+    rdfs:comment "Method of discharge (e.g., manual, crane, gravity). UN/CEFACT MMT-RDM: TransportEventType discharge method." ;
+    rdfs:domain :DischargeEvent ;
+    rdfs:range xsd:string .
+
+:dischargeEquipmentRef a owl:DatatypeProperty ;
+    rdfs:label "discharge equipment reference" ;
+    rdfs:comment "Reference to equipment discharged. UN/CEFACT MMT-RDM: TransportEventType discharge equipment reference." ;
+    rdfs:domain :DischargeEvent ;
+    rdfs:range xsd:string .
+
+:departureType a owl:DatatypeProperty ;
+    rdfs:label "departure type" ;
+    rdfs:comment "Type of departure (e.g., actual, estimated). UN/CEFACT MMT-RDM: TransportEventType departure type." ;
+    rdfs:domain :DepartureEvent ;
+    rdfs:range xsd:string .
+
+:actualDeparture a owl:DatatypeProperty ;
+    rdfs:label "actual departure" ;
+    rdfs:comment "Actual date and time of departure. UN/CEFACT MMT-RDM: TransportEventType actual departure." ;
+    rdfs:domain :DepartureEvent ;
+    rdfs:range xsd:dateTime .
+
+:arrivalType a owl:DatatypeProperty ;
+    rdfs:label "arrival type" ;
+    rdfs:comment "Type of arrival (e.g., actual, estimated). UN/CEFACT MMT-RDM: TransportEventType arrival type." ;
+    rdfs:domain :ArrivalEvent ;
+    rdfs:range xsd:string .
+
+:actualArrival a owl:DatatypeProperty ;
+    rdfs:label "actual arrival" ;
+    rdfs:comment "Actual date and time of arrival. UN/CEFACT MMT-RDM: TransportEventType actual arrival." ;
+    rdfs:domain :ArrivalEvent ;
+    rdfs:range xsd:dateTime .
+
+:pickupType a owl:DatatypeProperty ;
+    rdfs:label "pickup type" ;
+    rdfs:comment "Type of pickup (e.g., door, terminal). UN/CEFACT MMT-RDM: TransportEventType pickup type." ;
+    rdfs:domain :PickupEvent ;
+    rdfs:range xsd:string .
+
+:pickupParty a owl:DatatypeProperty ;
+    rdfs:label "pickup party" ;
+    rdfs:comment "Party that handed over the goods. UN/CEFACT MMT-RDM: TransportEventType pickup party." ;
+    rdfs:domain :PickupEvent ;
+    rdfs:range xsd:string .
+
+:deliveryType a owl:DatatypeProperty ;
+    rdfs:label "delivery type" ;
+    rdfs:comment "Type of delivery (e.g., door, terminal). UN/CEFACT MMT-RDM: TransportEventType delivery type." ;
+    rdfs:domain :DeliveryEvent ;
+    rdfs:range xsd:string .
+
+:receivedByParty a owl:DatatypeProperty ;
+    rdfs:label "received by party" ;
+    rdfs:comment "Party that received the goods. UN/CEFACT MMT-RDM: TransportEventType received by party." ;
+    rdfs:domain :DeliveryEvent ;
+    rdfs:range xsd:string .
+
+:transferType a owl:DatatypeProperty ;
+    rdfs:label "transfer type" ;
+    rdfs:comment "Type of transfer (e.g., transshipment, intermodal). UN/CEFACT MMT-RDM: TransportEventType transfer type." ;
+    rdfs:domain :TransferEvent ;
+    rdfs:range xsd:string .
+
+:transferFromParty a owl:DatatypeProperty ;
+    rdfs:label "transfer from party" ;
+    rdfs:comment "Party that handed over the goods for transfer. UN/CEFACT MMT-RDM: TransportEventType transfer from party." ;
+    rdfs:domain :TransferEvent ;
+    rdfs:range xsd:string .
+
+:clearanceStatus a owl:DatatypeProperty ;
+    rdfs:label "clearance status" ;
+    rdfs:comment "Customs clearance status (e.g., pending, cleared, held). UN/CEFACT MMT-RDM: TransportEventType clearance status." ;
+    rdfs:domain :CustomsClearanceEvent ;
+    rdfs:range xsd:string .
+
+:customsOffice a owl:DatatypeProperty ;
+    rdfs:label "customs office" ;
+    rdfs:comment "Customs office code. UN/CEFACT MMT-RDM: TransportEventType customs office." ;
+    rdfs:domain :CustomsClearanceEvent ;
+    rdfs:range xsd:string .
+
+:storageLocation a owl:DatatypeProperty ;
+    rdfs:label "storage location" ;
+    rdfs:comment "Warehouse location identifier. UN/CEFACT MMT-RDM: TransportEventType storage location." ;
+    rdfs:domain :WarehouseStorageEvent ;
+    rdfs:range xsd:string .
+
+:storageDuration a owl:DatatypeProperty ;
+    rdfs:label "storage duration" ;
+    rdfs:comment "Storage duration in days. UN/CEFACT MMT-RDM: TransportEventType storage duration." ;
+    rdfs:domain :WarehouseStorageEvent ;
+    rdfs:range xsd:integer .
+
+:inspectionType a owl:DatatypeProperty ;
+    rdfs:label "inspection type" ;
+    rdfs:comment "Type of inspection (e.g., customs, security, quality). UN/CEFACT MMT-RDM: TransportEventType inspection type." ;
+    rdfs:domain :InspectionEvent ;
+    rdfs:range xsd:string .
+
+:inspectionResult a owl:DatatypeProperty ;
+    rdfs:label "inspection result" ;
+    rdfs:comment "Result of the inspection (e.g., pass, fail, conditional). UN/CEFACT MMT-RDM: TransportEventType inspection result." ;
+    rdfs:domain :InspectionEvent ;
+    rdfs:range xsd:string .
+
+:inspectionStatusCode a owl:DatatypeProperty ;
+    rdfs:label "inspection status code" ;
+    rdfs:comment "Status code (pass, fail, conditional, pending). UN/CEFACT MMT-RDM: InspectionStatusType status code." ;
+    rdfs:domain :InspectionStatus ;
+    rdfs:range xsd:string .
+
+:inspectionDate a owl:DatatypeProperty ;
+    rdfs:label "inspection date" ;
+    rdfs:comment "Date of inspection. UN/CEFACT MMT-RDM: InspectionStatusType inspection date." ;
+    rdfs:domain :InspectionStatus ;
+    rdfs:range xsd:date .

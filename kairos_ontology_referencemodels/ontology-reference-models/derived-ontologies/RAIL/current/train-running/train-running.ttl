@@ -15,8 +15,9 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-08-15"^^xsd:date ;
     dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "1.1.0" ;
+    owl:versionInfo "1.2.0" ;
     dcterms:source "TAF TSI — taf_cat_complete.xsd: TrainRunningInformationMessage, TrainRunningForecastMessage, TrainRunningInterruptionMessage, TrainRunningData, TrainRunningTechData, TrainLocationStatus" ;
+    owl:imports <https://www.kairosflow.ai/ont/rail/shared-kernel> ;
     rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
 
 #################################################################

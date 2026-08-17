@@ -4,7 +4,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix mmt: <https://www.kairosflow.ai/ont/mmt#> .
+@prefix mmt-dg: <https://www.kairosflow.ai/ont/mmt/dangerous-goods#> .
 @prefix mmt-doc: <https://www.kairosflow.ai/ont/mmt/documents#> .
 @prefix mmt-equip: <https://www.kairosflow.ai/ont/mmt/equipment#> .
 @prefix mmt-evt: <https://www.kairosflow.ai/ont/mmt/events#> .
@@ -22,8 +22,15 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "2.2.0" ;
+    owl:versionInfo "3.0.0" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/dangerous-goods> ,
+                <https://www.kairosflow.ai/ont/mmt/documents> ,
+                <https://www.kairosflow.ai/ont/mmt/equipment> ,
+                <https://www.kairosflow.ai/ont/mmt/events> ,
+                <https://www.kairosflow.ai/ont/mmt/locations> ,
+                <https://www.kairosflow.ai/ont/mmt/party> ,
+                <https://www.kairosflow.ai/ont/mmt/transport-means> ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
 
 #################################################################
@@ -290,7 +297,7 @@
     rdfs:label "has dangerous goods" ;
     rdfs:comment "Indicates consignment contains dangerous goods." ;
     rdfs:domain :Consignment ;
-    rdfs:range mmt:DangerousGoods .
+    rdfs:range mmt-dg:DangerousGoods .
 
 #################################################################
 #    Datatype Properties

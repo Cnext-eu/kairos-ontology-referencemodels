@@ -1,0 +1,192 @@
+@prefix : <https://www.kairosflow.ai/ont/dcsa/locations#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/dcsa/locations> a owl:Ontology ;
+    dcterms:title "DCSA Locations Domain" ;
+    dcterms:description """Location concepts for container shipping.
+    
+    Covers ports, terminals, inland facilities, and other shipping locations
+    including place of receipt, port of loading, port of discharge, place of
+    delivery, transshipment ports, inland terminals, rail ramps, border
+    crossings, and depots.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-06-12"^^xsd:date ;
+    owl:versionInfo "1.5.0" ;
+    dcterms:source "DCSA Booking API (BKG) v2.0, DCSA Domain v3.1.1" ;
+    rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
+
+#################################################################
+#    Location Classes
+#################################################################
+
+:Location a owl:Class ;
+    rdfs:label "Location" ;
+    rdfs:comment """A physical location relevant to container shipping.
+    
+    DCSA: Ports, terminals, and other facilities in the supply chain.""" .
+
+:Port a owl:Class ;
+    rdfs:label "Port" ;
+    rdfs:comment """A maritime facility for vessel operations.
+    
+    DCSA: Identified by UN/LOCODE.""" ;
+    rdfs:subClassOf :Location .
+
+:Terminal a owl:Class ;
+    rdfs:label "Container Terminal" ;
+    rdfs:comment """A facility within a port for container handling and storage.
+    
+    DCSA: Where containers are loaded/discharged from vessels.""" ;
+    rdfs:subClassOf :Location .
+
+:PlaceOfReceipt a owl:Class ;
+    rdfs:label "Place of Receipt" ;
+    rdfs:comment """Location where carrier receives cargo from shipper.
+    
+    DCSA: Start point of carrier responsibility.""" ;
+    rdfs:subClassOf :Location .
+
+:PortOfLoading a owl:Class ;
+    rdfs:label "Port of Loading" ;
+    rdfs:comment """Port where cargo is loaded onto the ocean vessel.
+    
+    DCSA: Origin port for main ocean transport.""" ;
+    rdfs:subClassOf :Port .
+
+:PortOfDischarge a owl:Class ;
+    rdfs:label "Port of Discharge" ;
+    rdfs:comment """Port where cargo is discharged from the ocean vessel.
+    
+    DCSA: Destination port for main ocean transport.""" ;
+    rdfs:subClassOf :Port .
+
+:PlaceOfDelivery a owl:Class ;
+    rdfs:label "Place of Delivery" ;
+    rdfs:comment """Location where carrier delivers cargo to consignee.
+    
+    DCSA: End point of carrier responsibility.""" ;
+    rdfs:subClassOf :Location .
+
+:TransshipmentPort a owl:Class ;
+    rdfs:label "Transshipment Port" ;
+    rdfs:comment """Port where cargo is transferred between vessels.
+    
+    DCSA: Intermediate port in multi-vessel journey.""" ;
+    rdfs:subClassOf :Port .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:unLocationCode a owl:DatatypeProperty ;
+    rdfs:label "UN location code" ;
+    rdfs:comment "UN/LOCODE for location identification." ;
+    rdfs:domain :Location ;
+    rdfs:range xsd:string .
+
+:facilityCode a owl:DatatypeProperty ;
+    rdfs:label "facility code" ;
+    rdfs:comment "SMDG or BIC facility code for terminal." ;
+    rdfs:domain :Terminal ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Inland Facility Classes
+#################################################################
+
+:InlandTerminal a owl:Class ;
+    rdfs:label "Inland Terminal" ;
+    rdfs:comment """An intermodal terminal away from the seaport for container transfer.
+
+    DCSA facilityTypeCode: INTE (Inland Terminal).
+    Handles transfer between road, rail, and barge transport.""" ;
+    rdfs:subClassOf :Location .
+
+:RailRamp a owl:Class ;
+    rdfs:label "Rail Ramp" ;
+    rdfs:comment """A facility for loading/unloading containers to/from rail cars.
+
+    DCSA facilityTypeCode: RAMP.
+    Typically at inland terminals or port areas with rail connections.""" ;
+    rdfs:subClassOf :Location .
+
+:BorderCrossing a owl:Class ;
+    rdfs:label "Border Crossing" ;
+    rdfs:comment """A location where goods cross an international border.
+
+    DCSA facilityTypeCode: BORD (Border).
+    Relevant for inland pre-carriage and on-carriage across borders.""" ;
+    rdfs:subClassOf :Location .
+
+:Depot a owl:Class ;
+    rdfs:label "Container Depot" ;
+    rdfs:comment """A facility for container storage, maintenance, and empty pickup/return.
+
+    DCSA facilityTypeCode: DEPO.
+    Off-dock location for empty container management.""" ;
+    rdfs:subClassOf :Location .
+
+:ContainerFreightStation a owl:Class ;
+    rdfs:label "Container Freight Station" ;
+    rdfs:comment """A facility for consolidating or deconsolidating less-than-container-load cargo.
+
+    DCSA facilityTypeCode: COFS (Container Freight Station).
+    Used for LCL cargo stuffing and stripping operations.""" ;
+    rdfs:subClassOf :Location .
+
+#################################################################
+#    Additional Datatype Properties
+#################################################################
+
+:facilityTypeCode a owl:DatatypeProperty ;
+    rdfs:label "facility type code" ;
+    rdfs:comment """DCSA code classifying the type of facility.
+    Values: BORD (Border), CLOC (Customer Location), COFS (Container Freight Station),
+    OFFD (Off-Dock), DEPO (Depot), INTE (Inland Terminal), POTE (Port Terminal),
+    RAMP (Rail Ramp), WAYP (Waypoint).""" ;
+    rdfs:domain :Location ;
+    rdfs:range xsd:string .
+
+:shipmentLocationTypeCode a owl:DatatypeProperty ;
+    rdfs:label "shipment location type code" ;
+    rdfs:comment """DCSA code describing the role of a location in a shipment.
+    Values: PRE (Place of Receipt), POL (Port of Loading), POD (Port of Discharge),
+    PDE (Place of Delivery), PCF (Pre-Carriage From), OIR (Onward Inland Routing),
+    DRL (Depot Release Location), ORI (Origin of Goods), IEL (Import/Export Location),
+    PSR (Pre-carriage under shipper's responsibility).""" ;
+    rdfs:domain :Location ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Inland Location Role Classes
+#################################################################
+
+:PreCarriageFromLocation a owl:Class ;
+    rdfs:label "Pre-Carriage From Location" ;
+    rdfs:comment """The origin location for pre-carriage transport before main-carriage port.
+
+    DCSA shipmentLocationTypeCode: PCF.
+    The inland origin from which cargo moves to the port of loading.""" ;
+    rdfs:subClassOf :Location .
+
+:OnwardInlandRoutingLocation a owl:Class ;
+    rdfs:label "Onward Inland Routing Location" ;
+    rdfs:comment """A destination beyond the port of discharge for on-carriage inland routing.
+
+    DCSA shipmentLocationTypeCode: OIR.
+    The final inland destination beyond the seaport.""" ;
+    rdfs:subClassOf :Location .
+
+:DepotReleaseLocation a owl:Class ;
+    rdfs:label "Depot Release Location" ;
+    rdfs:comment """The location from which empty containers are released to the shipper.
+
+    DCSA shipmentLocationTypeCode: DRL.
+    Typically a container depot or off-dock facility.""" ;
+    rdfs:subClassOf :Location .

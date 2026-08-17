@@ -1,0 +1,94 @@
+@prefix : <https://www.kairosflow.ai/ont/tic/kpi#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22/rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/tic/kpi> a owl:Ontology ;
+    dcterms:title "TIC 4.0 KPI Definitions Ontology" ;
+    dcterms:description """Key Performance Indicator definitions for terminal operations as standardized
+    by TIC 4.0 Release 2024.013.
+
+    This module defines KPI metadata (what is measured, how it is calculated, its unit and scope).
+    It does NOT contain computed KPI values — those belong in the gold/analytics layer.
+
+    Standard TIC 4.0 KPIs include:
+    - BERTH_PRODUCTIVITY: Moves per hour per berth (gross/net)
+    - CRANE_PRODUCTIVITY: Moves per hour per crane (gross/net)
+    - DWELL_TIME: Average time cargo units spend in the terminal
+    - TRUCK_TURNAROUND: Gate-in to gate-out time for road transport
+    - YARD_UTILIZATION: Percentage of yard capacity in use
+    - VESSEL_TURNAROUND: Arrival to departure time for vessel calls""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-07-15"^^xsd:date ;
+    dcterms:modified "2026-07-15"^^xsd:date ;
+    owl:versionInfo "1.4.0" ;
+    dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
+    rdfs:seeAlso <https://tic40.org/standards/> .
+
+#################################################################
+#    KPI Class
+#################################################################
+
+:KPI a owl:Class ;
+    rdfs:label "Key Performance Indicator" ;
+    rdfs:comment """A standardized metric definition for measuring terminal operational performance.
+
+    TIC 4.0 (Release 2024.013): KPIs are formally defined with standard codes, formulas,
+    measurement units, and applicable scope. This class captures the KPI definition
+    (metadata), not computed values.
+
+    Standard KPI codes:
+    - BERTH_PRODUCTIVITY: Total moves / berth hours worked
+    - CRANE_PRODUCTIVITY: Total moves / crane hours worked
+    - DWELL_TIME: Average(cargo departure - cargo arrival)
+    - TRUCK_TURNAROUND: Average(gate-out time - gate-in time)
+    - YARD_UTILIZATION: (Occupied TEU slots / Total TEU capacity) × 100
+    - VESSEL_TURNAROUND: Average(vessel departure - vessel arrival)""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :kpiCode ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:kpiCode a owl:DatatypeProperty ;
+    rdfs:label "KPI code" ;
+    rdfs:comment "Standardized code identifying the KPI (e.g., BERTH_PRODUCTIVITY, DWELL_TIME)." ;
+    rdfs:domain :KPI ;
+    rdfs:range xsd:string .
+
+:kpiName a owl:DatatypeProperty ;
+    rdfs:label "KPI name" ;
+    rdfs:comment "Human-readable name of the KPI." ;
+    rdfs:domain :KPI ;
+    rdfs:range xsd:string .
+
+:kpiDescription a owl:DatatypeProperty ;
+    rdfs:label "KPI description" ;
+    rdfs:comment "Detailed description of what the KPI measures and how it should be interpreted." ;
+    rdfs:domain :KPI ;
+    rdfs:range xsd:string .
+
+:kpiFormula a owl:DatatypeProperty ;
+    rdfs:label "KPI formula" ;
+    rdfs:comment "The calculation formula for the KPI (e.g., 'Total moves / crane hours worked')." ;
+    rdfs:domain :KPI ;
+    rdfs:range xsd:string .
+
+:kpiUnit a owl:DatatypeProperty ;
+    rdfs:label "KPI unit" ;
+    rdfs:comment "Unit of measurement for the KPI value (e.g., moves/hour, hours, percentage)." ;
+    rdfs:domain :KPI ;
+    rdfs:range xsd:string .
+
+:kpiScope a owl:DatatypeProperty ;
+    rdfs:label "KPI scope" ;
+    rdfs:comment "Operational scope the KPI applies to (BERTH, CRANE, TERMINAL, YARD, GATE, VESSEL_CALL)." ;
+    rdfs:domain :KPI ;
+    rdfs:range xsd:string .

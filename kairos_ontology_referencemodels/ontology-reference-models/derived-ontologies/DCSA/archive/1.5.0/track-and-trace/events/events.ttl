@@ -1,0 +1,310 @@
+@prefix : <https://www.kairosflow.ai/ont/dcsa/events#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix loc: <https://www.kairosflow.ai/ont/dcsa/locations#> .
+@prefix equip: <https://www.kairosflow.ai/ont/dcsa/equipment#> .
+@prefix tc: <https://www.kairosflow.ai/ont/dcsa/transport-call#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/dcsa/events> a owl:Ontology ;
+    dcterms:title "DCSA Events Domain" ;
+    dcterms:description """Track and trace event concepts for container shipping.
+    
+    Covers all shipping events including transport events (vessel departure/arrival),
+    equipment events (gate-in/out, loading, discharge, empty pickup/return),
+    and document events (issuance, surrender).
+
+    v1.3.0: Added the DCSA Domain v3.1.0 operations-specific facility type
+    code variant. Additional DCSA Domain v3.1.0 fields may be mapped through
+    full domain discovery using the documented fit-gap analysis.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-06-21"^^xsd:date ;
+    owl:versionInfo "1.5.0" ;
+    dcterms:source "DCSA Track & Trace (TNT) API v2.2, Event Domain v3.2.0, DCSA Domain v3.1.0" ;
+    rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
+
+#################################################################
+#    Event Classes
+#################################################################
+
+:Event a owl:Class ;
+    rdfs:label "Shipment Event" ;
+    rdfs:comment """An occurrence in the container shipping lifecycle.
+    
+    DCSA: Base class for all tracking events.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :eventDateTime ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:TransportEvent a owl:Class ;
+    rdfs:label "Transport Event" ;
+    rdfs:comment """An event related to vessel or transport operations.
+    
+    DCSA: Vessel departure, arrival, berthing events.""" ;
+    rdfs:subClassOf :Event .
+
+:EquipmentEvent a owl:Class ;
+    rdfs:label "Equipment Event" ;
+    rdfs:comment """An event related to container handling or status.
+    
+    DCSA: Container pickup, gate-in, loading, discharge, delivery events.""" ;
+    rdfs:subClassOf :Event .
+
+:DocumentEvent a owl:Class ;
+    rdfs:label "Document Event" ;
+    rdfs:comment """An event related to shipping document status.
+    
+    DCSA: Document draft, approval, issuance, surrender events.""" ;
+    rdfs:subClassOf :Event .
+
+:VesselDepartureEvent a owl:Class ;
+    rdfs:label "Vessel Departure" ;
+    rdfs:comment """Vessel departing from a port.
+    
+    DCSA: ATD (Actual Time of Departure) or ETD (Estimated).""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:VesselArrivalEvent a owl:Class ;
+    rdfs:label "Vessel Arrival" ;
+    rdfs:comment """Vessel arriving at a port.
+    
+    DCSA: ATA (Actual Time of Arrival) or ETA (Estimated).""" ;
+    rdfs:subClassOf :TransportEvent .
+
+:GateInEvent a owl:Class ;
+    rdfs:label "Gate-In" ;
+    rdfs:comment """Container entering a terminal or depot.
+    
+    DCSA: Container received at terminal.""" ;
+    rdfs:subClassOf :EquipmentEvent .
+
+:GateOutEvent a owl:Class ;
+    rdfs:label "Gate-Out" ;
+    rdfs:comment """Container leaving a terminal or depot.
+    
+    DCSA: Container released from terminal.""" ;
+    rdfs:subClassOf :EquipmentEvent .
+
+:LoadedOnVesselEvent a owl:Class ;
+    rdfs:label "Loaded on Vessel" ;
+    rdfs:comment """Container loaded onto ocean vessel.
+    
+    DCSA: Critical milestone for shipment tracking.""" ;
+    rdfs:subClassOf :EquipmentEvent .
+
+:DischargedFromVesselEvent a owl:Class ;
+    rdfs:label "Discharged from Vessel" ;
+    rdfs:comment """Container discharged from ocean vessel.
+    
+    DCSA: Container unloaded at destination port.""" ;
+    rdfs:subClassOf :EquipmentEvent .
+
+:EmptyContainerPickupEvent a owl:Class ;
+    rdfs:label "Empty Container Pickup" ;
+    rdfs:comment """Empty container picked up by shipper.
+    
+    DCSA: Start of container use cycle.""" ;
+    rdfs:subClassOf :EquipmentEvent .
+
+:EmptyContainerReturnEvent a owl:Class ;
+    rdfs:label "Empty Container Return" ;
+    rdfs:comment """Empty container returned to depot.
+    
+    DCSA: End of container use cycle.""" ;
+    rdfs:subClassOf :EquipmentEvent .
+
+:DocumentIssuedEvent a owl:Class ;
+    rdfs:label "Document Issued" ;
+    rdfs:comment """Transport document officially issued.
+    
+    DCSA: B/L or Sea Waybill released.""" ;
+    rdfs:subClassOf :DocumentEvent .
+
+:DocumentSurrenderedEvent a owl:Class ;
+    rdfs:label "Document Surrendered" ;
+    rdfs:comment """Original Bill of Lading surrendered.
+    
+    DCSA: Releases cargo for delivery.""" ;
+    rdfs:subClassOf :DocumentEvent .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:occursAtLocation a owl:ObjectProperty ;
+    rdfs:label "occurs at location" ;
+    rdfs:comment "Relates event to location where it occurred." ;
+    rdfs:domain :Event ;
+    rdfs:range loc:Location .
+
+:involvesContainer a owl:ObjectProperty ;
+    rdfs:label "involves container" ;
+    rdfs:comment "Relates equipment event to specific container." ;
+    rdfs:domain :EquipmentEvent ;
+    rdfs:range equip:Container .
+
+:hasTransportCall a owl:ObjectProperty ;
+    rdfs:label "has transport call" ;
+    rdfs:comment """Links an event to the transport call where it occurred.
+
+    DCSA: Required on TransportEvent, optional on EquipmentEvent.
+    Identifies the transport means, facility, and mode of transport.""" ;
+    rdfs:domain :Event ;
+    rdfs:range tc:TransportCall .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:eventDateTime a owl:DatatypeProperty ;
+    rdfs:label "event date time" ;
+    rdfs:comment "Date and time when event occurred or is estimated." ;
+    rdfs:domain :Event ;
+    rdfs:range xsd:dateTime .
+
+:eventTypeCode a owl:DatatypeProperty ;
+    rdfs:label "event type code" ;
+    rdfs:comment "DCSA event type code." ;
+    rdfs:domain :Event ;
+    rdfs:range xsd:string .
+
+:eventClassifierCode a owl:DatatypeProperty ;
+    rdfs:label "event classifier code" ;
+    rdfs:comment "Event classifier: ACT (Actual), EST (Estimated), PLN (Planned), REQ (Requested)." ;
+    rdfs:domain :Event ;
+    rdfs:range xsd:string .
+
+:estimatedTimeOfArrival a owl:DatatypeProperty ;
+    rdfs:label "estimated time of arrival (ETA)" ;
+    rdfs:comment "Estimated vessel arrival time." ;
+    rdfs:domain :VesselArrivalEvent ;
+    rdfs:range xsd:dateTime .
+
+:estimatedTimeOfDeparture a owl:DatatypeProperty ;
+    rdfs:label "estimated time of departure (ETD)" ;
+    rdfs:comment "Estimated vessel departure time." ;
+    rdfs:domain :VesselDepartureEvent ;
+    rdfs:range xsd:dateTime .
+
+:actualTimeOfArrival a owl:DatatypeProperty ;
+    rdfs:label "actual time of arrival (ATA)" ;
+    rdfs:comment "Actual vessel arrival time." ;
+    rdfs:domain :VesselArrivalEvent ;
+    rdfs:range xsd:dateTime .
+
+:actualTimeOfDeparture a owl:DatatypeProperty ;
+    rdfs:label "actual time of departure (ATD)" ;
+    rdfs:comment "Actual vessel departure time." ;
+    rdfs:domain :VesselDepartureEvent ;
+    rdfs:range xsd:dateTime .
+
+#################################################################
+#    Inland & Additional Equipment Event Subclasses
+#################################################################
+
+:BorderCrossingEvent a owl:Class ;
+    rdfs:label "Border Crossing Event" ;
+    rdfs:comment """Container crossing an international border during inland transport.
+
+    DCSA equipmentEventTypeCode: CROS.
+    Records border crossing during pre-carriage or on-carriage legs.""" ;
+    rdfs:subClassOf :EquipmentEvent .
+
+:AvailableForPickupEvent a owl:Class ;
+    rdfs:label "Available for Pickup" ;
+    rdfs:comment """Container available for pickup at a facility.
+
+    DCSA equipmentEventTypeCode: AVPU.
+    Container is ready for collection by the shipper or haulier.""" ;
+    rdfs:subClassOf :EquipmentEvent .
+
+:AvailableForDropoffEvent a owl:Class ;
+    rdfs:label "Available for Drop-off" ;
+    rdfs:comment """Facility is available to receive a container drop-off.
+
+    DCSA equipmentEventTypeCode: AVDO.
+    Facility confirms readiness to accept container delivery.""" ;
+    rdfs:subClassOf :EquipmentEvent .
+
+:PickedUpEvent a owl:Class ;
+    rdfs:label "Picked Up" ;
+    rdfs:comment """Container picked up from a facility.
+
+    DCSA equipmentEventTypeCode: PICK.
+    Container physically collected by haulier or transport operator.""" ;
+    rdfs:subClassOf :EquipmentEvent .
+
+:DroppedOffEvent a owl:Class ;
+    rdfs:label "Dropped Off" ;
+    rdfs:comment """Container dropped off at a facility.
+
+    DCSA equipmentEventTypeCode: DROP.
+    Container physically delivered to destination facility.""" ;
+    rdfs:subClassOf :EquipmentEvent .
+
+:CustomsEvent a owl:Class ;
+    rdfs:label "Customs Event" ;
+    rdfs:comment """A customs-related event for a container.
+
+    DCSA equipmentEventTypeCodes: CUSS (Customs Selected), CUSI (Customs
+    Selected for Inspection), CUSR (Customs Released).
+    Use customsEventTypeCode property to distinguish sub-types.""" ;
+    rdfs:subClassOf :EquipmentEvent .
+
+:InspectionEvent a owl:Class ;
+    rdfs:label "Inspection Event" ;
+    rdfs:comment """Container inspected at a facility.
+
+    DCSA equipmentEventTypeCode: INSP.
+    Physical inspection of container by authorities or terminal.""" ;
+    rdfs:subClassOf :EquipmentEvent .
+
+:SealEvent a owl:Class ;
+    rdfs:label "Seal Event" ;
+    rdfs:comment """Seal applied to or removed from a container.
+
+    DCSA equipmentEventTypeCodes: RSEA (Resealed), RMVD (Seal Removed).
+    Use sealEventTypeCode property to distinguish.""" ;
+    rdfs:subClassOf :EquipmentEvent .
+
+#################################################################
+#    Additional Datatype Properties
+#################################################################
+
+:customsEventTypeCode a owl:DatatypeProperty ;
+    rdfs:label "customs event type code" ;
+    rdfs:comment "DCSA customs sub-type: CUSS (Selected), CUSI (Inspection), CUSR (Released)." ;
+    rdfs:domain :CustomsEvent ;
+    rdfs:range xsd:string .
+
+:sealEventTypeCode a owl:DatatypeProperty ;
+    rdfs:label "seal event type code" ;
+    rdfs:comment "DCSA seal sub-type: RSEA (Resealed), RMVD (Removed)." ;
+    rdfs:domain :SealEvent ;
+    rdfs:range xsd:string .
+
+:facilityTypeCode a owl:DatatypeProperty ;
+    rdfs:label "facility type code" ;
+    rdfs:comment """DCSA facility type code where this event occurred.
+    Values: BORD, CLOC, COFS, OFFD, DEPO, INTE, POTE, RAMP, WAYP.""" ;
+    rdfs:domain :Event ;
+    rdfs:range xsd:string .
+
+:facilityTypeCodeOPR a owl:DatatypeProperty ;
+    rdfs:label "facility type code OPR" ;
+    rdfs:comment """DCSA operations-event facility type code variant.
+    Values: PBPL (Pilot Boarding Place), BRTH (Berth), ANCH (Anchorage).""" ;
+    rdfs:domain :Event ;
+    rdfs:range xsd:string .
+
+:isTransshipmentMove a owl:DatatypeProperty ;
+    rdfs:label "is transshipment move" ;
+    rdfs:comment "Indicates if this equipment event is part of a transshipment operation." ;
+    rdfs:domain :EquipmentEvent ;
+    rdfs:range xsd:boolean .

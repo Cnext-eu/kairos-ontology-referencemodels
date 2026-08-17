@@ -1,0 +1,117 @@
+@prefix : <https://www.kairosflow.ai/ont/rail/shared-kernel#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+<https://www.kairosflow.ai/ont/rail/shared-kernel> a owl:Ontology ;
+    dcterms:title "RAIL Shared Kernel — Locations, Timing, Identifiers" ;
+    dcterms:description """Shared-kernel concepts reused across RAIL modules, grounded in
+    the TAF TSI data catalogue (taf_cat_complete.xsd): location identifiers,
+    composite planned/operational identifiers, validity periods, and timing
+    primitives. v1.0.0.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-08-15"^^xsd:date ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.1.0" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd: LocationIdent, CompositIdentifierPlannedType, CompositIdentifierOperationalType, ValidityPeriodType, BitmapDays" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+#################################################################
+#    Location and Identifier Classes
+#################################################################
+
+:RailLocationIdentifier a owl:Class ;
+    rdfs:label "rail location identifier" ;
+    rdfs:comment """Identifier for a TAF TSI location (reporting point, interchange point,
+    handover point, stopping/handling station). Corresponds to the LocationIdent
+    complex type in taf_cat_complete.xsd.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, complexType LocationIdent" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+:PlannedTrainIdentifier a owl:Class ;
+    rdfs:label "planned train identifier" ;
+    rdfs:comment """Composite identifier for a planned train (operator + train number +
+    start date). Corresponds to CompositIdentifierPlannedType in
+    taf_cat_complete.xsd.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, complexType CompositIdentifierPlannedType" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+:OperationalTrainIdentifier a owl:Class ;
+    rdfs:label "operational train identifier" ;
+    rdfs:comment """Composite identifier for an operational (running) train.
+    Corresponds to CompositIdentifierOperationalType in taf_cat_complete.xsd.
+    Properties: operationalTrainNumber (OperationalTrainNumberIdentifier),
+    scheduledTimeAtHandover (ScheduledTimeAtHandover).""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, complexType CompositIdentifierOperationalType" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+:ValidityPeriod a owl:Class ;
+    rdfs:label "validity period" ;
+    rdfs:comment """Validity period for a path or timetable entry. Corresponds to
+    ValidityPeriodType in taf_cat_complete.xsd. Uses BitmapDays for the
+    days-of-week pattern. Properties: startDateTime (StartDateTime),
+    endDateTime (EndDateTime), bitmapDays.""" ;
+    dcterms:source "TAF TSI — taf_cat_complete.xsd, complexType ValidityPeriodType; element BitmapDays" ;
+    rdfs:seeAlso <https://github.com/EU-Agency-for-Railways/TSI_TAF> .
+
+#################################################################
+#    Properties
+#################################################################
+
+:locationCode a owl:DatatypeProperty ;
+    rdfs:label "location code" ;
+    rdfs:comment "Coded identifier of a TAF TSI location (LocationIdent)." ;
+    rdfs:domain :RailLocationIdentifier ;
+    rdfs:range xsd:string .
+
+:plannedTrainNumber a owl:DatatypeProperty ;
+    rdfs:label "planned train number" ;
+    rdfs:comment "Train number component of a planned train identifier." ;
+    rdfs:domain :PlannedTrainIdentifier ;
+    rdfs:range xsd:string .
+
+:operatorCode a owl:DatatypeProperty ;
+    rdfs:label "operator code" ;
+    rdfs:comment """Railway Undertaking (RU) company code component of a train
+    identifier (UIC 920-1).""" ;
+    rdfs:domain :PlannedTrainIdentifier ;
+    rdfs:range xsd:string .
+
+:startDate a owl:DatatypeProperty ;
+    rdfs:label "start date" ;
+    rdfs:comment "Start date of a planned train identifier or validity period." ;
+    rdfs:domain :PlannedTrainIdentifier ;
+    rdfs:range xsd:date .
+
+:bitmapDays a owl:DatatypeProperty ;
+    rdfs:label "bitmap days" ;
+    rdfs:comment """Days-of-week validity bitmap (BitmapDays) for a validity period,
+    one character per day.""" ;
+    rdfs:domain :ValidityPeriod ;
+    rdfs:range xsd:string .
+
+:operationalTrainNumber a owl:DatatypeProperty ;
+    rdfs:label "operational train number" ;
+    rdfs:comment "Operational train number identifying the train for traffic management. Corresponds to OperationalTrainNumberIdentifier in taf_cat_complete.xsd." ;
+    rdfs:domain :OperationalTrainIdentifier ;
+    rdfs:range xsd:string .
+
+:scheduledTimeAtHandover a owl:DatatypeProperty ;
+    rdfs:label "scheduled time at handover" ;
+    rdfs:comment "Referenced date and time of departure or entrance at the border between two different IMs. Corresponds to ScheduledTimeAtHandover in taf_cat_complete.xsd." ;
+    rdfs:domain :OperationalTrainIdentifier ;
+    rdfs:range xsd:dateTime .
+
+:validityStartDateTime a owl:DatatypeProperty ;
+    rdfs:label "validity start date time" ;
+    rdfs:comment "Start date and time of the validity period. Corresponds to StartDateTime in taf_cat_complete.xsd." ;
+    rdfs:domain :ValidityPeriod ;
+    rdfs:range xsd:dateTime .
+
+:validityEndDateTime a owl:DatatypeProperty ;
+    rdfs:label "validity end date time" ;
+    rdfs:comment "End date and time of the validity period. Corresponds to EndDateTime in taf_cat_complete.xsd." ;
+    rdfs:domain :ValidityPeriod ;
+    rdfs:range xsd:dateTime .
