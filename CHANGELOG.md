@@ -5,6 +5,65 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.30.0] - 2026-08-17
+
+Three gaps found by adopting these modules on a real client hub (CLdN, logistics
+pack), each filed as an issue with its adopter evidence before being fixed. All
+changes are additive; no existing term was re-domained or removed.
+
+### Added
+
+- **`IMO/vessel-registry` `:capacityValue`** (#90). `:VesselCapacity` carried
+  `:capacityUnit` and `:capacityType` but no measured value, so the class could
+  state *"a TEU capacity measured in TEU"* but not how many — while
+  `:GrossTonnage` beside it has the full value/unit/convention triad. Eight
+  Ro-Ro capacity columns on the adopting hub had no home. `:hasCapacity` already
+  links `:Vessel` to the value object, so no new link was required.
+  IMO 1.2.0 → **1.3.0**.
+
+- **`BSP/financial` credit- and debit-note attributes** (#89). `:CreditNote` and
+  `:DebitNote` were bare classes — no `rdfs:subClassOf`, zero properties — while
+  `:Invoice` carried 15. Their attributes could not be expressed at all: the
+  invoice properties are `rdfs:domain :Invoice`, so reusing them entails
+  `CreditNote ⊑ Invoice`, contradicting the module's own decision to model the
+  notes as siblings rather than subclasses. Adds six header properties on each,
+  `:CreditNoteLine`, `:DebitNoteLine`, `:hasCreditNoteLine`, `:hasDebitNoteLine`
+  and `:appliesToInvoice` (union domain over both note types).
+
+- **`BSP/financial` `:BillingDocumentLine`** (#91). `:InvoiceLine` carried only
+  `:lineNumber` and `:taxRate` — no amount, quantity, unit price or description
+  — so a line item could not state what it charges or how much. This is the same
+  defect class as #90, a line object with qualifiers but no measure, and
+  mirroring `:InvoiceLine` faithfully had propagated it into the new
+  `:CreditNoteLine`. Introduces a shared parent carrying `:lineAmount`,
+  `:lineQuantity`, `:lineQuantityUnit`, `:lineUnitPrice`, `:lineTaxAmount` and
+  `:lineDescription`, with `:InvoiceLine`, `:CreditNoteLine` and
+  `:DebitNoteLine` as subclasses.
+
+  `:lineQuantityUnit` is included deliberately: UN/CEFACT `BilledQuantity`
+  carries a UN/ECE Recommendation 20 `unitCode`, and a bare quantity on a
+  freight line is ambiguous between pallets, tonnes, TEU and lane metres —
+  omitting it would repeat #90 in the other direction.
+
+  BSP 2.3.0 → **2.4.0** (covers both #89 and #91).
+
+### Notes
+
+- `:Invoice` is deliberately untouched: still exactly its original 15 properties
+  and no superclass. `financial.ttl` is **+256 / −0**, pure insertions.
+- **Not hoisted:** `:lineNumber` and `:taxRate` remain on the individual line
+  classes rather than moving to `:BillingDocumentLine`, because widening them is
+  re-domaining an existing property. The parent therefore owns the measures but
+  not the numbering — an intentional asymmetry, revisitable in a major.
+- No `dueDate` equivalent on either note: `due` is a banned token in the
+  temporal-quartet pattern and `:dueDate` survives only via a named exemption,
+  so minting one for the notes would require a new exemption entry.
+- Archived `BSP/archive/2.3.0/` and `IMO/archive/1.2.0/` from the pre-change
+  content before bumping.
+- Verified: `check_all.py` 7/7, tier-2 contract and bundle conformance 9 passed,
+  `validate_structure.py` all checks pass, `version_manager.py check` consistent
+  across 76 version strings.
+
 ## [1.29.1] - 2026-08-16
 
 ### Added
