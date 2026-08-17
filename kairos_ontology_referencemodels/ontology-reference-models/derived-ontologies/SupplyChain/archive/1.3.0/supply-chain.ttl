@@ -10,7 +10,6 @@
 @prefix consignment: <https://www.kairosflow.ai/ont/mmt/consignment#> .
 @prefix cargo: <https://www.kairosflow.ai/ont/mmt/cargo#> .
 @prefix equip: <https://www.kairosflow.ai/ont/dcsa/equipment#> .
-@prefix mmt-equip: <https://www.kairosflow.ai/ont/mmt/equipment#> .
 @prefix schedule: <https://www.kairosflow.ai/ont/dcsa/schedule#> .
 @prefix events: <https://www.kairosflow.ai/ont/dcsa/events#> .
 @prefix tic-events: <https://www.kairosflow.ai/ont/tic/events#> .
@@ -43,7 +42,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-31"^^xsd:date ;
     dcterms:modified "2026-08-14"^^xsd:date ;
-    owl:versionInfo "1.4.0" ;
+    owl:versionInfo "1.3.0" ;
     owl:imports <https://www.kairosflow.ai/ont/dcsa/booking> ,
                 <https://www.kairosflow.ai/ont/dcsa/equipment> ,
                 <https://www.kairosflow.ai/ont/dcsa/schedule> ,
@@ -52,7 +51,6 @@
                 <https://www.kairosflow.ai/ont/dcsa/transport-documents> ,
                 <https://www.kairosflow.ai/ont/mmt/consignment> ,
                 <https://www.kairosflow.ai/ont/mmt/cargo> ,
-                <https://www.kairosflow.ai/ont/mmt/equipment> ,
                 <https://www.kairosflow.ai/ont/imo/port-call> ,
                 <https://www.kairosflow.ai/ont/imo/vessel-registry> ,
                 <https://www.kairosflow.ai/ont/imo/dangerous-goods> ,
@@ -249,68 +247,3 @@
     rdfs:comment "Links a DCSA TransportDocument to the BSP BillOfLading representing the same document from a trade perspective." ;
     rdfs:domain tdoc:TransportDocument ;
     rdfs:range bsp-doc:BillOfLading .
-
-#################################################################
-#    Equipment / Goods ↔ Cargo Measurements  (gh#98)
-#
-#    MMT places the measurement value objects — Dimension, Weight and
-#    CargoMeasurement — in mmt/cargo, and the pack's overlap register resolved
-#    them there deliberately. But data-domains.yaml routes mmt/cargo to the
-#    `cargo` and `roro` domains only, so the `equipment` and `consignment`
-#    domains could not reach them at all. These bridges grant that reach without
-#    importing mmt/cargo into either domain, which would read as co-ownership and
-#    trip the cross-domain duplicate check.
-#
-#    These are INTEGRATION-LAYER declarations in the supply-chain namespace. They
-#    are deliberately NOT a claim that UN/CEFACT associates a spatial dimension
-#    with logistics transport equipment or with a consignment goods item — that
-#    question is open pending the versioned MMT-RDM audit, and until it lands no
-#    equivalent property may be added to mmt/equipment or mmt/consignment, nor may
-#    cargo:hasDimension be re-domained. The names carry no exterior/interior or
-#    ordered/actual qualifier for the same reason.
-#################################################################
-
-:hasEquipmentDimension a owl:ObjectProperty ;
-    rdfs:label "has equipment dimension" ;
-    rdfs:comment """Links an MMT TransportEquipment to an MMT Dimension value object.
-
-    Integration-layer bridge (gh#98): grants the `equipment` data domain reach to
-    mmt/cargo#Dimension. Not a subproperty of cargo:hasDimension — that property is
-    domained on cargo:CargoItem, and inheriting it would infer that equipment is
-    cargo. Carries no exterior/capacity qualifier: which dimensions an adopter
-    means is a mapping decision, not one this property encodes.""" ;
-    rdfs:domain mmt-equip:TransportEquipment ;
-    rdfs:range cargo:Dimension .
-
-:hasGoodsDimension a owl:ObjectProperty ;
-    rdfs:label "has goods dimension" ;
-    rdfs:comment """Links an MMT consignment GoodsItem to an MMT Dimension value object.
-
-    Integration-layer bridge (gh#98): grants the `consignment` data domain reach to
-    mmt/cargo#Dimension. Whether consignment:GoodsItem and cargo:CargoItem denote one
-    standard entity is unresolved; this property deliberately does not assert either
-    equivalence or containment between them.""" ;
-    rdfs:domain consignment:GoodsItem ;
-    rdfs:range cargo:Dimension .
-
-:hasGoodsWeight a owl:ObjectProperty ;
-    rdfs:label "has goods weight" ;
-    rdfs:comment """Links an MMT consignment GoodsItem to an MMT Weight value object.
-
-    Integration-layer bridge (gh#98): grants the `consignment` data domain reach to
-    mmt/cargo#Weight. The weight type (gross, net, tare) is carried by the Weight
-    object's own weightType property, not by separate scalar properties here.""" ;
-    rdfs:domain consignment:GoodsItem ;
-    rdfs:range cargo:Weight .
-
-:hasGoodsMeasurement a owl:ObjectProperty ;
-    rdfs:label "has goods measurement" ;
-    rdfs:comment """Links an MMT consignment GoodsItem to an MMT CargoMeasurement value object.
-
-    Integration-layer bridge (gh#98): grants the `consignment` data domain reach to
-    mmt/cargo#CargoMeasurement, covering volumes and load measures. The qualifier
-    lives in the measurement object's measurementType; note that a free-form
-    measurementType value is not by itself sufficient governance for an
-    ordered-versus-actual distinction, which remains an open modelling question.""" ;
-    rdfs:domain consignment:GoodsItem ;
-    rdfs:range cargo:CargoMeasurement .

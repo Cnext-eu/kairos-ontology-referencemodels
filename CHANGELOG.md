@@ -5,6 +5,94 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.33.0] - 2026-08-17
+
+Blueprint-layer companion to 1.32.0. That release fixed the graph layer — a module not
+importing what it asserts `rdfs:domain` against. This one fixes the routing layer: a
+class can be perfectly modelled, correctly imported by *a* domain, and still be
+unreachable from the domain that needs it, because `data-domains.yaml` scopes imports
+per domain and nothing checked the result against what the archetypes say a hub requires.
+
+### Fixed
+
+- **`mmt/cargo` measurement classes unreachable from the domains that carry the columns**
+  (#98). `Dimension`, `Weight` and `CargoMeasurement` were routed to `cargo` and `roro`
+  only, so the `equipment` domain (trailer dimensions) and `consignment` domain (goods
+  measures) could not see them at all. Four `cross_domain_relationships` bridges added.
+
+  Bridges rather than imports: a bridge says "may reference, does not own", whereas
+  importing `mmt/cargo` into `equipment` reads as co-ownership and trips the consumer's
+  cross-domain duplicate check. It is also the surgical option — a bridge exposes exactly
+  its `range_class_uri`, so the four entries widen each domain's pool by one class each,
+  not by a module.
+
+  The pack's own overlap register had already resolved `Dimension` to `MMT/Cargo`
+  deliberately. The decision was made and recorded, then not routed to the domains that
+  consume it.
+
+- **Four modules routed to no data domain at all**, found by the new gates:
+  - **`mmt/locations`** — 5 tier-required archetype concepts unreachable, while every
+    other vendor's locations module was routed. Now in `reference-data`.
+  - **`dcsa/party`** — 4 tier-required concepts unreachable, while BSP, MMT, IMO and RAIL
+    party modules were all routed. Now in `party`.
+  - **`mmt/transport-means`** — 11 concepts unreachable including `Vessel` and
+    `RoadVehicle`, both tier-required. The module spans every mode, so it is routed to
+    `vessel-maritime`, `equipment` and `intermodal` along mode lines rather than assigned
+    one owner. Precedent: `mmt/cargo` is imported by both `cargo` and `roro`.
+  - **`tic/party`** — 9 terms, and the only one found by the *module-level* check rather
+    than the archetype check, because no archetype core concept names a `tic/party` class.
+    Now in `party`.
+
+### Added
+
+- **`validate_archetypes.py` check 8 — concept/domain reachability.** Every archetype core
+  concept must be reachable from at least one data domain, by module import or declared
+  bridge. Blocking at `tier: required`, advisory below — `Dimension` is
+  `tier: recommended`, so a required-only gate would have missed the defect that prompted
+  the check.
+
+  `--list-single-domain` enumerates concepts reachable from exactly one domain. The issue
+  proposed flagging those as the cheap first step, but measured against the shipped
+  archetypes it fires on 348 of 416: belonging to one domain is the normal case for an
+  owned class, and per-concept warnings would bury the real findings. Reported as one
+  summary line instead.
+
+- **`test_every_term_declaring_module_reaches_a_data_domain`.** Worth being explicit that
+  this was a *granularity* gap, not a missing test.
+  `test_every_include_reaches_data_domains` was already written for exactly this failure
+  (the RAIL regression), but it checks `manifest.yaml` includes, which are vendor-level
+  (`ont/mmt#`), and passes on a prefix match against any routed module. That prefix match
+  is required for FIBO, where the manifest names module *groups* — and it is what made
+  per-module gaps invisible: MMT counted as reaching data-domains on the strength of
+  `mmt/cargo` alone.
+
+  The new check is scoped to each pack's own accelerator import closure and auto-exempts
+  pure aggregators, so it needs no allowlist entry per vendor root.
+
+- **Four integration-layer bridge properties** in `supply-chain`:
+  `hasEquipmentDimension`, `hasGoodsDimension`, `hasGoodsWeight`, `hasGoodsMeasurement`.
+  These are Kairos routing declarations and deliberately **not** a claim that UN/CEFACT
+  associates a spatial dimension with logistics transport equipment or with a consignment
+  goods item. That remains open pending a versioned MMT-RDM audit; until it lands, no
+  equivalent property may be added to `mmt/equipment` or `mmt/consignment`, and
+  `cargo:hasDimension` must not be re-domained — doing so would infer that equipment is
+  cargo. The names carry no exterior/interior or ordered/actual qualifier for the same
+  reason.
+
+- `tests/test_validate_archetypes.py` (13 tests, none previously), a bridge
+  class-endpoint check in `test_model_registration.py` — previously only the bridge
+  *property*'s module was verified as catalogued — and two `CONTRIBUTING.md` runbooks:
+  adding an industry model, and changing a data domain.
+
+### Known gaps
+
+- **`ont/mmt` declares 33 dangerous-goods terms in the vendor root namespace, which no
+  data domain imports**, so none is reachable from any client hub. Four are archetype
+  core concepts and the new gate warns on all four. Recorded in `UNROUTED_TRACKED_GAP`
+  with a staleness test that fails once it is fixed. The fix — extracting them into an
+  `mmt/dangerous-goods` leaf module — is a breaking MMT major and therefore its own
+  release.
+
 ## [1.32.0] - 2026-08-17
 
 ### Fixed

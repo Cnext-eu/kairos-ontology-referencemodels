@@ -128,6 +128,91 @@ property is simply in the wrong module: `:relatedToShipment` was domained on
 `fin:Invoice` while living in `commercial`, and moving it to `financial` removed the
 cycle rather than papering over it.
 
+## Reach: two mechanisms at two different layers
+
+Almost every "the model is missing X" report against this pack has turned out to be a
+reach failure rather than a modelling gap. The term exists; the consumer cannot get to
+it. There are two independent mechanisms, they live at different layers, and **neither
+substitutes for the other**.
+
+| | `owl:imports` (graph layer) | data-domain routing (blueprint layer) |
+|---|---|---|
+| **Answers** | "Is this class *typed* in my module's graph?" | "Is this class *offered* to a client-hub domain?" |
+| **Declared in** | the module's own `.ttl` header | `data-domains.yaml` |
+| **Miss looks like** | the property hangs off an untyped resource; the class cannot be anchored in the domain that loads this module | the class is absent from the domain's pool, so a table anchored to it is refused |
+| **Gate** | `validate_structure.py` check 10 | `validate_archetypes.py` check 8, `test_every_term_declaring_module_reaches_a_data_domain` |
+
+### Choosing between a domain import and a bridge
+
+At the blueprint layer you have two options, and the choice is a modelling statement:
+
+- **Add the module to a domain's `imports`** when that domain *owns* the grain. This is
+  also the only option when a module is owned by nobody yet — a bridge needs an owning
+  domain to point away from.
+- **Declare a `cross_domain_relationships` bridge** when a domain needs to *reference* a
+  class another domain owns. A bridge says "may reference, does not own"; importing the
+  other domain's module instead reads as co-ownership and trips the consumer's
+  cross-domain duplicate check.
+
+Two mechanical consequences to know before you pick:
+
+- A bridge exposes **exactly its `range_class_uri`**, not the whole module. Three classes
+  needed by two domains is six bridge entries, not one import.
+- A domain import exposes **every class in the module**, including ones the domain's own
+  `does_not_own` excludes. Where that is unavoidable, say so in the import's `note` and
+  treat `does_not_own` as the governing rule.
+
+A `status: new-bridge` bridge also needs its property to exist — add it to
+`derived-ontologies/SupplyChain/current/supply-chain.ttl` in the `supply-chain#`
+namespace. Keep those properties free of qualifiers you cannot cite: a bridge property is
+a Kairos routing declaration, not a claim about the upstream standard.
+
+## Runbook: adding an industry model
+
+Adding RAIL and IATA ONE Record touched about fifteen files and six were missed, every
+one in a surface with no machine reader. Work the levels in order; the right-hand column
+is what fails if you skip one.
+
+| # | Level | What to do | Caught by |
+|---|---|---|---|
+| 1 | Module `.ttl` | Write modules under `derived-ontologies/<VENDOR>/current/<module>/`, each with its own namespace and `owl:versionInfo`. Import every module you assert `rdfs:domain` against. | `validate_structure.py` 1–7, 10 |
+| 2 | Vendor root | `<vendor>.ttl` imports every module. Keep it a **pure aggregator** — terms declared in a root namespace are routable by no data domain. | check 10, routing test |
+| 3 | `catalog-v001.xml` | One `<uri>` entry per module IRI → file path. | `test_every_manifest_module_is_catalogued` |
+| 4 | Accelerator `.ttl` | The pack accelerator imports the vendor root. | `test_every_include_is_imported_by_the_accelerator` |
+| 5 | `manifest.yaml` | Add to `package.includes` (or `references` for catalogued-but-not-bundled). The single hand-edited registry. | the fan-out tests |
+| 6 | `data-domains.yaml` | Route **every term-declaring module** into at least one domain's `imports`. Aggregators are exempt automatically. | `test_every_term_declaring_module_reaches_a_data_domain` |
+| 7 | Bridges | Declare `cross_domain_relationships` for classes another domain must reference; add the property to `supply-chain.ttl`. | `test_every_bridge_class_endpoint_is_in_the_bundle` |
+| 8 | Archetypes | Add `ref_model_modules` and `core_concepts` with a `tier`. Every `tier: required` concept must be domain-reachable. | `validate_archetypes.py` 2, 8 |
+| 9 | Versioning | `archive_version.py <VENDOR>` **before** editing, then `version_manager.py bump`/`sync`. | `version_manager.py check` |
+| 10 | Generated artifacts | `generate_logistics_inventory.py`, `generate_pack_docs.py`. Never hand-edit their output. | freshness tests |
+| 11 | `CHANGELOG.md` + root `VERSION` | A vendor major may ride a repo minor (MMT 2.0.0 shipped in repo 1.16.0). | review |
+
+> **Archive before you edit, not after.** `archive_version.py` copies the *current
+> working tree*, so running it after your edits archives your new content under the old
+> version number. If you slip, restore with
+> `git archive origin/main <vendor-current-path>` and copy that into `archive/<old>/`.
+
+## Runbook: changing a data domain or blueprint
+
+`data-domains.yaml` looks local and is not — it is a published contract surface the
+toolkit reads directly, and every import widens what a client hub is offered.
+
+1. **Adding an import to a domain** — this assigns ownership. Check the domain's `owns` /
+   `does_not_own` prose still holds and add a `note` saying why the module belongs here.
+2. **Adding a bridge** — one entry per (class, domain) pair, `source_domain` being the
+   domain that needs reach. The schema is `additionalProperties: false`, so a typo'd key
+   fails rather than being ignored.
+3. **Removing or re-pointing an import** — check no archetype `core_concepts` entry loses
+   its last route. The gate blocks at `tier: required` and warns below it.
+4. **Any change** — re-run `generate_logistics_inventory.py` and `generate_pack_docs.py`,
+   then `check_all.py`, then tier 2. `data-domains.yaml` is in `contract-manifest.yaml`,
+   so tier 2 is not optional.
+
+Useful while auditing: `validate_archetypes.py --list-single-domain` enumerates concepts
+reachable from exactly one domain. Most are fine — one owner is normal — but it is the
+list to scan when you suspect the domain that *needs* a class differs from the one that
+*owns* it.
+
 ## How to contribute
 
 ### Reporting bugs
