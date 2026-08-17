@@ -443,6 +443,135 @@ def _check_anchor_generality(warnings: list[str]) -> None:
                 )
 
 
+def _load_domain_routing() -> tuple[dict[str, set[str]], dict[str, set[str]], int]:
+    """Read every pack's data-domains.yaml into two reachability indexes.
+
+    Returns ``(module_to_domains, bridged_class_to_domains, pack_count)``.
+
+    Two mechanisms make a class reachable from a data domain, and the consumer
+    honours both: a direct ``imports[].uri`` entry on the domain, or a declared
+    ``cross_domain_relationships`` bridge whose ``source_domain`` is that domain.
+    A bridge exposes exactly its ``range_class_uri`` — not the whole module — so
+    the bridge index is keyed by class URI while the import index is keyed by
+    module URI.
+    """
+    module_to_domains: dict[str, set[str]] = {}
+    bridged_to_domains: dict[str, set[str]] = {}
+    packs = 0
+
+    if not ACCELERATOR_PACKS_DIR.is_dir():
+        return module_to_domains, bridged_to_domains, packs
+
+    for path in sorted(ACCELERATOR_PACKS_DIR.glob("*/client-hub-blueprint/data-domains.yaml")):
+        data = _load_yaml(path)
+        if not isinstance(data, dict):
+            continue
+        packs += 1
+        for group in data.get("groups", []) or []:
+            for domain in (group or {}).get("domains", []) or []:
+                domain_id = (domain or {}).get("id")
+                if not domain_id:
+                    continue
+                for entry in domain.get("imports", []) or []:
+                    uri = (entry or {}).get("uri")
+                    if uri:
+                        module_to_domains.setdefault(_normalise_module(uri), set()).add(domain_id)
+        for bridge in data.get("cross_domain_relationships", []) or []:
+            source = (bridge or {}).get("source_domain")
+            target_class = (bridge or {}).get("range_class_uri")
+            if source and target_class:
+                bridged_to_domains.setdefault(target_class, set()).add(source)
+
+    return module_to_domains, bridged_to_domains, packs
+
+
+def _normalise_module(uri: str) -> str:
+    """``https://.../mmt/cargo#`` and ``...#Dimension`` both -> ``https://.../mmt/cargo``."""
+    return uri.split("#", 1)[0].rstrip("#/")
+
+
+def _check_concept_domain_reachability(
+    archetype_concepts: dict[str, list[tuple[str, str, str]]],
+    errors: list[str],
+    warnings: list[str],
+    list_single_domain: bool = False,
+) -> None:
+    """Check 8 (gh#98): every archetype core concept must be reachable from a data domain.
+
+    A class can be perfectly modelled, correctly imported by *a* domain, and still be
+    unreachable from the domain that needs it, because data-domains.yaml scopes imports
+    per domain and nothing checked the result against what the archetypes say a hub
+    requires. `mmt/cargo#Dimension` was reachable from `cargo` and `roro` only, while the
+    `equipment` and `consignment` domains that carry the dimension columns could not see
+    it — which produced a false reference-model gap report.
+
+    ``tier: required`` unreachable is blocking; ``recommended``/``optional`` warns —
+    ``Dimension`` is ``tier: recommended``, so a required-only gate would have missed
+    the very defect that prompted this check.
+
+    The issue also proposed flagging any concept reachable from exactly ONE domain.
+    Measured against the shipped archetypes that fires on 340 of 416 concepts, because
+    belonging to exactly one domain is the *normal* case for an owned class — it is not
+    evidence of anything. Reporting it per concept would bury the 24 real findings, so
+    it is emitted as a single summary line instead of 340 warnings.
+    """
+    module_to_domains, bridged_to_domains, packs = _load_domain_routing()
+    if not packs:
+        return
+
+    new_errors, new_warnings, singles = _reachability_findings(
+        archetype_concepts, module_to_domains, bridged_to_domains
+    )
+    errors.extend(new_errors)
+    warnings.extend(new_warnings)
+
+    if singles and list_single_domain:
+        print("\n── Concepts reachable from exactly one data domain ──")
+        for domain, tier, uri in sorted(singles):
+            print(f"  {domain}\t{tier}\t{uri}")
+
+
+def _reachability_findings(
+    archetype_concepts: dict[str, list[tuple[str, str, str]]],
+    module_to_domains: dict[str, set[str]],
+    bridged_to_domains: dict[str, set[str]],
+) -> tuple[list[str], list[str], list[tuple[str, str, str]]]:
+    """Pure core of check 8: returns ``(errors, warnings, single_domain_concepts)``."""
+    errors: list[str] = []
+    warnings: list[str] = []
+    singles: list[tuple[str, str, str]] = []
+    total = 0
+
+    for rel, concepts in sorted(archetype_concepts.items()):
+        for uri, tier, label in concepts:
+            total += 1
+            domains = set(module_to_domains.get(_normalise_module(uri), set()))
+            domains |= bridged_to_domains.get(uri, set())
+
+            if not domains:
+                message = (
+                    f"{rel}: core concept <{uri}> (tier: {tier}, \"{label}\") is not "
+                    f"reachable from any data domain — no domain imports its module and "
+                    f"no cross-domain bridge targets it, so a client hub cannot anchor to it"
+                )
+                if tier == "required":
+                    errors.append(message)
+                else:
+                    warnings.append(message)
+            elif len(domains) == 1:
+                singles.append((next(iter(domains)), tier, uri))
+
+    if singles:
+        warnings.append(
+            f"{len(singles)} of {total} archetype core concepts are reachable from exactly "
+            f"one data domain. That is expected for an owned class; it is only a defect when "
+            f"the domain that needs the class differs from the one that owns it (gh#98). Run "
+            f"with --list-single-domain to enumerate them."
+        )
+
+    return errors, warnings, singles
+
+
 def _check_orphaned_discovery_docs(known_archetype_ids: set[str], warnings: list[str]) -> None:
     """Advisory-only: warn about a discovery/<id>.md with no matching archetype id.
 
@@ -466,6 +595,21 @@ def _check_orphaned_discovery_docs(known_archetype_ids: set[str], warnings: list
 
 
 def main() -> int:
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Validate archetype catalog files under blueprints/archetypes/."
+    )
+    parser.add_argument(
+        "--list-single-domain",
+        action="store_true",
+        help=(
+            "Enumerate every core concept reachable from exactly one data domain "
+            "(audit aid for gh#98; does not affect the exit code)"
+        ),
+    )
+    args = parser.parse_args()
+
     try:
         import jsonschema  # noqa: F401
         import yaml  # noqa: F401
@@ -492,6 +636,8 @@ def main() -> int:
     warnings: list[str] = []
     #: archetype id -> declared ref_model_modules IRIs, for the scope-profile check.
     archetype_modules: dict[str, set[str]] = {}
+    #: archetype file -> [(concept uri, tier, label)], for the reachability check.
+    archetype_concepts: dict[str, list[tuple[str, str, str]]] = {}
 
     for yaml_file in files:
         rel = yaml_file.relative_to(REPO_ROOT)
@@ -510,6 +656,11 @@ def main() -> int:
             archetype_modules[archetype_id] = {
                 m["iri"] for m in data.get("ref_model_modules", []) or [] if "iri" in m
             }
+        archetype_concepts[str(rel)] = [
+            (c["uri"], c.get("tier", "?"), c.get("label", ""))
+            for c in data.get("core_concepts", []) or []
+            if isinstance(c, dict) and "uri" in c
+        ]
         print(f"  • {rel}")
 
     # Pack-level checks: not tied to any single archetype file.
@@ -519,6 +670,9 @@ def main() -> int:
     # parses, which is exactly the surface that rots when a check only warns.
     _check_scope_profiles(archetype_modules, errors)
     _check_mode_binding_drift(errors)
+    _check_concept_domain_reachability(
+        archetype_concepts, errors, warnings, args.list_single_domain
+    )
 
     print()
     for w in warnings:

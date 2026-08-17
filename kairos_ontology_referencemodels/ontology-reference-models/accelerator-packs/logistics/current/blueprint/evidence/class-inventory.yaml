@@ -26518,6 +26518,72 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/supply-chain#hasEnergyConsumption
 - comments:
+  - "Links an MMT TransportEquipment to an MMT Dimension value object.\n\n    Integration-layer bridge\
+    \ (gh#98): grants the `equipment` data domain reach to\n    mmt/cargo#Dimension. Not a subproperty\
+    \ of cargo:hasDimension — that property is\n    domained on cargo:CargoItem, and inheriting it would\
+    \ infer that equipment is\n    cargo. Carries no exterior/capacity qualifier: which dimensions an\
+    \ adopter\n    means is a mapping decision, not one this property encodes."
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment
+  kind: object_property
+  labels:
+  - has equipment dimension
+  module_uri: https://www.kairosflow.ai/ont/supply-chain
+  ranges:
+  - https://www.kairosflow.ai/ont/mmt/cargo#Dimension
+  source_file: derived-ontologies/SupplyChain/current/supply-chain.ttl
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/supply-chain#hasEquipmentDimension
+- comments:
+  - "Links an MMT consignment GoodsItem to an MMT Dimension value object.\n\n    Integration-layer bridge\
+    \ (gh#98): grants the `consignment` data domain reach to\n    mmt/cargo#Dimension. Whether consignment:GoodsItem\
+    \ and cargo:CargoItem denote one\n    standard entity is unresolved; this property deliberately does\
+    \ not assert either\n    equivalence or containment between them."
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/consignment#GoodsItem
+  kind: object_property
+  labels:
+  - has goods dimension
+  module_uri: https://www.kairosflow.ai/ont/supply-chain
+  ranges:
+  - https://www.kairosflow.ai/ont/mmt/cargo#Dimension
+  source_file: derived-ontologies/SupplyChain/current/supply-chain.ttl
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/supply-chain#hasGoodsDimension
+- comments:
+  - "Links an MMT consignment GoodsItem to an MMT CargoMeasurement value object.\n\n    Integration-layer\
+    \ bridge (gh#98): grants the `consignment` data domain reach to\n    mmt/cargo#CargoMeasurement, covering\
+    \ volumes and load measures. The qualifier\n    lives in the measurement object's measurementType;\
+    \ note that a free-form\n    measurementType value is not by itself sufficient governance for an\n\
+    \    ordered-versus-actual distinction, which remains an open modelling question."
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/consignment#GoodsItem
+  kind: object_property
+  labels:
+  - has goods measurement
+  module_uri: https://www.kairosflow.ai/ont/supply-chain
+  ranges:
+  - https://www.kairosflow.ai/ont/mmt/cargo#CargoMeasurement
+  source_file: derived-ontologies/SupplyChain/current/supply-chain.ttl
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/supply-chain#hasGoodsMeasurement
+- comments:
+  - "Links an MMT consignment GoodsItem to an MMT Weight value object.\n\n    Integration-layer bridge\
+    \ (gh#98): grants the `consignment` data domain reach to\n    mmt/cargo#Weight. The weight type (gross,\
+    \ net, tare) is carried by the Weight\n    object's own weightType property, not by separate scalar\
+    \ properties here."
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/consignment#GoodsItem
+  kind: object_property
+  labels:
+  - has goods weight
+  module_uri: https://www.kairosflow.ai/ont/supply-chain
+  ranges:
+  - https://www.kairosflow.ai/ont/mmt/cargo#Weight
+  source_file: derived-ontologies/SupplyChain/current/supply-chain.ttl
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/supply-chain#hasGoodsWeight
+- comments:
   - Links an MMT TransportMovement to the carbon footprint of that specific movement leg. Operational
     emissions data is commonly captured at movement/trip grain rather than at the consignment or transport-service
     grain that hasCarbonFootprint and hasEnergyConsumption attach to; this property closes that attachment
