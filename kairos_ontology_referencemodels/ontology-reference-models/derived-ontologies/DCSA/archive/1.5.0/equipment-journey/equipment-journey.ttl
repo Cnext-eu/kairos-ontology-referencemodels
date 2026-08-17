@@ -1,0 +1,23 @@
+@prefix : <https://www.kairosflow.ai/ont/dcsa/equipment-journey#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/dcsa/equipment-journey> a owl:Ontology ;
+    dcterms:title "DCSA Equipment Journey" ;
+    dcterms:description """The Equipment Journey covers the lifecycle of containers from empty pickup
+    through stuffing, transport, stripping, and return. This corresponds to DCSA's
+    equipment event tracking and IoT/Reefer monitoring domains.
+    
+    Sub-modules:
+    - container-operations: Container journey lifecycle, stuffing/stripping, LoLo operations""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-16"^^xsd:date ;
+    owl:versionInfo "1.5.0" ;
+    dcterms:source "DCSA Information Model 2024.Q4 — 2. Equipment Journey (TNT v2.2)" ;
+    rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> ;
+    owl:imports <https://www.kairosflow.ai/ont/dcsa/container-operations> .

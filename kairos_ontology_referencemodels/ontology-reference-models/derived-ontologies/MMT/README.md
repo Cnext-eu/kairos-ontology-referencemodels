@@ -21,9 +21,17 @@ Modular ontology for international logistics and freight transport, based on the
 ## Design Principles
 
 1. **Domain modules are self-contained** — each is a standalone `owl:Ontology` with its own namespace
-2. **No cross-imports between domains** — the root `mmt.ttl` is the only file with `owl:imports`
+2. **A module imports what it domains on** — a property asserting `rdfs:domain` against a
+   class from another module requires that module in this module's `owl:imports` closure,
+   or the class is never typed here and cannot be anchored in the consuming data domain.
+   The root `mmt.ttl` remains the aggregator and a leaf must never import it.
 3. **Properties follow their primary domain** — object/datatype properties are placed in the module of their primary domain class
-4. **Cross-domain references use untyped ranges** — when a property references a class from another domain, the `rdfs:range` is omitted to avoid cross-imports
+4. **Cross-domain references use untyped ranges** — when a property references a class
+   from another domain, the `rdfs:range` may be left unimported. This is deliberate, not
+   an oversight: the consumer derives each data domain's alignment pool from the
+   transitive `owl:imports` closure, so importing every range target widens what a client
+   hub is offered far beyond the real dependency. Principle 2 is the exception, because a
+   dangling domain hides the property from its own class.
 
 ## Modeling Approach: Reification of BSP Code-Based Distinctions
 

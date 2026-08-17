@@ -80,6 +80,54 @@ gate on every push and pull request.
   version (see `scripts/version_manager.py` and `scripts/archive_version.py`).
 - Every derived `owl:Class` should be backed by its cited standard.
 
+## Cross-module references and `owl:imports`
+
+**If your module asserts `rdfs:domain` against a class from another module, import that
+module.** Declaring the `@prefix` is not enough. Without the import the class is never
+typed in your module's graph, so the property hangs off an untyped resource — and a
+consumer working in the data domain that loads your module cannot offer that class as an
+anchor at all. Enforced by `validate_structure.py` check 10.
+
+A leaf module must import the specific sibling it references, **never its vendor root**.
+Importing the root pulls the whole vendor tree into every downstream consumer.
+
+### Why `rdfs:range` is treated differently
+
+An unimported `rdfs:range` only warns. This is deliberate and was measured, so please
+don't "fix" the warnings in bulk.
+
+The consuming toolkit derives each data domain's alignment pool from the **transitive**
+`owl:imports` closure. So every import you add widens what a client hub is offered.
+Requiring imports for ranges as well meant 70 imports rather than 15 and pushed the
+classes offered across the logistics domains from 729 to 1805 — handing the `compliance`
+domain 92 classes where it had 5, most of them from modules it has no relationship with.
+
+The distinction that matters:
+
+- a dangling **domain** hides a property from the class it belongs to, and the widening
+  it costs is real dependency (`financial` sees `CommercialTransaction` because its
+  properties are domained on it);
+- a dangling **range** only leaves the range class untyped locally — the property is
+  still discoverable on its own domain class — and importing for it drags in modules
+  that have no dependency relationship.
+
+This is what the "cross-domain references use untyped ranges" convention in the vendor
+READMEs is protecting. It is load-bearing, not stale. Import a range target only when a
+consumer genuinely needs to resolve the range class from your module, and say why.
+
+### Cycles
+
+Sibling import cycles do not fail the gate: both this repo's loader and the consumer's
+guard on already-visited paths, so a cycle cannot drop triples.
+
+They are still worth avoiding, for a reason the gate cannot see. BSP used to cycle
+(`commercial → financial → commercial`) and that one edge made all four BSP modules
+mutually reachable, so any data domain importing one was offered all four — 352 extra
+classes. If you find yourself adding an import that closes a cycle, check whether the
+property is simply in the wrong module: `:relatedToShipment` was domained on
+`fin:Invoice` while living in `commercial`, and moving it to `financial` removed the
+cycle rather than papering over it.
+
 ## How to contribute
 
 ### Reporting bugs

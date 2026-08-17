@@ -1388,15 +1388,20 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#relatedToOrder
 - comments:
-  - Links invoice to associated shipment.
-  domains:
-  - https://www.kairosflow.ai/ont/bsp/financial#Invoice
+  - "DEPRECATED at BSP 2.5.0. Use financial:relatedToShipment instead.\n\n    This property is domained\
+    \ on fin:Invoice, so by this pack's own rule that a property\n    lives in the module of its primary\
+    \ domain class it belongs in bsp/financial. Left here\n    as a resolvable stub for one major.\n\n\
+    \    It was the single assertion making the BSP import graph cyclic: commercial needed\n    financial\
+    \ for this domain, while financial needs commercial for :hasInvoice. That\n    cycle was harmless\
+    \ to the graph (both loaders guard on visited paths) but not to\n    scoping — the consumer derives\
+    \ each data domain's alignment pool from the transitive\n    owl:imports closure, so a cycle made\
+    \ all four BSP modules mutually reachable and any\n    domain importing one was offered all four."
+  domains: []
   kind: object_property
   labels:
-  - related to shipment
+  - related to shipment (deprecated — moved to bsp/financial)
   module_uri: https://www.kairosflow.ai/ont/bsp/commercial
-  ranges:
-  - https://www.kairosflow.ai/ont/bsp/commercial#Shipment
+  ranges: []
   source_file: derived-ontologies/BSP/current/commercial/commercial.ttl
   sources: *id002
   superclasses: []
@@ -5223,6 +5228,23 @@ records:
   sources: *id006
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/financial#rateBasis
+- comments:
+  - "Links an invoice to the commercial shipment it charges for.\n\n    Relocated from bsp/commercial\
+    \ at BSP 2.5.0: the property is domained on :Invoice, and\n    a property belongs in the module of\
+    \ its primary domain class. The old IRI\n    commercial:relatedToShipment remains as a deprecated\
+    \ stub for one major."
+  domains:
+  - https://www.kairosflow.ai/ont/bsp/financial#Invoice
+  kind: object_property
+  labels:
+  - related to shipment
+  module_uri: https://www.kairosflow.ai/ont/bsp/financial
+  ranges:
+  - https://www.kairosflow.ai/ont/bsp/commercial#Shipment
+  source_file: derived-ontologies/BSP/current/financial/financial.ttl
+  sources: *id006
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/bsp/financial#relatedToShipment
 - comments:
   - Total amount covered by the remittance advice.
   domains:

@@ -1,0 +1,427 @@
+@prefix : <https://www.kairosflow.ai/ont/dcsa/demurrage-detention#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix equip: <https://www.kairosflow.ai/ont/dcsa/equipment#> .
+@prefix loc: <https://www.kairosflow.ai/ont/dcsa/locations#> .
+@prefix party: <https://www.kairosflow.ai/ont/dcsa/party#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/dcsa/demurrage-detention> a owl:Ontology ;
+    dcterms:title "Kairos DCSA Demurrage & Detention Domain Ontology" ;
+    dcterms:description """Demurrage and detention domain based on the DCSA D&D API standard.
+
+    This module defines classes for container demurrage and detention charges,
+    free-time allowances, per-diem rate structures, and dispute management.
+
+    Demurrage: charges for container storage at port/terminal beyond free time.
+    Detention: charges for container use outside terminal beyond free time.
+
+    Covers:
+    - Demurrage charges and events
+    - Detention charges and events
+    - Free-time allowances and tariff structures
+    - Per-diem rate tiers
+    - D&D invoice disputes and waivers""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-22"^^xsd:date ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.5.0" ;
+    dcterms:source "DCSA Demurrage & Detention API v1.0" ;
+    rdfs:seeAlso <https://dcsa.org/standards/> .
+
+#################################################################
+#    Demurrage & Detention Charge Classes
+#################################################################
+
+:DemurrageCharge a owl:Class ;
+    rdfs:label "Demurrage Charge" ;
+    rdfs:comment """Charge for container storage at the port terminal beyond the
+    allowed free-time period. Accrues per day (per diem) from the date
+    the container is discharged until it is picked up.
+
+    DCSA D&D: The primary charge type for at-terminal container dwell.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :chargeAmount ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:DetentionCharge a owl:Class ;
+    rdfs:label "Detention Charge" ;
+    rdfs:comment """Charge for container use outside the terminal beyond the allowed
+    free-time period. Accrues per day from the date the container leaves
+    the terminal until it is returned empty.
+
+    DCSA D&D: The primary charge type for out-of-terminal container use.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :chargeAmount ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:CombinedDemurrageDetention a owl:Class ;
+    rdfs:label "Combined Demurrage & Detention" ;
+    rdfs:comment """A merged demurrage and detention charge applied by carriers that
+    do not distinguish between at-terminal and out-of-terminal periods.
+    Uses a single free-time allowance and combined per-diem rate.""" ;
+    rdfs:subClassOf :DemurrageCharge ;
+    rdfs:subClassOf :DetentionCharge .
+
+:StorageCharge a owl:Class ;
+    rdfs:label "Storage Charge" ;
+    rdfs:comment """Charge levied by the terminal operator (not the carrier) for
+    storing containers in the yard beyond the terminal's own free-time
+    allowance. Distinct from carrier-imposed demurrage.""" .
+
+#################################################################
+#    Tariff and Rate Structure
+#################################################################
+
+:FreeTimeAllowance a owl:Class ;
+    rdfs:label "Free Time Allowance" ;
+    rdfs:comment """The number of calendar days allowed before demurrage or detention
+    charges begin. Defined per tariff, port, equipment type, and
+    trade direction (import/export).
+
+    DCSA D&D: Specifies the grace period before charges accrue.
+    DCSA AN API Freetime schema properties: freetimeTypeCode (DET/DEM/PDM/STO),
+    isoEquipmentCode, modeOfTransportCode, quantity, unitOfMeasure (CD/WD/HR/DOD),
+    calculationBasis.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :freeDays ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:PerDiemRate a owl:Class ;
+    rdfs:label "Per Diem Rate" ;
+    rdfs:comment """The daily rate charged after free time expires. Often structured
+    in tiers (e.g., days 1-5 at one rate, days 6-10 at a higher rate).
+
+    DCSA D&D: Tiered daily rate structure for D&D billing.
+    DCSA defines demurrageAmount and detentionAmount as numeric fields
+    in the D&D charges schema. Currency is specified per charge.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :dailyRate ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:RateTier a owl:Class ;
+    rdfs:label "Rate Tier" ;
+    rdfs:comment """A tier within the per-diem rate structure, defining the daily rate
+    for a specific day range (e.g., days 1-4 = $50/day, days 5-9 = $100/day).""" .
+
+:DemurrageDetentionTariff a owl:Class ;
+    rdfs:label "Demurrage & Detention Tariff" ;
+    rdfs:comment """The published tariff defining free-time allowances, per-diem rates,
+    applicable ports, equipment types, and validity period for D&D charges.""" .
+
+#################################################################
+#    Event Classes
+#################################################################
+
+:DemurrageEvent a owl:Class ;
+    rdfs:label "Demurrage Event" ;
+    rdfs:comment """An event that starts, stops, or affects the demurrage clock.
+    Examples: container discharge (starts demurrage), gate-out (stops demurrage,
+    may start detention), empty return (stops detention).
+
+    DCSA D&D: Links to EquipmentEvent for tracking container milestones.""" .
+
+:DetentionEvent a owl:Class ;
+    rdfs:label "Detention Event" ;
+    rdfs:comment """An event that starts or stops the detention clock.
+    Typically: gate-out with full container (starts detention),
+    empty container return to depot (stops detention).""" .
+
+#################################################################
+#    Dispute and Waiver
+#################################################################
+
+:DisputeRecord a owl:Class ;
+    rdfs:label "Dispute Record" ;
+    rdfs:comment """A formal dispute raised against a demurrage or detention invoice.
+    Tracks the dispute reason, resolution status, and any waiver granted.""" .
+
+:Waiver a owl:Class ;
+    rdfs:label "Waiver" ;
+    rdfs:comment """A partial or full waiver of demurrage/detention charges, typically
+    granted due to carrier delay, force majeure, or commercial agreement.
+
+    DCSA D&D: Waivers are not defined as a separate schema in the DCSA OpenAPI
+    specification. Waiver management is handled via the dispute workflow.
+    Properties here are Kairos extensions for tracking waiver metadata.""" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasFreeTimeAllowance a owl:ObjectProperty ;
+    rdfs:label "has free time allowance" ;
+    rdfs:comment "Relates a D&D tariff to its free-time allowance." ;
+    rdfs:domain :DemurrageDetentionTariff ;
+    rdfs:range :FreeTimeAllowance .
+
+:hasPerDiemRate a owl:ObjectProperty ;
+    rdfs:label "has per diem rate" ;
+    rdfs:comment "Relates a D&D tariff to its per-diem rate structure." ;
+    rdfs:domain :DemurrageDetentionTariff ;
+    rdfs:range :PerDiemRate .
+
+:hasRateTier a owl:ObjectProperty ;
+    rdfs:label "has rate tier" ;
+    rdfs:comment "Relates a per-diem rate to its tier breakdown." ;
+    rdfs:domain :PerDiemRate ;
+    rdfs:range :RateTier .
+
+:appliesTariff a owl:ObjectProperty ;
+    rdfs:label "applies tariff" ;
+    rdfs:comment "Relates a D&D charge to the tariff used for calculation." ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range :DemurrageDetentionTariff .
+
+:triggeredBy a owl:ObjectProperty ;
+    rdfs:label "triggered by" ;
+    rdfs:comment "Relates a charge to the event that triggered the charge clock." ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range :DemurrageEvent .
+
+:stoppedBy a owl:ObjectProperty ;
+    rdfs:label "stopped by" ;
+    rdfs:comment "Relates a charge to the event that stopped the charge clock." ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range :DemurrageEvent .
+
+:hasDispute a owl:ObjectProperty ;
+    rdfs:label "has dispute" ;
+    rdfs:comment "Relates a D&D charge to a dispute record." ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range :DisputeRecord .
+
+:hasWaiver a owl:ObjectProperty ;
+    rdfs:label "has waiver" ;
+    rdfs:comment "Relates a dispute to a granted waiver." ;
+    rdfs:domain :DisputeRecord ;
+    rdfs:range :Waiver .
+
+#################################################################
+#    Cross-Domain Object Properties
+#################################################################
+
+:chargedForContainer a owl:ObjectProperty ;
+    rdfs:label "charged for container" ;
+    rdfs:comment "The container for which this D&D charge applies." ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range equip:Container .
+
+:chargedAtFacility a owl:ObjectProperty ;
+    rdfs:label "charged at facility" ;
+    rdfs:comment "The port or terminal where demurrage accrued." ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range loc:Location .
+
+:chargedToParty a owl:ObjectProperty ;
+    rdfs:label "charged to party" ;
+    rdfs:comment "The shipping party responsible for paying this charge." ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range party:ShippingParty .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:chargeAmount a owl:DatatypeProperty ;
+    rdfs:label "charge amount" ;
+    rdfs:comment "Total monetary amount of the D&D charge." ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range xsd:decimal .
+
+:currency a owl:DatatypeProperty ;
+    rdfs:label "currency" ;
+    rdfs:comment "ISO 4217 currency code for the charge (e.g., USD, EUR)." ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range xsd:string .
+
+:freeDays a owl:DatatypeProperty ;
+    rdfs:label "free days" ;
+    rdfs:comment "Number of calendar days of free time." ;
+    rdfs:domain :FreeTimeAllowance ;
+    rdfs:range xsd:integer .
+
+:freeTimeType a owl:DatatypeProperty ;
+    rdfs:label "free time type" ;
+    rdfs:comment "Type: DEMURRAGE, DETENTION, COMBINED, STORAGE." ;
+    rdfs:domain :FreeTimeAllowance ;
+    rdfs:range xsd:string .
+
+:dailyRate a owl:DatatypeProperty ;
+    rdfs:label "daily rate" ;
+    rdfs:comment "Per-diem amount charged per calendar day." ;
+    rdfs:domain :PerDiemRate ;
+    rdfs:range xsd:decimal .
+
+:tierStartDay a owl:DatatypeProperty ;
+    rdfs:label "tier start day" ;
+    rdfs:comment "First day number in this rate tier (e.g., 1, 5, 11)." ;
+    rdfs:domain :RateTier ;
+    rdfs:range xsd:integer .
+
+:tierEndDay a owl:DatatypeProperty ;
+    rdfs:label "tier end day" ;
+    rdfs:comment "Last day number in this rate tier (e.g., 4, 10, 999)." ;
+    rdfs:domain :RateTier ;
+    rdfs:range xsd:integer .
+
+:tierRate a owl:DatatypeProperty ;
+    rdfs:label "tier rate" ;
+    rdfs:comment "Daily rate for this tier." ;
+    rdfs:domain :RateTier ;
+    rdfs:range xsd:decimal .
+
+:chargeStartDate a owl:DatatypeProperty ;
+    rdfs:label "charge start date" ;
+    rdfs:comment "Date when D&D charges started accruing." ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range xsd:date .
+
+:chargeEndDate a owl:DatatypeProperty ;
+    rdfs:label "charge end date" ;
+    rdfs:comment "Date when D&D charges stopped accruing." ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range xsd:date .
+
+:chargeableDays a owl:DatatypeProperty ;
+    rdfs:label "chargeable days" ;
+    rdfs:comment "Total number of days for which charges apply (after free time)." ;
+    rdfs:domain :DemurrageCharge ;
+    rdfs:range xsd:integer .
+
+:equipmentType a owl:DatatypeProperty ;
+    rdfs:label "equipment type" ;
+    rdfs:comment "ISO equipment type code (e.g., 22G1 for 20ft dry, 45G1 for 40ft HC)." ;
+    rdfs:domain :DemurrageDetentionTariff ;
+    rdfs:range xsd:string .
+
+:tradeDirection a owl:DatatypeProperty ;
+    rdfs:label "trade direction" ;
+    rdfs:comment "Import or export direction: IMPORT, EXPORT." ;
+    rdfs:domain :DemurrageDetentionTariff ;
+    rdfs:range xsd:string .
+
+:portCode a owl:DatatypeProperty ;
+    rdfs:label "port code" ;
+    rdfs:comment "UN/LOCODE of the port where D&D applies." ;
+    rdfs:domain :DemurrageDetentionTariff ;
+    rdfs:range xsd:string .
+
+:disputeReason a owl:DatatypeProperty ;
+    rdfs:label "dispute reason" ;
+    rdfs:comment "Reason for disputing the D&D charge (e.g., CARRIER_DELAY, FORCE_MAJEURE, INCORRECT_CALCULATION)." ;
+    rdfs:domain :DisputeRecord ;
+    rdfs:range xsd:string .
+
+:disputeStatus a owl:DatatypeProperty ;
+    rdfs:label "dispute status" ;
+    rdfs:comment "Current status: OPEN, UNDER_REVIEW, RESOLVED, REJECTED." ;
+    rdfs:domain :DisputeRecord ;
+    rdfs:range xsd:string .
+
+:waiverAmount a owl:DatatypeProperty ;
+    rdfs:label "waiver amount" ;
+    rdfs:comment "Amount waived (partial or full)." ;
+    rdfs:domain :Waiver ;
+    rdfs:range xsd:decimal .
+
+:waiverType a owl:DatatypeProperty ;
+    rdfs:label "waiver type" ;
+    rdfs:comment "Type of waiver: FULL, PARTIAL, DAYS_EXTENSION." ;
+    rdfs:domain :Waiver ;
+    rdfs:range xsd:string .
+
+:validFrom a owl:DatatypeProperty ;
+    rdfs:label "valid from" ;
+    rdfs:comment "Start date of tariff validity." ;
+    rdfs:domain :DemurrageDetentionTariff ;
+    rdfs:range xsd:date .
+
+:validTo a owl:DatatypeProperty ;
+    rdfs:label "valid to" ;
+    rdfs:comment "End date of tariff validity." ;
+    rdfs:domain :DemurrageDetentionTariff ;
+    rdfs:range xsd:date .
+
+#################################################################
+#    Enriched Properties — DCSA AN API / D&D API
+#################################################################
+
+:freetimeTypeCode a owl:DatatypeProperty ;
+    rdfs:label "freetime type code" ;
+    rdfs:comment """DCSA AN API Freetime schema: type of free time.
+    DCSA enum: DET (Detention), DEM (Demurrage), PDM (Per Diem), STO (Storage).""" ;
+    rdfs:domain :FreeTimeAllowance ;
+    rdfs:range xsd:string .
+
+:isoEquipmentCode a owl:DatatypeProperty ;
+    rdfs:label "ISO equipment code" ;
+    rdfs:comment "DCSA AN API: ISO 6346 equipment size/type code (e.g., 22G1, 45G1)." ;
+    rdfs:domain :FreeTimeAllowance ;
+    rdfs:range xsd:string .
+
+:unitOfMeasure a owl:DatatypeProperty ;
+    rdfs:label "unit of measure" ;
+    rdfs:comment """DCSA AN API Freetime schema: unit for the free time quantity.
+    DCSA enum: CD (Calendar Days), WD (Working Days), HR (Hours), DOD (Days on Demurrage).""" ;
+    rdfs:domain :FreeTimeAllowance ;
+    rdfs:range xsd:string .
+
+:calculationBasis a owl:DatatypeProperty ;
+    rdfs:label "calculation basis" ;
+    rdfs:comment "DCSA AN API: basis used for free time calculation (e.g., CALENDAR_DAYS, WORKING_DAYS)." ;
+    rdfs:domain :FreeTimeAllowance ;
+    rdfs:range xsd:string .
+
+:demurrageAmount a owl:DatatypeProperty ;
+    rdfs:label "demurrage amount" ;
+    rdfs:comment "DCSA D&D: demurrage charge amount (numeric float)." ;
+    rdfs:domain :PerDiemRate ;
+    rdfs:range xsd:decimal .
+
+:detentionAmount a owl:DatatypeProperty ;
+    rdfs:label "detention amount" ;
+    rdfs:comment "DCSA D&D: detention charge amount (numeric float)." ;
+    rdfs:domain :PerDiemRate ;
+    rdfs:range xsd:decimal .
+
+:currencyCode a owl:DatatypeProperty ;
+    rdfs:label "currency code" ;
+    rdfs:comment "DCSA D&D: ISO 4217 currency code for the per-diem rate (e.g., USD, EUR)." ;
+    rdfs:domain :PerDiemRate ;
+    rdfs:range xsd:string .
+
+:rateCalculationBasis a owl:DatatypeProperty ;
+    rdfs:label "rate calculation basis" ;
+    rdfs:comment "DCSA D&D: basis used for rate calculation (e.g., PER_DAY, PER_CONTAINER)." ;
+    rdfs:domain :PerDiemRate ;
+    rdfs:range xsd:string .
+
+:paymentTermCode a owl:DatatypeProperty ;
+    rdfs:label "payment term code" ;
+    rdfs:comment "DCSA D&D: payment terms for the rate (e.g., PREPAID, COLLECT)." ;
+    rdfs:domain :PerDiemRate ;
+    rdfs:range xsd:string .
+
+:waiverReason a owl:DatatypeProperty ;
+    rdfs:label "waiver reason" ;
+    rdfs:comment "Kairos extension: reason for the waiver (e.g., CARRIER_DELAY, FORCE_MAJEURE, COMMERCIAL_AGREEMENT). Not defined in DCSA OpenAPI." ;
+    rdfs:domain :Waiver ;
+    rdfs:range xsd:string .
+
+:approvedBy a owl:DatatypeProperty ;
+    rdfs:label "approved by" ;
+    rdfs:comment "Kairos extension: identifier of the party or person who approved the waiver. Not defined in DCSA OpenAPI." ;
+    rdfs:domain :Waiver ;
+    rdfs:range xsd:string .

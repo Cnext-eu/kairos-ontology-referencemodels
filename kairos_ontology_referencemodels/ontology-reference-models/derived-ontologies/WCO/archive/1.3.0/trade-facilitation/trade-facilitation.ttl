@@ -1,0 +1,425 @@
+@prefix : <https://www.kairosflow.ai/ont/wco/trade-facilitation#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix wco-customs: <https://www.kairosflow.ai/ont/wco/customs#> .
+@prefix wco-party: <https://www.kairosflow.ai/ont/wco/party#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/wco/trade-facilitation> a owl:Ontology ;
+    dcterms:title "WCO Trade Facilitation Domain" ;
+    dcterms:description "Trade facilitation certificates, permits, and trusted trader programmes based on the WCO Data Model 3.10.0 and eFTI Regulation." ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.3.0" ;
+    dcterms:source "WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056" ;
+    rdfs:seeAlso <https://www.wcoomd.org/datamodel> .
+
+#################################################################
+#    Classes
+#################################################################
+
+:Certificate a owl:Class ;
+    rdfs:label "Certificate" ;
+    rdfs:comment """A trade facilitation certificate issued by a competent authority.
+
+    WCO: Base class for certificates accompanying goods in international trade.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :certificateNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:CertificateOfOrigin a owl:Class ;
+    rdfs:label "Certificate of Origin" ;
+    rdfs:comment """A certificate attesting the country of origin of goods.
+
+    WCO (Revised Kyoto Convention): Proof of origin for preferential trade treatment. Inherits
+    certificateNumber, certificateIssueDate, certificateExpiryDate from :Certificate. Own datatype
+    properties: originCriterion (WCO RKC: origin criterion code — wholly obtained, sufficiently
+    processed, etc.), originIssuingAuthority (authority that issued the certificate),
+    originCertificationDate (date the origin was certified), and originatingCountry (ISO 3166-1
+    alpha-2 country code of the originating country).""" ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/bsp/compliance#CertificateOfOrigin> ,
+                 <https://www.kairosflow.ai/ont/bsp/documents#CertificateOfOrigin> ;
+    rdfs:subClassOf :Certificate .
+
+:SPSCertificate a owl:Class ;
+    rdfs:label "SPS Certificate" ;
+    rdfs:comment """A Sanitary and Phytosanitary certificate.
+
+    WTO SPS Agreement / WCO: Sanitary and Phytosanitary certificate for food safety and animal/plant
+    health. Inherits certificateNumber, certificateIssueDate, certificateExpiryDate from :Certificate.
+    Own datatype properties: spsCertificateType (WTO SPS: type of SPS certificate — sanitary,
+    phytosanitary, veterinary, other), spsIssuingAuthority (competent authority that issued the
+    certificate), and sanitaryMeasureType (WTO SPS: type of sanitary/phytosanitary measure applied).""" ;
+    rdfs:subClassOf :Certificate .
+
+:License a owl:Class ;
+    rdfs:label "License" ;
+    rdfs:comment """A trade license or authorization issued by a regulatory authority.
+
+    WCO: Authorization to import or export controlled goods.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :licenseNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:ImportPermit a owl:Class ;
+    rdfs:label "Import Permit" ;
+    rdfs:comment """A permit authorizing the import of controlled goods.
+
+    WCO (Data Model 3.10.0): Authorization for importing controlled goods. Inherits licenseNumber,
+    licenseValidFrom, licenseValidTo from :License. Own datatype properties: importPermitType (WCO:
+    type of import permit — quota, non-quota, automatic, non-automatic) and importPermitIssuingAuthority
+    (authority that issued the import permit).""" ;
+    rdfs:subClassOf :License .
+
+:ExportPermit a owl:Class ;
+    rdfs:label "Export Permit" ;
+    rdfs:comment """A permit authorizing the export of controlled or strategic goods.
+
+    WCO (Data Model 3.10.0): Authorization for exporting controlled or strategic goods. Inherits
+    licenseNumber, licenseValidFrom, licenseValidTo from :License. Own datatype properties:
+    exportPermitType (WCO: type of export permit — strategic goods, dual-use, quota, non-quota) and
+    exportPermitIssuingAuthority (authority that issued the export permit).""" ;
+    rdfs:subClassOf :License .
+
+:eFTIRecord a owl:Class ;
+    rdfs:label "eFTI Record" ;
+    rdfs:comment """Electronic Freight Transport Information record per EU Regulation 2020/1056.
+
+    EU eFTI Regulation 2020/1056 / WCO: Digital record for regulatory freight information exchange.
+    Own datatype properties: eFTIPlatformIdentifier, eFTIDataSubsetIdentifier, eFTIRecordCreationDate
+    (date the eFTI record was created), eFTIRecordStatus (status of the record — draft, submitted,
+    accepted, rejected), and eFTIDataFormat (format of the eFTI data — XML, JSON, EDIFACT).""" ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/mmt/documents#TransportDocument> ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :eFTIPlatformIdentifier ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:AEOCertification a owl:Class ;
+    rdfs:label "AEO Certification" ;
+    rdfs:comment """Authorised Economic Operator certification under WCO SAFE Framework.
+
+    WCO (SAFE Framework of Standards): Recognition of a reliable and secure supply chain participant.
+    Own datatype properties: aeoStatus, aeoType, certificationIssueDate (date the AEO certification was
+    issued), certificationExpiryDate (date the AEO certification expires), and certifyingAuthority
+    (customs administration that granted the AEO certification).""" ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/bsp/compliance#ComplianceCertification> ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :aeoStatus ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:TrustedTrader a owl:Class ;
+    rdfs:label "Trusted Trader" ;
+    rdfs:comment """A trader recognized under mutual recognition arrangements.
+
+    WCO (SAFE Framework of Standards): Trader with facilitated customs procedures based on compliance
+    history. Own datatype properties: traderType (WCO SAFE: type of trusted trader — AEO, MRA partner,
+    national trusted trader), authorizationDate (date the trusted trader authorization was granted),
+    and authorizedScope (WCO SAFE: scope of authorized facilitations — simplified procedures, priority
+    treatment, reduced inspections).""" .
+
+:SingleWindow a owl:Class ;
+    rdfs:label "Single Window" ;
+    rdfs:comment """Single Window environment for submitting regulatory documents.
+
+    WCO (Revised Kyoto Convention / SAFE Framework): A facility allowing parties to lodge information
+    with a single entry point to satisfy all regulatory requirements. Own datatype properties:
+    singleWindowIdentifier, windowJurisdiction (WCO: jurisdiction of the Single Window — national,
+    regional), and windowURL (URL of the Single Window submission portal).""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :singleWindowIdentifier ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:TradeAgreementReference a owl:Class ;
+    rdfs:label "Trade Agreement Reference" ;
+    rdfs:comment """Reference to a free trade or preferential trade agreement.
+
+    WTO / WCO: Identifies the applicable trade agreement for preferential treatment. Own datatype
+    properties: agreementName, agreementType (WTO: type of agreement — free trade, customs union,
+    preferential, partial scope), and agreementCountryCode (ISO 3166-1 alpha-2 country code of the
+    partner country in the trade agreement).""" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasCertificate a owl:ObjectProperty ;
+    rdfs:label "has certificate" ;
+    rdfs:comment "Links an entity to a trade facilitation certificate." ;
+    rdfs:domain wco-customs:CustomsDeclaration ;
+    rdfs:range :Certificate .
+
+:hasLicense a owl:ObjectProperty ;
+    rdfs:label "has license" ;
+    rdfs:comment "Links an entity to a trade license or authorization." ;
+    rdfs:domain wco-customs:CustomsDeclaration ;
+    rdfs:range :License .
+
+:hasAEOCertification a owl:ObjectProperty ;
+    rdfs:label "has AEO certification" ;
+    rdfs:comment "Links an entity to an Authorised Economic Operator certification." ;
+    rdfs:domain wco-party:AEOHolder ;
+    rdfs:range :AEOCertification .
+
+:haseFTIRecord a owl:ObjectProperty ;
+    rdfs:label "has eFTI record" ;
+    rdfs:comment "Links an entity to an electronic freight transport information record." ;
+    rdfs:domain wco-customs:Filing ;
+    rdfs:range :eFTIRecord .
+
+:hasTrustedTrader a owl:ObjectProperty ;
+    rdfs:label "has trusted trader" ;
+    rdfs:comment "Links an entity to a recognized trusted trader." ;
+    rdfs:domain wco-customs:CustomsDeclaration ;
+    rdfs:range :TrustedTrader .
+
+:hasSingleWindow a owl:ObjectProperty ;
+    rdfs:label "has single window" ;
+    rdfs:comment "Links an entity to a Single Window environment." ;
+    rdfs:domain wco-customs:Filing ;
+    rdfs:range :SingleWindow .
+
+:hasTradeAgreementReference a owl:ObjectProperty ;
+    rdfs:label "has trade agreement reference" ;
+    rdfs:comment "Links an entity to a trade agreement reference." ;
+    rdfs:domain wco-customs:PreferenceClaim ;
+    rdfs:range :TradeAgreementReference .
+
+:issuedUnder a owl:ObjectProperty ;
+    rdfs:label "issued under" ;
+    rdfs:comment "Indicates the trade agreement under which a certificate was issued." ;
+    rdfs:domain :Certificate ;
+    rdfs:range :TradeAgreementReference .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:certificateNumber a owl:DatatypeProperty ;
+    rdfs:label "certificate number" ;
+    rdfs:comment "Unique identifier of the certificate." ;
+    rdfs:domain :Certificate ;
+    rdfs:range xsd:string .
+
+:certificateIssueDate a owl:DatatypeProperty ;
+    rdfs:label "certificate issue date" ;
+    rdfs:comment "Date on which the certificate was issued." ;
+    rdfs:domain :Certificate ;
+    rdfs:range xsd:date .
+
+:certificateExpiryDate a owl:DatatypeProperty ;
+    rdfs:label "certificate expiry date" ;
+    rdfs:comment "Date on which the certificate expires." ;
+    rdfs:domain :Certificate ;
+    rdfs:range xsd:date .
+
+:licenseNumber a owl:DatatypeProperty ;
+    rdfs:label "license number" ;
+    rdfs:comment "Unique identifier of the license." ;
+    rdfs:domain :License ;
+    rdfs:range xsd:string .
+
+:licenseValidFrom a owl:DatatypeProperty ;
+    rdfs:label "license valid from" ;
+    rdfs:comment "Start date of the license validity period." ;
+    rdfs:domain :License ;
+    rdfs:range xsd:date .
+
+:licenseValidTo a owl:DatatypeProperty ;
+    rdfs:label "license valid to" ;
+    rdfs:comment "End date of the license validity period." ;
+    rdfs:domain :License ;
+    rdfs:range xsd:date .
+
+:eFTIPlatformIdentifier a owl:DatatypeProperty ;
+    rdfs:label "eFTI platform identifier" ;
+    rdfs:comment "Identifier of the eFTI platform hosting the record." ;
+    rdfs:domain :eFTIRecord ;
+    rdfs:range xsd:string .
+
+:eFTIDataSubsetIdentifier a owl:DatatypeProperty ;
+    rdfs:label "eFTI data subset identifier" ;
+    rdfs:comment "Identifier of a data subset within the eFTI record." ;
+    rdfs:domain :eFTIRecord ;
+    rdfs:range xsd:string .
+
+:aeoStatus a owl:DatatypeProperty ;
+    rdfs:label "AEO status" ;
+    rdfs:comment "Current status of the AEO certification (e.g., active, suspended, revoked)." ;
+    rdfs:domain :AEOCertification ;
+    rdfs:range xsd:string .
+
+:aeoType a owl:DatatypeProperty ;
+    rdfs:label "AEO type" ;
+    rdfs:comment "Type of AEO certification: AEOC (customs simplifications) or AEOS (security/safety)." ;
+    rdfs:domain :AEOCertification ;
+    rdfs:range xsd:string .
+
+:singleWindowIdentifier a owl:DatatypeProperty ;
+    rdfs:label "single window identifier" ;
+    rdfs:comment "Unique identifier of the Single Window environment." ;
+    rdfs:domain :SingleWindow ;
+    rdfs:range xsd:string .
+
+:agreementName a owl:DatatypeProperty ;
+    rdfs:label "agreement name" ;
+    rdfs:comment "Name of the free trade or preferential trade agreement." ;
+    rdfs:domain :TradeAgreementReference ;
+    rdfs:range xsd:string .
+
+:agreementType a owl:DatatypeProperty ;
+    rdfs:label "agreement type" ;
+    rdfs:comment "Type of trade agreement: free trade, customs union, preferential, or partial scope (WTO)." ;
+    rdfs:domain :TradeAgreementReference ;
+    rdfs:range xsd:string .
+
+:agreementCountryCode a owl:DatatypeProperty ;
+    rdfs:label "agreement country code" ;
+    rdfs:comment "ISO 3166-1 alpha-2 country code of the partner country in the trade agreement (WTO)." ;
+    rdfs:domain :TradeAgreementReference ;
+    rdfs:range xsd:string .
+
+:originCriterion a owl:DatatypeProperty ;
+    rdfs:label "origin criterion" ;
+    rdfs:comment "Origin criterion code: wholly obtained, sufficiently processed, etc. (WCO Revised Kyoto Convention)." ;
+    rdfs:domain :CertificateOfOrigin ;
+    rdfs:range xsd:string .
+
+:originIssuingAuthority a owl:DatatypeProperty ;
+    rdfs:label "origin issuing authority" ;
+    rdfs:comment "Authority that issued the certificate of origin (WCO Revised Kyoto Convention)." ;
+    rdfs:domain :CertificateOfOrigin ;
+    rdfs:range xsd:string .
+
+:originCertificationDate a owl:DatatypeProperty ;
+    rdfs:label "origin certification date" ;
+    rdfs:comment "Date on which the origin was certified (WCO Revised Kyoto Convention)." ;
+    rdfs:domain :CertificateOfOrigin ;
+    rdfs:range xsd:date .
+
+:originatingCountry a owl:DatatypeProperty ;
+    rdfs:label "originating country" ;
+    rdfs:comment "ISO 3166-1 alpha-2 country code of the originating country (WCO Revised Kyoto Convention)." ;
+    rdfs:domain :CertificateOfOrigin ;
+    rdfs:range xsd:string .
+
+:spsCertificateType a owl:DatatypeProperty ;
+    rdfs:label "SPS certificate type" ;
+    rdfs:comment "Type of SPS certificate: sanitary, phytosanitary, veterinary, or other (WTO SPS Agreement)." ;
+    rdfs:domain :SPSCertificate ;
+    rdfs:range xsd:string .
+
+:spsIssuingAuthority a owl:DatatypeProperty ;
+    rdfs:label "SPS issuing authority" ;
+    rdfs:comment "Competent authority that issued the SPS certificate (WTO SPS Agreement)." ;
+    rdfs:domain :SPSCertificate ;
+    rdfs:range xsd:string .
+
+:sanitaryMeasureType a owl:DatatypeProperty ;
+    rdfs:label "sanitary measure type" ;
+    rdfs:comment "Type of sanitary or phytosanitary measure applied (WTO SPS Agreement)." ;
+    rdfs:domain :SPSCertificate ;
+    rdfs:range xsd:string .
+
+:importPermitType a owl:DatatypeProperty ;
+    rdfs:label "import permit type" ;
+    rdfs:comment "Type of import permit: quota, non-quota, automatic, or non-automatic (WCO Data Model 3.10.0)." ;
+    rdfs:domain :ImportPermit ;
+    rdfs:range xsd:string .
+
+:importPermitIssuingAuthority a owl:DatatypeProperty ;
+    rdfs:label "import permit issuing authority" ;
+    rdfs:comment "Authority that issued the import permit (WCO Data Model 3.10.0)." ;
+    rdfs:domain :ImportPermit ;
+    rdfs:range xsd:string .
+
+:exportPermitType a owl:DatatypeProperty ;
+    rdfs:label "export permit type" ;
+    rdfs:comment "Type of export permit: strategic goods, dual-use, quota, or non-quota (WCO Data Model 3.10.0)." ;
+    rdfs:domain :ExportPermit ;
+    rdfs:range xsd:string .
+
+:exportPermitIssuingAuthority a owl:DatatypeProperty ;
+    rdfs:label "export permit issuing authority" ;
+    rdfs:comment "Authority that issued the export permit (WCO Data Model 3.10.0)." ;
+    rdfs:domain :ExportPermit ;
+    rdfs:range xsd:string .
+
+:eFTIRecordCreationDate a owl:DatatypeProperty ;
+    rdfs:label "eFTI record creation date" ;
+    rdfs:comment "Date on which the eFTI record was created (EU eFTI Regulation 2020/1056)." ;
+    rdfs:domain :eFTIRecord ;
+    rdfs:range xsd:date .
+
+:eFTIRecordStatus a owl:DatatypeProperty ;
+    rdfs:label "eFTI record status" ;
+    rdfs:comment "Status of the eFTI record: draft, submitted, accepted, or rejected (EU eFTI Regulation 2020/1056)." ;
+    rdfs:domain :eFTIRecord ;
+    rdfs:range xsd:string .
+
+:eFTIDataFormat a owl:DatatypeProperty ;
+    rdfs:label "eFTI data format" ;
+    rdfs:comment "Format of the eFTI data: XML, JSON, or EDIFACT (EU eFTI Regulation 2020/1056)." ;
+    rdfs:domain :eFTIRecord ;
+    rdfs:range xsd:string .
+
+:certificationIssueDate a owl:DatatypeProperty ;
+    rdfs:label "certification issue date" ;
+    rdfs:comment "Date on which the AEO certification was issued (WCO SAFE Framework of Standards)." ;
+    rdfs:domain :AEOCertification ;
+    rdfs:range xsd:date .
+
+:certificationExpiryDate a owl:DatatypeProperty ;
+    rdfs:label "certification expiry date" ;
+    rdfs:comment "Date on which the AEO certification expires (WCO SAFE Framework of Standards)." ;
+    rdfs:domain :AEOCertification ;
+    rdfs:range xsd:date .
+
+:certifyingAuthority a owl:DatatypeProperty ;
+    rdfs:label "certifying authority" ;
+    rdfs:comment "Customs administration that granted the AEO certification (WCO SAFE Framework of Standards)." ;
+    rdfs:domain :AEOCertification ;
+    rdfs:range xsd:string .
+
+:traderType a owl:DatatypeProperty ;
+    rdfs:label "trader type" ;
+    rdfs:comment "Type of trusted trader: AEO, MRA partner, or national trusted trader (WCO SAFE Framework of Standards)." ;
+    rdfs:domain :TrustedTrader ;
+    rdfs:range xsd:string .
+
+:authorizationDate a owl:DatatypeProperty ;
+    rdfs:label "authorization date" ;
+    rdfs:comment "Date on which the trusted trader authorization was granted (WCO SAFE Framework of Standards)." ;
+    rdfs:domain :TrustedTrader ;
+    rdfs:range xsd:date .
+
+:authorizedScope a owl:DatatypeProperty ;
+    rdfs:label "authorized scope" ;
+    rdfs:comment "Scope of authorized facilitations: simplified procedures, priority treatment, reduced inspections (WCO SAFE Framework of Standards)." ;
+    rdfs:domain :TrustedTrader ;
+    rdfs:range xsd:string .
+
+:windowJurisdiction a owl:DatatypeProperty ;
+    rdfs:label "window jurisdiction" ;
+    rdfs:comment "Jurisdiction of the Single Window: national or regional (WCO RKC / SAFE Framework)." ;
+    rdfs:domain :SingleWindow ;
+    rdfs:range xsd:string .
+
+:windowURL a owl:DatatypeProperty ;
+    rdfs:label "window URL" ;
+    rdfs:comment "URL of the Single Window submission portal (WCO RKC / SAFE Framework)." ;
+    rdfs:domain :SingleWindow ;
+    rdfs:range xsd:string .
