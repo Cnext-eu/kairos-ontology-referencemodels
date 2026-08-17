@@ -318,20 +318,14 @@ UNROUTED_BY_DESIGN: dict[str, str] = {
     ),
 }
 
-#: Known-unrouted modules that are a real defect, recorded so this check can land without
+#: Known-unrouted modules that are a real defect, recorded so a check can land without
 #: also landing the fix. Distinct from UNROUTED_BY_DESIGN on purpose: these are wrong, not
 #: argued. Removing an entry is the definition of done for the linked follow-up.
-UNROUTED_TRACKED_GAP: dict[str, str] = {
-    "https://www.kairosflow.ai/ont/mmt": (
-        "gh#98 follow-up. The MMT root namespace declares 33 dangerous-goods terms — "
-        "DangerousGoods plus the nine UN TDG hazard subclasses and 23 datatype "
-        "properties — and no data domain imports `ont/mmt#`, so none of them is reachable "
-        "from any client hub. Four are archetype core concepts in unit-load-carrier and "
-        "the archetype gate warns on all four. The fix is to extract them into an "
-        "`mmt/dangerous-goods` leaf module and route it to the dangerous-goods domain, "
-        "which is a breaking MMT major and therefore its own release."
-    ),
-}
+#:
+#: Currently empty. The MMT root namespace held 33 dangerous-goods terms that no data
+#: domain could reach; they were relocated to mmt/cargo at MMT 2.4.0, leaving deprecated
+#: stubs behind — which is why the rule below also skips retirement shells.
+UNROUTED_TRACKED_GAP: dict[str, str] = {}
 
 
 def test_every_term_declaring_module_reaches_a_data_domain(pack) -> None:
@@ -377,6 +371,19 @@ def test_every_term_declaring_module_reaches_a_data_domain(pack) -> None:
         if iri in UNROUTED_TRACKED_GAP:
             continue  # real defect, tracked above rather than silently passing
         namespace = iri + "#"
+        own_terms = {
+            subject
+            for subject in set(document.graph.subjects())
+            if str(subject).startswith(namespace)
+        }
+        # A retirement shell is not an unrouted module. Once every term a module declares
+        # is owl:deprecated, the live definitions live elsewhere and the stubs exist only
+        # to keep old IRIs resolving — routing them would put retired terms back into a
+        # hub's alignment pool, which is the opposite of what the stubs are for.
+        if own_terms and all(
+            (subject, OWL.deprecated, None) in document.graph for subject in own_terms
+        ):
+            continue
         declares_terms = any(
             str(subject).startswith(namespace) for subject in set(document.graph.subjects())
         )
@@ -414,4 +421,24 @@ def test_tracked_unrouted_gaps_are_still_real() -> None:
     assert not stale, (
         f"UNROUTED_TRACKED_GAP entries that are now routed: {stale}. The defect is fixed "
         f"— delete the entry so the check guards it from here on."
+    )
+
+    # A module can also stop being a gap by being emptied rather than routed: relocate its
+    # terms elsewhere and leave deprecated stubs, and it becomes a retirement shell the
+    # rule skips. That must retire the entry too, or the allowlist hides a live rule.
+    resolver = CatalogResolver(CATALOG_PATH)
+    retired = []
+    for iri in UNROUTED_TRACKED_GAP:
+        path = resolver.resolve(iri)
+        if path is None or not Path(path).is_file():
+            continue
+        graph = Graph()
+        graph.parse(path, format="turtle")
+        namespace = _norm(iri) + "#"
+        own = {s for s in set(graph.subjects()) if str(s).startswith(namespace)}
+        if own and all((s, OWL.deprecated, None) in graph for s in own):
+            retired.append(iri)
+    assert not retired, (
+        f"UNROUTED_TRACKED_GAP entries whose terms are now all deprecated: {retired}. "
+        f"The module is a retirement shell, so it is no longer a gap — delete the entry."
     )

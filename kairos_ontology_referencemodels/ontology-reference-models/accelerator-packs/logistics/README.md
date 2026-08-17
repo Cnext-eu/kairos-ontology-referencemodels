@@ -22,7 +22,7 @@ The Logistics Accelerator bundles **9 ontologies** via **11 `owl:imports`** (som
 | Ontology | Standard | Version | Focus |
 |---|---|---|---|
 | DCSA | Digital Container Shipping Association | `1.6.0` | Container shipping lifecycle |
-| MMT | Multi-Modal Transport | `2.3.0` | Consignment, movement, cargo, equipment |
+| MMT | Multi-Modal Transport | `2.4.0` | Consignment, movement, cargo, equipment |
 | BSP | Buy-Ship-Pay | `2.5.0` | Party, contract, invoice, settlement |
 | TIC | Terminal Industry Committee 4.0 | `1.4.0` | Terminal operations, handling, automotive |
 | IMO | International Maritime Organization | `1.3.0` | Vessel registry, dangerous goods, port-call, crew, environmental, maritime security |

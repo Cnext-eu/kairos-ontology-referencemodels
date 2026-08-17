@@ -4,6 +4,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix cargo: <https://www.kairosflow.ai/ont/mmt/cargo#> .
 
 # Ontology Metadata
 <https://www.kairosflow.ai/ont/mmt> a owl:Ontology ;
@@ -27,7 +28,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "2.3.0" ;
+    owl:versionInfo "2.4.0" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model v1.0 (RABIE v101)" ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> ;
     owl:imports <https://www.kairosflow.ai/ont/mmt/consignment> ;
@@ -42,260 +43,212 @@
     owl:imports <https://www.kairosflow.ai/ont/mmt/inland-transport> .
 
 #################################################################
-#    Dangerous Goods Classes
-#    Source: UN Recommendations on the Transport of Dangerous Goods
-#    ("Orange Book"), 23rd revised edition. The parent DangerousGoods
-#    class corresponds to unece:DangerousGoods in BSP D23B.
-#    Subclasses reify the 9 hazard classes as OWL types; the BSP model
-#    uses a single flat class with hazardClassificationId instead.
-#    (A separate IMO ontology covers DG transport documentation.)
+#    Deprecated — dangerous goods relocated to mmt/cargo at 2.4.0
+#
+#    These 33 terms were declared in the MMT *root* namespace, which no data
+#    domain imports, so none was reachable from any client hub. They now live in
+#    the mmt/cargo namespace under the same local names. The stubs below keep the
+#    old IRIs resolvable for one major, so the relocation does not break a hub
+#    that loaded mmt.ttl directly.
+#
+#    They stay in this unrouted root namespace on purpose: a deprecated term in a
+#    namespace no domain imports cannot re-enter any alignment pool.
 #################################################################
 
 :DangerousGoods a owl:Class ;
-    rdfs:label "Dangerous Goods" ;
-    rdfs:comment """Hazardous materials requiring special handling.
-    
-    UN/CEFACT BSP D23B: Corresponds to unece:DangerousGoods — goods which may contain
-    a substance which poses risks to people and/or the environment during transportation.
-    The BSP model uses hazardClassificationId to distinguish classes; the subclasses below
-    reify the UN TDG hazard class taxonomy as OWL classes for semantic expressiveness.""" .
+    rdfs:label "DangerousGoods (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:DangerousGoods instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:DangerousGoods .
 
 :ExplosiveGoods a owl:Class ;
-    rdfs:label "Explosive Goods (Class 1)" ;
-    rdfs:comment """Explosive substances and articles.
-
-    Properties: explosionCode (compatibility group), netExplosiveMass.
-    UN/CEFACT MMT-RDM: DangerousGoods — explosionCode maps to the UN TDG
-    compatibility group letter; netExplosiveMass is the net explosive content
-    quantity. UN TDG Recommendations, Part 2, §2.1: Class 1.""" ;
-    rdfs:subClassOf :DangerousGoods .
+    rdfs:label "ExplosiveGoods (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:ExplosiveGoods instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:ExplosiveGoods .
 
 :FlammableGas a owl:Class ;
-    rdfs:label "Flammable Gas (Class 2.1)" ;
-    rdfs:comment """Flammable gases.
-
-    Properties: gasPressure, vaporPressure.
-    UN/CEFACT MMT-RDM: DangerousGoods — gasPressure and vaporPressure capture
-    the pressure thresholds relevant for flammable gas transport. UN TDG
-    Recommendations, Part 2, §2.2: Class 2.1 dangerous goods.""" ;
-    rdfs:subClassOf :DangerousGoods .
+    rdfs:label "FlammableGas (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:FlammableGas instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:FlammableGas .
 
 :FlammableLiquid a owl:Class ;
-    rdfs:label "Flammable Liquid (Class 3)" ;
-    rdfs:comment """Flammable liquids.
-
-    Properties: boilingPoint, flashPoint (inherited from DangerousGoods).
-    UN/CEFACT MMT-RDM: DangerousGoods — boilingPoint is the temperature at
-    which the liquid's vapor pressure equals ambient pressure. UN TDG
-    Recommendations, Part 2, §2.3: Class 3 dangerous goods.""" ;
-    rdfs:subClassOf :DangerousGoods .
+    rdfs:label "FlammableLiquid (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:FlammableLiquid instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:FlammableLiquid .
 
 :FlammableSolid a owl:Class ;
-    rdfs:label "Flammable Solid (Class 4)" ;
-    rdfs:comment """Flammable solids.
-
-    Properties: selfReactiveIndicator, pyrophoricIndicator.
-    UN/CEFACT MMT-RDM: DangerousGoods — selfReactiveIndicator and
-    pyrophoricIndicator flag self-reactive and pyrophoric substances within
-    Class 4. UN TDG Recommendations, Part 2, §2.4: Class 4 dangerous goods.""" ;
-    rdfs:subClassOf :DangerousGoods .
+    rdfs:label "FlammableSolid (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:FlammableSolid instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:FlammableSolid .
 
 :OxidizingSubstance a owl:Class ;
-    rdfs:label "Oxidizing Substance (Class 5)" ;
-    rdfs:comment """Oxidizing substances and organic peroxides.
-
-    Properties: organicPeroxideIndicator, selfAcceleratingTemperature.
-    UN/CEFACT MMT-RDM: DangerousGoods — organicPeroxideIndicator distinguishes
-    Class 5.2 organic peroxides; selfAcceleratingTemperature is the
-    self-accelerating decomposition temperature. UN TDG Recommendations,
-    Part 2, §2.5: Class 5 dangerous goods.""" ;
-    rdfs:subClassOf :DangerousGoods .
+    rdfs:label "OxidizingSubstance (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:OxidizingSubstance instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:OxidizingSubstance .
 
 :ToxicSubstance a owl:Class ;
-    rdfs:label "Toxic Substance (Class 6)" ;
-    rdfs:comment """Toxic and infectious substances.
-
-    Properties: infectiousSubstanceIndicator, toxicInhalationHazardIndicator.
-    UN/CEFACT MMT-RDM: DangerousGoods — infectiousSubstanceIndicator flags
-    Class 6.2 infectious substances; toxicInhalationHazardIndicator flags
-    toxic-inhalation hazards within Class 6.1. UN TDG Recommendations,
-    Part 2, §2.6: Class 6 dangerous goods.""" ;
-    rdfs:subClassOf :DangerousGoods .
+    rdfs:label "ToxicSubstance (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:ToxicSubstance instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:ToxicSubstance .
 
 :RadioactiveMaterial a owl:Class ;
-    rdfs:label "Radioactive Material (Class 7)" ;
-    rdfs:comment """Radioactive materials.
-
-    Properties: radioactivityLevel, criticalitySafetyIndex.
-    UN/CEFACT MMT-RDM: DangerousGoods — radioactivityLevel is the activity
-    concentration or A2/A1 value; criticalitySafetyIndex applies to fissile
-    material. UN TDG Recommendations, Part 2, §2.7: Class 7 dangerous goods.
-    Also exists as standalone unece:RadioactiveMaterial in BSP D23B.""" ;
-    rdfs:subClassOf :DangerousGoods .
+    rdfs:label "RadioactiveMaterial (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:RadioactiveMaterial instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:RadioactiveMaterial .
 
 :CorrosiveSubstance a owl:Class ;
-    rdfs:label "Corrosive Substance (Class 8)" ;
-    rdfs:comment """Corrosive substances.
-
-    Properties: corrosionRate, packingGroup (inherited from DangerousGoods).
-    UN/CEFACT MMT-RDM: DangerousGoods — corrosionRate indicates the rate of
-    corrosion for packing group determination. UN TDG Recommendations,
-    Part 2, §2.8: Class 8 dangerous goods.""" ;
-    rdfs:subClassOf :DangerousGoods .
+    rdfs:label "CorrosiveSubstance (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:CorrosiveSubstance instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:CorrosiveSubstance .
 
 :MiscellaneousDangerousGoods a owl:Class ;
-    rdfs:label "Miscellaneous Dangerous Goods (Class 9)" ;
-    rdfs:comment """Miscellaneous dangerous substances and articles.
-
-    Properties: miscellaneousHazardCode, environmentallyHazardousIndicator.
-    UN/CEFACT MMT-RDM: DangerousGoods — miscellaneousHazardCode captures the
-    specific Class 9 hazard identifier; environmentallyHazardousIndicator
-    flags environmentally hazardous substances (UN 3077/3082). UN TDG
-    Recommendations, Part 2, §2.9: Class 9 dangerous goods.""" ;
-    rdfs:subClassOf :DangerousGoods .
-
-#################################################################
-#    Dangerous Goods Datatype Properties
-#################################################################
+    rdfs:label "MiscellaneousDangerousGoods (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:MiscellaneousDangerousGoods instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:MiscellaneousDangerousGoods .
 
 :unNumber a owl:DatatypeProperty ;
-    rdfs:label "UN number" ;
-    rdfs:comment "UN dangerous goods identification number." ;
-    rdfs:domain :DangerousGoods ;
-    rdfs:range xsd:string .
+    rdfs:label "unNumber (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:unNumber instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:unNumber .
 
 :hazardClass a owl:DatatypeProperty ;
-    rdfs:label "hazard class" ;
-    rdfs:comment "UN dangerous goods class (1-9)." ;
-    rdfs:domain :DangerousGoods ;
-    rdfs:range xsd:string .
+    rdfs:label "hazardClass (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:hazardClass instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:hazardClass .
 
 :packingGroup a owl:DatatypeProperty ;
-    rdfs:label "packing group" ;
-    rdfs:comment "Packing group: I (high danger), II (medium), III (low)." ;
-    rdfs:domain :DangerousGoods ;
-    rdfs:range xsd:string .
+    rdfs:label "packingGroup (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:packingGroup instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:packingGroup .
 
 :properShippingName a owl:DatatypeProperty ;
-    rdfs:label "proper shipping name" ;
-    rdfs:comment "Official UN name for dangerous goods." ;
-    rdfs:domain :DangerousGoods ;
-    rdfs:range xsd:string .
+    rdfs:label "properShippingName (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:properShippingName instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:properShippingName .
 
 :technicalName a owl:DatatypeProperty ;
-    rdfs:label "technical name" ;
-    rdfs:comment "Chemical or technical name of dangerous goods." ;
-    rdfs:domain :DangerousGoods ;
-    rdfs:range xsd:string .
+    rdfs:label "technicalName (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:technicalName instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:technicalName .
 
 :flashPoint a owl:DatatypeProperty ;
-    rdfs:label "flash point" ;
-    rdfs:comment "Flash point temperature in Celsius for flammable goods." ;
-    rdfs:domain :DangerousGoods ;
-    rdfs:range xsd:decimal .
+    rdfs:label "flashPoint (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:flashPoint instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:flashPoint .
 
 :emergencyContactNumber a owl:DatatypeProperty ;
-    rdfs:label "emergency contact number" ;
-    rdfs:comment "24-hour emergency phone number for dangerous goods." ;
-    rdfs:domain :DangerousGoods ;
-    rdfs:range xsd:string .
-
-#################################################################
-#    DG Subclass-Specific Properties (UN/CEFACT MMT-RDM)
-#################################################################
+    rdfs:label "emergencyContactNumber (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:emergencyContactNumber instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:emergencyContactNumber .
 
 :explosionCode a owl:DatatypeProperty ;
-    rdfs:label "explosion code" ;
-    rdfs:comment "UN TDG compatibility group letter for Class 1 explosive goods. UN/CEFACT MMT-RDM: DangerousGoods compatibility group." ;
-    rdfs:domain :ExplosiveGoods ;
-    rdfs:range xsd:string .
+    rdfs:label "explosionCode (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:explosionCode instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:explosionCode .
 
 :netExplosiveMass a owl:DatatypeProperty ;
-    rdfs:label "net explosive mass" ;
-    rdfs:comment "Net explosive content mass in kilograms. UN/CEFACT MMT-RDM: DangerousGoods net explosive quantity." ;
-    rdfs:domain :ExplosiveGoods ;
-    rdfs:range xsd:decimal .
+    rdfs:label "netExplosiveMass (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:netExplosiveMass instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:netExplosiveMass .
 
 :gasPressure a owl:DatatypeProperty ;
-    rdfs:label "gas pressure" ;
-    rdfs:comment "Gas pressure in bar at reference temperature. UN/CEFACT MMT-RDM: DangerousGoods gas pressure." ;
-    rdfs:domain :FlammableGas ;
-    rdfs:range xsd:decimal .
+    rdfs:label "gasPressure (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:gasPressure instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:gasPressure .
 
 :vaporPressure a owl:DatatypeProperty ;
-    rdfs:label "vapor pressure" ;
-    rdfs:comment "Vapor pressure in kPa at 50°C. UN/CEFACT MMT-RDM: DangerousGoods vapor pressure." ;
-    rdfs:domain :FlammableGas ;
-    rdfs:range xsd:decimal .
+    rdfs:label "vaporPressure (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:vaporPressure instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:vaporPressure .
 
 :boilingPoint a owl:DatatypeProperty ;
-    rdfs:label "boiling point" ;
-    rdfs:comment "Boiling point temperature in Celsius. UN/CEFACT MMT-RDM: DangerousGoods boiling point." ;
-    rdfs:domain :FlammableLiquid ;
-    rdfs:range xsd:decimal .
+    rdfs:label "boilingPoint (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:boilingPoint instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:boilingPoint .
 
 :selfReactiveIndicator a owl:DatatypeProperty ;
-    rdfs:label "self-reactive indicator" ;
-    rdfs:comment "Indicates whether the substance is self-reactive. UN/CEFACT MMT-RDM: DangerousGoods self-reactive flag." ;
-    rdfs:domain :FlammableSolid ;
-    rdfs:range xsd:boolean .
+    rdfs:label "selfReactiveIndicator (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:selfReactiveIndicator instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:selfReactiveIndicator .
 
 :pyrophoricIndicator a owl:DatatypeProperty ;
-    rdfs:label "pyrophoric indicator" ;
-    rdfs:comment "Indicates whether the substance is pyrophoric (ignites in air). UN/CEFACT MMT-RDM: DangerousGoods pyrophoric flag." ;
-    rdfs:domain :FlammableSolid ;
-    rdfs:range xsd:boolean .
+    rdfs:label "pyrophoricIndicator (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:pyrophoricIndicator instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:pyrophoricIndicator .
 
 :organicPeroxideIndicator a owl:DatatypeProperty ;
-    rdfs:label "organic peroxide indicator" ;
-    rdfs:comment "Indicates whether the substance is an organic peroxide (Class 5.2). UN/CEFACT MMT-RDM: DangerousGoods organic peroxide flag." ;
-    rdfs:domain :OxidizingSubstance ;
-    rdfs:range xsd:boolean .
+    rdfs:label "organicPeroxideIndicator (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:organicPeroxideIndicator instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:organicPeroxideIndicator .
 
 :selfAcceleratingTemperature a owl:DatatypeProperty ;
-    rdfs:label "self-accelerating decomposition temperature" ;
-    rdfs:comment "Self-accelerating decomposition temperature in Celsius. UN/CEFACT MMT-RDM: DangerousGoods SADT." ;
-    rdfs:domain :OxidizingSubstance ;
-    rdfs:range xsd:decimal .
+    rdfs:label "selfAcceleratingTemperature (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:selfAcceleratingTemperature instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:selfAcceleratingTemperature .
 
 :infectiousSubstanceIndicator a owl:DatatypeProperty ;
-    rdfs:label "infectious substance indicator" ;
-    rdfs:comment "Indicates whether the substance is infectious (Class 6.2). UN/CEFACT MMT-RDM: DangerousGoods infectious substance flag." ;
-    rdfs:domain :ToxicSubstance ;
-    rdfs:range xsd:boolean .
+    rdfs:label "infectiousSubstanceIndicator (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:infectiousSubstanceIndicator instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:infectiousSubstanceIndicator .
 
 :toxicInhalationHazardIndicator a owl:DatatypeProperty ;
-    rdfs:label "toxic inhalation hazard indicator" ;
-    rdfs:comment "Indicates whether the substance presents a toxic inhalation hazard. UN/CEFACT MMT-RDM: DangerousGoods toxic inhalation flag." ;
-    rdfs:domain :ToxicSubstance ;
-    rdfs:range xsd:boolean .
+    rdfs:label "toxicInhalationHazardIndicator (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:toxicInhalationHazardIndicator instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:toxicInhalationHazardIndicator .
 
 :radioactivityLevel a owl:DatatypeProperty ;
-    rdfs:label "radioactivity level" ;
-    rdfs:comment "Activity concentration in Bq/g or A1/A2 value in TBq. UN/CEFACT MMT-RDM: DangerousGoods radioactivity level." ;
-    rdfs:domain :RadioactiveMaterial ;
-    rdfs:range xsd:decimal .
+    rdfs:label "radioactivityLevel (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:radioactivityLevel instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:radioactivityLevel .
 
 :criticalitySafetyIndex a owl:DatatypeProperty ;
-    rdfs:label "criticality safety index" ;
-    rdfs:comment "Criticality safety index value for fissile radioactive material. UN/CEFACT MMT-RDM: DangerousGoods CSI." ;
-    rdfs:domain :RadioactiveMaterial ;
-    rdfs:range xsd:decimal .
+    rdfs:label "criticalitySafetyIndex (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:criticalitySafetyIndex instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:criticalitySafetyIndex .
 
 :corrosionRate a owl:DatatypeProperty ;
-    rdfs:label "corrosion rate" ;
-    rdfs:comment "Corrosion rate on steel or aluminium in mm/year. UN/CEFACT MMT-RDM: DangerousGoods corrosion rate." ;
-    rdfs:domain :CorrosiveSubstance ;
-    rdfs:range xsd:decimal .
+    rdfs:label "corrosionRate (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:corrosionRate instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:corrosionRate .
 
 :miscellaneousHazardCode a owl:DatatypeProperty ;
-    rdfs:label "miscellaneous hazard code" ;
-    rdfs:comment "Specific hazard identifier code for Class 9 miscellaneous dangerous goods. UN/CEFACT MMT-RDM: DangerousGoods miscellaneous hazard code." ;
-    rdfs:domain :MiscellaneousDangerousGoods ;
-    rdfs:range xsd:string .
+    rdfs:label "miscellaneousHazardCode (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:miscellaneousHazardCode instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:miscellaneousHazardCode .
 
 :environmentallyHazardousIndicator a owl:DatatypeProperty ;
-    rdfs:label "environmentally hazardous indicator" ;
-    rdfs:comment "Indicates whether the substance is environmentally hazardous (UN 3077/3082). UN/CEFACT MMT-RDM: DangerousGoods environmentally hazardous flag." ;
-    rdfs:domain :MiscellaneousDangerousGoods ;
-    rdfs:range xsd:boolean .
+    rdfs:label "environmentallyHazardousIndicator (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:environmentallyHazardousIndicator instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:environmentallyHazardousIndicator .
