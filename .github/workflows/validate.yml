@@ -141,7 +141,12 @@ jobs:
           uv run --extra dev python -m pytest \
             tests/test_toolkit_contract.py tests/test_bundle_conformance.py -v -ra \
             -p no:randomly --strict-markers | tee contract.log
-          if grep -qE '^[0-9]+ skipped|no tests ran' contract.log; then
-            echo "::error::Contract tests skipped instead of running — the toolkit was not visible."
+          # Fail on ANY skip, not just an all-skip run. The previous guard anchored on
+          # '^[0-9]+ skipped', which matches "4 skipped in 0.01s" but NOT the far more
+          # likely "5 passed, 4 skipped in 0.53s" — so a job whose most important
+          # assertions never executed went green for several releases (gh#96). These
+          # tests exist to run; a skip here is a failure, never an outcome.
+          if grep -qE '[0-9]+ skipped|no tests ran' contract.log; then
+            echo "::error::Contract tests skipped instead of running — the toolkit was not visible, or a test opted out. A skip in this job is a failure; see gh#96."
             exit 1
           fi

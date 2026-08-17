@@ -150,7 +150,7 @@ surfaces:
       - scripts/version_manager.py check (VERSION matches owl:versionInfo)
       - scripts/validate_structure.py
       - tests/test_model_registration.py
-      - tests/test_bundle_conformance.py::test_inventory_filenames_are_injective
+      - tests/test_bundle_conformance.py::test_every_source_resolves_its_import_closure
       - tests/test_bundle_conformance.py::test_every_bundled_ttl_is_classified
     notes: >
       Module document IRIs and their owl:versionInfo are contract; a hub resolves modules by
