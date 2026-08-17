@@ -17911,30 +17911,24 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/imo/vessel-registry#yearBuilt
 - comments:
-  - "Corrosive substances.\n\n    Properties: corrosionRate, packingGroup (inherited from DangerousGoods).\n\
-    \    UN/CEFACT MMT-RDM: DangerousGoods — corrosionRate indicates the rate of\n    corrosion for packing\
-    \ group determination. UN TDG Recommendations,\n    Part 2, §2.8: Class 8 dangerous goods."
+  - DEPRECATED at MMT 2.4.0. Use cargo:CorrosiveSubstance instead.
   domains: []
   kind: class
   labels:
-  - Corrosive Substance (Class 8)
+  - CorrosiveSubstance (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
   ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: &id029
   - UN/CEFACT Multi-Modal Transport Reference Data Model v1.0 (RABIE v101)
-  superclasses:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
+  superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#CorrosiveSubstance
 - comments:
-  - "Hazardous materials requiring special handling.\n    \n    UN/CEFACT BSP D23B: Corresponds to unece:DangerousGoods\
-    \ — goods which may contain\n    a substance which poses risks to people and/or the environment during\
-    \ transportation.\n    The BSP model uses hazardClassificationId to distinguish classes; the subclasses\
-    \ below\n    reify the UN TDG hazard class taxonomy as OWL classes for semantic expressiveness."
+  - DEPRECATED at MMT 2.4.0. Use cargo:DangerousGoods instead.
   domains: []
   kind: class
   labels:
-  - Dangerous Goods
+  - DangerousGoods (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
   ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
@@ -17942,459 +17936,373 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#DangerousGoods
 - comments:
-  - "Explosive substances and articles.\n\n    Properties: explosionCode (compatibility group), netExplosiveMass.\n\
-    \    UN/CEFACT MMT-RDM: DangerousGoods — explosionCode maps to the UN TDG\n    compatibility group\
-    \ letter; netExplosiveMass is the net explosive content\n    quantity. UN TDG Recommendations, Part\
-    \ 2, §2.1: Class 1."
+  - DEPRECATED at MMT 2.4.0. Use cargo:ExplosiveGoods instead.
   domains: []
   kind: class
   labels:
-  - Explosive Goods (Class 1)
+  - ExplosiveGoods (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
   ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
-  superclasses:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
+  superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#ExplosiveGoods
 - comments:
-  - "Flammable gases.\n\n    Properties: gasPressure, vaporPressure.\n    UN/CEFACT MMT-RDM: DangerousGoods\
-    \ — gasPressure and vaporPressure capture\n    the pressure thresholds relevant for flammable gas\
-    \ transport. UN TDG\n    Recommendations, Part 2, §2.2: Class 2.1 dangerous goods."
+  - DEPRECATED at MMT 2.4.0. Use cargo:FlammableGas instead.
   domains: []
   kind: class
   labels:
-  - Flammable Gas (Class 2.1)
+  - FlammableGas (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
   ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
-  superclasses:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
+  superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#FlammableGas
 - comments:
-  - "Flammable liquids.\n\n    Properties: boilingPoint, flashPoint (inherited from DangerousGoods).\n\
-    \    UN/CEFACT MMT-RDM: DangerousGoods — boilingPoint is the temperature at\n    which the liquid's\
-    \ vapor pressure equals ambient pressure. UN TDG\n    Recommendations, Part 2, §2.3: Class 3 dangerous\
-    \ goods."
+  - DEPRECATED at MMT 2.4.0. Use cargo:FlammableLiquid instead.
   domains: []
   kind: class
   labels:
-  - Flammable Liquid (Class 3)
+  - FlammableLiquid (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
   ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
-  superclasses:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
+  superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#FlammableLiquid
 - comments:
-  - "Flammable solids.\n\n    Properties: selfReactiveIndicator, pyrophoricIndicator.\n    UN/CEFACT MMT-RDM:\
-    \ DangerousGoods — selfReactiveIndicator and\n    pyrophoricIndicator flag self-reactive and pyrophoric\
-    \ substances within\n    Class 4. UN TDG Recommendations, Part 2, §2.4: Class 4 dangerous goods."
+  - DEPRECATED at MMT 2.4.0. Use cargo:FlammableSolid instead.
   domains: []
   kind: class
   labels:
-  - Flammable Solid (Class 4)
+  - FlammableSolid (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
   ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
-  superclasses:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
+  superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#FlammableSolid
 - comments:
-  - "Miscellaneous dangerous substances and articles.\n\n    Properties: miscellaneousHazardCode, environmentallyHazardousIndicator.\n\
-    \    UN/CEFACT MMT-RDM: DangerousGoods — miscellaneousHazardCode captures the\n    specific Class\
-    \ 9 hazard identifier; environmentallyHazardousIndicator\n    flags environmentally hazardous substances\
-    \ (UN 3077/3082). UN TDG\n    Recommendations, Part 2, §2.9: Class 9 dangerous goods."
+  - DEPRECATED at MMT 2.4.0. Use cargo:MiscellaneousDangerousGoods instead.
   domains: []
   kind: class
   labels:
-  - Miscellaneous Dangerous Goods (Class 9)
+  - MiscellaneousDangerousGoods (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
   ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
-  superclasses:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
+  superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#MiscellaneousDangerousGoods
 - comments:
-  - "Oxidizing substances and organic peroxides.\n\n    Properties: organicPeroxideIndicator, selfAcceleratingTemperature.\n\
-    \    UN/CEFACT MMT-RDM: DangerousGoods — organicPeroxideIndicator distinguishes\n    Class 5.2 organic\
-    \ peroxides; selfAcceleratingTemperature is the\n    self-accelerating decomposition temperature.\
-    \ UN TDG Recommendations,\n    Part 2, §2.5: Class 5 dangerous goods."
+  - DEPRECATED at MMT 2.4.0. Use cargo:OxidizingSubstance instead.
   domains: []
   kind: class
   labels:
-  - Oxidizing Substance (Class 5)
+  - OxidizingSubstance (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
   ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
-  superclasses:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
+  superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#OxidizingSubstance
 - comments:
-  - "Radioactive materials.\n\n    Properties: radioactivityLevel, criticalitySafetyIndex.\n    UN/CEFACT\
-    \ MMT-RDM: DangerousGoods — radioactivityLevel is the activity\n    concentration or A2/A1 value;\
-    \ criticalitySafetyIndex applies to fissile\n    material. UN TDG Recommendations, Part 2, §2.7: Class\
-    \ 7 dangerous goods.\n    Also exists as standalone unece:RadioactiveMaterial in BSP D23B."
+  - DEPRECATED at MMT 2.4.0. Use cargo:RadioactiveMaterial instead.
   domains: []
   kind: class
   labels:
-  - Radioactive Material (Class 7)
+  - RadioactiveMaterial (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
   ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
-  superclasses:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
+  superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#RadioactiveMaterial
 - comments:
-  - "Toxic and infectious substances.\n\n    Properties: infectiousSubstanceIndicator, toxicInhalationHazardIndicator.\n\
-    \    UN/CEFACT MMT-RDM: DangerousGoods — infectiousSubstanceIndicator flags\n    Class 6.2 infectious\
-    \ substances; toxicInhalationHazardIndicator flags\n    toxic-inhalation hazards within Class 6.1.\
-    \ UN TDG Recommendations,\n    Part 2, §2.6: Class 6 dangerous goods."
+  - DEPRECATED at MMT 2.4.0. Use cargo:ToxicSubstance instead.
   domains: []
   kind: class
   labels:
-  - Toxic Substance (Class 6)
+  - ToxicSubstance (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
   ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
-  superclasses:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
+  superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#ToxicSubstance
 - comments:
-  - 'Boiling point temperature in Celsius. UN/CEFACT MMT-RDM: DangerousGoods boiling point.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#FlammableLiquid
+  - DEPRECATED at MMT 2.4.0. Use cargo:boilingPoint instead.
+  domains: []
   kind: datatype_property
   labels:
-  - boiling point
+  - boilingPoint (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#decimal
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#boilingPoint
 - comments:
-  - 'Corrosion rate on steel or aluminium in mm/year. UN/CEFACT MMT-RDM: DangerousGoods corrosion rate.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#CorrosiveSubstance
+  - DEPRECATED at MMT 2.4.0. Use cargo:corrosionRate instead.
+  domains: []
   kind: datatype_property
   labels:
-  - corrosion rate
+  - corrosionRate (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#decimal
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#corrosionRate
 - comments:
-  - 'Criticality safety index value for fissile radioactive material. UN/CEFACT MMT-RDM: DangerousGoods
-    CSI.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#RadioactiveMaterial
+  - DEPRECATED at MMT 2.4.0. Use cargo:criticalitySafetyIndex instead.
+  domains: []
   kind: datatype_property
   labels:
-  - criticality safety index
+  - criticalitySafetyIndex (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#decimal
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#criticalitySafetyIndex
 - comments:
-  - 24-hour emergency phone number for dangerous goods.
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
+  - DEPRECATED at MMT 2.4.0. Use cargo:emergencyContactNumber instead.
+  domains: []
   kind: datatype_property
   labels:
-  - emergency contact number
+  - emergencyContactNumber (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#string
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#emergencyContactNumber
 - comments:
-  - 'Indicates whether the substance is environmentally hazardous (UN 3077/3082). UN/CEFACT MMT-RDM: DangerousGoods
-    environmentally hazardous flag.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#MiscellaneousDangerousGoods
+  - DEPRECATED at MMT 2.4.0. Use cargo:environmentallyHazardousIndicator instead.
+  domains: []
   kind: datatype_property
   labels:
-  - environmentally hazardous indicator
+  - environmentallyHazardousIndicator (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#boolean
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#environmentallyHazardousIndicator
 - comments:
-  - 'UN TDG compatibility group letter for Class 1 explosive goods. UN/CEFACT MMT-RDM: DangerousGoods
-    compatibility group.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#ExplosiveGoods
+  - DEPRECATED at MMT 2.4.0. Use cargo:explosionCode instead.
+  domains: []
   kind: datatype_property
   labels:
-  - explosion code
+  - explosionCode (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#string
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#explosionCode
 - comments:
-  - Flash point temperature in Celsius for flammable goods.
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
+  - DEPRECATED at MMT 2.4.0. Use cargo:flashPoint instead.
+  domains: []
   kind: datatype_property
   labels:
-  - flash point
+  - flashPoint (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#decimal
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#flashPoint
 - comments:
-  - 'Gas pressure in bar at reference temperature. UN/CEFACT MMT-RDM: DangerousGoods gas pressure.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#FlammableGas
+  - DEPRECATED at MMT 2.4.0. Use cargo:gasPressure instead.
+  domains: []
   kind: datatype_property
   labels:
-  - gas pressure
+  - gasPressure (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#decimal
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#gasPressure
 - comments:
-  - UN dangerous goods class (1-9).
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
+  - DEPRECATED at MMT 2.4.0. Use cargo:hazardClass instead.
+  domains: []
   kind: datatype_property
   labels:
-  - hazard class
+  - hazardClass (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#string
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#hazardClass
 - comments:
-  - 'Indicates whether the substance is infectious (Class 6.2). UN/CEFACT MMT-RDM: DangerousGoods infectious
-    substance flag.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#ToxicSubstance
+  - DEPRECATED at MMT 2.4.0. Use cargo:infectiousSubstanceIndicator instead.
+  domains: []
   kind: datatype_property
   labels:
-  - infectious substance indicator
+  - infectiousSubstanceIndicator (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#boolean
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#infectiousSubstanceIndicator
 - comments:
-  - 'Specific hazard identifier code for Class 9 miscellaneous dangerous goods. UN/CEFACT MMT-RDM: DangerousGoods
-    miscellaneous hazard code.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#MiscellaneousDangerousGoods
+  - DEPRECATED at MMT 2.4.0. Use cargo:miscellaneousHazardCode instead.
+  domains: []
   kind: datatype_property
   labels:
-  - miscellaneous hazard code
+  - miscellaneousHazardCode (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#string
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#miscellaneousHazardCode
 - comments:
-  - 'Net explosive content mass in kilograms. UN/CEFACT MMT-RDM: DangerousGoods net explosive quantity.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#ExplosiveGoods
+  - DEPRECATED at MMT 2.4.0. Use cargo:netExplosiveMass instead.
+  domains: []
   kind: datatype_property
   labels:
-  - net explosive mass
+  - netExplosiveMass (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#decimal
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#netExplosiveMass
 - comments:
-  - 'Indicates whether the substance is an organic peroxide (Class 5.2). UN/CEFACT MMT-RDM: DangerousGoods
-    organic peroxide flag.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#OxidizingSubstance
+  - DEPRECATED at MMT 2.4.0. Use cargo:organicPeroxideIndicator instead.
+  domains: []
   kind: datatype_property
   labels:
-  - organic peroxide indicator
+  - organicPeroxideIndicator (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#boolean
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#organicPeroxideIndicator
 - comments:
-  - 'Packing group: I (high danger), II (medium), III (low).'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
+  - DEPRECATED at MMT 2.4.0. Use cargo:packingGroup instead.
+  domains: []
   kind: datatype_property
   labels:
-  - packing group
+  - packingGroup (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#string
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#packingGroup
 - comments:
-  - Official UN name for dangerous goods.
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
+  - DEPRECATED at MMT 2.4.0. Use cargo:properShippingName instead.
+  domains: []
   kind: datatype_property
   labels:
-  - proper shipping name
+  - properShippingName (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#string
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#properShippingName
 - comments:
-  - 'Indicates whether the substance is pyrophoric (ignites in air). UN/CEFACT MMT-RDM: DangerousGoods
-    pyrophoric flag.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#FlammableSolid
+  - DEPRECATED at MMT 2.4.0. Use cargo:pyrophoricIndicator instead.
+  domains: []
   kind: datatype_property
   labels:
-  - pyrophoric indicator
+  - pyrophoricIndicator (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#boolean
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#pyrophoricIndicator
 - comments:
-  - 'Activity concentration in Bq/g or A1/A2 value in TBq. UN/CEFACT MMT-RDM: DangerousGoods radioactivity
-    level.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#RadioactiveMaterial
+  - DEPRECATED at MMT 2.4.0. Use cargo:radioactivityLevel instead.
+  domains: []
   kind: datatype_property
   labels:
-  - radioactivity level
+  - radioactivityLevel (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#decimal
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#radioactivityLevel
 - comments:
-  - 'Self-accelerating decomposition temperature in Celsius. UN/CEFACT MMT-RDM: DangerousGoods SADT.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#OxidizingSubstance
+  - DEPRECATED at MMT 2.4.0. Use cargo:selfAcceleratingTemperature instead.
+  domains: []
   kind: datatype_property
   labels:
-  - self-accelerating decomposition temperature
+  - selfAcceleratingTemperature (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#decimal
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#selfAcceleratingTemperature
 - comments:
-  - 'Indicates whether the substance is self-reactive. UN/CEFACT MMT-RDM: DangerousGoods self-reactive
-    flag.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#FlammableSolid
+  - DEPRECATED at MMT 2.4.0. Use cargo:selfReactiveIndicator instead.
+  domains: []
   kind: datatype_property
   labels:
-  - self-reactive indicator
+  - selfReactiveIndicator (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#boolean
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#selfReactiveIndicator
 - comments:
-  - Chemical or technical name of dangerous goods.
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
+  - DEPRECATED at MMT 2.4.0. Use cargo:technicalName instead.
+  domains: []
   kind: datatype_property
   labels:
-  - technical name
+  - technicalName (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#string
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#technicalName
 - comments:
-  - 'Indicates whether the substance presents a toxic inhalation hazard. UN/CEFACT MMT-RDM: DangerousGoods
-    toxic inhalation flag.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#ToxicSubstance
+  - DEPRECATED at MMT 2.4.0. Use cargo:toxicInhalationHazardIndicator instead.
+  domains: []
   kind: datatype_property
   labels:
-  - toxic inhalation hazard indicator
+  - toxicInhalationHazardIndicator (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#boolean
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#toxicInhalationHazardIndicator
 - comments:
-  - UN dangerous goods identification number.
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
+  - DEPRECATED at MMT 2.4.0. Use cargo:unNumber instead.
+  domains: []
   kind: datatype_property
   labels:
-  - UN number
+  - unNumber (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#string
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt#unNumber
 - comments:
-  - 'Vapor pressure in kPa at 50°C. UN/CEFACT MMT-RDM: DangerousGoods vapor pressure.'
-  domains:
-  - https://www.kairosflow.ai/ont/mmt#FlammableGas
+  - DEPRECATED at MMT 2.4.0. Use cargo:vaporPressure instead.
+  domains: []
   kind: datatype_property
   labels:
-  - vapor pressure
+  - vaporPressure (deprecated — relocated to mmt/cargo)
   module_uri: https://www.kairosflow.ai/ont/mmt
-  ranges:
-  - http://www.w3.org/2001/XMLSchema#decimal
+  ranges: []
   source_file: derived-ontologies/MMT/current/mmt.ttl
   sources: *id029
   superclasses: []
@@ -18459,6 +18367,36 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#Commodity
 - comments:
+  - "Corrosive substances.\n\n    Properties: corrosionRate, packingGroup (inherited from DangerousGoods).\n\
+    \    UN/CEFACT MMT-RDM: DangerousGoods — corrosionRate indicates the rate of\n    corrosion for packing\
+    \ group determination. UN TDG Recommendations,\n    Part 2, §2.8: Class 8 dangerous goods."
+  domains: []
+  kind: class
+  labels:
+  - Corrosive Substance (Class 8)
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges: []
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/cargo#DangerousGoods
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#CorrosiveSubstance
+- comments:
+  - "Hazardous materials requiring special handling.\n    \n    UN/CEFACT BSP D23B: Corresponds to unece:DangerousGoods\
+    \ — goods which may contain\n    a substance which poses risks to people and/or the environment during\
+    \ transportation.\n    The BSP model uses hazardClassificationId to distinguish classes; the subclasses\
+    \ below\n    reify the UN TDG hazard class taxonomy as OWL classes for semantic expressiveness."
+  domains: []
+  kind: class
+  labels:
+  - Dangerous Goods
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges: []
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#DangerousGoods
+- comments:
   - "Physical dimensions of cargo or equipment.\n\n    UN/CEFACT MMT: Length, width, height, volume."
   domains: []
   kind: class
@@ -18484,6 +18422,68 @@ records:
   sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#DisposalInstructions
+- comments:
+  - "Explosive substances and articles.\n\n    Properties: explosionCode (compatibility group), netExplosiveMass.\n\
+    \    UN/CEFACT MMT-RDM: DangerousGoods — explosionCode maps to the UN TDG\n    compatibility group\
+    \ letter; netExplosiveMass is the net explosive content\n    quantity. UN TDG Recommendations, Part\
+    \ 2, §2.1: Class 1."
+  domains: []
+  kind: class
+  labels:
+  - Explosive Goods (Class 1)
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges: []
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/cargo#DangerousGoods
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#ExplosiveGoods
+- comments:
+  - "Flammable gases.\n\n    Properties: gasPressure, vaporPressure.\n    UN/CEFACT MMT-RDM: DangerousGoods\
+    \ — gasPressure and vaporPressure capture\n    the pressure thresholds relevant for flammable gas\
+    \ transport. UN TDG\n    Recommendations, Part 2, §2.2: Class 2.1 dangerous goods."
+  domains: []
+  kind: class
+  labels:
+  - Flammable Gas (Class 2.1)
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges: []
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/cargo#DangerousGoods
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#FlammableGas
+- comments:
+  - "Flammable liquids.\n\n    Properties: boilingPoint, flashPoint (inherited from DangerousGoods).\n\
+    \    UN/CEFACT MMT-RDM: DangerousGoods — boilingPoint is the temperature at\n    which the liquid's\
+    \ vapor pressure equals ambient pressure. UN TDG\n    Recommendations, Part 2, §2.3: Class 3 dangerous\
+    \ goods."
+  domains: []
+  kind: class
+  labels:
+  - Flammable Liquid (Class 3)
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges: []
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/cargo#DangerousGoods
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#FlammableLiquid
+- comments:
+  - "Flammable solids.\n\n    Properties: selfReactiveIndicator, pyrophoricIndicator.\n    UN/CEFACT MMT-RDM:\
+    \ DangerousGoods — selfReactiveIndicator and\n    pyrophoricIndicator flag self-reactive and pyrophoric\
+    \ substances within\n    Class 4. UN TDG Recommendations, Part 2, §2.4: Class 4 dangerous goods."
+  domains: []
+  kind: class
+  labels:
+  - Flammable Solid (Class 4)
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges: []
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/cargo#DangerousGoods
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#FlammableSolid
 - comments:
   - "A collection of merchandise or commodities for transport.\n\n    Properties: goodsDescription, natureOfGoods.\n\
     \    UN/CEFACT MMT-RDM: SupplyChainGoodsType — goodsDescription is the textual\n    description of\
@@ -18514,6 +18514,38 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#HandlingInstructions
 - comments:
+  - "Miscellaneous dangerous substances and articles.\n\n    Properties: miscellaneousHazardCode, environmentallyHazardousIndicator.\n\
+    \    UN/CEFACT MMT-RDM: DangerousGoods — miscellaneousHazardCode captures the\n    specific Class\
+    \ 9 hazard identifier; environmentallyHazardousIndicator\n    flags environmentally hazardous substances\
+    \ (UN 3077/3082). UN TDG\n    Recommendations, Part 2, §2.9: Class 9 dangerous goods."
+  domains: []
+  kind: class
+  labels:
+  - Miscellaneous Dangerous Goods (Class 9)
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges: []
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/cargo#DangerousGoods
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#MiscellaneousDangerousGoods
+- comments:
+  - "Oxidizing substances and organic peroxides.\n\n    Properties: organicPeroxideIndicator, selfAcceleratingTemperature.\n\
+    \    UN/CEFACT MMT-RDM: DangerousGoods — organicPeroxideIndicator distinguishes\n    Class 5.2 organic\
+    \ peroxides; selfAcceleratingTemperature is the\n    self-accelerating decomposition temperature.\
+    \ UN TDG Recommendations,\n    Part 2, §2.5: Class 5 dangerous goods."
+  domains: []
+  kind: class
+  labels:
+  - Oxidizing Substance (Class 5)
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges: []
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/cargo#DangerousGoods
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#OxidizingSubstance
+- comments:
   - "The specification of packaging used for cargo.\n\n    Properties: packageQuantity, packageMaterial.\n\
     \    UN/CEFACT MMT-RDM: TransportPackageType — packageQuantity is the number\n    of packages; packageMaterial\
     \ is the packaging material type (e.g.,\n    wood, plastic, metal)."
@@ -18542,6 +18574,22 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#QuarantineInstructions
 - comments:
+  - "Radioactive materials.\n\n    Properties: radioactivityLevel, criticalitySafetyIndex.\n    UN/CEFACT\
+    \ MMT-RDM: DangerousGoods — radioactivityLevel is the activity\n    concentration or A2/A1 value;\
+    \ criticalitySafetyIndex applies to fissile\n    material. UN TDG Recommendations, Part 2, §2.7: Class\
+    \ 7 dangerous goods.\n    Also exists as standalone unece:RadioactiveMaterial in BSP D23B."
+  domains: []
+  kind: class
+  labels:
+  - Radioactive Material (Class 7)
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges: []
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/cargo#DangerousGoods
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#RadioactiveMaterial
+- comments:
   - "Marks and numbers applied to packages for identification.\n\n    Properties: marksAndNumbers, shippingMarkType.\n\
     \    UN/CEFACT RABIE: LogisticsShippingMarksType — marksAndNumbers is the\n    physical marking text;\
     \ shippingMarkType is the type of mark (e.g.,\n    shipping, handling, regulatory)."
@@ -18555,6 +18603,22 @@ records:
   sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#ShippingMarks
+- comments:
+  - "Toxic and infectious substances.\n\n    Properties: infectiousSubstanceIndicator, toxicInhalationHazardIndicator.\n\
+    \    UN/CEFACT MMT-RDM: DangerousGoods — infectiousSubstanceIndicator flags\n    Class 6.2 infectious\
+    \ substances; toxicInhalationHazardIndicator flags\n    toxic-inhalation hazards within Class 6.1.\
+    \ UN TDG Recommendations,\n    Part 2, §2.6: Class 6 dangerous goods."
+  domains: []
+  kind: class
+  labels:
+  - Toxic Substance (Class 6)
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges: []
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/cargo#DangerousGoods
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#ToxicSubstance
 - comments:
   - "Waste material being transported.\n\n    Properties: wasteCode, disposalMethod.\n    UN/CEFACT RABIE:\
     \ TransportWasteMaterialType — wasteCode is the\n    regulated waste classification code (e.g., EWC,\
@@ -18598,6 +18662,20 @@ records:
   sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#Weight
+- comments:
+  - 'Boiling point temperature in Celsius. UN/CEFACT MMT-RDM: DangerousGoods boiling point.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#FlammableLiquid
+  kind: datatype_property
+  labels:
+  - boiling point
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#boilingPoint
 - comments:
   - Textual description of cargo.
   domains:
@@ -18685,6 +18763,35 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#componentPercentage
 - comments:
+  - 'Corrosion rate on steel or aluminium in mm/year. UN/CEFACT MMT-RDM: DangerousGoods corrosion rate.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#CorrosiveSubstance
+  kind: datatype_property
+  labels:
+  - corrosion rate
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#corrosionRate
+- comments:
+  - 'Criticality safety index value for fissile radioactive material. UN/CEFACT MMT-RDM: DangerousGoods
+    CSI.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#RadioactiveMaterial
+  kind: datatype_property
+  labels:
+  - criticality safety index
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#criticalitySafetyIndex
+- comments:
   - Unit of dimension measurement (M, CM, FT, IN).
   domains:
   - https://www.kairosflow.ai/ont/mmt/cargo#Dimension
@@ -18712,6 +18819,78 @@ records:
   sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#disposalMethod
+- comments:
+  - 24-hour emergency phone number for dangerous goods.
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#DangerousGoods
+  kind: datatype_property
+  labels:
+  - emergency contact number
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#emergencyContactNumber
+- comments:
+  - 'Indicates whether the substance is environmentally hazardous (UN 3077/3082). UN/CEFACT MMT-RDM: DangerousGoods
+    environmentally hazardous flag.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#MiscellaneousDangerousGoods
+  kind: datatype_property
+  labels:
+  - environmentally hazardous indicator
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#boolean
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#environmentallyHazardousIndicator
+- comments:
+  - 'UN TDG compatibility group letter for Class 1 explosive goods. UN/CEFACT MMT-RDM: DangerousGoods
+    compatibility group.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#ExplosiveGoods
+  kind: datatype_property
+  labels:
+  - explosion code
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#explosionCode
+- comments:
+  - Flash point temperature in Celsius for flammable goods.
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#DangerousGoods
+  kind: datatype_property
+  labels:
+  - flash point
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#flashPoint
+- comments:
+  - 'Gas pressure in bar at reference temperature. UN/CEFACT MMT-RDM: DangerousGoods gas pressure.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#FlammableGas
+  kind: datatype_property
+  labels:
+  - gas pressure
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#gasPressure
 - comments:
   - 'Textual description of the goods. UN/CEFACT MMT-RDM: SupplyChainGoodsType goods description.'
   domains:
@@ -18895,6 +19074,20 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#hasWeight
 - comments:
+  - UN dangerous goods class (1-9).
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#DangerousGoods
+  kind: datatype_property
+  labels:
+  - hazard class
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#hazardClass
+- comments:
   - Height measurement.
   domains:
   - https://www.kairosflow.ai/ont/mmt/cargo#Dimension
@@ -18923,6 +19116,21 @@ records:
   sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#hsCodeVersion
+- comments:
+  - 'Indicates whether the substance is infectious (Class 6.2). UN/CEFACT MMT-RDM: DangerousGoods infectious
+    substance flag.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#ToxicSubstance
+  kind: datatype_property
+  labels:
+  - infectious substance indicator
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#boolean
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#infectiousSubstanceIndicator
 - comments:
   - 'Insured value of cargo. UN/CEFACT MMT-RDM: TransportCargoInsuranceType insurance value.'
   domains:
@@ -19023,6 +19231,21 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#measurementValue
 - comments:
+  - 'Specific hazard identifier code for Class 9 miscellaneous dangerous goods. UN/CEFACT MMT-RDM: DangerousGoods
+    miscellaneous hazard code.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#MiscellaneousDangerousGoods
+  kind: datatype_property
+  labels:
+  - miscellaneous hazard code
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#miscellaneousHazardCode
+- comments:
   - 'Physical nature of goods (e.g., liquid, solid, powder). UN/CEFACT MMT-RDM: SupplyChainGoodsType nature
     of goods.'
   domains:
@@ -19037,6 +19260,35 @@ records:
   sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#natureOfGoods
+- comments:
+  - 'Net explosive content mass in kilograms. UN/CEFACT MMT-RDM: DangerousGoods net explosive quantity.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#ExplosiveGoods
+  kind: datatype_property
+  labels:
+  - net explosive mass
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#netExplosiveMass
+- comments:
+  - 'Indicates whether the substance is an organic peroxide (Class 5.2). UN/CEFACT MMT-RDM: DangerousGoods
+    organic peroxide flag.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#OxidizingSubstance
+  kind: datatype_property
+  labels:
+  - organic peroxide indicator
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#boolean
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#organicPeroxideIndicator
 - comments:
   - 'Packaging material type (e.g., wood, plastic, metal). UN/CEFACT MMT-RDM: TransportPackageType packaging
     material.'
@@ -19067,6 +19319,20 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#packageQuantity
 - comments:
+  - 'Packing group: I (high danger), II (medium), III (low).'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#DangerousGoods
+  kind: datatype_property
+  labels:
+  - packing group
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#packingGroup
+- comments:
   - 'Insurance policy reference number. UN/CEFACT MMT-RDM: TransportCargoInsuranceType policy number.'
   domains:
   - https://www.kairosflow.ai/ont/mmt/cargo#CargoInsurance
@@ -19080,6 +19346,35 @@ records:
   sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#policyNumber
+- comments:
+  - Official UN name for dangerous goods.
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#DangerousGoods
+  kind: datatype_property
+  labels:
+  - proper shipping name
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#properShippingName
+- comments:
+  - 'Indicates whether the substance is pyrophoric (ignites in air). UN/CEFACT MMT-RDM: DangerousGoods
+    pyrophoric flag.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#FlammableSolid
+  kind: datatype_property
+  labels:
+  - pyrophoric indicator
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#boolean
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#pyrophoricIndicator
 - comments:
   - 'Type of quarantine (phytosanitary, veterinary, biosecurity). UN/CEFACT MMT-RDM: QuarantineInstructionsType
     quarantine type.'
@@ -19096,6 +19391,21 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#quarantineType
 - comments:
+  - 'Activity concentration in Bq/g or A1/A2 value in TBq. UN/CEFACT MMT-RDM: DangerousGoods radioactivity
+    level.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#RadioactiveMaterial
+  kind: datatype_property
+  labels:
+  - radioactivity level
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#radioactivityLevel
+- comments:
   - 'Party responsible for disposal. UN/CEFACT MMT-RDM: DisposalInstructionsType responsible party.'
   domains:
   - https://www.kairosflow.ai/ont/mmt/cargo#DisposalInstructions
@@ -19109,6 +19419,35 @@ records:
   sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#responsibleParty
+- comments:
+  - 'Self-accelerating decomposition temperature in Celsius. UN/CEFACT MMT-RDM: DangerousGoods SADT.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#OxidizingSubstance
+  kind: datatype_property
+  labels:
+  - self-accelerating decomposition temperature
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#selfAcceleratingTemperature
+- comments:
+  - 'Indicates whether the substance is self-reactive. UN/CEFACT MMT-RDM: DangerousGoods self-reactive
+    flag.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#FlammableSolid
+  kind: datatype_property
+  labels:
+  - self-reactive indicator
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#boolean
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#selfReactiveIndicator
 - comments:
   - 'Type of mark (shipping, handling, regulatory). UN/CEFACT MMT-RDM: LogisticsShippingMarksType mark
     type.'
@@ -19139,6 +19478,35 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#stackingIndicator
 - comments:
+  - Chemical or technical name of dangerous goods.
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#DangerousGoods
+  kind: datatype_property
+  labels:
+  - technical name
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#technicalName
+- comments:
+  - 'Indicates whether the substance presents a toxic inhalation hazard. UN/CEFACT MMT-RDM: DangerousGoods
+    toxic inhalation flag.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#ToxicSubstance
+  kind: datatype_property
+  labels:
+  - toxic inhalation hazard indicator
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#boolean
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#toxicInhalationHazardIndicator
+- comments:
   - 'Prescribed treatment method code. UN/CEFACT MMT-RDM: QuarantineInstructionsType treatment method.'
   domains:
   - https://www.kairosflow.ai/ont/mmt/cargo#QuarantineInstructions
@@ -19152,6 +19520,34 @@ records:
   sources: *id030
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#treatmentMethod
+- comments:
+  - UN dangerous goods identification number.
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#DangerousGoods
+  kind: datatype_property
+  labels:
+  - UN number
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#unNumber
+- comments:
+  - 'Vapor pressure in kPa at 50°C. UN/CEFACT MMT-RDM: DangerousGoods vapor pressure.'
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/cargo#FlammableGas
+  kind: datatype_property
+  labels:
+  - vapor pressure
+  module_uri: https://www.kairosflow.ai/ont/mmt/cargo
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/MMT/current/cargo/cargo.ttl
+  sources: *id030
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/cargo#vaporPressure
 - comments:
   - 'Regulated waste classification code (e.g., EWC, Basel). UN/CEFACT MMT-RDM: TransportWasteMaterialType
     waste code.'
@@ -19874,7 +20270,7 @@ records:
   - has dangerous goods
   module_uri: https://www.kairosflow.ai/ont/mmt/consignment
   ranges:
-  - https://www.kairosflow.ai/ont/mmt#DangerousGoods
+  - https://www.kairosflow.ai/ont/mmt/cargo#DangerousGoods
   source_file: derived-ontologies/MMT/current/consignment/consignment.ttl
   sources: *id031
   superclasses: []

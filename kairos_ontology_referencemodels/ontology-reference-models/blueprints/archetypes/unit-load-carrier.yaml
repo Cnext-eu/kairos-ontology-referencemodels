@@ -92,7 +92,6 @@ ref_model_modules:
   - { iri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention", tier: recommended }
 
   # Dangerous goods carried on trailers.
-  - { iri: "https://www.kairosflow.ai/ont/mmt",                      tier: recommended }
   - { iri: "https://www.kairosflow.ai/ont/imo/dangerous-goods",      tier: recommended }
 
   # Customs and trade facilitation — real exposure at short-sea borders.
@@ -320,10 +319,10 @@ core_concepts:
   - { uri: "https://www.kairosflow.ai/ont/dcsa/demurrage-detention#DisputeRecord",              tier: optional,    label: "Dispute Record" }
 
   # ─── 15. Dangerous goods on trailers ────────────────────────────────────
-  - { uri: "https://www.kairosflow.ai/ont/mmt#DangerousGoods",                   tier: recommended, label: "Dangerous Goods" }
-  - { uri: "https://www.kairosflow.ai/ont/mmt#FlammableLiquid",                  tier: optional,    label: "Flammable Liquid (Class 3)" }
-  - { uri: "https://www.kairosflow.ai/ont/mmt#FlammableGas",                     tier: optional,    label: "Flammable Gas (Class 2.1)" }
-  - { uri: "https://www.kairosflow.ai/ont/mmt#CorrosiveSubstance",               tier: optional,    label: "Corrosive Substance (Class 8)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#DangerousGoods",                   tier: recommended, label: "Dangerous Goods" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#FlammableLiquid",                  tier: optional,    label: "Flammable Liquid (Class 3)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#FlammableGas",                     tier: optional,    label: "Flammable Gas (Class 2.1)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/cargo#CorrosiveSubstance",               tier: optional,    label: "Corrosive Substance (Class 8)" }
   - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#DangerousGoodsItem", tier: recommended, label: "Dangerous Goods Item" }
   - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#HazardClass",       tier: recommended, label: "Hazard Class (ADR/IMDG)" }
   - { uri: "https://www.kairosflow.ai/ont/imo/dangerous-goods#UNNumber",          tier: recommended, label: "UN Number" }

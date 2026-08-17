@@ -5,6 +5,50 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.33.1] - 2026-08-17
+
+### Fixed
+
+- **33 dangerous-goods terms were unreachable from every client hub** (#98, last of
+  three). `DangerousGoods`, the nine UN TDG hazard subclasses and 23 datatype properties
+  were declared in the MMT **root** namespace `https://www.kairosflow.ai/ont/mmt#`, which
+  no data domain imports — so the entire UN TDG hazard taxonomy was invisible to every
+  hub. Four of them are `unit-load-carrier` core concepts, and the gate added in 1.33.0
+  warned on all four.
+
+  All 33 relocate to `mmt/cargo#` under the same local names. Dangerous-goods
+  classification is goods classification, which that module owns, so the `cargo` and
+  `roro` domains reach them with **no routing change at all** — the smallest fix that
+  closes the defect. The archetype gate now reports zero unreachable concepts.
+
+### Why this is a patch and not a breaking change
+
+Moving 33 public IRIs would normally be a major under this repo's rename policy. It is
+not, because every old IRI stays resolvable: `mmt.ttl` now holds 33 `owl:deprecated`
+stubs, each with `rdfs:seeAlso` to its replacement. That is the policy's other branch —
+*additive/deprecation = minor, deprecated terms stay resolvable* — so MMT takes a minor
+(2.4.0) and nothing a hub had bound stops working.
+
+The stubs deliberately stay in the unrouted root namespace. A deprecated term in a
+namespace no data domain imports cannot re-enter any alignment pool, so keeping the old
+IRIs alive costs nothing in discovery noise — the objection that would otherwise argue
+for a clean break.
+
+### Changed
+
+- `mmt/consignment` retargets `:hasDangerousGoods` to `cargo:DangerousGoods` and drops
+  its now-unused root-namespace prefix. This is an `rdfs:range`, so it needs no
+  `owl:imports` under the rule established in 1.32.0.
+- `unit-load-carrier.yaml`: four core concepts retargeted, and the `ont/mmt` root entry
+  removed from `ref_model_modules` — `mmt/cargo` was already declared there.
+- The module-routing check now skips **retirement shells**: once every term a module
+  declares is `owl:deprecated`, the live definitions are elsewhere and the stubs exist
+  only to keep old IRIs resolving. Routing them would put retired terms back into a hub's
+  alignment pool, which is the opposite of what the stubs are for. The 1.33.0
+  `UNROUTED_TRACKED_GAP` entry for `ont/mmt` is removed, and its staleness guard now
+  catches an entry retired this way as well as one that was routed — otherwise an
+  allowlist entry could outlive the defect it documents.
+
 ## [1.33.0] - 2026-08-17
 
 Blueprint-layer companion to 1.32.0. That release fixed the graph layer — a module not
