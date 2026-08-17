@@ -1,0 +1,372 @@
+@prefix : <https://www.kairosflow.ai/ont/imo/crew-seafarer#> .
+@prefix imo-vr: <https://www.kairosflow.ai/ont/imo/vessel-registry#> .
+@prefix imo-pc: <https://www.kairosflow.ai/ont/imo/port-call#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/imo/crew-seafarer> a owl:Ontology ;
+    dcterms:title "IMO Crew & Seafarer Ontology" ;
+    dcterms:description """Crew, seafarer, and passenger domain ontology aligned with the STCW Convention,
+    MLC 2006, and the FAL Convention.
+
+    Covers seafarer identity and certification (STCW certificates of competency and
+    proficiency), crew lists (FAL Form 5), passenger lists (FAL Form 6), and the
+    minimum safe manning requirements.
+
+    Design note: Operational/HR concepts (rest hours records, watch schedules,
+    employment agreements, recruitment agencies) are excluded as they are
+    operational/commercial rather than reference-model entities.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-06-12"^^xsd:date ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.2.0" ;
+    dcterms:source "STCW Convention 1978 (Manila 2010), MLC 2006, FAL Convention Forms 5 & 6, SOLAS V/14" ;
+    rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
+
+#################################################################
+#    Classes
+#################################################################
+
+:Seafarer a owl:Class ;
+    rdfs:label "Seafarer" ;
+    rdfs:comment """A person who is employed or engaged in any capacity on board a ship.
+
+    MLC 2006 Article II: Any person who is employed or engaged or works in any
+    capacity on board a ship to which the Convention applies.
+
+    STCW Convention: A person meeting the requirements for certification and
+    engaged in the working of a ship.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :seafarerId ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:CrewMember a owl:Class ;
+    rdfs:label "Crew Member" ;
+    rdfs:comment """A seafarer listed on the crew list (FAL Form 5) for a specific voyage.
+
+    FAL Form 5 data elements: surname, given names, nationality, date/place of birth,
+    rank or rating, certificate of competency number, seaman's book number, port and
+    date of embarkation.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :hasSeafarer ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:CrewList a owl:Class ;
+    rdfs:label "Crew List" ;
+    rdfs:comment """The list of all crew members aboard a vessel for a port call (FAL Form 5).
+
+    One of the 7 mandatory FAL Convention forms. Must be submitted as part of the
+    pre-arrival notification to the port authority via the Maritime Single Window.
+
+    Properties: hasCrewMember, totalCrewCount, listDate, crewListFlagState,
+    crewListVoyageNumber.
+
+    IMO Compendium Data Set DS4. Source: FAL Convention Standard 2.1, Form 5.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :hasCrewMember ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:CertificateOfCompetency a owl:Class ;
+    rdfs:label "Certificate of Competency" ;
+    rdfs:comment """A certificate issued under the STCW Convention confirming that a seafarer
+    has met the requirements for a specific rank or function.
+
+    STCW Article II: CoC for masters, chief mates, OOW (deck), chief engineers,
+    second engineers, OOW (engine), and GMDSS operators.
+
+    Grades: Master, Chief Mate, OOW (Deck), Chief Engineer, Second Engineer,
+    OOW (Engine), GMDSS Radio Operator.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :cocNumber ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:CertificateOfProficiency a owl:Class ;
+    rdfs:label "Certificate of Proficiency" ;
+    rdfs:comment """A certificate issued under the STCW Convention for specialized functions.
+
+    STCW: CoP for ship security officer (SSO), GMDSS restricted operator,
+    advanced firefighting, medical first aid, proficiency in survival craft,
+    tanker operations (oil/chemical/gas).
+
+    Properties: copFunction, copCertificateNumber, copIssueDate, copExpiryDate,
+    copTrainingProvider.
+
+    Source: STCW Convention 1978 (Manila 2010), Regulations I/6, VI/2-VI/6.""" .
+
+:PassengerList a owl:Class ;
+    rdfs:label "Passenger List" ;
+    rdfs:comment """The list of all passengers aboard a vessel for a port call (FAL Form 6).
+
+    One of the 7 mandatory FAL Convention forms. IMO Compendium Data Set DS5.
+    Required for passenger ships and vessels carrying more than 12 passengers.
+
+    Properties: hasPassenger, totalPassengerCount, listDate, passengerListFlagState,
+    passengerListVoyageNumber.
+
+    Source: FAL Convention Standard 2.1, Form 6.""" .
+
+:Passenger a owl:Class ;
+    rdfs:label "Passenger" ;
+    rdfs:comment """An individual listed on the passenger list (FAL Form 6).
+
+    FAL Form 6 data elements: surname, given names, nationality, date of birth,
+    place of birth, port of embarkation, port of disembarkation.""" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasSeafarer a owl:ObjectProperty ;
+    rdfs:label "has seafarer" ;
+    rdfs:comment "Links a crew member entry to the seafarer it refers to." ;
+    rdfs:domain :CrewMember ;
+    rdfs:range :Seafarer .
+
+:hasCrewMember a owl:ObjectProperty ;
+    rdfs:label "has crew member" ;
+    rdfs:comment "Links a crew list to an individual crew member entry." ;
+    rdfs:domain :CrewList ;
+    rdfs:range :CrewMember .
+
+:hasPassenger a owl:ObjectProperty ;
+    rdfs:label "has passenger" ;
+    rdfs:comment "Links a passenger list to an individual passenger entry." ;
+    rdfs:domain :PassengerList ;
+    rdfs:range :Passenger .
+
+:holdsCoC a owl:ObjectProperty ;
+    rdfs:label "holds CoC" ;
+    rdfs:comment "Links a seafarer to a certificate of competency they hold." ;
+    rdfs:domain :Seafarer ;
+    rdfs:range :CertificateOfCompetency .
+
+:holdsCoP a owl:ObjectProperty ;
+    rdfs:label "holds CoP" ;
+    rdfs:comment "Links a seafarer to a certificate of proficiency they hold." ;
+    rdfs:domain :Seafarer ;
+    rdfs:range :CertificateOfProficiency .
+
+:forVessel a owl:ObjectProperty ;
+    rdfs:label "for vessel" ;
+    rdfs:comment "Links a crew list or passenger list to the vessel it pertains to." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :CrewList :PassengerList )
+    ] ;
+    rdfs:range imo-vr:Vessel .
+
+:forPortCall a owl:ObjectProperty ;
+    rdfs:label "for port call" ;
+    rdfs:comment "Links a crew list or passenger list to the port call it was submitted for." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :CrewList :PassengerList )
+    ] ;
+    rdfs:range imo-pc:PortCall .
+
+#################################################################
+#    Datatype Properties — Seafarer
+#################################################################
+
+:seafarerId a owl:DatatypeProperty ;
+    rdfs:label "seafarer ID" ;
+    rdfs:comment "Unique identifier for the seafarer (seaman's book number or national ID)." ;
+    rdfs:domain :Seafarer ;
+    rdfs:range xsd:string .
+
+:seafarerName a owl:DatatypeProperty ;
+    rdfs:label "seafarer name" ;
+    rdfs:comment "Full name of the seafarer (surname, given names)." ;
+    rdfs:domain :Seafarer ;
+    rdfs:range xsd:string .
+
+:nationality a owl:DatatypeProperty ;
+    rdfs:label "nationality" ;
+    rdfs:comment "ISO 3166-1 alpha-2 country code of the seafarer's nationality." ;
+    rdfs:domain :Seafarer ;
+    rdfs:range xsd:string .
+
+:dateOfBirth a owl:DatatypeProperty ;
+    rdfs:label "date of birth" ;
+    rdfs:comment "Date of birth of the seafarer." ;
+    rdfs:domain :Seafarer ;
+    rdfs:range xsd:date .
+
+#################################################################
+#    Datatype Properties — Crew Member
+#################################################################
+
+:rank a owl:DatatypeProperty ;
+    rdfs:label "rank" ;
+    rdfs:comment "Rank or rating of the crew member aboard (e.g., MASTER, CHIEF_OFFICER, AB, OILER)." ;
+    rdfs:domain :CrewMember ;
+    rdfs:range xsd:string .
+
+:portOfEmbarkation a owl:DatatypeProperty ;
+    rdfs:label "port of embarkation" ;
+    rdfs:comment "UN/LOCODE of the port where the crew member embarked." ;
+    rdfs:domain :CrewMember ;
+    rdfs:range xsd:string .
+
+:embarkationDate a owl:DatatypeProperty ;
+    rdfs:label "embarkation date" ;
+    rdfs:comment "Date when the crew member embarked." ;
+    rdfs:domain :CrewMember ;
+    rdfs:range xsd:date .
+
+#################################################################
+#    Datatype Properties — Certificates
+#################################################################
+
+:cocNumber a owl:DatatypeProperty ;
+    rdfs:label "CoC number" ;
+    rdfs:comment "Unique number of the certificate of competency." ;
+    rdfs:domain :CertificateOfCompetency ;
+    rdfs:range xsd:string .
+
+:cocGrade a owl:DatatypeProperty ;
+    rdfs:label "CoC grade" ;
+    rdfs:comment "Grade of competency (MASTER, CHIEF_MATE, OOW_DECK, CHIEF_ENGINEER, SECOND_ENGINEER, OOW_ENGINE, GMDSS)." ;
+    rdfs:domain :CertificateOfCompetency ;
+    rdfs:range xsd:string .
+
+:cocIssueDate a owl:DatatypeProperty ;
+    rdfs:label "CoC issue date" ;
+    rdfs:comment "Date when the certificate of competency was issued." ;
+    rdfs:domain :CertificateOfCompetency ;
+    rdfs:range xsd:date .
+
+:cocExpiryDate a owl:DatatypeProperty ;
+    rdfs:label "CoC expiry date" ;
+    rdfs:comment "Date when the certificate of competency expires." ;
+    rdfs:domain :CertificateOfCompetency ;
+    rdfs:range xsd:date .
+
+:cocIssuingCountry a owl:DatatypeProperty ;
+    rdfs:label "CoC issuing country" ;
+    rdfs:comment "ISO 3166-1 alpha-2 country code of the state that issued the CoC." ;
+    rdfs:domain :CertificateOfCompetency ;
+    rdfs:range xsd:string .
+
+:copFunction a owl:DatatypeProperty ;
+    rdfs:label "CoP function" ;
+    rdfs:comment "Specialized function (SSO, GMDSS_RESTRICTED, ADVANCED_FIREFIGHTING, MEDICAL_FIRST_AID, SURVIVAL_CRAFT, TANKER_OIL, TANKER_CHEMICAL, TANKER_GAS)." ;
+    rdfs:domain :CertificateOfProficiency ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Datatype Properties — Passenger
+#################################################################
+
+:passengerName a owl:DatatypeProperty ;
+    rdfs:label "passenger name" ;
+    rdfs:comment "Full name of the passenger." ;
+    rdfs:domain :Passenger ;
+    rdfs:range xsd:string .
+
+:passengerNationality a owl:DatatypeProperty ;
+    rdfs:label "passenger nationality" ;
+    rdfs:comment "ISO 3166-1 alpha-2 country code of the passenger's nationality." ;
+    rdfs:domain :Passenger ;
+    rdfs:range xsd:string .
+
+:passengerEmbarkedAt a owl:DatatypeProperty ;
+    rdfs:label "passenger embarked at" ;
+    rdfs:comment "UN/LOCODE of the port where the passenger embarked." ;
+    rdfs:domain :Passenger ;
+    rdfs:range xsd:string .
+
+:passengerDisembarkedAt a owl:DatatypeProperty ;
+    rdfs:label "passenger disembarked at" ;
+    rdfs:comment "UN/LOCODE of the port where the passenger disembarked or will disembark." ;
+    rdfs:domain :Passenger ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Datatype Properties — Crew List / Passenger List
+#################################################################
+
+:listDate a owl:DatatypeProperty ;
+    rdfs:label "list date" ;
+    rdfs:comment "Date when the crew list or passenger list was prepared." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( :CrewList :PassengerList )
+    ] ;
+    rdfs:range xsd:date .
+
+:totalCrewCount a owl:DatatypeProperty ;
+    rdfs:label "total crew count" ;
+    rdfs:comment "Total number of crew members on the list." ;
+    rdfs:domain :CrewList ;
+    rdfs:range xsd:integer .
+
+:totalPassengerCount a owl:DatatypeProperty ;
+    rdfs:label "total passenger count" ;
+    rdfs:comment "Total number of passengers on the list." ;
+    rdfs:domain :PassengerList ;
+    rdfs:range xsd:integer .
+
+#################################################################
+#    Datatype Properties — Enrichment (STCW / FAL Convention)
+#################################################################
+
+:copCertificateNumber a owl:DatatypeProperty ;
+    rdfs:label "CoP certificate number" ;
+    rdfs:comment "Unique identifier of the certificate of proficiency (STCW Regulation I/2)." ;
+    rdfs:domain :CertificateOfProficiency ;
+    rdfs:range xsd:string .
+
+:copIssueDate a owl:DatatypeProperty ;
+    rdfs:label "CoP issue date" ;
+    rdfs:comment "Date when the certificate of proficiency was issued (STCW Regulation I/2)." ;
+    rdfs:domain :CertificateOfProficiency ;
+    rdfs:range xsd:date .
+
+:copExpiryDate a owl:DatatypeProperty ;
+    rdfs:label "CoP expiry date" ;
+    rdfs:comment "Date when the certificate of proficiency expires (STCW Regulation I/2)." ;
+    rdfs:domain :CertificateOfProficiency ;
+    rdfs:range xsd:date .
+
+:copTrainingProvider a owl:DatatypeProperty ;
+    rdfs:label "CoP training provider" ;
+    rdfs:comment "Name of the training institution that provided the competency training (STCW Regulation I/6)." ;
+    rdfs:domain :CertificateOfProficiency ;
+    rdfs:range xsd:string .
+
+:crewListFlagState a owl:DatatypeProperty ;
+    rdfs:label "crew list flag state" ;
+    rdfs:comment "ISO 3166-1 alpha-2 flag state of the vessel whose crew list is submitted (FAL Form 5)." ;
+    rdfs:domain :CrewList ;
+    rdfs:range xsd:string .
+
+:crewListVoyageNumber a owl:DatatypeProperty ;
+    rdfs:label "crew list voyage number" ;
+    rdfs:comment "Voyage number associated with the crew list submission (FAL Form 5)." ;
+    rdfs:domain :CrewList ;
+    rdfs:range xsd:string .
+
+:passengerListFlagState a owl:DatatypeProperty ;
+    rdfs:label "passenger list flag state" ;
+    rdfs:comment "ISO 3166-1 alpha-2 flag state of the vessel whose passenger list is submitted (FAL Form 6)." ;
+    rdfs:domain :PassengerList ;
+    rdfs:range xsd:string .
+
+:passengerListVoyageNumber a owl:DatatypeProperty ;
+    rdfs:label "passenger list voyage number" ;
+    rdfs:comment "Voyage number associated with the passenger list submission (FAL Form 6)." ;
+    rdfs:domain :PassengerList ;
+    rdfs:range xsd:string .

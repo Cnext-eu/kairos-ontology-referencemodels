@@ -23,7 +23,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-08-13"^^xsd:date ;
-    owl:versionInfo "2.3.0" ;
+    owl:versionInfo "2.4.0" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
@@ -73,6 +73,7 @@
     rdfs:comment """A single line item on an invoice.
     
     ISO BSP: Individual charge or product entry.""" ;
+    rdfs:subClassOf :BillingDocumentLine ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :lineNumber ;
@@ -753,3 +754,258 @@
     rdfs:comment "ISO 4217 currency code qualifying :creditLimit." ;
     rdfs:domain party:TradeParty ;
     rdfs:range xsd:string .
+
+#################################################################
+#    CREDIT / DEBIT NOTE - Attributes and Line Items
+#
+#    :CreditNote and :DebitNote are deliberately modelled as siblings of
+#    :Invoice rather than as subclasses, so the :Invoice-domained properties
+#    can be neither reused nor declared rdfs:subPropertyOf without entailing
+#    that a credit note IS an invoice. The note-domained properties below
+#    give that branch the header and line facts its documents carry.
+#    :Invoice and its subclasses are untouched — this section is additive.
+#
+#    UN/CEFACT BSP: a credit note is a settlement document of type code 381
+#    and a debit note of type code 383 (UN/EDIFACT code list 1001), carrying
+#    the same header and SupplyChainTradeLineItem structure as the type-380
+#    commercial invoice.
+#################################################################
+
+:CreditNoteLine a owl:Class ;
+    rdfs:label "Credit Note Line" ;
+    rdfs:comment """A single line item on a credit note.
+
+    ISO BSP: Individual credited charge or returned product entry.
+
+    UN/CEFACT BSP: Maps to SupplyChainTradeLineItem on a type-381 (credit note)
+    document, UN/EDIFACT code list 1001 — the credit-note counterpart of
+    :InvoiceLine.""" ;
+    rdfs:subClassOf :BillingDocumentLine ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :creditNoteLineNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Credit / Debit Note Object Properties
+#################################################################
+
+:hasCreditNoteLine a owl:ObjectProperty ;
+    rdfs:label "has credit note line" ;
+    rdfs:comment "Relates a credit note to its line items. Credit-note counterpart of :hasInvoiceLine." ;
+    rdfs:domain :CreditNote ;
+    rdfs:range :CreditNoteLine .
+
+:appliesToInvoice a owl:ObjectProperty ;
+    rdfs:label "applies to invoice" ;
+    rdfs:comment """The invoice that this credit or debit note corrects or adjusts.
+
+    UN/CEFACT BSP: the preceding-invoice reference carried as a ReferencedDocument
+    on the settlement header of a type-381 or type-383 document (UN/EDIFACT code
+    list 1001). Domained on the union of the two note classes rather than on a
+    shared parent, so :Invoice and its subclasses are unaffected.""" ;
+    rdfs:domain [ a owl:Class ; owl:unionOf ( :CreditNote :DebitNote ) ] ;
+    rdfs:range :Invoice .
+
+#################################################################
+#    Credit / Debit Note Datatype Properties
+#################################################################
+
+:creditNoteNumber a owl:DatatypeProperty ;
+    rdfs:label "credit note number" ;
+    rdfs:comment "Unique identifier for the credit note. Counterpart of :invoiceNumber on the type-381 document (UN/EDIFACT code list 1001)." ;
+    rdfs:domain :CreditNote ;
+    rdfs:range xsd:string .
+
+:creditNoteDate a owl:DatatypeProperty ;
+    rdfs:label "credit note date" ;
+    rdfs:comment "Date on which the credit note was issued." ;
+    rdfs:domain :CreditNote ;
+    rdfs:range xsd:date .
+
+:creditNoteSubtotalAmount a owl:DatatypeProperty ;
+    rdfs:label "credit note subtotal amount" ;
+    rdfs:comment "Credited amount before taxes and charges." ;
+    rdfs:domain :CreditNote ;
+    rdfs:range xsd:decimal .
+
+:creditNoteTaxAmount a owl:DatatypeProperty ;
+    rdfs:label "credit note tax amount" ;
+    rdfs:comment "Total tax amount credited (VAT, sales tax, etc.)." ;
+    rdfs:domain :CreditNote ;
+    rdfs:range xsd:decimal .
+
+:creditNoteTotalAmount a owl:DatatypeProperty ;
+    rdfs:label "credit note total amount" ;
+    rdfs:comment "Total monetary amount credited, taxes included." ;
+    rdfs:domain :CreditNote ;
+    rdfs:range xsd:decimal .
+
+:creditNoteCurrency a owl:DatatypeProperty ;
+    rdfs:label "credit note currency" ;
+    rdfs:comment "ISO 4217 currency code of the credit note amounts (e.g., USD, EUR, GBP)." ;
+    rdfs:domain :CreditNote ;
+    rdfs:range xsd:string .
+
+:creditNoteLineNumber a owl:DatatypeProperty ;
+    rdfs:label "credit note line number" ;
+    rdfs:comment "Sequential line item number on the credit note. Counterpart of :lineNumber on :InvoiceLine." ;
+    rdfs:domain :CreditNoteLine ;
+    rdfs:range xsd:integer .
+
+:creditNoteLineTaxRate a owl:DatatypeProperty ;
+    rdfs:label "credit note line tax rate" ;
+    rdfs:comment "Tax percentage rate applied to the credit note line. Counterpart of :taxRate on :InvoiceLine." ;
+    rdfs:domain :CreditNoteLine ;
+    rdfs:range xsd:decimal .
+
+:debitNoteNumber a owl:DatatypeProperty ;
+    rdfs:label "debit note number" ;
+    rdfs:comment "Unique identifier for the debit note. Counterpart of :invoiceNumber on the type-383 document (UN/EDIFACT code list 1001)." ;
+    rdfs:domain :DebitNote ;
+    rdfs:range xsd:string .
+
+:debitNoteDate a owl:DatatypeProperty ;
+    rdfs:label "debit note date" ;
+    rdfs:comment "Date on which the debit note was issued." ;
+    rdfs:domain :DebitNote ;
+    rdfs:range xsd:date .
+
+:debitNoteSubtotalAmount a owl:DatatypeProperty ;
+    rdfs:label "debit note subtotal amount" ;
+    rdfs:comment "Debited amount before taxes and charges." ;
+    rdfs:domain :DebitNote ;
+    rdfs:range xsd:decimal .
+
+:debitNoteTaxAmount a owl:DatatypeProperty ;
+    rdfs:label "debit note tax amount" ;
+    rdfs:comment "Total tax amount debited (VAT, sales tax, etc.)." ;
+    rdfs:domain :DebitNote ;
+    rdfs:range xsd:decimal .
+
+:debitNoteTotalAmount a owl:DatatypeProperty ;
+    rdfs:label "debit note total amount" ;
+    rdfs:comment "Total monetary amount debited, taxes included." ;
+    rdfs:domain :DebitNote ;
+    rdfs:range xsd:decimal .
+
+:debitNoteCurrency a owl:DatatypeProperty ;
+    rdfs:label "debit note currency" ;
+    rdfs:comment "ISO 4217 currency code of the debit note amounts (e.g., USD, EUR, GBP)." ;
+    rdfs:domain :DebitNote ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    BILLING DOCUMENT LINE - Shared line grain (issue #91)
+#
+#    :InvoiceLine carried only :lineNumber and :taxRate — no amount,
+#    quantity, unit price or description — so a line could not state what
+#    it charges for. The measures are declared once, on a shared parent,
+#    and inherited by every document branch rather than minted three times.
+#
+#    The parent is additive: :InvoiceLine gains an rdfs:subClassOf edge and
+#    nothing else. :lineNumber and :taxRate deliberately stay domained on
+#    :InvoiceLine — re-domaining an existing property is the move that
+#    issue #89 shape 1 was rejected for — so the per-branch line-number and
+#    tax-rate properties remain exactly as they are.
+#
+#    UN/CEFACT BSP: SupplyChainTradeLineItem is defined once for every
+#    settlement document type (UN/EDIFACT code list 1001: 380 commercial
+#    invoice, 381 credit note, 383 debit note). This class is that single
+#    line element; the branch classes are its Kairos specialisations.
+#################################################################
+
+:BillingDocumentLine a owl:Class ;
+    rdfs:label "Billing Document Line" ;
+    rdfs:comment """A single line item on a billing document — an invoice, a credit note or a
+    debit note — carrying the line-grain measures all three branches share: amount,
+    quantity and its unit, unit price, tax amount and description.
+
+    Not intended for direct instantiation: bind to :InvoiceLine, :CreditNoteLine or
+    :DebitNoteLine, each of which is rdfs:subClassOf this class. Line numbering and
+    line tax rate remain branch-specific properties.
+
+    UN/CEFACT BSP: Maps to SupplyChainTradeLineItem, which the standard defines once
+    for all settlement document types (UN/EDIFACT code list 1001 type codes 380, 381
+    and 383).""" .
+
+:lineAmount a owl:DatatypeProperty ;
+    rdfs:label "line amount" ;
+    rdfs:comment "Net monetary amount charged or credited for this line, before document-level charges and allowances. UN/CEFACT BSP: SupplyChainTradeLineItem line total amount." ;
+    rdfs:domain :BillingDocumentLine ;
+    rdfs:range xsd:decimal .
+
+:lineQuantity a owl:DatatypeProperty ;
+    rdfs:label "line quantity" ;
+    rdfs:comment "Quantity billed on this line. Always qualify with :lineQuantityUnit — a bare quantity states no unit of measure. UN/CEFACT BSP: SupplyChainTradeLineItem BilledQuantity." ;
+    rdfs:domain :BillingDocumentLine ;
+    rdfs:range xsd:decimal .
+
+:lineQuantityUnit a owl:DatatypeProperty ;
+    rdfs:label "line quantity unit" ;
+    rdfs:comment "Unit of measure qualifying :lineQuantity, as a UN/ECE Recommendation 20 unit code (e.g., KGM, TNE, MTQ, EA, DAY). UN/CEFACT BSP: the unitCode attribute the standard carries on BilledQuantity." ;
+    rdfs:domain :BillingDocumentLine ;
+    rdfs:range xsd:string .
+
+:lineUnitPrice a owl:DatatypeProperty ;
+    rdfs:label "line unit price" ;
+    rdfs:comment "Price for one unit of :lineQuantity, expressed in the document currency. UN/CEFACT BSP: SupplyChainTradeLineItem net price per unit." ;
+    rdfs:domain :BillingDocumentLine ;
+    rdfs:range xsd:decimal .
+
+:lineTaxAmount a owl:DatatypeProperty ;
+    rdfs:label "line tax amount" ;
+    rdfs:comment "Tax amount applying to this line, at the rate given by the branch's line tax-rate property. UN/CEFACT BSP: SupplyChainTradeLineItem line-level trade tax amount." ;
+    rdfs:domain :BillingDocumentLine ;
+    rdfs:range xsd:decimal .
+
+:lineDescription a owl:DatatypeProperty ;
+    rdfs:label "line description" ;
+    rdfs:comment "Free-text description of the product or service the line charges for. UN/CEFACT BSP: SupplyChainTradeLineItem item description." ;
+    rdfs:domain :BillingDocumentLine ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    DEBIT NOTE LINE - closing the credit/debit asymmetry
+#
+#    :CreditNote received a line class in the issue #89 change while
+#    :DebitNote did not, on the grounds that only credit-note line tables
+#    had been seen in the field. A reference model states the domain, not
+#    one adopter's table list: a debit note carries line items for the
+#    same reason an invoice does.
+#################################################################
+
+:DebitNoteLine a owl:Class ;
+    rdfs:label "Debit Note Line" ;
+    rdfs:comment """A single line item on a debit note.
+
+    ISO BSP: Individual additional charge or invoice-adjustment entry.
+
+    UN/CEFACT BSP: Maps to SupplyChainTradeLineItem on a type-383 (debit note)
+    document, UN/EDIFACT code list 1001 — the debit-note counterpart of
+    :InvoiceLine.""" ;
+    rdfs:subClassOf :BillingDocumentLine ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :debitNoteLineNumber ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:hasDebitNoteLine a owl:ObjectProperty ;
+    rdfs:label "has debit note line" ;
+    rdfs:comment "Relates a debit note to its line items. Debit-note counterpart of :hasInvoiceLine." ;
+    rdfs:domain :DebitNote ;
+    rdfs:range :DebitNoteLine .
+
+:debitNoteLineNumber a owl:DatatypeProperty ;
+    rdfs:label "debit note line number" ;
+    rdfs:comment "Sequential line item number on the debit note. Counterpart of :lineNumber on :InvoiceLine." ;
+    rdfs:domain :DebitNoteLine ;
+    rdfs:range xsd:integer .
+
+:debitNoteLineTaxRate a owl:DatatypeProperty ;
+    rdfs:label "debit note line tax rate" ;
+    rdfs:comment "Tax percentage rate applied to the debit note line. Counterpart of :taxRate on :InvoiceLine." ;
+    rdfs:domain :DebitNoteLine ;
+    rdfs:range xsd:decimal .

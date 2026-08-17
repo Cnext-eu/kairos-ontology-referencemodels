@@ -1,0 +1,390 @@
+@prefix : <https://www.kairosflow.ai/ont/bsp/reference-data#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix comm: <https://www.kairosflow.ai/ont/bsp/commercial#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/bsp/reference-data> a owl:Ontology ;
+    dcterms:title "Kairos BSP Reference Data Domain Ontology" ;
+    dcterms:description """Reference data domain of the Buy-Ship-Pay Reference Data Model.
+
+    This module defines location and measurement reference data covering:
+    - Locations: Addresses, facilities, ports, airports, warehouses
+    - Countries: Sovereign nations with ISO 3166 codes
+    - Measurements: Weight, volume, dimension, monetary amounts
+    - Code lists: UN/LOCODE, IATA codes, country codes""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-09-17"^^xsd:date ;
+    owl:versionInfo "2.3.0" ;
+    dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/> .
+
+#################################################################
+#    Location Classes
+#################################################################
+
+:Location a owl:Class ;
+    rdfs:label "Location" ;
+    rdfs:comment """A physical or logical place.
+    
+    UN/CEFACT BSP: Maps to LogisticsLocation — a logistics related
+    physical location or place.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/LogisticsLocation> .
+
+:Address a owl:Class ;
+    rdfs:label "Address" ;
+    rdfs:comment """A structured postal or physical address.
+
+    UN/CEFACT BSP: Maps to TradeAddress — the location at which a trade
+    related organization or person may be found. Backed by UN/CEFACT CCL
+    D23B TradeAddress elements (ISO 20197-1:2024).
+
+    Properties:
+    - streetAddress: full street line (name + number) — backward-compatible
+      coarse-grained field; buildingNumber is a finer-grained alternative.
+    - buildingNumber: building/house number (UN/CEFACT BuildingNumber).
+    - city: city/town name (UN/CEFACT CityName).
+    - stateProvince: state or province name/code (UN/CEFACT CountrySub-DivisionName).
+    - postalCode: ZIP or postal code (UN/CEFACT PostcodeCode).
+    - addressCountry: links to :Country (UN/CEFACT TradeAddress Country) — typed
+      reference to the existing Country class with its ISO 3166 countryCode.
+    - poBox: post office box number (UN/CEFACT PostOfficeBox).
+    - careOf: c/o (care of) addressee forwarding line (UN/CEFACT CareOf).
+    - addressType: address purpose code — business, residential, registered,
+      etc. (UN/CEFACT TradeAddress typeCode).
+    - latitude/longitude: WGS84 decimal coordinates for geo queries.
+    Inherits unLocationCode, and city from parent :Location class.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TradeAddress> ;
+    rdfs:subClassOf :Location .
+
+:Facility a owl:Class ;
+    rdfs:label "Facility" ;
+    rdfs:comment """A physical site where business activities occur.
+    
+    ISO BSP: Factories, warehouses, stores, ports.""" ;
+    rdfs:subClassOf :Location .
+
+:Port a owl:Class ;
+    rdfs:label "Port" ;
+    rdfs:comment """A maritime facility for vessel operations.
+    
+    ISO BSP (UN/LOCODE): Seaport identified by UN/LOCODE (inherited from :Location
+    via :unLocationCode). 
+    
+    Properties:
+    - portName: official name of the port (UN/LOCODE name).
+    - portType: UN/LOCODE function classifier — e.g., SEA, RIVER, FISHING, CARGO.""" ;
+    rdfs:subClassOf :Facility ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/imo/locations#Port> ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/locations#Location> .
+
+:Airport a owl:Class ;
+    rdfs:label "Airport" ;
+    rdfs:comment """An air transport facility.
+    
+    ISO BSP: Identified by IATA/ICAO codes.""" ;
+    rdfs:subClassOf :Facility .
+
+:Warehouse a owl:Class ;
+    rdfs:label "Warehouse" ;
+    rdfs:comment """A storage facility for goods.
+    
+    ISO BSP: Distribution center, depot, bonded warehouse.
+    
+    Properties:
+    - warehouseType: GENERAL, BONDED, FREE_ZONE, COLD_STORAGE, DISTRIBUTION_CENTER.
+    - bondedIndicator: whether the warehouse is customs-bonded (WCO Customs Warehousing).""" ;
+    rdfs:subClassOf :Facility .
+
+:ManufacturingPlant a owl:Class ;
+    rdfs:label "Manufacturing Plant" ;
+    rdfs:comment """A facility where goods are produced.
+    
+    UN/CEFACT BSP: Maps to ProductionFacility — a man made physical structure
+    in which something is produced.
+    
+    Properties:
+    - facilityId: unique identifier for the production facility (UN/CEFACT ProductionFacility identifier).""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/ProductionFacility> ;
+    rdfs:subClassOf :Facility .
+
+:Country a owl:Class ;
+    rdfs:label "Country" ;
+    rdfs:comment """A sovereign nation state identified by ISO 3166 codes.
+    
+    UN/CEFACT BSP: Maps to Country — the area of land that belongs to a nation,
+    used or referenced for trade purposes.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Country> ;
+    rdfs:subClassOf :Location .
+
+#################################################################
+#    Measurement and Quantity Classes
+#################################################################
+
+:Measurement a owl:Class ;
+    rdfs:label "Measurement" ;
+    rdfs:comment """A quantified observation or dimension.
+    
+    UN/CEFACT BSP: Maps to Measurement — an amount, size, or extent
+    as established by measuring.
+
+    Properties:
+    - value: the numeric magnitude (UN/CEFACT Measurement_VALUE).
+    - unit: the unit of measure code (UN/CEFACT Rec 20, e.g., KGM, MTR, MTQ).""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/Measurement> .
+
+:Weight a owl:Class ;
+    rdfs:label "Weight" ;
+    rdfs:comment """A measurement of mass.
+    
+    UN/CEFACT BSP (CCL D23B Rec 20): Gross weight (AAB), net weight (AAA),
+    tare weight, chargeable weight.
+    
+    Properties:
+    - value: numeric mass (inherited semantics from :Measurement).
+    - unit: UN/CEFACT Rec 20 unit code (KGM, TNE, LBR).
+    - weightType: GROSS, NET, TARE, CHARGEABLE (UN/CEFACT CCL D23B weight qualifiers).""" ;
+    rdfs:subClassOf :Measurement .
+
+:Volume a owl:Class ;
+    rdfs:label "Volume" ;
+    rdfs:comment """A measurement of three-dimensional space.
+    
+    UN/CEFACT BSP (CCL D23B Rec 20): Gross volume (AAW), net volume (AAX).
+    
+    Properties:
+    - value: numeric volume.
+    - unit: UN/CEFACT Rec 20 unit code (MTQ, LTR).
+    - volumeType: GROSS, NET (UN/CEFACT CCL D23B volume qualifiers).""" ;
+    rdfs:subClassOf :Measurement .
+
+:Dimension a owl:Class ;
+    rdfs:label "Dimension" ;
+    rdfs:comment """A linear measurement.
+    
+    UN/CEFACT BSP (CCL D23B): External dimension (ABH), internal dimension (ABI).
+    
+    Properties:
+    - length, width, height: linear measures in the given unit.
+    - dimensionType: EXTERNAL, INTERNAL (UN/CEFACT CCL D23B dimension qualifiers).
+    - unit: UN/CEFACT Rec 20 unit code (MTR, CMT, MMT, INH).""" ;
+    rdfs:subClassOf :Measurement .
+
+:MonetaryAmount a owl:Class ;
+    rdfs:label "Monetary Amount" ;
+    rdfs:comment """A sum of money.
+    
+    UN/CEFACT BSP (CCL D23B): Amount with an explicit or implied currency.
+    
+    Properties:
+    - amount: numeric monetary value (UN/CEFACT Amount).
+    - currency: ISO 4217 currency code (UN/CEFACT CurrencyCode).""" ;
+    rdfs:subClassOf :Measurement .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasOriginLocation a owl:ObjectProperty ;
+    rdfs:label "has origin location" ;
+    rdfs:comment "Identifies origin location." ;
+    rdfs:domain comm:Shipment ;
+    rdfs:range :Location .
+
+:hasDestinationLocation a owl:ObjectProperty ;
+    rdfs:label "has destination location" ;
+    rdfs:comment "Identifies destination location." ;
+    rdfs:domain comm:Shipment ;
+    rdfs:range :Location .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:countryCode a owl:DatatypeProperty ;
+    rdfs:label "country code" ;
+    rdfs:comment "ISO 3166 country code (2 or 3 characters)." ;
+    rdfs:domain :Country ;
+    rdfs:range xsd:string .
+
+:unLocationCode a owl:DatatypeProperty ;
+    rdfs:label "UN location code" ;
+    rdfs:comment "UN/LOCODE (5 characters)." ;
+    rdfs:domain :Location ;
+    rdfs:range xsd:string .
+
+:iataAirportCode a owl:DatatypeProperty ;
+    rdfs:label "IATA airport code" ;
+    rdfs:comment "3-letter IATA code." ;
+    rdfs:domain :Airport ;
+    rdfs:range xsd:string .
+
+:streetAddress a owl:DatatypeProperty ;
+    rdfs:label "street address" ;
+    rdfs:comment "Street name and number." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:string .
+
+:city a owl:DatatypeProperty ;
+    rdfs:label "city" ;
+    rdfs:comment "City name." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:string .
+
+:stateProvince a owl:DatatypeProperty ;
+    rdfs:label "state/province" ;
+    rdfs:comment "State or province name/code." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:string .
+
+:postalCode a owl:DatatypeProperty ;
+    rdfs:label "postal code" ;
+    rdfs:comment "ZIP or postal code." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:string .
+
+:buildingNumber a owl:DatatypeProperty ;
+    rdfs:label "building number" ;
+    rdfs:comment "Building or house number (UN/CEFACT CCL D23B BuildingNumber)." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:string .
+
+:poBox a owl:DatatypeProperty ;
+    rdfs:label "P.O box" ;
+    rdfs:comment "Post office box number (UN/CEFACT CCL D23B PostOfficeBox)." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:string .
+
+:careOf a owl:DatatypeProperty ;
+    rdfs:label "care of" ;
+    rdfs:comment "c/o addressee forwarding line (UN/CEFACT CCL D23B CareOf)." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:string .
+
+:addressType a owl:DatatypeProperty ;
+    rdfs:label "address type" ;
+    rdfs:comment """Address purpose code (UN/CEFACT CCL D23B TradeAddress typeCode).
+    Typical values: business, residential, registered, billing, shipping.""" ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:string .
+
+:latitude a owl:DatatypeProperty ;
+    rdfs:label "latitude" ;
+    rdfs:comment "WGS84 latitude coordinate of the address." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:decimal .
+
+:longitude a owl:DatatypeProperty ;
+    rdfs:label "longitude" ;
+    rdfs:comment "WGS84 longitude coordinate of the address." ;
+    rdfs:domain :Address ;
+    rdfs:range xsd:decimal .
+
+:addressCountry a owl:ObjectProperty ;
+    rdfs:label "address country" ;
+    rdfs:comment "Links an Address to its Country (UN/CEFACT CCL D23B TradeAddress Country)." ;
+    rdfs:domain :Address ;
+    rdfs:range :Country .
+
+#################################################################
+#    Datatype Properties — Measurement Family (BSP 2.3.0)
+#    UN/CEFACT CCL D23B + Recommendation 20
+#################################################################
+
+:measurementValue a owl:DatatypeProperty ;
+    rdfs:label "measurement value" ;
+    rdfs:comment "Numeric magnitude of the measurement (UN/CEFACT CCL D23B Measurement VALUE)." ;
+    rdfs:domain :Measurement ;
+    rdfs:range xsd:decimal .
+
+:measurementUnit a owl:DatatypeProperty ;
+    rdfs:label "measurement unit" ;
+    rdfs:comment "Unit of measure code per UN/CEFACT Recommendation 20 (e.g., KGM, MTR, MTQ, LTR)." ;
+    rdfs:domain :Measurement ;
+    rdfs:range xsd:string .
+
+:weightType a owl:DatatypeProperty ;
+    rdfs:label "weight type" ;
+    rdfs:comment "Weight qualifier: GROSS, NET, TARE, CHARGEABLE (UN/CEFACT CCL D23B weight type codes AAB/AAA)." ;
+    rdfs:domain :Weight ;
+    rdfs:range xsd:string .
+
+:volumeType a owl:DatatypeProperty ;
+    rdfs:label "volume type" ;
+    rdfs:comment "Volume qualifier: GROSS, NET (UN/CEFACT CCL D23B volume type codes AAW/AAX)." ;
+    rdfs:domain :Volume ;
+    rdfs:range xsd:string .
+
+:dimensionType a owl:DatatypeProperty ;
+    rdfs:label "dimension type" ;
+    rdfs:comment "Dimension qualifier: EXTERNAL, INTERNAL (UN/CEFACT CCL D23B dimension type codes ABH/ABI)." ;
+    rdfs:domain :Dimension ;
+    rdfs:range xsd:string .
+
+:length a owl:DatatypeProperty ;
+    rdfs:label "length" ;
+    rdfs:comment "Linear length measure (UN/CEFACT CCL D23B Dimension Length)." ;
+    rdfs:domain :Dimension ;
+    rdfs:range xsd:decimal .
+
+:width a owl:DatatypeProperty ;
+    rdfs:label "width" ;
+    rdfs:comment "Linear width measure (UN/CEFACT CCL D23B Dimension Width)." ;
+    rdfs:domain :Dimension ;
+    rdfs:range xsd:decimal .
+
+:height a owl:DatatypeProperty ;
+    rdfs:label "height" ;
+    rdfs:comment "Linear height measure (UN/CEFACT CCL D23B Dimension Height)." ;
+    rdfs:domain :Dimension ;
+    rdfs:range xsd:decimal .
+
+:monetaryAmount a owl:DatatypeProperty ;
+    rdfs:label "monetary amount" ;
+    rdfs:comment "Numeric monetary value (UN/CEFACT CCL D23B Amount)." ;
+    rdfs:domain :MonetaryAmount ;
+    rdfs:range xsd:decimal .
+
+:monetaryCurrency a owl:DatatypeProperty ;
+    rdfs:label "monetary currency" ;
+    rdfs:comment "ISO 4217 currency code for the monetary amount (UN/CEFACT CCL D23B CurrencyCode)." ;
+    rdfs:domain :MonetaryAmount ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Datatype Properties — Facility Enrichment (BSP 2.3.0)
+#################################################################
+
+:portName a owl:DatatypeProperty ;
+    rdfs:label "port name" ;
+    rdfs:comment "Official name of the port (UN/LOCODE name field)." ;
+    rdfs:domain :Port ;
+    rdfs:range xsd:string .
+
+:portType a owl:DatatypeProperty ;
+    rdfs:label "port type" ;
+    rdfs:comment "Port function classifier per UN/LOCODE function code (SEA, RIVER, FISHING, CARGO)." ;
+    rdfs:domain :Port ;
+    rdfs:range xsd:string .
+
+:warehouseType a owl:DatatypeProperty ;
+    rdfs:label "warehouse type" ;
+    rdfs:comment "Type of warehouse: GENERAL, BONDED, FREE_ZONE, COLD_STORAGE, DISTRIBUTION_CENTER (WCO Customs Warehousing codes)." ;
+    rdfs:domain :Warehouse ;
+    rdfs:range xsd:string .
+
+:bondedIndicator a owl:DatatypeProperty ;
+    rdfs:label "bonded indicator" ;
+    rdfs:comment "Whether the warehouse is customs-bonded (WCO Customs Warehousing regime)." ;
+    rdfs:domain :Warehouse ;
+    rdfs:range xsd:boolean .
+
+:facilityId a owl:DatatypeProperty ;
+    rdfs:label "facility identifier" ;
+    rdfs:comment "Unique identifier for the production facility (UN/CEFACT CCL D23B ProductionFacility identifier)." ;
+    rdfs:domain :ManufacturingPlant ;
+    rdfs:range xsd:string .

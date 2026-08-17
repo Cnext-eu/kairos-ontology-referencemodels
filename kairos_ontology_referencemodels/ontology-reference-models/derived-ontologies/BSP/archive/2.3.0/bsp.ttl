@@ -1,0 +1,46 @@
+@prefix : <https://www.kairosflow.ai/ont/bsp#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/bsp> a owl:Ontology ;
+    dcterms:title "Kairos Buy-Ship-Pay Reference Data Model Ontology" ;
+    dcterms:description """UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0) ontology
+    for international trade lifecycle, also published as ISO 20197-1:2024.
+    
+    This ontology provides a semantic framework for the complete trade transaction lifecycle:
+    - Buy: Purchase orders, quotations, contracts, and commercial agreements
+    - Ship: Transport execution, shipment tracking, and logistics operations
+    - Pay: Invoicing, payment terms, settlement, and guarantees
+    - Cross-cutting: Parties, locations, documents, and regulatory compliance
+    
+    Modeled as an OWL class hierarchy based on the UN/CEFACT Core Component Library (CCL D23B)
+    and BSP-RDM business requirements specification.
+    
+    This root ontology imports all eight domain modules:
+    - Party: Trade party roles and contact information
+    - Commercial: Commercial transactions, shipments, and business events
+    - Financial: Invoicing, charges, surcharges, tariffs, payment, and trade finance
+    - Documents: Trade, transport, and regulatory documents
+    - Compliance: Regulatory requirements, tariffs, and trade agreements
+    - Reference Data: Locations, measurements, and code lists
+    - Cost Accounting: Transport cost allocation, budgets, and cost-to-serve
+    - Revenue & Yield: Revenue attribution, yield metrics, and profitability""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-06-20"^^xsd:date ;
+    owl:versionInfo "2.3.0" ;
+    dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
+    dcterms:references "ISO 20197-1:2024, UN/CEFACT Core Component Library D23B" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/> ;
+    owl:imports <https://www.kairosflow.ai/ont/bsp/party> ;
+    owl:imports <https://www.kairosflow.ai/ont/bsp/commercial> ;
+    owl:imports <https://www.kairosflow.ai/ont/bsp/financial> ;
+    owl:imports <https://www.kairosflow.ai/ont/bsp/documents> ;
+    owl:imports <https://www.kairosflow.ai/ont/bsp/compliance> ;
+    owl:imports <https://www.kairosflow.ai/ont/bsp/reference-data> ;
+    owl:imports <https://www.kairosflow.ai/ont/bsp/cost-accounting> ;
+    owl:imports <https://www.kairosflow.ai/ont/bsp/revenue-yield> .

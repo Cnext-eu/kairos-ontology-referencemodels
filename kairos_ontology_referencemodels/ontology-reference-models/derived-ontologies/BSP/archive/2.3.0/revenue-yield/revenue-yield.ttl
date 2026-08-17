@@ -1,0 +1,340 @@
+@prefix : <https://www.kairosflow.ai/ont/bsp/revenue-yield#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/bsp/revenue-yield> a owl:Ontology ;
+    dcterms:title "Kairos BSP Revenue & Yield Domain Ontology" ;
+    dcterms:description """Revenue management and yield analytics domain for logistics and transport companies.
+
+    This module defines classes for revenue tracking, yield-per-unit analysis,
+    load factor measurement, and profitability by scope. It provides the semantic
+    foundation for:
+    - Revenue attribution to services, voyages, routes, and customers
+    - Yield metrics (revenue per TEU, per tonne-km, per move)
+    - Capacity utilization and load factor
+    - Rate card management and pricing economics
+    - Contribution margin and profitability analysis
+
+    Designed for logistics operational finance — complements BSP/Financial (which
+    covers invoicing) and BSP/Cost-Accounting (which covers cost) with the revenue
+    and margin perspective.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-22"^^xsd:date ;
+    dcterms:modified "2026-09-17"^^xsd:date ;
+    owl:versionInfo "2.3.0" ;
+    dcterms:source "Industry Practice, UN/CEFACT CCL" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/> .
+
+#################################################################
+#    Revenue Classes
+#################################################################
+
+:RevenueItem a owl:Class ;
+    rdfs:label "Revenue Item" ;
+    rdfs:comment """A realized revenue line representing income from a specific service,
+    charge, or ancillary activity. Categories include: base freight revenue,
+    surcharge revenue, ancillary revenue (D&D, documentation, VAS).
+
+    Represents the income-side counterpart of BSP/Financial charges.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :revenueAmount ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:FreightRevenue a owl:Class ;
+    rdfs:label "Freight Revenue" ;
+    rdfs:comment """Revenue earned from the primary transport service (ocean freight,
+    road haulage, rail, air freight). The base revenue before surcharges.""" ;
+    rdfs:subClassOf :RevenueItem .
+
+:SurchargeRevenue a owl:Class ;
+    rdfs:label "Surcharge Revenue" ;
+    rdfs:comment """Revenue earned from surcharges applied on top of base freight
+    (BAF, CAF, THC, PSS, EBS, etc.). Tracked separately for yield analysis.""" ;
+    rdfs:subClassOf :RevenueItem .
+
+:AncillaryRevenue a owl:Class ;
+    rdfs:label "Ancillary Revenue" ;
+    rdfs:comment """Revenue from non-freight services: demurrage/detention charges,
+    documentation fees, VAS (value-added services), storage, etc.""" ;
+    rdfs:subClassOf :RevenueItem .
+
+#################################################################
+#    Yield and Utilization Classes
+#################################################################
+
+:RevenuePerUnit a owl:Class ;
+    rdfs:label "Revenue Per Unit" ;
+    rdfs:comment """A calculated yield metric expressing revenue relative to a transport unit.
+    Common units: per TEU, per FEU, per tonne-km, per CBM, per move, per slot.
+
+    The primary KPI for yield management in liner shipping and logistics.""" .
+
+:LoadFactor a owl:Class ;
+    rdfs:label "Load Factor" ;
+    rdfs:comment """A utilization measure expressing the ratio of capacity used to capacity
+    available. Expressed as percentage (e.g., 85% load factor on a voyage).
+
+    Calculated at voyage, vessel, route, or service-loop level. Critical for
+    yield optimization and network planning.""" .
+
+:CapacityUtilization a owl:Class ;
+    rdfs:label "Capacity Utilization" ;
+    rdfs:comment """Detailed capacity measurement showing slots/TEU filled vs available,
+    weight utilization, and volume utilization for a service or asset.
+
+    ISO 20197-1:2024 BSP: CapacityUtilization — granular utilization metrics.
+
+    Properties:
+    - slotUtilizationPercentage: percentage of available slots/TEU filled (0–100).
+    - weightUtilizationPercentage: percentage of available weight capacity used (0–100).
+    - volumeUtilizationPercentage: percentage of available volume capacity used (0–100).""" .
+
+#################################################################
+#    Pricing and Rate Card
+#################################################################
+
+:RateCard a owl:Class ;
+    rdfs:label "Rate Card" ;
+    rdfs:comment """A structured pricing schedule defining rates for transport services
+    by trade lane, equipment type, commodity, and validity period.
+
+    Distinct from TariffSchedule (BSP/Financial) which is the published tariff —
+    RateCard represents the commercial pricing offered to specific customer
+    segments or contract tiers.""" .
+
+:SpotRate a owl:Class ;
+    rdfs:label "Spot Rate" ;
+    rdfs:comment """A one-time freight rate for a specific shipment, not bound to a long-term
+    contract. Reflects current market conditions.""" ;
+    rdfs:subClassOf :RateCard .
+
+:ContractRate a owl:Class ;
+    rdfs:label "Contract Rate" ;
+    rdfs:comment """A freight rate agreed under a long-term service contract (typically annual).
+    Provides volume commitment in exchange for rate stability.""" ;
+    rdfs:subClassOf :RateCard .
+
+#################################################################
+#    Profitability Classes
+#################################################################
+
+:ContributionMargin a owl:Class ;
+    rdfs:label "Contribution Margin" ;
+    rdfs:comment """Revenue minus variable costs for a specific scope, before fixed-cost
+    allocation. Shows the contribution of a voyage, route, customer, or
+    trade lane to covering overhead and generating profit.
+
+    Key decision metric for yield management and network optimization.""" .
+
+:ProfitabilityScope a owl:Class ;
+    rdfs:label "Profitability Scope" ;
+    rdfs:comment """The entity or dimension for which profitability is measured.
+    Examples: a specific voyage, a trade route, a customer, a lane,
+    a service loop, or a vessel.
+
+    Enables multi-dimensional P&L analysis.""" .
+
+:YieldAnalysis a owl:Class ;
+    rdfs:label "Yield Analysis" ;
+    rdfs:comment """An aggregated yield calculation combining revenue, cost, utilization,
+    and margin for a scope and period. The top-level analytics entity
+    linking revenue, cost-to-serve, and profitability.""" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasRevenueItem a owl:ObjectProperty ;
+    rdfs:label "has revenue item" ;
+    rdfs:comment "Relates a shipment, booking, or scope to its revenue items." ;
+    rdfs:domain :ProfitabilityScope ;
+    rdfs:range :RevenueItem .
+
+:hasRevenuePerUnit a owl:ObjectProperty ;
+    rdfs:label "has revenue per unit" ;
+    rdfs:comment "Relates a scope to its calculated yield metric." ;
+    rdfs:domain :ProfitabilityScope ;
+    rdfs:range :RevenuePerUnit .
+
+:hasLoadFactor a owl:ObjectProperty ;
+    rdfs:label "has load factor" ;
+    rdfs:comment "Relates a voyage, vessel, or route to its load factor." ;
+    rdfs:domain :ProfitabilityScope ;
+    rdfs:range :LoadFactor .
+
+:hasContributionMargin a owl:ObjectProperty ;
+    rdfs:label "has contribution margin" ;
+    rdfs:comment "Relates a profitability scope to its contribution margin calculation." ;
+    rdfs:domain :ProfitabilityScope ;
+    rdfs:range :ContributionMargin .
+
+:hasYieldAnalysis a owl:ObjectProperty ;
+    rdfs:label "has yield analysis" ;
+    rdfs:comment "Relates a scope to its yield analysis." ;
+    rdfs:domain :ProfitabilityScope ;
+    rdfs:range :YieldAnalysis .
+
+:measuredFor a owl:ObjectProperty ;
+    rdfs:label "measured for" ;
+    rdfs:comment "Relates a metric to the profitability scope it measures." ;
+    rdfs:domain :RevenuePerUnit ;
+    rdfs:range :ProfitabilityScope .
+
+:appliesRateCard a owl:ObjectProperty ;
+    rdfs:label "applies rate card" ;
+    rdfs:comment "Relates a booking or shipment to the rate card used for pricing." ;
+    rdfs:domain :RevenueItem ;
+    rdfs:range :RateCard .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:revenueAmount a owl:DatatypeProperty ;
+    rdfs:label "revenue amount" ;
+    rdfs:comment "Monetary revenue amount." ;
+    rdfs:domain :RevenueItem ;
+    rdfs:range xsd:decimal .
+
+:revenueCategory a owl:DatatypeProperty ;
+    rdfs:label "revenue category" ;
+    rdfs:comment "Classification: FREIGHT, SURCHARGE, ANCILLARY, D_AND_D, DOCUMENTATION, VAS." ;
+    rdfs:domain :RevenueItem ;
+    rdfs:range xsd:string .
+
+:yieldPerUnit a owl:DatatypeProperty ;
+    rdfs:label "yield per unit" ;
+    rdfs:comment "Calculated revenue per transport unit." ;
+    rdfs:domain :RevenuePerUnit ;
+    rdfs:range xsd:decimal .
+
+:yieldUnit a owl:DatatypeProperty ;
+    rdfs:label "yield unit" ;
+    rdfs:comment "Transport unit denominator (e.g., TEU, FEU, TONNE_KM, CBM, MOVE, SLOT)." ;
+    rdfs:domain :RevenuePerUnit ;
+    rdfs:range xsd:string .
+
+:loadFactorPercentage a owl:DatatypeProperty ;
+    rdfs:label "load factor percentage" ;
+    rdfs:comment "Utilization as percentage (0-100)." ;
+    rdfs:domain :LoadFactor ;
+    rdfs:range xsd:decimal .
+
+:capacityAvailable a owl:DatatypeProperty ;
+    rdfs:label "capacity available" ;
+    rdfs:comment "Total available capacity in TEU or other unit." ;
+    rdfs:domain :LoadFactor ;
+    rdfs:range xsd:decimal .
+
+:capacityUsed a owl:DatatypeProperty ;
+    rdfs:label "capacity used" ;
+    rdfs:comment "Actual capacity utilized in TEU or other unit." ;
+    rdfs:domain :LoadFactor ;
+    rdfs:range xsd:decimal .
+
+:marginAmount a owl:DatatypeProperty ;
+    rdfs:label "margin amount" ;
+    rdfs:comment "Contribution margin amount (revenue - variable costs)." ;
+    rdfs:domain :ContributionMargin ;
+    rdfs:range xsd:decimal .
+
+:marginPercentage a owl:DatatypeProperty ;
+    rdfs:label "margin percentage" ;
+    rdfs:comment "Contribution margin as percentage of revenue." ;
+    rdfs:domain :ContributionMargin ;
+    rdfs:range xsd:decimal .
+
+:scopeType a owl:DatatypeProperty ;
+    rdfs:label "scope type" ;
+    rdfs:comment "Type of profitability scope: VOYAGE, ROUTE, CUSTOMER, LANE, SERVICE_LOOP, VESSEL, TRADE." ;
+    rdfs:domain :ProfitabilityScope ;
+    rdfs:range xsd:string .
+
+:scopeIdentifier a owl:DatatypeProperty ;
+    rdfs:label "scope identifier" ;
+    rdfs:comment "Business identifier of the scope (e.g., voyage number, route code, customer ID)." ;
+    rdfs:domain :ProfitabilityScope ;
+    rdfs:range xsd:string .
+
+:totalRevenue a owl:DatatypeProperty ;
+    rdfs:label "total revenue" ;
+    rdfs:comment "Total revenue for the yield analysis scope and period." ;
+    rdfs:domain :YieldAnalysis ;
+    rdfs:range xsd:decimal .
+
+:totalVariableCost a owl:DatatypeProperty ;
+    rdfs:label "total variable cost" ;
+    rdfs:comment "Total variable cost for the yield analysis scope and period." ;
+    rdfs:domain :YieldAnalysis ;
+    rdfs:range xsd:decimal .
+
+:netYield a owl:DatatypeProperty ;
+    rdfs:label "net yield" ;
+    rdfs:comment "Net yield (revenue minus variable cost) per unit." ;
+    rdfs:domain :YieldAnalysis ;
+    rdfs:range xsd:decimal .
+
+:period a owl:DatatypeProperty ;
+    rdfs:label "period" ;
+    rdfs:comment "Time period for the metric (e.g., 2026-Q1, 2026-03, VOYAGE-2026-001)." ;
+    rdfs:domain :YieldAnalysis ;
+    rdfs:range xsd:string .
+
+:currency a owl:DatatypeProperty ;
+    rdfs:label "currency" ;
+    rdfs:comment "ISO 4217 currency code." ;
+    rdfs:domain :RevenueItem ;
+    rdfs:range xsd:string .
+
+:rateAmount a owl:DatatypeProperty ;
+    rdfs:label "rate amount" ;
+    rdfs:comment "Rate per unit on the rate card." ;
+    rdfs:domain :RateCard ;
+    rdfs:range xsd:decimal .
+
+:rateBasis a owl:DatatypeProperty ;
+    rdfs:label "rate basis" ;
+    rdfs:comment "Unit basis for rate (e.g., PER_TEU, PER_FEU, PER_TONNE, W/M)." ;
+    rdfs:domain :RateCard ;
+    rdfs:range xsd:string .
+
+:validFrom a owl:DatatypeProperty ;
+    rdfs:label "valid from" ;
+    rdfs:comment "Start date of rate card validity." ;
+    rdfs:domain :RateCard ;
+    rdfs:range xsd:date .
+
+:validTo a owl:DatatypeProperty ;
+    rdfs:label "valid to" ;
+    rdfs:comment "End date of rate card validity." ;
+    rdfs:domain :RateCard ;
+    rdfs:range xsd:date .
+
+#################################################################
+#    Datatype Properties — Capacity Utilization (BSP 2.3.0)
+#    Backed by ISO 20197-1:2024 BSP
+#################################################################
+
+:slotUtilizationPercentage a owl:DatatypeProperty ;
+    rdfs:label "slot utilization percentage" ;
+    rdfs:comment "Percentage of available slots/TEU filled (0–100). ISO 20197-1:2024 BSP: CapacityUtilization.slotPercentage." ;
+    rdfs:domain :CapacityUtilization ;
+    rdfs:range xsd:decimal .
+
+:weightUtilizationPercentage a owl:DatatypeProperty ;
+    rdfs:label "weight utilization percentage" ;
+    rdfs:comment "Percentage of available weight capacity used (0–100). ISO 20197-1:2024 BSP: CapacityUtilization.weightPercentage." ;
+    rdfs:domain :CapacityUtilization ;
+    rdfs:range xsd:decimal .
+
+:volumeUtilizationPercentage a owl:DatatypeProperty ;
+    rdfs:label "volume utilization percentage" ;
+    rdfs:comment "Percentage of available volume capacity used (0–100). ISO 20197-1:2024 BSP: CapacityUtilization.volumePercentage." ;
+    rdfs:domain :CapacityUtilization ;
+    rdfs:range xsd:decimal .
