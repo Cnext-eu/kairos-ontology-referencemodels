@@ -5,6 +5,152 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.35.0] - 2026-08-18
+
+> Ships together with **1.34.0** below, which was never tagged separately — both
+> archetype expansions land in the `v1.35.0` release. Read the 1.34.0 section for the
+> `freight-forwarder` half of this work.
+
+### Added
+
+- **`unit-load-carrier` gets the same maximal-coverage treatment as the forwarder in
+  1.34.0** — 29 → **51 modules**, 174 → **288 core concepts** (45 required, 98
+  recommended, 145 optional). The sector spans a slot-buying road haulier and a ferry
+  operator running its own tonnage under ISM, ISPS and MLC; the archetype now declares
+  the union and four new scope axes narrow it per client.
+
+  The gh#104-shaped defect here was **party**: the archetype declared
+  `bsp/financial#Invoice` but had no anchor for the party that invoice is addressed to.
+  `mmt/party#TransportParty` carries the transport identity; nothing carried the durable
+  commercial counterparty a contract is held against — which is routinely a party that
+  never touches the trailer. `bsp/party` is now **required**, contributing `TradeParty`,
+  `TradePartyRoleAssignment` and `PartyRoleCode`.
+
+  22 modules are new. Required: `bsp/party`. Recommended: `bsp/commercial`, `wco/party`,
+  `wco/documents`, `wco/locations`, `imo/locations`, `imo/crew-seafarer`, `tic/events`.
+  Optional: `imo/certificates-surveys`, `imo/maritime-security`, `imo/environmental`,
+  `imo/party`, `tic/party`, `tic/automotive-services`, `tic/reefer-monitoring`,
+  `mmt/route-network`, `bsp/documents`, `bsp/compliance`, `bsp/reference-data`, and the
+  three TAF TSI rail modules the `modes-served` axis already named.
+
+- **The accompanying driver has an anchor.** Accompanied traffic is constitutive of this
+  archetype — its `description` has said so since 1.13.0 — but the driver crossing with
+  the trailer had no class: not cargo, not crew, and no passenger manifest module in
+  scope. `imo/crew-seafarer#Passenger` and `PassengerList` close it. A driver is a
+  `Passenger` on the sailing and a role assignment on the leg; no "AccompanyingDriver"
+  class was invented, and §21 of the discovery guide says so explicitly.
+
+- **Six new discovery-guide sections** (§20–§25): vessel statutory certificates and
+  security/environmental plans; crew, drivers and accompanied passengers; the commercial
+  cycle; trade documents, duty and shared reference data; the physical network route; and
+  rail intermodal grain-3 targets. The old §20/§21 (structural, naming) renumber to
+  §26/§27. Existing sections gain matching depth — the commercial trade party in §5,
+  maritime and customs geography in §6, vehicles/reefers/stevedores in §12, terminal-side
+  events in §13, declarant and transit documents in §16, and the billing, yield and cost
+  depth in §19.
+
+- **Four scope axes on this guide, two of them new to the pack.** `tonnage-model`
+  (`owns-operates` / `charters-in` / `slot-buyer`) and `unit-mix` (multi-valued, over
+  accompanied/unaccompanied trailers, swap bodies, cassettes, vehicles and reefer
+  trailers) are registered in `discovery/README.md`; `customs-role` and `financial-scope`
+  are reused unchanged from 1.34.0. `tonnage-model` is what makes the size honest: it
+  pre-seeds the entire vessel-operator regulatory block `not-applicable` for a slot buyer,
+  who should never be asked about a Declaration of Security.
+
+### Guarding against a second anchor for one thing
+
+The risk of adding 22 modules to an archetype this developed is duplicate anchors, and
+several were live: `wco/locations#BorderCrossing` against the required
+`dcsa/locations#BorderCrossing`, `imo/locations#Berth` against `tic/locations#Berth`,
+`tic/party#TerminalOperator` and `wco/party#CustomsBroker` against the `mmt/party` role
+overlays, and gate-in/gate-out in `tic/events` against `dcsa/events`. In every case the
+existing anchor stands and the competing class is **not** cited, with a YAML comment at
+the point a reader would look for it (authoring rule 3). `bsp/reference-data` is declared
+for `MonetaryAmount`, `Address` and `Country` only, on the same grounds as 1.34.0.
+
+Also newly commented as deliberate omissions: the DCSA container family, `dcsa/party`,
+`dcsa/transport-documents`, `dcsa/shipment-journey`, `dcsa/vessel-journey` (an aggregator
+that only imports the already-declared `dcsa/schedule` and owns no classes), `tic/kpi`
+(a single generic `KPI` class — too general to be a safe anchor), and
+`rail/rolling-stock` / `rail/train-running`.
+
+### What the new classes do not close
+
+`bsp/revenue-yield#CapacityUtilization` and `LoadFactor` are now cited for lane-metre
+fill, and `mmt/route-network#Route` for the physical lane. Neither closes a declared gap:
+the lane-metre **capacity** (§8) and the commercial **trade lane / market segment** (§19)
+remain open in `capability-coverage.yaml`, and the guide says so at both points. A hub
+mapping its trade lane onto `Route` has conflated a sales boundary with a geography.
+
+## [1.34.0] - 2026-08-18
+
+### Added
+
+- **`freight-forwarder` had zero financial concepts** (#104). The archetype declared 13
+  `ref_model_modules` and 52 `core_concepts`, none of them money — no charge, no rate, no
+  invoice, no tariff, no payment term — while `shipping-carrier` shipped 27/190 with ten
+  money concepts and `unit-load-carrier` 29/174 with fifteen. That is backwards: a
+  forwarder buys and resells transport, so cost-and-sell per shipment is *more* central to
+  it than to either carrier.
+
+  Measured against a live forwarder hub, three tables anchored on classes owned by the
+  `financial` domain, which the archetype did not import: a charge table carrying paired
+  cost and sell amounts (`bsp/financial#Charge`), an AR/AP document header
+  (`Invoice`), and its line table (`BillingDocumentLine`). Since the archetype controls
+  *conformance* — which concepts get a Stage 2 judgment and therefore enter the confirmed-
+  alias index — those tables could never be judged, tagged or modelled. They fell back to
+  lexical guessing. Alignment was never blocked; the *confirmed* anchor path was.
+
+  The fix goes past the filed defect. `freight-forwarder` now declares **36 modules and
+  203 core concepts**, the largest menu in the pack, because the forwarder is the
+  widest-scope archetype in it: five modes, customs filing, shipper CO₂ reporting, and a
+  resale margin. 23 modules are new — `bsp/financial` (**required**), `bsp/cost-accounting`,
+  `bsp/revenue-yield`, `bsp/commercial`, `dcsa/demurrage-detention`, `dcsa/locations`,
+  `dcsa/transport-call`, `mmt/events`, `imo/dangerous-goods` (recommended), and
+  `dcsa/schedule`, `dcsa/equipment`, `mmt/route-network`, `imo/vessel-registry`,
+  `bsp/documents`, `bsp/compliance`, `bsp/reference-data`, `wco/party`, `wco/documents`,
+  `wco/trade-facilitation`, `sustainability/carbon` and the three TAF TSI rail modules
+  (optional). `wco/customs` is promoted from `optional` to `recommended`.
+
+- **Discovery guide `§10 Charges, invoicing and margin` and `§11 Emissions reporting`.**
+  Without these the new concepts would enter the catalog and never be interviewed, which
+  leaves the defect half-closed: Stage 2 still produces no judgment for a charge table.
+  §10 asks the questions a paired cost/sell row, a governed charge code and a shared
+  billing line actually turn on. Existing sections gain the matching depth — quotation and
+  rate in §3, dangerous goods and container type in §6, itinerary locations, routes,
+  calls and cut-offs in §7, mode-neutral milestones in §8, and declarant/broker/importer
+  plus facilitation documents in §9.
+
+- **Two scope axes, `financial-scope` and `customs-role`**, registered in
+  `discovery/README.md` and given consequence tables in `freight-forwarder.md`. A 36-module
+  archetype is a *menu*, not a floor — the axes are what keep a two-mode port-to-port
+  agent's interview short by pre-seeding `not-applicable` for everything outside its
+  answers. `customs-role` promotes §9 Q1 from prose to an axis, since the answer decides an
+  entire module set rather than an attribute.
+
+### Why maximal rather than the three modules the issue asked for
+
+Archetype variation is expressed through `tier`, never through a forked catalog
+(`archetypes/README.md`, authoring rule 2). Adding only the three `bsp` financial modules
+would have closed the filed gap and left the neighbouring ones — quotation with no class to
+map to, ocean-only event classes for a road leg, no itinerary locations — to be found one
+issue at a time. Tiering carries the variation instead: 29 required, 56 recommended, 118
+optional.
+
+Deliberate omissions are now commented at the point a reader would expect them, per
+authoring rule 3: the whole `tic/*` family, vessel and box asset operations, and
+`sustainability/energy` (a forwarder reports emissions, it does not burn the fuel).
+`bsp/reference-data` is declared but only its `MonetaryAmount`, `Address` and `Country`
+classes are cited — citing its `Location` would give a hub two competing anchors for one
+thing, which the anchor-selection invariant forbids.
+
+### Known trade-off
+
+At 203 concepts this is the largest archetype in the pack and implies a longer Stage 2 run
+than either sibling. The mitigation is the design: `tier` plus five scope axes narrow it per
+client. If a real session proves too long, the correction is a tier demotion or another
+axis — not a forked "lean forwarder".
+
 ## [1.33.1] - 2026-08-17
 
 ### Fixed

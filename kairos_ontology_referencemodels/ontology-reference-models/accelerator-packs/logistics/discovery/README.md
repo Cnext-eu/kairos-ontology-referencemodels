@@ -113,6 +113,10 @@ for a carrier.
 | `modes-served` **(multi)** | `ocean` `road` `rail` `air` `barge` | Which mode-bearing leg subclasses and which mode-bound reservation standards the hub needs |
 | `geographic-scope` | `port-to-port` `door-to-door` `both` | Whether pre/on-carriage, inland legs and warehouse locations are in the model at all |
 | `service-model` **(multi)** | `1pl` `2pl` `3pl` `4pl` | Whether the order grain (grain 1) is required, and whether asset modules apply |
+| `financial-scope` | `charges-only` `full-billing` `margin-management` | How much of the cost / revenue apparatus comes with the charge line — whether the hub holds only what it charges, the full billing document set, or cost and sell against one job |
+| `customs-role` | `lodges` `prepares` `tracks-only` | Whether the customs party, document and facilitation modules are in the model at all, or the declaration reduces to a status reference |
+| `tonnage-model` | `owns-operates` `charters-in` `slot-buyer` | Whether the vessel-operator regulatory block (statutory certificates, ship security, MARPOL plans, crew) applies at all, or the carrier only buys capacity on someone else's sailing |
+| `unit-mix` **(multi)** | `accompanied-trailers` `unaccompanied-trailers` `swap-bodies` `cassettes` `vehicles` `reefer-trailers` | Which unit classes roll onto the deck — selects the automotive, reefer-monitoring and passenger-manifest modules. Not a mode axis: how a unit travels stays on the leg |
 
 Mode targets are **not** restated per guide. They are cited from
 [`multimodal-order-leg` `pattern.yaml`](../../../blueprints/patterns/multimodal-order-leg/pattern.yaml)

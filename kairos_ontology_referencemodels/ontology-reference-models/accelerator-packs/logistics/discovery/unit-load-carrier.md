@@ -18,14 +18,17 @@ interview script by a data architect or business analyst.
 
 ### Interview flow
 
-1. Walk the SME through §1–§19 (business areas). For each section:
+1. Answer the **Scope profile** below *first*. It selects which modules
+   the hub needs and pre-seeds outcomes for the ones it does not, so
+   §1–§25 stay short.
+2. Walk the SME through §1–§25 (business areas). For each section:
    - Read **Why it matters**.
    - Ask the **Questions**.
    - For every URI in **Maps to**, record an outcome code (see below)
      plus a free-text note.
-2. Walk through §20 (Structural & lifecycle relationships). These are
+3. Walk through §26 (Structural & lifecycle relationships). These are
    the cardinality and lifecycle decisions the ontology cannot infer.
-3. Walk through §21 (Naming & identifier conventions). These determine
+4. Walk through §27 (Naming & identifier conventions). These determine
    whether outcomes are `conforms` vs `conforms-with-rename`.
 
 ### Outcome codes (shared)
@@ -79,8 +82,15 @@ consequences are below.
 This archetype starts from a narrower position than the other two: the
 ferry/ro-ro leg bookended by road haulage is constitutive of it, so
 `mmt/inland-transport` is already **required** and the door-to-door answer
-is effectively fixed. The axes here mostly decide the *edges* — rail
+is effectively fixed. The first three axes mostly decide the *edges* — rail
 intermodal, terminal depth, and whether haulage is own-account.
+
+The last four decide considerably more than edges, and were added in 1.35.0
+alongside the modules they select. `unit-load-carrier` declares the largest
+module menu in the pack (51 modules) because the sector spans a slot-buying
+road haulier and a ferry operator running its own tonnage under ISM, ISPS
+and MLC. That is a *menu*, not a floor: without these axes the second
+operator's interview would be inflicted on the first.
 
 #### `modes-served` (multi-valued)
 
@@ -96,7 +106,7 @@ Mode targets are cited from
 | no barge | — | `mmt/inland-transport#BargeLeg`, `mmt/transport-means#BargeVessel` |
 | `air` | — **not applicable to this archetype**; if the client genuinely sells air, it is forwarding, not unit-load carriage — see `freight-forwarder` | — |
 
-The accompanied / unaccompanied distinction (§1, §20) is **not** a mode.
+The accompanied / unaccompanied distinction (§1, §21, §26) is **not** a mode.
 It is a property of how the trailer travels on the ferry leg, and belongs
 on the leg and the equipment — never as a fourth branch of a mode axis.
 Same category error the pattern rejects for project cargo.
@@ -123,6 +133,94 @@ should be restarted against it.
 
 Own-account versus subcontracted is asked again in §5 in business terms; if
 the answers differ, the Scope profile is wrong and must be corrected first.
+
+#### `tonnage-model`
+
+> *The ferry capacity you sell — do you own and operate the vessel, charter
+> it in, or buy slots on someone else's sailing?*
+> Allowed values: `owns-operates` `charters-in` `slot-buyer`
+
+This axis decides an entire regulatory block. A carrier operating its own
+ro-ro tonnage holds ISM, ISPS and MLC certificates, files MARPOL plans and
+employs crew; a slot buyer holds none of them and should never be asked
+about any of it.
+
+| Answer | Modules promoted / added | Pre-seed `not-applicable` |
+|---|---|---|
+| `owns-operates` | `https://www.kairosflow.ai/ont/imo/certificates-surveys`, `https://www.kairosflow.ai/ont/imo/maritime-security`, `https://www.kairosflow.ai/ont/imo/environmental` → **recommended**; `https://www.kairosflow.ai/ont/imo/party` → **recommended** (`ShipOperator`, `MasterOfVessel`); `https://www.kairosflow.ai/ont/imo/crew-seafarer` → **required** | — |
+| `charters-in` | `https://www.kairosflow.ai/ont/imo/party` → **recommended** (`ShipOwner` vs `ShipManager` vs operator must be distinguishable) | `imo/certificates-surveys` where the owner retains them — confirm, do not assume |
+| `slot-buyer` | — | all of `https://www.kairosflow.ai/ont/imo/certificates-surveys`, `https://www.kairosflow.ai/ont/imo/maritime-security`, `https://www.kairosflow.ai/ont/imo/environmental`; `imo/crew-seafarer#CrewList`, `CrewMember`, `Seafarer`, `CertificateOfCompetency` |
+
+Note that `imo/crew-seafarer` is **not** fully pre-seeded even for a slot
+buyer — the passenger half survives, because an accompanying driver is on
+the sailing manifest whoever owns the ship. See `unit-mix` below.
+
+#### `unit-mix` (multi-valued)
+
+> *What actually rolls onto the deck?*
+> Allowed values: `accompanied-trailers` `unaccompanied-trailers`
+> `swap-bodies` `cassettes` `vehicles` `reefer-trailers`
+
+| Answer | Modules promoted / added | Pre-seed `not-applicable` |
+|---|---|---|
+| `accompanied-trailers` | `https://www.kairosflow.ai/ont/imo/crew-seafarer` → **required** (`Passenger`, `PassengerList` — the driver is on the manifest) | — |
+| `unaccompanied-trailers` | defaults apply unchanged — the handover cardinality in §26 is where this lands | — |
+| `swap-bodies` / `cassettes` | defaults apply unchanged (`mmt/equipment#SwapBody` is already required) | — |
+| `vehicles` — self-propelled units as cargo | `https://www.kairosflow.ai/ont/tic/automotive-services` → **recommended** (`VehicleUnit`, `VIN`, `DamageReport`) | — |
+| `reefer-trailers` | `https://www.kairosflow.ai/ont/tic/reefer-monitoring` → **recommended**; `tic/events` reefer plug/alarm events → `recommended` | — |
+| no `vehicles` | — | all of `https://www.kairosflow.ai/ont/tic/automotive-services` |
+| no `reefer-trailers` | — | all of `https://www.kairosflow.ai/ont/tic/reefer-monitoring`; `tic/events#ReeferPlugInEvent`, `ReeferPlugOutEvent`, `ReeferAlarmEvent`; `mmt/equipment#TemperatureSettingInstructions` |
+
+**This axis is not a mode axis, and accompanied/unaccompanied is still not a
+mode.** It selects which *unit* classes the hub needs. How the trailer
+travels stays a property of the leg and the equipment, exactly as the
+`modes-served` note above says — what changes is only that an accompanied
+operation additionally needs a passenger manifest, which is a module the
+archetype must declare for the axis to promote.
+
+#### `customs-role`
+
+> *Do you lodge declarations yourself, prepare the data for a broker, or
+> only track someone else's filing?*
+> Allowed values: `lodges` `prepares` `tracks-only`
+
+Defined once in [`README.md`](./README.md#scope-axes) and shared with
+`freight-forwarder`. `wco/customs` is already **required** in this archetype
+and this axis never demotes it (rule 2) — a short-sea carrier crossing a
+customs border has declarations whatever its role. What the axis decides is
+the party, document and place modules around them.
+
+| Answer | Modules promoted / added | Pre-seed `not-applicable` |
+|---|---|---|
+| `lodges` | `https://www.kairosflow.ai/ont/wco/party`, `https://www.kairosflow.ai/ont/wco/documents`, `https://www.kairosflow.ai/ont/wco/locations` → **required** | — |
+| `prepares` | `https://www.kairosflow.ai/ont/wco/party` → **recommended** (declarant vs broker must be distinguishable) | — |
+| `tracks-only` | — | `wco/customs#CustomsValue`, `DutyCalculation`; most of `https://www.kairosflow.ai/ont/wco/documents` and `https://www.kairosflow.ai/ont/wco/locations` |
+
+A carrier running its own NCTS transit movements answers `lodges` even if it
+outsources import entries — record the answer per declaration type, not once
+for the business.
+
+#### `financial-scope`
+
+> *Does the system hold what you charge, what you were charged, or both
+> against the same trip?*
+> Allowed values: `charges-only` `full-billing` `margin-management`
+
+Also defined once in [`README.md`](./README.md#scope-axes). The financial
+modules are `optional` in this archetype rather than `required` as they are
+for the forwarder — a unit-load carrier commonly bills from a separate
+finance system — so here the axis promotes rather than trims.
+
+| Answer | Modules promoted / added | Pre-seed `not-applicable` |
+|---|---|---|
+| `charges-only` | `https://www.kairosflow.ai/ont/bsp/financial` → `recommended` | `https://www.kairosflow.ai/ont/bsp/cost-accounting`, `https://www.kairosflow.ai/ont/bsp/revenue-yield` |
+| `full-billing` | `https://www.kairosflow.ai/ont/bsp/financial` → **required**; `https://www.kairosflow.ai/ont/bsp/commercial` → **recommended** | — |
+| `margin-management` — own-account vs subcontracted cost held against the same trip as the revenue | `https://www.kairosflow.ai/ont/bsp/financial`, `https://www.kairosflow.ai/ont/bsp/cost-accounting`, `https://www.kairosflow.ai/ont/bsp/revenue-yield` → **required** | — |
+
+`margin-management` is the common answer for an operator running own-account
+haulage alongside subcontractors, because comparing the two *is* the
+allocation question §19 asks. If the SME says `charges-only` but §5 said
+own-account and subcontracted both exist, one of the two answers is wrong.
 
 ---
 
@@ -268,17 +366,33 @@ same decision rather than maintaining two parallel party hierarchies.
    given the short-sea customs exposure (§16)?
 5. Do you track terminal-operator relationships separately for the ro-ro
    terminal at each end of the crossing?
+6. Is the party you invoice the same record as the party whose trailer you
+   moved? Can they differ — a haulier customer billing through a group
+   holding, a forwarder booking on behalf of its own shipper?
+7. Is there one customer master independent of transaction roles, and does a
+   role carry validity dates, branch scope or credit state?
 
 **Maps to.**
 `mmt/party#Carrier`, `Consignor`, `Consignee`, `TransportParty`,
 `FreightForwarder`, `NotifyParty`, `CustomsBroker`, `TerminalOperator`,
-`WarehouseOperator`.
+`WarehouseOperator`,
+`bsp/party#TradeParty`, `TradePartyRoleAssignment`, `PartyRoleCode`.
 
 **Outcome guidance.** Two separate registries for own-account vs.
 subcontracted ⇒ `deviates` — negotiate a merge onto one `Carrier`/
 `InlandCarrier` party with an attribute discriminator before mapping, per
 the archetype's own design decision (see the YAML §5 comment). No warehouse
 operations ⇒ `WarehouseOperator` is `not-applicable`.
+
+Q6 and Q7 are the commercial identity, added in 1.35.0 with `bsp/party`.
+Until then this archetype had a transport party and an invoice with no owned
+anchor for the party that invoice is addressed to — the same shape of gap
+gh#104 filed against the forwarder. A hub where the invoiced party is only a
+field on the booking, with no durable master behind it, is `partial`: the
+booking is right, the counterparty has no identity to carry credit terms,
+contracts or a group hierarchy. Note this is still the
+`party-and-role-management` gap for the *role* half — `TradeParty` gives the
+durable identity, not the qualified role assignment the pattern describes.
 
 ---
 
@@ -299,16 +413,35 @@ sector — more so than the deep-sea port network that dominates
    between loads?
 4. Do you distinguish road terminals used purely for tractor/trailer
    marshalling from the ro-ro terminal itself?
+5. Do your crossings enter an emission control area, and is that a modelled
+   place or an assumption baked into a fuel calculation?
+6. Do you hold the customs office of departure and destination as locations,
+   distinct from the border crossing itself?
+7. Do you use bonded warehouses, free zones or other customs-controlled
+   areas as part of a normal movement?
 
 **Maps to.**
 `dcsa/locations#Port`, `Terminal`, `BorderCrossing`, `Depot`,
-`mmt/locations#Location`, `TransportLocation`, `RoadTerminal`, `Warehouse`.
+`mmt/locations#Location`, `TransportLocation`, `RoadTerminal`, `Warehouse`,
+`imo/locations#EmissionControlArea`, `MaritimeLocation`, `PilotBoardingPlace`,
+`Anchorage`, `PortApproach`,
+`wco/locations#CustomsOffice`, `CustomsControlledArea`, `BondedWarehouse`,
+`FreeZone`, `DesignatedExportPlace`.
 
 **Outcome guidance.** Border crossing co-located with the terminal (common
 for a dedicated ro-ro-only port) ⇒ `BorderCrossing` is
 `conforms-with-rename` onto the same physical record as `Terminal`, not a
 separate location. No dedicated depot network ⇒ `Depot` is `partial` (ad
 hoc parking, not a managed facility).
+
+On Q5, an ECA surcharge appearing on an invoice with no modelled area behind
+it is `partial` — the cost is reconstructable, the geography that caused it
+is not, and a route change cannot be costed in advance. On Q6, note that
+`Port`, `Terminal`, `Berth` and `BorderCrossing` each have exactly one anchor
+in this archetype (`dcsa/locations`, and `tic/locations#Berth` in §12); the
+`imo/locations` and `wco/locations` classes above deliberately do **not**
+restate them. If the hub's customs office is the same record as its border
+crossing, that is `conforms-with-rename`, not a second location.
 
 ---
 
@@ -429,7 +562,7 @@ a false start where the interview drifts toward container-shaped questions
 1. What equipment types are in your fleet: standard trailer, curtain-sider,
    reefer trailer, swap body, cassette?
 2. Do you use ISO 6346-style container numbering for any unit, or does your
-   fleet use a proprietary trailer-fleet numbering scheme (see §21)?
+   fleet use a proprietary trailer-fleet numbering scheme (see §27)?
 3. Do you carry any genuinely containerised equipment on chassis as a
    minority of the fleet (mixed-fleet operators)?
 4. Do you seal trailers for customs/security purposes, and if so, at what
@@ -498,17 +631,35 @@ crane operation.
    port call?
 3. Do you record individual roll-on / roll-off moves per trailer, or only
    aggregate counts per sailing?
+4. Do you carry self-propelled vehicles as cargo on any deck? If so, is the
+   unit identified by VIN, and do you record condition on and off?
+5. Do you carry reefer trailers? Is the deck plug position, the setpoint and
+   the alarm history held anywhere?
+6. Is the stevedore a distinct counterparty from the terminal operator?
 
 **Maps to.**
 `tic/terminal-infrastructure#TerminalTractor`,
 `tic/handling-operations#CarrierVisit`, `HorizontalMove`, `Move`,
-`tic/locations#Berth`, `QuaySide`.
+`tic/locations#Berth`, `QuaySide`,
+`tic/automotive-services#VehicleUnit`, `VIN`, `DamageReport`,
+`VehicleStorage`, `VehicleReleaseStatus`, `PDI`,
+`tic/reefer-monitoring#ReeferMonitoring`, `ReeferSlot`, `ReeferRack`,
+`tic/party#TerminalParty`, `Stevedore`.
 
 **Outcome guidance.** No terminal-tractor tracking (driver drives the
 trailer on/off directly) ⇒ `TerminalTractor` is `not-applicable`. Only
 aggregate counts per sailing ⇒ `HorizontalMove` is `partial` (the class
 exists conceptually in your operation but is not instantiated per unit in
 your system).
+
+Q4 and Q5 restate the `unit-mix` axis — if the answers differ, the axis is
+wrong and must be corrected first, because the module set depends on it. A
+vehicle carried as an anonymous unit count with no VIN is `partial`: damage
+liability on a car deck is settled per unit, and an aggregate count cannot
+support a claim. A reefer trailer whose setpoint lives only on the driver's
+paperwork is `partial` too — the temperature commitment is real, the record
+of meeting it is not. Note that `TerminalOperator` is anchored in §5 on the
+`mmt/party` overlay; `tic/party` adds the stevedore, not a second operator.
 
 ---
 
@@ -525,12 +676,17 @@ milestones a shipper can see for their trailer's crossing.
    given the sector's short-sea customs exposure?
 3. Are gate-in/gate-out events recorded against the trailer, the tractor,
    or both?
+4. Do you receive terminal-side events — yard moves, damage detected on the
+   deck or in the yard, reefer plug-in and alarms — as events, or only as
+   status fields and exception emails?
 
 **Maps to.**
 `mmt/events#ArrivalEvent`, `DepartureEvent`, `PickupEvent`, `DeliveryEvent`,
 `LoadingEvent`, `DischargeEvent`, `CustomsClearanceEvent`,
 `dcsa/events#TransportEvent`, `EquipmentEvent`, `GateInEvent`,
-`GateOutEvent`, `BorderCrossingEvent`, `CustomsEvent`.
+`GateOutEvent`, `BorderCrossingEvent`, `CustomsEvent`,
+`tic/events#TerminalEvent`, `YardMoveEvent`, `DamageDetectedEvent`,
+`ReeferPlugInEvent`, `ReeferPlugOutEvent`, `ReeferAlarmEvent`.
 
 **Outcome guidance.** `BorderCrossingEvent` and `CustomsEvent` are tiered
 `required` in the archetype (unlike `shipping-carrier`, where they are
@@ -538,6 +694,13 @@ milestones a shipper can see for their trailer's crossing.
 not an edge case — if the SME reports these as `not-applicable`, treat that
 as a signal to re-confirm the sector fit before proceeding, not as a normal
 outcome.
+
+On Q4, the terminal-side classes are additive, not a second home for the
+same milestone: gate-in, gate-out, vessel load and discharge stay anchored on
+`dcsa/events` and `mmt/events` above, and `tic/events` supplies only what
+those two do not carry. A damage event that exists solely as a photo
+attachment and a free-text note is `partial` — the fact is captured, the
+liability chain (which move, whose custody, which unit) is not.
 
 ---
 
@@ -618,16 +781,31 @@ pre-arrival safety/security filings are routine here, not an edge case.
    for your shippers, or only pass through what the shipper provides?
 4. How many customs declarations are filed per crossing — one per trailer,
    one per sailing, or something else?
+5. Who is recorded as declarant on a transit movement, and is that
+   distinguishable from the broker who keyed it and the importer of record?
+6. Do you hold AEO status, and does it change how a movement is handled?
+7. Is the transit accompanying document (T1 / NCTS) a record in your system,
+   or a PDF the driver carries?
 
 **Maps to.**
+`wco/party#Declarant`, `AEOHolder`, `Importer`, `Exporter`, `FreightAgent`,
+`wco/documents#TransitDocument`, `SADForm`, `TIRCarnet`, `ATACarnet`,
+`ExportLicenseDocument`,
 `wco/customs#CustomsDeclaration`, `TransitDeclaration`, `ImportDeclaration`,
 `ExportDeclaration`, `EntryExitSummary`, `ICS2Reference`, `Filing`,
 `DeclarationStatus`, `CustomsProcedure`, `GoodsItem`, `TariffClassification`,
 `CustomsValue`, `PreferenceClaim`.
 
-**Outcome guidance.** Broker files everything on your behalf ⇒ most of
-`wco/customs#*` is `partial` (you hold a reference number, not the
-authoritative filing). If the SME reports zero customs exposure at all,
+**Outcome guidance.** Q2 and Q5 restate the `customs-role` axis — if the
+answers differ, the axis is wrong and must be corrected first. Broker files
+everything on your behalf ⇒ most of `wco/customs#*` is `partial` (you hold a
+reference number, not the authoritative filing). On a transit movement the
+carrier is routinely the declarant itself, so a hub with no declarant field
+distinct from the customer is `partial`, not `not-applicable` — the legal
+responsibility exists whether or not the system records it, and it is the
+`party-and-role-management` gap again. A transit document that exists only
+as a carried PDF (Q7) is `partial`: the movement cannot be discharged from
+the data, only from the paper. If the SME reports zero customs exposure at all,
 re-confirm the sector fit — a genuinely domestic-only unit-load operation
 with no border crossing is arguably better modelled as a generic road
 haulier, not this archetype.
@@ -709,6 +887,12 @@ CR-RM-07 §9.2.
    bespoke billing schema?
 
 **Maps to.**
+`bsp/financial#Charge`, `BillingDocumentLine`, `InvoiceLine`, `Surcharge`,
+`CreditNote`, `DebitNote`, `Payment`, `AgingBucket`,
+`bsp/revenue-yield#CapacityUtilization`, `LoadFactor`, `ContributionMargin`,
+`RevenuePerUnit`, `YieldAnalysis`, `SpotRate`, `RateCard`,
+`bsp/cost-accounting#CostCenter`, `CostPerUnit`, `CostToServe`,
+`CostVariance`, `OverheadAllocation`,
 `bsp/financial#FreightCharge`, `FreightRate`, `Invoice`, `PaymentTerms`,
 `bsp/revenue-yield#FreightRevenue`, `ProfitabilityScope`, `ContractRate`,
 `bsp/cost-accounting#TransportCostItem`, `CostAllocation`,
@@ -721,6 +905,29 @@ SME's actual lane-definition model (named lanes, geography-derived,
 customer-segment-derived) in the free-text note, and flag it for the
 blueprint layer rather than mapping it to an invented "TradeLane" class.
 
+**Questions (added in 1.35.0, with the billing and yield classes)**
+
+5. Is there one charge line carrying both a cost and a sell amount, or two
+   separate lines? Is the charge code a governed list or free text?
+6. Is the invoice line a record shared across invoice, credit note and debit
+   note, or a per-document-type line table?
+7. Do you report lane-metre fill per sailing, and against what — booked,
+   loaded, or revenue-earning metres?
+8. Is quoted subcontractor cost held alongside the invoiced actual, so the
+   variance is reconstructable?
+
+**Outcome guidance on the added questions.** A paired cost/sell row anchors
+on `bsp/financial#Charge` with `TransportCostItem` and `FreightRevenue` as
+the two sides and `ContributionMargin` as their difference — do not let the
+hub invent a `MarginLine` class. Free-text charge codes are `partial` and
+belong in the
+[`governed-code-list`](../../../blueprints/patterns/governed-code-list/pattern.md)
+backlog. On Q7, `CapacityUtilization` and `LoadFactor` are the closest real
+classes to lane-metre fill, and neither closes the lane-metre gap declared
+in §8 — the *measure* has an anchor, the lane-metre *capacity* still does
+not. Record which denominator the SME actually uses; three carriers will
+give three answers and each will call it "utilisation".
+
 **Outcome guidance.** Subcontracted costs tracked in a wholly separate
 ledger with no resource-type discriminator on a shared allocation record ⇒
 `CostAllocation` is `deviates` — this is precisely the collision CR-RM-07
@@ -732,7 +939,195 @@ by lane.
 
 ---
 
-## §20 Structural & lifecycle relationships
+## §20 Vessel statutory certificates, security & environmental plans
+
+**Why it matters.** Whether this section applies at all is decided by the
+`tonnage-model` axis, and the difference is an entire regulatory block. A
+carrier operating its own ro-ro tonnage holds ISM, ISPS and MLC
+certificates and files MARPOL plans; a slot buyer holds none of them.
+
+**Questions**
+1. Do you operate your own ro-ro tonnage, charter it in, or buy slots?
+2. If you operate: are statutory certificates and their survey/renewal dates
+   held in the same system as operations, or in a separate ship-management
+   system?
+3. Is the Declaration of Security at the ship/port interface a record, or a
+   form completed on paper at the terminal?
+4. Are MARPOL-required plans (SEEMP, ballast water, SOPEP, garbage) tracked
+   against the vessel with revision history?
+
+**Maps to.**
+`imo/certificates-surveys#StatutoryCertificate`, `DocumentOfCompliance`,
+`SafetyManagementCertificate`, `InternationalShipSecurityCertificate`,
+`MaritimeLabourCertificate`, `StatutorySurvey`,
+`imo/maritime-security#ShipSecurityPlan`, `DeclarationOfSecurity`,
+`PortFacilitySecurityPlan`,
+`imo/environmental#ShipEnergyEfficiencyManagementPlan`,
+`BallastWaterManagementPlan`, `ShipboardOilPollutionEmergencyPlan`,
+`GarbageManagementPlan`,
+`imo/party#ShipOperator`, `ShipOwner`, `ShipManager`, `MasterOfVessel`,
+`PortAuthority`, `MaritimeAgent`, `ClassificationSociety`.
+
+**Outcome guidance.** Q1 restates the `tonnage-model` axis; if the answers
+differ, the axis is wrong and must be corrected first. A slot buyer makes
+this whole section `not-applicable` — record that explicitly, because a
+blank section is indistinguishable from one nobody asked about. Certificates
+living only in a ship-management system the hub does not read is
+`not-applicable` for *this* hub with a note, not `partial`: the boundary is
+a real scoping decision, not a modelling shortfall. On a chartered-in
+vessel, confirm who holds each certificate rather than assuming the operator
+does — that split is the usual source of a wrong join later.
+
+---
+
+## §21 Crew, drivers and accompanied passengers
+
+**Why it matters.** Accompanied traffic is constitutive of this archetype,
+and the accompanying driver is neither cargo nor crew. On a ro-ro sailing
+they are carried on the passenger manifest — a legal obligation under
+passenger-registration rules, and the reason the driver has to be a modelled
+party at all rather than an attribute of the trailer.
+
+**Questions**
+1. Do you carry accompanying drivers, and are they recorded on a passenger
+   manifest per sailing?
+2. Is the driver linked to the trailer they accompanied, so the pair can be
+   reconstructed after the crossing?
+3. For unaccompanied traffic, who is recorded as taking custody at each end?
+4. If you operate your own tonnage: are crew lists and certificates of
+   competency held per sailing or per vessel?
+
+**Maps to.**
+`imo/crew-seafarer#Passenger`, `PassengerList`, `CrewList`, `CrewMember`,
+`Seafarer`, `CertificateOfCompetency`.
+
+**Outcome guidance.** There is no dedicated "accompanying driver" class and
+none should be invented — the driver is a `Passenger` on the sailing and a
+role assignment on the leg, which is the `qualified-role-assignment` pattern
+doing exactly what it exists for. A manifest held only as a headcount, with
+no link from driver to trailer (Q2), is `partial`: the sailing is
+auditable, the pairing is not, and neither a damage claim nor a driver-hours
+question can be answered from it. A pure unaccompanied operation makes
+`Passenger` and `PassengerList` `not-applicable` — and should have shown as
+`unaccompanied-trailers` only on the `unit-mix` axis.
+
+---
+
+## §22 Commercial cycle — enquiry, quotation, contracted rate
+
+**Why it matters.** What precedes the booking in §1. A contracted lane rate
+with a haulier or forwarder customer is this sector's normal commercial
+instrument and the spot quote is the exception — the reverse of a
+forwarder's shape.
+
+**Questions**
+1. Is a customer priced from a standing contract, a rate card, or a
+   per-enquiry quote? Can all three apply on the same lane?
+2. Does a quotation exist as a record before the booking, and is it retained
+   when it loses?
+3. Is the sellable service — this lane, this sailing frequency, this transit
+   time — a catalogue record, or implied by whatever gets booked?
+4. Are subcontracted haulage buys raised as purchase orders against the
+   haulier, or settled from the self-billed invoice alone?
+
+**Maps to.**
+`bsp/commercial#Quotation`, `SalesContract`, `RequestForQuotation`,
+`TransportService`, `CommercialTransaction`, `OrderLine`, `PurchaseOrder`,
+`bsp/revenue-yield#ContractRate`, `SpotRate`, `RateCard`.
+
+**Outcome guidance.** An agreed rate stored only as a number on the booking,
+with no reference to the agreement it came from, is `deviates`: contract and
+spot are different commercial objects and the booking cannot say which it
+was priced from — which makes both rate-leakage analysis and a contract
+renegotiation impossible to evidence. Quotations overwritten in place (Q2)
+are `partial`; win/loss is gone. No service catalogue (Q3) is `partial`, not
+`deviates` — most carriers of this size genuinely run without one, and
+saying so is a finding.
+
+---
+
+## §23 Trade documents, duty & shared reference data
+
+**Why it matters.** The paperwork travelling with the unit beyond the CMR,
+and the shared value types the rest of the model leans on.
+
+**Questions**
+1. Which commercial documents do you hold beyond the CMR — delivery note /
+   POD, packing list, certificate of origin, insurance certificate?
+2. Is proof of delivery a document, an event, or a signature image?
+3. Are duty and tax amounts held anywhere in your system, or entirely in the
+   broker's?
+4. Is every monetary amount currency-qualified at the point it is stored?
+
+**Maps to.**
+`bsp/documents#DeliveryNote`, `PackingList`, `CertificateOfOrigin`,
+`InsuranceCertificate`,
+`bsp/compliance#DutyTax`, `TariffClassification`, `TradeAgreement`,
+`RegulatoryRequirement`,
+`bsp/reference-data#MonetaryAmount`, `Address`, `Country`.
+
+**Outcome guidance.** POD as a signature image with no structured event or
+document behind it (Q2) is `partial` — the delivery happened, the claim
+window cannot be computed from the data. A bare decimal with the currency
+implied by the customer's country (Q4) is `deviates`: it breaks the moment a
+customer is invoiced in a second currency, which on a cross-border ferry
+lane is normal rather than exotic. Note that `bsp/reference-data`'s own
+`Location`, `Port` and `Warehouse` classes are deliberately not in scope —
+locations anchor on `mmt/locations`, `dcsa/locations` and `tic/locations`
+(§6, §12).
+
+---
+
+## §24 Physical network route
+
+**Why it matters.** Whether a lane is a reusable, named object or is
+re-derived from each booking's endpoints, and — separately — whether that
+object is the same thing as the commercial trade lane §19 reports against.
+
+**Questions**
+1. Is a lane a reusable master record, a per-booking plan, or both?
+2. If reusable: is the physical lane the same record you report
+   profitability against, or are they two different things?
+
+**Maps to.** `mmt/route-network#Route`, `mmt/consignment#TransportRoute`.
+
+**Outcome guidance.** `Route` is the **physical** network lane. It does
+**not** close the `trade-lane-and-market-segment` gap declared in §19 — that
+gap is about the commercial reporting dimension, and a hub that maps its
+trade lane onto `Route` has conflated a sales boundary with a geography.
+Where the SME's answer to Q2 is "the same record", that is a `partial` worth
+flagging: it works until the first lane sold at two price points.
+
+---
+
+## §25 Rail intermodal — grain-3 targets (TAF TSI)
+
+**Why it matters.** Only in scope where swap bodies or trailers move on rail
+wagons. Selected by a `rail` answer on the `modes-served` axis; the modules
+were declared in the archetype in 1.35.0 so the axis promotes something the
+loader can deliver rather than relying on the mode-target exception.
+
+**Questions**
+1. Do any units move on rail wagons, and do you contract the path yourself
+   or buy a door-to-door rail product from a railway undertaking?
+2. Is the rail consignment a distinct record from the road/ferry booking?
+
+**Maps to.**
+`rail/consignment#ConsignmentOrderMessage`, `ConsignmentIdentification`,
+`ShipmentType`,
+`rail/path-request#PathRequestMessage`, `PreArrangedPath`, `OnDemandPath`,
+`rail/party#RailwayUndertaking`, `LeadRailwayUndertaking`, `RailCustomer`.
+
+**Outcome guidance.** Mode stays on the leg — grain 2 is
+`mmt/inland-transport#RailLeg` and these classes bind at the reservation,
+per [`multimodal-order-leg`](../../../blueprints/patterns/multimodal-order-leg/pattern.md).
+A carrier buying a rail product rather than a path is `RailCustomer` and
+should record the path classes `not-applicable`; do not treat the whole
+section as out of scope just because it does not run trains.
+
+---
+
+## §26 Structural & lifecycle relationships
 
 > **Important.** The ref-models declare *which* entities relate (via
 > `rdfs:domain` + `rdfs:range`), but do **not** declare cardinality,
@@ -827,7 +1222,7 @@ by lane.
 
 ---
 
-## §21 Naming & identifier conventions (cross-cutting)
+## §27 Naming & identifier conventions (cross-cutting)
 
 These don't map to specific URIs but determine whether outcomes are
 `conforms` or `conforms-with-rename` across the whole model.

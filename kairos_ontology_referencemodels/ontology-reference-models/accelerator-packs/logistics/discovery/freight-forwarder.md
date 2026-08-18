@@ -16,15 +16,15 @@ analyst.
 ### Interview flow
 
 1. Answer the **Scope profile** below *first*. It selects which modules the hub needs
-   and pre-seeds outcomes for the ones it does not, so §1–§9 stay short.
-2. Walk the SME through §1–§9 (business areas). For each section:
+   and pre-seeds outcomes for the ones it does not, so §1–§11 stay short.
+2. Walk the SME through §1–§11 (business areas). For each section:
    - Read **Why it matters**.
    - Ask the **Questions**.
    - For every URI in **Maps to**, record an outcome code (see below) plus a free-text
      note.
-3. Walk through §10 (Structural & lifecycle relationships). These are the cardinality
+3. Walk through §12 (Structural & lifecycle relationships). These are the cardinality
    and lifecycle decisions the ontology cannot infer.
-4. Walk through §11 (Naming & identifier conventions). These determine whether outcomes
+4. Walk through §13 (Naming & identifier conventions). These determine whether outcomes
    are `conforms` vs `conforms-with-rename`.
 
 ### Outcome codes (shared)
@@ -52,8 +52,10 @@ down.
 ### Scope profile (ask before §1)
 
 Forwarders vary more in scope than any other archetype in this pack — the same archetype
-serves a two-mode port-to-port agent and a five-mode door-to-door 4PL. These three axes
-decide which modules the hub actually needs. Ask them first.
+serves a two-mode port-to-port agent and a five-mode door-to-door 4PL. That is why
+`freight-forwarder.yaml` declares the largest module menu in the pack (36 modules): it is
+a *menu*, not a floor, and these five axes decide which of it the hub actually needs. Ask
+them first.
 
 The axes, their allowed values and the **resolution rules** (promote never demote;
 out-of-scope ⇒ pre-seeded `not-applicable` with `needs_confirmation: true`) are defined once
@@ -115,6 +117,43 @@ and never a substitute for axes 1 and 2.
 | `2pl` (asset carrier work alongside forwarding) | `mmt/transport-means`, `mmt/equipment` → `recommended` | — |
 | `1pl` only | — | this is a shipper running own transport; `freight-forwarder` is the wrong archetype — stop and reselect |
 
+#### Axis 4 — `financial-scope`
+
+> *Does the system hold what you charge, what you were charged, or both against the same
+> job?*
+> Allowed values: `charges-only` `full-billing` `margin-management`
+
+This axis exists because a forwarder buys and resells transport: cost and sell against one
+job is its core commercial fact, not back-office detail. `bsp/financial` is `required` in
+the archetype and this axis never demotes it (resolution rule 2) — what it decides is how
+much of the cost/revenue apparatus comes with it.
+
+| Answer | Modules promoted / added | Pre-seed `not-applicable` |
+|---|---|---|
+| `charges-only` (charge lines only; billing lives in a separate finance system) | — | `https://www.kairosflow.ai/ont/bsp/cost-accounting`, `https://www.kairosflow.ai/ont/bsp/revenue-yield` |
+| `full-billing` (the system issues invoices, credit and debit notes) | `https://www.kairosflow.ai/ont/bsp/commercial` → **recommended** | — |
+| `margin-management` (cost and sell held together; profitability reported per job, lane or customer) | `https://www.kairosflow.ai/ont/bsp/cost-accounting` → **required**; `https://www.kairosflow.ai/ont/bsp/revenue-yield` → **required** | — |
+
+**Where the answer usually is.** A charge table carrying a *paired* cost and sell amount on
+one row is `margin-management`, whatever the SME says the finance team calls it — the pairing
+is the margin model. Confirm against the source before recording `charges-only`; the two are
+easy to mistake for each other in an interview and only the source settles it.
+
+#### Axis 5 — `customs-role`
+
+> *Do you lodge declarations yourself, prepare the data for a broker, or only track someone
+> else's filing?*
+> Allowed values: `lodges` `prepares` `tracks-only`
+
+This is §9 Q1 promoted to an axis: the answer is the difference of an entire module set, not
+an attribute. `wco/customs` is `recommended` in the archetype.
+
+| Answer | Modules promoted / added | Pre-seed `not-applicable` |
+|---|---|---|
+| `lodges` | `https://www.kairosflow.ai/ont/wco/customs` → **required**; `https://www.kairosflow.ai/ont/wco/party`, `https://www.kairosflow.ai/ont/wco/documents` → **recommended**; `https://www.kairosflow.ai/ont/wco/trade-facilitation` → `recommended` where the forwarder holds AEO or files preference claims | — |
+| `prepares` | `https://www.kairosflow.ai/ont/wco/party` → `recommended` (declarant vs broker must be distinguishable) | — |
+| `tracks-only` | — | `wco/customs#Filing`, `DutyCalculation`, `CustomsValue`; all of `https://www.kairosflow.ai/ont/wco/party`, `https://www.kairosflow.ai/ont/wco/documents`, `https://www.kairosflow.ai/ont/wco/trade-facilitation` — the declaration reduces to a status reference (§9) |
+
 ### Declared gaps you will hit in this interview
 
 Two capability gaps recorded in
@@ -122,8 +161,10 @@ Two capability gaps recorded in
 surface repeatedly here:
 
 - **`party-and-role-management`** — no neutral durable Party identity with qualified
-  contextual role assignment exists yet. You will hit it in §2.
-- **`location-and-itinerary-roles`** — same problem for locations. You will hit it in §7.
+  contextual role assignment exists yet. You will hit it in §2, and again in §9 where
+  declarant, broker and importer of record are three roles one organisation often fills.
+- **`location-and-itinerary-roles`** — same problem for locations. You will hit it in §7;
+  the `dcsa/locations` subclasses are the shipped approximation, not the closure.
 
 For both, do **not** let the SME's answer drift into "so what class should we invent".
 Record the business requirement in the free-text note and flag it for the blueprint
@@ -195,10 +236,16 @@ may create several carrier bookings for one customer instruction.
    no carrier reservation is normal — it means the forwarder ran it.
 6. Does any order span more than one mode? If yes, confirm the customer is quoted one
    door-to-door price against one order, not one order per mode.
+7. Does a quotation exist as a record before the job, and can one quotation produce
+   several jobs — or several quotations compete for one enquiry?
+8. Is the customer priced from a standing agreement, a rate card, or a per-enquiry spot
+   quote? Are all three possible on the same lane?
 
 **Maps to.** `blueprint/transport-order#TransportOrder` (the forwarding job),
 `blueprint/transport-order#CarrierReservation` (per leg), `dcsa/booking#Booking` (the ocean
-reservation), `Shipment`, `ShippingInstruction`, `mmt/consignment#TransportLeg`.
+reservation), `Shipment`, `ShippingInstruction`, `mmt/consignment#TransportLeg`,
+`bsp/commercial#RequestForQuotation`, `Quotation`, `SalesContract`,
+`bsp/revenue-yield#RateCard`, `ContractRate`, `SpotRate`.
 
 **Outcome guidance.** The grain question is settled — an internal forwarding job is **not**
 equivalent to a DCSA Booking, and `TransportOrder` exists for it (issue #29 audit,
@@ -210,6 +257,12 @@ If the answer to Q6 is yes, do **not** let the hub type the order by mode — se
 standing warning in the Scope profile. A hub proposing `OceanOrder`/`RoadOrder` subclasses,
 or a single `transportMode` field on the order, has hit a known anti-pattern and should be
 redirected to the leg.
+
+Q7 and Q8 are the pricing grain. A quotation overwritten in place when the customer
+re-asks is `partial` — the enquiry history is gone and win/loss can never be reconstructed.
+An agreed rate stored only as a number on the job, with no reference to the agreement it
+came from, is `deviates`: `ContractRate` and `SpotRate` are different commercial objects and
+the job cannot say which it was priced from.
 
 ## §4 Master and house consolidation
 
@@ -263,14 +316,28 @@ carrier reference, and whether requested and allocated equipment are separate re
 2. At what point is a container or other unit assigned?
 3. Do you own equipment, track third-party equipment, or only retain carrier references?
 4. Are cargo weight and dimensions original, verified, chargeable, or all three?
+5. Do you handle dangerous goods? If so, do you hold the classification yourself (UN
+   number, class, packing group) or only carry the shipper's declaration as a document?
+6. Is the container type booked before a physical unit exists, and is that type billed
+   against?
 
-**Maps to.** `mmt/cargo#Goods`, `Weight`, `Dimension`,
-`mmt/equipment#TransportEquipment`, `FreightContainer`.
+**Maps to.** `mmt/cargo#Goods`, `Weight`, `Dimension`, `Commodity`, `PackageSpecification`,
+`HandlingInstructions`, `ShippingMarks`, `CargoInsurance`, `DangerousGoods`,
+`mmt/equipment#TransportEquipment`, `FreightContainer`,
+`dcsa/equipment#Container`, `DryContainer`, `ReeferContainer`, `TankContainer`,
+`imo/dangerous-goods#DGDeclaration`, `DangerousGoodsItem`, `UNNumber`, `HazardClass`,
+`PackingGroup`, `SegregationRule`.
 
 **Outcome guidance.** Carrier-reference-only (Q3) keeps `TransportEquipment` at
 `recommended` and makes ownership attributes `not-applicable`; owning equipment promotes it
 to `required` and should have shown up as `2pl` on the `service-model` axis. One weight
 field serving all of original/verified/chargeable is `partial`.
+
+On Q5, note where the hazard data actually lives: classification (`mmt/cargo#DangerousGoods`
+and its UN TDG subclasses) and declaration (`imo/dangerous-goods#DGDeclaration`) are separate
+grains, and a hub holding only a scanned DGD with no structured UN number is `partial`, not
+`conforms`. No dangerous goods at all makes the whole `imo/dangerous-goods` set
+`not-applicable` — record it, do not leave it silent.
 
 ## §7 Route planning and execution
 
@@ -284,16 +351,34 @@ reusable master data or per-job.
 3. Are pickup, cross-dock, terminal, port, and delivery stops explicitly sequenced?
 4. Does a location's role (pickup, port of loading, delivery) live on the location record
    or on its use within a route?
+5. Do you hold carrier cut-off times and quoted transit times against the job, the lane, or
+   neither?
+6. Is a call at a terminal, ramp or gate a record in its own right, or only a timestamp on
+   the leg?
 
 **Maps to.** `mmt/consignment#TransportRoute`, `TransportLeg`,
 `mmt/inland-transport#InlandLeg`, `InlandCarrier`, `HaulageInstructions`,
-`mmt/locations#Location`, `TransportLocation`, `Warehouse`.
+`mmt/locations#Location`, `TransportLocation`, `Warehouse`,
+`mmt/route-network#Route`,
+`dcsa/locations#PlaceOfReceipt`, `PortOfLoading`, `PortOfDischarge`, `PlaceOfDelivery`,
+`TransshipmentPort`, `InlandTerminal`, `Depot`, `ContainerFreightStation`, `RailRamp`,
+`BorderCrossing`,
+`dcsa/transport-call#TransportCall`, `TruckTransportCall`, `VesselTransportCall`,
+`dcsa/schedule#CutOffTime`, `TransitTime`, `SailingSchedule`.
 
 **Outcome guidance.** Planned legs overwritten on execution is `deviates` — plan and actual
 are separate grains and neither overwrites the other (`LOG-BP-006`). Roles stored on the
 location record (Q4) is the `location-and-itinerary-roles` gap: record it, do not invent a
 class. Port-to-port scope makes `Warehouse` and `HaulageInstructions` `not-applicable`, per
 axis 2.
+
+The `dcsa/locations` subclasses are the *itinerary role*, not a second location master. If
+the hub's location table already carries one row per physical place, those subclasses attach
+to the route's use of that row — mapping them onto duplicate location records is the same
+mistake Q4 is asking about. A reusable lane (Q1) maps to `mmt/route-network#Route`; a
+job-specific plan maps to `mmt/consignment#TransportRoute`, and a hub with both should say so
+rather than force one onto the other. A missed cut-off with no `CutOffTime` record to miss
+(Q5) is `partial` — the exception in §8 has no anchor without it.
 
 ## §8 Milestones and exceptions
 
@@ -307,14 +392,24 @@ wrong makes every downstream track-and-trace query ambiguous.
 2. How are planned, estimated, and actual times distinguished?
 3. Can a carrier correction supersede an earlier event without changing its source ID?
 4. Are exceptions separate events, statuses, or cases?
+5. Do road, rail and barge legs produce milestones in the same series as the ocean leg, or
+   in a separate one?
 
 **Maps to.** `dcsa/events#Event`, `TransportEvent`, `EquipmentEvent`,
-`DocumentEvent`.
+`DocumentEvent`,
+`mmt/events#PickupEvent`, `DeliveryEvent`, `LoadingEvent`, `DischargeEvent`,
+`TransferEvent`, `CustomsClearanceEvent`, `WarehouseStorageEvent`, `InspectionEvent`.
 
 **Outcome guidance.** More than one primary subject in Q1 is normal for a forwarder and is
 `conforms` — record each subject. A single mutable "status" column instead of an event
 series is `deviates`. Corrections that reuse the source ID (Q3) make event identity
 non-durable: `partial`, and flag it, because it blocks replay.
+
+Q5 is why both event modules are in scope: `dcsa/events` is ocean-shaped (vessel departure,
+gate in/out) and `mmt/events` carries pickup, delivery and cross-dock transfer. A multimodal
+forwarder legitimately maps to both, and that is `conforms`, not duplication. One inland
+milestone forced into a DCSA vessel event class is `deviates` — it makes every mode filter
+wrong downstream.
 
 ## §9 Customs coordination
 
@@ -325,17 +420,125 @@ broker's filing — a difference of an entire module, not an attribute.
 
 1. Do you lodge declarations, prepare data for a broker, or only track filing status?
 2. Is one declaration linked to a consignment, house, master, document, or goods-item set?
-3. Are import and export declarations separate lifecycles?
+3. Are import and export declarations separate lifecycles? Is transit (T1 / NCTS) a third?
+4. Who is recorded as declarant, and is that distinguishable from the broker who filed and
+   the importer of record?
+5. Do you hold AEO status, file preference claims, or lodge through a single window?
+6. Are duty and tax amounts held against the declaration, and do they reach the customer
+   invoice as disbursements?
 
 **Maps to.** `wco/customs#CustomsDeclaration`, `ImportDeclaration`,
-`ExportDeclaration`.
+`ExportDeclaration`, `TransitDeclaration`, `GoodsItem`, `DeclarationStatus`, `Filing`,
+`CustomsProcedure`, `TariffClassification`, `CustomsValue`, `DutyCalculation`,
+`wco/party#Declarant`, `CustomsBroker`, `FreightAgent`, `Importer`, `Exporter`, `AEOHolder`,
+`wco/documents#SADForm`, `TransitDocument`, `ATACarnet`, `TIRCarnet`,
+`wco/trade-facilitation#CertificateOfOrigin`, `License`, `ImportPermit`, `ExportPermit`,
+`AEOCertification`, `SingleWindow`, `eFTIRecord`,
+`bsp/compliance#DutyTax`, `TariffClassification`, `TradeAgreement`.
 
-**Outcome guidance.** Track-only (Q1) keeps `wco/customs` at `optional` and reduces the
-declaration classes to a status reference — record `partial`. Lodging declarations promotes
-`wco/customs` to `required`. Q2's answer is the declaration grain and must be recorded
-explicitly; it is the most common source of a wrong join later.
+**Outcome guidance.** Q1 restates the `customs-role` axis — if the answers differ, the axis
+is wrong and must be corrected before continuing, because the module set depends on it.
+Track-only reduces the declaration classes to a status reference: record `partial`. Q2's
+answer is the declaration grain and must be recorded explicitly; it is the most common source
+of a wrong join later.
 
-## §10 Structural and lifecycle relationships
+On Q4, one party field doing duty for declarant, broker and importer is `partial` — it is
+the `party-and-role-management` gap again, and the roles are legally distinct even when one
+organisation fills all three. On Q6, duty recorded only as a charge line with no link back to
+the declaration is `partial`: the amount survives, the basis for it does not, and a
+disbursement that cannot be traced to its declaration cannot be defended in an audit.
+
+## §10 Charges, invoicing and margin
+
+**Why it matters.** A forwarder buys transport and resells it, so cost and sell against one
+job is the core commercial fact of the business — more central here than for any carrier
+archetype. This is also the section that most often has no anchor in a first-pass model: a
+real forwarder charge table carries both amounts on one row and links out to both an AP and
+an AR document, and until this archetype declared `bsp/financial` there was nowhere owned for
+it to land (gh#104).
+
+**Questions**
+
+1. Is there one charge line per job carrying **both** a cost and a sell amount, or two
+   separate lines? If one, that pairing *is* the margin model — confirm it against the
+   source, not the SME's description.
+2. Is the charge code a governed list with an owner and a lifecycle, or free text?
+3. Does a charge line link to the AP document from the supplier and the AR document to the
+   customer, and can you get from one to the other through it?
+4. What is the billing document set — invoice only, or credit notes and debit notes too?
+   Is a credit note a negative invoice or its own type?
+5. Are invoice header and line separate records? Is the line a `BillingDocumentLine`
+   shared across document types, or a per-type line table?
+6. Are payment terms, due date and outstanding amount held on the invoice, on the customer,
+   or both?
+7. Are surcharges (BAF, CAF, peak season, THC) separate charge lines or components of the
+   freight rate?
+8. Do demurrage and detention charges received from a carrier get passed through to the
+   customer, and are they recognisable as such?
+9. At what grain is profitability reported — job, consignment, lane, customer, branch?
+10. Is the currency of a cost the same as the currency of the sell, and where does the
+    exchange rate live?
+
+**Maps to.** `bsp/financial#Charge`, `FreightCharge`, `FreightRate`, `Surcharge`,
+`BunkerAdjustmentFactor`, `CurrencyAdjustmentFactor`, `TerminalHandlingCharge`,
+`HandlingCharge`, `StorageCharge`, `DocumentationFee`, `TariffSchedule`,
+`Invoice`, `InvoiceLine`, `BillingDocumentLine`, `CommercialInvoice`, `ProformaInvoice`,
+`CreditNote`, `CreditNoteLine`, `DebitNote`, `DebitNoteLine`, `PaymentTerms`, `Payment`,
+`PaymentAllocation`, `Reconciliation`, `AgingBucket`,
+`bsp/cost-accounting#TransportCostItem`, `CostAllocation`, `AllocationBasis`, `CostCenter`,
+`CostToServe`, `CostPerUnit`,
+`bsp/revenue-yield#FreightRevenue`, `ContributionMargin`, `RevenueItem`, `AncillaryRevenue`,
+`SurchargeRevenue`, `ProfitabilityScope`,
+`dcsa/demurrage-detention#DemurrageCharge`, `DetentionCharge`, `FreeTimeAllowance`,
+`PerDiemRate`, `DisputeRecord`,
+`bsp/reference-data#MonetaryAmount`.
+
+**Outcome guidance.** Q1 is the section's hinge. A paired cost/sell row anchors on
+`bsp/financial#Charge` with `bsp/cost-accounting#TransportCostItem` and
+`bsp/revenue-yield#FreightRevenue` as the two sides, and `ContributionMargin` as their
+difference — do **not** let the hub invent a `MarginLine` class; the pairing is already
+expressible and a local class here fragments every profitability query later.
+
+Free-text charge codes (Q2) are `partial` and belong in the
+[`governed-code-list`](../../../blueprints/patterns/governed-code-list/pattern.md) backlog.
+A line table per document type (Q5) rather than a shared `BillingDocumentLine` is `partial`,
+not `deviates` — the structure is right, the reuse is not. Pass-through D&D that is
+indistinguishable from the forwarder's own charges (Q8) is `partial`: the amount is there,
+the pass-through fact is not, and margin is overstated by exactly that amount. A single
+currency field with no rate and no rate date (Q10) is `deviates` — restating a historic
+margin becomes impossible.
+
+**Where this lands in a real source.** A charge table with paired cost and sell columns, an
+AR/AP document header carrying invoice date, terms, due date and outstanding, and a line
+table joining the two: those three are `Charge`, `Invoice` and `BillingDocumentLine`
+respectively. If the hub has all three and this section produced no `conforms`, something
+was mis-anchored — re-check before moving on.
+
+## §11 Emissions reporting
+
+**Why it matters.** Shippers increasingly require per-consignment CO₂ from their forwarder,
+who must report emissions for transport it did not run. That makes the allocation basis —
+not the measurement — the modelling problem.
+
+**Questions**
+
+1. Do you report emissions per consignment, per job, per customer, or only in aggregate?
+2. Where do emission factors come from — carrier-reported, modal default, or measured?
+3. Is the activity basis tonne-kilometres, or something else?
+4. Are reports a stored artefact or computed on demand?
+
+**Maps to.** `sustainability/carbon#CarbonFootprint`, `CarbonEmission`, `TonneKilometre`,
+`EmissionFactor`, `EmissionReport`, `ModalShiftMetric`.
+
+**Outcome guidance.** No emissions reporting at all makes the whole set `not-applicable` —
+common today and not a defect; record it rather than leaving it blank. A single CO₂ number
+per shipment with no factor and no activity basis is `partial`: it cannot be recomputed,
+audited, or split across legs. Fuel and energy consumption (`sustainability/energy`) is
+deliberately **not** in this archetype — that belongs to whoever burns the fuel; if the SME
+has it, they are describing own-account transport and the `service-model` axis should show
+`2pl`.
+
+## §12 Structural and lifecycle relationships
 
 Confirm explicitly:
 
@@ -349,10 +552,17 @@ Confirm explicitly:
 8. equipment request to physical allocation timing;
 9. event-to-subject cardinality and correction behavior;
 10. document identity to version/state lifecycle;
-11. party and location roles versus durable identities.
+11. party and location roles versus durable identities;
+12. charge line to job, to cost document and to revenue document — the three-way link that
+    makes margin reconstructable;
+13. billing document header to line, and whether the line is shared across invoice, credit
+    note and debit note;
+14. declaration to consignment, house, master, document or goods-item set (§9 Q2);
+15. quotation to job, and quotation to the rate agreement it was priced from.
 
-## §11 Naming and identifier conventions
+## §13 Naming and identifier conventions
 
 Record the business terms for forwarding job, file, shipment, house, master, booking,
-load, consignment, route, leg, mode, milestone, and exception. For every identifier record
-the issuer, namespace, reuse policy, and whether aliases are retained.
+load, consignment, route, leg, mode, milestone, exception, charge, charge code, invoice,
+credit note, cost, sell, margin, quotation, rate, and declaration. For every identifier
+record the issuer, namespace, reuse policy, and whether aliases are retained.
