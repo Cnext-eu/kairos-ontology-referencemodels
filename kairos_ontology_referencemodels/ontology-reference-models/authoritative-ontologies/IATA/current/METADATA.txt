@@ -12,3 +12,15 @@ ontology_files:
   - IATA-1R-CL-Ontology.ttl  (code lists; namespace https://onerecord.iata.org/ns/code-lists/)
 license: MIT License (see ./LICENSE)
 homepage: https://www.iata.org/en/programs/cargo/e/freight/one-record/
+deviations:
+  - IATA-1R-DM-Ontology.domains-patch.ttl (generated) supplies rdfs:domain
+    triples absent from the upstream mirror. The mirror encodes property
+    domains as a non-standard owl:comment "Domain :ClassName"@en
+    annotation instead of rdfs:domain (532 of 564 properties carry it;
+    zero rdfs:domain triples exist). Any rdfs:domain-based consumer,
+    including the Kairos toolkit, otherwise sees zero properties on every
+    ONE Record class. Regenerate the patch via
+    scripts/generate_iata_domain_patch.py on every refresh of this
+    mirror -- do not hand-edit it, and do not hand-edit the vendor .ttl
+    files either. Wired in via a catalog-v001.xml redirection; see gh#93.
+    Not yet reported upstream to IATA-Cargo/ONE-Record.

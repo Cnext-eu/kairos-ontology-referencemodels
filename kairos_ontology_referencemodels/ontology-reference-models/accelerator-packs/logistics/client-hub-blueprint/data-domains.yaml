@@ -579,6 +579,16 @@ groups:
           - uri: "https://www.kairosflow.ai/ont/dcsa/locations#"
             module: "DCSA / Locations"
             provides: "Facility, UN location code, address"
+          - uri: "https://onerecord.iata.org/ns/code-lists#"
+            module: "IATA ONE Record / Code Lists"
+            provides: "AWB use indicator, charge codes, currency codes, dangerous goods codes, mode codes, rate class codes, measurement unit codes"
+            mode: air
+            import_policy: reference-only
+            note: >
+              Vendored under authoritative-ontologies/IATA/ and resolved through the
+              catalog. Uses the same reference-only policy as the IATA cargo module in
+              the booking domain (gh#106) — the accelerator pack never bulk-imports it;
+              a client hub serving air cargo binds to it here, hub-local.
         note: "Cross-cutting domain consumed by all other domains."
         standards:
           - "UN/LOCODE"
