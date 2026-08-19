@@ -5,6 +5,33 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.35.2] - 2026-08-19
+
+### Fixed
+
+- **`CodeListElement` and `OtherIdentifier` reachable from `reference-data`** (gh#109).
+  #106 (v1.35.1) fixed `ChargeCode` and the rest of the `code-lists#` namespace, but
+  two classes evidenced in the same issue — `CodeListElement` (the `rdfs:range` of 39
+  properties across the cargo data model) and `OtherIdentifier` — live in the `cargo#`
+  namespace instead, reachable only via `booking`'s existing import. Mirrored the same
+  `https://onerecord.iata.org/ns/cargo#` import into `reference-data`, matching
+  existing precedent in this file (`mmt/cargo#` and `bsp/documents#` are each already
+  imported into two domains). Verified against the pinned toolkit: both classes now
+  show `owned by: booking/reference-data` instead of `booking` only, with no change to
+  `Booking`/`Shipment`/`TransportMeans`' property counts.
+
+### Investigated, no change needed
+
+- **gh#108** ("53 property-domain assertions across 14 modules cannot attach to any
+  class") turned out to be a false positive in the toolkit, not a defect in this
+  package. Every one of the 53 unattached pairs traces to files under `archive/`,
+  never `current/` — all 14 named modules already carry the correct `owl:imports`
+  (added by `a449ab2`, v1.32.0). `scripts/validate_structure.py` check 10 already
+  excludes `archive/` for exactly this reason; the toolkit's `resolve_reference_models()`
+  does not. Filed as
+  [kairos-ontology-toolkit#566](https://github.com/Cnext-eu/kairos-ontology-toolkit/issues/566);
+  gh#108 closed here.
+
 ## [1.35.1] - 2026-08-19
 
 ### Fixed

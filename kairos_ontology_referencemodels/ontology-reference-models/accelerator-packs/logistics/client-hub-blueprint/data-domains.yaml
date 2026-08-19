@@ -589,6 +589,19 @@ groups:
               catalog. Uses the same reference-only policy as the IATA cargo module in
               the booking domain (gh#106) — the accelerator pack never bulk-imports it;
               a client hub serving air cargo binds to it here, hub-local.
+          - uri: "https://onerecord.iata.org/ns/cargo#"
+            module: "IATA ONE Record / Cargo"
+            provides: "Generic code-list element and other-identifier value objects (CodeListElement, OtherIdentifier) used across the cargo data model"
+            mode: air
+            import_policy: reference-only
+            note: >
+              Vendored under authoritative-ontologies/IATA/ and resolved through the
+              catalog. Same module already imported by booking (for Booking/Shipment/
+              etc. at grain 3) — mirrored here because CodeListElement and
+              OtherIdentifier are generic, cargo-model-wide value objects (39
+              properties range over CodeListElement alone) with no booking-specific
+              meaning, and were unreachable from reference-data's pool (gh#109). The
+              accelerator pack still never bulk-imports this module itself.
         note: "Cross-cutting domain consumed by all other domains."
         standards:
           - "UN/LOCODE"
