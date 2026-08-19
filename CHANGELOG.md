@@ -5,6 +5,35 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.35.1] - 2026-08-19
+
+### Fixed
+
+- **IATA ONE Record code-lists module reachable from `reference-data`** (gh#106).
+  `onerecord/ns/code-lists` was already vendored and catalogued but never imported
+  anywhere in the logistics accelerator's `data-domains.yaml`, so `ChargeCode`,
+  `CurrencyCode`, `DangerousGoodsCode`, `ModeCode`, `AWBUseIndicator` and the rest
+  were unreachable. Added to `reference-data` with `import_policy: reference-only`,
+  the same convention already used for `onerecord/cargo` in `booking`. A prior audit
+  (v1.29.1, gh#88) had deliberately deferred this exact addition pending that
+  convention rather than rejecting it outright — this closes that gap.
+
+- **IATA ONE Record data-model properties now carry `rdfs:domain`** (gh#93). The
+  vendored `IATA-1R-DM-Ontology.ttl` mirror encodes property domains as a
+  non-standard `owl:comment "Domain :ClassName"@en` annotation instead of
+  `rdfs:domain` — 532 of 564 properties carry it, zero use `rdfs:domain` — so any
+  consumer resolving properties via `rdfs:domain` (including the Kairos toolkit)
+  saw every ONE Record class as having zero properties. Added
+  `scripts/generate_iata_domain_patch.py`, which mechanically derives the missing
+  `rdfs:domain` triples (handling a one-property multi-domain case, ~49
+  universal-domain `owl:Thing` properties, and one malformed `"Domain: X"` literal)
+  into a generated sidecar, `IATA-1R-DM-Ontology.domains-patch.ttl`, regenerated on
+  every vendor refresh. Wired in via a `catalog-v001.xml` redirection so the
+  never-hand-edited vendor `.ttl` stays untouched and no `data-domains.yaml` import
+  needs to change. Verified against the pinned toolkit: `onerecord/cargo#Booking`
+  went from 0 to 11 resolvable properties, `#Shipment` 0 to 10, `#TransportMeans`
+  0 to 18.
+
 ## [1.35.0] - 2026-08-18
 
 > Ships together with **1.34.0** below, which was never tagged separately — both
