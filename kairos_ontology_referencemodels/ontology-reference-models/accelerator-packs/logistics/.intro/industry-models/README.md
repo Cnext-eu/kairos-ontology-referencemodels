@@ -13,7 +13,7 @@ pack ships is listed; a module with no sheet yet is shown as such rather than om
 | DCSA | [dcsa.md](dcsa.md) | 1.6.0 |
 | MMT | [mmt-un-cefact.md](mmt-un-cefact.md) | 2.5.0 |
 | BSP | [bsp-iso-20197.md](bsp-iso-20197.md) | 2.5.0 |
-| TIC | [tic-4-0.md](tic-4-0.md) | 1.5.0 |
+| TIC | [tic-4-0.md](tic-4-0.md) | 1.6.0 |
 | IMO | [imo.md](imo.md) | 1.4.0 |
 | WCO | [wco.md](wco.md) | 1.4.0 |
 | Sustainability | [sustainability.md](sustainability.md) | 1.2.0 |
@@ -31,7 +31,7 @@ pack ships is listed; a module with no sheet yet is shown as such rather than om
 | DCSA | 1.6.0 |
 | MMT | 2.5.0 |
 | BSP | 2.5.0 |
-| TIC | 1.5.0 |
+| TIC | 1.6.0 |
 | IMO | 1.4.0 |
 | WCO | 1.4.0 |
 | Sustainability | 1.2.0 |

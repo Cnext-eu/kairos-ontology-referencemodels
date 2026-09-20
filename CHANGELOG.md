@@ -5,6 +5,41 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.37.0] - 2026-09-21
+
+### Fixed
+
+- **`hasLocation` / `withinTerminal` are a consistent inverse pair** (gh#115, reopened).
+  `hasLocation` declared `owl:inverseOf :withinTerminal` while the two had mismatched
+  endpoints: `hasLocation` ranged over `TerminalLocation`, but `withinTerminal`'s domain
+  was a seven-class union that omitted it. Tooling reading `owl:inverseOf` to offer the
+  reverse direction found the assertion and then found the endpoints incompatible, so a
+  binding on `TerminalLocation` could not author `withinTerminal`.
+
+  The union was also redundant — all seven members are already
+  `rdfs:subClassOf :TerminalLocation` — so it is replaced by
+  `rdfs:domain :TerminalLocation`, which is shorter and admits any location subclass
+  added later.
+
+- **`Terminal` is no longer `rdfs:subClassOf :TerminalLocation`.** `TerminalLocation` is
+  documented as "a named or coded position within a terminal facility", and a terminal is
+  the facility, not a position inside one. The edge was the root cause of the mismatch
+  above: with it in place, widening `withinTerminal`'s domain to `TerminalLocation` would
+  have admitted a terminal nested in itself. `latitude` and `longitude` now take a
+  `unionOf ( :TerminalLocation :Terminal )` domain so a terminal keeps its coordinates.
+
+  This is a breaking hierarchy change for any consumer that bound on `TerminalLocation`
+  and expected `Terminal` in the extension. TIC 1.5.0 -> 1.6.0.
+
+### Note
+
+- The first half of gh#115 — `Terminal` declared in two TIC modules — was fixed in
+  1.36.0 and remains fixed. The reopening cited a diagnostic showing two classes named
+  `Terminal` in the closure, which counts classes by local name and does not test for
+  `owl:equivalentClass`; two URIs is the intended outcome of an equivalence fix, since
+  both declarations are load-bearing and neither could be removed. The axioms are
+  asserted in both modules, in both directions, for `Terminal` and `Berth`.
+
 ## [1.36.0] - 2026-09-21
 
 ### Added

@@ -31175,11 +31175,11 @@ records:
   uri: https://www.kairosflow.ai/ont/tic/locations#ReeferPlug
 - comments:
   - "The top-level location representing the entire terminal facility.\n\n    TIC 4.0: Identified by UN/LOCODE\
-    \ and terminal-specific facility code.\n\n    This is the *positioning* view of a terminal: the root\
-    \ of the terminal location\n    hierarchy and the range of :withinTerminal. It denotes the same real-world\
-    \ facility\n    as tic-infra:Terminal, which is the *asset* view, and the two are declared\n    equivalent.\
-    \ Prefer tic-infra:Terminal when anchoring a terminal facility table;\n    this class stays the anchor\
-    \ for terminal positioning."
+    \ and terminal-specific facility code.\n\n    This is the *positioning* view of a terminal: the range\
+    \ of :withinTerminal and the\n    domain of :hasLocation. It is not itself a :TerminalLocation — that\
+    \ class covers\n    positions within a facility. It denotes the same real-world facility\n    as tic-infra:Terminal,\
+    \ which is the *asset* view, and the two are declared\n    equivalent. Prefer tic-infra:Terminal when\
+    \ anchoring a terminal facility table;\n    this class stays the anchor for terminal positioning."
   domains: []
   kind: class
   labels:
@@ -31188,12 +31188,15 @@ records:
   ranges: []
   source_file: derived-ontologies/TIC/current/locations/locations.ttl
   sources: *id052
-  superclasses:
-  - https://www.kairosflow.ai/ont/tic/locations#TerminalLocation
+  superclasses: []
   uri: https://www.kairosflow.ai/ont/tic/locations#Terminal
 - comments:
   - "A named or coded position within a terminal facility.\n\n    TIC 4.0: Abstract superclass for all\
-    \ terminal location types, providing a common\n    interface for location coding and geospatial reference."
+    \ terminal location types, providing a common\n    interface for location coding and geospatial reference.\n\
+    \n    Positions *within* a facility only. :Terminal is deliberately not a subclass: a\n    terminal\
+    \ is the facility itself, not a position inside one. It was a subclass until\n    1.37.0, which made\
+    \ :withinTerminal admit a terminal nested in itself and left the\n    :hasLocation / :withinTerminal\
+    \ inverse pair inconsistent (gh#115)."
   domains: []
   kind: class
   labels:
@@ -31331,9 +31334,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/tic/locations#laneNumber
 - comments:
-  - WGS84 latitude coordinate of the location.
-  domains:
-  - https://www.kairosflow.ai/ont/tic/locations#TerminalLocation
+  - WGS84 latitude coordinate of the location. Applies to a terminal as well as to positions within it.
+  domains: []
   kind: datatype_property
   labels:
   - latitude
@@ -31345,9 +31347,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/tic/locations#latitude
 - comments:
-  - WGS84 longitude coordinate of the location.
-  domains:
-  - https://www.kairosflow.ai/ont/tic/locations#TerminalLocation
+  - WGS84 longitude coordinate of the location. Applies to a terminal as well as to positions within it.
+  domains: []
   kind: datatype_property
   labels:
   - longitude
@@ -31457,8 +31458,12 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/tic/locations#unlocode
 - comments:
-  - Links a location to the terminal it belongs to.
-  domains: []
+  - "Links a location within a terminal to the terminal it belongs to.\n\n    Domain is :TerminalLocation\
+    \ rather than an enumeration of its subclasses: the\n    previous seven-class union was both redundant\
+    \ — every member is a\n    :TerminalLocation — and incomplete, because it omitted :TerminalLocation\
+    \ itself,\n    which is the declared rdfs:range of the inverse :hasLocation (gh#115)."
+  domains:
+  - https://www.kairosflow.ai/ont/tic/locations#TerminalLocation
   kind: object_property
   labels:
   - within terminal
