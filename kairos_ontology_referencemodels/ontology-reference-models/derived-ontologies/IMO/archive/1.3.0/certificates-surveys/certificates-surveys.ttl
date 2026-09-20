@@ -1,0 +1,416 @@
+@prefix : <https://www.kairosflow.ai/ont/imo/certificates-surveys#> .
+@prefix imo-vr: <https://www.kairosflow.ai/ont/imo/vessel-registry#> .
+@prefix imo-party: <https://www.kairosflow.ai/ont/imo/party#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/imo/certificates-surveys> a owl:Ontology ;
+    dcterms:title "IMO Certificates & Surveys Ontology" ;
+    dcterms:description """Statutory certificates, surveys, and compliance documents domain ontology
+    aligned with the IMO Compendium.
+
+    Covers the certificate hierarchy mandated by SOLAS, MARPOL, ISM Code, ISPS Code,
+    Load Line Convention, BWM Convention, and MLC 2006. Certificates are the central
+    compliance artifact in IMO's regulatory framework — virtually every Port State Control
+    inspection verifies these documents.
+
+    Design note: Most certificates share an identical structure (number, issue date,
+    expiry date, issuing authority). Only certificates with structurally distinct
+    properties are modeled as separate subclasses. Others are distinguished by the
+    certificateType code property on StatutoryCertificate.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-06-12"^^xsd:date ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "1.3.0" ;
+    dcterms:source "SOLAS Chapter I, ISM Code, ISPS Code, LL Convention 1966, MARPOL, BWM Convention, MLC 2006" ;
+    rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
+
+#################################################################
+#    Certificate Classes
+#################################################################
+
+:StatutoryCertificate a owl:Class ;
+    rdfs:label "Statutory Certificate" ;
+    rdfs:comment """A mandatory certificate issued under an IMO convention or related instrument.
+
+    Statutory certificates must be carried on board and are verified during Port State
+    Control inspections. Each has a defined validity period and is issued by the flag
+    state administration or a Recognized Organization acting on its behalf.
+
+    Standard certificate types (use certificateType code):
+    - SAFETY_CONSTRUCTION: Cargo Ship Safety Construction Certificate (SOLAS I/12)
+    - SAFETY_EQUIPMENT: Cargo Ship Safety Equipment Certificate (SOLAS I/12)
+    - SAFETY_RADIO: Cargo Ship Safety Radio Certificate (SOLAS I/12 + GMDSS)
+    - PASSENGER_SAFETY: Passenger Ship Safety Certificate (SOLAS I/12)
+    - LOAD_LINE: International Load Line Certificate (LL Convention 1966)
+    - IOPPC: International Oil Pollution Prevention Certificate (MARPOL Ann. I)
+    - IAPP: International Air Pollution Prevention Certificate (MARPOL Ann. VI)
+    - ISPPC: International Sewage Pollution Prevention Certificate (MARPOL Ann. IV)
+    - IBWMC: International Ballast Water Management Certificate (BWM Convention)
+    - MIN_SAFE_MANNING: Minimum Safe Manning Document (SOLAS V/14)
+    - CLASS: Certificate of Class (IACS/Classification)
+    - CLC: CLC Certificate of Insurance (CLC 1992)
+    - BUNKER: Bunker Insurance Certificate (Bunker Convention 2001)""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :certificateNumber ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :certificateType ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:InternationalEnergyEfficiencyCertificate a owl:Class ;
+    rdfs:label "International Energy Efficiency Certificate" ;
+    rdfs:comment """The IEE Certificate issued under MARPOL Annex VI Regulation 6.
+
+    Structurally distinct from other certificates because it contains the vessel's
+    attained EEDI or EEXI value and the required reference value. Mandatory for all
+    ships of 400 GT and above since 2013 (EEDI for new ships) and 2023 (EEXI for existing ships).
+
+    The annual CII rating (A/B/C/D/E) is also recorded against this certificate.""" ;
+    rdfs:subClassOf :StatutoryCertificate .
+
+:DocumentOfCompliance a owl:Class ;
+    rdfs:label "Document of Compliance" ;
+    rdfs:comment """A document issued to a company under the ISM Code (SOLAS Chapter IX, §13.2).
+
+    Structurally distinct from ship certificates because it is issued to the COMPANY
+    (ship owner/manager), not to an individual vessel. Valid for 5 years, subject to
+    annual verification audits.
+
+    Properties: issuedToCompany (company link), docCompanyAddress, docVerificationDate,
+    docShipTypeScope, docValidityPeriod.
+
+    Source: ISM Code Part A §13; SOLAS Chapter IX Regulation 6.2.""" ;
+    rdfs:subClassOf :StatutoryCertificate .
+
+:SafetyManagementCertificate a owl:Class ;
+    rdfs:label "Safety Management Certificate" ;
+    rdfs:comment """A certificate issued to an individual ship under the ISM Code (§13.7).
+
+    Confirms that the vessel's safety management system complies with the ISM Code
+    and the company's Document of Compliance. Valid for 5 years, subject to at least
+    one intermediate verification.
+
+    Properties: smcImoNumber, smcCompanyName, docReferenceNumber, smcIntermediateVerificationDate.
+
+    Source: ISM Code Part A §13.7; SOLAS Chapter IX Regulation 6.3.""" ;
+    rdfs:subClassOf :StatutoryCertificate .
+
+:InternationalShipSecurityCertificate a owl:Class ;
+    rdfs:label "International Ship Security Certificate" ;
+    rdfs:comment """The ISSC issued under SOLAS Chapter XI-2/Regulation 9 and the ISPS Code.
+
+    Structurally distinct because it certifies approval of the Ship Security Plan
+    and links to the security plan document. Verified at every port entry as part
+    of pre-arrival security information exchange.
+
+    Properties: isscShipName, isscFlagState, isscSecurityPlanReference, isscVerificationDate,
+    isscInterimCertificate.
+
+    Source: SOLAS Chapter XI-2 Regulation 9; ISPS Code Part A Sections 19-21.""" ;
+    rdfs:subClassOf :StatutoryCertificate .
+
+:MaritimeLabourCertificate a owl:Class ;
+    rdfs:label "Maritime Labour Certificate" ;
+    rdfs:comment """Certificate of Maritime Labour Compliance issued under MLC 2006 Title 5.1.3.
+
+    Structurally distinct because it is accompanied by the Declaration of Maritime
+    Labour Compliance (DMLC) Parts I and II, which together document the vessel's
+    compliance with 14 areas of MLC 2006.
+
+    Properties: dmlcPartI, dmlcPartII, mlcInspectionDate, mlcInspectionAreasCovered,
+    mlcIntermediateInspectionDate.
+
+    Source: MLC 2006 Title 5, Standard A5.1.3.""" ;
+    rdfs:subClassOf :StatutoryCertificate .
+
+#################################################################
+#    Survey Class
+#################################################################
+
+:StatutorySurvey a owl:Class ;
+    rdfs:label "Statutory Survey" ;
+    rdfs:comment """A formal inspection of a vessel conducted by a flag state administration
+    or Recognized Organization to verify compliance with IMO conventions.
+
+    SOLAS Chapter I Regulations 7-10 define four survey types:
+    - INITIAL: Before the ship enters service or a new certificate is issued
+    - RENEWAL: At intervals not exceeding 5 years
+    - ANNUAL: Within 3 months of each anniversary date
+    - INTERMEDIATE: At specified intervals between renewal surveys
+
+    Successful surveys result in the issuance or endorsement of statutory certificates.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :surveyDate ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:issuedFor a owl:ObjectProperty ;
+    rdfs:label "issued for" ;
+    rdfs:comment "Links a statutory certificate to the vessel it was issued for." ;
+    rdfs:domain :StatutoryCertificate ;
+    rdfs:range imo-vr:Vessel .
+
+:issuedBy a owl:ObjectProperty ;
+    rdfs:label "issued by" ;
+    rdfs:comment "Links a statutory certificate to the authority or RO that issued it." ;
+    rdfs:domain :StatutoryCertificate ;
+    rdfs:range imo-party:MaritimeParty .
+
+:issuedToCompany a owl:ObjectProperty ;
+    rdfs:label "issued to company" ;
+    rdfs:comment "Links a Document of Compliance to the company it was issued to." ;
+    rdfs:domain :DocumentOfCompliance ;
+    rdfs:range imo-party:MaritimeParty .
+
+:resultOfSurvey a owl:ObjectProperty ;
+    rdfs:label "result of survey" ;
+    rdfs:comment "Links a statutory certificate to the survey that resulted in its issuance." ;
+    rdfs:domain :StatutoryCertificate ;
+    rdfs:range :StatutorySurvey .
+
+:surveyedVessel a owl:ObjectProperty ;
+    rdfs:label "surveyed vessel" ;
+    rdfs:comment "Links a statutory survey to the vessel that was surveyed." ;
+    rdfs:domain :StatutorySurvey ;
+    rdfs:range imo-vr:Vessel .
+
+:conductedBy a owl:ObjectProperty ;
+    rdfs:label "conducted by" ;
+    rdfs:comment "Links a statutory survey to the organization that conducted it." ;
+    rdfs:domain :StatutorySurvey ;
+    rdfs:range imo-party:MaritimeParty .
+
+#################################################################
+#    Datatype Properties — Certificate
+#################################################################
+
+:certificateNumber a owl:DatatypeProperty ;
+    rdfs:label "certificate number" ;
+    rdfs:comment "Unique identifier of the statutory certificate." ;
+    rdfs:domain :StatutoryCertificate ;
+    rdfs:range xsd:string .
+
+:certificateType a owl:DatatypeProperty ;
+    rdfs:label "certificate type" ;
+    rdfs:comment """Type code of the statutory certificate. Standard codes:
+    SAFETY_CONSTRUCTION, SAFETY_EQUIPMENT, SAFETY_RADIO, PASSENGER_SAFETY,
+    LOAD_LINE, IOPPC, IAPP, IEE, ISPPC, IBWMC, DOC, SMC, ISSC, MLC,
+    MIN_SAFE_MANNING, CLASS, CLC, BUNKER, MLC_FINANCIAL.""" ;
+    rdfs:domain :StatutoryCertificate ;
+    rdfs:range xsd:string .
+
+:issueDate a owl:DatatypeProperty ;
+    rdfs:label "issue date" ;
+    rdfs:comment "Date when the certificate was issued." ;
+    rdfs:domain :StatutoryCertificate ;
+    rdfs:range xsd:date .
+
+:expiryDate a owl:DatatypeProperty ;
+    rdfs:label "expiry date" ;
+    rdfs:comment "Date when the certificate expires." ;
+    rdfs:domain :StatutoryCertificate ;
+    rdfs:range xsd:date .
+
+:lastEndorsementDate a owl:DatatypeProperty ;
+    rdfs:label "last endorsement date" ;
+    rdfs:comment "Date of the most recent annual or intermediate endorsement." ;
+    rdfs:domain :StatutoryCertificate ;
+    rdfs:range xsd:date .
+
+:issuingAuthority a owl:DatatypeProperty ;
+    rdfs:label "issuing authority" ;
+    rdfs:comment "Name of the flag state administration or Recognized Organization that issued the certificate." ;
+    rdfs:domain :StatutoryCertificate ;
+    rdfs:range xsd:string .
+
+# IEE-specific properties
+:attainedEEDI a owl:DatatypeProperty ;
+    rdfs:label "attained EEDI" ;
+    rdfs:comment "Attained Energy Efficiency Design Index value in gCO₂/tonne-nautical-mile (new ships)." ;
+    rdfs:domain :InternationalEnergyEfficiencyCertificate ;
+    rdfs:range xsd:decimal .
+
+:requiredEEDI a owl:DatatypeProperty ;
+    rdfs:label "required EEDI" ;
+    rdfs:comment "Required EEDI reference value for the vessel's type and size." ;
+    rdfs:domain :InternationalEnergyEfficiencyCertificate ;
+    rdfs:range xsd:decimal .
+
+:attainedEEXI a owl:DatatypeProperty ;
+    rdfs:label "attained EEXI" ;
+    rdfs:comment "Attained Energy Efficiency Existing Ship Index value (existing ships, mandatory from 2023)." ;
+    rdfs:domain :InternationalEnergyEfficiencyCertificate ;
+    rdfs:range xsd:decimal .
+
+:requiredEEXI a owl:DatatypeProperty ;
+    rdfs:label "required EEXI" ;
+    rdfs:comment "Required EEXI reference value for the vessel's type and size." ;
+    rdfs:domain :InternationalEnergyEfficiencyCertificate ;
+    rdfs:range xsd:decimal .
+
+:ciiRating a owl:DatatypeProperty ;
+    rdfs:label "CII rating" ;
+    rdfs:comment "Annual Carbon Intensity Indicator rating (A, B, C, D, or E). Mandatory from 2023." ;
+    rdfs:domain :InternationalEnergyEfficiencyCertificate ;
+    rdfs:range xsd:string .
+
+:ciiValue a owl:DatatypeProperty ;
+    rdfs:label "CII value" ;
+    rdfs:comment "Attained annual operational CII value in gCO₂/tonne-nautical-mile." ;
+    rdfs:domain :InternationalEnergyEfficiencyCertificate ;
+    rdfs:range xsd:decimal .
+
+# MLC-specific properties
+:dmlcPartI a owl:DatatypeProperty ;
+    rdfs:label "DMLC Part I" ;
+    rdfs:comment "Reference to the Declaration of Maritime Labour Compliance Part I (national requirements)." ;
+    rdfs:domain :MaritimeLabourCertificate ;
+    rdfs:range xsd:string .
+
+:dmlcPartII a owl:DatatypeProperty ;
+    rdfs:label "DMLC Part II" ;
+    rdfs:comment "Reference to the Declaration of Maritime Labour Compliance Part II (ship-specific measures)." ;
+    rdfs:domain :MaritimeLabourCertificate ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Datatype Properties — Survey
+#################################################################
+
+:surveyDate a owl:DatatypeProperty ;
+    rdfs:label "survey date" ;
+    rdfs:comment "Date when the statutory survey was conducted." ;
+    rdfs:domain :StatutorySurvey ;
+    rdfs:range xsd:date .
+
+:surveyType a owl:DatatypeProperty ;
+    rdfs:label "survey type" ;
+    rdfs:comment "Type of statutory survey (INITIAL, RENEWAL, ANNUAL, INTERMEDIATE)." ;
+    rdfs:domain :StatutorySurvey ;
+    rdfs:range xsd:string .
+
+:surveyOutcome a owl:DatatypeProperty ;
+    rdfs:label "survey outcome" ;
+    rdfs:comment "Outcome of the survey (SATISFACTORY, CONDITIONS_OF_CLASS, RECOMMENDATIONS, FAILED)." ;
+    rdfs:domain :StatutorySurvey ;
+    rdfs:range xsd:string .
+
+:surveyConvention a owl:DatatypeProperty ;
+    rdfs:label "survey convention" ;
+    rdfs:comment "The IMO convention under which the survey was conducted (e.g., SOLAS, MARPOL, ISM, ISPS)." ;
+    rdfs:domain :StatutorySurvey ;
+    rdfs:range xsd:string .
+
+# DocumentOfCompliance-specific properties (ISM Code Part A §13)
+:docCompanyAddress a owl:DatatypeProperty ;
+    rdfs:label "DOC company address" ;
+    rdfs:comment "Registered address of the company to which the Document of Compliance was issued (ISM Code Part A §13.2)." ;
+    rdfs:domain :DocumentOfCompliance ;
+    rdfs:range xsd:string .
+
+:docVerificationDate a owl:DatatypeProperty ;
+    rdfs:label "DOC verification date" ;
+    rdfs:comment "Date of the most recent annual verification of the Document of Compliance (ISM Code Part A §13.2)." ;
+    rdfs:domain :DocumentOfCompliance ;
+    rdfs:range xsd:date .
+
+:docShipTypeScope a owl:DatatypeProperty ;
+    rdfs:label "DOC ship type scope" ;
+    rdfs:comment "Ship types covered by the Document of Compliance, e.g., BULK_CARRIER, TANKER, PASSENGER (ISM Code Part A §13)." ;
+    rdfs:domain :DocumentOfCompliance ;
+    rdfs:range xsd:string .
+
+:docValidityPeriod a owl:DatatypeProperty ;
+    rdfs:label "DOC validity period" ;
+    rdfs:comment "Validity period of the Document of Compliance in years (5 years per ISM Code Part A §13.2)." ;
+    rdfs:domain :DocumentOfCompliance ;
+    rdfs:range xsd:integer .
+
+# SafetyManagementCertificate-specific properties (ISM Code Part A §13.7)
+:smcImoNumber a owl:DatatypeProperty ;
+    rdfs:label "SMC IMO number" ;
+    rdfs:comment "IMO number of the vessel to which the Safety Management Certificate was issued (ISM Code Part A §13.7)." ;
+    rdfs:domain :SafetyManagementCertificate ;
+    rdfs:range xsd:string .
+
+:smcCompanyName a owl:DatatypeProperty ;
+    rdfs:label "SMC company name" ;
+    rdfs:comment "Name of the company whose SMS is documented and verified on the Safety Management Certificate (ISM Code Part A §13.7)." ;
+    rdfs:domain :SafetyManagementCertificate ;
+    rdfs:range xsd:string .
+
+:docReferenceNumber a owl:DatatypeProperty ;
+    rdfs:label "SMC DOC reference number" ;
+    rdfs:comment "Reference number of the associated Document of Compliance (ISM Code Part A §13.7)." ;
+    rdfs:domain :SafetyManagementCertificate ;
+    rdfs:range xsd:string .
+
+:smcIntermediateVerificationDate a owl:DatatypeProperty ;
+    rdfs:label "SMC intermediate verification date" ;
+    rdfs:comment "Date of the intermediate verification required during the 5-year validity period of the SMC (ISM Code Part A §13.7)." ;
+    rdfs:domain :SafetyManagementCertificate ;
+    rdfs:range xsd:date .
+
+# InternationalShipSecurityCertificate-specific properties (SOLAS XI-2/9, ISPS Code)
+:isscShipName a owl:DatatypeProperty ;
+    rdfs:label "ISSC ship name" ;
+    rdfs:comment "Name of the ship as recorded on the International Ship Security Certificate (SOLAS XI-2/9; ISPS Code Part A §19)." ;
+    rdfs:domain :InternationalShipSecurityCertificate ;
+    rdfs:range xsd:string .
+
+:isscFlagState a owl:DatatypeProperty ;
+    rdfs:label "ISSC flag state" ;
+    rdfs:comment "Flag state administration that issued the International Ship Security Certificate (ISPS Code Part A §19)." ;
+    rdfs:domain :InternationalShipSecurityCertificate ;
+    rdfs:range xsd:string .
+
+:isscSecurityPlanReference a owl:DatatypeProperty ;
+    rdfs:label "ISSC security plan reference" ;
+    rdfs:comment "Reference to the approved Ship Security Plan certified by the ISSC (ISPS Code Part A §19)." ;
+    rdfs:domain :InternationalShipSecurityCertificate ;
+    rdfs:range xsd:string .
+
+:isscVerificationDate a owl:DatatypeProperty ;
+    rdfs:label "ISSC verification date" ;
+    rdfs:comment "Date of the verification survey for the International Ship Security Certificate (ISPS Code Part A §19.1.1)." ;
+    rdfs:domain :InternationalShipSecurityCertificate ;
+    rdfs:range xsd:date .
+
+:isscInterimCertificate a owl:DatatypeProperty ;
+    rdfs:label "ISSC interim certificate" ;
+    rdfs:comment "Indicator whether this is an interim International Ship Security Certificate (true) or a full-term certificate (false) (ISPS Code Part A §19.4)." ;
+    rdfs:domain :InternationalShipSecurityCertificate ;
+    rdfs:range xsd:boolean .
+
+# MaritimeLabourCertificate-specific properties (MLC 2006 Title 5, Standard A5.1.3)
+:mlcInspectionDate a owl:DatatypeProperty ;
+    rdfs:label "MLC inspection date" ;
+    rdfs:comment "Date of the inspection for the Maritime Labour Certificate (MLC 2006 Standard A5.1.3)." ;
+    rdfs:domain :MaritimeLabourCertificate ;
+    rdfs:range xsd:date .
+
+:mlcInspectionAreasCovered a owl:DatatypeProperty ;
+    rdfs:label "MLC inspection areas covered" ;
+    rdfs:comment "The 14 areas of MLC 2006 compliance covered by the inspection, as listed in Standard A5.1.3 (MLC 2006 Standard A5.1.3)." ;
+    rdfs:domain :MaritimeLabourCertificate ;
+    rdfs:range xsd:string .
+
+:mlcIntermediateInspectionDate a owl:DatatypeProperty ;
+    rdfs:label "MLC intermediate inspection date" ;
+    rdfs:comment "Date of the intermediate inspection required during the 5-year validity period of the Maritime Labour Certificate (MLC 2006 Standard A5.1.3)." ;
+    rdfs:domain :MaritimeLabourCertificate ;
+    rdfs:range xsd:date .

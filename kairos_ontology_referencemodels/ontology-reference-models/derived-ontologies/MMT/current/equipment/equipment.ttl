@@ -16,7 +16,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "2.4.0" ;
+    owl:versionInfo "2.5.0" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
     owl:imports <https://www.kairosflow.ai/ont/mmt/events> ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
@@ -339,3 +339,91 @@
     rdfs:domain :TrailerUnit ;
     rdfs:range xsd:string .
 
+
+#################################################################
+#    Slave Equipment (ro-ro carrying equipment)
+#################################################################
+
+# Non-powered carrying equipment that a cargo unit rides on during roll-on/roll-off
+# handling. It is neither the cargo unit nor the powered handling machine, and it
+# determines which handling equipment can move a unit — and therefore what a terminal
+# can physically do. The unit-load / ro-ro / short-sea archetype already names
+# cassettes among its primary units, but no class existed for them.
+
+:SlaveEquipment a owl:Class ;
+    rdfs:label "Slave Equipment" ;
+    rdfs:comment """Non-powered terminal carrying equipment that a cargo unit rides on during
+    roll-on/roll-off handling.
+
+    Properties: slaveUnitId, slaveEquipmentType, deckLoadCapacityTonnes.
+    Distinct from the cargo unit it carries and from the powered handling equipment that
+    moves it; it has its own identity, location and lifecycle independent of both.""" ;
+    rdfs:subClassOf :TransportEquipment .
+
+:RollTrailer a owl:Class ;
+    rdfs:label "Roll Trailer" ;
+    rdfs:comment """A low, non-powered platform trailer used to move non-containerised cargo on
+    and off a ro-ro vessel, commonly known as a mafi.
+
+    Towed by a terminal tractor and left under the cargo for the sea crossing.""" ;
+    rdfs:subClassOf :SlaveEquipment .
+
+:Cassette a owl:Class ;
+    rdfs:label "Cassette" ;
+    rdfs:comment """A non-powered steel load platform carrying cargo on and off a ro-ro vessel,
+    lifted and moved by a dedicated cassette translifter rather than towed.
+
+    A primary unit of the unit-load / ro-ro / short-sea carrier archetype.""" ;
+    rdfs:subClassOf :SlaveEquipment .
+
+:Trestle a owl:Class ;
+    rdfs:label "Trestle" ;
+    rdfs:comment """A support frame placed under the coupling end of an unaccompanied semi-trailer
+    or roll trailer to hold it level while it is parked or stowed.""" ;
+    rdfs:subClassOf :SlaveEquipment .
+
+:carriedOnSlaveEquipment a owl:ObjectProperty ;
+    rdfs:label "carried on slave equipment" ;
+    rdfs:comment "Links transport equipment or a cargo unit to the slave equipment it rides on." ;
+    rdfs:domain :TransportEquipment ;
+    rdfs:range :SlaveEquipment .
+
+:slaveUnitId a owl:DatatypeProperty ;
+    rdfs:label "slave unit ID" ;
+    rdfs:comment "Identifier of the slave equipment unit, such as a mafi or cassette number." ;
+    rdfs:domain :SlaveEquipment ;
+    rdfs:range xsd:string .
+
+:slaveEquipmentType a owl:DatatypeProperty ;
+    rdfs:label "slave equipment type" ;
+    rdfs:comment "Type of slave equipment (ROLL_TRAILER, CASSETTE, TRESTLE)." ;
+    rdfs:domain :SlaveEquipment ;
+    rdfs:range xsd:string .
+
+:deckLoadCapacityTonnes a owl:DatatypeProperty ;
+    rdfs:label "deck load capacity (tonnes)" ;
+    rdfs:comment "Maximum load the slave equipment may carry, in tonnes." ;
+    rdfs:domain :SlaveEquipment ;
+    rdfs:range xsd:decimal .
+
+#################################################################
+#    Reefer Power Requirement
+#################################################################
+
+# The supply side of reefer power is modelled in tic/locations (ReeferPlug, with
+# plugNumber and powerCapacityKW) and the events in tic/events. The demand side —
+# whether a unit must be connected to terminal power while stationary, and at what
+# draw — had no home, so plug matching and reefer capacity planning were not
+# expressible.
+
+:requiresPowerSupply a owl:DatatypeProperty ;
+    rdfs:label "requires power supply" ;
+    rdfs:comment "Whether the equipment must be connected to terminal or shore power while stationary to hold its temperature setting." ;
+    rdfs:domain :TemperatureSettingInstructions ;
+    rdfs:range xsd:boolean .
+
+:powerRequirementKW a owl:DatatypeProperty ;
+    rdfs:label "power requirement (kW)" ;
+    rdfs:comment "Electrical power draw required to hold the temperature setting, in kilowatts. Matched against the power capacity of a reefer plug." ;
+    rdfs:domain :TemperatureSettingInstructions ;
+    rdfs:range xsd:decimal .

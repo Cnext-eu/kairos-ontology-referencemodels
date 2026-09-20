@@ -1,4 +1,5 @@
 @prefix : <https://www.kairosflow.ai/ont/tic/locations#> .
+@prefix tic-infra: <https://www.kairosflow.ai/ont/tic/terminal-infrastructure#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -15,7 +16,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "1.4.0" ;
+    owl:versionInfo "1.5.0" ;
     dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
     rdfs:seeAlso <https://tic40.org/standards/> .
 
@@ -34,7 +35,14 @@
     rdfs:label "Terminal" ;
     rdfs:comment """The top-level location representing the entire terminal facility.
 
-    TIC 4.0: Identified by UN/LOCODE and terminal-specific facility code.""" ;
+    TIC 4.0: Identified by UN/LOCODE and terminal-specific facility code.
+
+    This is the *positioning* view of a terminal: the root of the terminal location
+    hierarchy and the range of :withinTerminal. It denotes the same real-world facility
+    as tic-infra:Terminal, which is the *asset* view, and the two are declared
+    equivalent. Prefer tic-infra:Terminal when anchoring a terminal facility table;
+    this class stays the anchor for terminal positioning.""" ;
+    owl:equivalentClass tic-infra:Terminal ;
     rdfs:subClassOf :TerminalLocation ;
     rdfs:seeAlso <https://www.kairosflow.ai/ont/dcsa/locations#Terminal> ;
     rdfs:subClassOf [
@@ -47,7 +55,12 @@
     rdfs:label "Berth" ;
     rdfs:comment """A specific vessel mooring location alongside the quay.
 
-    TIC 4.0: Identified by berth number within the terminal.""" ;
+    TIC 4.0: Identified by berth number within the terminal.
+
+    The positioning view of a berth; tic-infra:Berth is the asset view of the same
+    berth, carrying length, depth and crane coverage. The two are declared equivalent
+    so that :withinTerminal and tic-infra:belongsToTerminal both remain usable.""" ;
+    owl:equivalentClass tic-infra:Berth ;
     rdfs:subClassOf :TerminalLocation ;
     rdfs:subClassOf [
         a owl:Restriction ;

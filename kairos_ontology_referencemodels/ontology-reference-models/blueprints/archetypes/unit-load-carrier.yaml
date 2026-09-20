@@ -371,6 +371,14 @@ core_concepts:
   - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment",     tier: required,    label: "Transport Equipment (fleet anchor)" }
   - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#TrailerUnit",           tier: required,    label: "Trailer Unit" }
   - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#SwapBody",              tier: required,    label: "Swap Body" }
+  # Slave equipment — the non-powered carriers a unit rides on. Neither the unit
+  # nor the handling machine, and it constrains which handling equipment can move
+  # a unit. Added in 1.36.0; before it existed, cassettes were named in this
+  # archetype's own commentary with no class to anchor them.
+  - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#SlaveEquipment",        tier: recommended, label: "Slave Equipment (ro-ro carrying equipment)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#RollTrailer",           tier: required,    label: "Roll Trailer (mafi)" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#Cassette",              tier: required,    label: "Cassette" }
+  - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#Trestle",               tier: optional,    label: "Trestle" }
   - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#Pallet",                tier: optional,    label: "Pallet" }
   - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#Seal",                  tier: recommended, label: "Seal" }
   - { uri: "https://www.kairosflow.ai/ont/mmt/equipment#TemperatureSettingInstructions", tier: optional, label: "Temperature Setting Instructions (reefer trailer)" }

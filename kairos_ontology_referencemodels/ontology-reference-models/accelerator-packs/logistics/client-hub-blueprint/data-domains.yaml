@@ -721,6 +721,46 @@ cross_domain_relationships:
     description: "Links an IMO PortCall to the TIC Terminal where it occurs."
     status: new-bridge
 
+  # ── Voyage & Move reach (gh#116) ───────────────────────────────────────
+  # Voyage and Move appeared in none of the bridges, so voyage→vessel and the three
+  # voyage/gate-pass foreign keys below had no property to carry them.
+
+  - id: voyage-to-vessel
+    source_domain: vessel-maritime
+    target_domain: vessel-maritime
+    property_uri: "https://www.kairosflow.ai/ont/imo/port-call#voyagePerformedBy"
+    domain_class_uri: "https://www.kairosflow.ai/ont/imo/port-call#Voyage"
+    range_class_uri: "https://www.kairosflow.ai/ont/imo/vessel-registry#Vessel"
+    description: "Links a voyage to the vessel that performs it. Within-standard IMO link, defined in imo/port-call rather than supply-chain."
+    status: new-bridge
+
+  - id: event-to-voyage
+    source_domain: events
+    target_domain: vessel-maritime
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#eventRelatesToVoyage"
+    domain_class_uri: "https://www.kairosflow.ai/ont/dcsa/events#Event"
+    range_class_uri: "https://www.kairosflow.ai/ont/imo/port-call#Voyage"
+    description: "Links a DCSA Event to the IMO Voyage it relates to."
+    status: new-bridge
+
+  - id: consignment-to-voyage
+    source_domain: consignment
+    target_domain: vessel-maritime
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#carriedOnVoyage"
+    domain_class_uri: "https://www.kairosflow.ai/ont/mmt/consignment#Consignment"
+    range_class_uri: "https://www.kairosflow.ai/ont/imo/port-call#Voyage"
+    description: "Links an MMT Consignment to the IMO Voyage carrying it."
+    status: new-bridge
+
+  - id: move-to-transport-document
+    source_domain: terminal-operations
+    target_domain: documents
+    property_uri: "https://www.kairosflow.ai/ont/supply-chain#moveAuthorizedBy"
+    domain_class_uri: "https://www.kairosflow.ai/ont/tic/handling-operations#Move"
+    range_class_uri: "https://www.kairosflow.ai/ont/bsp/documents#TransportDocument"
+    description: "Links a TIC terminal Move to the BSP TransportDocument authorizing it, such as a gate pass."
+    status: new-bridge
+
   - id: berthstay-to-berth
     source_domain: vessel-maritime
     target_domain: terminal-operations

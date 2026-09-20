@@ -16702,6 +16702,20 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/imo/port-call#partOfVoyage
 - comments:
+  - Links a vessel to a voyage it performs.
+  domains:
+  - https://www.kairosflow.ai/ont/imo/vessel-registry#Vessel
+  kind: object_property
+  labels:
+  - performs voyage
+  module_uri: https://www.kairosflow.ai/ont/imo/port-call
+  ranges:
+  - https://www.kairosflow.ai/ont/imo/port-call#Voyage
+  source_file: derived-ontologies/IMO/current/port-call/port-call.ttl
+  sources: *id027
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/imo/port-call#performsVoyage
+- comments:
   - Reference to the Ship Sanitation Certificate (SSC) issued under IHR (2005) Article 39.
   domains:
   - https://www.kairosflow.ai/ont/imo/port-call#PortHealthDeclaration
@@ -16910,6 +16924,20 @@ records:
   sources: *id027
   superclasses: []
   uri: https://www.kairosflow.ai/ont/imo/port-call#voyageNumber
+- comments:
+  - Links a voyage to the vessel that performs it.
+  domains:
+  - https://www.kairosflow.ai/ont/imo/port-call#Voyage
+  kind: object_property
+  labels:
+  - voyage performed by
+  module_uri: https://www.kairosflow.ai/ont/imo/port-call
+  ranges:
+  - https://www.kairosflow.ai/ont/imo/vessel-registry#Vessel
+  source_file: derived-ontologies/IMO/current/port-call/port-call.ttl
+  sources: *id027
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/imo/port-call#voyagePerformedBy
 - comments:
   - Date and time the voyage plan was approved by the master.
   domains:
@@ -21648,6 +21676,22 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/documents#versionNumber
 - comments:
+  - "A non-powered steel load platform carrying cargo on and off a ro-ro vessel,\n    lifted and moved\
+    \ by a dedicated cassette translifter rather than towed.\n\n    A primary unit of the unit-load /\
+    \ ro-ro / short-sea carrier archetype."
+  domains: []
+  kind: class
+  labels:
+  - Cassette
+  module_uri: https://www.kairosflow.ai/ont/mmt/equipment
+  ranges: []
+  source_file: derived-ontologies/MMT/current/equipment/equipment.ttl
+  sources: &id033
+  - UN/CEFACT Multi-Modal Transport Reference Data Model
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/equipment#SlaveEquipment
+  uri: https://www.kairosflow.ai/ont/mmt/equipment#Cassette
+- comments:
   - "An ISO freight container for intermodal transport.\n\n    Properties: isoContainerCode, containerSize,\
     \ containerType.\n    UN/CEFACT MMT-RDM: LogisticsTransportEquipmentType — isoContainerCode\n    is\
     \ the ISO 6346 container code; containerSize is the size (e.g., 20ft,\n    40ft); containerType is\
@@ -21659,8 +21703,7 @@ records:
   module_uri: https://www.kairosflow.ai/ont/mmt/equipment
   ranges: []
   source_file: derived-ontologies/MMT/current/equipment/equipment.ttl
-  sources: &id033
-  - UN/CEFACT Multi-Modal Transport Reference Data Model
+  sources: *id033
   superclasses:
   - https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment
   uri: https://www.kairosflow.ai/ont/mmt/equipment#FreightContainer
@@ -21698,6 +21741,21 @@ records:
   - https://www.kairosflow.ai/ont/mmt/equipment#FreightContainer
   uri: https://www.kairosflow.ai/ont/mmt/equipment#ReeferContainer
 - comments:
+  - "A low, non-powered platform trailer used to move non-containerised cargo on\n    and off a ro-ro\
+    \ vessel, commonly known as a mafi.\n\n    Towed by a terminal tractor and left under the cargo for\
+    \ the sea crossing."
+  domains: []
+  kind: class
+  labels:
+  - Roll Trailer
+  module_uri: https://www.kairosflow.ai/ont/mmt/equipment
+  ranges: []
+  source_file: derived-ontologies/MMT/current/equipment/equipment.ttl
+  sources: *id033
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/equipment#SlaveEquipment
+  uri: https://www.kairosflow.ai/ont/mmt/equipment#RollTrailer
+- comments:
   - "A security seal applied to transport equipment.\n\n    Properties: sealNumber, sealType, sealCondition,\
     \ sealIssuer.\n    UN/CEFACT RABIE: LogisticsSealType — sealNumber is the seal identifier;\n    sealType\
     \ is the type (carrier, customs, shipper); sealCondition is the\n    condition of the seal (intact,\
@@ -21712,6 +21770,22 @@ records:
   sources: *id033
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/equipment#Seal
+- comments:
+  - "Non-powered terminal carrying equipment that a cargo unit rides on during\n    roll-on/roll-off handling.\n\
+    \n    Properties: slaveUnitId, slaveEquipmentType, deckLoadCapacityTonnes.\n    Distinct from the\
+    \ cargo unit it carries and from the powered handling equipment that\n    moves it; it has its own\
+    \ identity, location and lifecycle independent of both."
+  domains: []
+  kind: class
+  labels:
+  - Slave Equipment
+  module_uri: https://www.kairosflow.ai/ont/mmt/equipment
+  ranges: []
+  source_file: derived-ontologies/MMT/current/equipment/equipment.ttl
+  sources: *id033
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment
+  uri: https://www.kairosflow.ai/ont/mmt/equipment#SlaveEquipment
 - comments:
   - "An intermodal freight container for road and rail.\n\n    Properties: swapBodyCode, swapBodyDimensions.\n\
     \    UN/CEFACT MMT-RDM: LogisticsTransportEquipmentType — swapBodyCode is\n    the swap body identification\
@@ -21788,6 +21862,34 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment
 - comments:
+  - "A support frame placed under the coupling end of an unaccompanied semi-trailer\n    or roll trailer\
+    \ to hold it level while it is parked or stowed."
+  domains: []
+  kind: class
+  labels:
+  - Trestle
+  module_uri: https://www.kairosflow.ai/ont/mmt/equipment
+  ranges: []
+  source_file: derived-ontologies/MMT/current/equipment/equipment.ttl
+  sources: *id033
+  superclasses:
+  - https://www.kairosflow.ai/ont/mmt/equipment#SlaveEquipment
+  uri: https://www.kairosflow.ai/ont/mmt/equipment#Trestle
+- comments:
+  - Links transport equipment or a cargo unit to the slave equipment it rides on.
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment
+  kind: object_property
+  labels:
+  - carried on slave equipment
+  module_uri: https://www.kairosflow.ai/ont/mmt/equipment
+  ranges:
+  - https://www.kairosflow.ai/ont/mmt/equipment#SlaveEquipment
+  source_file: derived-ontologies/MMT/current/equipment/equipment.ttl
+  sources: *id033
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/equipment#carriedOnSlaveEquipment
+- comments:
   - Equipment category code (LogisticsTransportEquipmentType.CategoryCode).
   domains:
   - https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment
@@ -21830,6 +21932,20 @@ records:
   sources: *id033
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/equipment#containerType
+- comments:
+  - Maximum load the slave equipment may carry, in tonnes.
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/equipment#SlaveEquipment
+  kind: datatype_property
+  labels:
+  - deck load capacity (tonnes)
+  module_uri: https://www.kairosflow.ai/ont/mmt/equipment
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/MMT/current/equipment/equipment.ttl
+  sources: *id033
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/equipment#deckLoadCapacityTonnes
 - comments:
   - Unique identifier for transport equipment (e.g., container number).
   domains:
@@ -22030,6 +22146,36 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/equipment#palletType
 - comments:
+  - Electrical power draw required to hold the temperature setting, in kilowatts. Matched against the
+    power capacity of a reefer plug.
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/equipment#TemperatureSettingInstructions
+  kind: datatype_property
+  labels:
+  - power requirement (kW)
+  module_uri: https://www.kairosflow.ai/ont/mmt/equipment
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#decimal
+  source_file: derived-ontologies/MMT/current/equipment/equipment.ttl
+  sources: *id033
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/equipment#powerRequirementKW
+- comments:
+  - Whether the equipment must be connected to terminal or shore power while stationary to hold its temperature
+    setting.
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/equipment#TemperatureSettingInstructions
+  kind: datatype_property
+  labels:
+  - requires power supply
+  module_uri: https://www.kairosflow.ai/ont/mmt/equipment
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#boolean
+  source_file: derived-ontologies/MMT/current/equipment/equipment.ttl
+  sources: *id033
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/equipment#requiresPowerSupply
+- comments:
   - 'Condition of the seal (intact, broken). UN/CEFACT MMT-RDM: LogisticsSealType seal condition.'
   domains:
   - https://www.kairosflow.ai/ont/mmt/equipment#Seal
@@ -22085,6 +22231,34 @@ records:
   sources: *id033
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/equipment#sealType
+- comments:
+  - Type of slave equipment (ROLL_TRAILER, CASSETTE, TRESTLE).
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/equipment#SlaveEquipment
+  kind: datatype_property
+  labels:
+  - slave equipment type
+  module_uri: https://www.kairosflow.ai/ont/mmt/equipment
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/MMT/current/equipment/equipment.ttl
+  sources: *id033
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/equipment#slaveEquipmentType
+- comments:
+  - Identifier of the slave equipment unit, such as a mafi or cassette number.
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/equipment#SlaveEquipment
+  kind: datatype_property
+  labels:
+  - slave unit ID
+  module_uri: https://www.kairosflow.ai/ont/mmt/equipment
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/MMT/current/equipment/equipment.ttl
+  sources: *id033
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/mmt/equipment#slaveUnitId
 - comments:
   - 'Swap body identification code. UN/CEFACT MMT-RDM: LogisticsTransportEquipmentType swap body code.'
   domains:
@@ -26757,6 +26931,19 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/supply-chain#callsAtTransportCall
 - comments:
+  - Links an MMT Consignment to the IMO Voyage carrying it.
+  domains:
+  - https://www.kairosflow.ai/ont/mmt/consignment#Consignment
+  kind: object_property
+  labels:
+  - carried on voyage
+  module_uri: https://www.kairosflow.ai/ont/supply-chain
+  ranges:
+  - https://www.kairosflow.ai/ont/imo/port-call#Voyage
+  source_file: derived-ontologies/SupplyChain/current/supply-chain.ttl
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/supply-chain#carriedOnVoyage
+- comments:
   - Links a BSP Invoice to the MMT Consignment it charges for.
   domains:
   - https://www.kairosflow.ai/ont/bsp/financial#Invoice
@@ -26848,6 +27035,19 @@ records:
   source_file: derived-ontologies/SupplyChain/current/supply-chain.ttl
   superclasses: []
   uri: https://www.kairosflow.ai/ont/supply-chain#eventRelatesToVessel
+- comments:
+  - Links a DCSA Event to the IMO Voyage it relates to.
+  domains:
+  - https://www.kairosflow.ai/ont/dcsa/events#Event
+  kind: object_property
+  labels:
+  - event relates to voyage
+  module_uri: https://www.kairosflow.ai/ont/supply-chain
+  ranges:
+  - https://www.kairosflow.ai/ont/imo/port-call#Voyage
+  source_file: derived-ontologies/SupplyChain/current/supply-chain.ttl
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/supply-chain#eventRelatesToVoyage
 - comments:
   - Links a DCSA Container to the TIC terminal cargo visit where it is handled.
   domains:
@@ -27023,6 +27223,21 @@ records:
   source_file: derived-ontologies/SupplyChain/current/supply-chain.ttl
   superclasses: []
   uri: https://www.kairosflow.ai/ont/supply-chain#invoicedVia
+- comments:
+  - "Links a TIC terminal Move to the BSP TransportDocument authorizing it.\n\n    Covers the gate pass\
+    \ or equivalent release document a terminal requires before a\n    unit may be moved; without it a\
+    \ bound move table carrying a gate-pass reference\n    could not reach any document class."
+  domains:
+  - https://www.kairosflow.ai/ont/tic/handling-operations#Move
+  kind: object_property
+  labels:
+  - move authorized by
+  module_uri: https://www.kairosflow.ai/ont/supply-chain
+  ranges:
+  - https://www.kairosflow.ai/ont/bsp/documents#TransportDocument
+  source_file: derived-ontologies/SupplyChain/current/supply-chain.ttl
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/supply-chain#moveAuthorizedBy
 - comments:
   - Links an MMT Consignment to a WCO CustomsDeclaration required for border crossing.
   domains:
@@ -30888,7 +31103,9 @@ records:
   uri: https://www.kairosflow.ai/ont/tic/locations#BargeQuay
 - comments:
   - "A specific vessel mooring location alongside the quay.\n\n    TIC 4.0: Identified by berth number\
-    \ within the terminal."
+    \ within the terminal.\n\n    The positioning view of a berth; tic-infra:Berth is the asset view of\
+    \ the same\n    berth, carrying length, depth and crane coverage. The two are declared equivalent\n\
+    \    so that :withinTerminal and tic-infra:belongsToTerminal both remain usable."
   domains: []
   kind: class
   labels:
@@ -30958,7 +31175,11 @@ records:
   uri: https://www.kairosflow.ai/ont/tic/locations#ReeferPlug
 - comments:
   - "The top-level location representing the entire terminal facility.\n\n    TIC 4.0: Identified by UN/LOCODE\
-    \ and terminal-specific facility code."
+    \ and terminal-specific facility code.\n\n    This is the *positioning* view of a terminal: the root\
+    \ of the terminal location\n    hierarchy and the range of :withinTerminal. It denotes the same real-world\
+    \ facility\n    as tic-infra:Terminal, which is the *asset* view, and the two are declared\n    equivalent.\
+    \ Prefer tic-infra:Terminal when anchoring a terminal facility table;\n    this class stays the anchor\
+    \ for terminal positioning."
   domains: []
   kind: class
   labels:
@@ -31779,7 +32000,9 @@ records:
 - comments:
   - "A designated location alongside a quay where a vessel can be moored for loading or discharging cargo.\n\
     \n    TIC 4.0: Berths are identified by number and have length, depth, crane coverage, and\n    quay\
-    \ crane count attributes."
+    \ crane count attributes.\n\n    The asset view of a berth; tic-loc:Berth is the positioning view\
+    \ of the same berth\n    within the terminal location hierarchy. The two are declared equivalent so\
+    \ that\n    :belongsToTerminal and tic-loc:withinTerminal both remain usable."
   domains: []
   kind: class
   labels:
@@ -31979,7 +32202,11 @@ records:
 - comments:
   - "A port or inland facility where cargo is transferred between transport modes.\n\n    TIC 4.0: The\
     \ top-level physical entity encompassing berths, yards, gates, and all\n    associated infrastructure\
-    \ for cargo handling operations."
+    \ for cargo handling operations.\n\n    This is the *asset* view of a terminal, and the preferred\
+    \ anchor for a terminal\n    facility table — it is the range of the supply-chain callsAtTerminal\
+    \ bridge. It\n    denotes the same real-world facility as tic-loc:Terminal, the *positioning* view\n\
+    \    that roots the terminal location hierarchy, and the two are declared equivalent so\n    that\
+    \ tic-loc:withinTerminal is satisfiable from either anchor."
   domains: []
   kind: class
   labels:
@@ -32227,6 +32454,20 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/tic/terminal-infrastructure#craneStatus
 - comments:
+  - Links a piece of terminal equipment to the terminal location where it is currently positioned.
+  domains:
+  - https://www.kairosflow.ai/ont/tic/terminal-infrastructure#TerminalEquipment
+  kind: object_property
+  labels:
+  - currently at
+  module_uri: https://www.kairosflow.ai/ont/tic/terminal-infrastructure
+  ranges:
+  - https://www.kairosflow.ai/ont/tic/locations#TerminalLocation
+  source_file: derived-ontologies/TIC/current/terminal-infrastructure/terminal-infrastructure.ttl
+  sources: *id055
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/tic/terminal-infrastructure#currentlyAt
+- comments:
   - Cumulative energy consumption in kilowatt-hours.
   domains:
   - https://www.kairosflow.ai/ont/tic/terminal-infrastructure#PowerSource
@@ -32254,6 +32495,62 @@ records:
   sources: *id055
   superclasses: []
   uri: https://www.kairosflow.ai/ont/tic/terminal-infrastructure#equipmentCondition
+- comments:
+  - Unique identifier of a piece of cargo handling equipment within the terminal fleet.
+  domains:
+  - https://www.kairosflow.ai/ont/tic/terminal-infrastructure#TerminalEquipment
+  kind: datatype_property
+  labels:
+  - equipment ID
+  module_uri: https://www.kairosflow.ai/ont/tic/terminal-infrastructure
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/TIC/current/terminal-infrastructure/terminal-infrastructure.ttl
+  sources: *id055
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/tic/terminal-infrastructure#equipmentId
+- comments:
+  - Whether the equipment is currently in active service, as opposed to withdrawn, sold, or awaiting commissioning.
+  domains:
+  - https://www.kairosflow.ai/ont/tic/terminal-infrastructure#TerminalEquipment
+  kind: datatype_property
+  labels:
+  - equipment in service
+  module_uri: https://www.kairosflow.ai/ont/tic/terminal-infrastructure
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#boolean
+  source_file: derived-ontologies/TIC/current/terminal-infrastructure/terminal-infrastructure.ttl
+  sources: *id055
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/tic/terminal-infrastructure#equipmentInService
+- comments:
+  - Manufacturer of the equipment (e.g. Kalmar, Konecranes, Liebherr).
+  domains:
+  - https://www.kairosflow.ai/ont/tic/terminal-infrastructure#TerminalEquipment
+  kind: datatype_property
+  labels:
+  - equipment make
+  module_uri: https://www.kairosflow.ai/ont/tic/terminal-infrastructure
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/TIC/current/terminal-infrastructure/terminal-infrastructure.ttl
+  sources: *id055
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/tic/terminal-infrastructure#equipmentMake
+- comments:
+  - Manufacturer model designation of the equipment.
+  domains:
+  - https://www.kairosflow.ai/ont/tic/terminal-infrastructure#TerminalEquipment
+  kind: datatype_property
+  labels:
+  - equipment model
+  module_uri: https://www.kairosflow.ai/ont/tic/terminal-infrastructure
+  ranges:
+  - http://www.w3.org/2001/XMLSchema#string
+  source_file: derived-ontologies/TIC/current/terminal-infrastructure/terminal-infrastructure.ttl
+  sources: *id055
+  superclasses: []
+  uri: https://www.kairosflow.ai/ont/tic/terminal-infrastructure#equipmentModel
 - comments:
   - Maximum operational speed of the equipment in km/h.
   domains:
