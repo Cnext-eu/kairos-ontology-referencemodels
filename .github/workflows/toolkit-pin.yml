@@ -1,0 +1,115 @@
+name: Advance the toolkit pin
+
+# "Always take the latest toolkit" cannot be expressed as a marking. The dependency is a
+# direct wheel URL, which is exact by construction -- uv and pip resolve precisely that
+# artifact and will never advance it (see scripts/check_toolkit_pin.py's own docstring).
+# `[tool.kairos].channel` says which release *should* be pinned; it is a hint, not a
+# resolver instruction. So the only way the pin tracks a channel is if something moves it.
+#
+# That something used to be a person remembering, and the record shows how that goes: the
+# repo sat on 5.1.0rc2 through eight toolkit releases, and more recently drifted to
+# 5.13.0rc8 while the channel's latest was 5.20.0 -- failing the PR gate for a reason
+# unrelated to the change under review.
+#
+# This workflow does the remembering. It opens a PR rather than pushing to main, because
+# advancing the pin can genuinely break the cross-repo contract suite, and that belongs in
+# review where CI can say so before it lands.
+
+on:
+  schedule:
+    # Mondays, 06:00 UTC. Weekly rather than daily: the PR gate already catches a stale
+    # pin on anything being reviewed, so this only needs to beat the next contributor to
+    # it, not the next hour.
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  # Never two open bump PRs racing each other; a newer run supersedes an in-flight one.
+  group: toolkit-pin
+  cancel-in-progress: true
+
+jobs:
+  advance:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      # --update rewrites both occurrences of the version in pyproject.toml and re-locks.
+      # It exits 0 when the pin is already current, and also when the latest release is
+      # undetermined (offline or unauthenticated), so a network blip produces no PR rather
+      # than a wrong one. GH_TOKEN lifts the unauthenticated API rate limit.
+      - name: Advance the pin to the channel's latest release
+        id: advance
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          uv run --extra dev python scripts/check_toolkit_pin.py --update | tee pin.log
+          if git diff --quiet -- pyproject.toml uv.lock; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            VERSION=$(uv run python -c "import re,pathlib;print(re.search(r'kairos_ontology_toolkit-([^-]+)-py3', pathlib.Path('pyproject.toml').read_text(encoding='utf-8')).group(1))")
+            test -n "$VERSION"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Run the gate the pin actually has to satisfy, so the PR body can say whether the
+      # new toolkit still reads this bundle rather than leaving a reviewer to guess.
+      - name: Check the pinned toolkit still reads this bundle
+        if: steps.advance.outputs.changed == 'true'
+        id: contract
+        continue-on-error: true
+        run: |
+          uv sync --extra dev
+          uv run --extra dev python -m pytest tests/test_toolkit_contract.py -q
+
+      - name: Open a pull request
+        if: steps.advance.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.advance.outputs.version }}
+          CONTRACT: ${{ steps.contract.outcome }}
+        run: |
+          BRANCH="chore/toolkit-pin-${VERSION}"
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            echo "A PR branch for ${VERSION} already exists; nothing to do."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add pyproject.toml uv.lock
+          git commit -m "chore: advance the toolkit pin to ${VERSION}"
+          git push origin "$BRANCH"
+          if [ "$CONTRACT" = "success" ]; then
+            VERDICT="✅ \`tests/test_toolkit_contract.py\` passes against ${VERSION}."
+          else
+            VERDICT="⚠️ \`tests/test_toolkit_contract.py\` **fails** against ${VERSION}. The pin advance is not safe as-is — review before merging."
+          fi
+          gh pr create --base main --head "$BRANCH" \
+            --title "chore: advance the toolkit pin to ${VERSION}" \
+            --body "$(printf '%s\n' \
+              "Opened by the weekly \`toolkit-pin\` workflow." \
+              "" \
+              "The toolkit is a direct wheel URL, so the pin is exact and never advances on its own; \`[tool.kairos].channel\` says which release *should* be pinned but is not a resolver instruction. This advances it to the channel's latest." \
+              "" \
+              "$VERDICT" \
+              "" \
+              "\`\`\`" \
+              "$(cat pin.log)" \
+              "\`\`\`")"
