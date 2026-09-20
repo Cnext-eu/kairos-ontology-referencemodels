@@ -260,7 +260,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "jsonschema", marker = "extra == 'dev'", specifier = ">=4.0" },
-    { name = "kairos-ontology-toolkit", marker = "extra == 'dev'", url = "https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.13.0rc8/kairos_ontology_toolkit-5.13.0rc8-py3-none-any.whl" },
+    { name = "kairos-ontology-toolkit", marker = "extra == 'dev'", url = "https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.20.0/kairos_ontology_toolkit-5.20.0-py3-none-any.whl" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0" },
     { name = "pytest-randomly", marker = "extra == 'dev'", specifier = ">=3.16" },
     { name = "pyyaml", marker = "extra == 'dev'", specifier = ">=6.0" },
@@ -270,8 +270,8 @@ provides-extras = ["dev"]
 
 [[package]]
 name = "kairos-ontology-toolkit"
-version = "5.13.0rc8"
-source = { url = "https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.13.0rc8/kairos_ontology_toolkit-5.13.0rc8-py3-none-any.whl" }
+version = "5.20.0"
+source = { url = "https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.20.0/kairos_ontology_toolkit-5.20.0-py3-none-any.whl" }
 dependencies = [
     { name = "click" },
     { name = "jinja2" },
@@ -287,7 +287,7 @@ dependencies = [
     { name = "rdflib" },
 ]
 wheels = [
-    { url = "https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.13.0rc8/kairos_ontology_toolkit-5.13.0rc8-py3-none-any.whl", hash = "sha256:b6e97f8ddc34898e985d15b37c38abdf2b4cecf93f397299768422dec000c7ee" },
+    { url = "https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.20.0/kairos_ontology_toolkit-5.20.0-py3-none-any.whl", hash = "sha256:75ec914405a332751d5573a40684b204858ebaa6cbdd91598ac40feb58182f26" },
 ]
 
 [package.metadata]
