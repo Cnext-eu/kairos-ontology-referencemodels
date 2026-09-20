@@ -1,0 +1,265 @@
+@prefix : <https://www.kairosflow.ai/ont/tic/automotive-services#> .
+@prefix tic-party: <https://www.kairosflow.ai/ont/tic/party#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/tic/automotive-services> a owl:Ontology ;
+    dcterms:title "TIC 4.0 Automotive Services Ontology" ;
+    dcterms:description """Automotive and vehicle processing services domain of the TIC 4.0 ontology.
+
+    Covers vehicle handling at automotive terminals including vehicle units,
+    VIN identification, vehicle storage, pre-delivery inspections (PDI), washing,
+    body repair, release status, and damage reporting.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-16"^^xsd:date ;
+    dcterms:modified "2026-05-21"^^xsd:date ;
+    owl:versionInfo "1.4.0" ;
+    dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
+    rdfs:seeAlso <https://tic40.org/standards/> .
+
+#################################################################
+#    Vehicle Classes
+#################################################################
+
+:VehicleUnit a owl:Class ;
+    rdfs:label "Vehicle Unit" ;
+    rdfs:comment """An individual motor vehicle being processed through the automotive terminal.
+
+    TIC 4.0: The primary unit of handling in automotive logistics, identified by VIN and
+    tracked through all terminal services from arrival to release.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :hasVIN ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:VIN a owl:Class ;
+    rdfs:label "VIN" ;
+    rdfs:comment """A Vehicle Identification Number — a unique 17-character code assigned to every motor vehicle.
+
+    TIC 4.0: The primary identifier for tracking vehicles through terminal operations,
+    conforming to ISO 3779 / ISO 3780 standards.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :vinCode ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:VehicleStorage a owl:Class ;
+    rdfs:label "Vehicle Storage" ;
+    rdfs:comment """The allocation of a parking or storage position for a vehicle within the terminal compound.
+
+    TIC 4.0: Includes open-air lots, covered storage, and climate-controlled areas.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :storagePosition ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Service Classes
+#################################################################
+
+:VehicleService a owl:Class ;
+    rdfs:label "Vehicle Service" ;
+    rdfs:comment """A service performed on a vehicle unit at the automotive terminal.
+
+    TIC 4.0: Abstract superclass for all value-added and technical services.""" .
+
+:PDI a owl:Class ;
+    rdfs:label "Pre-Delivery Inspection (PDI)" ;
+    rdfs:comment """A standardized multi-point inspection performed on a vehicle before delivery to the dealer or customer.
+
+    TIC 4.0: PDI checklists cover mechanical, electrical, cosmetic, and safety systems
+    and result in a pass/fail status with noted deficiencies.""" ;
+    rdfs:subClassOf :VehicleService ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :inspectionResult ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:Wash a owl:Class ;
+    rdfs:label "Wash" ;
+    rdfs:comment """A vehicle washing service including exterior wash, interior cleaning, or full detailing.
+
+    TIC 4.0: May be a standalone service or part of the PDI process.""" ;
+    rdfs:subClassOf :VehicleService .
+
+:BodyRepair a owl:Class ;
+    rdfs:label "Body Repair" ;
+    rdfs:comment """A repair service to fix cosmetic or structural body damage on a vehicle.
+
+    TIC 4.0: Triggered by damage reports; includes dent removal, paint touch-up, and panel replacement.""" ;
+    rdfs:subClassOf :VehicleService ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :relatedDamageReport ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Status and Reporting Classes
+#################################################################
+
+:VehicleReleaseStatus a owl:Class ;
+    rdfs:label "Vehicle Release Status" ;
+    rdfs:comment """The current release disposition of a vehicle (e.g., HOLD, READY_FOR_RELEASE, RELEASED).
+
+    TIC 4.0: Governs whether a vehicle may leave the terminal compound; may be blocked
+    by pending services, inspections, or holds.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :releaseStatusCode ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:DamageReport a owl:Class ;
+    rdfs:label "Damage Report" ;
+    rdfs:comment """A formal record of damage observed on a vehicle during inspection or handling.
+
+    TIC 4.0: Includes damage location (using standard body zone codes), severity,
+    probable cause, and photographic evidence references.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :damageZoneCode ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+:hasVIN a owl:ObjectProperty ;
+    rdfs:label "has VIN" ;
+    rdfs:comment "Links a vehicle unit to its Vehicle Identification Number." ;
+    rdfs:domain :VehicleUnit ;
+    rdfs:range :VIN .
+
+:hasService a owl:ObjectProperty ;
+    rdfs:label "has service" ;
+    rdfs:comment "Links a vehicle unit to a service performed on it." ;
+    rdfs:domain :VehicleUnit ;
+    rdfs:range :VehicleService .
+
+:hasReleaseStatus a owl:ObjectProperty ;
+    rdfs:label "has release status" ;
+    rdfs:comment "Links a vehicle unit to its current release status." ;
+    rdfs:domain :VehicleUnit ;
+    rdfs:range :VehicleReleaseStatus .
+
+:hasDamageReport a owl:ObjectProperty ;
+    rdfs:label "has damage report" ;
+    rdfs:comment "Links a vehicle unit to a damage report filed against it." ;
+    rdfs:domain :VehicleUnit ;
+    rdfs:range :DamageReport .
+
+:relatedDamageReport a owl:ObjectProperty ;
+    rdfs:label "related damage report" ;
+    rdfs:comment "Links a body repair service to the damage report that triggered it." ;
+    rdfs:domain :BodyRepair ;
+    rdfs:range :DamageReport .
+
+:hasStorageAssignment a owl:ObjectProperty ;
+    rdfs:label "has storage assignment" ;
+    rdfs:comment "Links a vehicle unit to its storage allocation." ;
+    rdfs:domain :VehicleUnit ;
+    rdfs:range :VehicleStorage .
+
+:performedBy a owl:ObjectProperty ;
+    rdfs:label "performed by" ;
+    rdfs:comment "Links a vehicle service to the party who performed it." ;
+    rdfs:domain :VehicleService ;
+    rdfs:range tic-party:TerminalParty .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+:vinCode a owl:DatatypeProperty ;
+    rdfs:label "VIN code" ;
+    rdfs:comment "The 17-character Vehicle Identification Number string." ;
+    rdfs:domain :VIN ;
+    rdfs:range xsd:string .
+
+:make a owl:DatatypeProperty ;
+    rdfs:label "make" ;
+    rdfs:comment "The manufacturer or brand of the vehicle." ;
+    rdfs:domain :VehicleUnit ;
+    rdfs:range xsd:string .
+
+:model a owl:DatatypeProperty ;
+    rdfs:label "model" ;
+    rdfs:comment "The model designation of the vehicle." ;
+    rdfs:domain :VehicleUnit ;
+    rdfs:range xsd:string .
+
+:modelYear a owl:DatatypeProperty ;
+    rdfs:label "model year" ;
+    rdfs:comment "The model year of the vehicle." ;
+    rdfs:domain :VehicleUnit ;
+    rdfs:range xsd:gYear .
+
+:colour a owl:DatatypeProperty ;
+    rdfs:label "colour" ;
+    rdfs:comment "The exterior colour code or name of the vehicle." ;
+    rdfs:domain :VehicleUnit ;
+    rdfs:range xsd:string .
+
+:storagePosition a owl:DatatypeProperty ;
+    rdfs:label "storage position" ;
+    rdfs:comment "Identifier of the parking position within the vehicle storage area." ;
+    rdfs:domain :VehicleStorage ;
+    rdfs:range xsd:string .
+
+:inspectionResult a owl:DatatypeProperty ;
+    rdfs:label "inspection result" ;
+    rdfs:comment "Outcome of the PDI: PASS, FAIL, or CONDITIONAL." ;
+    rdfs:domain :PDI ;
+    rdfs:range xsd:string .
+
+:inspectionDate a owl:DatatypeProperty ;
+    rdfs:label "inspection date" ;
+    rdfs:comment "The date on which the inspection was performed." ;
+    rdfs:domain :PDI ;
+    rdfs:range xsd:date .
+
+:releaseStatusCode a owl:DatatypeProperty ;
+    rdfs:label "release status code" ;
+    rdfs:comment "Code indicating release disposition (HOLD, READY_FOR_RELEASE, RELEASED)." ;
+    rdfs:domain :VehicleReleaseStatus ;
+    rdfs:range xsd:string .
+
+:damageZoneCode a owl:DatatypeProperty ;
+    rdfs:label "damage zone code" ;
+    rdfs:comment "Standard body zone code indicating the location of damage on the vehicle." ;
+    rdfs:domain :DamageReport ;
+    rdfs:range xsd:string .
+
+:damageSeverity a owl:DatatypeProperty ;
+    rdfs:label "damage severity" ;
+    rdfs:comment "Severity classification of the damage (e.g., MINOR, MODERATE, SEVERE)." ;
+    rdfs:domain :DamageReport ;
+    rdfs:range xsd:string .
+
+:damageDescription a owl:DatatypeProperty ;
+    rdfs:label "damage description" ;
+    rdfs:comment "Free-text description of the observed damage." ;
+    rdfs:domain :DamageReport ;
+    rdfs:range xsd:string .
+
+:serviceDate a owl:DatatypeProperty ;
+    rdfs:label "service date" ;
+    rdfs:comment "The date on which a vehicle service was performed." ;
+    rdfs:domain :VehicleService ;
+    rdfs:range xsd:date .
+
+:serviceStatus a owl:DatatypeProperty ;
+    rdfs:label "service status" ;
+    rdfs:comment "Current status of the service (SCHEDULED, IN_PROGRESS, COMPLETED, CANCELLED)." ;
+    rdfs:domain :VehicleService ;
+    rdfs:range xsd:string .

@@ -1,0 +1,348 @@
+@prefix : <https://www.kairosflow.ai/ont/supply-chain#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# Cross-standard class prefixes
+@prefix booking: <https://www.kairosflow.ai/ont/dcsa/booking#> .
+@prefix consignment: <https://www.kairosflow.ai/ont/mmt/consignment#> .
+@prefix cargo: <https://www.kairosflow.ai/ont/mmt/cargo#> .
+@prefix equip: <https://www.kairosflow.ai/ont/dcsa/equipment#> .
+@prefix mmt-equip: <https://www.kairosflow.ai/ont/mmt/equipment#> .
+@prefix schedule: <https://www.kairosflow.ai/ont/dcsa/schedule#> .
+@prefix events: <https://www.kairosflow.ai/ont/dcsa/events#> .
+@prefix tic-events: <https://www.kairosflow.ai/ont/tic/events#> .
+@prefix tic-infra: <https://www.kairosflow.ai/ont/tic/terminal-infrastructure#> .
+@prefix tic-handling: <https://www.kairosflow.ai/ont/tic/handling-operations#> .
+@prefix transport-call: <https://www.kairosflow.ai/ont/dcsa/transport-call#> .
+@prefix portcall: <https://www.kairosflow.ai/ont/imo/port-call#> .
+@prefix vessel: <https://www.kairosflow.ai/ont/imo/vessel-registry#> .
+@prefix dg: <https://www.kairosflow.ai/ont/imo/dangerous-goods#> .
+@prefix commercial: <https://www.kairosflow.ai/ont/bsp/commercial#> .
+@prefix financial: <https://www.kairosflow.ai/ont/bsp/financial#> .
+@prefix bsp-doc: <https://www.kairosflow.ai/ont/bsp/documents#> .
+@prefix wco-customs: <https://www.kairosflow.ai/ont/wco/customs#> .
+@prefix tdoc: <https://www.kairosflow.ai/ont/dcsa/transport-documents#> .
+@prefix sust-carbon: <https://www.kairosflow.ai/ont/sustainability/carbon#> .
+@prefix sust-energy: <https://www.kairosflow.ai/ont/sustainability/energy#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/supply-chain> a owl:Ontology ;
+    dcterms:title "Supply Chain Integration Ontology" ;
+    dcterms:description """Cross-standard bridge properties for logistics supply chain integration.
+
+    This module defines object properties that connect classes across different
+    ontology standards (DCSA, MMT, BSP, TIC, IMO, WCO). It does not introduce
+    new classes — it only bridges existing classes from separate standards.
+
+    Within-standard cross-module links (e.g., MMT consignment → MMT equipment)
+    are already defined in their respective modules. This ontology covers the
+    gaps between standards.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-05-31"^^xsd:date ;
+    dcterms:modified "2026-08-14"^^xsd:date ;
+    owl:versionInfo "1.4.0" ;
+    owl:imports <https://www.kairosflow.ai/ont/dcsa/booking> ,
+                <https://www.kairosflow.ai/ont/dcsa/equipment> ,
+                <https://www.kairosflow.ai/ont/dcsa/schedule> ,
+                <https://www.kairosflow.ai/ont/dcsa/events> ,
+                <https://www.kairosflow.ai/ont/dcsa/transport-call> ,
+                <https://www.kairosflow.ai/ont/dcsa/transport-documents> ,
+                <https://www.kairosflow.ai/ont/mmt/consignment> ,
+                <https://www.kairosflow.ai/ont/mmt/cargo> ,
+                <https://www.kairosflow.ai/ont/mmt/equipment> ,
+                <https://www.kairosflow.ai/ont/imo/port-call> ,
+                <https://www.kairosflow.ai/ont/imo/vessel-registry> ,
+                <https://www.kairosflow.ai/ont/imo/dangerous-goods> ,
+                <https://www.kairosflow.ai/ont/tic/terminal-infrastructure> ,
+                <https://www.kairosflow.ai/ont/tic/handling-operations> ,
+                <https://www.kairosflow.ai/ont/tic/events> ,
+                <https://www.kairosflow.ai/ont/bsp/commercial> ,
+                <https://www.kairosflow.ai/ont/bsp/financial> ,
+                <https://www.kairosflow.ai/ont/bsp/documents> ,
+                <https://www.kairosflow.ai/ont/wco/customs> ,
+                <https://www.kairosflow.ai/ont/sustainability/carbon> ,
+                <https://www.kairosflow.ai/ont/sustainability/energy> .
+
+#################################################################
+#    Booking ↔ Transport
+#################################################################
+
+:bookedConsignment a owl:ObjectProperty ;
+    rdfs:label "booked consignment" ;
+    rdfs:comment "Links a DCSA Booking to the MMT Consignment that fulfils it." ;
+    rdfs:domain booking:Booking ;
+    rdfs:range consignment:Consignment .
+
+:underAgreement a owl:ObjectProperty ;
+    rdfs:label "under agreement" ;
+    rdfs:comment "Links a DCSA Booking to the BSP commercial agreement that governs it." ;
+    rdfs:domain booking:Booking ;
+    rdfs:range commercial:SalesContract .
+
+#################################################################
+#    Transport ↔ Finance
+#################################################################
+
+:invoicedVia a owl:ObjectProperty ;
+    rdfs:label "invoiced via" ;
+    rdfs:comment "Links an MMT Consignment to the BSP Invoice raised for settlement." ;
+    rdfs:domain consignment:Consignment ;
+    rdfs:range financial:Invoice ;
+    owl:inverseOf :chargesForConsignment .
+
+:chargesForConsignment a owl:ObjectProperty ;
+    rdfs:label "charges for consignment" ;
+    rdfs:comment "Links a BSP Invoice to the MMT Consignment it charges for." ;
+    rdfs:domain financial:Invoice ;
+    rdfs:range consignment:Consignment ;
+    owl:inverseOf :invoicedVia .
+
+#################################################################
+#    Transport ↔ Schedule
+#################################################################
+
+:scheduledVia a owl:ObjectProperty ;
+    rdfs:label "scheduled via" ;
+    rdfs:comment "Links an MMT TransportService to the DCSA ServiceLoop it operates on." ;
+    rdfs:domain consignment:TransportService ;
+    rdfs:range schedule:ServiceLoop .
+
+:callsAtTransportCall a owl:ObjectProperty ;
+    rdfs:label "calls at transport call" ;
+    rdfs:comment "Links an MMT TransportMovement to the DCSA TransportCall that executes it. Per-stop operational data (arrival/departure times, facility, mode) lives at TransportCall grain, not at the ServiceLoop rotation grain that scheduledVia addresses." ;
+    rdfs:domain consignment:TransportMovement ;
+    rdfs:range transport-call:TransportCall .
+
+#################################################################
+#    Equipment ↔ Terminal
+#################################################################
+
+:handledAtTerminal a owl:ObjectProperty ;
+    rdfs:label "handled at terminal" ;
+    rdfs:comment "Links a DCSA Container to the TIC terminal cargo visit where it is handled." ;
+    rdfs:domain equip:Container ;
+    rdfs:range tic-handling:CargoVisit .
+
+#################################################################
+#    Vessel ↔ Terminal
+#################################################################
+
+:callsAtTerminal a owl:ObjectProperty ;
+    rdfs:label "calls at terminal" ;
+    rdfs:comment "Links an IMO PortCall to the TIC Terminal where the vessel calls." ;
+    rdfs:domain portcall:PortCall ;
+    rdfs:range tic-infra:Terminal .
+
+:berthsAt a owl:ObjectProperty ;
+    rdfs:label "berths at" ;
+    rdfs:comment "Links an IMO BerthStay to the TIC Berth where the vessel is moored." ;
+    rdfs:domain portcall:BerthStay ;
+    rdfs:range tic-infra:Berth .
+
+#################################################################
+#    Cargo ↔ Dangerous Goods
+#################################################################
+
+:classifiedAsDangerousGoods a owl:ObjectProperty ;
+    rdfs:label "classified as dangerous goods" ;
+    rdfs:comment "Links an MMT CargoItem to its IMO dangerous goods classification." ;
+    rdfs:domain cargo:CargoItem ;
+    rdfs:range dg:DangerousGoodsItem .
+
+#################################################################
+#    Consignment ↔ Customs
+#################################################################
+
+:requiresCustomsDeclaration a owl:ObjectProperty ;
+    rdfs:label "requires customs declaration" ;
+    rdfs:comment "Links an MMT Consignment to a WCO CustomsDeclaration required for border crossing." ;
+    rdfs:domain consignment:Consignment ;
+    rdfs:range wco-customs:CustomsDeclaration .
+
+#################################################################
+#    Events ↔ Transport Entities
+#################################################################
+
+:eventRelatesToConsignment a owl:ObjectProperty ;
+    rdfs:label "event relates to consignment" ;
+    rdfs:comment "Links a DCSA Event to the MMT Consignment it relates to." ;
+    rdfs:domain events:Event ;
+    rdfs:range consignment:Consignment .
+
+:eventRelatesToVessel a owl:ObjectProperty ;
+    rdfs:label "event relates to vessel" ;
+    rdfs:comment "Links a DCSA Event to the IMO Vessel it relates to." ;
+    rdfs:domain events:Event ;
+    rdfs:range vessel:Vessel ;
+    owl:inverseOf :hasVesselEvent .
+
+:hasVesselEvent a owl:ObjectProperty ;
+    rdfs:label "has vessel event" ;
+    rdfs:comment "Links an IMO Vessel to the DCSA Events that relate to it — the inverse of eventRelatesToVessel. Enables vessel-maritime domain to reach event classes (e.g., DischargedFromVesselEvent) without importing the events module directly." ;
+    rdfs:domain vessel:Vessel ;
+    rdfs:range events:Event ;
+    owl:inverseOf :eventRelatesToVessel .
+
+:eventRelatesToEquipment a owl:ObjectProperty ;
+    rdfs:label "event relates to equipment" ;
+    rdfs:comment "Links a TIC TerminalEvent to the DCSA Container it involves." ;
+    rdfs:domain tic-events:TerminalEvent ;
+    rdfs:range equip:Container .
+
+#################################################################
+#    Vessel ↔ Sustainability
+#################################################################
+
+:hasCIIRating a owl:ObjectProperty ;
+    rdfs:label "has CII rating" ;
+    rdfs:comment "Links an IMO Vessel to its Carbon Intensity Indicator rating for operational efficiency." ;
+    rdfs:domain vessel:Vessel ;
+    rdfs:range sust-carbon:CIIRating .
+
+:hasEmissionReport a owl:ObjectProperty ;
+    rdfs:label "has emission report" ;
+    rdfs:comment "Links an IMO Vessel to a formal emission report covering a reporting period." ;
+    rdfs:domain vessel:Vessel ;
+    rdfs:range sust-carbon:EmissionReport .
+
+#################################################################
+#    Transport ↔ Sustainability
+#################################################################
+
+:hasEnergyConsumption a owl:ObjectProperty ;
+    rdfs:label "has energy consumption" ;
+    rdfs:comment "Links an MMT TransportService to its measured energy consumption." ;
+    rdfs:domain consignment:TransportService ;
+    rdfs:range sust-energy:EnergyConsumption .
+
+:hasCarbonFootprint a owl:ObjectProperty ;
+    rdfs:label "has carbon footprint" ;
+    rdfs:comment "Links an MMT Consignment to the total carbon footprint of its transport chain." ;
+    rdfs:domain consignment:Consignment ;
+    rdfs:range sust-carbon:CarbonFootprint .
+
+:hasMovementEmission a owl:ObjectProperty ;
+    rdfs:label "has movement emission" ;
+    rdfs:comment "Links an MMT TransportMovement to the carbon footprint of that specific movement leg. Operational emissions data is commonly captured at movement/trip grain rather than at the consignment or transport-service grain that hasCarbonFootprint and hasEnergyConsumption attach to; this property closes that attachment gap." ;
+    rdfs:domain consignment:TransportMovement ;
+    rdfs:range sust-carbon:CarbonFootprint .
+
+#################################################################
+#    Cargo ↔ Customs Goods
+#################################################################
+
+:declaredAsGoodsItem a owl:ObjectProperty ;
+    rdfs:label "declared as goods item" ;
+    rdfs:comment "Links an MMT CargoItem to the WCO GoodsItem that declares it for customs purposes." ;
+    rdfs:domain cargo:CargoItem ;
+    rdfs:range wco-customs:GoodsItem .
+
+#################################################################
+#    Transport Documents ↔ Trade Documents
+#################################################################
+
+:correspondsToBillOfLading a owl:ObjectProperty ;
+    rdfs:label "corresponds to bill of lading" ;
+    rdfs:comment "Links a DCSA TransportDocument to the BSP BillOfLading representing the same document from a trade perspective." ;
+    rdfs:domain tdoc:TransportDocument ;
+    rdfs:range bsp-doc:BillOfLading .
+
+#################################################################
+#    Equipment / Goods ↔ Cargo Measurements  (gh#98)
+#
+#    MMT places the measurement value objects — Dimension, Weight and
+#    CargoMeasurement — in mmt/cargo, and the pack's overlap register resolved
+#    them there deliberately. But data-domains.yaml routes mmt/cargo to the
+#    `cargo` and `roro` domains only, so the `equipment` and `consignment`
+#    domains could not reach them at all. These bridges grant that reach without
+#    importing mmt/cargo into either domain, which would read as co-ownership and
+#    trip the cross-domain duplicate check.
+#
+#    These are INTEGRATION-LAYER declarations in the supply-chain namespace. They
+#    are deliberately NOT a claim that UN/CEFACT associates a spatial dimension
+#    with logistics transport equipment or with a consignment goods item — that
+#    question is open pending the versioned MMT-RDM audit, and until it lands no
+#    equivalent property may be added to mmt/equipment or mmt/consignment, nor may
+#    cargo:hasDimension be re-domained. The names carry no exterior/interior or
+#    ordered/actual qualifier for the same reason.
+#################################################################
+
+:hasEquipmentDimension a owl:ObjectProperty ;
+    rdfs:label "has equipment dimension" ;
+    rdfs:comment """Links an MMT TransportEquipment to an MMT Dimension value object.
+
+    Integration-layer bridge (gh#98): grants the `equipment` data domain reach to
+    mmt/cargo#Dimension. Not a subproperty of cargo:hasDimension — that property is
+    domained on cargo:CargoItem, and inheriting it would infer that equipment is
+    cargo. Carries no exterior/capacity qualifier: which dimensions an adopter
+    means is a mapping decision, not one this property encodes.""" ;
+    rdfs:domain mmt-equip:TransportEquipment ;
+    rdfs:range cargo:Dimension .
+
+:hasGoodsDimension a owl:ObjectProperty ;
+    rdfs:label "has goods dimension" ;
+    rdfs:comment """Links an MMT consignment GoodsItem to an MMT Dimension value object.
+
+    Integration-layer bridge (gh#98): grants the `consignment` data domain reach to
+    mmt/cargo#Dimension. Whether consignment:GoodsItem and cargo:CargoItem denote one
+    standard entity is unresolved; this property deliberately does not assert either
+    equivalence or containment between them.""" ;
+    rdfs:domain consignment:GoodsItem ;
+    rdfs:range cargo:Dimension .
+
+:hasGoodsWeight a owl:ObjectProperty ;
+    rdfs:label "has goods weight" ;
+    rdfs:comment """Links an MMT consignment GoodsItem to an MMT Weight value object.
+
+    Integration-layer bridge (gh#98): grants the `consignment` data domain reach to
+    mmt/cargo#Weight. The weight type (gross, net, tare) is carried by the Weight
+    object's own weightType property, not by separate scalar properties here.""" ;
+    rdfs:domain consignment:GoodsItem ;
+    rdfs:range cargo:Weight .
+
+:hasGoodsMeasurement a owl:ObjectProperty ;
+    rdfs:label "has goods measurement" ;
+    rdfs:comment """Links an MMT consignment GoodsItem to an MMT CargoMeasurement value object.
+
+    Integration-layer bridge (gh#98): grants the `consignment` data domain reach to
+    mmt/cargo#CargoMeasurement, covering volumes and load measures. The qualifier
+    lives in the measurement object's measurementType; note that a free-form
+    measurementType value is not by itself sufficient governance for an
+    ordered-versus-actual distinction, which remains an open modelling question.""" ;
+    rdfs:domain consignment:GoodsItem ;
+    rdfs:range cargo:CargoMeasurement .
+
+#################################################################
+#    Voyage and Move reach (gh#116)
+#################################################################
+
+# Voyage and Move were absent from every cross_domain_relationships bridge, so a
+# bound voyage or move table carrying a foreign key had no property to realize it:
+# the key reached the Silver layer as a raw column with no join, while every
+# design-time gate reported clean. Voyage → Vessel is a within-standard IMO link and
+# lives in imo/port-call as :voyagePerformedBy; the three below cross standards.
+
+:eventRelatesToVoyage a owl:ObjectProperty ;
+    rdfs:label "event relates to voyage" ;
+    rdfs:comment "Links a DCSA Event to the IMO Voyage it relates to." ;
+    rdfs:domain events:Event ;
+    rdfs:range portcall:Voyage .
+
+:carriedOnVoyage a owl:ObjectProperty ;
+    rdfs:label "carried on voyage" ;
+    rdfs:comment "Links an MMT Consignment to the IMO Voyage carrying it." ;
+    rdfs:domain consignment:Consignment ;
+    rdfs:range portcall:Voyage .
+
+:moveAuthorizedBy a owl:ObjectProperty ;
+    rdfs:label "move authorized by" ;
+    rdfs:comment """Links a TIC terminal Move to the BSP TransportDocument authorizing it.
+
+    Covers the gate pass or equivalent release document a terminal requires before a
+    unit may be moved; without it a bound move table carrying a gate-pass reference
+    could not reach any document class.""" ;
+    rdfs:domain tic-handling:Move ;
+    rdfs:range bsp-doc:TransportDocument .

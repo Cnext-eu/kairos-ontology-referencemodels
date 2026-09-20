@@ -5,6 +5,92 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.36.0] - 2026-09-21
+
+### Added
+
+- **`TerminalEquipment` identity and deployment** (gh#113 item 1). The class carried
+  only capability and telemetry attributes — `liftCapacityTonnes`, `equipmentSpeed`,
+  `hasSpreader`, `hasPowerSource`, `hasHealthStatus`, `hasBattery` — so neither it nor
+  any of its nine subclasses (`QuayCrane`, `StraddleCarrier`, `AutomatedGuidedVehicle`
+  and the rest) could be identified or located. Added `equipmentId` (with an
+  `owl:cardinality 1` restriction on the class, matching the `Battery`/`batteryId`
+  precedent in the same file), `equipmentMake`, `equipmentModel`, `equipmentInService`,
+  and the object property `currentlyAt` ranging over `tic-loc:TerminalLocation`.
+  TIC 1.4.0 → 1.5.0.
+
+- **Slave equipment for ro-ro handling** (gh#113 item 3). `mafi`, `cassette`, `trestle`
+  and `roll-trailer` returned zero hits across the entire corpus, yet the
+  `unit-load-carrier` archetype's own commentary names cassettes among its primary
+  units. Added `SlaveEquipment` (subclass of `mmt/equipment#TransportEquipment`) with
+  `RollTrailer`, `Cassette` and `Trestle` beneath it, the properties `slaveUnitId`,
+  `slaveEquipmentType` and `deckLoadCapacityTonnes`, and the object property
+  `carriedOnSlaveEquipment`. Registered in the `unit-load-carrier` archetype —
+  `RollTrailer` and `Cassette` at required tier, `SlaveEquipment` recommended,
+  `Trestle` optional. MMT 2.4.0 → 2.5.0.
+
+- **Reefer power requirement** (gh#113 item 6). The supply side was already modelled
+  (`tic/locations#ReeferPlug` with `plugNumber` and `powerCapacityKW`, plus
+  `ReeferPlugInEvent`/`ReeferPlugOutEvent` in `tic/events`), but the demand side had no
+  home, so plug matching and reefer capacity planning were not expressible. Added
+  `requiresPowerSupply` and `powerRequirementKW` on
+  `mmt/equipment#TemperatureSettingInstructions`.
+
+- **`Voyage` and `Move` reachable across module boundaries** (gh#116). Neither class
+  appeared in any of the 30 `cross_domain_relationships` bridges, and `port-call.ttl`
+  held no reference to `vessel-registry` at all, so "this voyage is sailed by this
+  vessel" was not expressible and four evidenced foreign keys had no property to carry
+  them. Added `voyagePerformedBy` and its inverse `performsVoyage` to `imo/port-call`
+  — a within-standard IMO link, so it belongs in the module rather than in
+  `supply-chain`, per that module's own stated scope — together with
+  `eventRelatesToVoyage`, `carriedOnVoyage` and `moveAuthorizedBy` in `supply-chain`.
+  All four declared as bridges in the logistics blueprint. IMO 1.3.0 → 1.4.0,
+  SupplyChain 1.4.0 → 1.5.0.
+
+### Fixed
+
+- **`Terminal` and `Berth` duplicated across the two TIC modules** (gh#115). Both were
+  declared as `owl:Class` in `tic/locations` and `tic/terminal-infrastructure` with
+  different definitions and nothing relating them. Both duplicates were load-bearing in
+  different places — `tic/locations#Terminal` is the range of `withinTerminal` and is
+  referenced by `tic/party`, while `tic/terminal-infrastructure#Terminal` is the range
+  of the `callsAtTerminal` blueprint bridge — so a hub anchored on either one lost the
+  other. Declared `owl:equivalentClass` in both directions for both pairs, and rewrote
+  the four `rdfs:comment`s to state which is the positioning view and which the asset
+  view, naming `terminal-infrastructure#Terminal` as the preferred anchor for a terminal
+  facility table. These are the first `owl:equivalentClass` axioms in the corpus;
+  `owl:deprecated` was already in use (56 occurrences) but does not fit here, since
+  neither definition is obsolete. TIC 1.4.0 → 1.5.0.
+
+### Investigated, no change needed
+
+- **gh#113 items 3a, 4 and 5 are reachability problems, not model gaps.** Verified
+  against the full catalog rather than the logistics pack's import closure:
+  - *Road vehicle.* The report states *"no road-vehicle class or property exists"*.
+    `mmt/transport-means#RoadVehicle` has existed with `vehicleRegistration` — the
+    license plate drafted locally as `vehicleLicensePlate` — plus `roadVehicleType` and
+    `motCarrierId`. `mmt/equipment#TrailerUnit` carries `trailerPlate`.
+  - *Full/empty and gross weight.* `emptyIndicator` (`dcsa/equipment`),
+    `emptyIndicatorCode` (EMPTY/LADEN, `dcsa/container-operations`),
+    `verifiedGrossMass` (`dcsa/equipment`) and `cargoGrossWeightKg`
+    (`tic/handling-operations#CargoVisit`) all exist. They sit on the cargo visit and on
+    the equipment rather than on `Move`.
+  - *Free time and demurrage.* `dcsa/demurrage-detention` already provides
+    `FreeTimeAllowance`, `freeDays`, `freeTimeType`, `chargeableDays`, `PerDiemRate`,
+    `RateTier`, `DemurrageDetentionTariff`, `DemurrageCharge`, `DetentionCharge` and
+    `StorageCharge`.
+
+  In each case the concept exists but was not reachable from the consuming domain's
+  import closure, which is the defect tracked in gh#116.
+
+- **gh#113 item 2 (multi-leg routing) deferred pending gh#114.** Leg ordering already
+  exists as `bsp/commercial#legSequence`, but `mmt/consignment#TransportLeg` — the class
+  the canonical registry designates — has `departureLocation`/`arrivalLocation` and no
+  sequence at all. Journey-level first-port-of-loading and final-port-of-discharge exist
+  in DCSA only on `Booking` and `TransportDocument`, never on a leg. Adding routing to
+  one of the two `TransportLeg` classes before resolving which is canonical would deepen
+  the split rather than close the gap.
+
 ## [1.35.2] - 2026-08-19
 
 ### Fixed

@@ -17,7 +17,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
     dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "1.4.0" ;
+    owl:versionInfo "1.5.0" ;
     dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
     rdfs:seeAlso <https://tic40.org/standards/> .
 
@@ -30,7 +30,14 @@
     rdfs:comment """A port or inland facility where cargo is transferred between transport modes.
 
     TIC 4.0: The top-level physical entity encompassing berths, yards, gates, and all
-    associated infrastructure for cargo handling operations.""" ;
+    associated infrastructure for cargo handling operations.
+
+    This is the *asset* view of a terminal, and the preferred anchor for a terminal
+    facility table — it is the range of the supply-chain callsAtTerminal bridge. It
+    denotes the same real-world facility as tic-loc:Terminal, the *positioning* view
+    that roots the terminal location hierarchy, and the two are declared equivalent so
+    that tic-loc:withinTerminal is satisfiable from either anchor.""" ;
+    owl:equivalentClass tic-loc:Terminal ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :terminalCode ;
@@ -42,7 +49,12 @@
     rdfs:comment """A designated location alongside a quay where a vessel can be moored for loading or discharging cargo.
 
     TIC 4.0: Berths are identified by number and have length, depth, crane coverage, and
-    quay crane count attributes.""" ;
+    quay crane count attributes.
+
+    The asset view of a berth; tic-loc:Berth is the positioning view of the same berth
+    within the terminal location hierarchy. The two are declared equivalent so that
+    :belongsToTerminal and tic-loc:withinTerminal both remain usable.""" ;
+    owl:equivalentClass tic-loc:Berth ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty :belongsToTerminal ;
@@ -94,7 +106,12 @@
     rdfs:label "Terminal Equipment" ;
     rdfs:comment """A piece of mechanical equipment used for cargo handling within the terminal.
 
-    TIC 4.0: Abstract superclass for all terminal handling equipment types.""" .
+    TIC 4.0: Abstract superclass for all terminal handling equipment types.""" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :equipmentId ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
 
 :QuayCrane a owl:Class ;
     rdfs:label "Quay Crane" ;
@@ -623,3 +640,42 @@
     rdfs:comment "Operational status of the charging station (AVAILABLE, IN_USE, FAULT, MAINTENANCE)." ;
     rdfs:domain :ChargingStation ;
     rdfs:range xsd:string .
+
+#################################################################
+#    Phase 3.4: Equipment Identity and Deployment
+#################################################################
+
+# TerminalEquipment previously carried only capability and telemetry attributes —
+# lift capacity, speed, spreader, power source, health and battery — so neither it
+# nor any of its subclasses could be identified or located. Identity and current
+# position are the minimum for the class to participate in a terminal model.
+
+:equipmentId a owl:DatatypeProperty ;
+    rdfs:label "equipment ID" ;
+    rdfs:comment "Unique identifier of a piece of cargo handling equipment within the terminal fleet." ;
+    rdfs:domain :TerminalEquipment ;
+    rdfs:range xsd:string .
+
+:equipmentMake a owl:DatatypeProperty ;
+    rdfs:label "equipment make" ;
+    rdfs:comment "Manufacturer of the equipment (e.g. Kalmar, Konecranes, Liebherr)." ;
+    rdfs:domain :TerminalEquipment ;
+    rdfs:range xsd:string .
+
+:equipmentModel a owl:DatatypeProperty ;
+    rdfs:label "equipment model" ;
+    rdfs:comment "Manufacturer model designation of the equipment." ;
+    rdfs:domain :TerminalEquipment ;
+    rdfs:range xsd:string .
+
+:equipmentInService a owl:DatatypeProperty ;
+    rdfs:label "equipment in service" ;
+    rdfs:comment "Whether the equipment is currently in active service, as opposed to withdrawn, sold, or awaiting commissioning." ;
+    rdfs:domain :TerminalEquipment ;
+    rdfs:range xsd:boolean .
+
+:currentlyAt a owl:ObjectProperty ;
+    rdfs:label "currently at" ;
+    rdfs:comment "Links a piece of terminal equipment to the terminal location where it is currently positioned." ;
+    rdfs:domain :TerminalEquipment ;
+    rdfs:range tic-loc:TerminalLocation .

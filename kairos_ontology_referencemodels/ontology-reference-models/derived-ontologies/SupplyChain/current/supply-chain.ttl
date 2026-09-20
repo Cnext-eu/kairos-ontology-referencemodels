@@ -43,7 +43,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-31"^^xsd:date ;
     dcterms:modified "2026-08-14"^^xsd:date ;
-    owl:versionInfo "1.4.0" ;
+    owl:versionInfo "1.5.0" ;
     owl:imports <https://www.kairosflow.ai/ont/dcsa/booking> ,
                 <https://www.kairosflow.ai/ont/dcsa/equipment> ,
                 <https://www.kairosflow.ai/ont/dcsa/schedule> ,
@@ -314,3 +314,35 @@
     ordered-versus-actual distinction, which remains an open modelling question.""" ;
     rdfs:domain consignment:GoodsItem ;
     rdfs:range cargo:CargoMeasurement .
+
+#################################################################
+#    Voyage and Move reach (gh#116)
+#################################################################
+
+# Voyage and Move were absent from every cross_domain_relationships bridge, so a
+# bound voyage or move table carrying a foreign key had no property to realize it:
+# the key reached the Silver layer as a raw column with no join, while every
+# design-time gate reported clean. Voyage → Vessel is a within-standard IMO link and
+# lives in imo/port-call as :voyagePerformedBy; the three below cross standards.
+
+:eventRelatesToVoyage a owl:ObjectProperty ;
+    rdfs:label "event relates to voyage" ;
+    rdfs:comment "Links a DCSA Event to the IMO Voyage it relates to." ;
+    rdfs:domain events:Event ;
+    rdfs:range portcall:Voyage .
+
+:carriedOnVoyage a owl:ObjectProperty ;
+    rdfs:label "carried on voyage" ;
+    rdfs:comment "Links an MMT Consignment to the IMO Voyage carrying it." ;
+    rdfs:domain consignment:Consignment ;
+    rdfs:range portcall:Voyage .
+
+:moveAuthorizedBy a owl:ObjectProperty ;
+    rdfs:label "move authorized by" ;
+    rdfs:comment """Links a TIC terminal Move to the BSP TransportDocument authorizing it.
+
+    Covers the gate pass or equivalent release document a terminal requires before a
+    unit may be moved; without it a bound move table carrying a gate-pass reference
+    could not reach any document class.""" ;
+    rdfs:domain tic-handling:Move ;
+    rdfs:range bsp-doc:TransportDocument .

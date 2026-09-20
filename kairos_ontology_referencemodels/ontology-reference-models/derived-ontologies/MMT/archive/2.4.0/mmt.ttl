@@ -1,0 +1,254 @@
+@prefix : <https://www.kairosflow.ai/ont/mmt#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix cargo: <https://www.kairosflow.ai/ont/mmt/cargo#> .
+
+# Ontology Metadata
+<https://www.kairosflow.ai/ont/mmt> a owl:Ontology ;
+    dcterms:title "Kairos Multi-Modal Transport (MMT) Ontology" ;
+    dcterms:description """UN/CEFACT Multi-Modal Transport Reference Data Model ontology for international logistics and freight transport.
+    
+    This ontology provides a comprehensive semantic framework for multi-modal transport operations, covering:
+    - Transport service execution and routing
+    - Consignments and cargo handling
+    - Transport equipment (containers, vehicles, units)
+    - Transport events and milestones
+    - Transport documents and instructions
+    - Party roles in logistics operations
+    - Locations, routes, and transport legs
+    - Cross-border and customs processes
+    - Dangerous goods and special cargo
+    
+    Fully aligned with UN/CEFACT MMT Reference Data Model for global supply chain interoperability.
+    
+    This root ontology imports all 10 domain modules.""" ;
+    dcterms:creator "Kairos Ontology Team" ;
+    dcterms:created "2026-01-06"^^xsd:date ;
+    dcterms:modified "2026-09-18"^^xsd:date ;
+    owl:versionInfo "2.4.0" ;
+    dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model v1.0 (RABIE v101)" ;
+    rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/consignment> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/cargo> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/equipment> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/transport-means> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/party> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/locations> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/documents> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/events> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/route-network> ;
+    owl:imports <https://www.kairosflow.ai/ont/mmt/inland-transport> .
+
+#################################################################
+#    Deprecated — dangerous goods relocated to mmt/cargo at 2.4.0
+#
+#    These 33 terms were declared in the MMT *root* namespace, which no data
+#    domain imports, so none was reachable from any client hub. They now live in
+#    the mmt/cargo namespace under the same local names. The stubs below keep the
+#    old IRIs resolvable for one major, so the relocation does not break a hub
+#    that loaded mmt.ttl directly.
+#
+#    They stay in this unrouted root namespace on purpose: a deprecated term in a
+#    namespace no domain imports cannot re-enter any alignment pool.
+#################################################################
+
+:DangerousGoods a owl:Class ;
+    rdfs:label "DangerousGoods (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:DangerousGoods instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:DangerousGoods .
+
+:ExplosiveGoods a owl:Class ;
+    rdfs:label "ExplosiveGoods (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:ExplosiveGoods instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:ExplosiveGoods .
+
+:FlammableGas a owl:Class ;
+    rdfs:label "FlammableGas (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:FlammableGas instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:FlammableGas .
+
+:FlammableLiquid a owl:Class ;
+    rdfs:label "FlammableLiquid (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:FlammableLiquid instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:FlammableLiquid .
+
+:FlammableSolid a owl:Class ;
+    rdfs:label "FlammableSolid (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:FlammableSolid instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:FlammableSolid .
+
+:OxidizingSubstance a owl:Class ;
+    rdfs:label "OxidizingSubstance (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:OxidizingSubstance instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:OxidizingSubstance .
+
+:ToxicSubstance a owl:Class ;
+    rdfs:label "ToxicSubstance (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:ToxicSubstance instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:ToxicSubstance .
+
+:RadioactiveMaterial a owl:Class ;
+    rdfs:label "RadioactiveMaterial (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:RadioactiveMaterial instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:RadioactiveMaterial .
+
+:CorrosiveSubstance a owl:Class ;
+    rdfs:label "CorrosiveSubstance (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:CorrosiveSubstance instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:CorrosiveSubstance .
+
+:MiscellaneousDangerousGoods a owl:Class ;
+    rdfs:label "MiscellaneousDangerousGoods (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:MiscellaneousDangerousGoods instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:MiscellaneousDangerousGoods .
+
+:unNumber a owl:DatatypeProperty ;
+    rdfs:label "unNumber (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:unNumber instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:unNumber .
+
+:hazardClass a owl:DatatypeProperty ;
+    rdfs:label "hazardClass (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:hazardClass instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:hazardClass .
+
+:packingGroup a owl:DatatypeProperty ;
+    rdfs:label "packingGroup (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:packingGroup instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:packingGroup .
+
+:properShippingName a owl:DatatypeProperty ;
+    rdfs:label "properShippingName (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:properShippingName instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:properShippingName .
+
+:technicalName a owl:DatatypeProperty ;
+    rdfs:label "technicalName (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:technicalName instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:technicalName .
+
+:flashPoint a owl:DatatypeProperty ;
+    rdfs:label "flashPoint (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:flashPoint instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:flashPoint .
+
+:emergencyContactNumber a owl:DatatypeProperty ;
+    rdfs:label "emergencyContactNumber (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:emergencyContactNumber instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:emergencyContactNumber .
+
+:explosionCode a owl:DatatypeProperty ;
+    rdfs:label "explosionCode (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:explosionCode instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:explosionCode .
+
+:netExplosiveMass a owl:DatatypeProperty ;
+    rdfs:label "netExplosiveMass (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:netExplosiveMass instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:netExplosiveMass .
+
+:gasPressure a owl:DatatypeProperty ;
+    rdfs:label "gasPressure (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:gasPressure instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:gasPressure .
+
+:vaporPressure a owl:DatatypeProperty ;
+    rdfs:label "vaporPressure (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:vaporPressure instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:vaporPressure .
+
+:boilingPoint a owl:DatatypeProperty ;
+    rdfs:label "boilingPoint (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:boilingPoint instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:boilingPoint .
+
+:selfReactiveIndicator a owl:DatatypeProperty ;
+    rdfs:label "selfReactiveIndicator (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:selfReactiveIndicator instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:selfReactiveIndicator .
+
+:pyrophoricIndicator a owl:DatatypeProperty ;
+    rdfs:label "pyrophoricIndicator (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:pyrophoricIndicator instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:pyrophoricIndicator .
+
+:organicPeroxideIndicator a owl:DatatypeProperty ;
+    rdfs:label "organicPeroxideIndicator (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:organicPeroxideIndicator instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:organicPeroxideIndicator .
+
+:selfAcceleratingTemperature a owl:DatatypeProperty ;
+    rdfs:label "selfAcceleratingTemperature (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:selfAcceleratingTemperature instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:selfAcceleratingTemperature .
+
+:infectiousSubstanceIndicator a owl:DatatypeProperty ;
+    rdfs:label "infectiousSubstanceIndicator (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:infectiousSubstanceIndicator instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:infectiousSubstanceIndicator .
+
+:toxicInhalationHazardIndicator a owl:DatatypeProperty ;
+    rdfs:label "toxicInhalationHazardIndicator (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:toxicInhalationHazardIndicator instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:toxicInhalationHazardIndicator .
+
+:radioactivityLevel a owl:DatatypeProperty ;
+    rdfs:label "radioactivityLevel (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:radioactivityLevel instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:radioactivityLevel .
+
+:criticalitySafetyIndex a owl:DatatypeProperty ;
+    rdfs:label "criticalitySafetyIndex (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:criticalitySafetyIndex instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:criticalitySafetyIndex .
+
+:corrosionRate a owl:DatatypeProperty ;
+    rdfs:label "corrosionRate (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:corrosionRate instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:corrosionRate .
+
+:miscellaneousHazardCode a owl:DatatypeProperty ;
+    rdfs:label "miscellaneousHazardCode (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:miscellaneousHazardCode instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:miscellaneousHazardCode .
+
+:environmentallyHazardousIndicator a owl:DatatypeProperty ;
+    rdfs:label "environmentallyHazardousIndicator (deprecated — relocated to mmt/cargo)" ;
+    rdfs:comment "DEPRECATED at MMT 2.4.0. Use cargo:environmentallyHazardousIndicator instead." ;
+    owl:deprecated true ;
+    rdfs:seeAlso cargo:environmentallyHazardousIndicator .
