@@ -61,7 +61,7 @@ package:
     - id: UNCEFACT
       name: "UN/CEFACT code lists (UNECE Rec 5, 9, 16, 19, 20, 21)"
       uri: "https://www.kairosflow.ai/ont/uncefact/code-lists#"
-      focus: "Standards-body code lists: transport modes, units of measure, package types, Incoterms, transport stage, currencies, countries, subdivisions, UN/LOCODE functions"
+      focus: "Standards-body code lists: transport modes, units of measure, package types, Incoterms, transport stage, currencies, party roles, countries, subdivisions, UN/LOCODE functions"
       note: "Authoritative extract vendored under authoritative-ontologies/UNCEFACT/ (gh#120). Exposed via the OASIS catalog; not bulk-imported into this pack. A hub links its governed code-list class to these members instead of re-ingesting the lists."
 
   excludes:

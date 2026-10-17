@@ -83,6 +83,19 @@ lists and status codes. The enumeration constraint belongs in SHACL, not OWL:
 `kairos-ontology suggest-shapes` (DD-076) derives `sh:in` enums from bronze distinct-value
 evidence.
 
+**Party roles sit between the two cases.** A standard list exists: UN/CEFACT's party roles
+(UNTDED 3035, 625 codes such as `CZ` consignor, `CN` consignee, `CA` carrier), shipped as
+`unece:PartyRoleCodeList`. But most hubs govern a short list of readable roles (`SHIPPER`,
+`CONTROLLING_CUSTOMER`) that is partly client-specific. So the role classes stay empty
+shells, and the hub chooses one of two options:
+
+- **Adopt the standard list:** `unece:PartyRoleCodeList rdfs:subClassOf hub:PartyRoleCode`,
+  plus hub-local individuals for roles 3035 lacks.
+- **Keep its own roles and link them:** each hub role individual carries
+  `skos:exactMatch` (or `skos:closeMatch`) to its 3035 code, e.g.
+  `hub:SHIPPER skos:closeMatch <https://vocabulary.uncefact.org/PartyRoleCodeList#CZ>`.
+  Two hubs' roles are then comparable through the shared code.
+
 **Crosswalks.** A mapping from one *source system's* codes to the standard's (CargoWise
 `SEA` → Rec 19 `1`) is source-specific and stays in the hub. A mapping between two
 *standards* is shared and ships here: `authoritative-ontologies/UNCEFACT/current/UNCEFACT-IATA-alignment.ttl`

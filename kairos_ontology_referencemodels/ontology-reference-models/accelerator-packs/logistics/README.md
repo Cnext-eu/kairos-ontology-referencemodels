@@ -36,7 +36,7 @@ Reference-only — catalogued and bindable, deliberately **not** imported:
 | Ontology | Standard | Version | Focus |
 |---|---|---|---|
 | IATA | IATA ONE Record (air cargo) | `3.3.0 RC1 (2026-08 standard)` | Air cargo booking, shipment, transport movement |
-| UNCEFACT | UN/CEFACT code lists (UNECE Rec 5, 9, 16, 19, 20, 21) | `2026-10-17 (snapshot date; upstream publishes no version)` | Standards-body code lists: transport modes, units of measure, package types, Incoterms, transport stage, currencies, countries, subdivisions, UN/LOCODE functions |
+| UNCEFACT | UN/CEFACT code lists (UNECE Rec 5, 9, 16, 19, 20, 21) | `2026-10-17 (snapshot date; upstream publishes no version)` | Standards-body code lists: transport modes, units of measure, package types, Incoterms, transport stage, currencies, party roles, countries, subdivisions, UN/LOCODE functions |
 <!-- END GENERATED: modules -->
 
 ### What's NOT included?

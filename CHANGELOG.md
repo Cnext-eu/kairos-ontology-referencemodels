@@ -5,6 +5,24 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.40.0] - 2026-10-17
+
+### Added
+
+- **UN/CEFACT party roles as reference data.** `unece:PartyRoleCodeList` (UNTDED 3035,
+  625 codes, e.g. `CZ` consignor, `CN` consignee, `CA` carrier, `N1` notify party) is added
+  to `authoritative-ontologies/UNCEFACT/`, from the BSP document already vendored.
+
+### Changed
+
+- **Party roles in `governed-code-list` and `qualified-role-assignment`.** The role code
+  classes (`bsp/party#PartyRoleCode`, `mmt/party#TransportPartyRoleCode`) stay empty
+  shells, because most hubs govern a short, partly client-specific list of readable roles.
+  The patterns now give a hub two options: adopt the standard list
+  (`unece:PartyRoleCodeList rdfs:subClassOf hub:PartyRoleCode`, plus local roles 3035
+  lacks), or keep its own roles and link each one to its 3035 code with `skos:exactMatch`
+  or `skos:closeMatch`.
+
 ## [1.39.1] - 2026-10-17
 
 ### Changed

@@ -19,6 +19,10 @@ unece:PackageTypeCodeList a rdfs:Class ;
     rdfs:label "PackageTypeCodeList" ;
     rdfs:comment "A character string used to replace or represent a type of package." .
 
+unece:PartyRoleCodeList a rdfs:Class ;
+    rdfs:label "PartyRoleCodeList" ;
+    rdfs:comment "A character string used to replace or represent a role of a party." .
+
 unece:TransportModeCodeList a rdfs:Class ;
     rdfs:label "TransportModeCodeList" ;
     rdfs:comment "A character string used to represent a transport mode." .
@@ -2429,6 +2433,2506 @@ unlcdv:UNLOCODE a rdfs:Class ;
 
 <https://vocabulary.uncefact.org/PackageTypeCodeList#ZZ> a unece:PackageTypeCodeList ;
     rdf:value "ZZ" ;
+    rdfs:comment "Mutually defined" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AA> a unece:PartyRoleCodeList ;
+    rdf:value "AA" ;
+    rdfs:comment "Party to be billed (AAR Accounting rule 11)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AB> a unece:PartyRoleCodeList ;
+    rdf:value "AB" ;
+    rdfs:comment "Buyer's agent/representative" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AE> a unece:PartyRoleCodeList ;
+    rdf:value "AE" ;
+    rdfs:comment "Declarant's agent/representative" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AF> a unece:PartyRoleCodeList ;
+    rdf:value "AF" ;
+    rdfs:comment "Transit principal" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AG> a unece:PartyRoleCodeList ;
+    rdf:value "AG" ;
+    rdfs:comment "Agent" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AH> a unece:PartyRoleCodeList ;
+    rdf:value "AH" ;
+    rdfs:comment "Transit principal's agent/representative" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AI> a unece:PartyRoleCodeList ;
+    rdf:value "AI" ;
+    rdfs:comment "Successful job applicant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AJ> a unece:PartyRoleCodeList ;
+    rdf:value "AJ" ;
+    rdfs:comment "Party issuing mutually agreed codes" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AK> a unece:PartyRoleCodeList ;
+    rdf:value "AK" ;
+    rdfs:comment "Acknowledgement recipient" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AL> a unece:PartyRoleCodeList ;
+    rdf:value "AL" ;
+    rdfs:comment "Principal responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AM> a unece:PartyRoleCodeList ;
+    rdf:value "AM" ;
+    rdfs:comment "Authorized official" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AN> a unece:PartyRoleCodeList ;
+    rdf:value "AN" ;
+    rdfs:comment "Approved importer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AO> a unece:PartyRoleCodeList ;
+    rdf:value "AO" ;
+    rdfs:comment "Account of" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AP> a unece:PartyRoleCodeList ;
+    rdf:value "AP" ;
+    rdfs:comment "Accepting party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AQ> a unece:PartyRoleCodeList ;
+    rdf:value "AQ" ;
+    rdfs:comment "Approved consignor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AR> a unece:PartyRoleCodeList ;
+    rdf:value "AR" ;
+    rdfs:comment "Authorized exporter" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AS> a unece:PartyRoleCodeList ;
+    rdf:value "AS" ;
+    rdfs:comment "Account servicing financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AT> a unece:PartyRoleCodeList ;
+    rdf:value "AT" ;
+    rdfs:comment "Authorized importer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AU> a unece:PartyRoleCodeList ;
+    rdf:value "AU" ;
+    rdfs:comment "Authorized trader (transit)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AV> a unece:PartyRoleCodeList ;
+    rdf:value "AV" ;
+    rdfs:comment "Authorizing official" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AW> a unece:PartyRoleCodeList ;
+    rdf:value "AW" ;
+    rdfs:comment "Applicant's bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AX> a unece:PartyRoleCodeList ;
+    rdf:value "AX" ;
+    rdfs:comment "Authenticating party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AY> a unece:PartyRoleCodeList ;
+    rdf:value "AY" ;
+    rdfs:comment "Animal being investigated" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AZ> a unece:PartyRoleCodeList ;
+    rdf:value "AZ" ;
+    rdfs:comment "Issuing bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#B1> a unece:PartyRoleCodeList ;
+    rdf:value "B1" ;
+    rdfs:comment "Contact bank 1" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#B2> a unece:PartyRoleCodeList ;
+    rdf:value "B2" ;
+    rdfs:comment "Contact bank 2" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BA> a unece:PartyRoleCodeList ;
+    rdf:value "BA" ;
+    rdfs:comment "Booking agent" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BB> a unece:PartyRoleCodeList ;
+    rdf:value "BB" ;
+    rdfs:comment "Buyer bank identification" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BC> a unece:PartyRoleCodeList ;
+    rdf:value "BC" ;
+    rdfs:comment "Negotiating bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BD> a unece:PartyRoleCodeList ;
+    rdf:value "BD" ;
+    rdfs:comment "Documentary credit reimbursing bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BE> a unece:PartyRoleCodeList ;
+    rdf:value "BE" ;
+    rdfs:comment "Beneficiary" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BF> a unece:PartyRoleCodeList ;
+    rdf:value "BF" ;
+    rdfs:comment "Beneficiary's bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BG> a unece:PartyRoleCodeList ;
+    rdf:value "BG" ;
+    rdfs:comment "Employer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BH> a unece:PartyRoleCodeList ;
+    rdf:value "BH" ;
+    rdfs:comment "Previous employer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BI> a unece:PartyRoleCodeList ;
+    rdf:value "BI" ;
+    rdfs:comment "Buyer's financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BJ> a unece:PartyRoleCodeList ;
+    rdf:value "BJ" ;
+    rdfs:comment "Release to party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BK> a unece:PartyRoleCodeList ;
+    rdf:value "BK" ;
+    rdfs:comment "Financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BL> a unece:PartyRoleCodeList ;
+    rdf:value "BL" ;
+    rdfs:comment "Bill of lading recipient" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BM> a unece:PartyRoleCodeList ;
+    rdf:value "BM" ;
+    rdfs:comment "Insured" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BN> a unece:PartyRoleCodeList ;
+    rdf:value "BN" ;
+    rdfs:comment "Insurance beneficiary" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BO> a unece:PartyRoleCodeList ;
+    rdf:value "BO" ;
+    rdfs:comment "Broker or sales office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BP> a unece:PartyRoleCodeList ;
+    rdf:value "BP" ;
+    rdfs:comment "Building site purchaser" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BQ> a unece:PartyRoleCodeList ;
+    rdf:value "BQ" ;
+    rdfs:comment "Cheque drawn bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BS> a unece:PartyRoleCodeList ;
+    rdf:value "BS" ;
+    rdfs:comment "Bill and ship to" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BT> a unece:PartyRoleCodeList ;
+    rdf:value "BT" ;
+    rdfs:comment "Party to be billed for other than freight (bill to)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BU> a unece:PartyRoleCodeList ;
+    rdf:value "BU" ;
+    rdfs:comment "Service bureau" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BV> a unece:PartyRoleCodeList ;
+    rdf:value "BV" ;
+    rdfs:comment "Member" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BW> a unece:PartyRoleCodeList ;
+    rdf:value "BW" ;
+    rdfs:comment "Borrower" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BX> a unece:PartyRoleCodeList ;
+    rdf:value "BX" ;
+    rdfs:comment "Building site engineer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BY> a unece:PartyRoleCodeList ;
+    rdf:value "BY" ;
+    rdfs:comment "Buyer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BZ> a unece:PartyRoleCodeList ;
+    rdf:value "BZ" ;
+    rdfs:comment "Building site forwarder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#C1> a unece:PartyRoleCodeList ;
+    rdf:value "C1" ;
+    rdfs:comment "In care of party no. 1" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#C2> a unece:PartyRoleCodeList ;
+    rdf:value "C2" ;
+    rdfs:comment "In care of party no. 2" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CA> a unece:PartyRoleCodeList ;
+    rdf:value "CA" ;
+    rdfs:comment "Carrier" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CB> a unece:PartyRoleCodeList ;
+    rdf:value "CB" ;
+    rdfs:comment "Customs broker" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CC> a unece:PartyRoleCodeList ;
+    rdf:value "CC" ;
+    rdfs:comment "Claimant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CD> a unece:PartyRoleCodeList ;
+    rdf:value "CD" ;
+    rdfs:comment "Agent's bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CE> a unece:PartyRoleCodeList ;
+    rdf:value "CE" ;
+    rdfs:comment "Ceding company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CF> a unece:PartyRoleCodeList ;
+    rdf:value "CF" ;
+    rdfs:comment "Container operator/lessee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CG> a unece:PartyRoleCodeList ;
+    rdf:value "CG" ;
+    rdfs:comment "Carrier's agent" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CH> a unece:PartyRoleCodeList ;
+    rdf:value "CH" ;
+    rdfs:comment "Connecting carrier" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CI> a unece:PartyRoleCodeList ;
+    rdf:value "CI" ;
+    rdfs:comment "Commission processor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CJ> a unece:PartyRoleCodeList ;
+    rdf:value "CJ" ;
+    rdfs:comment "Previous member" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CK> a unece:PartyRoleCodeList ;
+    rdf:value "CK" ;
+    rdfs:comment "Empty equipment despatch party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CL> a unece:PartyRoleCodeList ;
+    rdf:value "CL" ;
+    rdfs:comment "Container location party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CM> a unece:PartyRoleCodeList ;
+    rdf:value "CM" ;
+    rdfs:comment "Customs" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CN> a unece:PartyRoleCodeList ;
+    rdf:value "CN" ;
+    rdfs:comment "Consignee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CNX> a unece:PartyRoleCodeList ;
+    rdf:value "CNX" ;
+    rdfs:comment "Cash pool top account servicing financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CNY> a unece:PartyRoleCodeList ;
+    rdf:value "CNY" ;
+    rdfs:comment "Cash pool level account servicing financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CNZ> a unece:PartyRoleCodeList ;
+    rdf:value "CNZ" ;
+    rdfs:comment "Cash pool sub-account servicing financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CO> a unece:PartyRoleCodeList ;
+    rdf:value "CO" ;
+    rdfs:comment "Corporate office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COA> a unece:PartyRoleCodeList ;
+    rdf:value "COA" ;
+    rdfs:comment "Entity in which a financial interest is held" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COB> a unece:PartyRoleCodeList ;
+    rdf:value "COB" ;
+    rdfs:comment "Intermediate level parent company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COC> a unece:PartyRoleCodeList ;
+    rdf:value "COC" ;
+    rdfs:comment "Transshipment party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COD> a unece:PartyRoleCodeList ;
+    rdf:value "COD" ;
+    rdfs:comment "Quotation requesting party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COE> a unece:PartyRoleCodeList ;
+    rdf:value "COE" ;
+    rdfs:comment "Party maintaining the codes used in the message" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COF> a unece:PartyRoleCodeList ;
+    rdf:value "COF" ;
+    rdfs:comment "Party maintaining the identifiers used in the message" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COG> a unece:PartyRoleCodeList ;
+    rdf:value "COG" ;
+    rdfs:comment "Dispatcher" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COH> a unece:PartyRoleCodeList ;
+    rdf:value "COH" ;
+    rdfs:comment "Submitter of sample" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COI> a unece:PartyRoleCodeList ;
+    rdf:value "COI" ;
+    rdfs:comment "Institutional provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COJ> a unece:PartyRoleCodeList ;
+    rdf:value "COJ" ;
+    rdfs:comment "Primary health care provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COK> a unece:PartyRoleCodeList ;
+    rdf:value "COK" ;
+    rdfs:comment "Assistant surgeon" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COL> a unece:PartyRoleCodeList ;
+    rdf:value "COL" ;
+    rdfs:comment "Admitting health care provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COM> a unece:PartyRoleCodeList ;
+    rdf:value "COM" ;
+    rdfs:comment "Referring health care provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CON> a unece:PartyRoleCodeList ;
+    rdf:value "CON" ;
+    rdfs:comment "Supervising health care provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COO> a unece:PartyRoleCodeList ;
+    rdf:value "COO" ;
+    rdfs:comment "Party providing financing" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COP> a unece:PartyRoleCodeList ;
+    rdf:value "COP" ;
+    rdfs:comment "Convoying party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COQ> a unece:PartyRoleCodeList ;
+    rdf:value "COQ" ;
+    rdfs:comment "Nominated bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COR> a unece:PartyRoleCodeList ;
+    rdf:value "COR" ;
+    rdfs:comment "Family member" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COS> a unece:PartyRoleCodeList ;
+    rdf:value "COS" ;
+    rdfs:comment "Co-participant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COT> a unece:PartyRoleCodeList ;
+    rdf:value "COT" ;
+    rdfs:comment "Involved party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COU> a unece:PartyRoleCodeList ;
+    rdf:value "COU" ;
+    rdfs:comment "Assigner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COV> a unece:PartyRoleCodeList ;
+    rdf:value "COV" ;
+    rdfs:comment "Registered principal" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COW> a unece:PartyRoleCodeList ;
+    rdf:value "COW" ;
+    rdfs:comment "Freight payer on behalf of the consignor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COX> a unece:PartyRoleCodeList ;
+    rdf:value "COX" ;
+    rdfs:comment "Freight payer on behalf of the consignee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COY> a unece:PartyRoleCodeList ;
+    rdf:value "COY" ;
+    rdfs:comment "Party responsible for disinfection" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COZ> a unece:PartyRoleCodeList ;
+    rdf:value "COZ" ;
+    rdfs:comment "Party responsible for refueling" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CP> a unece:PartyRoleCodeList ;
+    rdf:value "CP" ;
+    rdfs:comment "Party to receive certificate of compliance" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPA> a unece:PartyRoleCodeList ;
+    rdf:value "CPA" ;
+    rdfs:comment "Advising bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPB> a unece:PartyRoleCodeList ;
+    rdf:value "CPB" ;
+    rdfs:comment "Reimbursing bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPC> a unece:PartyRoleCodeList ;
+    rdf:value "CPC" ;
+    rdfs:comment "Advise through bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPD> a unece:PartyRoleCodeList ;
+    rdf:value "CPD" ;
+    rdfs:comment "Charges payer at destination" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPE> a unece:PartyRoleCodeList ;
+    rdf:value "CPE" ;
+    rdfs:comment "Transport means master name" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPF> a unece:PartyRoleCodeList ;
+    rdf:value "CPF" ;
+    rdfs:comment "Means of transport charterer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPG> a unece:PartyRoleCodeList ;
+    rdf:value "CPG" ;
+    rdfs:comment "Excise party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPH> a unece:PartyRoleCodeList ;
+    rdf:value "CPH" ;
+    rdfs:comment "Copy report to" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPI> a unece:PartyRoleCodeList ;
+    rdf:value "CPI" ;
+    rdfs:comment "Related healthcare party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPJ> a unece:PartyRoleCodeList ;
+    rdf:value "CPJ" ;
+    rdfs:comment "Clinical information provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPK> a unece:PartyRoleCodeList ;
+    rdf:value "CPK" ;
+    rdfs:comment "Service requester" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPL> a unece:PartyRoleCodeList ;
+    rdf:value "CPL" ;
+    rdfs:comment "Patient admitted by" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPM> a unece:PartyRoleCodeList ;
+    rdf:value "CPM" ;
+    rdfs:comment "Patient discharged to" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPN> a unece:PartyRoleCodeList ;
+    rdf:value "CPN" ;
+    rdfs:comment "Patient hosted by" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPO> a unece:PartyRoleCodeList ;
+    rdf:value "CPO" ;
+    rdfs:comment "Prescriber's contact person" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CQ> a unece:PartyRoleCodeList ;
+    rdf:value "CQ" ;
+    rdfs:comment "Cheque order" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CR> a unece:PartyRoleCodeList ;
+    rdf:value "CR" ;
+    rdfs:comment "Empty equipment return party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CS> a unece:PartyRoleCodeList ;
+    rdf:value "CS" ;
+    rdfs:comment "Consolidator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CT> a unece:PartyRoleCodeList ;
+    rdf:value "CT" ;
+    rdfs:comment "Consignee to be specified" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CU> a unece:PartyRoleCodeList ;
+    rdf:value "CU" ;
+    rdfs:comment "Container return company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CV> a unece:PartyRoleCodeList ;
+    rdf:value "CV" ;
+    rdfs:comment "Consignee of vessel" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CW> a unece:PartyRoleCodeList ;
+    rdf:value "CW" ;
+    rdfs:comment "Equipment owner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CX> a unece:PartyRoleCodeList ;
+    rdf:value "CX" ;
+    rdfs:comment "Consignee's agent" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CY> a unece:PartyRoleCodeList ;
+    rdf:value "CY" ;
+    rdfs:comment "Commissionable agent" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CZ> a unece:PartyRoleCodeList ;
+    rdf:value "CZ" ;
+    rdfs:comment "Consignor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DA> a unece:PartyRoleCodeList ;
+    rdf:value "DA" ;
+    rdfs:comment "Available with bank (documentary credits)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DB> a unece:PartyRoleCodeList ;
+    rdf:value "DB" ;
+    rdfs:comment "Distributor branch" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DC> a unece:PartyRoleCodeList ;
+    rdf:value "DC" ;
+    rdfs:comment "Deconsolidator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCP> a unece:PartyRoleCodeList ;
+    rdf:value "DCP" ;
+    rdfs:comment "Despatch charge payer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCQ> a unece:PartyRoleCodeList ;
+    rdf:value "DCQ" ;
+    rdfs:comment "Prescription database owner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCR> a unece:PartyRoleCodeList ;
+    rdf:value "DCR" ;
+    rdfs:comment "Original prescriber" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCS> a unece:PartyRoleCodeList ;
+    rdf:value "DCS" ;
+    rdfs:comment "Temporary employee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCT> a unece:PartyRoleCodeList ;
+    rdf:value "DCT" ;
+    rdfs:comment "Designer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCU> a unece:PartyRoleCodeList ;
+    rdf:value "DCU" ;
+    rdfs:comment "Quotation delivered to" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCV> a unece:PartyRoleCodeList ;
+    rdf:value "DCV" ;
+    rdfs:comment "Developer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCW> a unece:PartyRoleCodeList ;
+    rdf:value "DCW" ;
+    rdfs:comment "Test execution party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCX> a unece:PartyRoleCodeList ;
+    rdf:value "DCX" ;
+    rdfs:comment "Party to receive refund" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCY> a unece:PartyRoleCodeList ;
+    rdf:value "DCY" ;
+    rdfs:comment "Authorised issuer of prescription" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCZ> a unece:PartyRoleCodeList ;
+    rdf:value "DCZ" ;
+    rdfs:comment "Authorised dispenser of medicine" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DD> a unece:PartyRoleCodeList ;
+    rdf:value "DD" ;
+    rdfs:comment "Documentary credit account party's bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDA> a unece:PartyRoleCodeList ;
+    rdf:value "DDA" ;
+    rdfs:comment "Report responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDB> a unece:PartyRoleCodeList ;
+    rdf:value "DDB" ;
+    rdfs:comment "Initial sender" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDC> a unece:PartyRoleCodeList ;
+    rdf:value "DDC" ;
+    rdfs:comment "The party authorising the original prescription" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDD> a unece:PartyRoleCodeList ;
+    rdf:value "DDD" ;
+    rdfs:comment "Applicant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDE> a unece:PartyRoleCodeList ;
+    rdf:value "DDE" ;
+    rdfs:comment "Meter reader" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDF> a unece:PartyRoleCodeList ;
+    rdf:value "DDF" ;
+    rdfs:comment "Primary electronic business contact" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDG> a unece:PartyRoleCodeList ;
+    rdf:value "DDG" ;
+    rdfs:comment "Alternate electronic business contact" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDH> a unece:PartyRoleCodeList ;
+    rdf:value "DDH" ;
+    rdfs:comment "Primary government business contact" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDI> a unece:PartyRoleCodeList ;
+    rdf:value "DDI" ;
+    rdfs:comment "Alternate government business contact" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDJ> a unece:PartyRoleCodeList ;
+    rdf:value "DDJ" ;
+    rdfs:comment "Past performance contact" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDK> a unece:PartyRoleCodeList ;
+    rdf:value "DDK" ;
+    rdfs:comment "Balance responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDL> a unece:PartyRoleCodeList ;
+    rdf:value "DDL" ;
+    rdfs:comment "Group of passengers" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDM> a unece:PartyRoleCodeList ;
+    rdf:value "DDM" ;
+    rdfs:comment "Grid operator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDN> a unece:PartyRoleCodeList ;
+    rdf:value "DDN" ;
+    rdfs:comment "First financial institution in the transaction chain" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDO> a unece:PartyRoleCodeList ;
+    rdf:value "DDO" ;
+    rdfs:comment "Location manager" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDP> a unece:PartyRoleCodeList ;
+    rdf:value "DDP" ;
+    rdfs:comment "Group leader" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDQ> a unece:PartyRoleCodeList ;
+    rdf:value "DDQ" ;
+    rdfs:comment "Energy Supplier" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDR> a unece:PartyRoleCodeList ;
+    rdf:value "DDR" ;
+    rdfs:comment "Consignor's freight forwarder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDS> a unece:PartyRoleCodeList ;
+    rdf:value "DDS" ;
+    rdfs:comment "Consignee's freight forwarder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDT> a unece:PartyRoleCodeList ;
+    rdf:value "DDT" ;
+    rdfs:comment "In transit crew member" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDU> a unece:PartyRoleCodeList ;
+    rdf:value "DDU" ;
+    rdfs:comment "In transit passenger" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDV> a unece:PartyRoleCodeList ;
+    rdf:value "DDV" ;
+    rdfs:comment "Energy consumption imbalance responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDW> a unece:PartyRoleCodeList ;
+    rdf:value "DDW" ;
+    rdfs:comment "Energy production imbalance responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDX> a unece:PartyRoleCodeList ;
+    rdf:value "DDX" ;
+    rdfs:comment "Imbalance settlement responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDY> a unece:PartyRoleCodeList ;
+    rdf:value "DDY" ;
+    rdfs:comment "Transmission capacity allocator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDZ> a unece:PartyRoleCodeList ;
+    rdf:value "DDZ" ;
+    rdfs:comment "Metering point administrator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DE> a unece:PartyRoleCodeList ;
+    rdf:value "DE" ;
+    rdfs:comment "Depositor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEA> a unece:PartyRoleCodeList ;
+    rdf:value "DEA" ;
+    rdfs:comment "Metered data aggregator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEB> a unece:PartyRoleCodeList ;
+    rdf:value "DEB" ;
+    rdfs:comment "Meter operator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEC> a unece:PartyRoleCodeList ;
+    rdf:value "DEC" ;
+    rdfs:comment "Party connected to grid" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DED> a unece:PartyRoleCodeList ;
+    rdf:value "DED" ;
+    rdfs:comment "Profile maintenance party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEE> a unece:PartyRoleCodeList ;
+    rdf:value "DEE" ;
+    rdfs:comment "Stowaway" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEF> a unece:PartyRoleCodeList ;
+    rdf:value "DEF" ;
+    rdfs:comment "Meat cutter" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEG> a unece:PartyRoleCodeList ;
+    rdf:value "DEG" ;
+    rdfs:comment "Consortium Carrier (maritime)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEH> a unece:PartyRoleCodeList ;
+    rdf:value "DEH" ;
+    rdfs:comment "Non-vessel operating carrier" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEI> a unece:PartyRoleCodeList ;
+    rdf:value "DEI" ;
+    rdfs:comment "Means of transport operator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEJ> a unece:PartyRoleCodeList ;
+    rdf:value "DEJ" ;
+    rdfs:comment "Stuffing address" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEK> a unece:PartyRoleCodeList ;
+    rdf:value "DEK" ;
+    rdfs:comment "Mooring service provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEL> a unece:PartyRoleCodeList ;
+    rdf:value "DEL" ;
+    rdfs:comment "Pilotage service provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEM> a unece:PartyRoleCodeList ;
+    rdf:value "DEM" ;
+    rdfs:comment "Berth towage service provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEN> a unece:PartyRoleCodeList ;
+    rdf:value "DEN" ;
+    rdfs:comment "Agent/representative, direct representation" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEO> a unece:PartyRoleCodeList ;
+    rdf:value "DEO" ;
+    rdfs:comment "Agent/representative, indirect representation" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEP> a unece:PartyRoleCodeList ;
+    rdf:value "DEP" ;
+    rdfs:comment "Stevedore" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEQ> a unece:PartyRoleCodeList ;
+    rdf:value "DEQ" ;
+    rdfs:comment "Shipper" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DER> a unece:PartyRoleCodeList ;
+    rdf:value "DER" ;
+    rdfs:comment "Source data pool" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DES> a unece:PartyRoleCodeList ;
+    rdf:value "DES" ;
+    rdfs:comment "Brand owner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DET> a unece:PartyRoleCodeList ;
+    rdf:value "DET" ;
+    rdfs:comment "Cockpit crew" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEU> a unece:PartyRoleCodeList ;
+    rdf:value "DEU" ;
+    rdfs:comment "Cabin crew" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEV> a unece:PartyRoleCodeList ;
+    rdf:value "DEV" ;
+    rdfs:comment "Airline operations management, not in cockpit" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEW> a unece:PartyRoleCodeList ;
+    rdf:value "DEW" ;
+    rdfs:comment "Cargo non-cockpit crew and/or non-crew personnel" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEX> a unece:PartyRoleCodeList ;
+    rdf:value "DEX" ;
+    rdfs:comment "Pilots seated outside cockpit" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEY> a unece:PartyRoleCodeList ;
+    rdf:value "DEY" ;
+    rdfs:comment "Commercial verifier" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEZ> a unece:PartyRoleCodeList ;
+    rdf:value "DEZ" ;
+    rdfs:comment "Authorized issuer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DF> a unece:PartyRoleCodeList ;
+    rdf:value "DF" ;
+    rdfs:comment "Documentary credit applicant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFA> a unece:PartyRoleCodeList ;
+    rdf:value "DFA" ;
+    rdfs:comment "Bank for deposit of duties/taxes/fees" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFB> a unece:PartyRoleCodeList ;
+    rdf:value "DFB" ;
+    rdfs:comment "Company security officer (IMO Circular MSC 1130)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFC> a unece:PartyRoleCodeList ;
+    rdf:value "DFC" ;
+    rdfs:comment "Distiller" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFD> a unece:PartyRoleCodeList ;
+    rdf:value "DFD" ;
+    rdfs:comment "Drayman/lighterman" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFE> a unece:PartyRoleCodeList ;
+    rdf:value "DFE" ;
+    rdfs:comment "Exhibitor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFF> a unece:PartyRoleCodeList ;
+    rdf:value "DFF" ;
+    rdfs:comment "Feedlot" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFG> a unece:PartyRoleCodeList ;
+    rdf:value "DFG" ;
+    rdfs:comment "Government official" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFH> a unece:PartyRoleCodeList ;
+    rdf:value "DFH" ;
+    rdfs:comment "Government service requestor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFI> a unece:PartyRoleCodeList ;
+    rdf:value "DFI" ;
+    rdfs:comment "Crop grower" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFJ> a unece:PartyRoleCodeList ;
+    rdf:value "DFJ" ;
+    rdfs:comment "ISPS Responsible Party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFK> a unece:PartyRoleCodeList ;
+    rdf:value "DFK" ;
+    rdfs:comment "LPCO authorized party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFL> a unece:PartyRoleCodeList ;
+    rdf:value "DFL" ;
+    rdfs:comment "Operator of property, registered" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFM> a unece:PartyRoleCodeList ;
+    rdf:value "DFM" ;
+    rdfs:comment "Organic growth certifier, accredited" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFN> a unece:PartyRoleCodeList ;
+    rdf:value "DFN" ;
+    rdfs:comment "Party holding Certificate of Financial Responsibility" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFO> a unece:PartyRoleCodeList ;
+    rdf:value "DFO" ;
+    rdfs:comment "Port facility security officer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFP> a unece:PartyRoleCodeList ;
+    rdf:value "DFP" ;
+    rdfs:comment "Vehicle owner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFQ> a unece:PartyRoleCodeList ;
+    rdf:value "DFQ" ;
+    rdfs:comment "Security certificate issuer, recognized" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFR> a unece:PartyRoleCodeList ;
+    rdf:value "DFR" ;
+    rdfs:comment "Ship Security Officer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFS> a unece:PartyRoleCodeList ;
+    rdf:value "DFS" ;
+    rdfs:comment "Certificate issuer, veterinary" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFT> a unece:PartyRoleCodeList ;
+    rdf:value "DFT" ;
+    rdfs:comment "Assembler" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFU> a unece:PartyRoleCodeList ;
+    rdf:value "DFU" ;
+    rdfs:comment "Competitor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFV> a unece:PartyRoleCodeList ;
+    rdf:value "DFV" ;
+    rdfs:comment "Right holder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFW> a unece:PartyRoleCodeList ;
+    rdf:value "DFW" ;
+    rdfs:comment "Authorised Economic Operator (AEO)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFX> a unece:PartyRoleCodeList ;
+    rdf:value "DFX" ;
+    rdfs:comment "Manufacturer of equipment" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFY> a unece:PartyRoleCodeList ;
+    rdf:value "DFY" ;
+    rdfs:comment "Crew other ship" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFZ> a unece:PartyRoleCodeList ;
+    rdf:value "DFZ" ;
+    rdfs:comment "Article information responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DG> a unece:PartyRoleCodeList ;
+    rdf:value "DG" ;
+    rdfs:comment "Documentary credit beneficiary" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGA> a unece:PartyRoleCodeList ;
+    rdf:value "DGA" ;
+    rdfs:comment "Price information responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGB> a unece:PartyRoleCodeList ;
+    rdf:value "DGB" ;
+    rdfs:comment "Invoice processing party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGC> a unece:PartyRoleCodeList ;
+    rdf:value "DGC" ;
+    rdfs:comment "Logistic service provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGD> a unece:PartyRoleCodeList ;
+    rdf:value "DGD" ;
+    rdfs:comment "Fattener" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGE> a unece:PartyRoleCodeList ;
+    rdf:value "DGE" ;
+    rdfs:comment "Breeder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGF> a unece:PartyRoleCodeList ;
+    rdf:value "DGF" ;
+    rdfs:comment "Calorific Value Responsible" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGG> a unece:PartyRoleCodeList ;
+    rdf:value "DGG" ;
+    rdfs:comment "Balancing Service Provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGH> a unece:PartyRoleCodeList ;
+    rdf:value "DGH" ;
+    rdfs:comment "Consent Administrator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGI> a unece:PartyRoleCodeList ;
+    rdf:value "DGI" ;
+    rdfs:comment "Energy Service Company (ESCO)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGJ> a unece:PartyRoleCodeList ;
+    rdf:value "DGJ" ;
+    rdfs:comment "Resource Aggregator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGK> a unece:PartyRoleCodeList ;
+    rdf:value "DGK" ;
+    rdfs:comment "Resource Provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGL> a unece:PartyRoleCodeList ;
+    rdf:value "DGL" ;
+    rdfs:comment "Metered Data Administrator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGM> a unece:PartyRoleCodeList ;
+    rdf:value "DGM" ;
+    rdfs:comment "Consumer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGN> a unece:PartyRoleCodeList ;
+    rdf:value "DGN" ;
+    rdfs:comment "Farmer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGO> a unece:PartyRoleCodeList ;
+    rdf:value "DGO" ;
+    rdfs:comment "Recycler" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGP> a unece:PartyRoleCodeList ;
+    rdf:value "DGP" ;
+    rdfs:comment "Retailer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGQ> a unece:PartyRoleCodeList ;
+    rdf:value "DGQ" ;
+    rdfs:comment "Second Party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGR> a unece:PartyRoleCodeList ;
+    rdf:value "DGR" ;
+    rdfs:comment "Waste Disposal Provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGS> a unece:PartyRoleCodeList ;
+    rdf:value "DGS" ;
+    rdfs:comment "Tanner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGT> a unece:PartyRoleCodeList ;
+    rdf:value "DGT" ;
+    rdfs:comment "Service Provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGU> a unece:PartyRoleCodeList ;
+    rdf:value "DGU" ;
+    rdfs:comment "Ginner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGV> a unece:PartyRoleCodeList ;
+    rdf:value "DGV" ;
+    rdfs:comment "Spinner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGW> a unece:PartyRoleCodeList ;
+    rdf:value "DGW" ;
+    rdfs:comment "Weaver" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DH> a unece:PartyRoleCodeList ;
+    rdf:value "DH" ;
+    rdfs:comment "Documentary credit account party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DI> a unece:PartyRoleCodeList ;
+    rdf:value "DI" ;
+    rdfs:comment "Documentary credit second beneficiary" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DJ> a unece:PartyRoleCodeList ;
+    rdf:value "DJ" ;
+    rdfs:comment "Party according to documentary credit transaction" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DK> a unece:PartyRoleCodeList ;
+    rdf:value "DK" ;
+    rdfs:comment "Documentary credit beneficiary's bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DL> a unece:PartyRoleCodeList ;
+    rdf:value "DL" ;
+    rdfs:comment "Factor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DM> a unece:PartyRoleCodeList ;
+    rdf:value "DM" ;
+    rdfs:comment "Party to whom documents are to be presented" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DN> a unece:PartyRoleCodeList ;
+    rdf:value "DN" ;
+    rdfs:comment "Owner of operation" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DO> a unece:PartyRoleCodeList ;
+    rdf:value "DO" ;
+    rdfs:comment "Document recipient" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DP> a unece:PartyRoleCodeList ;
+    rdf:value "DP" ;
+    rdfs:comment "Delivery party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DQ> a unece:PartyRoleCodeList ;
+    rdf:value "DQ" ;
+    rdfs:comment "Owner's agent" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DR> a unece:PartyRoleCodeList ;
+    rdf:value "DR" ;
+    rdfs:comment "Driver" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DS> a unece:PartyRoleCodeList ;
+    rdf:value "DS" ;
+    rdfs:comment "Distributor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DT> a unece:PartyRoleCodeList ;
+    rdf:value "DT" ;
+    rdfs:comment "Declarant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DU> a unece:PartyRoleCodeList ;
+    rdf:value "DU" ;
+    rdfs:comment "Owner's representative" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DV> a unece:PartyRoleCodeList ;
+    rdf:value "DV" ;
+    rdfs:comment "Project management office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DW> a unece:PartyRoleCodeList ;
+    rdf:value "DW" ;
+    rdfs:comment "Drawee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DX> a unece:PartyRoleCodeList ;
+    rdf:value "DX" ;
+    rdfs:comment "Engineer (construction)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DY> a unece:PartyRoleCodeList ;
+    rdf:value "DY" ;
+    rdfs:comment "Engineer, resident (construction)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DZ> a unece:PartyRoleCodeList ;
+    rdf:value "DZ" ;
+    rdfs:comment "Architect" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EA> a unece:PartyRoleCodeList ;
+    rdf:value "EA" ;
+    rdfs:comment "Architect-designer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EB> a unece:PartyRoleCodeList ;
+    rdf:value "EB" ;
+    rdfs:comment "Building inspectorate" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EC> a unece:PartyRoleCodeList ;
+    rdf:value "EC" ;
+    rdfs:comment "Exchanger" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#ED> a unece:PartyRoleCodeList ;
+    rdf:value "ED" ;
+    rdfs:comment "Engineer, consultant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EE> a unece:PartyRoleCodeList ;
+    rdf:value "EE" ;
+    rdfs:comment "Location of goods for customs examination before clearance" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EF> a unece:PartyRoleCodeList ;
+    rdf:value "EF" ;
+    rdfs:comment "Project coordination office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EG> a unece:PartyRoleCodeList ;
+    rdf:value "EG" ;
+    rdfs:comment "Surveyor, topographical" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EH> a unece:PartyRoleCodeList ;
+    rdf:value "EH" ;
+    rdfs:comment "Engineer, measurement" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EI> a unece:PartyRoleCodeList ;
+    rdf:value "EI" ;
+    rdfs:comment "Controller, quality" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EJ> a unece:PartyRoleCodeList ;
+    rdf:value "EJ" ;
+    rdfs:comment "Surveyor, quantity" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EK> a unece:PartyRoleCodeList ;
+    rdf:value "EK" ;
+    rdfs:comment "Surveyor (professional), quantity" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EL> a unece:PartyRoleCodeList ;
+    rdf:value "EL" ;
+    rdfs:comment "Project" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EM> a unece:PartyRoleCodeList ;
+    rdf:value "EM" ;
+    rdfs:comment "Party to receive electronic memo of invoice" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EN> a unece:PartyRoleCodeList ;
+    rdf:value "EN" ;
+    rdfs:comment "Tenderer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EO> a unece:PartyRoleCodeList ;
+    rdf:value "EO" ;
+    rdfs:comment "Owner of equipment" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EP> a unece:PartyRoleCodeList ;
+    rdf:value "EP" ;
+    rdfs:comment "Equipment drop-off party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EQ> a unece:PartyRoleCodeList ;
+    rdf:value "EQ" ;
+    rdfs:comment "Empty container responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#ER> a unece:PartyRoleCodeList ;
+    rdf:value "ER" ;
+    rdfs:comment "Empty container return agent" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#ES> a unece:PartyRoleCodeList ;
+    rdf:value "ES" ;
+    rdfs:comment "Contractor, lead" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#ET> a unece:PartyRoleCodeList ;
+    rdf:value "ET" ;
+    rdfs:comment "Co-contractor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EU> a unece:PartyRoleCodeList ;
+    rdf:value "EU" ;
+    rdfs:comment "Contractor, general" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EV> a unece:PartyRoleCodeList ;
+    rdf:value "EV" ;
+    rdfs:comment "Subcontractor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EW> a unece:PartyRoleCodeList ;
+    rdf:value "EW" ;
+    rdfs:comment "Subcontractor with direct payment" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EX> a unece:PartyRoleCodeList ;
+    rdf:value "EX" ;
+    rdfs:comment "Exporter" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EY> a unece:PartyRoleCodeList ;
+    rdf:value "EY" ;
+    rdfs:comment "Subcontractor, nominated" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EZ> a unece:PartyRoleCodeList ;
+    rdf:value "EZ" ;
+    rdfs:comment "Operator, essential services" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FA> a unece:PartyRoleCodeList ;
+    rdf:value "FA" ;
+    rdfs:comment "Operator, communication channel" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FB> a unece:PartyRoleCodeList ;
+    rdf:value "FB" ;
+    rdfs:comment "Nominated freight company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FC> a unece:PartyRoleCodeList ;
+    rdf:value "FC" ;
+    rdfs:comment "Contractor, main" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FD> a unece:PartyRoleCodeList ;
+    rdf:value "FD" ;
+    rdfs:comment "Buyer's parent company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FE> a unece:PartyRoleCodeList ;
+    rdf:value "FE" ;
+    rdfs:comment "Credit rating agency" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FF> a unece:PartyRoleCodeList ;
+    rdf:value "FF" ;
+    rdfs:comment "Factor, correspondent" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FG> a unece:PartyRoleCodeList ;
+    rdf:value "FG" ;
+    rdfs:comment "Buyer as officially registered" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FH> a unece:PartyRoleCodeList ;
+    rdf:value "FH" ;
+    rdfs:comment "Seller as officially registered" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FI> a unece:PartyRoleCodeList ;
+    rdf:value "FI" ;
+    rdfs:comment "Copy message to" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FJ> a unece:PartyRoleCodeList ;
+    rdf:value "FJ" ;
+    rdfs:comment "Trade Union" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FK> a unece:PartyRoleCodeList ;
+    rdf:value "FK" ;
+    rdfs:comment "Previous Trade Union" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FL> a unece:PartyRoleCodeList ;
+    rdf:value "FL" ;
+    rdfs:comment "Passenger" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FM> a unece:PartyRoleCodeList ;
+    rdf:value "FM" ;
+    rdfs:comment "Crew member" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FN> a unece:PartyRoleCodeList ;
+    rdf:value "FN" ;
+    rdfs:comment "Tariff issuer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FO> a unece:PartyRoleCodeList ;
+    rdf:value "FO" ;
+    rdfs:comment "Party performing inspection" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FP> a unece:PartyRoleCodeList ;
+    rdf:value "FP" ;
+    rdfs:comment "Freight/charges payer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FQ> a unece:PartyRoleCodeList ;
+    rdf:value "FQ" ;
+    rdfs:comment "Container survey agent" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FR> a unece:PartyRoleCodeList ;
+    rdf:value "FR" ;
+    rdfs:comment "Message from" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FS> a unece:PartyRoleCodeList ;
+    rdf:value "FS" ;
+    rdfs:comment "Party authorized to make definite a contract action" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FT> a unece:PartyRoleCodeList ;
+    rdf:value "FT" ;
+    rdfs:comment "Financial settlement party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FU> a unece:PartyRoleCodeList ;
+    rdf:value "FU" ;
+    rdfs:comment "Hazardous material office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FV> a unece:PartyRoleCodeList ;
+    rdf:value "FV" ;
+    rdfs:comment "Party providing government furnished property" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FW> a unece:PartyRoleCodeList ;
+    rdf:value "FW" ;
+    rdfs:comment "Freight forwarder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FX> a unece:PartyRoleCodeList ;
+    rdf:value "FX" ;
+    rdfs:comment "Current receiver" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FY> a unece:PartyRoleCodeList ;
+    rdf:value "FY" ;
+    rdfs:comment "Current sender" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FZ> a unece:PartyRoleCodeList ;
+    rdf:value "FZ" ;
+    rdfs:comment "Grouping centre" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GA> a unece:PartyRoleCodeList ;
+    rdf:value "GA" ;
+    rdfs:comment "Road carrier" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GB> a unece:PartyRoleCodeList ;
+    rdf:value "GB" ;
+    rdfs:comment "Chamber of commerce" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GC> a unece:PartyRoleCodeList ;
+    rdf:value "GC" ;
+    rdfs:comment "Goods custodian" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GD> a unece:PartyRoleCodeList ;
+    rdf:value "GD" ;
+    rdfs:comment "Producer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GE> a unece:PartyRoleCodeList ;
+    rdf:value "GE" ;
+    rdfs:comment "Registration tribunal" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GF> a unece:PartyRoleCodeList ;
+    rdf:value "GF" ;
+    rdfs:comment "Slot charter party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GH> a unece:PartyRoleCodeList ;
+    rdf:value "GH" ;
+    rdfs:comment "Applicant for job" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GI> a unece:PartyRoleCodeList ;
+    rdf:value "GI" ;
+    rdfs:comment "Spouse" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GJ> a unece:PartyRoleCodeList ;
+    rdf:value "GJ" ;
+    rdfs:comment "Mother" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GK> a unece:PartyRoleCodeList ;
+    rdf:value "GK" ;
+    rdfs:comment "Father" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GL> a unece:PartyRoleCodeList ;
+    rdf:value "GL" ;
+    rdfs:comment "Socially insured person" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GM> a unece:PartyRoleCodeList ;
+    rdf:value "GM" ;
+    rdfs:comment "Inventory controller" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GN> a unece:PartyRoleCodeList ;
+    rdf:value "GN" ;
+    rdfs:comment "Processor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GO> a unece:PartyRoleCodeList ;
+    rdf:value "GO" ;
+    rdfs:comment "Goods owner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GP> a unece:PartyRoleCodeList ;
+    rdf:value "GP" ;
+    rdfs:comment "Packer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GQ> a unece:PartyRoleCodeList ;
+    rdf:value "GQ" ;
+    rdfs:comment "Slaughterer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GR> a unece:PartyRoleCodeList ;
+    rdf:value "GR" ;
+    rdfs:comment "Goods releasing party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GS> a unece:PartyRoleCodeList ;
+    rdf:value "GS" ;
+    rdfs:comment "Consignor's representative" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GT> a unece:PartyRoleCodeList ;
+    rdf:value "GT" ;
+    rdfs:comment "Rail carrier" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GU> a unece:PartyRoleCodeList ;
+    rdf:value "GU" ;
+    rdfs:comment "Originator of article number" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GV> a unece:PartyRoleCodeList ;
+    rdf:value "GV" ;
+    rdfs:comment "Procurement responsibility for order" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GW> a unece:PartyRoleCodeList ;
+    rdf:value "GW" ;
+    rdfs:comment "Party fulfilling all operations" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GX> a unece:PartyRoleCodeList ;
+    rdf:value "GX" ;
+    rdfs:comment "Central catalogue party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GY> a unece:PartyRoleCodeList ;
+    rdf:value "GY" ;
+    rdfs:comment "Inventory reporting party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GZ> a unece:PartyRoleCodeList ;
+    rdf:value "GZ" ;
+    rdfs:comment "Substitute supplier" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HA> a unece:PartyRoleCodeList ;
+    rdf:value "HA" ;
+    rdfs:comment "Party which delivers consignments to the terminal" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HB> a unece:PartyRoleCodeList ;
+    rdf:value "HB" ;
+    rdfs:comment "Party which picks up consignments from the terminal" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HC> a unece:PartyRoleCodeList ;
+    rdf:value "HC" ;
+    rdfs:comment "Transit freight forwarder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HD> a unece:PartyRoleCodeList ;
+    rdf:value "HD" ;
+    rdfs:comment "Inspection and acceptance party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HE> a unece:PartyRoleCodeList ;
+    rdf:value "HE" ;
+    rdfs:comment "Transportation office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HF> a unece:PartyRoleCodeList ;
+    rdf:value "HF" ;
+    rdfs:comment "Contract administration office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HG> a unece:PartyRoleCodeList ;
+    rdf:value "HG" ;
+    rdfs:comment "Investigator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HH> a unece:PartyRoleCodeList ;
+    rdf:value "HH" ;
+    rdfs:comment "Audit office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HI> a unece:PartyRoleCodeList ;
+    rdf:value "HI" ;
+    rdfs:comment "Requestor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HJ> a unece:PartyRoleCodeList ;
+    rdf:value "HJ" ;
+    rdfs:comment "Foreign disclosure information office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HK> a unece:PartyRoleCodeList ;
+    rdf:value "HK" ;
+    rdfs:comment "Mark-for party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HL> a unece:PartyRoleCodeList ;
+    rdf:value "HL" ;
+    rdfs:comment "Party to receive reports" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HM> a unece:PartyRoleCodeList ;
+    rdf:value "HM" ;
+    rdfs:comment "Alternative manufacturer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HN> a unece:PartyRoleCodeList ;
+    rdf:value "HN" ;
+    rdfs:comment "Service performer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HO> a unece:PartyRoleCodeList ;
+    rdf:value "HO" ;
+    rdfs:comment "Shipper's association" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HP> a unece:PartyRoleCodeList ;
+    rdf:value "HP" ;
+    rdfs:comment "Final message recipient" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HQ> a unece:PartyRoleCodeList ;
+    rdf:value "HQ" ;
+    rdfs:comment "Account owner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HR> a unece:PartyRoleCodeList ;
+    rdf:value "HR" ;
+    rdfs:comment "Shipping line service" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HS> a unece:PartyRoleCodeList ;
+    rdf:value "HS" ;
+    rdfs:comment "Creditor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HT> a unece:PartyRoleCodeList ;
+    rdf:value "HT" ;
+    rdfs:comment "Clearing house" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HU> a unece:PartyRoleCodeList ;
+    rdf:value "HU" ;
+    rdfs:comment "Ordering bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HV> a unece:PartyRoleCodeList ;
+    rdf:value "HV" ;
+    rdfs:comment "Receiver of funds" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HW> a unece:PartyRoleCodeList ;
+    rdf:value "HW" ;
+    rdfs:comment "Sender of funds" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HX> a unece:PartyRoleCodeList ;
+    rdf:value "HX" ;
+    rdfs:comment "Debtor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HY> a unece:PartyRoleCodeList ;
+    rdf:value "HY" ;
+    rdfs:comment "Presenting bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HZ> a unece:PartyRoleCodeList ;
+    rdf:value "HZ" ;
+    rdfs:comment "Work team" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#I1> a unece:PartyRoleCodeList ;
+    rdf:value "I1" ;
+    rdfs:comment "Intermediary bank 1" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#I2> a unece:PartyRoleCodeList ;
+    rdf:value "I2" ;
+    rdfs:comment "Intermediary bank 2" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IB> a unece:PartyRoleCodeList ;
+    rdf:value "IB" ;
+    rdfs:comment "Intermediary/broker" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IC> a unece:PartyRoleCodeList ;
+    rdf:value "IC" ;
+    rdfs:comment "Intermediate consignee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#ID> a unece:PartyRoleCodeList ;
+    rdf:value "ID" ;
+    rdfs:comment "Replacing manufacturer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IE> a unece:PartyRoleCodeList ;
+    rdf:value "IE" ;
+    rdfs:comment "Non-resident third party company with whom financial account is held" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IF> a unece:PartyRoleCodeList ;
+    rdf:value "IF" ;
+    rdfs:comment "Non-resident group company with whom financial account is held" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IG> a unece:PartyRoleCodeList ;
+    rdf:value "IG" ;
+    rdfs:comment "Non-resident beneficiary" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IH> a unece:PartyRoleCodeList ;
+    rdf:value "IH" ;
+    rdfs:comment "Resident beneficiary" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#II> a unece:PartyRoleCodeList ;
+    rdf:value "II" ;
+    rdfs:comment "Invoice issuer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IJ> a unece:PartyRoleCodeList ;
+    rdf:value "IJ" ;
+    rdfs:comment "Non-resident instructing party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IL> a unece:PartyRoleCodeList ;
+    rdf:value "IL" ;
+    rdfs:comment "Resident instructing party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IM> a unece:PartyRoleCodeList ;
+    rdf:value "IM" ;
+    rdfs:comment "Importer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IN> a unece:PartyRoleCodeList ;
+    rdf:value "IN" ;
+    rdfs:comment "Insurer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IO> a unece:PartyRoleCodeList ;
+    rdf:value "IO" ;
+    rdfs:comment "Insurance company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IP> a unece:PartyRoleCodeList ;
+    rdf:value "IP" ;
+    rdfs:comment "Insurance claim adjuster" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IQ> a unece:PartyRoleCodeList ;
+    rdf:value "IQ" ;
+    rdfs:comment "Domestic financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IR> a unece:PartyRoleCodeList ;
+    rdf:value "IR" ;
+    rdfs:comment "Non-domestic financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IS> a unece:PartyRoleCodeList ;
+    rdf:value "IS" ;
+    rdfs:comment "Party to receive certified inspection report" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IT> a unece:PartyRoleCodeList ;
+    rdf:value "IT" ;
+    rdfs:comment "Installation on site" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IU> a unece:PartyRoleCodeList ;
+    rdf:value "IU" ;
+    rdfs:comment "Non-resident debtor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IV> a unece:PartyRoleCodeList ;
+    rdf:value "IV" ;
+    rdfs:comment "Invoicee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IW> a unece:PartyRoleCodeList ;
+    rdf:value "IW" ;
+    rdfs:comment "Non-resident creditor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IX> a unece:PartyRoleCodeList ;
+    rdf:value "IX" ;
+    rdfs:comment "Supplier work team" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IY> a unece:PartyRoleCodeList ;
+    rdf:value "IY" ;
+    rdfs:comment "Tenant manager" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IZ> a unece:PartyRoleCodeList ;
+    rdf:value "IZ" ;
+    rdfs:comment "Party mandated to liquidate an enterprise" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#JA> a unece:PartyRoleCodeList ;
+    rdf:value "JA" ;
+    rdfs:comment "Certified accountant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#JB> a unece:PartyRoleCodeList ;
+    rdf:value "JB" ;
+    rdfs:comment "Goods collection party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#JC> a unece:PartyRoleCodeList ;
+    rdf:value "JC" ;
+    rdfs:comment "Party at final place of positioning" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#JD> a unece:PartyRoleCodeList ;
+    rdf:value "JD" ;
+    rdfs:comment "Customs office of clearance" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#JE> a unece:PartyRoleCodeList ;
+    rdf:value "JE" ;
+    rdfs:comment "Party from whom customs documents are to be picked up" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#JF> a unece:PartyRoleCodeList ;
+    rdf:value "JF" ;
+    rdfs:comment "Party from whom non-customs documents are to be picked up" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#JG> a unece:PartyRoleCodeList ;
+    rdf:value "JG" ;
+    rdfs:comment "Party to receive customs documents" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#JH> a unece:PartyRoleCodeList ;
+    rdf:value "JH" ;
+    rdfs:comment "Party to receive non-customs documents" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LA> a unece:PartyRoleCodeList ;
+    rdf:value "LA" ;
+    rdfs:comment "Party designated to provide living animal care" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LB> a unece:PartyRoleCodeList ;
+    rdf:value "LB" ;
+    rdfs:comment "Co-producer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LC> a unece:PartyRoleCodeList ;
+    rdf:value "LC" ;
+    rdfs:comment "Party declaring the Value Added Tax (VAT)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LD> a unece:PartyRoleCodeList ;
+    rdf:value "LD" ;
+    rdfs:comment "Party recovering the Value Added Tax (VAT)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LE> a unece:PartyRoleCodeList ;
+    rdf:value "LE" ;
+    rdfs:comment "Person on claim" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LF> a unece:PartyRoleCodeList ;
+    rdf:value "LF" ;
+    rdfs:comment "Buyer's corporate office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LG> a unece:PartyRoleCodeList ;
+    rdf:value "LG" ;
+    rdfs:comment "Supplier's corporate office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LH> a unece:PartyRoleCodeList ;
+    rdf:value "LH" ;
+    rdfs:comment "Liquidator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LI> a unece:PartyRoleCodeList ;
+    rdf:value "LI" ;
+    rdfs:comment "Account coordinator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LJ> a unece:PartyRoleCodeList ;
+    rdf:value "LJ" ;
+    rdfs:comment "Inspection leader" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LK> a unece:PartyRoleCodeList ;
+    rdf:value "LK" ;
+    rdfs:comment "Patient" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LL> a unece:PartyRoleCodeList ;
+    rdf:value "LL" ;
+    rdfs:comment "Patient companion" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LM> a unece:PartyRoleCodeList ;
+    rdf:value "LM" ;
+    rdfs:comment "Medical treatment executant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LN> a unece:PartyRoleCodeList ;
+    rdf:value "LN" ;
+    rdfs:comment "Lender" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LO> a unece:PartyRoleCodeList ;
+    rdf:value "LO" ;
+    rdfs:comment "Medical treatment prescriber" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LP> a unece:PartyRoleCodeList ;
+    rdf:value "LP" ;
+    rdfs:comment "Loading party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LQ> a unece:PartyRoleCodeList ;
+    rdf:value "LQ" ;
+    rdfs:comment "Debt payment authorisation party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LR> a unece:PartyRoleCodeList ;
+    rdf:value "LR" ;
+    rdfs:comment "Administration centre" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LS> a unece:PartyRoleCodeList ;
+    rdf:value "LS" ;
+    rdfs:comment "Product services and repairs centre" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LT> a unece:PartyRoleCodeList ;
+    rdf:value "LT" ;
+    rdfs:comment "Secretariat" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LU> a unece:PartyRoleCodeList ;
+    rdf:value "LU" ;
+    rdfs:comment "Entry point technical assessment group" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LV> a unece:PartyRoleCodeList ;
+    rdf:value "LV" ;
+    rdfs:comment "Party assigning a status" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MA> a unece:PartyRoleCodeList ;
+    rdf:value "MA" ;
+    rdfs:comment "Party for whom item is ultimately intended" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MAD> a unece:PartyRoleCodeList ;
+    rdf:value "MAD" ;
+    rdfs:comment "Meter administrator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MDR> a unece:PartyRoleCodeList ;
+    rdf:value "MDR" ;
+    rdfs:comment "Metered data responsible" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MF> a unece:PartyRoleCodeList ;
+    rdf:value "MF" ;
+    rdfs:comment "Manufacturer of goods" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MG> a unece:PartyRoleCodeList ;
+    rdf:value "MG" ;
+    rdfs:comment "Party designated to execute re-icing" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MI> a unece:PartyRoleCodeList ;
+    rdf:value "MI" ;
+    rdfs:comment "Planning schedule/material release issuer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MOP> a unece:PartyRoleCodeList ;
+    rdf:value "MOP" ;
+    rdfs:comment "Market operator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MP> a unece:PartyRoleCodeList ;
+    rdf:value "MP" ;
+    rdfs:comment "Manufacturing unit" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MR> a unece:PartyRoleCodeList ;
+    rdf:value "MR" ;
+    rdfs:comment "Message recipient" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MS> a unece:PartyRoleCodeList ;
+    rdf:value "MS" ;
+    rdfs:comment "Document/message issuer/sender" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MT> a unece:PartyRoleCodeList ;
+    rdf:value "MT" ;
+    rdfs:comment "Party designated to execute sanitary procedures" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#N2> a unece:PartyRoleCodeList ;
+    rdf:value "N2" ;
+    rdfs:comment "Notify party no. 2" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#NI> a unece:PartyRoleCodeList ;
+    rdf:value "NI" ;
+    rdfs:comment "Notify party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OA> a unece:PartyRoleCodeList ;
+    rdf:value "OA" ;
+    rdfs:comment "Break bulk berth operator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OB> a unece:PartyRoleCodeList ;
+    rdf:value "OB" ;
+    rdfs:comment "Ordered by" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OC> a unece:PartyRoleCodeList ;
+    rdf:value "OC" ;
+    rdfs:comment "Party data responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OD> a unece:PartyRoleCodeList ;
+    rdf:value "OD" ;
+    rdfs:comment "Equipment repair party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OE> a unece:PartyRoleCodeList ;
+    rdf:value "OE" ;
+    rdfs:comment "Owner of property" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OF> a unece:PartyRoleCodeList ;
+    rdf:value "OF" ;
+    rdfs:comment "On behalf of" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OG> a unece:PartyRoleCodeList ;
+    rdf:value "OG" ;
+    rdfs:comment "Owner or lessor's surveyor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OH> a unece:PartyRoleCodeList ;
+    rdf:value "OH" ;
+    rdfs:comment "Lessee's surveyor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OI> a unece:PartyRoleCodeList ;
+    rdf:value "OI" ;
+    rdfs:comment "Outside inspection agency" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OJ> a unece:PartyRoleCodeList ;
+    rdf:value "OJ" ;
+    rdfs:comment "Third party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OK> a unece:PartyRoleCodeList ;
+    rdf:value "OK" ;
+    rdfs:comment "Receiver's sub-entity" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OL> a unece:PartyRoleCodeList ;
+    rdf:value "OL" ;
+    rdfs:comment "Case of need party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OM> a unece:PartyRoleCodeList ;
+    rdf:value "OM" ;
+    rdfs:comment "Collecting bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#ON> a unece:PartyRoleCodeList ;
+    rdf:value "ON" ;
+    rdfs:comment "Remitting bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OO> a unece:PartyRoleCodeList ;
+    rdf:value "OO" ;
+    rdfs:comment "Order of the shipper party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OP> a unece:PartyRoleCodeList ;
+    rdf:value "OP" ;
+    rdfs:comment "Operator of property or equipment" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OQ> a unece:PartyRoleCodeList ;
+    rdf:value "OQ" ;
+    rdfs:comment "Collection principal" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OR> a unece:PartyRoleCodeList ;
+    rdf:value "OR" ;
+    rdfs:comment "Ordered bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OS> a unece:PartyRoleCodeList ;
+    rdf:value "OS" ;
+    rdfs:comment "Original shipper" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OT> a unece:PartyRoleCodeList ;
+    rdf:value "OT" ;
+    rdfs:comment "Outside test agency" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OU> a unece:PartyRoleCodeList ;
+    rdf:value "OU" ;
+    rdfs:comment "Account owner's servicing bank on the sending side" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OV> a unece:PartyRoleCodeList ;
+    rdf:value "OV" ;
+    rdfs:comment "Transport means owner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OW> a unece:PartyRoleCodeList ;
+    rdf:value "OW" ;
+    rdfs:comment "Account owner's servicing bank on the receiving side" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OX> a unece:PartyRoleCodeList ;
+    rdf:value "OX" ;
+    rdfs:comment "Sender's correspondent bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OY> a unece:PartyRoleCodeList ;
+    rdf:value "OY" ;
+    rdfs:comment "Ordering customer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OZ> a unece:PartyRoleCodeList ;
+    rdf:value "OZ" ;
+    rdfs:comment "Receiver's correspondent bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#P1> a unece:PartyRoleCodeList ;
+    rdf:value "P1" ;
+    rdfs:comment "Contact party 1" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#P2> a unece:PartyRoleCodeList ;
+    rdf:value "P2" ;
+    rdfs:comment "Contact party 2" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#P3> a unece:PartyRoleCodeList ;
+    rdf:value "P3" ;
+    rdfs:comment "Contact party 3" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#P4> a unece:PartyRoleCodeList ;
+    rdf:value "P4" ;
+    rdfs:comment "Contact party 4" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PA> a unece:PartyRoleCodeList ;
+    rdf:value "PA" ;
+    rdfs:comment "Party to receive inspection report" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PAD> a unece:PartyRoleCodeList ;
+    rdf:value "PAD" ;
+    rdfs:comment "Party Administrator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PB> a unece:PartyRoleCodeList ;
+    rdf:value "PB" ;
+    rdfs:comment "Paying financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PC> a unece:PartyRoleCodeList ;
+    rdf:value "PC" ;
+    rdfs:comment "Actual purchaser's customer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PD> a unece:PartyRoleCodeList ;
+    rdf:value "PD" ;
+    rdfs:comment "Purchaser's department buyer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PE> a unece:PartyRoleCodeList ;
+    rdf:value "PE" ;
+    rdfs:comment "Payee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PF> a unece:PartyRoleCodeList ;
+    rdf:value "PF" ;
+    rdfs:comment "Party to receive freight bill" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PG> a unece:PartyRoleCodeList ;
+    rdf:value "PG" ;
+    rdfs:comment "Prime contractor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PH> a unece:PartyRoleCodeList ;
+    rdf:value "PH" ;
+    rdfs:comment "Payer's financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PI> a unece:PartyRoleCodeList ;
+    rdf:value "PI" ;
+    rdfs:comment "Payee's company name/ID" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PJ> a unece:PartyRoleCodeList ;
+    rdf:value "PJ" ;
+    rdfs:comment "Party to receive correspondence" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PK> a unece:PartyRoleCodeList ;
+    rdf:value "PK" ;
+    rdfs:comment "Contact party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PM> a unece:PartyRoleCodeList ;
+    rdf:value "PM" ;
+    rdfs:comment "Party to receive paper memo of invoice" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PN> a unece:PartyRoleCodeList ;
+    rdf:value "PN" ;
+    rdfs:comment "Party to receive shipping notice" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PO> a unece:PartyRoleCodeList ;
+    rdf:value "PO" ;
+    rdfs:comment "Ordering party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#POA> a unece:PartyRoleCodeList ;
+    rdf:value "POA" ;
+    rdfs:comment "Port Authority" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PP> a unece:PartyRoleCodeList ;
+    rdf:value "PP" ;
+    rdfs:comment "Platform provider party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PQ> a unece:PartyRoleCodeList ;
+    rdf:value "PQ" ;
+    rdfs:comment "Certifying party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PR> a unece:PartyRoleCodeList ;
+    rdf:value "PR" ;
+    rdfs:comment "Payer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PS> a unece:PartyRoleCodeList ;
+    rdf:value "PS" ;
+    rdfs:comment "Payer's company name/ID (Check, Draft or Wire)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PT> a unece:PartyRoleCodeList ;
+    rdf:value "PT" ;
+    rdfs:comment "Party to receive test report" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PW> a unece:PartyRoleCodeList ;
+    rdf:value "PW" ;
+    rdfs:comment "Despatch party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PX> a unece:PartyRoleCodeList ;
+    rdf:value "PX" ;
+    rdfs:comment "Party to receive all documents" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PY> a unece:PartyRoleCodeList ;
+    rdf:value "PY" ;
+    rdfs:comment "Checking party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PZ> a unece:PartyRoleCodeList ;
+    rdf:value "PZ" ;
+    rdfs:comment "Party to print some document" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RA> a unece:PartyRoleCodeList ;
+    rdf:value "RA" ;
+    rdfs:comment "Central bank or regulatory authority" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RB> a unece:PartyRoleCodeList ;
+    rdf:value "RB" ;
+    rdfs:comment "Receiving financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RCA> a unece:PartyRoleCodeList ;
+    rdf:value "RCA" ;
+    rdfs:comment "Reconciliation accountable" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RCR> a unece:PartyRoleCodeList ;
+    rdf:value "RCR" ;
+    rdfs:comment "Reconciliation responsible" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RE> a unece:PartyRoleCodeList ;
+    rdf:value "RE" ;
+    rdfs:comment "Party to receive commercial invoice remittance" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RF> a unece:PartyRoleCodeList ;
+    rdf:value "RF" ;
+    rdfs:comment "Received from" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RH> a unece:PartyRoleCodeList ;
+    rdf:value "RH" ;
+    rdfs:comment "Seller's financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RI> a unece:PartyRoleCodeList ;
+    rdf:value "RI" ;
+    rdfs:comment "Reinsurance intermediary/broker" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RL> a unece:PartyRoleCodeList ;
+    rdf:value "RL" ;
+    rdfs:comment "Reporting carrier (Customs)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RM> a unece:PartyRoleCodeList ;
+    rdf:value "RM" ;
+    rdfs:comment "Reporting carrier's nominated agent/representative (Customs)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RP> a unece:PartyRoleCodeList ;
+    rdf:value "RP" ;
+    rdfs:comment "Routing party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RS> a unece:PartyRoleCodeList ;
+    rdf:value "RS" ;
+    rdfs:comment "Party to receive statement of account" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RV> a unece:PartyRoleCodeList ;
+    rdf:value "RV" ;
+    rdfs:comment "Receiver of cheque" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RW> a unece:PartyRoleCodeList ;
+    rdf:value "RW" ;
+    rdfs:comment "Issuer of waybill" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SB> a unece:PartyRoleCodeList ;
+    rdf:value "SB" ;
+    rdfs:comment "Sales responsibility" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SE> a unece:PartyRoleCodeList ;
+    rdf:value "SE" ;
+    rdfs:comment "Seller" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SF> a unece:PartyRoleCodeList ;
+    rdf:value "SF" ;
+    rdfs:comment "Ship from" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SG> a unece:PartyRoleCodeList ;
+    rdf:value "SG" ;
+    rdfs:comment "Store group" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SI> a unece:PartyRoleCodeList ;
+    rdf:value "SI" ;
+    rdfs:comment "Shipping schedule issuer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SN> a unece:PartyRoleCodeList ;
+    rdf:value "SN" ;
+    rdfs:comment "Store keeper" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SO> a unece:PartyRoleCodeList ;
+    rdf:value "SO" ;
+    rdfs:comment "Sold to if different than bill to" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SPC> a unece:PartyRoleCodeList ;
+    rdf:value "SPC" ;
+    rdfs:comment "SOLAS verified gross mass responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SR> a unece:PartyRoleCodeList ;
+    rdf:value "SR" ;
+    rdfs:comment "Seller agent" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SS> a unece:PartyRoleCodeList ;
+    rdf:value "SS" ;
+    rdfs:comment "Social securities collector's office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#ST> a unece:PartyRoleCodeList ;
+    rdf:value "ST" ;
+    rdfs:comment "Ship to" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SU> a unece:PartyRoleCodeList ;
+    rdf:value "SU" ;
+    rdfs:comment "Supplier" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SX> a unece:PartyRoleCodeList ;
+    rdf:value "SX" ;
+    rdfs:comment "Surety for additions" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SY> a unece:PartyRoleCodeList ;
+    rdf:value "SY" ;
+    rdfs:comment "Surety" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SZ> a unece:PartyRoleCodeList ;
+    rdf:value "SZ" ;
+    rdfs:comment "Surety for antidumping/countervailing duty" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TA> a unece:PartyRoleCodeList ;
+    rdf:value "TA" ;
+    rdfs:comment "Legal receiver" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TB> a unece:PartyRoleCodeList ;
+    rdf:value "TB" ;
+    rdfs:comment "Submitter" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TC> a unece:PartyRoleCodeList ;
+    rdf:value "TC" ;
+    rdfs:comment "Tax collector's office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TCP> a unece:PartyRoleCodeList ;
+    rdf:value "TCP" ;
+    rdfs:comment "Transit charge payer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TCR> a unece:PartyRoleCodeList ;
+    rdf:value "TCR" ;
+    rdfs:comment "Transport capacity responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TD> a unece:PartyRoleCodeList ;
+    rdf:value "TD" ;
+    rdfs:comment "Party to receive technical documentation" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TE> a unece:PartyRoleCodeList ;
+    rdf:value "TE" ;
+    rdfs:comment "Bankruptcy referee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TF> a unece:PartyRoleCodeList ;
+    rdf:value "TF" ;
+    rdfs:comment "Source of information" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TG> a unece:PartyRoleCodeList ;
+    rdf:value "TG" ;
+    rdfs:comment "Judge" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TH> a unece:PartyRoleCodeList ;
+    rdf:value "TH" ;
+    rdfs:comment "Attorney" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TI> a unece:PartyRoleCodeList ;
+    rdf:value "TI" ;
+    rdfs:comment "Law firm" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TJ> a unece:PartyRoleCodeList ;
+    rdf:value "TJ" ;
+    rdfs:comment "Trustee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TK> a unece:PartyRoleCodeList ;
+    rdf:value "TK" ;
+    rdfs:comment "Signatory" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TL> a unece:PartyRoleCodeList ;
+    rdf:value "TL" ;
+    rdfs:comment "Occupant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TM> a unece:PartyRoleCodeList ;
+    rdf:value "TM" ;
+    rdfs:comment "Co-occupant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TN> a unece:PartyRoleCodeList ;
+    rdf:value "TN" ;
+    rdfs:comment "Subject of inquiry" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TO> a unece:PartyRoleCodeList ;
+    rdf:value "TO" ;
+    rdfs:comment "Lessor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TP> a unece:PartyRoleCodeList ;
+    rdf:value "TP" ;
+    rdfs:comment "Owner of residence" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TQ> a unece:PartyRoleCodeList ;
+    rdf:value "TQ" ;
+    rdfs:comment "Founder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TR> a unece:PartyRoleCodeList ;
+    rdf:value "TR" ;
+    rdfs:comment "Terminal operator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TS> a unece:PartyRoleCodeList ;
+    rdf:value "TS" ;
+    rdfs:comment "Party to receive certified test results" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TT> a unece:PartyRoleCodeList ;
+    rdf:value "TT" ;
+    rdfs:comment "Transfer to" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TU> a unece:PartyRoleCodeList ;
+    rdf:value "TU" ;
+    rdfs:comment "President" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TV> a unece:PartyRoleCodeList ;
+    rdf:value "TV" ;
+    rdfs:comment "Chairperson" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TW> a unece:PartyRoleCodeList ;
+    rdf:value "TW" ;
+    rdfs:comment "Legal title holder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TX> a unece:PartyRoleCodeList ;
+    rdf:value "TX" ;
+    rdfs:comment "Shareholder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TY> a unece:PartyRoleCodeList ;
+    rdf:value "TY" ;
+    rdfs:comment "Provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TZ> a unece:PartyRoleCodeList ;
+    rdf:value "TZ" ;
+    rdfs:comment "Military branch" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UA> a unece:PartyRoleCodeList ;
+    rdf:value "UA" ;
+    rdfs:comment "Educational institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UB> a unece:PartyRoleCodeList ;
+    rdf:value "UB" ;
+    rdfs:comment "Assignor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UC> a unece:PartyRoleCodeList ;
+    rdf:value "UC" ;
+    rdfs:comment "Ultimate consignee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UD> a unece:PartyRoleCodeList ;
+    rdf:value "UD" ;
+    rdfs:comment "Ultimate customer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UE> a unece:PartyRoleCodeList ;
+    rdf:value "UE" ;
+    rdfs:comment "Advisor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UF> a unece:PartyRoleCodeList ;
+    rdf:value "UF" ;
+    rdfs:comment "Co-defendant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UG> a unece:PartyRoleCodeList ;
+    rdf:value "UG" ;
+    rdfs:comment "Merged company with retained identity" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UH> a unece:PartyRoleCodeList ;
+    rdf:value "UH" ;
+    rdfs:comment "Party represented" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UHP> a unece:PartyRoleCodeList ;
+    rdf:value "UHP" ;
+    rdfs:comment "Unexpected handling party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UI> a unece:PartyRoleCodeList ;
+    rdf:value "UI" ;
+    rdfs:comment "Assignee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UJ> a unece:PartyRoleCodeList ;
+    rdf:value "UJ" ;
+    rdfs:comment "Key person" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UK> a unece:PartyRoleCodeList ;
+    rdf:value "UK" ;
+    rdfs:comment "Author" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UL> a unece:PartyRoleCodeList ;
+    rdf:value "UL" ;
+    rdfs:comment "Ultimate parent company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UM> a unece:PartyRoleCodeList ;
+    rdf:value "UM" ;
+    rdfs:comment "Party not to be confused with" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UN> a unece:PartyRoleCodeList ;
+    rdf:value "UN" ;
+    rdfs:comment "Accountant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UO> a unece:PartyRoleCodeList ;
+    rdf:value "UO" ;
+    rdfs:comment "Plaintiff" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UP> a unece:PartyRoleCodeList ;
+    rdf:value "UP" ;
+    rdfs:comment "Unloading party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UQ> a unece:PartyRoleCodeList ;
+    rdf:value "UQ" ;
+    rdfs:comment "Parent company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UR> a unece:PartyRoleCodeList ;
+    rdf:value "UR" ;
+    rdfs:comment "Affiliated company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#US> a unece:PartyRoleCodeList ;
+    rdf:value "US" ;
+    rdfs:comment "Bailiff" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UT> a unece:PartyRoleCodeList ;
+    rdf:value "UT" ;
+    rdfs:comment "Merged company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UU> a unece:PartyRoleCodeList ;
+    rdf:value "UU" ;
+    rdfs:comment "Defendant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UV> a unece:PartyRoleCodeList ;
+    rdf:value "UV" ;
+    rdfs:comment "Petitioning creditor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UW> a unece:PartyRoleCodeList ;
+    rdf:value "UW" ;
+    rdfs:comment "Guarantee agency" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UX> a unece:PartyRoleCodeList ;
+    rdf:value "UX" ;
+    rdfs:comment "Organization group" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UY> a unece:PartyRoleCodeList ;
+    rdf:value "UY" ;
+    rdfs:comment "Subsidiary" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UZ> a unece:PartyRoleCodeList ;
+    rdf:value "UZ" ;
+    rdfs:comment "Industry association" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VA> a unece:PartyRoleCodeList ;
+    rdf:value "VA" ;
+    rdfs:comment "Joint owner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VB> a unece:PartyRoleCodeList ;
+    rdf:value "VB" ;
+    rdfs:comment "Joint venture" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VC> a unece:PartyRoleCodeList ;
+    rdf:value "VC" ;
+    rdfs:comment "Filing office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VE> a unece:PartyRoleCodeList ;
+    rdf:value "VE" ;
+    rdfs:comment "Court" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VF> a unece:PartyRoleCodeList ;
+    rdf:value "VF" ;
+    rdfs:comment "Liability holder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VG> a unece:PartyRoleCodeList ;
+    rdf:value "VG" ;
+    rdfs:comment "Local government sponsor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VH> a unece:PartyRoleCodeList ;
+    rdf:value "VH" ;
+    rdfs:comment "Mortgage company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VI> a unece:PartyRoleCodeList ;
+    rdf:value "VI" ;
+    rdfs:comment "Notary public" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VJ> a unece:PartyRoleCodeList ;
+    rdf:value "VJ" ;
+    rdfs:comment "Officer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VK> a unece:PartyRoleCodeList ;
+    rdf:value "VK" ;
+    rdfs:comment "Publisher" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VL> a unece:PartyRoleCodeList ;
+    rdf:value "VL" ;
+    rdfs:comment "Party manufactured for" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VM> a unece:PartyRoleCodeList ;
+    rdf:value "VM" ;
+    rdfs:comment "Previous owner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VN> a unece:PartyRoleCodeList ;
+    rdf:value "VN" ;
+    rdfs:comment "Vendor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VO> a unece:PartyRoleCodeList ;
+    rdf:value "VO" ;
+    rdfs:comment "Purchased company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VP> a unece:PartyRoleCodeList ;
+    rdf:value "VP" ;
+    rdfs:comment "Receiver manager" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VQ> a unece:PartyRoleCodeList ;
+    rdf:value "VQ" ;
+    rdfs:comment "Responsible government agency" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VR> a unece:PartyRoleCodeList ;
+    rdf:value "VR" ;
+    rdfs:comment "Sole proprietor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VS> a unece:PartyRoleCodeList ;
+    rdf:value "VS" ;
+    rdfs:comment "Auctioneer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VT> a unece:PartyRoleCodeList ;
+    rdf:value "VT" ;
+    rdfs:comment "Branch" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VU> a unece:PartyRoleCodeList ;
+    rdf:value "VU" ;
+    rdfs:comment "Business" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VV> a unece:PartyRoleCodeList ;
+    rdf:value "VV" ;
+    rdfs:comment "Ultimate same country parent company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VW> a unece:PartyRoleCodeList ;
+    rdf:value "VW" ;
+    rdfs:comment "Responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VX> a unece:PartyRoleCodeList ;
+    rdf:value "VX" ;
+    rdfs:comment "Secured party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VY> a unece:PartyRoleCodeList ;
+    rdf:value "VY" ;
+    rdfs:comment "Other related party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VZ> a unece:PartyRoleCodeList ;
+    rdf:value "VZ" ;
+    rdfs:comment "Co-debtor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WA> a unece:PartyRoleCodeList ;
+    rdf:value "WA" ;
+    rdfs:comment "Company which holds financial interest" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WB> a unece:PartyRoleCodeList ;
+    rdf:value "WB" ;
+    rdfs:comment "Rating organization" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WC> a unece:PartyRoleCodeList ;
+    rdf:value "WC" ;
+    rdfs:comment "Information reference agency" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WD> a unece:PartyRoleCodeList ;
+    rdf:value "WD" ;
+    rdfs:comment "Warehouse depositor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WE> a unece:PartyRoleCodeList ;
+    rdf:value "WE" ;
+    rdfs:comment "Compilation agency" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WF> a unece:PartyRoleCodeList ;
+    rdf:value "WF" ;
+    rdfs:comment "Information maintenance agency" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WG> a unece:PartyRoleCodeList ;
+    rdf:value "WG" ;
+    rdfs:comment "Information dissemination agency" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WH> a unece:PartyRoleCodeList ;
+    rdf:value "WH" ;
+    rdfs:comment "Warehouse keeper" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WI> a unece:PartyRoleCodeList ;
+    rdf:value "WI" ;
+    rdfs:comment "Inspection address" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WJ> a unece:PartyRoleCodeList ;
+    rdf:value "WJ" ;
+    rdfs:comment "Refusal party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WK> a unece:PartyRoleCodeList ;
+    rdf:value "WK" ;
+    rdfs:comment "Value added network provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WL> a unece:PartyRoleCodeList ;
+    rdf:value "WL" ;
+    rdfs:comment "Agency" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WM> a unece:PartyRoleCodeList ;
+    rdf:value "WM" ;
+    rdfs:comment "Works manager" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WN> a unece:PartyRoleCodeList ;
+    rdf:value "WN" ;
+    rdfs:comment "Party to receive order to supply" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WO> a unece:PartyRoleCodeList ;
+    rdf:value "WO" ;
+    rdfs:comment "Party to receive invitation to offer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WP> a unece:PartyRoleCodeList ;
+    rdf:value "WP" ;
+    rdfs:comment "Sub-entity" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WPA> a unece:PartyRoleCodeList ;
+    rdf:value "WPA" ;
+    rdfs:comment "Weighting party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WQ> a unece:PartyRoleCodeList ;
+    rdf:value "WQ" ;
+    rdfs:comment "Doing business as" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WR> a unece:PartyRoleCodeList ;
+    rdf:value "WR" ;
+    rdfs:comment "Party submitting quote" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WS> a unece:PartyRoleCodeList ;
+    rdf:value "WS" ;
+    rdfs:comment "Wholesaler" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WT> a unece:PartyRoleCodeList ;
+    rdf:value "WT" ;
+    rdfs:comment "Affiliated party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WU> a unece:PartyRoleCodeList ;
+    rdf:value "WU" ;
+    rdfs:comment "Previous name" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WV> a unece:PartyRoleCodeList ;
+    rdf:value "WV" ;
+    rdfs:comment "Party performing task" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WW> a unece:PartyRoleCodeList ;
+    rdf:value "WW" ;
+    rdfs:comment "Registering party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WX> a unece:PartyRoleCodeList ;
+    rdf:value "WX" ;
+    rdfs:comment "Inland clearance depot operator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WY> a unece:PartyRoleCodeList ;
+    rdf:value "WY" ;
+    rdfs:comment "Destination terminal operator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WZ> a unece:PartyRoleCodeList ;
+    rdf:value "WZ" ;
+    rdfs:comment "Departure terminal operator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#ZZZ> a unece:PartyRoleCodeList ;
+    rdf:value "ZZZ" ;
     rdfs:comment "Mutually defined" .
 
 <https://vocabulary.uncefact.org/TransportModeCodeList#0> a unece:TransportModeCodeList ;
@@ -38203,7 +40707,7 @@ unlcdv:subdivisionType a rdf:Property ;
 <https://www.kairosflow.ai/ont/uncefact/code-lists-vendor-extract> a owl:Ontology ;
     rdfs:label "UN/CEFACT code lists (vendor extract)" ;
     dcterms:source unece: ;
-    rdfs:comment "Verbatim extract of standards-body code lists from the UN/CEFACT web vocabulary (UNECE Rec 5, 9, 16, 19, 20, 21 and UNTDED 8051), retrieved 2026-10-17 from: https://vocabulary.uncefact.org/ (sha256 d8d194408fc2adb774c3e783ef362c19140bae75418f4b82419d1ddc203ad7aa); https://vocabulary.uncefact.org/unlocode-vocab (sha256 245ca42549d4a5a05eb61e62e37d76f6c501d063a0b19e0d563a60ed31c6b19f); https://vocabulary.uncefact.org/unlocode-countries (sha256 86c0ff0cdc14498d77fb2e40b833ff78f79981136bb4912f4aff486ab75a5d39); https://vocabulary.uncefact.org/unlocode-subdivisions (sha256 3b1b474a81de412d845bbd75544ae33a0619b57cbc9064d7e9e9f76dcb801cf9); https://vocabulary.uncefact.org/unlocode-functions (sha256 7a5f556bc3939d95db40ae8f49902b159b1e3c99ead313ef1413983c63e270a0). Generated by scripts/download_uncefact_codelists.py; do not hand-edit." ;
+    rdfs:comment "Verbatim extract of standards-body code lists from the UN/CEFACT web vocabulary (UNECE Rec 5, 9, 16, 19, 20, 21 and UNTDED 3035, 8051), retrieved 2026-10-17 from: https://vocabulary.uncefact.org/ (sha256 d8d194408fc2adb774c3e783ef362c19140bae75418f4b82419d1ddc203ad7aa); https://vocabulary.uncefact.org/unlocode-vocab (sha256 245ca42549d4a5a05eb61e62e37d76f6c501d063a0b19e0d563a60ed31c6b19f); https://vocabulary.uncefact.org/unlocode-countries (sha256 86c0ff0cdc14498d77fb2e40b833ff78f79981136bb4912f4aff486ab75a5d39); https://vocabulary.uncefact.org/unlocode-subdivisions (sha256 3b1b474a81de412d845bbd75544ae33a0619b57cbc9064d7e9e9f76dcb801cf9); https://vocabulary.uncefact.org/unlocode-functions (sha256 7a5f556bc3939d95db40ae8f49902b159b1e3c99ead313ef1413983c63e270a0). Generated by scripts/download_uncefact_codelists.py; do not hand-edit." ;
     owl:versionInfo "snapshot 2026-10-17" .
 
 <https://vocabulary.uncefact.org/unlocode-countries#BA> a unlcdv:Country ;

@@ -70,6 +70,12 @@ domainless (`REUSABLE — no rdfs:domain by design`, MMT/BSP 2.1.0): reuse a mod
 only when your role vocabulary IS that module's code list; otherwise mint a local `hasRole` per
 this pattern — the modules' `roleValidFrom`/`roleValidTo` stay reusable either way.
 
+The role code classes ship empty. The standard role list, UN/CEFACT UNTDED 3035
+(`unece:PartyRoleCodeList`, 625 codes), ships as reference data under
+`authoritative-ontologies/UNCEFACT/`. A hub either adopts it as its role list or links its
+own roles to it with `skos:exactMatch` / `skos:closeMatch`; see `governed-code-list`, "Party
+roles sit between the two cases".
+
 ## Cardinality rules (advisory)
 
 One durable identity may have `0..n` role assignments, each scoped to exactly one context. A

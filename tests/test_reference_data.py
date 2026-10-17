@@ -34,6 +34,7 @@ REFERENCE_DATA_MODULES = {
             UNECE.DeliveryTermsCodeList,
             UNECE.TransportMovementStageCodeList,
             UNECE.CurrencyCodeList,
+            UNECE.PartyRoleCodeList,
             UNLCDV.Country,
             UNLCDV.Subdivision,
             UNLCDV.Function,

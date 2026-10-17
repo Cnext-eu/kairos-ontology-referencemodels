@@ -1821,6 +1821,1888 @@ unece:PackageTypeCodeList a owl:Class ;
 <https://vocabulary.uncefact.org/PackageTypeCodeList#ZZ> a owl:NamedIndividual ;
     rdfs:label "Mutually defined" .
 
+unece:PartyRoleCodeList a owl:Class ;
+    dcterms:description "Party function code qualifier (UNTDED 3035): the UN/CEFACT party roles, e.g. CZ consignor, CN consignee, CA carrier, N1 notify party" ;
+    dcterms:source unece: ;
+    rdfs:seeAlso <https://github.com/Cnext-eu/kairos-ontology-referencemodels/blob/main/kairos_ontology_referencemodels/ontology-reference-models/authoritative-ontologies/UNCEFACT/README.md> ;
+    owl:versionInfo "2026-10-17" ;
+    kairos-ext:isReferenceData true .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AA> a owl:NamedIndividual ;
+    rdfs:label "Party to be billed (AAR Accounting rule 11)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AB> a owl:NamedIndividual ;
+    rdfs:label "Buyer's agent/representative" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AE> a owl:NamedIndividual ;
+    rdfs:label "Declarant's agent/representative" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AF> a owl:NamedIndividual ;
+    rdfs:label "Transit principal" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AG> a owl:NamedIndividual ;
+    rdfs:label "Agent" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AH> a owl:NamedIndividual ;
+    rdfs:label "Transit principal's agent/representative" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AI> a owl:NamedIndividual ;
+    rdfs:label "Successful job applicant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AJ> a owl:NamedIndividual ;
+    rdfs:label "Party issuing mutually agreed codes" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AK> a owl:NamedIndividual ;
+    rdfs:label "Acknowledgement recipient" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AL> a owl:NamedIndividual ;
+    rdfs:label "Principal responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AM> a owl:NamedIndividual ;
+    rdfs:label "Authorized official" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AN> a owl:NamedIndividual ;
+    rdfs:label "Approved importer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AO> a owl:NamedIndividual ;
+    rdfs:label "Account of" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AP> a owl:NamedIndividual ;
+    rdfs:label "Accepting party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AQ> a owl:NamedIndividual ;
+    rdfs:label "Approved consignor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AR> a owl:NamedIndividual ;
+    rdfs:label "Authorized exporter" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AS> a owl:NamedIndividual ;
+    rdfs:label "Account servicing financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AT> a owl:NamedIndividual ;
+    rdfs:label "Authorized importer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AU> a owl:NamedIndividual ;
+    rdfs:label "Authorized trader (transit)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AV> a owl:NamedIndividual ;
+    rdfs:label "Authorizing official" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AW> a owl:NamedIndividual ;
+    rdfs:label "Applicant's bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AX> a owl:NamedIndividual ;
+    rdfs:label "Authenticating party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AY> a owl:NamedIndividual ;
+    rdfs:label "Animal being investigated" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#AZ> a owl:NamedIndividual ;
+    rdfs:label "Issuing bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#B1> a owl:NamedIndividual ;
+    rdfs:label "Contact bank 1" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#B2> a owl:NamedIndividual ;
+    rdfs:label "Contact bank 2" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BA> a owl:NamedIndividual ;
+    rdfs:label "Booking agent" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BB> a owl:NamedIndividual ;
+    rdfs:label "Buyer bank identification" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BC> a owl:NamedIndividual ;
+    rdfs:label "Negotiating bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BD> a owl:NamedIndividual ;
+    rdfs:label "Documentary credit reimbursing bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BE> a owl:NamedIndividual ;
+    rdfs:label "Beneficiary" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BF> a owl:NamedIndividual ;
+    rdfs:label "Beneficiary's bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BG> a owl:NamedIndividual ;
+    rdfs:label "Employer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BH> a owl:NamedIndividual ;
+    rdfs:label "Previous employer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BI> a owl:NamedIndividual ;
+    rdfs:label "Buyer's financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BJ> a owl:NamedIndividual ;
+    rdfs:label "Release to party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BK> a owl:NamedIndividual ;
+    rdfs:label "Financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BL> a owl:NamedIndividual ;
+    rdfs:label "Bill of lading recipient" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BM> a owl:NamedIndividual ;
+    rdfs:label "Insured" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BN> a owl:NamedIndividual ;
+    rdfs:label "Insurance beneficiary" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BO> a owl:NamedIndividual ;
+    rdfs:label "Broker or sales office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BP> a owl:NamedIndividual ;
+    rdfs:label "Building site purchaser" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BQ> a owl:NamedIndividual ;
+    rdfs:label "Cheque drawn bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BS> a owl:NamedIndividual ;
+    rdfs:label "Bill and ship to" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BT> a owl:NamedIndividual ;
+    rdfs:label "Party to be billed for other than freight (bill to)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BU> a owl:NamedIndividual ;
+    rdfs:label "Service bureau" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BV> a owl:NamedIndividual ;
+    rdfs:label "Member" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BW> a owl:NamedIndividual ;
+    rdfs:label "Borrower" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BX> a owl:NamedIndividual ;
+    rdfs:label "Building site engineer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BY> a owl:NamedIndividual ;
+    rdfs:label "Buyer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#BZ> a owl:NamedIndividual ;
+    rdfs:label "Building site forwarder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#C1> a owl:NamedIndividual ;
+    rdfs:label "In care of party no. 1" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#C2> a owl:NamedIndividual ;
+    rdfs:label "In care of party no. 2" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CA> a owl:NamedIndividual ;
+    rdfs:label "Carrier" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CB> a owl:NamedIndividual ;
+    rdfs:label "Customs broker" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CC> a owl:NamedIndividual ;
+    rdfs:label "Claimant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CD> a owl:NamedIndividual ;
+    rdfs:label "Agent's bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CE> a owl:NamedIndividual ;
+    rdfs:label "Ceding company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CF> a owl:NamedIndividual ;
+    rdfs:label "Container operator/lessee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CG> a owl:NamedIndividual ;
+    rdfs:label "Carrier's agent" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CH> a owl:NamedIndividual ;
+    rdfs:label "Connecting carrier" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CI> a owl:NamedIndividual ;
+    rdfs:label "Commission processor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CJ> a owl:NamedIndividual ;
+    rdfs:label "Previous member" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CK> a owl:NamedIndividual ;
+    rdfs:label "Empty equipment despatch party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CL> a owl:NamedIndividual ;
+    rdfs:label "Container location party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CM> a owl:NamedIndividual ;
+    rdfs:label "Customs" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CN> a owl:NamedIndividual ;
+    rdfs:label "Consignee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CNX> a owl:NamedIndividual ;
+    rdfs:label "Cash pool top account servicing financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CNY> a owl:NamedIndividual ;
+    rdfs:label "Cash pool level account servicing financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CNZ> a owl:NamedIndividual ;
+    rdfs:label "Cash pool sub-account servicing financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CO> a owl:NamedIndividual ;
+    rdfs:label "Corporate office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COA> a owl:NamedIndividual ;
+    rdfs:label "Entity in which a financial interest is held" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COB> a owl:NamedIndividual ;
+    rdfs:label "Intermediate level parent company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COC> a owl:NamedIndividual ;
+    rdfs:label "Transshipment party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COD> a owl:NamedIndividual ;
+    rdfs:label "Quotation requesting party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COE> a owl:NamedIndividual ;
+    rdfs:label "Party maintaining the codes used in the message" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COF> a owl:NamedIndividual ;
+    rdfs:label "Party maintaining the identifiers used in the message" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COG> a owl:NamedIndividual ;
+    rdfs:label "Dispatcher" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COH> a owl:NamedIndividual ;
+    rdfs:label "Submitter of sample" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COI> a owl:NamedIndividual ;
+    rdfs:label "Institutional provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COJ> a owl:NamedIndividual ;
+    rdfs:label "Primary health care provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COK> a owl:NamedIndividual ;
+    rdfs:label "Assistant surgeon" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COL> a owl:NamedIndividual ;
+    rdfs:label "Admitting health care provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COM> a owl:NamedIndividual ;
+    rdfs:label "Referring health care provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CON> a owl:NamedIndividual ;
+    rdfs:label "Supervising health care provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COO> a owl:NamedIndividual ;
+    rdfs:label "Party providing financing" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COP> a owl:NamedIndividual ;
+    rdfs:label "Convoying party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COQ> a owl:NamedIndividual ;
+    rdfs:label "Nominated bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COR> a owl:NamedIndividual ;
+    rdfs:label "Family member" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COS> a owl:NamedIndividual ;
+    rdfs:label "Co-participant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COT> a owl:NamedIndividual ;
+    rdfs:label "Involved party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COU> a owl:NamedIndividual ;
+    rdfs:label "Assigner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COV> a owl:NamedIndividual ;
+    rdfs:label "Registered principal" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COW> a owl:NamedIndividual ;
+    rdfs:label "Freight payer on behalf of the consignor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COX> a owl:NamedIndividual ;
+    rdfs:label "Freight payer on behalf of the consignee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COY> a owl:NamedIndividual ;
+    rdfs:label "Party responsible for disinfection" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#COZ> a owl:NamedIndividual ;
+    rdfs:label "Party responsible for refueling" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CP> a owl:NamedIndividual ;
+    rdfs:label "Party to receive certificate of compliance" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPA> a owl:NamedIndividual ;
+    rdfs:label "Advising bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPB> a owl:NamedIndividual ;
+    rdfs:label "Reimbursing bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPC> a owl:NamedIndividual ;
+    rdfs:label "Advise through bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPD> a owl:NamedIndividual ;
+    rdfs:label "Charges payer at destination" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPE> a owl:NamedIndividual ;
+    rdfs:label "Transport means master name" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPF> a owl:NamedIndividual ;
+    rdfs:label "Means of transport charterer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPG> a owl:NamedIndividual ;
+    rdfs:label "Excise party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPH> a owl:NamedIndividual ;
+    rdfs:label "Copy report to" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPI> a owl:NamedIndividual ;
+    rdfs:label "Related healthcare party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPJ> a owl:NamedIndividual ;
+    rdfs:label "Clinical information provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPK> a owl:NamedIndividual ;
+    rdfs:label "Service requester" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPL> a owl:NamedIndividual ;
+    rdfs:label "Patient admitted by" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPM> a owl:NamedIndividual ;
+    rdfs:label "Patient discharged to" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPN> a owl:NamedIndividual ;
+    rdfs:label "Patient hosted by" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CPO> a owl:NamedIndividual ;
+    rdfs:label "Prescriber's contact person" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CQ> a owl:NamedIndividual ;
+    rdfs:label "Cheque order" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CR> a owl:NamedIndividual ;
+    rdfs:label "Empty equipment return party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CS> a owl:NamedIndividual ;
+    rdfs:label "Consolidator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CT> a owl:NamedIndividual ;
+    rdfs:label "Consignee to be specified" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CU> a owl:NamedIndividual ;
+    rdfs:label "Container return company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CV> a owl:NamedIndividual ;
+    rdfs:label "Consignee of vessel" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CW> a owl:NamedIndividual ;
+    rdfs:label "Equipment owner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CX> a owl:NamedIndividual ;
+    rdfs:label "Consignee's agent" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CY> a owl:NamedIndividual ;
+    rdfs:label "Commissionable agent" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#CZ> a owl:NamedIndividual ;
+    rdfs:label "Consignor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DA> a owl:NamedIndividual ;
+    rdfs:label "Available with bank (documentary credits)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DB> a owl:NamedIndividual ;
+    rdfs:label "Distributor branch" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DC> a owl:NamedIndividual ;
+    rdfs:label "Deconsolidator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCP> a owl:NamedIndividual ;
+    rdfs:label "Despatch charge payer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCQ> a owl:NamedIndividual ;
+    rdfs:label "Prescription database owner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCR> a owl:NamedIndividual ;
+    rdfs:label "Original prescriber" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCS> a owl:NamedIndividual ;
+    rdfs:label "Temporary employee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCT> a owl:NamedIndividual ;
+    rdfs:label "Designer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCU> a owl:NamedIndividual ;
+    rdfs:label "Quotation delivered to" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCV> a owl:NamedIndividual ;
+    rdfs:label "Developer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCW> a owl:NamedIndividual ;
+    rdfs:label "Test execution party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCX> a owl:NamedIndividual ;
+    rdfs:label "Party to receive refund" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCY> a owl:NamedIndividual ;
+    rdfs:label "Authorised issuer of prescription" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DCZ> a owl:NamedIndividual ;
+    rdfs:label "Authorised dispenser of medicine" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DD> a owl:NamedIndividual ;
+    rdfs:label "Documentary credit account party's bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDA> a owl:NamedIndividual ;
+    rdfs:label "Report responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDB> a owl:NamedIndividual ;
+    rdfs:label "Initial sender" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDC> a owl:NamedIndividual ;
+    rdfs:label "The party authorising the original prescription" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDD> a owl:NamedIndividual ;
+    rdfs:label "Applicant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDE> a owl:NamedIndividual ;
+    rdfs:label "Meter reader" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDF> a owl:NamedIndividual ;
+    rdfs:label "Primary electronic business contact" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDG> a owl:NamedIndividual ;
+    rdfs:label "Alternate electronic business contact" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDH> a owl:NamedIndividual ;
+    rdfs:label "Primary government business contact" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDI> a owl:NamedIndividual ;
+    rdfs:label "Alternate government business contact" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDJ> a owl:NamedIndividual ;
+    rdfs:label "Past performance contact" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDK> a owl:NamedIndividual ;
+    rdfs:label "Balance responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDL> a owl:NamedIndividual ;
+    rdfs:label "Group of passengers" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDM> a owl:NamedIndividual ;
+    rdfs:label "Grid operator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDN> a owl:NamedIndividual ;
+    rdfs:label "First financial institution in the transaction chain" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDO> a owl:NamedIndividual ;
+    rdfs:label "Location manager" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDP> a owl:NamedIndividual ;
+    rdfs:label "Group leader" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDQ> a owl:NamedIndividual ;
+    rdfs:label "Energy Supplier" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDR> a owl:NamedIndividual ;
+    rdfs:label "Consignor's freight forwarder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDS> a owl:NamedIndividual ;
+    rdfs:label "Consignee's freight forwarder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDT> a owl:NamedIndividual ;
+    rdfs:label "In transit crew member" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDU> a owl:NamedIndividual ;
+    rdfs:label "In transit passenger" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDV> a owl:NamedIndividual ;
+    rdfs:label "Energy consumption imbalance responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDW> a owl:NamedIndividual ;
+    rdfs:label "Energy production imbalance responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDX> a owl:NamedIndividual ;
+    rdfs:label "Imbalance settlement responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDY> a owl:NamedIndividual ;
+    rdfs:label "Transmission capacity allocator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DDZ> a owl:NamedIndividual ;
+    rdfs:label "Metering point administrator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DE> a owl:NamedIndividual ;
+    rdfs:label "Depositor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEA> a owl:NamedIndividual ;
+    rdfs:label "Metered data aggregator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEB> a owl:NamedIndividual ;
+    rdfs:label "Meter operator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEC> a owl:NamedIndividual ;
+    rdfs:label "Party connected to grid" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DED> a owl:NamedIndividual ;
+    rdfs:label "Profile maintenance party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEE> a owl:NamedIndividual ;
+    rdfs:label "Stowaway" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEF> a owl:NamedIndividual ;
+    rdfs:label "Meat cutter" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEG> a owl:NamedIndividual ;
+    rdfs:label "Consortium Carrier (maritime)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEH> a owl:NamedIndividual ;
+    rdfs:label "Non-vessel operating carrier" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEI> a owl:NamedIndividual ;
+    rdfs:label "Means of transport operator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEJ> a owl:NamedIndividual ;
+    rdfs:label "Stuffing address" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEK> a owl:NamedIndividual ;
+    rdfs:label "Mooring service provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEL> a owl:NamedIndividual ;
+    rdfs:label "Pilotage service provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEM> a owl:NamedIndividual ;
+    rdfs:label "Berth towage service provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEN> a owl:NamedIndividual ;
+    rdfs:label "Agent/representative, direct representation" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEO> a owl:NamedIndividual ;
+    rdfs:label "Agent/representative, indirect representation" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEP> a owl:NamedIndividual ;
+    rdfs:label "Stevedore" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEQ> a owl:NamedIndividual ;
+    rdfs:label "Shipper" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DER> a owl:NamedIndividual ;
+    rdfs:label "Source data pool" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DES> a owl:NamedIndividual ;
+    rdfs:label "Brand owner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DET> a owl:NamedIndividual ;
+    rdfs:label "Cockpit crew" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEU> a owl:NamedIndividual ;
+    rdfs:label "Cabin crew" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEV> a owl:NamedIndividual ;
+    rdfs:label "Airline operations management, not in cockpit" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEW> a owl:NamedIndividual ;
+    rdfs:label "Cargo non-cockpit crew and/or non-crew personnel" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEX> a owl:NamedIndividual ;
+    rdfs:label "Pilots seated outside cockpit" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEY> a owl:NamedIndividual ;
+    rdfs:label "Commercial verifier" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DEZ> a owl:NamedIndividual ;
+    rdfs:label "Authorized issuer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DF> a owl:NamedIndividual ;
+    rdfs:label "Documentary credit applicant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFA> a owl:NamedIndividual ;
+    rdfs:label "Bank for deposit of duties/taxes/fees" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFB> a owl:NamedIndividual ;
+    rdfs:label "Company security officer (IMO Circular MSC 1130)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFC> a owl:NamedIndividual ;
+    rdfs:label "Distiller" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFD> a owl:NamedIndividual ;
+    rdfs:label "Drayman/lighterman" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFE> a owl:NamedIndividual ;
+    rdfs:label "Exhibitor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFF> a owl:NamedIndividual ;
+    rdfs:label "Feedlot" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFG> a owl:NamedIndividual ;
+    rdfs:label "Government official" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFH> a owl:NamedIndividual ;
+    rdfs:label "Government service requestor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFI> a owl:NamedIndividual ;
+    rdfs:label "Crop grower" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFJ> a owl:NamedIndividual ;
+    rdfs:label "ISPS Responsible Party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFK> a owl:NamedIndividual ;
+    rdfs:label "LPCO authorized party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFL> a owl:NamedIndividual ;
+    rdfs:label "Operator of property, registered" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFM> a owl:NamedIndividual ;
+    rdfs:label "Organic growth certifier, accredited" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFN> a owl:NamedIndividual ;
+    rdfs:label "Party holding Certificate of Financial Responsibility" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFO> a owl:NamedIndividual ;
+    rdfs:label "Port facility security officer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFP> a owl:NamedIndividual ;
+    rdfs:label "Vehicle owner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFQ> a owl:NamedIndividual ;
+    rdfs:label "Security certificate issuer, recognized" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFR> a owl:NamedIndividual ;
+    rdfs:label "Ship Security Officer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFS> a owl:NamedIndividual ;
+    rdfs:label "Certificate issuer, veterinary" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFT> a owl:NamedIndividual ;
+    rdfs:label "Assembler" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFU> a owl:NamedIndividual ;
+    rdfs:label "Competitor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFV> a owl:NamedIndividual ;
+    rdfs:label "Right holder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFW> a owl:NamedIndividual ;
+    rdfs:label "Authorised Economic Operator (AEO)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFX> a owl:NamedIndividual ;
+    rdfs:label "Manufacturer of equipment" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFY> a owl:NamedIndividual ;
+    rdfs:label "Crew other ship" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DFZ> a owl:NamedIndividual ;
+    rdfs:label "Article information responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DG> a owl:NamedIndividual ;
+    rdfs:label "Documentary credit beneficiary" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGA> a owl:NamedIndividual ;
+    rdfs:label "Price information responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGB> a owl:NamedIndividual ;
+    rdfs:label "Invoice processing party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGC> a owl:NamedIndividual ;
+    rdfs:label "Logistic service provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGD> a owl:NamedIndividual ;
+    rdfs:label "Fattener" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGE> a owl:NamedIndividual ;
+    rdfs:label "Breeder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGF> a owl:NamedIndividual ;
+    rdfs:label "Calorific Value Responsible" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGG> a owl:NamedIndividual ;
+    rdfs:label "Balancing Service Provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGH> a owl:NamedIndividual ;
+    rdfs:label "Consent Administrator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGI> a owl:NamedIndividual ;
+    rdfs:label "Energy Service Company (ESCO)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGJ> a owl:NamedIndividual ;
+    rdfs:label "Resource Aggregator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGK> a owl:NamedIndividual ;
+    rdfs:label "Resource Provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGL> a owl:NamedIndividual ;
+    rdfs:label "Metered Data Administrator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGM> a owl:NamedIndividual ;
+    rdfs:label "Consumer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGN> a owl:NamedIndividual ;
+    rdfs:label "Farmer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGO> a owl:NamedIndividual ;
+    rdfs:label "Recycler" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGP> a owl:NamedIndividual ;
+    rdfs:label "Retailer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGQ> a owl:NamedIndividual ;
+    rdfs:label "Second Party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGR> a owl:NamedIndividual ;
+    rdfs:label "Waste Disposal Provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGS> a owl:NamedIndividual ;
+    rdfs:label "Tanner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGT> a owl:NamedIndividual ;
+    rdfs:label "Service Provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGU> a owl:NamedIndividual ;
+    rdfs:label "Ginner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGV> a owl:NamedIndividual ;
+    rdfs:label "Spinner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DGW> a owl:NamedIndividual ;
+    rdfs:label "Weaver" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DH> a owl:NamedIndividual ;
+    rdfs:label "Documentary credit account party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DI> a owl:NamedIndividual ;
+    rdfs:label "Documentary credit second beneficiary" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DJ> a owl:NamedIndividual ;
+    rdfs:label "Party according to documentary credit transaction" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DK> a owl:NamedIndividual ;
+    rdfs:label "Documentary credit beneficiary's bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DL> a owl:NamedIndividual ;
+    rdfs:label "Factor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DM> a owl:NamedIndividual ;
+    rdfs:label "Party to whom documents are to be presented" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DN> a owl:NamedIndividual ;
+    rdfs:label "Owner of operation" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DO> a owl:NamedIndividual ;
+    rdfs:label "Document recipient" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DP> a owl:NamedIndividual ;
+    rdfs:label "Delivery party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DQ> a owl:NamedIndividual ;
+    rdfs:label "Owner's agent" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DR> a owl:NamedIndividual ;
+    rdfs:label "Driver" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DS> a owl:NamedIndividual ;
+    rdfs:label "Distributor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DT> a owl:NamedIndividual ;
+    rdfs:label "Declarant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DU> a owl:NamedIndividual ;
+    rdfs:label "Owner's representative" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DV> a owl:NamedIndividual ;
+    rdfs:label "Project management office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DW> a owl:NamedIndividual ;
+    rdfs:label "Drawee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DX> a owl:NamedIndividual ;
+    rdfs:label "Engineer (construction)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DY> a owl:NamedIndividual ;
+    rdfs:label "Engineer, resident (construction)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#DZ> a owl:NamedIndividual ;
+    rdfs:label "Architect" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EA> a owl:NamedIndividual ;
+    rdfs:label "Architect-designer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EB> a owl:NamedIndividual ;
+    rdfs:label "Building inspectorate" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EC> a owl:NamedIndividual ;
+    rdfs:label "Exchanger" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#ED> a owl:NamedIndividual ;
+    rdfs:label "Engineer, consultant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EE> a owl:NamedIndividual ;
+    rdfs:label "Location of goods for customs examination before clearance" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EF> a owl:NamedIndividual ;
+    rdfs:label "Project coordination office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EG> a owl:NamedIndividual ;
+    rdfs:label "Surveyor, topographical" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EH> a owl:NamedIndividual ;
+    rdfs:label "Engineer, measurement" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EI> a owl:NamedIndividual ;
+    rdfs:label "Controller, quality" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EJ> a owl:NamedIndividual ;
+    rdfs:label "Surveyor, quantity" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EK> a owl:NamedIndividual ;
+    rdfs:label "Surveyor (professional), quantity" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EL> a owl:NamedIndividual ;
+    rdfs:label "Project" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EM> a owl:NamedIndividual ;
+    rdfs:label "Party to receive electronic memo of invoice" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EN> a owl:NamedIndividual ;
+    rdfs:label "Tenderer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EO> a owl:NamedIndividual ;
+    rdfs:label "Owner of equipment" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EP> a owl:NamedIndividual ;
+    rdfs:label "Equipment drop-off party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EQ> a owl:NamedIndividual ;
+    rdfs:label "Empty container responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#ER> a owl:NamedIndividual ;
+    rdfs:label "Empty container return agent" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#ES> a owl:NamedIndividual ;
+    rdfs:label "Contractor, lead" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#ET> a owl:NamedIndividual ;
+    rdfs:label "Co-contractor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EU> a owl:NamedIndividual ;
+    rdfs:label "Contractor, general" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EV> a owl:NamedIndividual ;
+    rdfs:label "Subcontractor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EW> a owl:NamedIndividual ;
+    rdfs:label "Subcontractor with direct payment" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EX> a owl:NamedIndividual ;
+    rdfs:label "Exporter" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EY> a owl:NamedIndividual ;
+    rdfs:label "Subcontractor, nominated" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#EZ> a owl:NamedIndividual ;
+    rdfs:label "Operator, essential services" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FA> a owl:NamedIndividual ;
+    rdfs:label "Operator, communication channel" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FB> a owl:NamedIndividual ;
+    rdfs:label "Nominated freight company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FC> a owl:NamedIndividual ;
+    rdfs:label "Contractor, main" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FD> a owl:NamedIndividual ;
+    rdfs:label "Buyer's parent company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FE> a owl:NamedIndividual ;
+    rdfs:label "Credit rating agency" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FF> a owl:NamedIndividual ;
+    rdfs:label "Factor, correspondent" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FG> a owl:NamedIndividual ;
+    rdfs:label "Buyer as officially registered" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FH> a owl:NamedIndividual ;
+    rdfs:label "Seller as officially registered" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FI> a owl:NamedIndividual ;
+    rdfs:label "Copy message to" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FJ> a owl:NamedIndividual ;
+    rdfs:label "Trade Union" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FK> a owl:NamedIndividual ;
+    rdfs:label "Previous Trade Union" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FL> a owl:NamedIndividual ;
+    rdfs:label "Passenger" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FM> a owl:NamedIndividual ;
+    rdfs:label "Crew member" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FN> a owl:NamedIndividual ;
+    rdfs:label "Tariff issuer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FO> a owl:NamedIndividual ;
+    rdfs:label "Party performing inspection" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FP> a owl:NamedIndividual ;
+    rdfs:label "Freight/charges payer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FQ> a owl:NamedIndividual ;
+    rdfs:label "Container survey agent" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FR> a owl:NamedIndividual ;
+    rdfs:label "Message from" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FS> a owl:NamedIndividual ;
+    rdfs:label "Party authorized to make definite a contract action" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FT> a owl:NamedIndividual ;
+    rdfs:label "Financial settlement party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FU> a owl:NamedIndividual ;
+    rdfs:label "Hazardous material office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FV> a owl:NamedIndividual ;
+    rdfs:label "Party providing government furnished property" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FW> a owl:NamedIndividual ;
+    rdfs:label "Freight forwarder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FX> a owl:NamedIndividual ;
+    rdfs:label "Current receiver" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FY> a owl:NamedIndividual ;
+    rdfs:label "Current sender" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#FZ> a owl:NamedIndividual ;
+    rdfs:label "Grouping centre" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GA> a owl:NamedIndividual ;
+    rdfs:label "Road carrier" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GB> a owl:NamedIndividual ;
+    rdfs:label "Chamber of commerce" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GC> a owl:NamedIndividual ;
+    rdfs:label "Goods custodian" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GD> a owl:NamedIndividual ;
+    rdfs:label "Producer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GE> a owl:NamedIndividual ;
+    rdfs:label "Registration tribunal" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GF> a owl:NamedIndividual ;
+    rdfs:label "Slot charter party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GH> a owl:NamedIndividual ;
+    rdfs:label "Applicant for job" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GI> a owl:NamedIndividual ;
+    rdfs:label "Spouse" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GJ> a owl:NamedIndividual ;
+    rdfs:label "Mother" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GK> a owl:NamedIndividual ;
+    rdfs:label "Father" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GL> a owl:NamedIndividual ;
+    rdfs:label "Socially insured person" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GM> a owl:NamedIndividual ;
+    rdfs:label "Inventory controller" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GN> a owl:NamedIndividual ;
+    rdfs:label "Processor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GO> a owl:NamedIndividual ;
+    rdfs:label "Goods owner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GP> a owl:NamedIndividual ;
+    rdfs:label "Packer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GQ> a owl:NamedIndividual ;
+    rdfs:label "Slaughterer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GR> a owl:NamedIndividual ;
+    rdfs:label "Goods releasing party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GS> a owl:NamedIndividual ;
+    rdfs:label "Consignor's representative" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GT> a owl:NamedIndividual ;
+    rdfs:label "Rail carrier" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GU> a owl:NamedIndividual ;
+    rdfs:label "Originator of article number" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GV> a owl:NamedIndividual ;
+    rdfs:label "Procurement responsibility for order" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GW> a owl:NamedIndividual ;
+    rdfs:label "Party fulfilling all operations" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GX> a owl:NamedIndividual ;
+    rdfs:label "Central catalogue party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GY> a owl:NamedIndividual ;
+    rdfs:label "Inventory reporting party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#GZ> a owl:NamedIndividual ;
+    rdfs:label "Substitute supplier" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HA> a owl:NamedIndividual ;
+    rdfs:label "Party which delivers consignments to the terminal" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HB> a owl:NamedIndividual ;
+    rdfs:label "Party which picks up consignments from the terminal" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HC> a owl:NamedIndividual ;
+    rdfs:label "Transit freight forwarder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HD> a owl:NamedIndividual ;
+    rdfs:label "Inspection and acceptance party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HE> a owl:NamedIndividual ;
+    rdfs:label "Transportation office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HF> a owl:NamedIndividual ;
+    rdfs:label "Contract administration office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HG> a owl:NamedIndividual ;
+    rdfs:label "Investigator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HH> a owl:NamedIndividual ;
+    rdfs:label "Audit office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HI> a owl:NamedIndividual ;
+    rdfs:label "Requestor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HJ> a owl:NamedIndividual ;
+    rdfs:label "Foreign disclosure information office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HK> a owl:NamedIndividual ;
+    rdfs:label "Mark-for party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HL> a owl:NamedIndividual ;
+    rdfs:label "Party to receive reports" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HM> a owl:NamedIndividual ;
+    rdfs:label "Alternative manufacturer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HN> a owl:NamedIndividual ;
+    rdfs:label "Service performer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HO> a owl:NamedIndividual ;
+    rdfs:label "Shipper's association" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HP> a owl:NamedIndividual ;
+    rdfs:label "Final message recipient" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HQ> a owl:NamedIndividual ;
+    rdfs:label "Account owner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HR> a owl:NamedIndividual ;
+    rdfs:label "Shipping line service" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HS> a owl:NamedIndividual ;
+    rdfs:label "Creditor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HT> a owl:NamedIndividual ;
+    rdfs:label "Clearing house" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HU> a owl:NamedIndividual ;
+    rdfs:label "Ordering bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HV> a owl:NamedIndividual ;
+    rdfs:label "Receiver of funds" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HW> a owl:NamedIndividual ;
+    rdfs:label "Sender of funds" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HX> a owl:NamedIndividual ;
+    rdfs:label "Debtor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HY> a owl:NamedIndividual ;
+    rdfs:label "Presenting bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#HZ> a owl:NamedIndividual ;
+    rdfs:label "Work team" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#I1> a owl:NamedIndividual ;
+    rdfs:label "Intermediary bank 1" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#I2> a owl:NamedIndividual ;
+    rdfs:label "Intermediary bank 2" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IB> a owl:NamedIndividual ;
+    rdfs:label "Intermediary/broker" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IC> a owl:NamedIndividual ;
+    rdfs:label "Intermediate consignee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#ID> a owl:NamedIndividual ;
+    rdfs:label "Replacing manufacturer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IE> a owl:NamedIndividual ;
+    rdfs:label "Non-resident third party company with whom financial account is held" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IF> a owl:NamedIndividual ;
+    rdfs:label "Non-resident group company with whom financial account is held" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IG> a owl:NamedIndividual ;
+    rdfs:label "Non-resident beneficiary" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IH> a owl:NamedIndividual ;
+    rdfs:label "Resident beneficiary" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#II> a owl:NamedIndividual ;
+    rdfs:label "Invoice issuer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IJ> a owl:NamedIndividual ;
+    rdfs:label "Non-resident instructing party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IL> a owl:NamedIndividual ;
+    rdfs:label "Resident instructing party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IM> a owl:NamedIndividual ;
+    rdfs:label "Importer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IN> a owl:NamedIndividual ;
+    rdfs:label "Insurer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IO> a owl:NamedIndividual ;
+    rdfs:label "Insurance company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IP> a owl:NamedIndividual ;
+    rdfs:label "Insurance claim adjuster" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IQ> a owl:NamedIndividual ;
+    rdfs:label "Domestic financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IR> a owl:NamedIndividual ;
+    rdfs:label "Non-domestic financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IS> a owl:NamedIndividual ;
+    rdfs:label "Party to receive certified inspection report" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IT> a owl:NamedIndividual ;
+    rdfs:label "Installation on site" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IU> a owl:NamedIndividual ;
+    rdfs:label "Non-resident debtor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IV> a owl:NamedIndividual ;
+    rdfs:label "Invoicee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IW> a owl:NamedIndividual ;
+    rdfs:label "Non-resident creditor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IX> a owl:NamedIndividual ;
+    rdfs:label "Supplier work team" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IY> a owl:NamedIndividual ;
+    rdfs:label "Tenant manager" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#IZ> a owl:NamedIndividual ;
+    rdfs:label "Party mandated to liquidate an enterprise" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#JA> a owl:NamedIndividual ;
+    rdfs:label "Certified accountant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#JB> a owl:NamedIndividual ;
+    rdfs:label "Goods collection party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#JC> a owl:NamedIndividual ;
+    rdfs:label "Party at final place of positioning" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#JD> a owl:NamedIndividual ;
+    rdfs:label "Customs office of clearance" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#JE> a owl:NamedIndividual ;
+    rdfs:label "Party from whom customs documents are to be picked up" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#JF> a owl:NamedIndividual ;
+    rdfs:label "Party from whom non-customs documents are to be picked up" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#JG> a owl:NamedIndividual ;
+    rdfs:label "Party to receive customs documents" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#JH> a owl:NamedIndividual ;
+    rdfs:label "Party to receive non-customs documents" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LA> a owl:NamedIndividual ;
+    rdfs:label "Party designated to provide living animal care" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LB> a owl:NamedIndividual ;
+    rdfs:label "Co-producer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LC> a owl:NamedIndividual ;
+    rdfs:label "Party declaring the Value Added Tax (VAT)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LD> a owl:NamedIndividual ;
+    rdfs:label "Party recovering the Value Added Tax (VAT)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LE> a owl:NamedIndividual ;
+    rdfs:label "Person on claim" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LF> a owl:NamedIndividual ;
+    rdfs:label "Buyer's corporate office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LG> a owl:NamedIndividual ;
+    rdfs:label "Supplier's corporate office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LH> a owl:NamedIndividual ;
+    rdfs:label "Liquidator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LI> a owl:NamedIndividual ;
+    rdfs:label "Account coordinator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LJ> a owl:NamedIndividual ;
+    rdfs:label "Inspection leader" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LK> a owl:NamedIndividual ;
+    rdfs:label "Patient" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LL> a owl:NamedIndividual ;
+    rdfs:label "Patient companion" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LM> a owl:NamedIndividual ;
+    rdfs:label "Medical treatment executant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LN> a owl:NamedIndividual ;
+    rdfs:label "Lender" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LO> a owl:NamedIndividual ;
+    rdfs:label "Medical treatment prescriber" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LP> a owl:NamedIndividual ;
+    rdfs:label "Loading party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LQ> a owl:NamedIndividual ;
+    rdfs:label "Debt payment authorisation party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LR> a owl:NamedIndividual ;
+    rdfs:label "Administration centre" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LS> a owl:NamedIndividual ;
+    rdfs:label "Product services and repairs centre" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LT> a owl:NamedIndividual ;
+    rdfs:label "Secretariat" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LU> a owl:NamedIndividual ;
+    rdfs:label "Entry point technical assessment group" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#LV> a owl:NamedIndividual ;
+    rdfs:label "Party assigning a status" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MA> a owl:NamedIndividual ;
+    rdfs:label "Party for whom item is ultimately intended" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MAD> a owl:NamedIndividual ;
+    rdfs:label "Meter administrator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MDR> a owl:NamedIndividual ;
+    rdfs:label "Metered data responsible" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MF> a owl:NamedIndividual ;
+    rdfs:label "Manufacturer of goods" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MG> a owl:NamedIndividual ;
+    rdfs:label "Party designated to execute re-icing" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MI> a owl:NamedIndividual ;
+    rdfs:label "Planning schedule/material release issuer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MOP> a owl:NamedIndividual ;
+    rdfs:label "Market operator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MP> a owl:NamedIndividual ;
+    rdfs:label "Manufacturing unit" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MR> a owl:NamedIndividual ;
+    rdfs:label "Message recipient" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MS> a owl:NamedIndividual ;
+    rdfs:label "Document/message issuer/sender" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#MT> a owl:NamedIndividual ;
+    rdfs:label "Party designated to execute sanitary procedures" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#N2> a owl:NamedIndividual ;
+    rdfs:label "Notify party no. 2" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#NI> a owl:NamedIndividual ;
+    rdfs:label "Notify party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OA> a owl:NamedIndividual ;
+    rdfs:label "Break bulk berth operator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OB> a owl:NamedIndividual ;
+    rdfs:label "Ordered by" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OC> a owl:NamedIndividual ;
+    rdfs:label "Party data responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OD> a owl:NamedIndividual ;
+    rdfs:label "Equipment repair party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OE> a owl:NamedIndividual ;
+    rdfs:label "Owner of property" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OF> a owl:NamedIndividual ;
+    rdfs:label "On behalf of" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OG> a owl:NamedIndividual ;
+    rdfs:label "Owner or lessor's surveyor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OH> a owl:NamedIndividual ;
+    rdfs:label "Lessee's surveyor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OI> a owl:NamedIndividual ;
+    rdfs:label "Outside inspection agency" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OJ> a owl:NamedIndividual ;
+    rdfs:label "Third party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OK> a owl:NamedIndividual ;
+    rdfs:label "Receiver's sub-entity" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OL> a owl:NamedIndividual ;
+    rdfs:label "Case of need party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OM> a owl:NamedIndividual ;
+    rdfs:label "Collecting bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#ON> a owl:NamedIndividual ;
+    rdfs:label "Remitting bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OO> a owl:NamedIndividual ;
+    rdfs:label "Order of the shipper party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OP> a owl:NamedIndividual ;
+    rdfs:label "Operator of property or equipment" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OQ> a owl:NamedIndividual ;
+    rdfs:label "Collection principal" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OR> a owl:NamedIndividual ;
+    rdfs:label "Ordered bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OS> a owl:NamedIndividual ;
+    rdfs:label "Original shipper" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OT> a owl:NamedIndividual ;
+    rdfs:label "Outside test agency" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OU> a owl:NamedIndividual ;
+    rdfs:label "Account owner's servicing bank on the sending side" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OV> a owl:NamedIndividual ;
+    rdfs:label "Transport means owner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OW> a owl:NamedIndividual ;
+    rdfs:label "Account owner's servicing bank on the receiving side" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OX> a owl:NamedIndividual ;
+    rdfs:label "Sender's correspondent bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OY> a owl:NamedIndividual ;
+    rdfs:label "Ordering customer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#OZ> a owl:NamedIndividual ;
+    rdfs:label "Receiver's correspondent bank" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#P1> a owl:NamedIndividual ;
+    rdfs:label "Contact party 1" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#P2> a owl:NamedIndividual ;
+    rdfs:label "Contact party 2" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#P3> a owl:NamedIndividual ;
+    rdfs:label "Contact party 3" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#P4> a owl:NamedIndividual ;
+    rdfs:label "Contact party 4" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PA> a owl:NamedIndividual ;
+    rdfs:label "Party to receive inspection report" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PAD> a owl:NamedIndividual ;
+    rdfs:label "Party Administrator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PB> a owl:NamedIndividual ;
+    rdfs:label "Paying financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PC> a owl:NamedIndividual ;
+    rdfs:label "Actual purchaser's customer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PD> a owl:NamedIndividual ;
+    rdfs:label "Purchaser's department buyer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PE> a owl:NamedIndividual ;
+    rdfs:label "Payee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PF> a owl:NamedIndividual ;
+    rdfs:label "Party to receive freight bill" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PG> a owl:NamedIndividual ;
+    rdfs:label "Prime contractor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PH> a owl:NamedIndividual ;
+    rdfs:label "Payer's financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PI> a owl:NamedIndividual ;
+    rdfs:label "Payee's company name/ID" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PJ> a owl:NamedIndividual ;
+    rdfs:label "Party to receive correspondence" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PK> a owl:NamedIndividual ;
+    rdfs:label "Contact party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PM> a owl:NamedIndividual ;
+    rdfs:label "Party to receive paper memo of invoice" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PN> a owl:NamedIndividual ;
+    rdfs:label "Party to receive shipping notice" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PO> a owl:NamedIndividual ;
+    rdfs:label "Ordering party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#POA> a owl:NamedIndividual ;
+    rdfs:label "Port Authority" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PP> a owl:NamedIndividual ;
+    rdfs:label "Platform provider party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PQ> a owl:NamedIndividual ;
+    rdfs:label "Certifying party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PR> a owl:NamedIndividual ;
+    rdfs:label "Payer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PS> a owl:NamedIndividual ;
+    rdfs:label "Payer's company name/ID (Check, Draft or Wire)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PT> a owl:NamedIndividual ;
+    rdfs:label "Party to receive test report" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PW> a owl:NamedIndividual ;
+    rdfs:label "Despatch party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PX> a owl:NamedIndividual ;
+    rdfs:label "Party to receive all documents" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PY> a owl:NamedIndividual ;
+    rdfs:label "Checking party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#PZ> a owl:NamedIndividual ;
+    rdfs:label "Party to print some document" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RA> a owl:NamedIndividual ;
+    rdfs:label "Central bank or regulatory authority" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RB> a owl:NamedIndividual ;
+    rdfs:label "Receiving financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RCA> a owl:NamedIndividual ;
+    rdfs:label "Reconciliation accountable" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RCR> a owl:NamedIndividual ;
+    rdfs:label "Reconciliation responsible" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RE> a owl:NamedIndividual ;
+    rdfs:label "Party to receive commercial invoice remittance" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RF> a owl:NamedIndividual ;
+    rdfs:label "Received from" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RH> a owl:NamedIndividual ;
+    rdfs:label "Seller's financial institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RI> a owl:NamedIndividual ;
+    rdfs:label "Reinsurance intermediary/broker" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RL> a owl:NamedIndividual ;
+    rdfs:label "Reporting carrier (Customs)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RM> a owl:NamedIndividual ;
+    rdfs:label "Reporting carrier's nominated agent/representative (Customs)" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RP> a owl:NamedIndividual ;
+    rdfs:label "Routing party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RS> a owl:NamedIndividual ;
+    rdfs:label "Party to receive statement of account" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RV> a owl:NamedIndividual ;
+    rdfs:label "Receiver of cheque" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#RW> a owl:NamedIndividual ;
+    rdfs:label "Issuer of waybill" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SB> a owl:NamedIndividual ;
+    rdfs:label "Sales responsibility" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SE> a owl:NamedIndividual ;
+    rdfs:label "Seller" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SF> a owl:NamedIndividual ;
+    rdfs:label "Ship from" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SG> a owl:NamedIndividual ;
+    rdfs:label "Store group" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SI> a owl:NamedIndividual ;
+    rdfs:label "Shipping schedule issuer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SN> a owl:NamedIndividual ;
+    rdfs:label "Store keeper" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SO> a owl:NamedIndividual ;
+    rdfs:label "Sold to if different than bill to" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SPC> a owl:NamedIndividual ;
+    rdfs:label "SOLAS verified gross mass responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SR> a owl:NamedIndividual ;
+    rdfs:label "Seller agent" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SS> a owl:NamedIndividual ;
+    rdfs:label "Social securities collector's office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#ST> a owl:NamedIndividual ;
+    rdfs:label "Ship to" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SU> a owl:NamedIndividual ;
+    rdfs:label "Supplier" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SX> a owl:NamedIndividual ;
+    rdfs:label "Surety for additions" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SY> a owl:NamedIndividual ;
+    rdfs:label "Surety" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#SZ> a owl:NamedIndividual ;
+    rdfs:label "Surety for antidumping/countervailing duty" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TA> a owl:NamedIndividual ;
+    rdfs:label "Legal receiver" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TB> a owl:NamedIndividual ;
+    rdfs:label "Submitter" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TC> a owl:NamedIndividual ;
+    rdfs:label "Tax collector's office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TCP> a owl:NamedIndividual ;
+    rdfs:label "Transit charge payer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TCR> a owl:NamedIndividual ;
+    rdfs:label "Transport capacity responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TD> a owl:NamedIndividual ;
+    rdfs:label "Party to receive technical documentation" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TE> a owl:NamedIndividual ;
+    rdfs:label "Bankruptcy referee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TF> a owl:NamedIndividual ;
+    rdfs:label "Source of information" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TG> a owl:NamedIndividual ;
+    rdfs:label "Judge" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TH> a owl:NamedIndividual ;
+    rdfs:label "Attorney" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TI> a owl:NamedIndividual ;
+    rdfs:label "Law firm" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TJ> a owl:NamedIndividual ;
+    rdfs:label "Trustee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TK> a owl:NamedIndividual ;
+    rdfs:label "Signatory" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TL> a owl:NamedIndividual ;
+    rdfs:label "Occupant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TM> a owl:NamedIndividual ;
+    rdfs:label "Co-occupant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TN> a owl:NamedIndividual ;
+    rdfs:label "Subject of inquiry" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TO> a owl:NamedIndividual ;
+    rdfs:label "Lessor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TP> a owl:NamedIndividual ;
+    rdfs:label "Owner of residence" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TQ> a owl:NamedIndividual ;
+    rdfs:label "Founder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TR> a owl:NamedIndividual ;
+    rdfs:label "Terminal operator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TS> a owl:NamedIndividual ;
+    rdfs:label "Party to receive certified test results" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TT> a owl:NamedIndividual ;
+    rdfs:label "Transfer to" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TU> a owl:NamedIndividual ;
+    rdfs:label "President" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TV> a owl:NamedIndividual ;
+    rdfs:label "Chairperson" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TW> a owl:NamedIndividual ;
+    rdfs:label "Legal title holder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TX> a owl:NamedIndividual ;
+    rdfs:label "Shareholder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TY> a owl:NamedIndividual ;
+    rdfs:label "Provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#TZ> a owl:NamedIndividual ;
+    rdfs:label "Military branch" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UA> a owl:NamedIndividual ;
+    rdfs:label "Educational institution" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UB> a owl:NamedIndividual ;
+    rdfs:label "Assignor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UC> a owl:NamedIndividual ;
+    rdfs:label "Ultimate consignee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UD> a owl:NamedIndividual ;
+    rdfs:label "Ultimate customer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UE> a owl:NamedIndividual ;
+    rdfs:label "Advisor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UF> a owl:NamedIndividual ;
+    rdfs:label "Co-defendant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UG> a owl:NamedIndividual ;
+    rdfs:label "Merged company with retained identity" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UH> a owl:NamedIndividual ;
+    rdfs:label "Party represented" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UHP> a owl:NamedIndividual ;
+    rdfs:label "Unexpected handling party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UI> a owl:NamedIndividual ;
+    rdfs:label "Assignee" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UJ> a owl:NamedIndividual ;
+    rdfs:label "Key person" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UK> a owl:NamedIndividual ;
+    rdfs:label "Author" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UL> a owl:NamedIndividual ;
+    rdfs:label "Ultimate parent company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UM> a owl:NamedIndividual ;
+    rdfs:label "Party not to be confused with" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UN> a owl:NamedIndividual ;
+    rdfs:label "Accountant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UO> a owl:NamedIndividual ;
+    rdfs:label "Plaintiff" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UP> a owl:NamedIndividual ;
+    rdfs:label "Unloading party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UQ> a owl:NamedIndividual ;
+    rdfs:label "Parent company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UR> a owl:NamedIndividual ;
+    rdfs:label "Affiliated company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#US> a owl:NamedIndividual ;
+    rdfs:label "Bailiff" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UT> a owl:NamedIndividual ;
+    rdfs:label "Merged company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UU> a owl:NamedIndividual ;
+    rdfs:label "Defendant" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UV> a owl:NamedIndividual ;
+    rdfs:label "Petitioning creditor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UW> a owl:NamedIndividual ;
+    rdfs:label "Guarantee agency" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UX> a owl:NamedIndividual ;
+    rdfs:label "Organization group" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UY> a owl:NamedIndividual ;
+    rdfs:label "Subsidiary" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#UZ> a owl:NamedIndividual ;
+    rdfs:label "Industry association" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VA> a owl:NamedIndividual ;
+    rdfs:label "Joint owner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VB> a owl:NamedIndividual ;
+    rdfs:label "Joint venture" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VC> a owl:NamedIndividual ;
+    rdfs:label "Filing office" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VE> a owl:NamedIndividual ;
+    rdfs:label "Court" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VF> a owl:NamedIndividual ;
+    rdfs:label "Liability holder" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VG> a owl:NamedIndividual ;
+    rdfs:label "Local government sponsor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VH> a owl:NamedIndividual ;
+    rdfs:label "Mortgage company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VI> a owl:NamedIndividual ;
+    rdfs:label "Notary public" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VJ> a owl:NamedIndividual ;
+    rdfs:label "Officer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VK> a owl:NamedIndividual ;
+    rdfs:label "Publisher" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VL> a owl:NamedIndividual ;
+    rdfs:label "Party manufactured for" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VM> a owl:NamedIndividual ;
+    rdfs:label "Previous owner" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VN> a owl:NamedIndividual ;
+    rdfs:label "Vendor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VO> a owl:NamedIndividual ;
+    rdfs:label "Purchased company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VP> a owl:NamedIndividual ;
+    rdfs:label "Receiver manager" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VQ> a owl:NamedIndividual ;
+    rdfs:label "Responsible government agency" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VR> a owl:NamedIndividual ;
+    rdfs:label "Sole proprietor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VS> a owl:NamedIndividual ;
+    rdfs:label "Auctioneer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VT> a owl:NamedIndividual ;
+    rdfs:label "Branch" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VU> a owl:NamedIndividual ;
+    rdfs:label "Business" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VV> a owl:NamedIndividual ;
+    rdfs:label "Ultimate same country parent company" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VW> a owl:NamedIndividual ;
+    rdfs:label "Responsible party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VX> a owl:NamedIndividual ;
+    rdfs:label "Secured party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VY> a owl:NamedIndividual ;
+    rdfs:label "Other related party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#VZ> a owl:NamedIndividual ;
+    rdfs:label "Co-debtor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WA> a owl:NamedIndividual ;
+    rdfs:label "Company which holds financial interest" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WB> a owl:NamedIndividual ;
+    rdfs:label "Rating organization" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WC> a owl:NamedIndividual ;
+    rdfs:label "Information reference agency" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WD> a owl:NamedIndividual ;
+    rdfs:label "Warehouse depositor" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WE> a owl:NamedIndividual ;
+    rdfs:label "Compilation agency" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WF> a owl:NamedIndividual ;
+    rdfs:label "Information maintenance agency" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WG> a owl:NamedIndividual ;
+    rdfs:label "Information dissemination agency" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WH> a owl:NamedIndividual ;
+    rdfs:label "Warehouse keeper" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WI> a owl:NamedIndividual ;
+    rdfs:label "Inspection address" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WJ> a owl:NamedIndividual ;
+    rdfs:label "Refusal party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WK> a owl:NamedIndividual ;
+    rdfs:label "Value added network provider" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WL> a owl:NamedIndividual ;
+    rdfs:label "Agency" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WM> a owl:NamedIndividual ;
+    rdfs:label "Works manager" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WN> a owl:NamedIndividual ;
+    rdfs:label "Party to receive order to supply" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WO> a owl:NamedIndividual ;
+    rdfs:label "Party to receive invitation to offer" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WP> a owl:NamedIndividual ;
+    rdfs:label "Sub-entity" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WPA> a owl:NamedIndividual ;
+    rdfs:label "Weighting party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WQ> a owl:NamedIndividual ;
+    rdfs:label "Doing business as" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WR> a owl:NamedIndividual ;
+    rdfs:label "Party submitting quote" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WS> a owl:NamedIndividual ;
+    rdfs:label "Wholesaler" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WT> a owl:NamedIndividual ;
+    rdfs:label "Affiliated party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WU> a owl:NamedIndividual ;
+    rdfs:label "Previous name" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WV> a owl:NamedIndividual ;
+    rdfs:label "Party performing task" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WW> a owl:NamedIndividual ;
+    rdfs:label "Registering party" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WX> a owl:NamedIndividual ;
+    rdfs:label "Inland clearance depot operator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WY> a owl:NamedIndividual ;
+    rdfs:label "Destination terminal operator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#WZ> a owl:NamedIndividual ;
+    rdfs:label "Departure terminal operator" .
+
+<https://vocabulary.uncefact.org/PartyRoleCodeList#ZZZ> a owl:NamedIndividual ;
+    rdfs:label "Mutually defined" .
+
 unece:TransportModeCodeList a owl:Class ;
     dcterms:description "UNECE Recommendation No. 19 (Codes for Modes of Transport)" ;
     dcterms:source unece: ;
