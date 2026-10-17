@@ -6610,7 +6610,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/reference-data#streetAddress
 - comments:
-  - UN/LOCODE (5 characters).
+  - UN/LOCODE (5 characters). The value is the 5-character UN/LOCODE (ISO 3166-1 country + 3-character
+    location), the rdf:value of a unlcdv:UNLOCODE location; the locations are loaded in the hub as a reference
+    table (authoritative-ontologies/UNCEFACT, README 'UN/LOCODE locations').
   domains:
   - https://www.kairosflow.ai/ont/bsp/reference-data#Location
   kind: datatype_property
@@ -10741,7 +10743,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/dcsa/locations#shipmentLocationTypeCode
 - comments:
-  - UN/LOCODE for location identification.
+  - UN/LOCODE for location identification. The value is the 5-character UN/LOCODE (ISO 3166-1 country
+    + 3-character location), the rdf:value of a unlcdv:UNLOCODE location; the locations are loaded in
+    the hub as a reference table (authoritative-ontologies/UNCEFACT, README 'UN/LOCODE locations').
   domains:
   - https://www.kairosflow.ai/ont/dcsa/locations#Location
   kind: datatype_property
@@ -14701,6 +14705,9 @@ records:
   uri: https://www.kairosflow.ai/ont/imo/locations#tssTrafficLaneDirection
 - comments:
   - The UN/LOCODE (five-character code) identifying a port or location (e.g., 'NLRTM' for Rotterdam).
+    The value is the 5-character UN/LOCODE (ISO 3166-1 country + 3-character location), the rdf:value
+    of a unlcdv:UNLOCODE location; the locations are loaded in the hub as a reference table (authoritative-ontologies/UNCEFACT,
+    README 'UN/LOCODE locations').
   domains:
   - https://www.kairosflow.ai/ont/imo/locations#Port
   kind: datatype_property
@@ -23851,7 +23858,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/locations#terminalType
 - comments:
-  - UN/LOCODE for location (5 characters).
+  - UN/LOCODE for location (5 characters). The value is the 5-character UN/LOCODE (ISO 3166-1 country
+    + 3-character location), the rdf:value of a unlcdv:UNLOCODE location; the locations are loaded in
+    the hub as a reference table (authoritative-ontologies/UNCEFACT, README 'UN/LOCODE locations').
   domains:
   - https://www.kairosflow.ai/ont/mmt/locations#Location
   kind: datatype_property
@@ -31460,7 +31469,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/tic/locations#trackNumber
 - comments:
-  - UN/LOCODE of the port where the terminal is located.
+  - UN/LOCODE of the port where the terminal is located. The value is the 5-character UN/LOCODE (ISO 3166-1
+    country + 3-character location), the rdf:value of a unlcdv:UNLOCODE location; the locations are loaded
+    in the hub as a reference table (authoritative-ontologies/UNCEFACT, README 'UN/LOCODE locations').
   domains:
   - https://www.kairosflow.ai/ont/tic/locations#Terminal
   kind: datatype_property

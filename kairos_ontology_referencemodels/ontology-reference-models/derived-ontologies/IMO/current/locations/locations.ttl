@@ -15,8 +15,8 @@
     system and IMO requirements for vessel traffic management and port operations.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "1.4.0" ;
+    dcterms:modified "2026-10-17"^^xsd:date ;
+    owl:versionInfo "1.4.1" ;
     dcterms:source "IMO Compendium data set, FAL Convention, COLREG Rule 10, Resolution A.857(20)" ;
     rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
 
@@ -177,7 +177,8 @@
 
 :unlocode a owl:DatatypeProperty ;
     rdfs:label "UN/LOCODE" ;
-    rdfs:comment "The UN/LOCODE (five-character code) identifying a port or location (e.g., 'NLRTM' for Rotterdam)." ;
+    rdfs:comment "The UN/LOCODE (five-character code) identifying a port or location (e.g., 'NLRTM' for Rotterdam). The value is the 5-character UN/LOCODE (ISO 3166-1 country + 3-character location), the rdf:value of a unlcdv:UNLOCODE location; the locations are loaded in the hub as a reference table (authoritative-ontologies/UNCEFACT, README 'UN/LOCODE locations')." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/UNLOCODE> ;
     rdfs:domain :Port ;
     rdfs:range xsd:string .
 
