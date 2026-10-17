@@ -10,11 +10,11 @@ pack ships is listed; a module with no sheet yet is shown as such rather than om
 <!-- BEGIN GENERATED: sheets -->
 | Model | Sheet | Version |
 |---|---|---|
-| DCSA | [dcsa.md](dcsa.md) | 1.6.1 |
-| MMT | [mmt-un-cefact.md](mmt-un-cefact.md) | 2.5.1 |
-| BSP | [bsp-iso-20197.md](bsp-iso-20197.md) | 2.5.1 |
-| TIC | [tic-4-0.md](tic-4-0.md) | 1.6.1 |
-| IMO | [imo.md](imo.md) | 1.4.0 |
+| DCSA | [dcsa.md](dcsa.md) | 1.6.2 |
+| MMT | [mmt-un-cefact.md](mmt-un-cefact.md) | 2.5.2 |
+| BSP | [bsp-iso-20197.md](bsp-iso-20197.md) | 2.5.2 |
+| TIC | [tic-4-0.md](tic-4-0.md) | 1.6.2 |
+| IMO | [imo.md](imo.md) | 1.4.1 |
 | WCO | [wco.md](wco.md) | 1.4.1 |
 | Sustainability | [sustainability.md](sustainability.md) | 1.2.0 |
 | supply-chain | [supply-chain-integration.md](supply-chain-integration.md) | 1.5.0 |
@@ -29,11 +29,11 @@ pack ships is listed; a module with no sheet yet is shown as such rather than om
 | Component | Version |
 |---|---|
 | Kairos Logistics Accelerator Pack | 1.10.1 |
-| DCSA | 1.6.1 |
-| MMT | 2.5.1 |
-| BSP | 2.5.1 |
-| TIC | 1.6.1 |
-| IMO | 1.4.0 |
+| DCSA | 1.6.2 |
+| MMT | 2.5.2 |
+| BSP | 2.5.2 |
+| TIC | 1.6.2 |
+| IMO | 1.4.1 |
 | WCO | 1.4.1 |
 | Sustainability | 1.2.0 |
 | supply-chain | 1.5.0 |

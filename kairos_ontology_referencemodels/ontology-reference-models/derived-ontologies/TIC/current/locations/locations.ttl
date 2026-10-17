@@ -15,8 +15,8 @@
     positions, gate lanes, quay side areas, reefer plugs, rail sidings, and barge quays.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-05-21"^^xsd:date ;
-    owl:versionInfo "1.6.1" ;
+    dcterms:modified "2026-10-17"^^xsd:date ;
+    owl:versionInfo "1.6.2" ;
     dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
     rdfs:seeAlso <https://tic40.org/standards/> .
 
@@ -194,7 +194,8 @@
 
 :unlocode a owl:DatatypeProperty ;
     rdfs:label "UN/LOCODE" ;
-    rdfs:comment "UN/LOCODE of the port where the terminal is located." ;
+    rdfs:comment "UN/LOCODE of the port where the terminal is located. The value is the 5-character UN/LOCODE (ISO 3166-1 country + 3-character location), the rdf:value of a unlcdv:UNLOCODE location; the locations are loaded in the hub as a reference table (authoritative-ontologies/UNCEFACT, README 'UN/LOCODE locations')." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/UNLOCODE> ;
     rdfs:domain :Terminal ;
     rdfs:range xsd:string .
 

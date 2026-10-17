@@ -5,6 +5,19 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.39.1] - 2026-10-17
+
+### Changed
+
+- **The derived UN/LOCODE fields point at the shipped location shape.** Five text fields
+  hold a UN/LOCODE: BSP `reference-data:unLocationCode`, DCSA `locations:unLocationCode`,
+  IMO `locations:unlocode`, MMT `locations:unLocationCode` and TIC `locations:unlocode`.
+  Each gains `rdfs:seeAlso unlcdv:UNLOCODE`, and its comment says the value is the
+  5-character code, matching a location's `rdf:value`, and that the locations are loaded
+  into the hub as a reference table (1.39.0). The ranges stay `xsd:string`, so the change
+  is non-breaking. Module versions: BSP 2.5.2, DCSA 1.6.2, IMO 1.4.1, MMT 2.5.2,
+  TIC 1.6.2; previous versions are archived.
+
 ## [1.39.0] - 2026-10-17
 
 ### Added

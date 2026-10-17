@@ -18,8 +18,8 @@
     - Code lists: UN/LOCODE, IATA codes, country codes""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-09-17"^^xsd:date ;
-    owl:versionInfo "2.5.1" ;
+    dcterms:modified "2026-10-17"^^xsd:date ;
+    owl:versionInfo "2.5.2" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     owl:imports <https://www.kairosflow.ai/ont/bsp/commercial> ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
@@ -214,7 +214,8 @@
 
 :unLocationCode a owl:DatatypeProperty ;
     rdfs:label "UN location code" ;
-    rdfs:comment "UN/LOCODE (5 characters)." ;
+    rdfs:comment "UN/LOCODE (5 characters). The value is the 5-character UN/LOCODE (ISO 3166-1 country + 3-character location), the rdf:value of a unlcdv:UNLOCODE location; the locations are loaded in the hub as a reference table (authoritative-ontologies/UNCEFACT, README 'UN/LOCODE locations')." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/UNLOCODE> ;
     rdfs:domain :Location ;
     rdfs:range xsd:string .
 
