@@ -15,8 +15,8 @@
     and dangerous goods declarations. Based on UN/CEFACT MMT Reference Data Model.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "2.5.0" ;
+    dcterms:modified "2026-10-17"^^xsd:date ;
+    owl:versionInfo "2.5.1" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
 
@@ -334,7 +334,8 @@
 
 :dgTransportMode a owl:DatatypeProperty ;
     rdfs:label "DG transport mode" ;
-    rdfs:comment "Transport mode for the dangerous goods. UN/CEFACT MMT-RDM: DangerousGoodsDeclarationType transport mode." ;
+    rdfs:comment "Transport mode for the dangerous goods. UN/CEFACT MMT-RDM: DangerousGoodsDeclarationType transport mode. The UN/CEFACT code list for transport mode is UNECE Rec 19 (unece:TransportModeCodeList, authoritative-ontologies/UNCEFACT); where the source carries a code, map it there." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportModeCodeList> ;
     rdfs:domain :DangerousGoodsDeclaration ;
     rdfs:range xsd:string .
 

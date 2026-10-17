@@ -16,8 +16,8 @@
     job instructions, and move types (load, discharge, lift, horizontal).""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "1.6.0" ;
+    dcterms:modified "2026-10-17"^^xsd:date ;
+    owl:versionInfo "1.6.1" ;
     dcterms:source "TIC4.0 Release 2025.017 / BSI PAS 4000:2026" ;
     rdfs:seeAlso <https://tic40.org/standards/> .
 
@@ -472,7 +472,8 @@
 
 :transportMode a owl:DatatypeProperty ;
     rdfs:label "transport mode" ;
-    rdfs:comment "Mode of transport for the carrier trip (VESSEL, TRUCK, TRAIN, BARGE). TIC 4.0: transport mode classification for carrier trip planning." ;
+    rdfs:comment "Mode of transport for the carrier trip (VESSEL, TRUCK, TRAIN, BARGE). TIC 4.0: transport mode classification for carrier trip planning. Maps to UNECE Rec 19 (unece:TransportModeCodeList, authoritative-ontologies/UNCEFACT): VESSEL=1, TRAIN=2, TRUCK=3, BARGE=8." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportModeCodeList> ;
     rdfs:domain :CarrierTrip ;
     rdfs:range xsd:string .
 

@@ -12,8 +12,8 @@
     dcterms:description "Customs and trade documents including declarations, permits, transit documents, and international trade carnets based on the WCO Data Model 3.10.0." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "1.4.0" ;
+    dcterms:modified "2026-10-17"^^xsd:date ;
+    owl:versionInfo "1.4.1" ;
     dcterms:source "WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056" ;
     owl:imports <https://www.kairosflow.ai/ont/wco/customs> ;
     rdfs:seeAlso <https://www.wcoomd.org/datamodel> .
@@ -312,7 +312,8 @@
 
 :transitTransportMode a owl:DatatypeProperty ;
     rdfs:label "transit transport mode" ;
-    rdfs:comment "Mode of transport used for the transit movement (WCO T020: 1=sea, 2=rail, 3=road, 4=air, 7=pipeline, 8=inland waterway)." ;
+    rdfs:comment "Mode of transport used for the transit movement (WCO T020: 1=sea, 2=rail, 3=road, 4=air, 7=pipeline, 8=inland waterway). WCO T020 is UNECE Rec 19 (7 is 'fixed transport installations', which covers pipelines). Values are UNECE Rec 19 codes: each matches the rdf:value of a unece:TransportModeCodeList member (authoritative-ontologies/UNCEFACT)." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportModeCodeList> ;
     rdfs:domain :TransitDocument ;
     rdfs:range xsd:string .
 
