@@ -32,6 +32,7 @@ Usage:
 import argparse
 import hashlib
 import json
+import re
 import subprocess
 import sys
 import urllib.request
@@ -97,6 +98,24 @@ def fetch_dump() -> bytes:
     request = urllib.request.Request(SOURCE_URL, headers={"Accept": "application/ld+json"})
     with urllib.request.urlopen(request, timeout=300) as response:
         return response.read()
+
+
+def fetch_upstream_release() -> str:
+    """The BSP release the endpoint's landing page names (e.g. "D23B"), or "unknown".
+
+    The JSON-LD dump carries no version, but the HTML landing page labels the BSP
+    vocabulary with its UN/CEFACT directory release. Best effort: page layout is not a
+    contract, so a miss is recorded as "unknown" rather than failing the refresh.
+    """
+    try:
+        request = urllib.request.Request(SOURCE_URL, headers={"Accept": "text/html"})
+        with urllib.request.urlopen(request, timeout=60) as response:
+            html = response.read().decode("utf-8", errors="replace")
+    except OSError:
+        return "unknown"
+    text = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", html))
+    match = re.search(r"Buy-Ship-Pay.{0,120}?Browse (D\d{2}[A-Z])\b", text)
+    return match.group(1) if match else "unknown"
 
 
 def as_list(value):
@@ -206,7 +225,7 @@ def write_patch(extract_graph: Graph, snapshot: str, digest: str) -> None:
     patch.serialize(PATCH_TTL, format="turtle", encoding="utf-8")
 
 
-def write_metadata(snapshot: str, digest: str, size: int, counts: dict[str, int]) -> None:
+def write_metadata(snapshot: str, digest: str, size: int, counts: dict[str, int], release: str) -> None:
     lists = "\n".join(
         f"  - unece:{name} ({counts[name]} codes) -- {rec}" for name, rec in CODE_LISTS.items()
     )
@@ -220,6 +239,7 @@ source_url: {SOURCE_URL} (Accept: application/ld+json)
 source_repository: https://github.com/uncefact/spec-JSONLD
 download_date: {snapshot}
 version: {snapshot} (snapshot date; upstream publishes no version)
+upstream_release: {release} (BSP release named on the endpoint's landing page at download time)
 dump_sha256: {digest}
 dump_bytes: {size}
 code_lists:
@@ -229,7 +249,10 @@ ontology_files:
   - UNCEFACT-CodeLists.owl-patch.ttl  (generated OWL typing; ontology IRI {PUBLIC_ONTOLOGY_IRI})
   - UNCEFACT-IATA-alignment.ttl       (generated IATA -> UNECE skos:exactMatch; see
                                        scripts/generate_uncefact_iata_alignment.py)
-license: see README.md, section License
+license: CC BY 4.0 per UN/CEFACT ("All UN/CEFACT standards are free to use under CC By
+  4.0 license"), attribution to UNECE; confirmation that it covers this endpoint is
+  pending -- the endpoint's own site terms are the generic UN website terms. See
+  README.md, section License.
 generator: scripts/download_uncefact_codelists.py -- regenerates all three files; do not hand-edit.
 deviations:
   - Extract, not mirror. Only the code-list classes above and the nodes typed by them
@@ -285,6 +308,7 @@ def main() -> int:
         action="store_true",
         help="regenerate even when upstream is unchanged (after changing this script)",
     )
+    parser.add_argument("--upstream-release", help="UN/CEFACT release to record (default: read from the landing page)")
     args = parser.parse_args()
 
     if args.from_file:
@@ -318,7 +342,8 @@ def main() -> int:
     TARGET_DIR.mkdir(parents=True, exist_ok=True)
     write_extract(graph, snapshot, digest)
     write_patch(graph, snapshot, digest)
-    write_metadata(snapshot, digest, len(raw), counts)
+    release = args.upstream_release or fetch_upstream_release()
+    write_metadata(snapshot, digest, len(raw), counts, release)
     for name, count in counts.items():
         print(f"  unece:{name}: {count} codes")
     print(f"Wrote {EXTRACT_TTL.name}, {PATCH_TTL.name}, {METADATA_TXT.name} (snapshot {snapshot}, sha256 {digest[:12]}...)")

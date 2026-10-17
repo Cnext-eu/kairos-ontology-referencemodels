@@ -54,7 +54,11 @@ OMG LCC (Languages, Countries and Codes)
 UN/CEFACT code lists (UNECE Recommendations 19, 20 and 21)
   - Path: ontology-reference-models/authoritative-ontologies/UNCEFACT/
   - Publisher: UN/CEFACT, United Nations Economic Commission for Europe
-  - License: no explicit licence published; see the module README
+  - License: CC BY 4.0 per UN/CEFACT ("All UN/CEFACT standards are free to use
+    under CC By 4.0 license"); written confirmation for the vocabulary.uncefact.org
+    endpoint pending -- see the module README
+  - Attribution: UNECE Recommendations 19, 20 and 21, (c) United Nations Economic
+    Commission for Europe
   - Homepage: https://vocabulary.uncefact.org/
 
 W3C SKOS (Simple Knowledge Organization System) core vocabulary
@@ -70,6 +74,15 @@ condition that the notice is retained. Both licenses are compatible with the
 Apache License, Version 2.0, under which this product is released; the upstream
 terms continue to apply to the vendored files themselves and are reproduced
 verbatim in the LICENSE file alongside each ontology.
+
+The UN/CEFACT code lists are data, not software. UN/CEFACT states its standards
+are free to use under CC BY 4.0, which permits redistribution and adaptation,
+including commercially, with attribution; they are redistributed here as an
+unmodified extract with that attribution. The UN website terms on the download
+endpoint itself are more restrictive and generic; confirmation that CC BY 4.0
+covers the endpoint's content is pending (see the module README). The extract
+is accompanied by generated Kairos files (an OWL typing patch and an IATA
+alignment) that add triples about the vendored terms without editing them.
 
 The vendored files are not modified — alignment to them is expressed from Kairos
 ontologies by reference (e.g. rdfs:subClassOf), never by editing upstream

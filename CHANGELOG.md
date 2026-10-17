@@ -32,8 +32,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   edited. Registered in the catalog, in the logistics manifest `references`, and in
   the `reference-data` domain as `import_policy: reference-only`.
 
-  The redistribution licence is unconfirmed: UN/CEFACT publishes none with the
-  vocabulary. See the module README.
+  Licence: CC BY 4.0 with attribution to UNECE, as UN/CEFACT states for its standards
+  ("All UN/CEFACT standards are free to use under CC By 4.0 license"). The download
+  endpoint itself still shows only the generic UN website terms, so written
+  confirmation from UNECE is pending; the module README records the evidence. The
+  snapshot is UN/CEFACT release D23B, recorded as `upstream_release` in `METADATA.txt`.
+  UN/CEFACT is rebuilding the vocabulary as SKOS with path IRIs; the README explains
+  what that means for future refreshes.
 
 - **Reference-data provenance in the graph.** Each UN/CEFACT code-list class carries:
   - `kairos-ext:isReferenceData true`, the toolkit's existing code-list marker;

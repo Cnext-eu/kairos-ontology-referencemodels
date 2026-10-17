@@ -97,8 +97,34 @@ instead of re-ingesting the list from the UNECE PDFs.
 
 ## License
 
-UN/CEFACT publishes no licence file with the vocabulary (the
-[source repository](https://github.com/uncefact/spec-JSONLD) has none). UNECE makes its
-trade facilitation recommendations and their code lists available free of charge. The
-exact redistribution terms are **unconfirmed** — see gh#120 before a release ships this
-module.
+**Intended licence: CC BY 4.0, attribution to UNECE / UN/CEFACT. Written confirmation from
+UNECE is still outstanding.** Checked 2026-10-17:
+
+| Source | What it says |
+|---|---|
+| UN/CEFACT's successor vocabulary site, hosted by the UN (`opensource.unicc.org/un/unece/uncefact/vocab-bsp`, "© 2026 United Nations Economic Commission for Europe") | "All UN/CEFACT standards are free to use under CC By 4.0 license." |
+| UN/CEFACT licence on its published standards (ScanCode `LicenseRef-scancode-un-cefact-2016`) | Copying and distribution permitted, including supporting derivative works, provided the copyright notice is retained; permissions perpetual. |
+| `vocabulary.uncefact.org/home/terms` (the endpoint this module downloads from) | Only the generic UN website terms: personal, non-commercial use, "without any right to resell or redistribute", "subject to … more specific restrictions that may apply to specific Material". |
+| `github.com/uncefact/spec-JSONLD` (the endpoint's source repository) | No licence file. |
+
+The two UN/CEFACT-specific statements both permit redistribution, and CC BY 4.0 is the
+current one. The generic website terms predate it and are not specific to the standards.
+Until UNECE confirms that CC BY 4.0 covers the code lists served at
+`vocabulary.uncefact.org`, treat this module as **CC BY 4.0 with attribution, pending
+confirmation**. Attribution: *UNECE Recommendations 19, 20 and 21, © United Nations
+Economic Commission for Europe, from the UN/CEFACT Web Vocabulary
+(https://vocabulary.uncefact.org/), extract of the snapshot recorded in METADATA.txt.*
+
+To close this, ask UNECE in the vocab-bsp repository, which invites issues:
+https://opensource.unicc.org/un/unece/uncefact/vocab-bsp/-/issues.
+
+## Upstream is changing shape
+
+UN/CEFACT is rebuilding the vocabulary in `vocab-bsp`: code lists become SKOS concept
+schemes with path IRIs (`…/party-role/consignee`), Rec 20's facet lists fold into one
+master list, and `skos:notation` carries the code. Its code-list strategy commits to
+keeping today's fragment IRIs (`…/TransportModeCodeList#4`) resolvable as `owl:sameAs`
+aliases, so IRIs a hub stores stay valid. But once the live endpoint switches over, the
+extractor's selection by `@type unece:<List>` will find nothing. The script then stops
+with "a code list came back empty" instead of writing an empty snapshot. Adapting the
+extractor is a deliberate change at that point, not a routine refresh.

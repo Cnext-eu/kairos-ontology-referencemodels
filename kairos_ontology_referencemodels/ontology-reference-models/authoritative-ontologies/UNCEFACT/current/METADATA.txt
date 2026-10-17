@@ -7,6 +7,7 @@ source_url: https://vocabulary.uncefact.org/ (Accept: application/ld+json)
 source_repository: https://github.com/uncefact/spec-JSONLD
 download_date: 2026-10-17
 version: 2026-10-17 (snapshot date; upstream publishes no version)
+upstream_release: D23B (BSP release named on the endpoint's landing page at download time)
 dump_sha256: d8d194408fc2adb774c3e783ef362c19140bae75418f4b82419d1ddc203ad7aa
 dump_bytes: 8764615
 code_lists:
@@ -18,7 +19,10 @@ ontology_files:
   - UNCEFACT-CodeLists.owl-patch.ttl  (generated OWL typing; ontology IRI https://www.kairosflow.ai/ont/uncefact/code-lists)
   - UNCEFACT-IATA-alignment.ttl       (generated IATA -> UNECE skos:exactMatch; see
                                        scripts/generate_uncefact_iata_alignment.py)
-license: see README.md, section License
+license: CC BY 4.0 per UN/CEFACT ("All UN/CEFACT standards are free to use under CC By
+  4.0 license"), attribution to UNECE; confirmation that it covers this endpoint is
+  pending -- the endpoint's own site terms are the generic UN website terms. See
+  README.md, section License.
 generator: scripts/download_uncefact_codelists.py -- regenerates all three files; do not hand-edit.
 deviations:
   - Extract, not mirror. Only the code-list classes above and the nodes typed by them
