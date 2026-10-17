@@ -47,12 +47,47 @@ ship this composition (`bsp/party#hasRole` → `PartyRoleCode`, `mmt/party#hasRo
 
 ## Where the values live
 
-The **slot** is the standard's; the **members** are the client's. Reference modules ship
-governed code-list classes as empty shells (`bsp/party#PartyRoleCode`,
-`mmt/party#TransportPartyRoleCode`): the value set is client master data and belongs to the
-blueprint's `reference-data` domain, whose contract owns code lists and status codes. The
-enumeration constraint itself belongs in SHACL, not OWL — `kairos-ontology suggest-shapes`
-(DD-076) derives `sh:in` enums from bronze distinct-value evidence.
+Who maintains the list decides where its members live. There are two cases.
+
+**Standards-body lists — the reference models ship the members.** When a standards body
+publishes and maintains the list (UNECE Rec 19 transport modes, Rec 20 units of measure,
+Rec 21 package types), its members are vendored as reference data under
+`authoritative-ontologies/` (`authoritative-ontologies/UNCEFACT/`, refreshed by
+`scripts/download_uncefact_codelists.py`). A hub does not re-ingest the list from the
+standard's PDF into its own bronze table: every hub's copy would drift on its own, and
+nothing would identify two hubs' lists as the same list. Instead the hub's governed class
+takes in the shared list:
+
+```turtle
+hub:TransportModeCode a owl:Class .
+unece:TransportModeCodeList rdfs:subClassOf hub:TransportModeCode .
+# every Rec 19 code (unece:TransportModeCodeList#0 … #9) is now a hub:TransportModeCode
+```
+
+The subclass runs from the shared list to the hub's class, not the other way round: the
+hub's dimension is the standard's codes plus any extensions, and an extension must not
+become a member of the standard's list. Each shared member carries its code in
+`rdf:value`, which is the join key to source data. Two variations stay in the hub:
+
+- **A profile** (the hub accepts only part of the list) is a hub-side SHACL `sh:in` over
+  the shared members. Do not copy the subset into new individuals.
+- **An extension** (codes the standard lacks) is a hub-local individual of the hub's
+  governed class. Extensions are client members, exactly as in the next case.
+
+**Client lists — empty shells.** When the client defines the values (party roles,
+internal status codes), the **slot** is the standard's and the **members** are the
+client's. Reference modules ship these governed classes as empty shells
+(`bsp/party#PartyRoleCode`, `mmt/party#TransportPartyRoleCode`): the value set is client
+master data and belongs to the blueprint's `reference-data` domain, whose contract owns code
+lists and status codes. The enumeration constraint belongs in SHACL, not OWL:
+`kairos-ontology suggest-shapes` (DD-076) derives `sh:in` enums from bronze distinct-value
+evidence.
+
+**Crosswalks.** A mapping from one *source system's* codes to the standard's (CargoWise
+`SEA` → Rec 19 `1`) is source-specific and stays in the hub. A mapping between two
+*standards* is shared and ships here: `authoritative-ontologies/UNCEFACT/current/UNCEFACT-IATA-alignment.ttl`
+links IATA ONE Record codes to UNECE codes, and the derived transport-mode slots state how
+their standard's values map to Rec 19 (see `rdfs:seeAlso` on each slot).
 
 ## Cardinality rules (advisory)
 
