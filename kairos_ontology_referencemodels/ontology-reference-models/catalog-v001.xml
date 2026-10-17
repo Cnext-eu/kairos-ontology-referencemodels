@@ -46,6 +46,10 @@
          uri="authoritative-ontologies/UNCEFACT/current/UNCEFACT-CodeLists.owl-patch.ttl"/>
     <uri name="https://www.kairosflow.ai/ont/uncefact/code-lists-vendor-extract"
          uri="authoritative-ontologies/UNCEFACT/current/UNCEFACT-CodeLists.ttl"/>
+    <!-- Generated skos:exactMatch from IATA ONE Record ModeCode / MeasurementUnitCode
+         individuals to the UNECE codes (scripts/generate_uncefact_iata_alignment.py). -->
+    <uri name="https://www.kairosflow.ai/ont/uncefact/iata-alignment"
+         uri="authoritative-ontologies/UNCEFACT/current/UNCEFACT-IATA-alignment.ttl"/>
 
     <!-- ========== FIBO: single rewrite rule resolves all FIBO URIs to the stable local path.
          The folder is always named "fibo/" regardless of release version. -->

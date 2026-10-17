@@ -18,6 +18,7 @@ vendored triple is copied unchanged and keeps its `https://vocabulary.uncefact.o
 |---|---|---|
 | `UNCEFACT-CodeLists.ttl` | `https://www.kairosflow.ai/ont/uncefact/code-lists-vendor-extract` | Vendor extract |
 | `UNCEFACT-CodeLists.owl-patch.ttl` | `https://www.kairosflow.ai/ont/uncefact/code-lists` | Generated OWL typing; imports the extract. **Hubs import this IRI.** |
+| `UNCEFACT-IATA-alignment.ttl` | `https://www.kairosflow.ai/ont/uncefact/iata-alignment` | Generated `skos:exactMatch` from IATA ONE Record codes to these codes |
 | `METADATA.txt` | — | Provenance: source, snapshot date, checksum, deviations |
 
 | UN/CEFACT class | Recommendation | Codes |
@@ -37,24 +38,39 @@ in `rdfs:comment` (the patch copies the name to `rdfs:label`):
 
 `rdf:value` is the join key to source data.
 
-## Version
+## Version and refresh
 
-UN/CEFACT does not version the endpoint; it serves one dump that is updated in place. A
-snapshot is identified by its download date and the sha256 of the full dump, both in
-`METADATA.txt`. To refresh:
+This is **reference data**: UN/CEFACT revises these lists (Rec 20 several times a
+decade, Rec 21 and Rec 19 rarely), so the snapshot goes stale unless it is refreshed.
+UN/CEFACT does not version the endpoint; it serves one dump that is updated in place, so
+a snapshot is identified by its download date and the sha256 of the full dump, both in
+`METADATA.txt`.
 
 ```sh
-python scripts/download_uncefact_codelists.py
+python scripts/download_uncefact_codelists.py --check   # exit 1 if upstream changed
+python scripts/download_uncefact_codelists.py           # refresh
 ```
 
-Diff the result before committing: a code that disappears is a breaking change for any
-hub that stores it.
+A refresh moves the previous snapshot to `archive/<download date>/`, rewrites the
+extract, the OWL patch and `METADATA.txt`, and regenerates the IATA alignment. It writes
+nothing when upstream is unchanged. Diff the result before committing: a code that
+disappears is a breaking change for any hub that stores it. The CI workflow
+`reference-data-freshness` runs `--check` monthly. See `VERSIONING.md`, "Refreshing
+reference data".
 
 ## Relation to the IATA code lists
 
 `authoritative-ontologies/IATA/` ships `code-lists:ModeCode` (an air-cargo profile of
-Rec 19) and `code-lists:MeasurementUnitCode` (96 codes, based on Rec 20). These lists are
+Rec 19) and `code-lists:MeasurementUnitCode` (40 codes, based on Rec 20). These lists are
 the full standards-body lists behind both. Where both exist, a hub links to these.
+
+`UNCEFACT-IATA-alignment.ttl` links them: all 10 `ModeCode` individuals (matched on the
+`(N)` code in their comment, so it includes `ModeCode#MAIL`, which IATA's own `owl:oneOf`
+leaves out), and 36 of the 40 `MeasurementUnitCode` individuals (matched on local name).
+`KBQ`, `MBQ`, `TBQ` and `NDA` are IATA codes with no Rec 20 counterpart and stay
+unlinked. The links are `skos:exactMatch`, not `owl:sameAs`: IATA's `ModeCode` is a
+closed `owl:oneOf` that omits Mail, and `owl:sameAs` would let a reasoner merge Mail into
+one of the other modes.
 
 ## Where it binds in Kairos
 

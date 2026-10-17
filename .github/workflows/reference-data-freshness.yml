@@ -1,0 +1,104 @@
+name: Refresh reference data
+
+# This repository vendors reference data (code lists) as well as ontologies -- see
+# VERSIONING.md, "Refreshing reference data". Ontology mirrors change on a release the
+# maintainers hear about; standards-body code lists are revised in place, and the
+# UN/CEFACT vocabulary endpoint serves one unversioned dump with no release to watch. A
+# vendored snapshot therefore goes stale silently unless something compares it with
+# upstream.
+#
+# This workflow does the comparing. It runs the refresh script, and when upstream changed
+# it opens a PR rather than pushing to main: a code that disappears upstream is a breaking
+# change for every hub that stores it, and that needs a reviewer, a CHANGELOG entry and a
+# version bump before it lands.
+
+on:
+  schedule:
+    # First of the month, 06:00 UTC. UNECE revises these lists a few times a decade, so
+    # monthly is ample.
+    - cron: '0 6 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: reference-data-freshness
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      # The script writes nothing when the upstream dump is byte-identical to the vendored
+      # one, so an unchanged upstream leaves a clean tree and no PR.
+      - name: Refresh the UN/CEFACT code lists
+        id: refresh
+        run: |
+          set -euo pipefail
+          uv run --extra dev python scripts/download_uncefact_codelists.py | tee refresh.log
+          if [ -z "$(git status --porcelain -- kairos_ontology_referencemodels/ontology-reference-models/authoritative-ontologies/UNCEFACT)" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "date=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run the test suite against the refreshed lists
+        if: steps.refresh.outputs.changed == 'true'
+        id: tests
+        continue-on-error: true
+        run: |
+          uv sync --extra dev
+          uv run --extra dev python -m pytest -q
+
+      - name: Open a pull request
+        if: steps.refresh.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DATE: ${{ steps.refresh.outputs.date }}
+          TESTS: ${{ steps.tests.outcome }}
+        run: |
+          BRANCH="chore/reference-data-${DATE}"
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            echo "A PR branch for ${DATE} already exists; nothing to do."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add kairos_ontology_referencemodels/ontology-reference-models/authoritative-ontologies/UNCEFACT
+          git commit -m "chore: refresh UN/CEFACT code lists (snapshot ${DATE})"
+          git push origin "$BRANCH"
+          if [ "$TESTS" = "success" ]; then
+            VERDICT="✅ The test suite passes against the refreshed lists."
+          else
+            VERDICT="⚠️ The test suite **fails** against the refreshed lists. Review before merging."
+          fi
+          gh pr create --base main --head "$BRANCH" \
+            --title "chore: refresh UN/CEFACT code lists (snapshot ${DATE})" \
+            --body "$(printf '%s\n' \
+              "Opened by the monthly \`reference-data-freshness\` workflow: the UN/CEFACT vocabulary dump no longer matches the vendored snapshot." \
+              "" \
+              "$VERDICT" \
+              "" \
+              "Before merging:" \
+              "- Diff the extract. A **removed** code breaks every hub that stores it: call it out in the CHANGELOG as breaking." \
+              "- Bump \`VERSION\` and add a CHANGELOG entry (this PR does neither)." \
+              "" \
+              "\`\`\`" \
+              "$(cat refresh.log)" \
+              "\`\`\`")"

@@ -17,6 +17,8 @@ code_lists:
 ontology_files:
   - UNCEFACT-CodeLists.ttl            (vendor extract; ontology IRI https://www.kairosflow.ai/ont/uncefact/code-lists-vendor-extract)
   - UNCEFACT-CodeLists.owl-patch.ttl  (generated OWL typing; ontology IRI https://www.kairosflow.ai/ont/uncefact/code-lists)
+  - UNCEFACT-IATA-alignment.ttl       (generated IATA -> UNECE skos:exactMatch; see
+                                       scripts/generate_uncefact_iata_alignment.py)
 license: see README.md, section License
 generator: scripts/download_uncefact_codelists.py -- regenerates all three files; do not hand-edit.
 deviations:

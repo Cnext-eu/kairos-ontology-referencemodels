@@ -16,15 +16,23 @@ Two files are written, mirroring the IATA domains-patch arrangement (gh#93):
   is the document hubs import, via ``https://www.kairosflow.ai/ont/uncefact/code-lists``.
 
 ``METADATA.txt`` is regenerated too, so the snapshot date and checksum cannot drift
-from the files they describe.
+from the files they describe. A refresh moves the previous snapshot to
+``archive/<download date>/`` and regenerates the IATA alignment
+(``scripts/generate_uncefact_iata_alignment.py``). Nothing is written when the upstream
+dump is byte-identical to the vendored one.
+
+This is reference data: UN/CEFACT revises these lists, so refresh periodically (see
+VERSIONING.md, "Refreshing reference data").
 
 Usage:
-    python scripts/download_uncefact_codelists.py                 # download the live dump
-    python scripts/download_uncefact_codelists.py --from-file X   # use a saved dump
+    python scripts/download_uncefact_codelists.py --check         # has upstream changed? (exit 1 if so)
+    python scripts/download_uncefact_codelists.py                 # download and refresh
+    python scripts/download_uncefact_codelists.py --from-file X   # refresh from a saved dump
 """
 import argparse
 import hashlib
 import json
+import subprocess
 import sys
 import urllib.request
 from datetime import date
@@ -189,6 +197,8 @@ code_lists:
 ontology_files:
   - UNCEFACT-CodeLists.ttl            (vendor extract; ontology IRI {EXTRACT_ONTOLOGY_IRI})
   - UNCEFACT-CodeLists.owl-patch.ttl  (generated OWL typing; ontology IRI {PUBLIC_ONTOLOGY_IRI})
+  - UNCEFACT-IATA-alignment.ttl       (generated IATA -> UNECE skos:exactMatch; see
+                                       scripts/generate_uncefact_iata_alignment.py)
 license: see README.md, section License
 generator: scripts/download_uncefact_codelists.py -- regenerates all three files; do not hand-edit.
 deviations:
@@ -206,10 +216,41 @@ deviations:
     )
 
 
+def recorded_snapshot() -> tuple[str | None, str | None]:
+    """Return (download_date, dump_sha256) from the current METADATA.txt, if any."""
+    if not METADATA_TXT.is_file():
+        return None, None
+    fields = dict(
+        line.split(": ", 1) for line in METADATA_TXT.read_text(encoding="utf-8").splitlines() if ": " in line
+    )
+    return fields.get("download_date"), fields.get("dump_sha256")
+
+
+def archive_current(old_date: str) -> None:
+    """Move the current snapshot to archive/<old download date>/, as download_fibo.py does."""
+    archive_dir = TARGET_DIR.parent / "archive" / old_date
+    if archive_dir.exists():
+        raise SystemExit(f"ERROR: {archive_dir} already exists; refusing to overwrite an archived snapshot")
+    archive_dir.mkdir(parents=True)
+    for path in sorted(TARGET_DIR.iterdir()):
+        path.rename(archive_dir / path.name)
+    print(f"Archived snapshot {old_date} -> archive/{old_date}/")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--from-file", type=Path, help="use a saved JSON-LD dump instead of downloading")
     parser.add_argument("--snapshot-date", help="download date to record (default: today, or the file's date)")
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="only report whether the upstream dump differs from the vendored snapshot (exit 1 if it does)",
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="regenerate even when upstream is unchanged (after changing this script)",
+    )
     args = parser.parse_args()
 
     if args.from_file:
@@ -221,12 +262,25 @@ def main() -> int:
         snapshot = args.snapshot_date or date.today().isoformat()
 
     digest = hashlib.sha256(raw).hexdigest()
+    old_date, old_digest = recorded_snapshot()
+    if args.check:
+        if digest == old_digest:
+            print(f"Up to date: upstream matches the vendored snapshot of {old_date}.")
+            return 0
+        print(f"Upstream changed since the vendored snapshot of {old_date}: re-run without --check.")
+        return 1
+    if digest == old_digest and not args.force:
+        print(f"Up to date: upstream matches the vendored snapshot of {old_date}; nothing written.")
+        return 0
+
     nodes = json.loads(raw)["@graph"]
     graph, counts = extract(nodes)
     if not all(counts.values()):
         print(f"ERROR: a code list came back empty: {counts}", file=sys.stderr)
         return 1
 
+    if old_date and old_date != snapshot:
+        archive_current(old_date)
     TARGET_DIR.mkdir(parents=True, exist_ok=True)
     write_extract(graph, snapshot, digest)
     write_patch(graph)
@@ -234,6 +288,13 @@ def main() -> int:
     for name, count in counts.items():
         print(f"  unece:{name}: {count} codes")
     print(f"Wrote {EXTRACT_TTL.name}, {PATCH_TTL.name}, {METADATA_TXT.name} (snapshot {snapshot}, sha256 {digest[:12]}...)")
+
+    # The IATA alignment links into these codes, so it is regenerated with them.
+    sys.stdout.flush()
+    alignment = subprocess.run([sys.executable, str(Path(__file__).with_name("generate_uncefact_iata_alignment.py"))])
+    if alignment.returncode:
+        return alignment.returncode
+    print("Next: diff the result (a removed code breaks hubs that store it), then run the test suite.")
     return 0
 
 
