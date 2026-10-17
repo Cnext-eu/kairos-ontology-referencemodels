@@ -38,6 +38,22 @@ in `rdfs:comment` (the patch copies the name to `rdfs:label`):
 
 `rdf:value` is the join key to source data.
 
+### Provenance in the graph
+
+A consumer does not need this README to know what it imported. The patch stamps the
+ontology and each code-list class with:
+
+| Annotation | Value |
+|---|---|
+| `kairos-ext:isReferenceData` | `true` on each code-list class: the toolkit's existing code-list marker (`ref_` table, SCD type 1) |
+| `owl:versionInfo` | the snapshot date, e.g. `"2026-10-17"`. Upstream publishes no version, so the date is the version, and it sorts. |
+| `dcterms:source` | `https://vocabulary.uncefact.org/` |
+| `rdfs:seeAlso` | this README |
+| `dcterms:description` | on each class, the UNECE recommendation it publishes; on the ontology, the snapshot date and dump checksum |
+
+`tests/test_reference_data.py` fails if `METADATA.txt`, the extract header and the patch
+disagree on the snapshot date, or if a class loses one of these annotations.
+
 ## Version and refresh
 
 This is **reference data**: UN/CEFACT revises these lists (Rec 20 several times a

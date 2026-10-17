@@ -31,3 +31,7 @@ deviations:
   - UNCEFACT-CodeLists.owl-patch.ttl adds owl:Class, owl:NamedIndividual and
     rdfs:label (copied from each code's rdfs:comment). Wired in by importing the
     extract, so the extract stays byte-for-byte generated.
+  - The patch also marks each code-list class as reference data
+    (kairos-ext:isReferenceData true) and stamps the ontology and each class with
+    owl:versionInfo "<download_date>", dcterms:source <https://vocabulary.uncefact.org/> and
+    rdfs:seeAlso <the module README>.
