@@ -21,8 +21,8 @@
     transport routes, legs, and movements. Based on UN/CEFACT MMT Reference Data Model.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "2.5.0" ;
+    dcterms:modified "2026-10-17"^^xsd:date ;
+    owl:versionInfo "2.5.1" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
 
@@ -322,13 +322,15 @@
 
 :transportMode a owl:DatatypeProperty ;
     rdfs:label "transport mode" ;
-    rdfs:comment "Mode of transport: MARITIME, AIR, RAIL, ROAD, INLAND_WATERWAY. A movement's mode is INHERITED from its leg and must agree with it (blueprints/patterns/multimodal-order-leg, grain 4): at leg grain, mode is expressed by the reified leg subclasses (inland-transport InlandLeg/RailLeg/BargeLeg/RoadLeg, subclasses of TransportLeg) and inland-transport:inlandMode. This scalar is a source-faithful denormalised copy at movement grain (RABIE LogisticsTransportMovement), not the place mode is decided." ;
+    rdfs:comment "Mode of transport: MARITIME, AIR, RAIL, ROAD, INLAND_WATERWAY. A movement's mode is INHERITED from its leg and must agree with it (blueprints/patterns/multimodal-order-leg, grain 4): at leg grain, mode is expressed by the reified leg subclasses (inland-transport InlandLeg/RailLeg/BargeLeg/RoadLeg, subclasses of TransportLeg) and inland-transport:inlandMode. This scalar is a source-faithful denormalised copy at movement grain (RABIE LogisticsTransportMovement), not the place mode is decided. Maps to UNECE Rec 19 (unece:TransportModeCodeList, authoritative-ontologies/UNCEFACT): MARITIME=1, RAIL=2, ROAD=3, AIR=4, INLAND_WATERWAY=8." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportModeCodeList> ;
     rdfs:domain :TransportMovement ;
     rdfs:range xsd:string .
 
 :modeCode a owl:DatatypeProperty ;
     rdfs:label "mode code" ;
-    rdfs:comment "UN/CEFACT transport mode code (1-9). Inherited from the leg like transportMode above — see blueprints/patterns/multimodal-order-leg grain 4 and MMT/README.md on reifying TransportMovement + modeCode into leg subclasses." ;
+    rdfs:comment "UN/CEFACT transport mode code (1-9). Inherited from the leg like transportMode above — see blueprints/patterns/multimodal-order-leg grain 4 and MMT/README.md on reifying TransportMovement + modeCode into leg subclasses. Values are UNECE Rec 19 codes: each matches the rdf:value of a unece:TransportModeCodeList member (authoritative-ontologies/UNCEFACT)." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportModeCodeList> ;
     rdfs:domain :TransportMovement ;
     rdfs:range xsd:string .
 

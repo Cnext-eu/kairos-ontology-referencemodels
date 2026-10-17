@@ -21,12 +21,12 @@ The Logistics Accelerator bundles **9 ontologies** via **11 `owl:imports`** (som
 
 | Ontology | Standard | Version | Focus |
 |---|---|---|---|
-| DCSA | Digital Container Shipping Association | `1.6.0` | Container shipping lifecycle |
-| MMT | Multi-Modal Transport | `2.5.0` | Consignment, movement, cargo, equipment |
-| BSP | Buy-Ship-Pay | `2.5.0` | Party, contract, invoice, settlement |
-| TIC | Terminal Industry Committee 4.0 | `1.6.0` | Terminal operations, handling, automotive |
+| DCSA | Digital Container Shipping Association | `1.6.1` | Container shipping lifecycle |
+| MMT | Multi-Modal Transport | `2.5.1` | Consignment, movement, cargo, equipment |
+| BSP | Buy-Ship-Pay | `2.5.1` | Party, contract, invoice, settlement |
+| TIC | Terminal Industry Committee 4.0 | `1.6.1` | Terminal operations, handling, automotive |
 | IMO | International Maritime Organization | `1.4.0` | Vessel registry, dangerous goods, port-call, crew, environmental, maritime security |
-| WCO | World Customs Organization | `1.4.0` | Customs declarations, goods items, procedures, trade facilitation |
+| WCO | World Customs Organization | `1.4.1` | Customs declarations, goods items, procedures, trade facilitation |
 | Sustainability | Sustainability & Carbon | `1.2.0` | Emissions, energy, ESG reporting |
 | supply-chain | Supply Chain | `1.5.0` | Cross-standard bridge properties linking DCSA, MMT, BSP, TIC, IMO, and WCO |
 | RAIL | TAF TSI Rail | `1.1.0` | EU rail freight reservation & running (path request, consignment order, train running, rolling stock) |
@@ -36,6 +36,7 @@ Reference-only — catalogued and bindable, deliberately **not** imported:
 | Ontology | Standard | Version | Focus |
 |---|---|---|---|
 | IATA | IATA ONE Record (air cargo) | `3.3.0 RC1 (2026-08 standard)` | Air cargo booking, shipment, transport movement |
+| UNCEFACT | UN/CEFACT code lists (UNECE Rec 19, 20, 21) | `2026-10-17 (snapshot date; upstream publishes no version)` | Standards-body code lists: transport modes (Rec 19), units of measure (Rec 20), package types (Rec 21) |
 <!-- END GENERATED: modules -->
 
 ### What's NOT included?

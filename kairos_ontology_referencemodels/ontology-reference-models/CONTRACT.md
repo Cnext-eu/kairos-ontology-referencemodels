@@ -44,6 +44,13 @@ way: `scaffold-binding` resolves the module that owns the target class and keeps
 | It exists in no reference model | Define it in your own domain `.ttl` as a client-specific class |
 | You need a subclass of a reference class | Import the parent, define the subclass in your domain |
 
+**Link to shipped reference data; do not re-ingest it.** Standards-body code lists ship
+with their members (`authoritative-ontologies/UNCEFACT/`: UNECE Rec 19/20/21). A hub takes
+a shipped list into its governed class (`unece:TransportModeCodeList rdfs:subClassOf
+hub:TransportModeCode`) and joins source data on each code's `rdf:value`. It does not parse
+the standard's PDF into its own table. The snapshot a hub imported is its
+`owl:versionInfo` (a date). See `blueprints/patterns/governed-code-list`.
+
 **Bind mode at the reservation, never at the order.** See
 `blueprints/patterns/multimodal-order-leg`. An order spanning three modes has no single mode
 value; `mode_bindings[].target_iris` names the grain-3 class each mode binds to.
@@ -92,7 +99,9 @@ catalog and `data-domains.yaml`.
 ## Adding or changing an industry model
 
 1. Author the ontology under the correct tier (`authoritative-` verbatim, `derived-` with every
-   class citing its standard, `blueprints/` for Kairos-authored grains).
+   class citing its standard, `blueprints/` for Kairos-authored grains). Standards-body
+   **reference data** (code lists) is authoritative too: vendor it by script, never by hand,
+   and give it a refresh path. See `VERSIONING.md`, "Refreshing reference data".
 2. Bump the module `VERSION` and `owl:versionInfo` together — skill `refmodels-ontology-versioning`.
 3. Register every module document IRI in `catalog-v001.xml`.
 4. Add it to `manifest.yaml`, to the accelerator's `owl:imports`, and to `data-domains.yaml`.

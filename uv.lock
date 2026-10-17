@@ -260,7 +260,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "jsonschema", marker = "extra == 'dev'", specifier = ">=4.0" },
-    { name = "kairos-ontology-toolkit", marker = "extra == 'dev'", url = "https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.20.0/kairos_ontology_toolkit-5.20.0-py3-none-any.whl" },
+    { name = "kairos-ontology-toolkit", marker = "extra == 'dev'", url = "https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.27.2/kairos_ontology_toolkit-5.27.2-py3-none-any.whl" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0" },
     { name = "pytest-randomly", marker = "extra == 'dev'", specifier = ">=3.16" },
     { name = "pyyaml", marker = "extra == 'dev'", specifier = ">=6.0" },
@@ -270,8 +270,8 @@ provides-extras = ["dev"]
 
 [[package]]
 name = "kairos-ontology-toolkit"
-version = "5.20.0"
-source = { url = "https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.20.0/kairos_ontology_toolkit-5.20.0-py3-none-any.whl" }
+version = "5.27.2"
+source = { url = "https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.27.2/kairos_ontology_toolkit-5.27.2-py3-none-any.whl" }
 dependencies = [
     { name = "click" },
     { name = "jinja2" },
@@ -287,7 +287,7 @@ dependencies = [
     { name = "rdflib" },
 ]
 wheels = [
-    { url = "https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.20.0/kairos_ontology_toolkit-5.20.0-py3-none-any.whl", hash = "sha256:75ec914405a332751d5573a40684b204858ebaa6cbdd91598ac40feb58182f26" },
+    { url = "https://github.com/Cnext-eu/kairos-ontology-toolkit/releases/download/v5.27.2/kairos_ontology_toolkit-5.27.2-py3-none-any.whl", hash = "sha256:2466029dc4b657d9767e0fb581022b1c6c51bcb043f46928257195b0098d02d1" },
 ]
 
 [package.metadata]
@@ -299,7 +299,9 @@ requires-dist = [
     { name = "jinja2", specifier = ">=3.1.3" },
     { name = "jsonschema", specifier = ">=4.0.0" },
     { name = "langfuse", marker = "extra == 'langfuse'", specifier = ">=4.14.0,<5.0.0" },
+    { name = "mcp", marker = "extra == 'mcp'", specifier = ">=2.2.0,<3.0.0" },
     { name = "openai", specifier = ">=1.0.0,<3.0.0" },
+    { name = "openpyxl", marker = "extra == 'documents'", specifier = ">=3.1.0,<4.0.0" },
     { name = "openpyxl", marker = "extra == 'flatfile'", specifier = ">=3.1.0,<4.0.0" },
     { name = "opentelemetry-api", marker = "extra == 'otel'", specifier = ">=1.28.0,<2.0.0" },
     { name = "opentelemetry-exporter-otlp", marker = "extra == 'otel'", specifier = ">=1.28.0,<2.0.0" },
@@ -310,11 +312,14 @@ requires-dist = [
     { name = "pyarrow", marker = "extra == 'parquet'", specifier = ">=14.0.0" },
     { name = "pypdf", specifier = ">=6.14.2" },
     { name = "pyshacl", specifier = ">=0.30.1" },
+    { name = "python-docx", marker = "extra == 'business-doc'", specifier = ">=1.1.0,<2.0.0" },
+    { name = "python-docx", marker = "extra == 'documents'", specifier = ">=1.1.0,<2.0.0" },
     { name = "python-dotenv", specifier = ">=1.0.0,<2.0.0" },
+    { name = "python-pptx", marker = "extra == 'documents'", specifier = ">=1.0.0,<2.0.0" },
     { name = "pyyaml", specifier = ">=6.0" },
     { name = "rdflib", specifier = ">=7.4.0" },
 ]
-provides-extras = ["azure", "flatfile", "foundry", "langfuse", "otel", "parquet"]
+provides-extras = ["azure", "business-doc", "documents", "flatfile", "foundry", "langfuse", "mcp", "otel", "parquet"]
 
 [[package]]
 name = "markupsafe"

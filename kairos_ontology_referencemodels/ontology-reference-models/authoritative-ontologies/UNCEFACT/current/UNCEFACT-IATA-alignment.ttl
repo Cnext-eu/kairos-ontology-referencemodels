@@ -1,0 +1,100 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#BQL> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#BQL> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#CEL> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#CEL> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#CGM> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#CGM> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#CLT> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#CLT> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#CMQ> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#CMQ> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#CMT> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#CMT> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#CUR> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#CUR> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#DLT> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#DLT> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#DMT> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#DMT> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#FAH> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#FAH> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#FOT> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#FOT> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#FTQ> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#FTQ> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#GIA> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#GIA> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#GII> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#GII> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#GLI> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#GLI> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#GLL> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#GLL> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#GRM> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#GRM> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#INH> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#INH> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#INQ> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#INQ> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#KEL> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#KEL> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#KGM> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#KGM> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#LBR> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#LBR> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#LTR> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#LTR> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#MGM> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#MGM> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#MLT> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#MLT> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#MMT> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#MMT> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#MTQ> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#MTQ> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#MTR> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#MTR> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#ONZ> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#ONZ> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#OZA> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#OZA> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#OZI> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#OZI> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#PTI> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#PTI> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#PTL> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#PTL> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#QTI> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#QTI> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#QTL> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#QTL> .
+
+<https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#YRD> skos:exactMatch <https://vocabulary.uncefact.org/UnitMeasureCode#YRD> .
+
+<https://onerecord.iata.org/ns/code-lists/ModeCode#AIR_TRANSPORT> skos:exactMatch <https://vocabulary.uncefact.org/TransportModeCodeList#4> .
+
+<https://onerecord.iata.org/ns/code-lists/ModeCode#FIXED_TRANSPORT_INSTALLATION> skos:exactMatch <https://vocabulary.uncefact.org/TransportModeCodeList#7> .
+
+<https://onerecord.iata.org/ns/code-lists/ModeCode#INLAND_WATER_TRANSPORT> skos:exactMatch <https://vocabulary.uncefact.org/TransportModeCodeList#8> .
+
+<https://onerecord.iata.org/ns/code-lists/ModeCode#MAIL> skos:exactMatch <https://vocabulary.uncefact.org/TransportModeCodeList#5> .
+
+<https://onerecord.iata.org/ns/code-lists/ModeCode#MARITIME_TRANSPORT> skos:exactMatch <https://vocabulary.uncefact.org/TransportModeCodeList#1> .
+
+<https://onerecord.iata.org/ns/code-lists/ModeCode#MULTIMODAL_TRANSPORT> skos:exactMatch <https://vocabulary.uncefact.org/TransportModeCodeList#6> .
+
+<https://onerecord.iata.org/ns/code-lists/ModeCode#RAIL_TRANSPORT> skos:exactMatch <https://vocabulary.uncefact.org/TransportModeCodeList#2> .
+
+<https://onerecord.iata.org/ns/code-lists/ModeCode#ROAD_TRANSPORT> skos:exactMatch <https://vocabulary.uncefact.org/TransportModeCodeList#3> .
+
+<https://onerecord.iata.org/ns/code-lists/ModeCode#TRANSPORT_MODE_NOT_APPLICABLE> skos:exactMatch <https://vocabulary.uncefact.org/TransportModeCodeList#9> .
+
+<https://onerecord.iata.org/ns/code-lists/ModeCode#TRANSPORT_MODE_NOT_SPECIFIED> skos:exactMatch <https://vocabulary.uncefact.org/TransportModeCodeList#0> .
+
+<https://www.kairosflow.ai/ont/uncefact/iata-alignment> a owl:Ontology ;
+    rdfs:label "IATA ONE Record to UN/CEFACT code alignment" ;
+    rdfs:comment "skos:exactMatch from IATA ONE Record code-list individuals to the UNECE codes they profile: 10 ModeCode -> Rec 19 (matched on the '(N)' code in rdfs:comment), 36 MeasurementUnitCode -> Rec 20 (matched on the local name). IATA codes with no UNECE counterpart, left unlinked: MeasurementUnitCode#KBQ, MeasurementUnitCode#MBQ, MeasurementUnitCode#NDA, MeasurementUnitCode#TBQ. Generated by scripts/generate_uncefact_iata_alignment.py; do not hand-edit." .
+

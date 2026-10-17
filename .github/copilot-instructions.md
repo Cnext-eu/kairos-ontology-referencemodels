@@ -19,11 +19,31 @@ client hub, not here. If a task seems to call for them, it is aimed at the wrong
 
 | Tier | Path | Rule |
 |---|---|---|
-| **Authoritative** | `authoritative-ontologies/` | Official RDF/OWL from standards bodies (FIBO, IATA ONE Record). Vendored **verbatim** — never hand-edit; re-download instead. |
+| **Authoritative** | `authoritative-ontologies/` | Official RDF/OWL from standards bodies (FIBO, IATA ONE Record), and **reference data** — standards-body code lists (UNCEFACT: UNECE Rec 19/20/21). Vendored **verbatim** — never hand-edit; re-download instead. |
 | **Derived** | `derived-ontologies/` | Kairos RDF interpretations of non-RDF standards (DCSA, MMT, BSP, TIC, IMO, WCO, RAIL, Sustainability), plus **SupplyChain** — the cross-standard bridge module (defines no new classes; only bridges classes across standards). Every standard-backed class must be backed by a cited element of its standard. |
 | **Blueprint** | `blueprints/` | Opinionated Kairos guidance (archetypes, patterns, `blueprints/ontology/`). Not a standard; versioned independently. |
 
 Accelerator packs (`accelerator-packs/<pack>/`) pre-compose these into a bundle per sector.
+
+## Reference data (code lists)
+
+This repo also ships **reference data**: the members of code lists a standards body
+maintains (`authoritative-ontologies/UNCEFACT/`, plus IATA's code lists). Unlike ontologies,
+these are revised in place upstream, so they must be **refreshed periodically with the
+scripts**, never edited by hand:
+
+```bash
+python scripts/download_uncefact_codelists.py --check   # exit 1 if upstream changed
+python scripts/download_uncefact_codelists.py           # refresh; archives the old snapshot
+```
+
+The refresh also regenerates `UNCEFACT-IATA-alignment.ttl`. After re-vendoring IATA, run
+`scripts/generate_uncefact_iata_alignment.py` yourself. The monthly
+`reference-data-freshness` workflow opens a PR when upstream changed. A refresh that removes
+a code is breaking for hubs. `tests/test_reference_data.py` keeps the snapshot date
+consistent across `METADATA.txt`, the extract and the OWL patch. Client-defined lists are
+never shipped; they stay empty shells (`blueprints/patterns/governed-code-list`). Details:
+`VERSIONING.md`, "Refreshing reference data".
 
 ## The published contract
 

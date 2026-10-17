@@ -26,8 +26,8 @@
     discovery using the documented fit-gap analysis.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "1.6.0" ;
+    dcterms:modified "2026-10-17"^^xsd:date ;
+    owl:versionInfo "1.6.1" ;
     dcterms:source "DCSA Booking API (BKG) v2.0.4, DCSA Domain v3.1.0" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
 
@@ -485,7 +485,9 @@
     rdfs:label "requested pre-carriage mode of transport" ;
     rdfs:comment """Requested transport mode for pre-carriage (origin to port of loading).
     DCSA BKG v2.0.2 values: VESSEL, RAIL, TRUCK, BARGE, RAIL_TRUCK,
-    BARGE_TRUCK, BARGE_RAIL, MULTIMODAL.""" ;
+    BARGE_TRUCK, BARGE_RAIL, MULTIMODAL.
+    Maps to UNECE Rec 19 (unece:TransportModeCodeList, authoritative-ontologies/UNCEFACT): VESSEL=1, RAIL=2, TRUCK=3, BARGE=8, RAIL_TRUCK / BARGE_TRUCK / BARGE_RAIL / MULTIMODAL=6.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportModeCodeList> ;
     rdfs:domain :Booking ;
     rdfs:range xsd:string .
 
@@ -493,7 +495,9 @@
     rdfs:label "requested on-carriage mode of transport" ;
     rdfs:comment """Requested transport mode for on-carriage (port of discharge to destination).
     DCSA BKG v2.0.2 values: VESSEL, RAIL, TRUCK, BARGE, RAIL_TRUCK,
-    BARGE_TRUCK, BARGE_RAIL, MULTIMODAL.""" ;
+    BARGE_TRUCK, BARGE_RAIL, MULTIMODAL.
+    Maps to UNECE Rec 19 (unece:TransportModeCodeList, authoritative-ontologies/UNCEFACT): VESSEL=1, RAIL=2, TRUCK=3, BARGE=8, RAIL_TRUCK / BARGE_TRUCK / BARGE_RAIL / MULTIMODAL=6.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportModeCodeList> ;
     rdfs:domain :Booking ;
     rdfs:range xsd:string .
 
@@ -548,7 +552,8 @@
 
 :legModeOfTransport a owl:DatatypeProperty ;
     rdfs:label "mode of transport" ;
-    rdfs:comment "Transport mode for this leg (VESSEL, RAIL, TRUCK, BARGE)." ;
+    rdfs:comment "Transport mode for this leg (VESSEL, RAIL, TRUCK, BARGE). Maps to UNECE Rec 19 (unece:TransportModeCodeList, authoritative-ontologies/UNCEFACT): VESSEL=1, RAIL=2, TRUCK=3, BARGE=8." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportModeCodeList> ;
     rdfs:domain :TransportPlanLeg ;
     rdfs:range xsd:string .
 

@@ -17,16 +17,17 @@ This folder contains a business-and-architecture oriented documentation set for 
 | Component | Version |
 |---|---|
 | Kairos Logistics Accelerator Pack | 1.10.1 |
-| DCSA | 1.6.0 |
-| MMT | 2.5.0 |
-| BSP | 2.5.0 |
-| TIC | 1.6.0 |
+| DCSA | 1.6.1 |
+| MMT | 2.5.1 |
+| BSP | 2.5.1 |
+| TIC | 1.6.1 |
 | IMO | 1.4.0 |
-| WCO | 1.4.0 |
+| WCO | 1.4.1 |
 | Sustainability | 1.2.0 |
 | supply-chain | 1.5.0 |
 | RAIL | 1.1.0 |
 | IATA | 3.3.0 RC1 (2026-08 standard) |
+| UNCEFACT | 2026-10-17 (snapshot date; upstream publishes no version) |
 <!-- END GENERATED: versions -->
 
 ## Documents

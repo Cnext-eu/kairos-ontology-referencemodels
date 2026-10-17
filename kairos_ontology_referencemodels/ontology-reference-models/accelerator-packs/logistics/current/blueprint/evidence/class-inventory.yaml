@@ -1010,7 +1010,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#legSequence
 - comments:
-  - 'Mode of transport for this leg (ROAD, SEA, AIR, RAIL). UN/CEFACT CCL D23B: TransportMovement.modeCode.'
+  - 'Mode of transport for this leg (ROAD, SEA, AIR, RAIL). UN/CEFACT CCL D23B: TransportMovement.modeCode.
+    Maps to UNECE Rec 19 (unece:TransportModeCodeList, authoritative-ontologies/UNCEFACT): SEA=1, RAIL=2,
+    ROAD=3, AIR=4.'
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#TransportLeg
   kind: datatype_property
@@ -1631,7 +1633,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#tareWeight
 - comments:
-  - 'Mode of transport (ROAD, SEA, AIR, RAIL, MULTIMODAL). UN/CEFACT CCL D23B: LogisticsTransportMovement.modeCode.'
+  - 'Mode of transport (ROAD, SEA, AIR, RAIL, MULTIMODAL). UN/CEFACT CCL D23B: LogisticsTransportMovement.modeCode.
+    Maps to UNECE Rec 19 (unece:TransportModeCodeList, authoritative-ontologies/UNCEFACT): SEA=1, RAIL=2,
+    ROAD=3, AIR=4, MULTIMODAL=6.'
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#TransportService
   kind: datatype_property
@@ -8173,7 +8177,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/dcsa/booking#legHasTransportCall
 - comments:
-  - Transport mode for this leg (VESSEL, RAIL, TRUCK, BARGE).
+  - 'Transport mode for this leg (VESSEL, RAIL, TRUCK, BARGE). Maps to UNECE Rec 19 (unece:TransportModeCodeList,
+    authoritative-ontologies/UNCEFACT): VESSEL=1, RAIL=2, TRUCK=3, BARGE=8.'
   domains:
   - https://www.kairosflow.ai/ont/dcsa/booking#TransportPlanLeg
   kind: datatype_property
@@ -8345,7 +8350,9 @@ records:
   uri: https://www.kairosflow.ai/ont/dcsa/booking#receiptTypeAtOrigin
 - comments:
   - "Requested transport mode for on-carriage (port of discharge to destination).\n    DCSA BKG v2.0.2\
-    \ values: VESSEL, RAIL, TRUCK, BARGE, RAIL_TRUCK,\n    BARGE_TRUCK, BARGE_RAIL, MULTIMODAL."
+    \ values: VESSEL, RAIL, TRUCK, BARGE, RAIL_TRUCK,\n    BARGE_TRUCK, BARGE_RAIL, MULTIMODAL.\n    Maps\
+    \ to UNECE Rec 19 (unece:TransportModeCodeList, authoritative-ontologies/UNCEFACT): VESSEL=1, RAIL=2,\
+    \ TRUCK=3, BARGE=8, RAIL_TRUCK / BARGE_TRUCK / BARGE_RAIL / MULTIMODAL=6."
   domains:
   - https://www.kairosflow.ai/ont/dcsa/booking#Booking
   kind: datatype_property
@@ -8360,7 +8367,9 @@ records:
   uri: https://www.kairosflow.ai/ont/dcsa/booking#requestedOnCarriageModeOfTransport
 - comments:
   - "Requested transport mode for pre-carriage (origin to port of loading).\n    DCSA BKG v2.0.2 values:\
-    \ VESSEL, RAIL, TRUCK, BARGE, RAIL_TRUCK,\n    BARGE_TRUCK, BARGE_RAIL, MULTIMODAL."
+    \ VESSEL, RAIL, TRUCK, BARGE, RAIL_TRUCK,\n    BARGE_TRUCK, BARGE_RAIL, MULTIMODAL.\n    Maps to UNECE\
+    \ Rec 19 (unece:TransportModeCodeList, authoritative-ontologies/UNCEFACT): VESSEL=1, RAIL=2, TRUCK=3,\
+    \ BARGE=8, RAIL_TRUCK / BARGE_TRUCK / BARGE_RAIL / MULTIMODAL=6."
   domains:
   - https://www.kairosflow.ai/ont/dcsa/booking#Booking
   kind: datatype_property
@@ -11306,7 +11315,8 @@ records:
 - comments:
   - "Transport mode for this call. DCSA values: VESSEL, BARGE, RAIL, TRUCK.\n    Combined modes (RAIL_TRUCK,\
     \ BARGE_TRUCK, BARGE_RAIL, MULTIMODAL) appear\n    on booking-level properties, not on individual\
-    \ transport calls."
+    \ transport calls.\n    Maps to UNECE Rec 19 (unece:TransportModeCodeList, authoritative-ontologies/UNCEFACT):\
+    \ VESSEL=1, RAIL=2, TRUCK=3, BARGE=8, RAIL_TRUCK / BARGE_TRUCK / BARGE_RAIL / MULTIMODAL=6."
   domains:
   - https://www.kairosflow.ai/ont/dcsa/transport-call#TransportCall
   kind: datatype_property
@@ -20587,8 +20597,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#masterReferenceNumber
 - comments:
-  - UN/CEFACT transport mode code (1-9). Inherited from the leg like transportMode above — see blueprints/patterns/multimodal-order-leg
-    grain 4 and MMT/README.md on reifying TransportMovement + modeCode into leg subclasses.
+  - 'UN/CEFACT transport mode code (1-9). Inherited from the leg like transportMode above — see blueprints/patterns/multimodal-order-leg
+    grain 4 and MMT/README.md on reifying TransportMovement + modeCode into leg subclasses. Values are
+    UNECE Rec 19 codes: each matches the rdf:value of a unece:TransportModeCodeList member (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/mmt/consignment#TransportMovement
   kind: datatype_property
@@ -20775,7 +20786,9 @@ records:
     its leg and must agree with it (blueprints/patterns/multimodal-order-leg, grain 4): at leg grain,
     mode is expressed by the reified leg subclasses (inland-transport InlandLeg/RailLeg/BargeLeg/RoadLeg,
     subclasses of TransportLeg) and inland-transport:inlandMode. This scalar is a source-faithful denormalised
-    copy at movement grain (RABIE LogisticsTransportMovement), not the place mode is decided.'
+    copy at movement grain (RABIE LogisticsTransportMovement), not the place mode is decided. Maps to
+    UNECE Rec 19 (unece:TransportModeCodeList, authoritative-ontologies/UNCEFACT): MARITIME=1, RAIL=2,
+    ROAD=3, AIR=4, INLAND_WATERWAY=8.'
   domains:
   - https://www.kairosflow.ai/ont/mmt/consignment#TransportMovement
   kind: datatype_property
@@ -21310,7 +21323,8 @@ records:
   uri: https://www.kairosflow.ai/ont/mmt/documents#dgDeclarationDate
 - comments:
   - 'Transport mode for the dangerous goods. UN/CEFACT MMT-RDM: DangerousGoodsDeclarationType transport
-    mode.'
+    mode. The UN/CEFACT code list for transport mode is UNECE Rec 19 (unece:TransportModeCodeList, authoritative-ontologies/UNCEFACT);
+    where the source carries a code, map it there.'
   domains:
   - https://www.kairosflow.ai/ont/mmt/documents#DangerousGoodsDeclaration
   kind: datatype_property
@@ -23230,7 +23244,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/inland-transport#inlandCarrierCode
 - comments:
-  - 'Inland transport mode: RAIL, BARGE, ROAD.'
+  - 'Inland transport mode: RAIL, BARGE, ROAD. Maps to UNECE Rec 19 (unece:TransportModeCodeList, authoritative-ontologies/UNCEFACT):
+    RAIL=2, ROAD=3, BARGE=8.'
   domains:
   - https://www.kairosflow.ai/ont/mmt/inland-transport#InlandLeg
   kind: datatype_property
@@ -30730,7 +30745,8 @@ records:
   uri: https://www.kairosflow.ai/ont/tic/handling-operations#trainId
 - comments:
   - 'Mode of transport for the carrier trip (VESSEL, TRUCK, TRAIN, BARGE). TIC 4.0: transport mode classification
-    for carrier trip planning.'
+    for carrier trip planning. Maps to UNECE Rec 19 (unece:TransportModeCodeList, authoritative-ontologies/UNCEFACT):
+    VESSEL=1, TRAIN=2, TRUCK=3, BARGE=8.'
   domains:
   - https://www.kairosflow.ai/ont/tic/handling-operations#CarrierTrip
   kind: datatype_property
@@ -34999,7 +35015,9 @@ records:
   uri: https://www.kairosflow.ai/ont/wco/customs#transitStatusCode
 - comments:
   - 'Mode of transport code at the border (WCO T020: 1=sea, 2=rail, 3=road, 4=air, 7=pipeline, 8=inland
-    waterway).'
+    waterway). WCO T020 is UNECE Rec 19 (7 is ''fixed transport installations'', which covers pipelines).
+    Values are UNECE Rec 19 codes: each matches the rdf:value of a unece:TransportModeCodeList member
+    (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/wco/customs#CustomsDeclaration
   kind: datatype_property
@@ -35809,7 +35827,9 @@ records:
   uri: https://www.kairosflow.ai/ont/wco/documents#transitGuaranteeReference
 - comments:
   - 'Mode of transport used for the transit movement (WCO T020: 1=sea, 2=rail, 3=road, 4=air, 7=pipeline,
-    8=inland waterway).'
+    8=inland waterway). WCO T020 is UNECE Rec 19 (7 is ''fixed transport installations'', which covers
+    pipelines). Values are UNECE Rec 19 codes: each matches the rdf:value of a unece:TransportModeCodeList
+    member (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/wco/documents#TransitDocument
   kind: datatype_property

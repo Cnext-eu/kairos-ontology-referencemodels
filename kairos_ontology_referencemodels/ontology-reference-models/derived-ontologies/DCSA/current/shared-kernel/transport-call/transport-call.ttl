@@ -27,8 +27,8 @@
     DCSA Domain v3.1.0 fields may be mapped through full domain discovery.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-06-12"^^xsd:date ;
-    dcterms:modified "2026-06-21"^^xsd:date ;
-    owl:versionInfo "1.6.0" ;
+    dcterms:modified "2026-10-17"^^xsd:date ;
+    owl:versionInfo "1.6.1" ;
     dcterms:source "DCSA Event Domain v3.2.0, DCSA Domain v3.1.0" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
 
@@ -98,7 +98,9 @@
     rdfs:label "mode of transport" ;
     rdfs:comment """Transport mode for this call. DCSA values: VESSEL, BARGE, RAIL, TRUCK.
     Combined modes (RAIL_TRUCK, BARGE_TRUCK, BARGE_RAIL, MULTIMODAL) appear
-    on booking-level properties, not on individual transport calls.""" ;
+    on booking-level properties, not on individual transport calls.
+    Maps to UNECE Rec 19 (unece:TransportModeCodeList, authoritative-ontologies/UNCEFACT): VESSEL=1, RAIL=2, TRUCK=3, BARGE=8, RAIL_TRUCK / BARGE_TRUCK / BARGE_RAIL / MULTIMODAL=6.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportModeCodeList> ;
     rdfs:domain :TransportCall ;
     rdfs:range xsd:string .
 

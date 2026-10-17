@@ -25,6 +25,11 @@ naming_conventions:
   - element: link_to_governed_code
     convention: "has<Dimension>Code"
     example: hasEquipmentTypeCode
+# Where the members live (gh#120): standards-body lists ship as reference data under
+# authoritative-ontologies/ and hubs take them in; client lists ship as empty shells. See
+# "Where the values live" in pattern.md. Re-ingesting a shipped standards-body list per hub
+# is discouraged there in prose; it is not listed as an anti_pattern below because every
+# entry here needs a recorded position in the toolkit's core/pattern_rules.py first.
 anti_patterns:
   - id: raw-string-as-classification-of-record
     description: "The raw source string is propagated as the classification, with no governed dimension to reconcile disagreements against."
