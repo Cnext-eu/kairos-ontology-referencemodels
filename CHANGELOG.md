@@ -5,6 +5,48 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.39.0] - 2026-10-17
+
+### Added
+
+- **More standards-body code lists in `authoritative-ontologies/UNCEFACT/`.** The extract
+  grows from three lists to nine, following a survey of which reference data client hubs
+  maintain as dbt seeds:
+  - From the BSP document already vendored:
+    - `unece:DeliveryTermsCodeList`: Incoterms 2020 / Rec 5, UNTDED 4053, 13 codes.
+    - `unece:TransportMovementStageCodeList`: UNTDED 8051, 30 codes, e.g. 10 pre-carriage,
+      20 main carriage, 30 on-carriage.
+    - `unece:CurrencyCodeList`: ISO 4217 / Rec 9, 179 codes.
+  - From the UN/LOCODE documents (Rec 16):
+    - `unlcdv:Country`: ISO 3166-1, 249 codes.
+    - `unlcdv:Subdivision`: ISO 3166-2, 4,669 codes, linked to its country by
+      `unlcdv:countryCode`.
+    - `unlcdv:Function`: 11 location function classifiers.
+    - The small UN/LOCODE vocabulary that declares these classes and their properties.
+
+  The 115,928 UN/LOCODE locations (~39 MB) are not vendored. They are reference data the
+  hub loads as a table. `unlcdv:UNLOCODE` ships as a class without members: it is marked
+  `kairos-ext:isReferenceData true` and `dcterms:source <https://vocabulary.uncefact.org/unlocode>`,
+  and states the loading instruction in `dcterms:description`. Its properties link to the
+  shipped countries, subdivisions and function codes, so every hub loads to the same shape.
+  The module README gives the suggested table shape and sources.
+
+- `download_uncefact_codelists.py` now reads several upstream documents. It records a
+  sha256 per document plus a combined checksum that `--check` compares, and the UN/LOCODE
+  release (v2023-2) next to the BSP release (D23B). `--from-file` is replaced by
+  `--from-dir`. The OWL patch types the UN/LOCODE properties mechanically from their
+  `schema:domainIncludes` / `schema:rangeIncludes`.
+
+### Notes
+
+- Three upstream subdivisions (`SNDB `, `SOGE `, `THS `) carry a trailing space in their
+  IRI. They are skipped and listed in `METADATA.txt` rather than corrected, because a
+  corrected IRI would be one UN/CEFACT never published.
+- **ISO 6346 container size/type codes are deliberately not vendored.** Neither ISO nor
+  BIC publishes a free-reuse statement for the list, and the standard is sold. ISO 3166 and
+  ISO 4217 codes are included as UNECE republishes them; ISO states the codes themselves are
+  free to use.
+
 ## [1.38.0] - 2026-10-17
 
 ### Added

@@ -20,7 +20,7 @@ The Kairos Reference Models repository provides validated, versioned ontologies 
 - ✅ **FIBO integration** with 300+ Financial Industry Business Ontology files
 - ✅ **8 standard-backed derived ontologies** covering logistics, trade, and sustainability
 - ✅ **SupplyChain bridge module** linking the standards into one supply-chain view
-- ✅ **Reference data (code lists)** — standards-body code lists such as UNECE Rec 19/20/21, vendored and refreshed by script (see [Reference data](#-reference-data-code-lists))
+- ✅ **Reference data (code lists)** — standards-body code lists (UNECE transport modes, units, package types, Incoterms, currencies, ISO 3166 countries and subdivisions, …), vendored and refreshed by script (see [Reference data](#-reference-data-code-lists))
 - ✅ **Accelerator Packs** — one-import bundles for Logistics and Financial Services
 - ✅ **SKOS mappings** for alignment with industry standards (Schema.org)
 - ✅ **Git-based distribution** via tags and submodules
@@ -37,7 +37,7 @@ kairos-ontology-referencemodels/
 │   │   ├── IATA/                      # IATA ONE Record
 │   │   ├── OMG-Commons/               # OMG Commons (vocabularies)
 │   │   ├── OMG-LCC/                   # OMG Languages, Countries & Codes
-│   │   ├── UNCEFACT/                  # Reference data: UNECE Rec 19/20/21 code lists
+│   │   ├── UNCEFACT/                  # Reference data: UNECE / UN/LOCODE code lists
 │   │   └── W3C-SKOS/                  # W3C SKOS core
 │   ├── derived-ontologies/            # Our RDF interpretations of non-RDF standards
 │   │   ├── DCSA/                      # Container shipping (1 root + 6 domains)
@@ -100,7 +100,7 @@ the same list (see `blueprints/patterns/governed-code-list`, "Where the values l
 
 | Module | Contents | Refresh with |
 |---|---|---|
-| `authoritative-ontologies/UNCEFACT/` | UNECE Rec 19 transport modes (10), Rec 20 units of measure (1,828), Rec 21 package types (405) | `scripts/download_uncefact_codelists.py` |
+| `authoritative-ontologies/UNCEFACT/` | UNECE Rec 19 transport modes (10), Rec 20 units of measure (1,828), Rec 21 package types (405), Rec 5 Incoterms (13), transport stage (30), ISO 4217 currencies (179), ISO 3166-1 countries (249), ISO 3166-2 subdivisions (4,669), UN/LOCODE functions (11) | `scripts/download_uncefact_codelists.py` |
 | `authoritative-ontologies/UNCEFACT/` (`UNCEFACT-IATA-alignment.ttl`) | Links from IATA ONE Record codes to the UNECE codes | `scripts/generate_uncefact_iata_alignment.py` (run automatically by the refresh above) |
 | `authoritative-ontologies/IATA/` (`IATA-1R-CL-Ontology.ttl`) | IATA ONE Record code lists (air cargo profiles) | manual re-vendor, see `VERSIONING.md` |
 

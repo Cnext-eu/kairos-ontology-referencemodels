@@ -51,14 +51,15 @@ OMG LCC (Languages, Countries and Codes)
   - License: MIT License
   - Homepage: https://www.omg.org/spec/LCC/
 
-UN/CEFACT code lists (UNECE Recommendations 19, 20 and 21)
+UN/CEFACT code lists (UNECE Recommendations 5, 9, 16, 19, 20 and 21; UN/LOCODE)
   - Path: ontology-reference-models/authoritative-ontologies/UNCEFACT/
   - Publisher: UN/CEFACT, United Nations Economic Commission for Europe
   - License: CC BY 4.0 per UN/CEFACT ("All UN/CEFACT standards are free to use
     under CC By 4.0 license"); written confirmation for the vocabulary.uncefact.org
     endpoint pending -- see the module README
-  - Attribution: UNECE Recommendations 19, 20 and 21, (c) United Nations Economic
-    Commission for Europe
+  - Attribution: UNECE code lists (Recommendations 5, 9, 16, 19, 20 and 21), (c)
+    United Nations Economic Commission for Europe. Country, subdivision and
+    currency codes are ISO 3166 / ISO 4217 codes as UNECE republishes them.
   - Homepage: https://vocabulary.uncefact.org/
 
 W3C SKOS (Simple Knowledge Organization System) core vocabulary

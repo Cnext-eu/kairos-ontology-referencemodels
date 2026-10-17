@@ -45,7 +45,8 @@ way: `scaffold-binding` resolves the module that owns the target class and keeps
 | You need a subclass of a reference class | Import the parent, define the subclass in your domain |
 
 **Link to shipped reference data; do not re-ingest it.** Standards-body code lists ship
-with their members (`authoritative-ontologies/UNCEFACT/`: UNECE Rec 19/20/21). A hub takes
+with their members (`authoritative-ontologies/UNCEFACT/`: UNECE Rec 19/20/21, Incoterms, transport stage, ISO 4217
+currencies, ISO 3166 countries and subdivisions, UN/LOCODE functions). A hub takes
 a shipped list into its governed class (`unece:TransportModeCodeList rdfs:subClassOf
 hub:TransportModeCode`) and joins source data on each code's `rdf:value`. It does not parse
 the standard's PDF into its own table. The snapshot a hub imported is its

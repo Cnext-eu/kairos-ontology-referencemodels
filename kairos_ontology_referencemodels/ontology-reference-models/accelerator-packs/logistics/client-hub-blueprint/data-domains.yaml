@@ -591,7 +591,7 @@ groups:
               a client hub serving air cargo binds to it here, hub-local.
           - uri: "https://www.kairosflow.ai/ont/uncefact/code-lists#"
             module: "UN/CEFACT / Code Lists"
-            provides: "UNECE Rec 19 transport mode codes, Rec 20 unit of measure codes, Rec 21 package type codes"
+            provides: "UNECE Rec 19 transport modes, Rec 20 units of measure, Rec 21 package types, Rec 5 Incoterms (delivery terms), transport stage, ISO 4217 currencies, ISO 3166-1 countries and 3166-2 subdivisions, UN/LOCODE function classifiers"
             import_policy: reference-only
             note: >
               Vendored under authoritative-ontologies/UNCEFACT/ and resolved through the
@@ -616,7 +616,7 @@ groups:
           - "UN/LOCODE"
           - "ISO code lists"
           - "UN/CEFACT CCL"
-          - "UNECE Rec 19 / 20 / 21"
+          - "UNECE Rec 5 / 9 / 16 / 19 / 20 / 21"
 
   - id: master-data-management
     name: "Master Data Management"

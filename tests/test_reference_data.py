@@ -19,6 +19,7 @@ from rdflib.namespace import DCTERMS, OWL, RDF, RDFS
 ONTOLOGY_ROOT = Path(__file__).resolve().parent.parent / "kairos_ontology_referencemodels" / "ontology-reference-models"
 KAIROS_EXT = Namespace("https://kairos.cnext.eu/ext#")
 UNECE = Namespace("https://vocabulary.uncefact.org/")
+UNLCDV = Namespace("https://vocabulary.uncefact.org/unlocode-vocab/")
 
 #: module dir -> (extract file, patch file, patch ontology IRI, code-list classes)
 REFERENCE_DATA_MODULES = {
@@ -26,7 +27,17 @@ REFERENCE_DATA_MODULES = {
         "UNCEFACT-CodeLists.ttl",
         "UNCEFACT-CodeLists.owl-patch.ttl",
         URIRef("https://www.kairosflow.ai/ont/uncefact/code-lists"),
-        [UNECE.TransportModeCodeList, UNECE.UnitMeasureCode, UNECE.PackageTypeCodeList],
+        [
+            UNECE.TransportModeCodeList,
+            UNECE.UnitMeasureCode,
+            UNECE.PackageTypeCodeList,
+            UNECE.DeliveryTermsCodeList,
+            UNECE.TransportMovementStageCodeList,
+            UNECE.CurrencyCodeList,
+            UNLCDV.Country,
+            UNLCDV.Subdivision,
+            UNLCDV.Function,
+        ],
     ),
 }
 
@@ -69,6 +80,18 @@ def test_code_list_classes_carry_reference_data_provenance(module) -> None:
         assert see_also.endswith(f"/authoritative-ontologies/{module['name']}/README.md"), (
             f"{cls} rdfs:seeAlso does not point at the module README: {see_also!r}"
         )
+
+
+def test_hub_loaded_reference_classes_say_where_their_rows_come_from() -> None:
+    """unlcdv:UNLOCODE ships without members, so its source and instruction are its whole contract."""
+    current = ONTOLOGY_ROOT / "authoritative-ontologies" / "UNCEFACT" / "current"
+    extract = Graph().parse(current / "UNCEFACT-CodeLists.ttl")
+    patch = Graph().parse(current / "UNCEFACT-CodeLists.owl-patch.ttl")
+    cls = UNLCDV.UNLOCODE
+    assert (None, RDF.type, cls) not in extract, "UN/LOCODE locations must not be vendored"
+    assert patch.value(cls, KAIROS_EXT.isReferenceData) == Literal(True)
+    assert str(patch.value(cls, DCTERMS.source)) == "https://vocabulary.uncefact.org/unlocode"
+    assert "not vendored" in str(patch.value(cls, DCTERMS.description))
 
 
 def test_every_code_is_an_owl_individual_with_a_code(module) -> None:
