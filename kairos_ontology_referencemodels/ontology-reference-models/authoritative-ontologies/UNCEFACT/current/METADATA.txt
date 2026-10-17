@@ -1,0 +1,31 @@
+UN/CEFACT Code Lists - Download Information
+============================================
+
+source: UN/CEFACT JSON-LD Web Vocabulary
+publisher: United Nations Centre for Trade Facilitation and Electronic Business (UN/CEFACT), UNECE
+source_url: https://vocabulary.uncefact.org/ (Accept: application/ld+json)
+source_repository: https://github.com/uncefact/spec-JSONLD
+download_date: 2026-10-17
+version: none published -- the endpoint serves one unversioned dump; this snapshot is
+  identified by its download date and checksum.
+dump_sha256: d8d194408fc2adb774c3e783ef362c19140bae75418f4b82419d1ddc203ad7aa
+dump_bytes: 8764615
+code_lists:
+  - unece:TransportModeCodeList (10 codes) -- UNECE Recommendation No. 19 (Codes for Modes of Transport)
+  - unece:UnitMeasureCode (1828 codes) -- UNECE Recommendation No. 20 (Codes for Units of Measure)
+  - unece:PackageTypeCodeList (405 codes) -- UNECE Recommendation No. 21 (Codes for Passengers, Types of Cargo, Packages and Packaging Materials)
+ontology_files:
+  - UNCEFACT-CodeLists.ttl            (vendor extract; ontology IRI https://www.kairosflow.ai/ont/uncefact/code-lists-vendor-extract)
+  - UNCEFACT-CodeLists.owl-patch.ttl  (generated OWL typing; ontology IRI https://www.kairosflow.ai/ont/uncefact/code-lists)
+license: see README.md, section License
+generator: scripts/download_uncefact_codelists.py -- regenerates all three files; do not hand-edit.
+deviations:
+  - Extract, not mirror. Only the code-list classes above and the nodes typed by them
+    are vendored; the rest of the vocabulary (the UN/CEFACT trade data model) is not.
+  - Owl:Ontology headers are Kairos-minted. The dump declares no ontology, and an
+    extract must not claim the IRI of the whole vocabulary.
+  - The dump's @context omits the rdf: prefix used by every rdf:value; the generator
+    expands it to the standard RDF namespace. Not yet reported upstream.
+  - UNCEFACT-CodeLists.owl-patch.ttl adds owl:Class, owl:NamedIndividual and
+    rdfs:label (copied from each code's rdfs:comment). Wired in by importing the
+    extract, so the extract stays byte-for-byte generated.

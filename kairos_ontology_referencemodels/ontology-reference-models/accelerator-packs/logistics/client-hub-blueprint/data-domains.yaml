@@ -589,6 +589,15 @@ groups:
               catalog. Uses the same reference-only policy as the IATA cargo module in
               the booking domain (gh#106) — the accelerator pack never bulk-imports it;
               a client hub serving air cargo binds to it here, hub-local.
+          - uri: "https://www.kairosflow.ai/ont/uncefact/code-lists#"
+            module: "UN/CEFACT / Code Lists"
+            provides: "UNECE Rec 19 transport mode codes, Rec 20 unit of measure codes, Rec 21 package type codes"
+            import_policy: reference-only
+            note: >
+              Vendored under authoritative-ontologies/UNCEFACT/ and resolved through the
+              catalog (gh#120). Standards-body lists, so the members ship here instead of
+              being re-ingested per hub. Unlike the IATA code lists these are mode-neutral:
+              Rec 19 is the full ten-code list, not IATA's air profile of it.
           - uri: "https://onerecord.iata.org/ns/cargo#"
             module: "IATA ONE Record / Cargo"
             provides: "Generic code-list element and other-identifier value objects (CodeListElement, OtherIdentifier) used across the cargo data model"
@@ -607,6 +616,7 @@ groups:
           - "UN/LOCODE"
           - "ISO code lists"
           - "UN/CEFACT CCL"
+          - "UNECE Rec 19 / 20 / 21"
 
   - id: master-data-management
     name: "Master Data Management"

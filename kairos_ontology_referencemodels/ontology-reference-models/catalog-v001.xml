@@ -35,6 +35,18 @@
     <uri name="https://raw.githubusercontent.com/IATA-Cargo/ONE-Record/refs/heads/master/working_draft/ontology/IATA-1R-CL-Ontology.ttl"
          uri="authoritative-ontologies/IATA/current/IATA-1R-CL-Ontology.ttl"/>
 
+    <!-- ========== UN/CEFACT code lists (UNECE Rec 19/20/21, authoritative extract) ========== -->
+    <!-- Same arrangement as the IATA domains-patch above (gh#120). The public name
+         resolves to a generated OWL patch that owl:imports the vendor extract, so the
+         extract stays exactly what scripts/download_uncefact_codelists.py wrote. Both
+         ontology IRIs are Kairos-minted: upstream publishes no ontology document, and
+         an extract of three code lists must not answer to the IRI of the whole
+         UN/CEFACT vocabulary. Terms keep their https://vocabulary.uncefact.org/ IRIs. -->
+    <uri name="https://www.kairosflow.ai/ont/uncefact/code-lists"
+         uri="authoritative-ontologies/UNCEFACT/current/UNCEFACT-CodeLists.owl-patch.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/uncefact/code-lists-vendor-extract"
+         uri="authoritative-ontologies/UNCEFACT/current/UNCEFACT-CodeLists.ttl"/>
+
     <!-- ========== FIBO: single rewrite rule resolves all FIBO URIs to the stable local path.
          The folder is always named "fibo/" regardless of release version. -->
     <rewriteURI uriStartString="https://spec.edmcouncil.org/fibo/ontology/"

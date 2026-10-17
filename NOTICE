@@ -51,6 +51,12 @@ OMG LCC (Languages, Countries and Codes)
   - License: MIT License
   - Homepage: https://www.omg.org/spec/LCC/
 
+UN/CEFACT code lists (UNECE Recommendations 19, 20 and 21)
+  - Path: ontology-reference-models/authoritative-ontologies/UNCEFACT/
+  - Publisher: UN/CEFACT, United Nations Economic Commission for Europe
+  - License: no explicit licence published; see the module README
+  - Homepage: https://vocabulary.uncefact.org/
+
 W3C SKOS (Simple Knowledge Organization System) core vocabulary
   - Path: ontology-reference-models/authoritative-ontologies/W3C-SKOS/
   - Copyright (c) 2009 World Wide Web Consortium

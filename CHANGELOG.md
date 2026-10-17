@@ -5,6 +5,36 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.38.0] - 2026-10-17
+
+### Added
+
+- **UN/CEFACT code lists as an authoritative extract** (gh#120). New module
+  `authoritative-ontologies/UNCEFACT/` vendors the UNECE Rec 19 (transport mode, 10
+  codes), Rec 20 (unit of measure, 1,828) and Rec 21 (package type, 405) code lists from
+  the UN/CEFACT JSON-LD Web Vocabulary. Hubs import
+  `https://www.kairosflow.ai/ont/uncefact/code-lists`. Each code keeps its upstream IRI
+  (`https://vocabulary.uncefact.org/TransportModeCodeList#4`) and carries the code in
+  `rdf:value`, so it can serve as the join key to source data. Before this, hubs
+  re-ingested these lists from the UNECE PDFs, and nothing identified two hubs' copies
+  as the same list.
+
+  The IATA `code-lists:ModeCode` was not usable for this. Its `owl:oneOf` enumeration
+  leaves out Mail (5), although the `ModeCode#MAIL` individual exists, and its codes
+  appear only in `rdfs:comment` prose.
+
+  UN/CEFACT serves one unversioned ~8.7 MB dump of its whole vocabulary, so
+  `scripts/download_uncefact_codelists.py` keeps only the three classes and their
+  members, unchanged, and records the snapshot date and the dump's sha256 in
+  `METADATA.txt`. As with the IATA domains-patch (gh#93), a generated sidecar
+  (`UNCEFACT-CodeLists.owl-patch.ttl`) adds the `owl:Class`, `owl:NamedIndividual` and
+  `rdfs:label` typing the upstream lacks, and imports the extract, which is never
+  edited. Registered in the catalog, in the logistics manifest `references`, and in
+  the `reference-data` domain as `import_policy: reference-only`.
+
+  The redistribution licence is unconfirmed: UN/CEFACT publishes none with the
+  vocabulary. See the module README.
+
 ## [1.37.0] - 2026-09-21
 
 ### Fixed
