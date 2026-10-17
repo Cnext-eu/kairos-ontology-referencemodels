@@ -192,6 +192,25 @@ is what fails if you skip one.
 > version number. If you slip, restore with
 > `git archive origin/main <vendor-current-path>` and copy that into `archive/<old>/`.
 
+## Runbook: refreshing reference data
+
+This repository ships reference data (standards-body code lists) as well as ontologies, and
+reference data goes stale: UN/CEFACT revises UNECE Rec 19/20/21 in place, without a release.
+Refresh it **with the scripts**, never by hand:
+
+| # | Step | Command / check |
+|---|---|---|
+| 1 | Check upstream | `python scripts/download_uncefact_codelists.py --check` (exit 1 = changed) |
+| 2 | Refresh | `python scripts/download_uncefact_codelists.py` — archives the old snapshot, regenerates the extract, OWL patch, `METADATA.txt` and the IATA alignment |
+| 3 | Review | Diff `UNCEFACT-CodeLists.ttl`. A **removed** code is breaking for hubs that store it. |
+| 4 | Gate | Full validation gate; `tests/test_reference_data.py` checks snapshot-date consistency |
+| 5 | Release | Bump root `VERSION`; CHANGELOG entry naming the snapshot date |
+
+The `reference-data-freshness` workflow does steps 1–2 monthly and opens a PR; steps 3–5
+remain the reviewer's. After re-vendoring IATA, run
+`python scripts/generate_uncefact_iata_alignment.py` as well. See `VERSIONING.md`,
+"Refreshing reference data".
+
 ## Runbook: changing a data domain or blueprint
 
 `data-domains.yaml` looks local and is not — it is a published contract surface the

@@ -20,6 +20,7 @@ The Kairos Reference Models repository provides validated, versioned ontologies 
 - ✅ **FIBO integration** with 300+ Financial Industry Business Ontology files
 - ✅ **8 standard-backed derived ontologies** covering logistics, trade, and sustainability
 - ✅ **SupplyChain bridge module** linking the standards into one supply-chain view
+- ✅ **Reference data (code lists)** — standards-body code lists such as UNECE Rec 19/20/21, vendored and refreshed by script (see [Reference data](#-reference-data-code-lists))
 - ✅ **Accelerator Packs** — one-import bundles for Logistics and Financial Services
 - ✅ **SKOS mappings** for alignment with industry standards (Schema.org)
 - ✅ **Git-based distribution** via tags and submodules
@@ -36,6 +37,7 @@ kairos-ontology-referencemodels/
 │   │   ├── IATA/                      # IATA ONE Record
 │   │   ├── OMG-Commons/               # OMG Commons (vocabularies)
 │   │   ├── OMG-LCC/                   # OMG Languages, Countries & Codes
+│   │   ├── UNCEFACT/                  # Reference data: UNECE Rec 19/20/21 code lists
 │   │   └── W3C-SKOS/                  # W3C SKOS core
 │   ├── derived-ontologies/            # Our RDF interpretations of non-RDF standards
 │   │   ├── DCSA/                      # Container shipping (1 root + 6 domains)
@@ -55,7 +57,7 @@ kairos-ontology-referencemodels/
 │   │   ├── patterns/                  # Sector-neutral shapes and naming conventions
 │   │   └── ontology/                  # Kairos-authored classes where no standard defines the grain
 │   └── catalog-v001.xml               # XML catalog for import resolution
-├── scripts/                           # Tooling (validation, version management)
+├── scripts/                           # Tooling (validation, version management, reference-data refresh)
 ├── examples/                          # Usage examples
 ├── .github/workflows/                 # CI/CD (validate + release)
 ├── VERSION                            # Global semantic version
@@ -86,6 +88,42 @@ view. Plus **FIBO**, **IATA ONE Record**, **OMG Commons / LCC**, and **W3C SKOS*
 authoritative ontology files vendored verbatim from the standards bodies.
 
 Each derived ontology lives in its own directory under `kairos_ontology_referencemodels/ontology-reference-models/derived-ontologies/` with a `VERSION` file for independent versioning.
+
+---
+
+## 📋 Reference data (code lists)
+
+This repository ships **reference data** as well as ontologies: the members of code lists
+that a standards body publishes and maintains. Hubs link to these shared codes instead of
+each re-ingesting the list from the standard's PDF, so two hubs' copies are recognisably
+the same list (see `blueprints/patterns/governed-code-list`, "Where the values live").
+
+| Module | Contents | Refresh with |
+|---|---|---|
+| `authoritative-ontologies/UNCEFACT/` | UNECE Rec 19 transport modes (10), Rec 20 units of measure (1,828), Rec 21 package types (405) | `scripts/download_uncefact_codelists.py` |
+| `authoritative-ontologies/UNCEFACT/` (`UNCEFACT-IATA-alignment.ttl`) | Links from IATA ONE Record codes to the UNECE codes | `scripts/generate_uncefact_iata_alignment.py` (run automatically by the refresh above) |
+| `authoritative-ontologies/IATA/` (`IATA-1R-CL-Ontology.ttl`) | IATA ONE Record code lists (air cargo profiles) | manual re-vendor, see `VERSIONING.md` |
+
+> ⚠️ **Reference data goes stale.** Standards bodies revise code lists in place, often
+> without a release to watch, so **refresh these lists periodically with the scripts**:
+>
+> ```bash
+> python scripts/download_uncefact_codelists.py --check   # exit 1 if upstream changed
+> python scripts/download_uncefact_codelists.py           # refresh, archive the old snapshot
+> ```
+>
+> The `reference-data-freshness` workflow runs the refresh monthly and opens a PR when
+> upstream changed. Never hand-edit the generated `.ttl` files. A refresh that **removes**
+> a code is a breaking change for hubs that store it. See `VERSIONING.md`, "Refreshing
+> reference data".
+
+Each code-list class carries its provenance in the graph: `kairos-ext:isReferenceData true`,
+`owl:versionInfo` (the snapshot date), `dcterms:source` (where it was downloaded from), and
+`rdfs:seeAlso` (the module README). Each code keeps its code in `rdf:value` as the join key
+to source data.
+
+Lists a client defines (party roles, internal statuses) are **not** shipped: their
+governed classes are empty shells that the hub fills in its `reference-data` domain.
 
 ---
 

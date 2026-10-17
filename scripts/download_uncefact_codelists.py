@@ -219,8 +219,7 @@ publisher: United Nations Centre for Trade Facilitation and Electronic Business 
 source_url: {SOURCE_URL} (Accept: application/ld+json)
 source_repository: https://github.com/uncefact/spec-JSONLD
 download_date: {snapshot}
-version: none published -- the endpoint serves one unversioned dump; this snapshot is
-  identified by its download date and checksum.
+version: {snapshot} (snapshot date; upstream publishes no version)
 dump_sha256: {digest}
 dump_bytes: {size}
 code_lists:

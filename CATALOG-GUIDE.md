@@ -9,6 +9,13 @@ The Kairos Ontology Hub uses **XML Catalog** to resolve FIBO ontology imports fr
 - ✅ **Fast validation** - Local file access (no HTTP latency)
 - ✅ **Version control** - Explicit tracking of FIBO version
 
+The same catalog resolves the other vendored sources, including **reference data**: the
+UN/CEFACT code lists resolve as `https://www.kairosflow.ai/ont/uncefact/code-lists`
+(a generated OWL patch that imports the vendor extract) and
+`https://www.kairosflow.ai/ont/uncefact/iata-alignment`. These are refreshed by
+`scripts/download_uncefact_codelists.py`, not edited; see `VERSIONING.md`, "Refreshing
+reference data".
+
 ---
 
 ## Architecture

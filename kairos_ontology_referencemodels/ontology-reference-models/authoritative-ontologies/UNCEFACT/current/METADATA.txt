@@ -6,8 +6,7 @@ publisher: United Nations Centre for Trade Facilitation and Electronic Business 
 source_url: https://vocabulary.uncefact.org/ (Accept: application/ld+json)
 source_repository: https://github.com/uncefact/spec-JSONLD
 download_date: 2026-10-17
-version: none published -- the endpoint serves one unversioned dump; this snapshot is
-  identified by its download date and checksum.
+version: 2026-10-17 (snapshot date; upstream publishes no version)
 dump_sha256: d8d194408fc2adb774c3e783ef362c19140bae75418f4b82419d1ddc203ad7aa
 dump_bytes: 8764615
 code_lists:

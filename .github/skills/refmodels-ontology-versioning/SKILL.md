@@ -103,7 +103,27 @@ After downloading, update `catalog-v001.xml` if the extracted folder name change
 and hand-write `METADATA.txt` in the same key order. See
 `kairos_ontology_referencemodels/ontology-reference-models/VERSIONING.md`. Always finish with
 `pytest tests/test_bundle_conformance.py`, which proves every closure still resolves offline;
-a mirror that silently stops resolving is exactly the v1.16.0 failure (gh#57).
+a mirror that silently stops resolving is exactly the v1.16.0 failure (gh#57). After
+re-vendoring IATA, also run `scripts/generate_iata_domain_patch.py` and
+`scripts/generate_uncefact_iata_alignment.py`.
+
+## Versioning Workflow (Reference Data — code lists)
+
+The repo ships standards-body code lists (`authoritative-ontologies/UNCEFACT/`: UNECE Rec
+19/20/21). They are revised in place upstream with no release, so refresh them
+**periodically, by script**:
+
+```bash
+python scripts/download_uncefact_codelists.py --check   # exit 1 if upstream changed
+python scripts/download_uncefact_codelists.py           # refresh
+```
+
+The script archives `current/` to `archive/<old download date>/`, rewrites the extract,
+the OWL patch and `METADATA.txt`, and regenerates the IATA alignment. The version is the
+download date (`owl:versionInfo`); there is no `VERSION` file. Diff the extract: a
+**removed** code is breaking for hubs. Then bump the root `VERSION` and add a CHANGELOG
+entry. The monthly `reference-data-freshness` workflow opens the PR for you. See
+`VERSIONING.md`, "Refreshing reference data".
 
 ## Folder Structure
 
