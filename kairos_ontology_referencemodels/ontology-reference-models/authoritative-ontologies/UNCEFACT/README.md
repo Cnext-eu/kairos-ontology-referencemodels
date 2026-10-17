@@ -113,6 +113,42 @@ accelerator never bulk-imports it. Per `blueprints/patterns/governed-code-list`,
 whose governed code-list class stands for one of these lists links to these members
 instead of re-ingesting the list from the UNECE PDFs.
 
+## UN/LOCODE locations: load in the hub
+
+The ~116,000 UN/LOCODE locations are **reference data that this module deliberately does
+not vendor**. At ~39 MB, and re-released twice a year, they would dwarf everything else and
+ride along in every hub that imports the module. They are also rows a hub queries and joins,
+not a small enumeration it binds classes to. They belong in the hub as a **reference table**.
+
+What ships here is the **target shape**, so every hub loads to the same class and IRIs:
+
+- the class `unlcdv:UNLOCODE`. In the OWL patch it carries
+  `kairos-ext:isReferenceData true`, `dcterms:source <https://vocabulary.uncefact.org/unlocode>`,
+  and the loading instruction in `dcterms:description`. It has no members;
+- its properties `unlcdv:countryCode` (→ `unlcdv:Country`),
+  `unlcdv:countrySubdivision` (→ `unlcdv:Subdivision`) and `unlcdv:functions`
+  (→ `unlcdv:Function`), whose targets **do** ship here.
+
+| Column (suggested) | From the JSON-LD dump | Notes |
+|---|---|---|
+| `locode` (key) | `rdf:value`, e.g. `BEANR` | 5 characters: ISO 3166-1 country + 3-character location |
+| `iri` | `@id`, e.g. `https://vocabulary.uncefact.org/unlocode#BEANR` | Stable upstream IRI |
+| `name` | `rdfs:label` | |
+| `country_code` | `unlcdv:countryCode` → `unlcdv:Country` | Join to the shipped countries |
+| `subdivision_code` | `unlcdv:countrySubdivision` → `unlcdv:Subdivision` | Absent for ~12% of locations |
+| `function_codes` | `unlcdv:functions` → `unlcdv:Function` | Several per location (1 = port, 4 = airport, …) |
+| `latitude`, `longitude` | `geo:lat`, `geo:long` | Absent for ~20% of locations |
+| `status` | — | Only in the official UNECE CSV release; the endpoint does not serve it |
+
+**Sources.** `https://vocabulary.uncefact.org/unlocode` (JSON-LD, `Accept:
+application/ld+json`), or the official UNECE UN/LOCODE CSV release, which also carries the
+Status column and the change indicators. Reload on each UN/LOCODE release (twice a year:
+`YYYY-1`, `YYYY-2`); the release vendored alongside is in `METADATA.txt`
+(`upstream_release`).
+
+The derived modules' location-code text fields (`unLocationCode`, `unlocode`) hold the
+same 5-character code. Kairos-ontology-toolkit#1126 tracks generating this loader for hubs.
+
 ## License
 
 **Intended licence: CC BY 4.0, attribution to UNECE / UN/CEFACT. Written confirmation from

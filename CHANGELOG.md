@@ -24,7 +24,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `unlcdv:Function`: 11 location function classifiers.
     - The small UN/LOCODE vocabulary that declares these classes and their properties.
 
-  The 115,928 UN/LOCODE locations (~39 MB) are not vendored.
+  The 115,928 UN/LOCODE locations (~39 MB) are not vendored. They are reference data the
+  hub loads as a table. `unlcdv:UNLOCODE` ships as a class without members: it is marked
+  `kairos-ext:isReferenceData true` and `dcterms:source <https://vocabulary.uncefact.org/unlocode>`,
+  and states the loading instruction in `dcterms:description`. Its properties link to the
+  shipped countries, subdivisions and function codes, so every hub loads to the same shape.
+  The module README gives the suggested table shape and sources.
 
 - `download_uncefact_codelists.py` now reads several upstream documents. It records a
   sha256 per document plus a combined checksum that `--check` compares, and the UN/LOCODE

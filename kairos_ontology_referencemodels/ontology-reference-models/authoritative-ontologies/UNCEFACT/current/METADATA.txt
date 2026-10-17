@@ -48,6 +48,9 @@ deviations:
     (copied from rdfs:comment where a code has none) and OWL types, domains and ranges
     for the UN/LOCODE properties (from schema:domainIncludes / schema:rangeIncludes).
     Wired in by importing the extract, so the extract stays byte-for-byte generated.
+  - unlcdv:UNLOCODE ships as a class without members: the locations are loaded into
+    the hub as a reference table from https://vocabulary.uncefact.org/unlocode. The patch marks it as
+    reference data and states the loading instruction in dcterms:description.
   - The patch also marks each code-list class as reference data
     (kairos-ext:isReferenceData true) and stamps the ontology and each class with
     owl:versionInfo "<download_date>", dcterms:source <its document> and

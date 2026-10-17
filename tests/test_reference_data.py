@@ -82,6 +82,18 @@ def test_code_list_classes_carry_reference_data_provenance(module) -> None:
         )
 
 
+def test_hub_loaded_reference_classes_say_where_their_rows_come_from() -> None:
+    """unlcdv:UNLOCODE ships without members, so its source and instruction are its whole contract."""
+    current = ONTOLOGY_ROOT / "authoritative-ontologies" / "UNCEFACT" / "current"
+    extract = Graph().parse(current / "UNCEFACT-CodeLists.ttl")
+    patch = Graph().parse(current / "UNCEFACT-CodeLists.owl-patch.ttl")
+    cls = UNLCDV.UNLOCODE
+    assert (None, RDF.type, cls) not in extract, "UN/LOCODE locations must not be vendored"
+    assert patch.value(cls, KAIROS_EXT.isReferenceData) == Literal(True)
+    assert str(patch.value(cls, DCTERMS.source)) == "https://vocabulary.uncefact.org/unlocode"
+    assert "not vendored" in str(patch.value(cls, DCTERMS.description))
+
+
 def test_every_code_is_an_owl_individual_with_a_code(module) -> None:
     extract, patch = module["extract"], module["patch"]
     for cls in module["classes"]:

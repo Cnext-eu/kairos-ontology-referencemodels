@@ -114,6 +114,26 @@ SOURCES = [
     }),
 ]
 
+#: Reference-data classes whose members are deliberately NOT vendored: compact class IRI ->
+#: (where the rows come from, the instruction stamped on the class). The class and its
+#: properties ship (from unlocode-vocab) so every hub targets the same shape and IRIs; the
+#: rows are loaded into the hub as a reference table. Kept as prose until the toolkit reads
+#: a machine-readable marker for it (kairos-ontology-toolkit#1126).
+HUB_LOADED_CLASSES = {
+    "unlcdv:UNLOCODE": (
+        BASE_URL + "unlocode",
+        "Reference data whose members are deliberately not vendored: the ~116,000 UN/LOCODE "
+        "locations (~39 MB, re-released twice a year) belong in the hub as a reference table, "
+        "not in an imported ontology. Load them from https://vocabulary.uncefact.org/unlocode "
+        "(JSON-LD; each location's IRI is https://vocabulary.uncefact.org/unlocode#<LOCODE>) "
+        "or from the official UNECE UN/LOCODE CSV release, which also carries the Status "
+        "column the endpoint does not serve. Key rows on the 5-character code (country + "
+        "3-character location), and link them to the shipped codes with unlcdv:countryCode "
+        "(unlcdv:Country), unlcdv:countrySubdivision (unlcdv:Subdivision) and "
+        "unlcdv:functions (unlcdv:Function). See the module README, 'UN/LOCODE locations'.",
+    ),
+}
+
 # The BSP dump's @context declares rdfs, unece, xsd, owl and schema but not rdf, although
 # every code value is keyed "rdf:value". A conforming JSON-LD processor would read
 # "rdf:value" as an absolute IRI with scheme "rdf", so the dumps are read as plain JSON
@@ -319,6 +339,17 @@ def write_patch(extract_graph: Graph, snapshot: str) -> None:
     # Classes the vendored UN/LOCODE vocabulary declares without shipped members (UNLOCODE).
     for cls in extract_graph.subjects(RDF.type, RDFS.Class):
         patch.add((cls, RDF.type, OWL.Class))
+    for class_id, (source_url, instruction) in HUB_LOADED_CLASSES.items():
+        cls = expand(class_id)
+        if (cls, RDF.type, RDFS.Class) not in extract_graph:
+            raise ValueError(f"{class_id} is not declared by any vendored document")
+        if (None, RDF.type, cls) in extract_graph:
+            raise ValueError(f"{class_id} is hub-loaded but members were vendored")
+        patch.add((cls, KAIROS_EXT.isReferenceData, Literal(True)))
+        patch.add((cls, OWL.versionInfo, Literal(snapshot)))
+        patch.add((cls, DCTERMS.source, URIRef(source_url)))
+        patch.add((cls, DCTERMS.description, Literal(instruction)))
+        patch.add((cls, RDFS.seeAlso, URIRef(README_URL)))
     _owl_property_types(extract_graph, patch)
     patch.serialize(PATCH_TTL, format="turtle", encoding="utf-8")
 
@@ -380,6 +411,9 @@ deviations:
     (copied from rdfs:comment where a code has none) and OWL types, domains and ranges
     for the UN/LOCODE properties (from schema:domainIncludes / schema:rangeIncludes).
     Wired in by importing the extract, so the extract stays byte-for-byte generated.
+  - unlcdv:UNLOCODE ships as a class without members: the locations are loaded into
+    the hub as a reference table from {BASE_URL}unlocode. The patch marks it as
+    reference data and states the loading instruction in dcterms:description.
   - The patch also marks each code-list class as reference data
     (kairos-ext:isReferenceData true) and stamps the ontology and each class with
     owl:versionInfo "<download_date>", dcterms:source <its document> and

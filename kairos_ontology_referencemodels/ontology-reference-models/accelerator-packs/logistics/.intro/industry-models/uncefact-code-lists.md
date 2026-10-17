@@ -32,6 +32,15 @@ python scripts/download_uncefact_codelists.py           # refresh
 The monthly `reference-data-freshness` workflow opens a PR when upstream changed. A
 **removed** code is breaking for hubs that store it.
 
+## UN/LOCODE locations are loaded by the hub, not shipped
+
+The ~116,000 UN/LOCODE locations are reference data too, but they are too large and change
+too often (twice a year) to ship in an imported ontology. The module ships their **shape**:
+the class `unlcdv:UNLOCODE`, marked `kairos-ext:isReferenceData` with a `dcterms:source`
+and a loading instruction, and properties linking to the shipped countries, subdivisions
+and function codes. The hub loads the rows as a reference table keyed on the 5-character
+code. See the module README, "UN/LOCODE locations: load in the hub".
+
 ## How a hub uses it
 
 `reference-only` in `manifest.yaml`: the accelerator never bulk-imports it. The hub's

@@ -17352,5 +17352,10 @@ unlcdv:Subdivision a owl:Class ;
     owl:versionInfo "2026-10-17" ;
     kairos-ext:isReferenceData true .
 
-unlcdv:UNLOCODE a owl:Class .
+unlcdv:UNLOCODE a owl:Class ;
+    dcterms:description "Reference data whose members are deliberately not vendored: the ~116,000 UN/LOCODE locations (~39 MB, re-released twice a year) belong in the hub as a reference table, not in an imported ontology. Load them from https://vocabulary.uncefact.org/unlocode (JSON-LD; each location's IRI is https://vocabulary.uncefact.org/unlocode#<LOCODE>) or from the official UNECE UN/LOCODE CSV release, which also carries the Status column the endpoint does not serve. Key rows on the 5-character code (country + 3-character location), and link them to the shipped codes with unlcdv:countryCode (unlcdv:Country), unlcdv:countrySubdivision (unlcdv:Subdivision) and unlcdv:functions (unlcdv:Function). See the module README, 'UN/LOCODE locations'." ;
+    dcterms:source unece:unlocode ;
+    rdfs:seeAlso <https://github.com/Cnext-eu/kairos-ontology-referencemodels/blob/main/kairos_ontology_referencemodels/ontology-reference-models/authoritative-ontologies/UNCEFACT/README.md> ;
+    owl:versionInfo "2026-10-17" ;
+    kairos-ext:isReferenceData true .
 
