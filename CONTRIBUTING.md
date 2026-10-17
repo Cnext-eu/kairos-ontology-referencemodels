@@ -195,7 +195,7 @@ is what fails if you skip one.
 ## Runbook: refreshing reference data
 
 This repository ships reference data (standards-body code lists) as well as ontologies, and
-reference data goes stale: UN/CEFACT revises UNECE Rec 19/20/21 in place, without a release.
+reference data goes stale: UN/CEFACT revises the UNECE code lists in place, without a release.
 Refresh it **with the scripts**, never by hand:
 
 | # | Step | Command / check |

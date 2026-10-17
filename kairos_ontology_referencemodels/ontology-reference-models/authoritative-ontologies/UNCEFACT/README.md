@@ -8,9 +8,10 @@ the `.ttl` files**; re-run `scripts/download_uncefact_codelists.py` instead.
 
 **Authoritative.** UN/CEFACT publishes these lists natively as RDF, so they enter
 `authoritative-ontologies/` rather than being re-authored as a derived ontology (gh#120).
-It is an *extract*, not a full mirror: the vocabulary is one ~8.7 MB document holding the
-whole UN/CEFACT trade data model, and only the code lists below are vendored. Every
-vendored triple is copied unchanged and keeps its `https://vocabulary.uncefact.org/` IRI.
+It is an *extract*, not a full mirror. The root document is ~8.7 MB holding the whole
+UN/CEFACT trade data model, and the UN/LOCODE locations are another ~39 MB; only the code
+lists below are vendored, from five upstream documents. Every vendored triple is copied
+unchanged and keeps its `https://vocabulary.uncefact.org/` IRI.
 
 ## Contents
 
@@ -19,16 +20,33 @@ vendored triple is copied unchanged and keeps its `https://vocabulary.uncefact.o
 | `UNCEFACT-CodeLists.ttl` | `https://www.kairosflow.ai/ont/uncefact/code-lists-vendor-extract` | Vendor extract |
 | `UNCEFACT-CodeLists.owl-patch.ttl` | `https://www.kairosflow.ai/ont/uncefact/code-lists` | Generated OWL typing; imports the extract. **Hubs import this IRI.** |
 | `UNCEFACT-IATA-alignment.ttl` | `https://www.kairosflow.ai/ont/uncefact/iata-alignment` | Generated `skos:exactMatch` from IATA ONE Record codes to these codes |
-| `METADATA.txt` | — | Provenance: source, snapshot date, checksum, deviations |
+| `METADATA.txt` | — | Provenance: source documents, snapshot date, checksums, deviations |
 
-| UN/CEFACT class | Recommendation | Codes |
-|---|---|---|
-| `unece:TransportModeCodeList` | Rec 19 — Codes for Modes of Transport | 10 |
-| `unece:UnitMeasureCode` | Rec 20 — Codes for Units of Measure | 1,828 |
-| `unece:PackageTypeCodeList` | Rec 21 — Codes for Types of Cargo, Packages and Packaging Materials | 405 |
+| UN/CEFACT class | What it is | Codes | Upstream document |
+|---|---|---|---|
+| `unece:TransportModeCodeList` | Rec 19 — Codes for Modes of Transport | 10 | `/` (BSP) |
+| `unece:UnitMeasureCode` | Rec 20 — Codes for Units of Measure | 1,828 | `/` (BSP) |
+| `unece:PackageTypeCodeList` | Rec 21 — Codes for Types of Cargo, Packages and Packaging Materials | 405 | `/` (BSP) |
+| `unece:DeliveryTermsCodeList` | Delivery terms (UNTDED 4053): the 11 ICC Incoterms 2020 abbreviations (Rec 5) + 2 generic codes | 13 | `/` (BSP) |
+| `unece:TransportMovementStageCodeList` | Transport stage (UNTDED 8051): 10 pre-carriage, 20 main carriage, 30 on-carriage, … | 30 | `/` (BSP) |
+| `unece:CurrencyCodeList` | Currency codes (UNTDED 6345): ISO 4217, Rec 9 | 179 | `/` (BSP) |
+| `unlcdv:Country` | ISO 3166-1 alpha-2 countries, as published with UN/LOCODE (Rec 16) | 249 | `/unlocode-countries` |
+| `unlcdv:Subdivision` | ISO 3166-2 subdivisions, as published with UN/LOCODE (Rec 16) | 4,669 | `/unlocode-subdivisions` |
+| `unlcdv:Function` | UN/LOCODE function classifiers (Rec 16) | 11 | `/unlocode-functions` |
+
+The UN/LOCODE classes and their properties (`unlcdv:countryCode`, `unlcdv:subdivisionType`,
+…) come from the small `/unlocode-vocab` document, vendored whole. A subdivision links to its
+country with `unlcdv:countryCode`. The 115,928 UN/LOCODE locations themselves (`/unlocode`)
+are **not** vendored: at ~39 MB they would dwarf the rest. The UN/LOCODE status indicators
+are not published by the endpoint at all.
+
+Three upstream subdivisions (`SNDB `, `SOGE `, `THS `) have a trailing space in their
+IRI, which makes them invalid IRIs. They are skipped rather than corrected, because
+correcting them would mint IRIs UN/CEFACT never published. `METADATA.txt` lists them.
 
 Each code is an instance of its list's class, with the code in `rdf:value` and its name
-in `rdfs:comment` (the patch copies the name to `rdfs:label`):
+in `rdfs:label` or `rdfs:comment` (the patch copies a comment to `rdfs:label` where the
+code has no label):
 
 ```turtle
 <https://vocabulary.uncefact.org/TransportModeCodeList#4> a unece:TransportModeCodeList ;
@@ -56,10 +74,10 @@ disagree on the snapshot date, or if a class loses one of these annotations.
 
 ## Version and refresh
 
-This is **reference data**: UN/CEFACT revises these lists (Rec 20 several times a
-decade, Rec 21 and Rec 19 rarely), so the snapshot goes stale unless it is refreshed.
-UN/CEFACT does not version the endpoint; it serves one dump that is updated in place, so
-a snapshot is identified by its download date and the sha256 of the full dump, both in
+This is **reference data**: UN/CEFACT revises these lists (UN/LOCODE twice a
+year, Rec 20 several times a decade, the others rarely), so the snapshot goes stale unless
+it is refreshed. UN/CEFACT does not version the endpoint; it serves documents updated in
+place, so a snapshot is identified by its download date and the sha256 of each document, all in
 `METADATA.txt`.
 
 ```sh
@@ -111,9 +129,15 @@ The two UN/CEFACT-specific statements both permit redistribution, and CC BY 4.0 
 current one. The generic website terms predate it and are not specific to the standards.
 Until UNECE confirms that CC BY 4.0 covers the code lists served at
 `vocabulary.uncefact.org`, treat this module as **CC BY 4.0 with attribution, pending
-confirmation**. Attribution: *UNECE Recommendations 19, 20 and 21, © United Nations
-Economic Commission for Europe, from the UN/CEFACT Web Vocabulary
+confirmation**. Attribution: *UNECE code lists (Recommendations 5, 9, 16, 19, 20 and 21, and UNTDED
+code lists), © United Nations Economic Commission for Europe, from the UN/CEFACT Web Vocabulary
 (https://vocabulary.uncefact.org/), extract of the snapshot recorded in METADATA.txt.*
+
+**ISO 3166 and ISO 4217.** The country, subdivision and currency codes are ISO codes,
+republished here as UNECE publishes them (Rec 3, Rec 9, Rec 16). ISO has stated that use
+of the codes themselves is free of charge; the full standards, and ISO's own databases,
+are sold separately and are not vendored. **ISO 6346** (container size/type codes) is
+deliberately absent: neither ISO nor BIC publishes a free-reuse statement for that list.
 
 To close this, ask UNECE in the vocab-bsp repository, which invites issues:
 https://opensource.unicc.org/un/unece/uncefact/vocab-bsp/-/issues.

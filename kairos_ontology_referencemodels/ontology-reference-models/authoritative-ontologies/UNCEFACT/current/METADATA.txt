@@ -7,13 +7,24 @@ source_url: https://vocabulary.uncefact.org/ (Accept: application/ld+json)
 source_repository: https://github.com/uncefact/spec-JSONLD
 download_date: 2026-10-17
 version: 2026-10-17 (snapshot date; upstream publishes no version)
-upstream_release: D23B (BSP release named on the endpoint's landing page at download time)
-dump_sha256: d8d194408fc2adb774c3e783ef362c19140bae75418f4b82419d1ddc203ad7aa
-dump_bytes: 8764615
+upstream_release: BSP D23B, UN/LOCODE v2023-2 (as named on the endpoint's landing page at download time)
+dump_sha256: 5314d7738df3e3f889f5d2e46aef5b56a7e5c0a3bfa7b5f4f40361da06a2b6a9 (combined; per document below)
+documents:
+  - bsp: https://vocabulary.uncefact.org/ (8764615 bytes, sha256 d8d194408fc2adb774c3e783ef362c19140bae75418f4b82419d1ddc203ad7aa)
+  - unlocode-vocab: https://vocabulary.uncefact.org/unlocode-vocab (2549 bytes, sha256 245ca42549d4a5a05eb61e62e37d76f6c501d063a0b19e0d563a60ed31c6b19f)
+  - unlocode-countries: https://vocabulary.uncefact.org/unlocode-countries (33074 bytes, sha256 86c0ff0cdc14498d77fb2e40b833ff78f79981136bb4912f4aff486ab75a5d39)
+  - unlocode-subdivisions: https://vocabulary.uncefact.org/unlocode-subdivisions (1170635 bytes, sha256 3b1b474a81de412d845bbd75544ae33a0619b57cbc9064d7e9e9f76dcb801cf9)
+  - unlocode-functions: https://vocabulary.uncefact.org/unlocode-functions (5152 bytes, sha256 7a5f556bc3939d95db40ae8f49902b159b1e3c99ead313ef1413983c63e270a0)
 code_lists:
   - unece:TransportModeCodeList (10 codes) -- UNECE Recommendation No. 19 (Codes for Modes of Transport)
   - unece:UnitMeasureCode (1828 codes) -- UNECE Recommendation No. 20 (Codes for Units of Measure)
   - unece:PackageTypeCodeList (405 codes) -- UNECE Recommendation No. 21 (Codes for Passengers, Types of Cargo, Packages and Packaging Materials)
+  - unece:DeliveryTermsCodeList (13 codes) -- Delivery terms (UNTDED 4053): the ICC Incoterms 2020 abbreviations of UNECE Recommendation No. 5, plus two generic codes
+  - unece:TransportMovementStageCodeList (30 codes) -- Transport stage code qualifier (UNTDED 8051), e.g. 10 pre-carriage, 20 main carriage, 30 on-carriage
+  - unece:CurrencyCodeList (179 codes) -- Currency codes (UNTDED 6345): ISO 4217 alphabetic codes, UNECE Recommendation No. 9
+  - unlcdv:Country (249 codes) -- ISO 3166-1 alpha-2 country codes, as published with UN/LOCODE (UNECE Recommendation No. 16)
+  - unlcdv:Subdivision (4669 codes) -- ISO 3166-2 country subdivision codes, as published with UN/LOCODE (UNECE Recommendation No. 16)
+  - unlcdv:Function (11 codes) -- UN/LOCODE function classifiers (UNECE Recommendation No. 16)
 ontology_files:
   - UNCEFACT-CodeLists.ttl            (vendor extract; ontology IRI https://www.kairosflow.ai/ont/uncefact/code-lists-vendor-extract)
   - UNCEFACT-CodeLists.owl-patch.ttl  (generated OWL typing; ontology IRI https://www.kairosflow.ai/ont/uncefact/code-lists)
@@ -21,20 +32,28 @@ ontology_files:
                                        scripts/generate_uncefact_iata_alignment.py)
 license: CC BY 4.0 per UN/CEFACT ("All UN/CEFACT standards are free to use under CC By
   4.0 license"), attribution to UNECE; confirmation that it covers this endpoint is
-  pending -- the endpoint's own site terms are the generic UN website terms. See
-  README.md, section License.
+  pending -- the endpoint's own site terms are the generic UN website terms. ISO 3166
+  and ISO 4217 codes are republished here as UNECE publishes them; ISO states the codes
+  themselves are free to use. See README.md, section License.
 generator: scripts/download_uncefact_codelists.py -- regenerates all three files; do not hand-edit.
 deviations:
-  - Extract, not mirror. Only the code-list classes above and the nodes typed by them
-    are vendored; the rest of the vocabulary (the UN/CEFACT trade data model) is not.
-  - Owl:Ontology headers are Kairos-minted. The dump declares no ontology, and an
+  - Extract, not mirror. Only the code-list classes above, the nodes typed by them, and
+    the UN/LOCODE vocabulary (4 classes, 4 properties) are vendored; the rest of the
+    vocabulary (the UN/CEFACT trade data model, the UN/LOCODE locations) is not.
+  - Owl:Ontology headers are Kairos-minted. The dumps declare no ontology, and an
     extract must not claim the IRI of the whole vocabulary.
-  - The dump's @context omits the rdf: prefix used by every rdf:value; the generator
+  - The BSP dump's @context omits the rdf: prefix used by every rdf:value; the generator
     expands it to the standard RDF namespace. Not yet reported upstream.
-  - UNCEFACT-CodeLists.owl-patch.ttl adds owl:Class, owl:NamedIndividual and
-    rdfs:label (copied from each code's rdfs:comment). Wired in by importing the
-    extract, so the extract stays byte-for-byte generated.
+  - UNCEFACT-CodeLists.owl-patch.ttl adds owl:Class, owl:NamedIndividual, rdfs:label
+    (copied from rdfs:comment where a code has none) and OWL types, domains and ranges
+    for the UN/LOCODE properties (from schema:domainIncludes / schema:rangeIncludes).
+    Wired in by importing the extract, so the extract stays byte-for-byte generated.
   - The patch also marks each code-list class as reference data
     (kairos-ext:isReferenceData true) and stamps the ontology and each class with
-    owl:versionInfo "<download_date>", dcterms:source <https://vocabulary.uncefact.org/> and
+    owl:versionInfo "<download_date>", dcterms:source <its document> and
     rdfs:seeAlso <the module README>.
+  - Skipped upstream nodes whose id is not a valid IRI (not corrected: that would
+    mint IRIs UN/CEFACT never published; not yet reported upstream):
+      'unlcds:SNDB ' (Diourbel)
+      'unlcds:SOGE ' (Gedo)
+      'unlcds:THS ' (Phatthaya)

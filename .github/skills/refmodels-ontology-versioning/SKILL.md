@@ -110,7 +110,8 @@ re-vendoring IATA, also run `scripts/generate_iata_domain_patch.py` and
 ## Versioning Workflow (Reference Data — code lists)
 
 The repo ships standards-body code lists (`authoritative-ontologies/UNCEFACT/`: UNECE Rec
-19/20/21). They are revised in place upstream with no release, so refresh them
+5/9/16/19/20/21: transport mode, units, package types, Incoterms, transport stage,
+currencies, countries, subdivisions, UN/LOCODE functions). They are revised in place upstream with no release, so refresh them
 **periodically, by script**:
 
 ```bash

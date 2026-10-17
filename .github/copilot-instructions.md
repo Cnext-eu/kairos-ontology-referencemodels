@@ -19,7 +19,7 @@ client hub, not here. If a task seems to call for them, it is aimed at the wrong
 
 | Tier | Path | Rule |
 |---|---|---|
-| **Authoritative** | `authoritative-ontologies/` | Official RDF/OWL from standards bodies (FIBO, IATA ONE Record), and **reference data** — standards-body code lists (UNCEFACT: UNECE Rec 19/20/21). Vendored **verbatim** — never hand-edit; re-download instead. |
+| **Authoritative** | `authoritative-ontologies/` | Official RDF/OWL from standards bodies (FIBO, IATA ONE Record), and **reference data** — standards-body code lists (UNCEFACT: UNECE Rec 5/9/16/19/20/21 — transport mode, units, package types, Incoterms, transport stage, currencies, countries, subdivisions, UN/LOCODE functions). Vendored **verbatim** — never hand-edit; re-download instead. |
 | **Derived** | `derived-ontologies/` | Kairos RDF interpretations of non-RDF standards (DCSA, MMT, BSP, TIC, IMO, WCO, RAIL, Sustainability), plus **SupplyChain** — the cross-standard bridge module (defines no new classes; only bridges classes across standards). Every standard-backed class must be backed by a cited element of its standard. |
 | **Blueprint** | `blueprints/` | Opinionated Kairos guidance (archetypes, patterns, `blueprints/ontology/`). Not a standard; versioned independently. |
 

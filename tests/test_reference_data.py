@@ -19,6 +19,7 @@ from rdflib.namespace import DCTERMS, OWL, RDF, RDFS
 ONTOLOGY_ROOT = Path(__file__).resolve().parent.parent / "kairos_ontology_referencemodels" / "ontology-reference-models"
 KAIROS_EXT = Namespace("https://kairos.cnext.eu/ext#")
 UNECE = Namespace("https://vocabulary.uncefact.org/")
+UNLCDV = Namespace("https://vocabulary.uncefact.org/unlocode-vocab/")
 
 #: module dir -> (extract file, patch file, patch ontology IRI, code-list classes)
 REFERENCE_DATA_MODULES = {
@@ -26,7 +27,17 @@ REFERENCE_DATA_MODULES = {
         "UNCEFACT-CodeLists.ttl",
         "UNCEFACT-CodeLists.owl-patch.ttl",
         URIRef("https://www.kairosflow.ai/ont/uncefact/code-lists"),
-        [UNECE.TransportModeCodeList, UNECE.UnitMeasureCode, UNECE.PackageTypeCodeList],
+        [
+            UNECE.TransportModeCodeList,
+            UNECE.UnitMeasureCode,
+            UNECE.PackageTypeCodeList,
+            UNECE.DeliveryTermsCodeList,
+            UNECE.TransportMovementStageCodeList,
+            UNECE.CurrencyCodeList,
+            UNLCDV.Country,
+            UNLCDV.Subdivision,
+            UNLCDV.Function,
+        ],
     ),
 }
 

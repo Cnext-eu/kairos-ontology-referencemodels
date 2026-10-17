@@ -35,7 +35,7 @@
     <uri name="https://raw.githubusercontent.com/IATA-Cargo/ONE-Record/refs/heads/master/working_draft/ontology/IATA-1R-CL-Ontology.ttl"
          uri="authoritative-ontologies/IATA/current/IATA-1R-CL-Ontology.ttl"/>
 
-    <!-- ========== UN/CEFACT code lists (UNECE Rec 19/20/21, authoritative extract) ========== -->
+    <!-- ========== UN/CEFACT code lists (UNECE reference data, authoritative extract) ========== -->
     <!-- Same arrangement as the IATA domains-patch above (gh#120). The public name
          resolves to a generated OWL patch that owl:imports the vendor extract, so the
          extract stays exactly what scripts/download_uncefact_codelists.py wrote. Both
