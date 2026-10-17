@@ -6,8 +6,8 @@
 
 | Item | Details |
 |---|---|
-| What is it? | **Reference data**, not a data model: the members of nine UNECE / UN/LOCODE code lists, as published by UN/CEFACT in its JSON-LD Web Vocabulary. |
-| Main focus | Transport mode (Rec 19, 10), unit of measure (Rec 20, 1,828), package type (Rec 21, 405), Incoterms / delivery terms (Rec 5, 13), transport stage (UNTDED 8051, 30), currency (ISO 4217, 179), country (ISO 3166-1, 249), subdivision (ISO 3166-2, 4,669), UN/LOCODE function classifier (11). |
+| What is it? | **Reference data**, not a data model: the members of ten UNECE / UN/LOCODE code lists, as published by UN/CEFACT in its JSON-LD Web Vocabulary. |
+| Main focus | Transport mode (Rec 19, 10), unit of measure (Rec 20, 1,828), package type (Rec 21, 405), Incoterms / delivery terms (Rec 5, 13), transport stage (UNTDED 8051, 30), currency (ISO 4217, 179), party role (UNTDED 3035, 625), country (ISO 3166-1, 249), subdivision (ISO 3166-2, 4,669), UN/LOCODE function classifier (11). |
 | Why selected in this blueprint | Hubs re-ingested these lists from the UNECE PDFs, each on its own, and the copies drifted (gh#120). They are maintained by a standards body, so the reference models ship the members once for every hub. |
 | Who is behind it | UN/CEFACT (United Nations Centre for Trade Facilitation and Electronic Business), UNECE. |
 | Official site / references | https://vocabulary.uncefact.org/ ; source repository https://github.com/uncefact/spec-JSONLD |

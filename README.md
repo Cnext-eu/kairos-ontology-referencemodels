@@ -100,7 +100,7 @@ the same list (see `blueprints/patterns/governed-code-list`, "Where the values l
 
 | Module | Contents | Refresh with |
 |---|---|---|
-| `authoritative-ontologies/UNCEFACT/` | UNECE Rec 19 transport modes (10), Rec 20 units of measure (1,828), Rec 21 package types (405), Rec 5 Incoterms (13), transport stage (30), ISO 4217 currencies (179), ISO 3166-1 countries (249), ISO 3166-2 subdivisions (4,669), UN/LOCODE functions (11) | `scripts/download_uncefact_codelists.py` |
+| `authoritative-ontologies/UNCEFACT/` | UNECE Rec 19 transport modes (10), Rec 20 units of measure (1,828), Rec 21 package types (405), Rec 5 Incoterms (13), transport stage (30), ISO 4217 currencies (179), UNTDED 3035 party roles (625), ISO 3166-1 countries (249), ISO 3166-2 subdivisions (4,669), UN/LOCODE functions (11) | `scripts/download_uncefact_codelists.py` |
 | `authoritative-ontologies/UNCEFACT/` (`UNCEFACT-IATA-alignment.ttl`) | Links from IATA ONE Record codes to the UNECE codes | `scripts/generate_uncefact_iata_alignment.py` (run automatically by the refresh above) |
 | `authoritative-ontologies/IATA/` (`IATA-1R-CL-Ontology.ttl`) | IATA ONE Record code lists (air cargo profiles) | manual re-vendor, see `VERSIONING.md` |
 
