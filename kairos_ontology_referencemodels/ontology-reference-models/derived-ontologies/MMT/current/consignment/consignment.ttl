@@ -21,8 +21,8 @@
     transport routes, legs, and movements. Based on UN/CEFACT MMT Reference Data Model.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-10-17"^^xsd:date ;
-    owl:versionInfo "2.5.3" ;
+    dcterms:modified "2026-10-18"^^xsd:date ;
+    owl:versionInfo "2.5.4" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
 
@@ -342,13 +342,15 @@
 
 :packageType a owl:DatatypeProperty ;
     rdfs:label "package type" ;
-    rdfs:comment "Type of packaging (e.g., carton, pallet, crate)." ;
+    rdfs:comment "Type of packaging (e.g., carton, pallet, crate). Maps to UNECE Rec 21 (unece:PackageTypeCodeList) (authoritative-ontologies/UNCEFACT): carton=CT, pallet=PX, crate=CR." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/PackageTypeCodeList> ;
     rdfs:domain :Package ;
     rdfs:range xsd:string .
 
 :packageCode a owl:DatatypeProperty ;
     rdfs:label "package code" ;
-    rdfs:comment "UN/CEFACT package type code." ;
+    rdfs:comment "UN/CEFACT package type code. Values are UNECE Rec 21 codes: each matches the rdf:value of a unece:PackageTypeCodeList member (authoritative-ontologies/UNCEFACT). Note PX = pallet; PL is pail." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/PackageTypeCodeList> ;
     rdfs:domain :Package ;
     rdfs:range xsd:string .
 
@@ -390,7 +392,8 @@
 
 :countryOfOrigin a owl:DatatypeProperty ;
     rdfs:label "country of origin" ;
-    rdfs:comment "ISO 3166 country code where goods originated." ;
+    rdfs:comment "ISO 3166 country code where goods originated. Values are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT)." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/Country> ;
     rdfs:domain :GoodsItem ;
     rdfs:range xsd:string .
 
@@ -402,13 +405,15 @@
 
 :currency a owl:DatatypeProperty ;
     rdfs:label "currency" ;
-    rdfs:comment "ISO 4217 currency code." ;
+    rdfs:comment "ISO 4217 currency code. Values are ISO 4217 alphabetic codes: each matches the rdf:value of an iso4217:CurrencyCode member (authoritative-ontologies/ISO4217, from SIX); withdrawn codes are owl:deprecated there." ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/iso4217#CurrencyCode> ;
     rdfs:domain :Consignment ;
     rdfs:range xsd:string .
 
 :incoterm a owl:DatatypeProperty ;
     rdfs:label "Incoterm" ;
-    rdfs:comment "International Commercial Terms (e.g., FOB, CIF, EXW)." ;
+    rdfs:comment "International Commercial Terms (e.g., FOB, CIF, EXW). Values are Incoterms abbreviations: the 11 Incoterms 2020 rules match the rdf:value of a unece:DeliveryTermsCodeList member (Rec 5, authoritative-ontologies/UNCEFACT); older terms (DAT, DDU, DAF, DES, DEQ) have no shipped code." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/DeliveryTermsCodeList> ;
     rdfs:domain :Consignment ;
     rdfs:range xsd:string .
 
@@ -520,7 +525,8 @@
 
 :stageCode a owl:DatatypeProperty ;
     rdfs:label "stage code" ;
-    rdfs:comment "Transport stage: PRE-CARRIAGE, MAIN-CARRIAGE, ON-CARRIAGE." ;
+    rdfs:comment "Transport stage: PRE-CARRIAGE, MAIN-CARRIAGE, ON-CARRIAGE. Maps to UNTDED 8051 (unece:TransportMovementStageCodeList) (authoritative-ontologies/UNCEFACT): PRE-CARRIAGE=10, MAIN-CARRIAGE=20, ON-CARRIAGE=30." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportMovementStageCodeList> ;
     rdfs:domain :TransportMovement ;
     rdfs:range xsd:string .
 

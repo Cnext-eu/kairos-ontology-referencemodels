@@ -22,8 +22,8 @@
     operational/commercial rather than reference-model entities.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-06-12"^^xsd:date ;
-    dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "1.4.1" ;
+    dcterms:modified "2026-10-18"^^xsd:date ;
+    owl:versionInfo "1.4.2" ;
     dcterms:source "STCW Convention 1978 (Manila 2010), MLC 2006, FAL Convention Forms 5 & 6, SOLAS V/14" ;
     rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
 
@@ -256,7 +256,8 @@
 
 :cocIssuingCountry a owl:DatatypeProperty ;
     rdfs:label "CoC issuing country" ;
-    rdfs:comment "ISO 3166-1 alpha-2 country code of the state that issued the CoC." ;
+    rdfs:comment "ISO 3166-1 alpha-2 country code of the state that issued the CoC. Values are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT)." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/Country> ;
     rdfs:domain :CertificateOfCompetency ;
     rdfs:range xsd:string .
 

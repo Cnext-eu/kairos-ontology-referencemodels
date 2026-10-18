@@ -16,8 +16,8 @@
     crossings, and depots.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-10-17"^^xsd:date ;
-    owl:versionInfo "1.6.3" ;
+    dcterms:modified "2026-10-18"^^xsd:date ;
+    owl:versionInfo "1.6.4" ;
     dcterms:source "DCSA Booking API (BKG) v2.0, DCSA Domain v3.1.1" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
 
@@ -26,6 +26,8 @@
 #################################################################
 
 :Location a owl:Class ;
+    rdfs:comment "Locations are identified by UN/LOCODE; the shared location shape is unlcdv:UNLOCODE (kind 2: the hub loads the rows, see authoritative-ontologies/UNCEFACT, README 'UN/LOCODE locations')." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/UNLOCODE> ;
     rdfs:label "Location" ;
     rdfs:comment """A physical location relevant to container shipping.
     
@@ -35,7 +37,9 @@
     rdfs:label "Port" ;
     rdfs:comment """A maritime facility for vessel operations.
     
-    DCSA: Identified by UN/LOCODE.""" ;
+    DCSA: Identified by UN/LOCODE.
+    Locations are identified by UN/LOCODE; the shared location shape is unlcdv:UNLOCODE (kind 2: the hub loads the rows, see authoritative-ontologies/UNCEFACT, README 'UN/LOCODE locations').""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/UNLOCODE> ;
     rdfs:subClassOf :Location .
 
 :Terminal a owl:Class ;

@@ -957,7 +957,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#hasTransportEquipment
 - comments:
-  - International Commercial Terms (e.g., FOB, CIF, EXW, DDP).
+  - 'International Commercial Terms (e.g., FOB, CIF, EXW, DDP). Values are Incoterms abbreviations: the
+    11 Incoterms 2020 rules match the rdf:value of a unece:DeliveryTermsCodeList member (Rec 5, authoritative-ontologies/UNCEFACT);
+    older terms (DAT, DDU, DAF, DES, DEQ) have no shipped code.'
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#CommercialTransaction
   kind: datatype_property
@@ -1239,7 +1241,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#packageNetWeight
 - comments:
-  - Type of packaging (e.g., CARTON, PALLET, CRATE).
+  - 'Type of packaging (e.g., CARTON, PALLET, CRATE). Maps to UNECE Rec 21 (unece:PackageTypeCodeList)
+    (authoritative-ontologies/UNCEFACT): CARTON=CT, PALLET=PX, CRATE=CR.'
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#Shipment
   kind: datatype_property
@@ -1253,7 +1256,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#packageType
 - comments:
-  - UN/CEFACT Recommendation 21 package type code (BX, PL, CR, DR, etc.).
+  - 'UN/CEFACT Recommendation 21 package type code (BX, PL, CR, DR, etc.). Values are UNECE Rec 21 codes:
+    each matches the rdf:value of a unece:PackageTypeCodeList member (authoritative-ontologies/UNCEFACT).
+    Note PX = pallet; PL is pail.'
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#Package
   kind: datatype_property
@@ -1652,7 +1657,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#transportMode
 - comments:
-  - Unit in which quantity is expressed (e.g., EA, KG, M).
+  - 'Unit in which quantity is expressed (e.g., EA, KG, M). Maps to UNECE Rec 20 (unece:UnitMeasureCode)
+    (authoritative-ontologies/UNCEFACT): EA=EA, KG=KGM, M=MTR.'
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#OrderLine
   kind: datatype_property
@@ -1803,7 +1809,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/compliance#dutyAmount
 - comments:
-  - ISO 4217 currency code for the duty amount.
+  - 'ISO 4217 currency code for the duty amount. Values are ISO 4217 alphabetic codes: each matches the
+    rdf:value of an iso4217:CurrencyCode member (authoritative-ontologies/ISO4217, from SIX); withdrawn
+    codes are owl:deprecated there.'
   domains:
   - https://www.kairosflow.ai/ont/bsp/compliance#DutyTax
   kind: datatype_property
@@ -2235,7 +2243,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/cost-accounting#costUnit
 - comments:
-  - ISO 4217 currency code.
+  - 'ISO 4217 currency code. Values are ISO 4217 alphabetic codes: each matches the rdf:value of an iso4217:CurrencyCode
+    member (authoritative-ontologies/ISO4217, from SIX); withdrawn codes are owl:deprecated there.'
   domains:
   - https://www.kairosflow.ai/ont/bsp/cost-accounting#TransportCostItem
   kind: datatype_property
@@ -2918,7 +2927,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/documents#executingCarrier
 - comments:
-  - 'Country that issued the export license. UN/CEFACT CCL D23B: Certificate.issueLocation.'
+  - 'Country that issued the export license. UN/CEFACT CCL D23B: Certificate.issueLocation. If the value
+    is an ISO 3166-1 alpha-2 code it matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT);
+    a country name does not join.'
   domains:
   - https://www.kairosflow.ai/ont/bsp/documents#ExportLicense
   kind: datatype_property
@@ -3212,7 +3223,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/documents#issuingParty
 - comments:
-  - 'Country that issued the import license. UN/CEFACT CCL D23B: Certificate.issueLocation.'
+  - 'Country that issued the import license. UN/CEFACT CCL D23B: Certificate.issueLocation. If the value
+    is an ISO 3166-1 alpha-2 code it matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT);
+    a country name does not join.'
   domains:
   - https://www.kairosflow.ai/ont/bsp/documents#ImportLicense
   kind: datatype_property
@@ -3380,7 +3393,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/documents#packingListTotalPackages
 - comments:
-  - 'Country requiring the certificate. IPPC: PhytosanitaryCertificate.importingCountry.'
+  - 'Country requiring the certificate. IPPC: PhytosanitaryCertificate.importingCountry. If the value
+    is an ISO 3166-1 alpha-2 code it matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT);
+    a country name does not join.'
   domains:
   - https://www.kairosflow.ai/ont/bsp/documents#PhytosanitaryCertificate
   kind: datatype_property
@@ -3394,7 +3409,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/documents#phytosanitaryImportingCountry
 - comments:
-  - 'Country of origin of the plant products. IPPC: PhytosanitaryCertificate.originCountry.'
+  - 'Country of origin of the plant products. IPPC: PhytosanitaryCertificate.originCountry. If the value
+    is an ISO 3166-1 alpha-2 code it matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT);
+    a country name does not join.'
   domains:
   - https://www.kairosflow.ai/ont/bsp/documents#PhytosanitaryCertificate
   kind: datatype_property
@@ -4256,7 +4273,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/financial#creditLimit
 - comments:
-  - ISO 4217 currency code qualifying :creditLimit.
+  - 'ISO 4217 currency code qualifying :creditLimit. Values are ISO 4217 alphabetic codes: each matches
+    the rdf:value of an iso4217:CurrencyCode member (authoritative-ontologies/ISO4217, from SIX); withdrawn
+    codes are owl:deprecated there.'
   domains:
   - https://www.kairosflow.ai/ont/bsp/party#TradeParty
   kind: datatype_property
@@ -4270,7 +4289,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/financial#creditLimitCurrency
 - comments:
-  - ISO 4217 currency code of the credit note amounts (e.g., USD, EUR, GBP).
+  - 'ISO 4217 currency code of the credit note amounts (e.g., USD, EUR, GBP). Values are ISO 4217 alphabetic
+    codes: each matches the rdf:value of an iso4217:CurrencyCode member (authoritative-ontologies/ISO4217,
+    from SIX); withdrawn codes are owl:deprecated there.'
   domains:
   - https://www.kairosflow.ai/ont/bsp/financial#CreditNote
   kind: datatype_property
@@ -4383,7 +4404,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/financial#creditNoteTotalAmount
 - comments:
-  - ISO 4217 currency code (e.g., USD, EUR, GBP).
+  - 'ISO 4217 currency code (e.g., USD, EUR, GBP). Values are ISO 4217 alphabetic codes: each matches
+    the rdf:value of an iso4217:CurrencyCode member (authoritative-ontologies/ISO4217, from SIX); withdrawn
+    codes are owl:deprecated there.'
   domains:
   - https://www.kairosflow.ai/ont/bsp/financial#Invoice
   kind: datatype_property
@@ -4411,7 +4434,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/financial#customsValue
 - comments:
-  - ISO 4217 currency code of the debit note amounts (e.g., USD, EUR, GBP).
+  - 'ISO 4217 currency code of the debit note amounts (e.g., USD, EUR, GBP). Values are ISO 4217 alphabetic
+    codes: each matches the rdf:value of an iso4217:CurrencyCode member (authoritative-ontologies/ISO4217,
+    from SIX); withdrawn codes are owl:deprecated there.'
   domains:
   - https://www.kairosflow.ai/ont/bsp/financial#DebitNote
   kind: datatype_property
@@ -5977,7 +6002,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/party#partyName
 - comments:
-  - ISO 3166-1 alpha-2 country code of the party's country of legal registration.
+  - 'ISO 3166-1 alpha-2 country code of the party''s country of legal registration. Values are ISO 3166-1
+    alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/bsp/party#TradeParty
   kind: datatype_property
@@ -6089,7 +6115,9 @@ records:
   uri: https://www.kairosflow.ai/ont/bsp/reference-data#Airport
 - comments:
   - "A sovereign nation state identified by ISO 3166 codes.\n    \n    UN/CEFACT BSP: Maps to Country\
-    \ — the area of land that belongs to a nation,\n    used or referenced for trade purposes."
+    \ — the area of land that belongs to a nation,\n    used or referenced for trade purposes.\n    The\
+    \ shipped ISO 3166-1 country list is unlcdv:Country (authoritative-ontologies/UNCEFACT); a hub adopts\
+    \ it with unlcdv:Country rdfs:subClassOf this class (blueprints/patterns/governed-code-list)."
   domains: []
   kind: class
   labels:
@@ -6193,7 +6221,9 @@ records:
   - "A maritime facility for vessel operations.\n    \n    ISO BSP (UN/LOCODE): Seaport identified by\
     \ UN/LOCODE (inherited from :Location\n    via :unLocationCode). \n    \n    Properties:\n    - portName:\
     \ official name of the port (UN/LOCODE name).\n    - portType: UN/LOCODE function classifier — e.g.,\
-    \ SEA, RIVER, FISHING, CARGO."
+    \ SEA, RIVER, FISHING, CARGO.\n    Locations are identified by UN/LOCODE; the shared location shape\
+    \ is unlcdv:UNLOCODE (kind 2: the hub loads the rows, see authoritative-ontologies/UNCEFACT, README\
+    \ 'UN/LOCODE locations')."
   domains: []
   kind: class
   labels:
@@ -6337,7 +6367,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/reference-data#city
 - comments:
-  - ISO 3166 country code (2 or 3 characters).
+  - ISO 3166 country code (2 or 3 characters). Only ISO 3166-1 alpha-2 is shipped (unlcdv:Country, authoritative-ontologies/UNCEFACT);
+    an alpha-3 value has no shipped list to join to.
   domains:
   - https://www.kairosflow.ai/ont/bsp/reference-data#Country
   kind: datatype_property
@@ -6519,7 +6550,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/reference-data#monetaryAmount
 - comments:
-  - ISO 4217 currency code for the monetary amount (UN/CEFACT CCL D23B CurrencyCode).
+  - 'ISO 4217 currency code for the monetary amount (UN/CEFACT CCL D23B CurrencyCode). Values are ISO
+    4217 alphabetic codes: each matches the rdf:value of an iso4217:CurrencyCode member (authoritative-ontologies/ISO4217,
+    from SIX); withdrawn codes are owl:deprecated there.'
   domains:
   - https://www.kairosflow.ai/ont/bsp/reference-data#MonetaryAmount
   kind: datatype_property
@@ -6589,7 +6622,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/reference-data#postalCode
 - comments:
-  - State or province name/code.
+  - 'State or province name/code. Only an ISO 3166-2 subdivision code joins the shipped list: it matches
+    the rdf:value of a unlcdv:Subdivision member (authoritative-ontologies/UNCEFACT); a name does not.'
   domains:
   - https://www.kairosflow.ai/ont/bsp/reference-data#Address
   kind: datatype_property
@@ -6917,7 +6951,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/revenue-yield#capacityUsed
 - comments:
-  - ISO 4217 currency code.
+  - 'ISO 4217 currency code. Values are ISO 4217 alphabetic codes: each matches the rdf:value of an iso4217:CurrencyCode
+    member (authoritative-ontologies/ISO4217, from SIX); withdrawn codes are owl:deprecated there.'
   domains:
   - https://www.kairosflow.ai/ont/bsp/revenue-yield#RevenueItem
   kind: datatype_property
@@ -7492,7 +7527,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/dcsa/booking#cargoGrossVolume
 - comments:
-  - 'DCSA _CAR variant: unit of measure for cargo gross volume (e.g., MTQ, FTQ).'
+  - 'DCSA _CAR variant: unit of measure for cargo gross volume (e.g., MTQ, FTQ). Values are UNECE Rec
+    20 codes: each matches the rdf:value of a unece:UnitMeasureCode member (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/dcsa/booking#UtilizedTransportEquipment
   kind: datatype_property
@@ -7534,7 +7570,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/dcsa/booking#cargoGrossWeightUTE
 - comments:
-  - 'DCSA _CAR variant: unit of measure for cargo gross weight (e.g., KGM, LBR).'
+  - 'DCSA _CAR variant: unit of measure for cargo gross weight (e.g., KGM, LBR). Values are UNECE Rec
+    20 codes: each matches the rdf:value of a unece:UnitMeasureCode member (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/dcsa/booking#UtilizedTransportEquipment
   kind: datatype_property
@@ -8042,7 +8079,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/dcsa/booking#imoClass
 - comments:
-  - International Commercial Terms code (e.g., FOB, CIF, FCA).
+  - 'International Commercial Terms code (e.g., FOB, CIF, FCA). Values are Incoterms abbreviations: the
+    11 Incoterms 2020 rules match the rdf:value of a unece:DeliveryTermsCodeList member (Rec 5, authoritative-ontologies/UNCEFACT);
+    older terms (DAT, DDU, DAF, DES, DEQ) have no shipped code.'
   domains:
   - https://www.kairosflow.ai/ont/dcsa/booking#Booking
   kind: datatype_property
@@ -8272,7 +8311,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/dcsa/booking#numberOfPackages
 - comments:
-  - UN/CEFACT package type code.
+  - 'UN/CEFACT package type code. Values are UNECE Rec 21 codes: each matches the rdf:value of a unece:PackageTypeCodeList
+    member (authoritative-ontologies/UNCEFACT). Note PX = pallet; PL is pail.'
   domains:
   - https://www.kairosflow.ai/ont/dcsa/booking#CargoItem
   kind: datatype_property
@@ -9246,7 +9286,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/dcsa/demurrage-detention#chargedToParty
 - comments:
-  - ISO 4217 currency code for the charge (e.g., USD, EUR).
+  - 'ISO 4217 currency code for the charge (e.g., USD, EUR). Values are ISO 4217 alphabetic codes: each
+    matches the rdf:value of an iso4217:CurrencyCode member (authoritative-ontologies/ISO4217, from SIX);
+    withdrawn codes are owl:deprecated there.'
   domains:
   - https://www.kairosflow.ai/ont/dcsa/demurrage-detention#DemurrageCharge
   kind: datatype_property
@@ -9260,7 +9302,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/dcsa/demurrage-detention#currency
 - comments:
-  - 'DCSA D&D: ISO 4217 currency code for the per-diem rate (e.g., USD, EUR).'
+  - 'DCSA D&D: ISO 4217 currency code for the per-diem rate (e.g., USD, EUR). Values are ISO 4217 alphabetic
+    codes: each matches the rdf:value of an iso4217:CurrencyCode member (authoritative-ontologies/ISO4217,
+    from SIX); withdrawn codes are owl:deprecated there.'
   domains:
   - https://www.kairosflow.ai/ont/dcsa/demurrage-detention#PerDiemRate
   kind: datatype_property
@@ -9935,7 +9979,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/dcsa/equipment#temperatureSetting
 - comments:
-  - 'Unit: CEL (Celsius) or FAH (Fahrenheit).'
+  - 'Unit: CEL (Celsius) or FAH (Fahrenheit). Values are UNECE Rec 20 codes: each matches the rdf:value
+    of a unece:UnitMeasureCode member (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/dcsa/equipment#ReeferContainer
   kind: datatype_property
@@ -10561,6 +10606,8 @@ records:
 - comments:
   - "A physical location relevant to container shipping.\n    \n    DCSA: Ports, terminals, and other\
     \ facilities in the supply chain."
+  - 'Locations are identified by UN/LOCODE; the shared location shape is unlcdv:UNLOCODE (kind 2: the
+    hub loads the rows, see authoritative-ontologies/UNCEFACT, README ''UN/LOCODE locations'').'
   domains: []
   kind: class
   labels:
@@ -10612,7 +10659,9 @@ records:
   - https://www.kairosflow.ai/ont/dcsa/locations#Location
   uri: https://www.kairosflow.ai/ont/dcsa/locations#PlaceOfReceipt
 - comments:
-  - "A maritime facility for vessel operations.\n    \n    DCSA: Identified by UN/LOCODE."
+  - "A maritime facility for vessel operations.\n    \n    DCSA: Identified by UN/LOCODE.\n    Locations\
+    \ are identified by UN/LOCODE; the shared location shape is unlcdv:UNLOCODE (kind 2: the hub loads\
+    \ the rows, see authoritative-ontologies/UNCEFACT, README 'UN/LOCODE locations')."
   domains: []
   kind: class
   labels:
@@ -11700,7 +11749,8 @@ records:
   uri: https://www.kairosflow.ai/ont/dcsa/transport-documents#numberOfOriginals
 - comments:
   - "Mode of transport for on-carriage (port of discharge to destination).\n    DCSA EBL v3 values: VESSEL,\
-    \ RAIL, TRUCK, BARGE, MULTIMODAL."
+    \ RAIL, TRUCK, BARGE, MULTIMODAL.\n    Maps to UNECE Rec 19 (unece:TransportModeCodeList) (authoritative-ontologies/UNCEFACT):\
+    \ VESSEL=1, RAIL=2, TRUCK=3, BARGE=8, MULTIMODAL=6."
   domains:
   - https://www.kairosflow.ai/ont/dcsa/transport-documents#TransportDocument
   kind: datatype_property
@@ -11715,7 +11765,8 @@ records:
   uri: https://www.kairosflow.ai/ont/dcsa/transport-documents#onCarriageBy
 - comments:
   - "Mode of transport for pre-carriage (origin to port of loading).\n    DCSA EBL v3 values: VESSEL,\
-    \ RAIL, TRUCK, BARGE, MULTIMODAL."
+    \ RAIL, TRUCK, BARGE, MULTIMODAL.\n    Maps to UNECE Rec 19 (unece:TransportModeCodeList) (authoritative-ontologies/UNCEFACT):\
+    \ VESSEL=1, RAIL=2, TRUCK=3, BARGE=8, MULTIMODAL=6."
   domains:
   - https://www.kairosflow.ai/ont/dcsa/transport-documents#TransportDocument
   kind: datatype_property
@@ -12605,7 +12656,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/imo/crew-seafarer#cocIssueDate
 - comments:
-  - ISO 3166-1 alpha-2 country code of the state that issued the CoC.
+  - 'ISO 3166-1 alpha-2 country code of the state that issued the CoC. Values are ISO 3166-1 alpha-2 codes:
+    each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/imo/crew-seafarer#CertificateOfCompetency
   kind: datatype_property
@@ -14130,7 +14182,9 @@ records:
 - comments:
   - "A maritime port facility with infrastructure for the loading, unloading, and\n    transit of cargo\
     \ and passengers. Identified by a UN/LOCODE.\n\n    IMO: A port encompasses all terminals, anchorages,\
-    \ and approaches within its jurisdiction."
+    \ and approaches within its jurisdiction.\n    Locations are identified by UN/LOCODE; the shared location\
+    \ shape is unlcdv:UNLOCODE (kind 2: the hub loads the rows, see authoritative-ontologies/UNCEFACT,\
+    \ README 'UN/LOCODE locations')."
   domains: []
   kind: class
   labels:
@@ -15356,7 +15410,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/imo/party#agentServiceType
 - comments:
-  - The ISO 3166-1 alpha-2 country code of the flag authority.
+  - 'The ISO 3166-1 alpha-2 country code of the flag authority. Values are ISO 3166-1 alpha-2 codes: each
+    matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/imo/party#FlagAuthority
   kind: datatype_property
@@ -15552,7 +15607,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/imo/party#masterCoCGrade
 - comments:
-  - ISO 3166-1 alpha-2 country code of the state that issued the master's CoC. STCW II/2.
+  - 'ISO 3166-1 alpha-2 country code of the state that issued the master''s CoC. STCW II/2. Values are
+    ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/imo/party#MasterOfVessel
   kind: datatype_property
@@ -17518,7 +17574,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/imo/vessel-registry#draftValue
 - comments:
-  - ISO 3166-1 alpha-2 country code of the flag state, per UNCLOS Article 91.
+  - 'ISO 3166-1 alpha-2 country code of the flag state, per UNCLOS Article 91. Values are ISO 3166-1 alpha-2
+    codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/imo/vessel-registry#FlagState
   kind: datatype_property
@@ -18849,7 +18906,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#criticalitySafetyIndex
 - comments:
-  - Unit of dimension measurement (M, CM, FT, IN).
+  - 'Unit of dimension measurement (M, CM, FT, IN). Maps to UNECE Rec 20 (unece:UnitMeasureCode) (authoritative-ontologies/UNCEFACT):
+    M=MTR, CM=CMT, FT=FOT, IN=INH.'
   domains:
   - https://www.kairosflow.ai/ont/mmt/cargo#Dimension
   kind: datatype_property
@@ -19635,7 +19693,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/cargo#weightType
 - comments:
-  - Unit of weight measurement (KG, LB, TON).
+  - 'Unit of weight measurement (KG, LB, TON). Maps to UNECE Rec 20 (unece:UnitMeasureCode) (authoritative-ontologies/UNCEFACT):
+    KG=KGM, LB=LBR, TON=TNE (metric tonne).'
   domains:
   - https://www.kairosflow.ai/ont/mmt/cargo#Weight
   kind: datatype_property
@@ -20021,7 +20080,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#containsGoods
 - comments:
-  - ISO 3166 country code where goods originated.
+  - 'ISO 3166 country code where goods originated. Values are ISO 3166-1 alpha-2 codes: each matches the
+    rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/mmt/consignment#GoodsItem
   kind: datatype_property
@@ -20035,7 +20095,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#countryOfOrigin
 - comments:
-  - ISO 4217 currency code.
+  - 'ISO 4217 currency code. Values are ISO 4217 alphabetic codes: each matches the rdf:value of an iso4217:CurrencyCode
+    member (authoritative-ontologies/ISO4217, from SIX); withdrawn codes are owl:deprecated there.'
   domains:
   - https://www.kairosflow.ai/ont/mmt/consignment#Consignment
   kind: datatype_property
@@ -20532,7 +20593,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#hsCode
 - comments:
-  - International Commercial Terms (e.g., FOB, CIF, EXW).
+  - 'International Commercial Terms (e.g., FOB, CIF, EXW). Values are Incoterms abbreviations: the 11
+    Incoterms 2020 rules match the rdf:value of a unece:DeliveryTermsCodeList member (Rec 5, authoritative-ontologies/UNCEFACT);
+    older terms (DAT, DDU, DAF, DES, DEQ) have no shipped code.'
   domains:
   - https://www.kairosflow.ai/ont/mmt/consignment#Consignment
   kind: datatype_property
@@ -20674,7 +20737,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#numberOfPackages
 - comments:
-  - UN/CEFACT package type code.
+  - 'UN/CEFACT package type code. Values are UNECE Rec 21 codes: each matches the rdf:value of a unece:PackageTypeCodeList
+    member (authoritative-ontologies/UNCEFACT). Note PX = pallet; PL is pail.'
   domains:
   - https://www.kairosflow.ai/ont/mmt/consignment#Package
   kind: datatype_property
@@ -20716,7 +20780,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#packageQuantity
 - comments:
-  - Type of packaging (e.g., carton, pallet, crate).
+  - 'Type of packaging (e.g., carton, pallet, crate). Maps to UNECE Rec 21 (unece:PackageTypeCodeList)
+    (authoritative-ontologies/UNCEFACT): carton=CT, pallet=PX, crate=CR.'
   domains:
   - https://www.kairosflow.ai/ont/mmt/consignment#Package
   kind: datatype_property
@@ -20787,7 +20852,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/consignment#serviceType
 - comments:
-  - 'Transport stage: PRE-CARRIAGE, MAIN-CARRIAGE, ON-CARRIAGE.'
+  - 'Transport stage: PRE-CARRIAGE, MAIN-CARRIAGE, ON-CARRIAGE. Maps to UNTDED 8051 (unece:TransportMovementStageCodeList)
+    (authoritative-ontologies/UNCEFACT): PRE-CARRIAGE=10, MAIN-CARRIAGE=20, ON-CARRIAGE=30.'
   domains:
   - https://www.kairosflow.ai/ont/mmt/consignment#TransportMovement
   kind: datatype_property
@@ -23457,6 +23523,8 @@ records:
     \ locationType.\n    UN/CEFACT MMT-RDM: LogisticsLocationType — unLocationCode is the\n    UN/LOCODE;\
     \ locationName is the name of the location; locationType\n    is the type of location (port, airport,\
     \ terminal, warehouse)."
+  - 'Locations are identified by UN/LOCODE; the shared location shape is unlcdv:UNLOCODE (kind 2: the
+    hub loads the rows, see authoritative-ontologies/UNCEFACT, README ''UN/LOCODE locations'').'
   domains: []
   kind: class
   labels:
@@ -23470,7 +23538,8 @@ records:
 - comments:
   - "A maritime facility for vessel operations.\n\n    Properties: portName, portType.\n    UN/CEFACT\
     \ MMT-RDM: LogisticsLocationType — portName is the name of\n    the port; portType is the type of\
-    \ port (sea, river)."
+    \ port (sea, river).\n    Locations are identified by UN/LOCODE; the shared location shape is unlcdv:UNLOCODE\
+    \ (kind 2: the hub loads the rows, see authoritative-ontologies/UNCEFACT, README 'UN/LOCODE locations')."
   domains: []
   kind: class
   labels:
@@ -24348,7 +24417,10 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/party#partyName
 - comments:
-  - 'Code value (e.g., CGN, CNE). UN/CEFACT MMT-RDM: TransportPartyRoleCodeType role code value.'
+  - 'Code value (e.g., CGN, CNE). UN/CEFACT MMT-RDM: TransportPartyRoleCodeType role code value. These
+    are MMT-RDM role codes, not UNTDED 3035 codes; the standard party-role list is unece:PartyRoleCodeList
+    (authoritative-ontologies/UNCEFACT), to which a hub links its roles with skos:exactMatch / skos:closeMatch
+    (kind 3, blueprints/patterns/governed-code-list).'
   domains:
   - https://www.kairosflow.ai/ont/mmt/party#TransportPartyRoleCode
   kind: datatype_property
@@ -33570,7 +33642,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/wco/customs#conveyanceReferenceNumber
 - comments:
-  - Country of final destination of the goods (ISO 3166-1 alpha-2, WCO 465).
+  - 'Country of final destination of the goods (ISO 3166-1 alpha-2, WCO 465). Values are ISO 3166-1 alpha-2
+    codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/wco/customs#GoodsItem
   kind: datatype_property
@@ -33584,7 +33657,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/wco/customs#countryOfDestination
 - comments:
-  - Country of origin of the goods (ISO 3166-1 alpha-2, WCO 062).
+  - 'Country of origin of the goods (ISO 3166-1 alpha-2, WCO 062). Values are ISO 3166-1 alpha-2 codes:
+    each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/wco/customs#GoodsItem
   kind: datatype_property
@@ -33598,7 +33672,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/wco/customs#countryOfOrigin
 - comments:
-  - ISO 4217 currency code of the declared customs value (WCO 135).
+  - 'ISO 4217 currency code of the declared customs value (WCO 135). Values are ISO 4217 alphabetic codes:
+    each matches the rdf:value of an iso4217:CurrencyCode member (authoritative-ontologies/ISO4217, from
+    SIX); withdrawn codes are owl:deprecated there.'
   domains:
   - https://www.kairosflow.ai/ont/wco/customs#CustomsValue
   kind: datatype_property
@@ -33884,7 +33960,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/wco/customs#exportDate
 - comments:
-  - ISO 3166-1 alpha-2 code of the destination country to which the goods are exported (WCO 465).
+  - 'ISO 3166-1 alpha-2 code of the destination country to which the goods are exported (WCO 465). Values
+    are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/wco/customs#ExportDeclaration
   kind: datatype_property
@@ -34351,7 +34428,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/wco/customs#importDate
 - comments:
-  - ISO 3166-1 alpha-2 code of the country from which the goods were dispatched (WCO 062 country of origin).
+  - 'ISO 3166-1 alpha-2 code of the country from which the goods were dispatched (WCO 062 country of origin).
+    Values are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/wco/customs#ImportDeclaration
   kind: datatype_property
@@ -34534,7 +34612,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/wco/customs#numberOfPackages
 - comments:
-  - Type of package code per UN Recommendation 21 (e.g., CT=carton, BX=box, PL=pallet).
+  - 'Type of package code per UN Recommendation 21 (e.g., CT=carton, BX=box, PX=pallet). Values are UNECE
+    Rec 21 codes: each matches the rdf:value of a unece:PackageTypeCodeList member (authoritative-ontologies/UNCEFACT).
+    Note PX = pallet; PL is pail.'
   domains:
   - https://www.kairosflow.ai/ont/wco/customs#Packaging
   kind: datatype_property
@@ -36040,7 +36120,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/wco/locations#areaType
 - comments:
-  - ISO 3166-1 alpha-2 country code of the country at the border crossing (WCO Data Model 3.10.0).
+  - 'ISO 3166-1 alpha-2 country code of the country at the border crossing (WCO Data Model 3.10.0). Values
+    are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/wco/locations#BorderCrossing
   kind: datatype_property
@@ -36249,7 +36330,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/wco/locations#officeCode
 - comments:
-  - ISO 3166-1 alpha-2 country code of the customs office (WCO Data Model 3.10.0).
+  - 'ISO 3166-1 alpha-2 country code of the customs office (WCO Data Model 3.10.0). Values are ISO 3166-1
+    alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/wco/locations#CustomsOffice
   kind: datatype_property
@@ -36585,8 +36667,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/wco/party#aeoCertificateType
 - comments:
-  - ISO 3166-1 alpha-2 country code of the customs administration that issued the AEO certificate (WCO
-    SAFE Framework of Standards).
+  - 'ISO 3166-1 alpha-2 country code of the customs administration that issued the AEO certificate (WCO
+    SAFE Framework of Standards). Values are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a
+    unlcdv:Country member (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/wco/party#AEOHolder
   kind: datatype_property
@@ -36924,8 +37007,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/wco/party#declarantType
 - comments:
-  - ISO 3166-1 alpha-2 country code of the exporter's established country (WCO Data Model 3.10.0 / EU
-    EORI).
+  - 'ISO 3166-1 alpha-2 country code of the exporter''s established country (WCO Data Model 3.10.0 / EU
+    EORI). Values are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member
+    (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/wco/party#Exporter
   kind: datatype_property
@@ -36982,7 +37066,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/wco/party#guaranteeAmount
 - comments:
-  - ISO 4217 currency code of the guarantee amount.
+  - 'ISO 4217 currency code of the guarantee amount. Values are ISO 4217 alphabetic codes: each matches
+    the rdf:value of an iso4217:CurrencyCode member (authoritative-ontologies/ISO4217, from SIX); withdrawn
+    codes are owl:deprecated there.'
   domains:
   - https://www.kairosflow.ai/ont/wco/party#GuaranteeProvider
   kind: datatype_property
@@ -37164,8 +37250,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/wco/party#hasImporter
 - comments:
-  - ISO 3166-1 alpha-2 country code of the importer's established country (WCO Data Model 3.10.0 / EU
-    EORI).
+  - 'ISO 3166-1 alpha-2 country code of the importer''s established country (WCO Data Model 3.10.0 / EU
+    EORI). Values are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member
+    (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/wco/party#Importer
   kind: datatype_property
@@ -37423,7 +37510,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/wco/trade-facilitation#aeoType
 - comments:
-  - ISO 3166-1 alpha-2 country code of the partner country in the trade agreement (WTO).
+  - 'ISO 3166-1 alpha-2 country code of the partner country in the trade agreement (WTO). Values are ISO
+    3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/wco/trade-facilitation#TradeAgreementReference
   kind: datatype_property
@@ -37916,7 +38004,8 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/wco/trade-facilitation#originIssuingAuthority
 - comments:
-  - ISO 3166-1 alpha-2 country code of the originating country (WCO Revised Kyoto Convention).
+  - 'ISO 3166-1 alpha-2 country code of the originating country (WCO Revised Kyoto Convention). Values
+    are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT).'
   domains:
   - https://www.kairosflow.ai/ont/wco/trade-facilitation#CertificateOfOrigin
   kind: datatype_property

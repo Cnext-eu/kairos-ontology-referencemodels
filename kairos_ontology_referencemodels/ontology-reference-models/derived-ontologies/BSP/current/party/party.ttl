@@ -25,7 +25,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-10-18"^^xsd:date ;
-    owl:versionInfo "2.5.3" ;
+    owl:versionInfo "2.5.4" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     owl:imports <https://www.kairosflow.ai/ont/bsp/reference-data> ;
     owl:imports <https://www.kairosflow.ai/ont/bsp/commercial> ;
@@ -424,7 +424,8 @@
 
 :registrationCountry a owl:DatatypeProperty ;
     rdfs:label "registration country" ;
-    rdfs:comment "ISO 3166-1 alpha-2 country code of the party's country of legal registration." ;
+    rdfs:comment "ISO 3166-1 alpha-2 country code of the party's country of legal registration. Values are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT)." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/Country> ;
     rdfs:domain :TradeParty ;
     rdfs:range xsd:string .
 

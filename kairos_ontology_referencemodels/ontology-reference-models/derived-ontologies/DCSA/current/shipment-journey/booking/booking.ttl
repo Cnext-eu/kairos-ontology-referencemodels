@@ -26,8 +26,8 @@
     discovery using the documented fit-gap analysis.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-10-17"^^xsd:date ;
-    owl:versionInfo "1.6.3" ;
+    dcterms:modified "2026-10-18"^^xsd:date ;
+    owl:versionInfo "1.6.4" ;
     dcterms:source "DCSA Booking API (BKG) v2.0.4, DCSA Domain v3.1.0" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
 
@@ -325,7 +325,8 @@
 
 :packageCode a owl:DatatypeProperty ;
     rdfs:label "package code" ;
-    rdfs:comment "UN/CEFACT package type code." ;
+    rdfs:comment "UN/CEFACT package type code. Values are UNECE Rec 21 codes: each matches the rdf:value of a unece:PackageTypeCodeList member (authoritative-ontologies/UNCEFACT). Note PX = pallet; PL is pail." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/PackageTypeCodeList> ;
     rdfs:domain :CargoItem ;
     rdfs:range xsd:string .
 
@@ -427,7 +428,8 @@
 
 :incoterm a owl:DatatypeProperty ;
     rdfs:label "Incoterm" ;
-    rdfs:comment "International Commercial Terms code (e.g., FOB, CIF, FCA)." ;
+    rdfs:comment "International Commercial Terms code (e.g., FOB, CIF, FCA). Values are Incoterms abbreviations: the 11 Incoterms 2020 rules match the rdf:value of a unece:DeliveryTermsCodeList member (Rec 5, authoritative-ontologies/UNCEFACT); older terms (DAT, DDU, DAF, DES, DEQ) have no shipped code." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/DeliveryTermsCodeList> ;
     rdfs:domain :Booking ;
     rdfs:range xsd:string .
 
@@ -627,7 +629,8 @@
 
 :cargoGrossWeightUnit a owl:DatatypeProperty ;
     rdfs:label "cargo gross weight unit" ;
-    rdfs:comment "DCSA _CAR variant: unit of measure for cargo gross weight (e.g., KGM, LBR)." ;
+    rdfs:comment "DCSA _CAR variant: unit of measure for cargo gross weight (e.g., KGM, LBR). Values are UNECE Rec 20 codes: each matches the rdf:value of a unece:UnitMeasureCode member (authoritative-ontologies/UNCEFACT)." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/UnitMeasureCode> ;
     rdfs:domain :UtilizedTransportEquipment ;
     rdfs:range xsd:string .
 
@@ -639,7 +642,8 @@
 
 :cargoGrossVolumeUnit a owl:DatatypeProperty ;
     rdfs:label "cargo gross volume unit" ;
-    rdfs:comment "DCSA _CAR variant: unit of measure for cargo gross volume (e.g., MTQ, FTQ)." ;
+    rdfs:comment "DCSA _CAR variant: unit of measure for cargo gross volume (e.g., MTQ, FTQ). Values are UNECE Rec 20 codes: each matches the rdf:value of a unece:UnitMeasureCode member (authoritative-ontologies/UNCEFACT)." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/UnitMeasureCode> ;
     rdfs:domain :UtilizedTransportEquipment ;
     rdfs:range xsd:string .
 

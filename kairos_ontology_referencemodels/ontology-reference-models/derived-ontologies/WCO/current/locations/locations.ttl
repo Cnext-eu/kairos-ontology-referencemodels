@@ -12,8 +12,8 @@
     dcterms:description "Customs locations, border crossings, bonded facilities, and controlled areas based on the WCO Data Model 3.10.0." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "1.4.1" ;
+    dcterms:modified "2026-10-18"^^xsd:date ;
+    owl:versionInfo "1.4.2" ;
     dcterms:source "WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056" ;
     owl:imports <https://www.kairosflow.ai/ont/wco/customs> ;
     rdfs:seeAlso <https://www.wcoomd.org/datamodel> .
@@ -205,7 +205,8 @@
 
 :officeCountryCode a owl:DatatypeProperty ;
     rdfs:label "office country code" ;
-    rdfs:comment "ISO 3166-1 alpha-2 country code of the customs office (WCO Data Model 3.10.0)." ;
+    rdfs:comment "ISO 3166-1 alpha-2 country code of the customs office (WCO Data Model 3.10.0). Values are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT)." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/Country> ;
     rdfs:domain :CustomsOffice ;
     rdfs:range xsd:string .
 
@@ -217,7 +218,8 @@
 
 :borderCountryCode a owl:DatatypeProperty ;
     rdfs:label "border country code" ;
-    rdfs:comment "ISO 3166-1 alpha-2 country code of the country at the border crossing (WCO Data Model 3.10.0)." ;
+    rdfs:comment "ISO 3166-1 alpha-2 country code of the country at the border crossing (WCO Data Model 3.10.0). Values are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT)." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/Country> ;
     rdfs:domain :BorderCrossing ;
     rdfs:range xsd:string .
 

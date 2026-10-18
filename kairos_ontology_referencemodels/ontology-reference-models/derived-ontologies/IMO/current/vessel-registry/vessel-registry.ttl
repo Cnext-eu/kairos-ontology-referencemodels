@@ -15,8 +15,8 @@
     Scheme (Resolution A.1117(30)) and related SOLAS requirements.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "1.4.1" ;
+    dcterms:modified "2026-10-18"^^xsd:date ;
+    owl:versionInfo "1.4.2" ;
     dcterms:source "IMO Compendium data set, SOLAS XI-1/3, Resolution A.1117(30), 1969 Tonnage Convention" ;
     rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
 
@@ -343,7 +343,8 @@
 
 :flagStateCountryCode a owl:DatatypeProperty ;
     rdfs:label "flag state country code" ;
-    rdfs:comment "ISO 3166-1 alpha-2 country code of the flag state, per UNCLOS Article 91." ;
+    rdfs:comment "ISO 3166-1 alpha-2 country code of the flag state, per UNCLOS Article 91. Values are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT)." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/Country> ;
     rdfs:domain :FlagState ;
     rdfs:range xsd:string .
 

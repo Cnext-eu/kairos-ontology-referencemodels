@@ -17,8 +17,8 @@
     and reference numbers.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-06-20"^^xsd:date ;
-    owl:versionInfo "1.6.3" ;
+    dcterms:modified "2026-10-18"^^xsd:date ;
+    owl:versionInfo "1.6.4" ;
     dcterms:source "DCSA Electronic Bill of Lading (EBL) API v3.0" ;
     rdfs:seeAlso <https://github.com/dcsaorg/DCSA-OpenAPI> .
 
@@ -174,14 +174,18 @@
 :preCarriageBy a owl:DatatypeProperty ;
     rdfs:label "pre-carriage by" ;
     rdfs:comment """Mode of transport for pre-carriage (origin to port of loading).
-    DCSA EBL v3 values: VESSEL, RAIL, TRUCK, BARGE, MULTIMODAL.""" ;
+    DCSA EBL v3 values: VESSEL, RAIL, TRUCK, BARGE, MULTIMODAL.
+    Maps to UNECE Rec 19 (unece:TransportModeCodeList) (authoritative-ontologies/UNCEFACT): VESSEL=1, RAIL=2, TRUCK=3, BARGE=8, MULTIMODAL=6.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportModeCodeList> ;
     rdfs:domain :TransportDocument ;
     rdfs:range xsd:string .
 
 :onCarriageBy a owl:DatatypeProperty ;
     rdfs:label "on-carriage by" ;
     rdfs:comment """Mode of transport for on-carriage (port of discharge to destination).
-    DCSA EBL v3 values: VESSEL, RAIL, TRUCK, BARGE, MULTIMODAL.""" ;
+    DCSA EBL v3 values: VESSEL, RAIL, TRUCK, BARGE, MULTIMODAL.
+    Maps to UNECE Rec 19 (unece:TransportModeCodeList) (authoritative-ontologies/UNCEFACT): VESSEL=1, RAIL=2, TRUCK=3, BARGE=8, MULTIMODAL=6.""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportModeCodeList> ;
     rdfs:domain :TransportDocument ;
     rdfs:range xsd:string .
 

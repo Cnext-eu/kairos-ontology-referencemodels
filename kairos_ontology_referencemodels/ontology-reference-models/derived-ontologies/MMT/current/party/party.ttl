@@ -17,7 +17,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-10-18"^^xsd:date ;
-    owl:versionInfo "2.5.3" ;
+    owl:versionInfo "2.5.4" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
 
@@ -319,7 +319,8 @@
 
 :roleCodeValue a owl:DatatypeProperty ;
     rdfs:label "role code value" ;
-    rdfs:comment "Code value (e.g., CGN, CNE). UN/CEFACT MMT-RDM: TransportPartyRoleCodeType role code value." ;
+    rdfs:comment "Code value (e.g., CGN, CNE). UN/CEFACT MMT-RDM: TransportPartyRoleCodeType role code value. These are MMT-RDM role codes, not UNTDED 3035 codes; the standard party-role list is unece:PartyRoleCodeList (authoritative-ontologies/UNCEFACT), to which a hub links its roles with skos:exactMatch / skos:closeMatch (kind 3, blueprints/patterns/governed-code-list)." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/PartyRoleCodeList> ;
     rdfs:domain :TransportPartyRoleCode ;
     rdfs:range xsd:string .
 

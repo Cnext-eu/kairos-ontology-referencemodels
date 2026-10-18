@@ -13,8 +13,8 @@
     dcterms:description "Trade facilitation certificates, permits, and trusted trader programmes based on the WCO Data Model 3.10.0 and eFTI Regulation." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "1.4.1" ;
+    dcterms:modified "2026-10-18"^^xsd:date ;
+    owl:versionInfo "1.4.2" ;
     dcterms:source "WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056" ;
     owl:imports <https://www.kairosflow.ai/ont/wco/customs> ,
                 <https://www.kairosflow.ai/ont/wco/party> ;
@@ -290,7 +290,8 @@
 
 :agreementCountryCode a owl:DatatypeProperty ;
     rdfs:label "agreement country code" ;
-    rdfs:comment "ISO 3166-1 alpha-2 country code of the partner country in the trade agreement (WTO)." ;
+    rdfs:comment "ISO 3166-1 alpha-2 country code of the partner country in the trade agreement (WTO). Values are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT)." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/Country> ;
     rdfs:domain :TradeAgreementReference ;
     rdfs:range xsd:string .
 
@@ -314,7 +315,8 @@
 
 :originatingCountry a owl:DatatypeProperty ;
     rdfs:label "originating country" ;
-    rdfs:comment "ISO 3166-1 alpha-2 country code of the originating country (WCO Revised Kyoto Convention)." ;
+    rdfs:comment "ISO 3166-1 alpha-2 country code of the originating country (WCO Revised Kyoto Convention). Values are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT)." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/Country> ;
     rdfs:domain :CertificateOfOrigin ;
     rdfs:range xsd:string .
 
