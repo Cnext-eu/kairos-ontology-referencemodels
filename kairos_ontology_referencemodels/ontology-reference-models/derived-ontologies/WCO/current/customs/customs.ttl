@@ -11,8 +11,8 @@
     dcterms:description "Customs declarations, duty calculations, tariff classifications, and filing procedures based on the WCO Data Model 3.10.0." ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-10-17"^^xsd:date ;
-    owl:versionInfo "1.4.1" ;
+    dcterms:modified "2026-10-18"^^xsd:date ;
+    owl:versionInfo "1.4.2" ;
     dcterms:source "WCO Data Model 3.10.0, eFTI Regulation (EU) 2020/1056" ;
     rdfs:seeAlso <https://www.wcoomd.org/datamodel> .
 
@@ -365,7 +365,8 @@
 
 :currencyCode a owl:DatatypeProperty ;
     rdfs:label "currency code" ;
-    rdfs:comment "ISO 4217 currency code of the declared customs value (WCO 135)." ;
+    rdfs:comment "ISO 4217 currency code of the declared customs value (WCO 135). Values are ISO 4217 alphabetic codes: each matches the rdf:value of an iso4217:CurrencyCode member (authoritative-ontologies/ISO4217, from SIX); withdrawn codes are owl:deprecated there." ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/iso4217#CurrencyCode> ;
     rdfs:domain :CustomsValue ;
     rdfs:range xsd:string .
 
@@ -608,13 +609,15 @@
 
 :countryOfOrigin a owl:DatatypeProperty ;
     rdfs:label "country of origin" ;
-    rdfs:comment "Country of origin of the goods (ISO 3166-1 alpha-2, WCO 062)." ;
+    rdfs:comment "Country of origin of the goods (ISO 3166-1 alpha-2, WCO 062). Values are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT)." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/Country> ;
     rdfs:domain :GoodsItem ;
     rdfs:range xsd:string .
 
 :countryOfDestination a owl:DatatypeProperty ;
     rdfs:label "country of destination" ;
-    rdfs:comment "Country of final destination of the goods (ISO 3166-1 alpha-2, WCO 465)." ;
+    rdfs:comment "Country of final destination of the goods (ISO 3166-1 alpha-2, WCO 465). Values are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT)." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/Country> ;
     rdfs:domain :GoodsItem ;
     rdfs:range xsd:string .
 
@@ -660,7 +663,8 @@
 
 :packageTypeCode a owl:DatatypeProperty ;
     rdfs:label "package type code" ;
-    rdfs:comment "Type of package code per UN Recommendation 21 (e.g., CT=carton, BX=box, PL=pallet)." ;
+    rdfs:comment "Type of package code per UN Recommendation 21 (e.g., CT=carton, BX=box, PX=pallet). Values are UNECE Rec 21 codes: each matches the rdf:value of a unece:PackageTypeCodeList member (authoritative-ontologies/UNCEFACT). Note PX = pallet; PL is pail." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/PackageTypeCodeList> ;
     rdfs:domain :Packaging ;
     rdfs:range xsd:string .
 
@@ -845,7 +849,8 @@
 
 :importOriginCountry a owl:DatatypeProperty ;
     rdfs:label "import origin country" ;
-    rdfs:comment "ISO 3166-1 alpha-2 code of the country from which the goods were dispatched (WCO 062 country of origin)." ;
+    rdfs:comment "ISO 3166-1 alpha-2 code of the country from which the goods were dispatched (WCO 062 country of origin). Values are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT)." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/Country> ;
     rdfs:domain :ImportDeclaration ;
     rdfs:range xsd:string .
 
@@ -867,7 +872,8 @@
 
 :exportDestinationCountry a owl:DatatypeProperty ;
     rdfs:label "export destination country" ;
-    rdfs:comment "ISO 3166-1 alpha-2 code of the destination country to which the goods are exported (WCO 465)." ;
+    rdfs:comment "ISO 3166-1 alpha-2 code of the destination country to which the goods are exported (WCO 465). Values are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT)." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/Country> ;
     rdfs:domain :ExportDeclaration ;
     rdfs:range xsd:string .
 

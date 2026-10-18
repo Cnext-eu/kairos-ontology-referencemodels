@@ -16,8 +16,8 @@
     Based on UN/CEFACT MMT Reference Data Model.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-10-17"^^xsd:date ;
-    owl:versionInfo "2.5.3" ;
+    dcterms:modified "2026-10-18"^^xsd:date ;
+    owl:versionInfo "2.5.4" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
     owl:imports <https://www.kairosflow.ai/ont/mmt/events> ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
@@ -27,6 +27,8 @@
 #################################################################
 
 :Location a owl:Class ;
+    rdfs:comment "Locations are identified by UN/LOCODE; the shared location shape is unlcdv:UNLOCODE (kind 2: the hub loads the rows, see authoritative-ontologies/UNCEFACT, README 'UN/LOCODE locations')." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/UNLOCODE> ;
     rdfs:label "Location" ;
     rdfs:comment """A physical place relevant to transport operations.
 
@@ -51,7 +53,9 @@
 
     Properties: portName, portType.
     UN/CEFACT MMT-RDM: LogisticsLocationType — portName is the name of
-    the port; portType is the type of port (sea, river).""" ;
+    the port; portType is the type of port (sea, river).
+    Locations are identified by UN/LOCODE; the shared location shape is unlcdv:UNLOCODE (kind 2: the hub loads the rows, see authoritative-ontologies/UNCEFACT, README 'UN/LOCODE locations').""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/UNLOCODE> ;
     rdfs:subClassOf :TransportLocation .
 
 :Airport a owl:Class ;

@@ -17,8 +17,8 @@
     identifying responsible parties in port call and vessel registration processes.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "1.4.1" ;
+    dcterms:modified "2026-10-18"^^xsd:date ;
+    owl:versionInfo "1.4.2" ;
     dcterms:source "IMO Compendium data set, FAL Convention, ISM Code, STCW Convention" ;
     rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> ;
     owl:imports <https://www.kairosflow.ai/ont/imo/locations> .
@@ -266,7 +266,8 @@
 
 :authorityCountryCode a owl:DatatypeProperty ;
     rdfs:label "authority country code" ;
-    rdfs:comment "The ISO 3166-1 alpha-2 country code of the flag authority." ;
+    rdfs:comment "The ISO 3166-1 alpha-2 country code of the flag authority. Values are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT)." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/Country> ;
     rdfs:domain :FlagAuthority ;
     rdfs:range xsd:string .
 
@@ -348,7 +349,8 @@
 
 :masterIssuingCountry a owl:DatatypeProperty ;
     rdfs:label "master issuing country" ;
-    rdfs:comment "ISO 3166-1 alpha-2 country code of the state that issued the master's CoC. STCW II/2." ;
+    rdfs:comment "ISO 3166-1 alpha-2 country code of the state that issued the master's CoC. STCW II/2. Values are ISO 3166-1 alpha-2 codes: each matches the rdf:value of a unlcdv:Country member (authoritative-ontologies/UNCEFACT)." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/Country> ;
     rdfs:domain :MasterOfVessel ;
     rdfs:range xsd:string .
 

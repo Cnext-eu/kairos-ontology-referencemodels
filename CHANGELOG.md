@@ -5,6 +5,53 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.42.1] - 2026-10-18
+
+### Changed
+
+- **Every derived field that carries a shipped code now points at its list.** Each field
+  gains `rdfs:seeAlso <list>`, and its comment says whether the values match the list's
+  `rdf:value` directly or how the module's own tokens map. The ranges stay `xsd:string`,
+  so nothing breaks. 62 annotations in 25 files:
+  - **Currency → `iso4217:CurrencyCode`:** 13 fields in BSP, DCSA, MMT and WCO.
+  - **Country → `unlcdv:Country`:**
+    - 17 alpha-2 fields in BSP, IMO, MMT and WCO;
+    - 4 BSP document fields of unstated format;
+    - BSP `reference-data:countryCode`, whose comment now notes that only alpha-2 ships;
+    - the BSP `reference-data:Country` class.
+  - **Subdivision → `unlcdv:Subdivision`:** BSP `reference-data:stateProvince`.
+  - **Units → Rec 20:**
+    - direct: DCSA cargo gross volume and weight units, temperature unit;
+    - crosswalk: MMT `cargo:weightUnit` (KG→KGM, LB→LBR, TON→TNE), MMT
+      `cargo:dimensionUnit` (M→MTR, CM→CMT, FT→FOT, IN→INH), BSP
+      `commercial:unitOfMeasure`.
+  - **Package type → Rec 21:**
+    - direct: BSP, DCSA, MMT and WCO code fields;
+    - crosswalk: BSP and MMT `packageType` (carton→CT, pallet→PX, crate→CR).
+  - **Incoterms → `unece:DeliveryTermsCodeList`:** BSP, DCSA and MMT `incoterm`. Only
+    the 11 Incoterms 2020 rules ship.
+  - **Transport stage → UNTDED 8051:** MMT `consignment:stageCode` (PRE-/MAIN-/ON-CARRIAGE
+    → 10/20/30).
+  - **Transport mode → Rec 19:** DCSA `transport-documents:preCarriageBy` and
+    `onCarriageBy`, which were missed in 1.38.0.
+  - **Party role:** MMT `party:roleCodeValue`, noted as MMT-RDM codes linked to 3035 by
+    `skos:` matching.
+  - **UN/LOCODE shape (`unlcdv:UNLOCODE`):** the DCSA and MMT `Location` and `Port`
+    classes and the BSP and IMO `Port` classes.
+
+  Not linked, on purpose:
+  - the Sustainability emission categories (ISO 14083, not transport modes);
+  - WCO `customs:functionCode` (a declaration message function, not shipped);
+  - the DCSA free-time `unitOfMeasure` (a DCSA enum, not Rec 20).
+
+### Fixed
+
+- **WCO `customs:packageTypeCode`'s comment said "PL=pallet".** In Rec 21, `PL` is pail
+  and pallet is `PX`.
+
+- Module versions: BSP 2.5.4, DCSA 1.6.4, IMO 1.4.2, MMT 2.5.4, WCO 1.4.2. Previous
+  versions are archived.
+
 ## [1.42.0] - 2026-10-18
 
 ### Added

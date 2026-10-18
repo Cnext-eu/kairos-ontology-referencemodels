@@ -24,8 +24,8 @@
     and margin perspective.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-22"^^xsd:date ;
-    dcterms:modified "2026-09-17"^^xsd:date ;
-    owl:versionInfo "2.5.3" ;
+    dcterms:modified "2026-10-18"^^xsd:date ;
+    owl:versionInfo "2.5.4" ;
     dcterms:source "Industry Practice, UN/CEFACT CCL" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
@@ -288,7 +288,8 @@
 
 :currency a owl:DatatypeProperty ;
     rdfs:label "currency" ;
-    rdfs:comment "ISO 4217 currency code." ;
+    rdfs:comment "ISO 4217 currency code. Values are ISO 4217 alphabetic codes: each matches the rdf:value of an iso4217:CurrencyCode member (authoritative-ontologies/ISO4217, from SIX); withdrawn codes are owl:deprecated there." ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/iso4217#CurrencyCode> ;
     rdfs:domain :RevenueItem ;
     rdfs:range xsd:string .
 

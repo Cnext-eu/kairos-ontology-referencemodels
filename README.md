@@ -139,6 +139,10 @@ Each shipped code-list class carries its provenance in the graph: `kairos-ext:is
 `rdfs:seeAlso` (the module README). Each code keeps its code in `rdf:value` as the join key
 to source data.
 
+Every derived-module field that carries one of these codes points at its list with
+`rdfs:seeAlso`, and its comment says whether the values match directly or how they map
+(e.g. MMT `weightUnit` KG→KGM).
+
 Where the same standard ships twice, logistics hubs bind to `unlcdv:Country` (not OMG-LCC's
 ISO 3166-1 countries) and `iso4217:CurrencyCode` (not `unece:CurrencyCodeList` or FIBO's copy,
 which lag ISO 4217).

@@ -21,12 +21,12 @@ The Logistics Accelerator bundles **9 ontologies** via **11 `owl:imports`** (som
 
 | Ontology | Standard | Version | Focus |
 |---|---|---|---|
-| DCSA | Digital Container Shipping Association | `1.6.3` | Container shipping lifecycle |
-| MMT | Multi-Modal Transport | `2.5.3` | Consignment, movement, cargo, equipment |
-| BSP | Buy-Ship-Pay | `2.5.3` | Party, contract, invoice, settlement |
+| DCSA | Digital Container Shipping Association | `1.6.4` | Container shipping lifecycle |
+| MMT | Multi-Modal Transport | `2.5.4` | Consignment, movement, cargo, equipment |
+| BSP | Buy-Ship-Pay | `2.5.4` | Party, contract, invoice, settlement |
 | TIC | Terminal Industry Committee 4.0 | `1.6.2` | Terminal operations, handling, automotive |
-| IMO | International Maritime Organization | `1.4.1` | Vessel registry, dangerous goods, port-call, crew, environmental, maritime security |
-| WCO | World Customs Organization | `1.4.1` | Customs declarations, goods items, procedures, trade facilitation |
+| IMO | International Maritime Organization | `1.4.2` | Vessel registry, dangerous goods, port-call, crew, environmental, maritime security |
+| WCO | World Customs Organization | `1.4.2` | Customs declarations, goods items, procedures, trade facilitation |
 | Sustainability | Sustainability & Carbon | `1.2.0` | Emissions, energy, ESG reporting |
 | supply-chain | Supply Chain | `1.5.0` | Cross-standard bridge properties linking DCSA, MMT, BSP, TIC, IMO, and WCO |
 | RAIL | TAF TSI Rail | `1.1.0` | EU rail freight reservation & running (path request, consignment order, train running, rolling stock) |

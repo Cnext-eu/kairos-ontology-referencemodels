@@ -20,7 +20,7 @@
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
     dcterms:modified "2026-10-18"^^xsd:date ;
-    owl:versionInfo "2.5.3" ;
+    owl:versionInfo "2.5.4" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
@@ -416,7 +416,8 @@
 
 :unitOfMeasure a owl:DatatypeProperty ;
     rdfs:label "unit of measure" ;
-    rdfs:comment "Unit in which quantity is expressed (e.g., EA, KG, M)." ;
+    rdfs:comment "Unit in which quantity is expressed (e.g., EA, KG, M). Maps to UNECE Rec 20 (unece:UnitMeasureCode) (authoritative-ontologies/UNCEFACT): EA=EA, KG=KGM, M=MTR." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/UnitMeasureCode> ;
     rdfs:domain :OrderLine ;
     rdfs:range xsd:string .
 
@@ -485,7 +486,8 @@
 
 :incoterm a owl:DatatypeProperty ;
     rdfs:label "Incoterm" ;
-    rdfs:comment "International Commercial Terms (e.g., FOB, CIF, EXW, DDP)." ;
+    rdfs:comment "International Commercial Terms (e.g., FOB, CIF, EXW, DDP). Values are Incoterms abbreviations: the 11 Incoterms 2020 rules match the rdf:value of a unece:DeliveryTermsCodeList member (Rec 5, authoritative-ontologies/UNCEFACT); older terms (DAT, DDU, DAF, DES, DEQ) have no shipped code." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/DeliveryTermsCodeList> ;
     rdfs:domain :CommercialTransaction ;
     rdfs:range xsd:string .
 
@@ -515,7 +517,8 @@
 
 :packageType a owl:DatatypeProperty ;
     rdfs:label "package type" ;
-    rdfs:comment "Type of packaging (e.g., CARTON, PALLET, CRATE)." ;
+    rdfs:comment "Type of packaging (e.g., CARTON, PALLET, CRATE). Maps to UNECE Rec 21 (unece:PackageTypeCodeList) (authoritative-ontologies/UNCEFACT): CARTON=CT, PALLET=PX, CRATE=CR." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/PackageTypeCodeList> ;
     rdfs:domain :Shipment ;
     rdfs:range xsd:string .
 
@@ -632,7 +635,8 @@
 
 :packageTypeCode a owl:DatatypeProperty ;
     rdfs:label "package type code" ;
-    rdfs:comment "UN/CEFACT Recommendation 21 package type code (BX, PL, CR, DR, etc.)." ;
+    rdfs:comment "UN/CEFACT Recommendation 21 package type code (BX, PL, CR, DR, etc.). Values are UNECE Rec 21 codes: each matches the rdf:value of a unece:PackageTypeCodeList member (authoritative-ontologies/UNCEFACT). Note PX = pallet; PL is pail." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/PackageTypeCodeList> ;
     rdfs:seeAlso <https://unece.org/trade/cefact/UNLOCODE> ;
     rdfs:domain :Package ;
     rdfs:range xsd:string .

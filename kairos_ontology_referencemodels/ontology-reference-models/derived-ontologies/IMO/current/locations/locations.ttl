@@ -15,8 +15,8 @@
     system and IMO requirements for vessel traffic management and port operations.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-16"^^xsd:date ;
-    dcterms:modified "2026-10-17"^^xsd:date ;
-    owl:versionInfo "1.4.1" ;
+    dcterms:modified "2026-10-18"^^xsd:date ;
+    owl:versionInfo "1.4.2" ;
     dcterms:source "IMO Compendium data set, FAL Convention, COLREG Rule 10, Resolution A.857(20)" ;
     rdfs:seeAlso <https://imocompendium.imo.org/public/IMO-Compendium/Current> .
 
@@ -34,7 +34,9 @@
     rdfs:comment """A maritime port facility with infrastructure for the loading, unloading, and
     transit of cargo and passengers. Identified by a UN/LOCODE.
 
-    IMO: A port encompasses all terminals, anchorages, and approaches within its jurisdiction.""" ;
+    IMO: A port encompasses all terminals, anchorages, and approaches within its jurisdiction.
+    Locations are identified by UN/LOCODE; the shared location shape is unlcdv:UNLOCODE (kind 2: the hub loads the rows, see authoritative-ontologies/UNCEFACT, README 'UN/LOCODE locations').""" ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/unlocode-vocab/UNLOCODE> ;
     rdfs:subClassOf :MaritimeLocation ;
     rdfs:subClassOf [
         a owl:Restriction ;
