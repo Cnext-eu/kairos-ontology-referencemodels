@@ -50,7 +50,11 @@ currencies, ISO 3166 countries and subdivisions, UN/LOCODE functions). A hub tak
 a shipped list into its governed class (`unece:TransportModeCodeList rdfs:subClassOf
 hub:TransportModeCode`) and joins source data on each code's `rdf:value`. It does not parse
 the standard's PDF into its own table. The snapshot a hub imported is its
-`owl:versionInfo` (a date). See `blueprints/patterns/governed-code-list`.
+`owl:versionInfo` (a date). This is **kind 1** of the three kinds of code list. A **kind 2**
+list (UN/LOCODE locations) ships its shape only, and the hub loads the rows. A **kind 3**
+list (client or system codes) never ships members here. The kind is decided by where the
+class is defined and whether it has members, not by `kairos-ext:isReferenceData`. See
+`blueprints/patterns/governed-code-list`, "Where the values live".
 
 **Bind mode at the reservation, never at the order.** See
 `blueprints/patterns/multimodal-order-leg`. An order spanning three modes has no single mode

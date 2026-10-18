@@ -19,8 +19,8 @@
     - Events: Business events, order events, shipment events""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-10-17"^^xsd:date ;
-    owl:versionInfo "2.5.2" ;
+    dcterms:modified "2026-10-18"^^xsd:date ;
+    owl:versionInfo "2.5.3" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/> .
 
@@ -604,7 +604,7 @@
 
 :equipmentSizeType a owl:DatatypeProperty ;
     rdfs:label "equipment size/type" ;
-    rdfs:comment "ISO 6346 size/type code (e.g., 22G1, 45G1). UN/CEFACT CCL D23B: LogisticsTransportEquipment.categoryCode." ;
+    rdfs:comment "ISO 6346 size/type code (e.g., 22G1, 45G1). UN/CEFACT CCL D23B: LogisticsTransportEquipment.categoryCode. ISO 6346 size/type codes are not shipped (neither ISO nor BIC publishes a free-reuse statement), so the governed equipment-type list is client- or system-owned (kind 3, blueprints/patterns/governed-code-list) and carries this code as an attribute of each row." ;
     rdfs:seeAlso <https://vocabulary.uncefact.org/LogisticsTransportEquipment> ;
     rdfs:domain :TransportEquipment ;
     rdfs:range xsd:string .

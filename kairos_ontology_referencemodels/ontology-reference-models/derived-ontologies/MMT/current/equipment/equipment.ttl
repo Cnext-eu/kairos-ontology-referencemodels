@@ -15,8 +15,8 @@
     trailers, and equipment properties. Based on UN/CEFACT MMT Reference Data Model.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "2.5.2" ;
+    dcterms:modified "2026-10-18"^^xsd:date ;
+    owl:versionInfo "2.5.3" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
     owl:imports <https://www.kairosflow.ai/ont/mmt/events> ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
@@ -128,7 +128,7 @@
 
 :equipmentSizeType a owl:DatatypeProperty ;
     rdfs:label "equipment size type" ;
-    rdfs:comment "ISO 6346 equipment size and type code." ;
+    rdfs:comment "ISO 6346 equipment size and type code. ISO 6346 size/type codes are not shipped (neither ISO nor BIC publishes a free-reuse statement), so the governed equipment-type list is client- or system-owned (kind 3, blueprints/patterns/governed-code-list) and carries this code as an attribute of each row." ;
     rdfs:domain :TransportEquipment ;
     rdfs:range xsd:string .
 
