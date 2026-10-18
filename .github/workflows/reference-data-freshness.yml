@@ -57,8 +57,18 @@ jobs:
             echo "date=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Refresh ISO 4217 from SIX
+        id: refresh_iso
+        run: |
+          set -euo pipefail
+          uv run --extra dev python scripts/download_iso4217.py | tee -a refresh.log
+          if [ -n "$(git status --porcelain -- kairos_ontology_referencemodels/ontology-reference-models/authoritative-ontologies/ISO4217)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "date=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Run the test suite against the refreshed lists
-        if: steps.refresh.outputs.changed == 'true'
+        if: steps.refresh.outputs.changed == 'true' || steps.refresh_iso.outputs.changed == 'true'
         id: tests
         continue-on-error: true
         run: |
@@ -66,10 +76,10 @@ jobs:
           uv run --extra dev python -m pytest -q
 
       - name: Open a pull request
-        if: steps.refresh.outputs.changed == 'true'
+        if: steps.refresh.outputs.changed == 'true' || steps.refresh_iso.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DATE: ${{ steps.refresh.outputs.date }}
+          DATE: ${{ steps.refresh.outputs.date || steps.refresh_iso.outputs.date }}
           TESTS: ${{ steps.tests.outcome }}
         run: |
           BRANCH="chore/reference-data-${DATE}"
@@ -80,8 +90,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -b "$BRANCH"
-          git add kairos_ontology_referencemodels/ontology-reference-models/authoritative-ontologies/UNCEFACT
-          git commit -m "chore: refresh UN/CEFACT code lists (snapshot ${DATE})"
+          git add kairos_ontology_referencemodels/ontology-reference-models/authoritative-ontologies/UNCEFACT \
+                  kairos_ontology_referencemodels/ontology-reference-models/authoritative-ontologies/ISO4217
+          git commit -m "chore: refresh reference data (snapshot ${DATE})"
           git push origin "$BRANCH"
           if [ "$TESTS" = "success" ]; then
             VERDICT="✅ The test suite passes against the refreshed lists."
@@ -89,9 +100,9 @@ jobs:
             VERDICT="⚠️ The test suite **fails** against the refreshed lists. Review before merging."
           fi
           gh pr create --base main --head "$BRANCH" \
-            --title "chore: refresh UN/CEFACT code lists (snapshot ${DATE})" \
+            --title "chore: refresh reference data (snapshot ${DATE})" \
             --body "$(printf '%s\n' \
-              "Opened by the monthly \`reference-data-freshness\` workflow: the UN/CEFACT vocabulary dump no longer matches the vendored snapshot." \
+              "Opened by the monthly \`reference-data-freshness\` workflow: UN/CEFACT or SIX (ISO 4217) no longer matches the vendored snapshot." \
               "" \
               "$VERDICT" \
               "" \

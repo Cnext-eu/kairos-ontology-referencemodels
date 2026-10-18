@@ -1,0 +1,27 @@
+ISO 4217 Currency Codes - Download Information
+==============================================
+
+source: ISO 4217 lists published by SIX Financial Information AG, maintenance agency for ISO 4217
+publisher: SIX Financial Information AG, on behalf of ISO and SNV (Swiss Association for Standardization)
+source_page: https://www.six-group.com/en/products-services/financial-information/market-reference-data/data-standards.html
+download_date: 2026-10-18
+version: 2026-09-17 (list one publication date)
+list_one: https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml (published 2026-09-17, 47491 bytes, sha256 33139b438657d1cee116ba737807ea71d19d6de4b90f799a09c56f0cc6a1b0ff)
+list_three: https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-three.xml (published 2026-01-01, 30638 bytes, sha256 98fde2423cdb916dd59dcf5fe96222edad8fa198d865c1c83dbc464b9cc52387)
+sha256: ec4114ff8bb7d5de6bc6220b2c98cf5e7d0d4a4b86ae63462abc3ea200eddc90 (combined; compared by --check)
+members: 178 current (10 of them funds) + 129 withdrawn (owl:deprecated)
+ontology_files:
+  - list-one.xml, list-three.xml   (vendored source, unchanged)
+  - ISO4217-CurrencyCodes.ttl      (generated; ontology IRI https://www.kairosflow.ai/ont/iso4217)
+  - ISO4217-alignment.ttl          (generated skos:exactMatch; ontology IRI https://www.kairosflow.ai/ont/iso4217/alignment)
+alignment: UN/CEFACT unece:CurrencyCodeList 179, FIBO fibo-fnd-acc-cur:CurrencyIdentifier 163
+license: SIX provides the lists "online and free of charge" on ISO's behalf, and ISO states use
+  of the codes is free of charge. No explicit redistribution clause was found on SIX's site;
+  the content is facts (codes, names, numbers, dates). See README.md, section License.
+generator: scripts/download_iso4217.py -- regenerates everything in current/; do not hand-edit.
+deviations:
+  - IRIs are Kairos-minted (https://www.kairosflow.ai/ont/iso4217#<code>): SIX publishes XML only.
+  - One member per alphabetic code. Current codes take name, numeric code, minor unit and fund
+    flag from list one; withdrawn codes (in list three, not in list one) take name, numeric code
+    and withdrawal date from their latest historic row and are marked owl:deprecated.
+  - Minor unit 'N.A.' is omitted, not encoded.

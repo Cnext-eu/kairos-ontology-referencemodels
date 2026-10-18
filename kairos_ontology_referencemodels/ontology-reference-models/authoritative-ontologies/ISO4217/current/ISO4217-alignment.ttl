@@ -1,0 +1,532 @@
+@prefix iso4217: <https://www.kairosflow.ai/ont/iso4217#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+iso4217:AED skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/AED>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#AED> .
+
+iso4217:AFN skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/AFN>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#AFN> .
+
+iso4217:ALL skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/ALL>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#ALL> .
+
+iso4217:AMD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/AMD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#AMD> .
+
+iso4217:ANG skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/ANG>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#ANG> .
+
+iso4217:AOA skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/AOA>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#AOA> .
+
+iso4217:ARS skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/ARS>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#ARS> .
+
+iso4217:AUD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/AUD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#AUD> .
+
+iso4217:AWG skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/AWG>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#AWG> .
+
+iso4217:AZN skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/AZN>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#AZN> .
+
+iso4217:BAM skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/BAM>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#BAM> .
+
+iso4217:BBD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/BBD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#BBD> .
+
+iso4217:BDT skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/BDT>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#BDT> .
+
+iso4217:BGN skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/BGN>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#BGN> .
+
+iso4217:BHD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/BHD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#BHD> .
+
+iso4217:BIF skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/BIF>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#BIF> .
+
+iso4217:BMD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/BMD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#BMD> .
+
+iso4217:BND skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/BND>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#BND> .
+
+iso4217:BOB skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/BOB>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#BOB> .
+
+iso4217:BOV skos:exactMatch <https://vocabulary.uncefact.org/CurrencyCodeList#BOV> .
+
+iso4217:BRL skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/BRL>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#BRL> .
+
+iso4217:BSD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/BSD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#BSD> .
+
+iso4217:BTN skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/BTN>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#BTN> .
+
+iso4217:BWP skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/BWP>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#BWP> .
+
+iso4217:BYN skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/BYN>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#BYN> .
+
+iso4217:BZD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/BZD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#BZD> .
+
+iso4217:CAD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/CAD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#CAD> .
+
+iso4217:CDF skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/CDF>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#CDF> .
+
+iso4217:CHE skos:exactMatch <https://vocabulary.uncefact.org/CurrencyCodeList#CHE> .
+
+iso4217:CHF skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/CHF>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#CHF> .
+
+iso4217:CHW skos:exactMatch <https://vocabulary.uncefact.org/CurrencyCodeList#CHW> .
+
+iso4217:CLF skos:exactMatch <https://vocabulary.uncefact.org/CurrencyCodeList#CLF> .
+
+iso4217:CLP skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/CLP>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#CLP> .
+
+iso4217:CNY skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/CNY>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#CNY> .
+
+iso4217:COP skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/COP>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#COP> .
+
+iso4217:COU skos:exactMatch <https://vocabulary.uncefact.org/CurrencyCodeList#COU> .
+
+iso4217:CRC skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/CRC>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#CRC> .
+
+iso4217:CUC skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/CUC>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#CUC> .
+
+iso4217:CUP skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/CUP>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#CUP> .
+
+iso4217:CVE skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/CVE>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#CVE> .
+
+iso4217:CZK skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/CZK>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#CZK> .
+
+iso4217:DJF skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/DJF>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#DJF> .
+
+iso4217:DKK skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/DKK>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#DKK> .
+
+iso4217:DOP skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/DOP>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#DOP> .
+
+iso4217:DZD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/DZD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#DZD> .
+
+iso4217:EGP skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/EGP>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#EGP> .
+
+iso4217:ERN skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/ERN>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#ERN> .
+
+iso4217:ETB skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/ETB>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#ETB> .
+
+iso4217:EUR skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/EUR>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#EUR> .
+
+iso4217:FJD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/FJD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#FJD> .
+
+iso4217:FKP skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/FKP>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#FKP> .
+
+iso4217:GBP skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/GBP>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#GBP> .
+
+iso4217:GEL skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/GEL>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#GEL> .
+
+iso4217:GHS skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/GHS>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#GHS> .
+
+iso4217:GIP skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/GIP>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#GIP> .
+
+iso4217:GMD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/GMD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#GMD> .
+
+iso4217:GNF skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/GNF>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#GNF> .
+
+iso4217:GTQ skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/GTQ>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#GTQ> .
+
+iso4217:GYD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/GYD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#GYD> .
+
+iso4217:HKD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/HKD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#HKD> .
+
+iso4217:HNL skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/HNL>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#HNL> .
+
+iso4217:HRK skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/HRK> .
+
+iso4217:HTG skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/HTG>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#HTG> .
+
+iso4217:HUF skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/HUF>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#HUF> .
+
+iso4217:IDR skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/IDR>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#IDR> .
+
+iso4217:ILS skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/ILS>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#ILS> .
+
+iso4217:INR skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/INR>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#INR> .
+
+iso4217:IQD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/IQD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#IQD> .
+
+iso4217:IRR skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/IRR>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#IRR> .
+
+iso4217:ISK skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/ISK>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#ISK> .
+
+iso4217:JMD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/JMD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#JMD> .
+
+iso4217:JOD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/JOD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#JOD> .
+
+iso4217:JPY skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/JPY>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#JPY> .
+
+iso4217:KES skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/KES>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#KES> .
+
+iso4217:KGS skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/KGS>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#KGS> .
+
+iso4217:KHR skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/KHR>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#KHR> .
+
+iso4217:KMF skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/KMF>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#KMF> .
+
+iso4217:KPW skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/KPW>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#KPW> .
+
+iso4217:KRW skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/KRW>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#KRW> .
+
+iso4217:KWD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/KWD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#KWD> .
+
+iso4217:KYD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/KYD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#KYD> .
+
+iso4217:KZT skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/KZT>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#KZT> .
+
+iso4217:LAK skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/LAK>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#LAK> .
+
+iso4217:LBP skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/LBP>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#LBP> .
+
+iso4217:LKR skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/LKR>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#LKR> .
+
+iso4217:LRD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/LRD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#LRD> .
+
+iso4217:LSL skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/LSL>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#LSL> .
+
+iso4217:LYD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/LYD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#LYD> .
+
+iso4217:MAD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/MAD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#MAD> .
+
+iso4217:MDL skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/MDL>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#MDL> .
+
+iso4217:MGA skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/MGA>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#MGA> .
+
+iso4217:MKD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/MKD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#MKD> .
+
+iso4217:MMK skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/MMK>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#MMK> .
+
+iso4217:MNT skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/MNT>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#MNT> .
+
+iso4217:MOP skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/MOP>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#MOP> .
+
+iso4217:MRU skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/MRU>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#MRU> .
+
+iso4217:MUR skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/MUR>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#MUR> .
+
+iso4217:MVR skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/MVR>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#MVR> .
+
+iso4217:MWK skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/MWK>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#MWK> .
+
+iso4217:MXN skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/MXN>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#MXN> .
+
+iso4217:MXV skos:exactMatch <https://vocabulary.uncefact.org/CurrencyCodeList#MXV> .
+
+iso4217:MYR skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/MYR>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#MYR> .
+
+iso4217:MZN skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/MZN>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#MZN> .
+
+iso4217:NAD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/NAD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#NAD> .
+
+iso4217:NGN skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/NGN>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#NGN> .
+
+iso4217:NIO skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/NIO>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#NIO> .
+
+iso4217:NOK skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/NOK>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#NOK> .
+
+iso4217:NPR skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/NPR>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#NPR> .
+
+iso4217:NZD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/NZD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#NZD> .
+
+iso4217:OMR skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/OMR>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#OMR> .
+
+iso4217:PAB skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/PAB>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#PAB> .
+
+iso4217:PEN skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/PEN>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#PEN> .
+
+iso4217:PGK skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/PGK>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#PGK> .
+
+iso4217:PHP skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/PHP>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#PHP> .
+
+iso4217:PKR skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/PKR>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#PKR> .
+
+iso4217:PLN skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/PLN>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#PLN> .
+
+iso4217:PYG skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/PYG>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#PYG> .
+
+iso4217:QAR skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/QAR>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#QAR> .
+
+iso4217:RON skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/RON>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#RON> .
+
+iso4217:RSD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/RSD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#RSD> .
+
+iso4217:RUB skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/RUB>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#RUB> .
+
+iso4217:RWF skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/RWF>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#RWF> .
+
+iso4217:SAR skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/SAR>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#SAR> .
+
+iso4217:SBD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/SBD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#SBD> .
+
+iso4217:SCR skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/SCR>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#SCR> .
+
+iso4217:SDG skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/SDG>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#SDG> .
+
+iso4217:SEK skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/SEK>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#SEK> .
+
+iso4217:SGD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/SGD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#SGD> .
+
+iso4217:SHP skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/SHP>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#SHP> .
+
+iso4217:SLE skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/SLE>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#SLE> .
+
+iso4217:SLL skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/SLL> .
+
+iso4217:SOS skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/SOS>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#SOS> .
+
+iso4217:SRD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/SRD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#SRD> .
+
+iso4217:SSP skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/SSP>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#SSP> .
+
+iso4217:STN skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/STN>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#STN> .
+
+iso4217:SVC skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/SVC>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#SVC> .
+
+iso4217:SYP skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/SYP>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#SYP> .
+
+iso4217:SZL skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/SZL>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#SZL> .
+
+iso4217:THB skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/THB>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#THB> .
+
+iso4217:TJS skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/TJS>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#TJS> .
+
+iso4217:TMT skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/TMT>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#TMT> .
+
+iso4217:TND skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/TND>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#TND> .
+
+iso4217:TOP skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/TOP>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#TOP> .
+
+iso4217:TRY skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/TRY>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#TRY> .
+
+iso4217:TTD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/TTD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#TTD> .
+
+iso4217:TWD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/TWD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#TWD> .
+
+iso4217:TZS skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/TZS>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#TZS> .
+
+iso4217:UAH skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/UAH>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#UAH> .
+
+iso4217:UGX skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/UGX>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#UGX> .
+
+iso4217:USD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/USD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#USD> .
+
+iso4217:USN skos:exactMatch <https://vocabulary.uncefact.org/CurrencyCodeList#USN> .
+
+iso4217:UYI skos:exactMatch <https://vocabulary.uncefact.org/CurrencyCodeList#UYI> .
+
+iso4217:UYU skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/UYU>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#UYU> .
+
+iso4217:UYW skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/UYW>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#UYW> .
+
+iso4217:UZS skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/UZS>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#UZS> .
+
+iso4217:VED skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/VED>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#VED> .
+
+iso4217:VES skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/VES>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#VES> .
+
+iso4217:VND skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/VND>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#VND> .
+
+iso4217:VUV skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/VUV>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#VUV> .
+
+iso4217:WST skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/WST>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#WST> .
+
+iso4217:XAF skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/XAF>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#XAF> .
+
+iso4217:XAG skos:exactMatch <https://vocabulary.uncefact.org/CurrencyCodeList#XAG> .
+
+iso4217:XAU skos:exactMatch <https://vocabulary.uncefact.org/CurrencyCodeList#XAU> .
+
+iso4217:XBA skos:exactMatch <https://vocabulary.uncefact.org/CurrencyCodeList#XBA> .
+
+iso4217:XBB skos:exactMatch <https://vocabulary.uncefact.org/CurrencyCodeList#XBB> .
+
+iso4217:XBC skos:exactMatch <https://vocabulary.uncefact.org/CurrencyCodeList#XBC> .
+
+iso4217:XBD skos:exactMatch <https://vocabulary.uncefact.org/CurrencyCodeList#XBD> .
+
+iso4217:XCD skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/XCD>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#XCD> .
+
+iso4217:XDR skos:exactMatch <https://vocabulary.uncefact.org/CurrencyCodeList#XDR> .
+
+iso4217:XOF skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/XOF>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#XOF> .
+
+iso4217:XPD skos:exactMatch <https://vocabulary.uncefact.org/CurrencyCodeList#XPD> .
+
+iso4217:XPF skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/XPF>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#XPF> .
+
+iso4217:XPT skos:exactMatch <https://vocabulary.uncefact.org/CurrencyCodeList#XPT> .
+
+iso4217:XSU skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/XSU>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#XSU> .
+
+iso4217:XTS skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/XTS>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#XTS> .
+
+iso4217:XUA skos:exactMatch <https://vocabulary.uncefact.org/CurrencyCodeList#XUA> .
+
+iso4217:XXX skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/XXX>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#XXX> .
+
+iso4217:YER skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/YER>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#YER> .
+
+iso4217:ZAR skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/ZAR>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#ZAR> .
+
+iso4217:ZMW skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/ZMW>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#ZMW> .
+
+iso4217:ZWL skos:exactMatch <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/ZWL>,
+        <https://vocabulary.uncefact.org/CurrencyCodeList#ZWL> .
+
+<https://www.kairosflow.ai/ont/iso4217/alignment> a owl:Ontology ;
+    rdfs:label "ISO 4217 to UN/CEFACT and FIBO currency alignment" ;
+    rdfs:comment "skos:exactMatch from each ISO 4217 member to the same alphabetic code in the secondary copies: UN/CEFACT unece:CurrencyCodeList (179), FIBO fibo-fnd-acc-cur:CurrencyIdentifier (163). Generated by scripts/download_iso4217.py; do not hand-edit." .
+

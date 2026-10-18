@@ -589,6 +589,14 @@ groups:
               catalog. Uses the same reference-only policy as the IATA cargo module in
               the booking domain (gh#106) — the accelerator pack never bulk-imports it;
               a client hub serving air cargo binds to it here, hub-local.
+          - uri: "https://www.kairosflow.ai/ont/iso4217#"
+            module: "ISO 4217 / Currency Codes"
+            provides: "ISO 4217 currency and fund codes (current and withdrawn), numeric code, minor unit"
+            import_policy: reference-only
+            note: >
+              Vendored under authoritative-ontologies/ISO4217/ from SIX, the ISO 4217
+              maintenance agency (gh#128). The currency list to bind; the UN/CEFACT copy
+              lags ISO and is linked by skos:exactMatch.
           - uri: "https://www.kairosflow.ai/ont/uncefact/code-lists#"
             module: "UN/CEFACT / Code Lists"
             provides: "UNECE Rec 19 transport modes, Rec 20 units of measure, Rec 21 package types, Rec 5 Incoterms (delivery terms), transport stage, ISO 4217 currencies, UNTDED 3035 party roles, ISO 3166-1 countries and 3166-2 subdivisions, UN/LOCODE function classifiers"
@@ -617,6 +625,7 @@ groups:
           - "ISO code lists"
           - "UN/CEFACT CCL"
           - "UNECE Rec 5 / 9 / 16 / 19 / 20 / 21"
+          - "ISO 4217 (SIX)"
 
   - id: master-data-management
     name: "Master Data Management"

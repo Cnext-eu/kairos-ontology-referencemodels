@@ -29,7 +29,7 @@ unchanged and keeps its `https://vocabulary.uncefact.org/` IRI.
 | `unece:PackageTypeCodeList` | Rec 21 — Codes for Types of Cargo, Packages and Packaging Materials | 405 | `/` (BSP) |
 | `unece:DeliveryTermsCodeList` | Delivery terms (UNTDED 4053): the 11 ICC Incoterms 2020 abbreviations (Rec 5) + 2 generic codes | 13 | `/` (BSP) |
 | `unece:TransportMovementStageCodeList` | Transport stage (UNTDED 8051): 10 pre-carriage, 20 main carriage, 30 on-carriage, … | 30 | `/` (BSP) |
-| `unece:CurrencyCodeList` | Currency codes (UNTDED 6345): ISO 4217, Rec 9 | 179 | `/` (BSP) |
+| `unece:CurrencyCodeList` | Currency codes (UNTDED 6345): ISO 4217, Rec 9. **Secondary:** lags ISO; bind `iso4217:CurrencyCode` (`authoritative-ontologies/ISO4217/`) instead | 179 | `/` (BSP) |
 | `unece:PartyRoleCodeList` | Party roles (UNTDED 3035): CZ consignor, CN consignee, CA carrier, N1 notify party, … | 625 | `/` (BSP) |
 | `unlcdv:Country` | ISO 3166-1 alpha-2 countries, as published with UN/LOCODE (Rec 16) | 249 | `/unlocode-countries` |
 | `unlcdv:Subdivision` | ISO 3166-2 subdivisions, as published with UN/LOCODE (Rec 16) | 4,669 | `/unlocode-subdivisions` |

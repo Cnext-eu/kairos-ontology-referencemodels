@@ -58,6 +58,11 @@ package:
       uri: "https://onerecord.iata.org/ns/cargo#"
       focus: "Air cargo booking, shipment, transport movement"
       note: "Authoritative mirror vendored under authoritative-ontologies/IATA/. Exposed via the OASIS catalog; not bulk-imported into this pack. Bind hub-local at the reservation grain per the multimodal-order-leg pattern."
+    - id: ISO4217
+      name: "ISO 4217 currency codes (SIX, maintenance agency)"
+      uri: "https://www.kairosflow.ai/ont/iso4217#"
+      focus: "Current and withdrawn ISO 4217 currency and fund codes, with numeric code and minor unit"
+      note: "Authoritative reference data vendored under authoritative-ontologies/ISO4217/ from SIX (gh#128). The currency list hubs bind to; unece:CurrencyCodeList is a lagging secondary copy. Exposed via the OASIS catalog; not bulk-imported."
     - id: UNCEFACT
       name: "UN/CEFACT code lists (UNECE Rec 5, 9, 16, 19, 20, 21)"
       uri: "https://www.kairosflow.ai/ont/uncefact/code-lists#"
