@@ -24,8 +24,8 @@
     the role subclasses remain as deprecated standards overlays.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-08-15"^^xsd:date ;
-    owl:versionInfo "2.5.2" ;
+    dcterms:modified "2026-10-18"^^xsd:date ;
+    owl:versionInfo "2.5.3" ;
     dcterms:source "UN/CEFACT Buy-Ship-Pay Reference Data Model (BSP-RDM v1.0)" ;
     owl:imports <https://www.kairosflow.ai/ont/bsp/reference-data> ;
     owl:imports <https://www.kairosflow.ai/ont/bsp/commercial> ;
@@ -214,7 +214,9 @@
 
     Named per blueprints/patterns/governed-code-list (<Dimension>Code). The value
     set corresponds to the deprecated role subclasses above; survivorship and
-    value governance are a pack-level MDM concern, not fixed by this module.""" .
+    value governance are a pack-level MDM concern, not fixed by this module.
+
+    Kind 3 per blueprints/patterns/governed-code-list ("Where the values live"): this module ships the class WITHOUT members and does not mark it kairos-ext:isReferenceData; the role names above are examples, not shipped members. The standard role list, UNTDED 3035, ships as unece:PartyRoleCodeList (authoritative-ontologies/UNCEFACT). A hub either adopts it (unece:PartyRoleCodeList rdfs:subClassOf this class) or links its own roles to it with skos:exactMatch / skos:closeMatch.""" .
 
 :TradePartyRoleAssignment a owl:Class ;
     rdfs:label "Trade Party Role Assignment" ;

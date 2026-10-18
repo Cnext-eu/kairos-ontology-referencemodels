@@ -27,8 +27,8 @@
     - D&D invoice disputes and waivers""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-05-22"^^xsd:date ;
-    dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "1.6.2" ;
+    dcterms:modified "2026-10-18"^^xsd:date ;
+    owl:versionInfo "1.6.3" ;
     dcterms:source "DCSA Demurrage & Detention API v1.0" ;
     rdfs:seeAlso <https://dcsa.org/standards/> .
 
@@ -367,7 +367,7 @@
 
 :isoEquipmentCode a owl:DatatypeProperty ;
     rdfs:label "ISO equipment code" ;
-    rdfs:comment "DCSA AN API: ISO 6346 equipment size/type code (e.g., 22G1, 45G1)." ;
+    rdfs:comment "DCSA AN API: ISO 6346 equipment size/type code (e.g., 22G1, 45G1). ISO 6346 size/type codes are not shipped (neither ISO nor BIC publishes a free-reuse statement), so the governed equipment-type list is client- or system-owned (kind 3, blueprints/patterns/governed-code-list) and carries this code as an attribute of each row." ;
     rdfs:domain :FreeTimeAllowance ;
     rdfs:range xsd:string .
 

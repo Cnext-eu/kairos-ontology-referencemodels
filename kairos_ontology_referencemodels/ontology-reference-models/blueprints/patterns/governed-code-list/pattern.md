@@ -47,16 +47,34 @@ ship this composition (`bsp/party#hasRole` → `PartyRoleCode`, `mmt/party#hasRo
 
 ## Where the values live
 
-Who maintains the list decides where its members live. There are two cases.
+Every governed code list is one of **three kinds**. The kind answers two questions: where
+the list's rows come from, and what the reference models give a hub.
 
-**Standards-body lists — the reference models ship the members.** When a standards body
-publishes and maintains the list (UNECE Rec 19 transport modes, Rec 20 units of measure,
-Rec 21 package types), its members are vendored as reference data under
-`authoritative-ontologies/` (`authoritative-ontologies/UNCEFACT/`, refreshed by
-`scripts/download_uncefact_codelists.py`). A hub does not re-ingest the list from the
-standard's PDF into its own bronze table: every hub's copy would drift on its own, and
-nothing would identify two hubs' lists as the same list. Instead the hub's governed class
-takes in the shared list:
+| Kind | Examples | Rows come from | What the reference models ship |
+|---|---|---|---|
+| **1. Shipped standard list** | UNECE Rec 19 / 20 / 21, Incoterms (UNTDED 4053), currencies (ISO 4217), party roles (UNTDED 3035), ISO 3166-1 countries and 3166-2 subdivisions, UN/LOCODE function classifiers, IATA ONE Record code lists | vendored individuals under `authoritative-ontologies/`, refreshed by script | the class **and its members**, each code in `rdf:value`, with `owl:versionInfo` (snapshot) and `dcterms:source` |
+| **2. Hub-loaded standard list** | UN/LOCODE locations (~116,000 rows, re-released twice a year) | the hub loads them from the standard's own release | the **target shape** only: class and properties, no members (`unlcdv:UNLOCODE`, with the loading instruction in `dcterms:description`) |
+| **3. Client- or system-owned list** | a TMS container-type master, internal status codes, readable party roles such as `SHIPPER` | the client's own source systems | **no members.** At most an empty governed-class shell (`bsp/party#PartyRoleCode`, `mmt/party#TransportPartyRoleCode`) and, where a standard exists, the link to it |
+
+Members are shipped only for kind 1. Shapes are shipped for all three kinds. Kinds 2 and
+3 get no members and no refresh workflow from this repository.
+
+**Telling the kinds apart in the graph.** Decide by where the class is defined and whether
+it has members. Do not decide by an annotation:
+
+- **kind 1:** the class has members (`owl:NamedIndividual`s typed by it) in the closure;
+- **kind 2:** the class is defined under `authoritative-ontologies/` and has no members;
+- **kind 3:** everything else: a derived-module shell, or a class the hub defines.
+
+`kairos-ext:isReferenceData` does not decide the kind. It is the toolkit's hub-side
+projection annotation, and a hub may set it on its own kind-3 class. Some kind-1 lists
+(IATA, OMG-LCC) are not marked with it at all.
+
+### Kind 1: take the shipped list in
+
+A hub does not re-ingest a shipped list from the standard's PDF into its own bronze table:
+every hub's copy would drift on its own, and nothing would identify two hubs' lists as the
+same list. Instead the hub's governed class takes in the shared list:
 
 ```turtle
 hub:TransportModeCode a owl:Class .
@@ -66,39 +84,85 @@ unece:TransportModeCodeList rdfs:subClassOf hub:TransportModeCode .
 
 The subclass runs from the shared list to the hub's class, not the other way round: the
 hub's dimension is the standard's codes plus any extensions, and an extension must not
-become a member of the standard's list. Each shared member carries its code in
-`rdf:value`, which is the join key to source data. Two variations stay in the hub:
+become a member of the standard's list. Join source data on (list, code), where the code
+is each member's `rdf:value`, not on the member IRI: UN/CEFACT has announced a switch to
+path IRIs, keeping today's fragment IRIs only as `owl:sameAs` aliases.
 
-- **A profile** (the hub accepts only part of the list) is a hub-side SHACL `sh:in` over
-  the shared members. Do not copy the subset into new individuals.
-- **An extension** (codes the standard lacks) is a hub-local individual of the hub's
-  governed class. Extensions are client members, exactly as in the next case.
+A **profile** (the hub accepts only part of the list) is a hub-side SHACL `sh:in` over the
+shared members. Do not copy the subset into new individuals.
 
-**Client lists — empty shells.** When the client defines the values (party roles,
-internal status codes), the **slot** is the standard's and the **members** are the
-client's. Reference modules ship these governed classes as empty shells
-(`bsp/party#PartyRoleCode`, `mmt/party#TransportPartyRoleCode`): the value set is client
-master data and belongs to the blueprint's `reference-data` domain, whose contract owns code
-lists and status codes. The enumeration constraint belongs in SHACL, not OWL:
-`kairos-ontology suggest-shapes` (DD-076) derives `sh:in` enums from bronze distinct-value
-evidence.
+When the same standard ships twice, use the list the logistics pack routes:
 
-**Party roles sit between the two cases.** A standard list exists: UN/CEFACT's party roles
-(UNTDED 3035, 625 codes such as `CZ` consignor, `CN` consignee, `CA` carrier), shipped as
-`unece:PartyRoleCodeList`. But most hubs govern a short list of readable roles (`SHIPPER`,
-`CONTROLLING_CUSTOMER`) that is partly client-specific. So the role classes stay empty
-shells, and the hub chooses one of two options:
+| Dimension | Use | Also present (do not bind to) |
+|---|---|---|
+| Country | `unlcdv:Country` (UNCEFACT, linked to subdivisions and UN/LOCODE) | OMG-LCC ISO 3166-1 (FIBO closure) |
+| Currency | `unece:CurrencyCodeList` (UNCEFACT) | IATA `code-lists:CurrencyCode` (air profile) |
+| Transport mode | `unece:TransportModeCodeList` (all 10 Rec 19 codes) | IATA `code-lists:ModeCode` (air profile, linked by `skos:exactMatch`) |
 
-- **Adopt the standard list:** `unece:PartyRoleCodeList rdfs:subClassOf hub:PartyRoleCode`,
-  plus hub-local individuals for roles 3035 lacks.
-- **Keep its own roles and link them:** each hub role individual carries
-  `skos:exactMatch` (or `skos:closeMatch`) to its 3035 code, e.g.
+### Kind 2: load the rows in the hub, to the shipped shape
+
+The rows are too many, or change too often, to ship in an imported ontology. The hub binds
+the standard's own release as an ordinary source and loads it to the shipped class and
+properties, keyed on the code. For UN/LOCODE: the 5-character code, linked to the shipped
+`unlcdv:Country`, `unlcdv:Subdivision` and `unlcdv:Function` members (see the UNCEFACT
+module README, "UN/LOCODE locations: load in the hub").
+
+### Kind 3: the client's list, linked to a standard where one exists
+
+When the client or a source system defines the values, the **slot** is the standard's and
+the **members** are the client's. Reference modules ship these governed classes as empty
+shells: the value set is client master data and belongs to the blueprint's `reference-data`
+domain, whose contract owns code lists and status codes. The enumeration constraint belongs
+in SHACL, not OWL: `kairos-ontology suggest-shapes` (DD-076) derives `sh:in` enums from
+bronze distinct-value evidence.
+
+Where a standard exists, link to it:
+
+- **The standard is shipped (kind 1):** each client member carries `skos:exactMatch` or
+  `skos:closeMatch` to its standard code, so two hubs' lists are comparable through the
+  shared code.
+- **The standard exists but cannot be shipped** (ISO 6346 container size/type codes: ISO
+  and BIC publish no free-reuse statement): the client list carries the standard's code as
+  an **attribute** of each row. The derived ISO 6346 properties are where that code goes
+  (BSP `commercial:equipmentSizeType`, DCSA `equipment:isoEquipmentCode` and
+  `demurrage-detention:isoEquipmentCode`, MMT `equipment:equipmentSizeType`). A
+  production example: the governed container-type list is the TMS's own master table,
+  keyed on the TMS type code, with the ISO 6346 code as one column.
+
+**Party roles are the worked example of the choice between kind 1 and kind 3.** A standard
+list ships: UN/CEFACT's party roles (UNTDED 3035, 625 codes such as `CZ` consignor, `CN`
+consignee, `CA` carrier), as `unece:PartyRoleCodeList`. But most hubs govern a short list
+of readable roles (`SHIPPER`, `CONTROLLING_CUSTOMER`) that is partly client-specific. The
+role classes therefore stay empty shells, and the hub chooses:
+
+- **treat it as kind 1:** `unece:PartyRoleCodeList rdfs:subClassOf hub:PartyRoleCode`; or
+- **treat it as kind 3 with links:** keep its own roles, each with `skos:exactMatch` (or
+  `skos:closeMatch`) to its 3035 code, e.g.
   `hub:SHIPPER skos:closeMatch <https://vocabulary.uncefact.org/PartyRoleCodeList#CZ>`.
-  Two hubs' roles are then comparable through the shared code.
 
-**Crosswalks.** A mapping from one *source system's* codes to the standard's (CargoWise
-`SEA` → Rec 19 `1`) is source-specific and stays in the hub. A mapping between two
-*standards* is shared and ships here: `authoritative-ontologies/UNCEFACT/current/UNCEFACT-IATA-alignment.ttl`
+### Local extensions follow the list's kind
+
+An extension (a code the standard lacks) lives where the rest of the list lives:
+
+- **kinds 1 and 2:** a row in the hub's reference table, from a hub extension seed unioned
+  in with an `origin` column. Not an individual in the hub ontology. Extensions only add
+  rows; they never override a shipped row, and a local row is deprecated, not deleted,
+  because facts point at it;
+- **kind 3:** the client list itself.
+
+The binding's `unique` check on the code is what catches a later release that assigns an
+extension's code to something else. Where the standard reserves a user-assigned range, take
+extension codes from it so this can never happen: ISO 3166-1 reserves `AA`, `QM`–`QZ`,
+`XA`–`XZ` and `ZZ`. Most lists reserve nothing: Rec 19 uses all of `0`–`9`, ISO 4217's
+`X` codes are mostly assigned (`XAU`, `XDR`, `XTS`, `XXX`), and Rec 20, Rec 21 and
+UN/LOCODE have no reserved range. There, the `origin` column and the unique check are the
+only protection.
+
+### Crosswalks
+
+A mapping from one *source system's* codes to the standard's (CargoWise `SEA` → Rec 19
+`1`) is source-specific and stays in the hub. A mapping between two *standards* is shared
+and ships here: `authoritative-ontologies/UNCEFACT/current/UNCEFACT-IATA-alignment.ttl`
 links IATA ONE Record codes to UNECE codes, and the derived transport-mode slots state how
 their standard's values map to Rec 19 (see `rdfs:seeAlso` on each slot).
 

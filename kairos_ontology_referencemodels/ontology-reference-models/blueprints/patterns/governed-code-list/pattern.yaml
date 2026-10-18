@@ -25,9 +25,11 @@ naming_conventions:
   - element: link_to_governed_code
     convention: "has<Dimension>Code"
     example: hasEquipmentTypeCode
-# Where the members live (gh#120): standards-body lists ship as reference data under
-# authoritative-ontologies/ and hubs take them in; client lists ship as empty shells. See
-# "Where the values live" in pattern.md. Re-ingesting a shipped standards-body list per hub
+# Where the members live (gh#120, gh#125): three kinds of list. 1 = shipped standard list
+# (members vendored under authoritative-ontologies/), 2 = hub-loaded standard list (shape
+# shipped, rows loaded by the hub), 3 = client- or system-owned list (empty shell at most).
+# The kind is decided by where the class is defined and whether it has members, not by an
+# annotation. See "Where the values live" in pattern.md. Re-ingesting a shipped standards-body list per hub
 # is discouraged there in prose; it is not listed as an anti_pattern below because every
 # entry here needs a recorded position in the toolkit's core/pattern_rules.py first.
 anti_patterns:

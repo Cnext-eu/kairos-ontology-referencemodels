@@ -148,7 +148,9 @@ Status column and the change indicators. Reload on each UN/LOCODE release (twice
 (`upstream_release`).
 
 The derived modules' location-code text fields (`unLocationCode`, `unlocode`) hold the
-same 5-character code. Kairos-ontology-toolkit#1126 tracks generating this loader for hubs.
+same 5-character code. Loading the locations is ordinary source binding in the hub: this
+is a **kind 2** list (`blueprints/patterns/governed-code-list`, "Where the values live"),
+and no tool generates its loader.
 
 ## License
 
@@ -175,6 +177,10 @@ republished here as UNECE publishes them (Rec 3, Rec 9, Rec 16). ISO has stated 
 of the codes themselves is free of charge; the full standards, and ISO's own databases,
 are sold separately and are not vendored. **ISO 6346** (container size/type codes) is
 deliberately absent: neither ISO nor BIC publishes a free-reuse statement for that list.
+It is therefore a **kind 3** list: the hub's governed equipment-type list is its own (often a
+TMS master table) and carries the ISO 6346 code as an attribute, in the derived properties
+BSP `commercial:equipmentSizeType`, DCSA `equipment:isoEquipmentCode` and
+`demurrage-detention:isoEquipmentCode`, and MMT `equipment:equipmentSizeType`.
 
 To close this, ask UNECE in the vocab-bsp repository, which invites issues:
 https://opensource.unicc.org/un/unece/uncefact/vocab-bsp/-/issues.

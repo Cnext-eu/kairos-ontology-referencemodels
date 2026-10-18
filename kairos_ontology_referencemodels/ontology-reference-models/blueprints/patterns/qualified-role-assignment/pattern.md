@@ -73,8 +73,9 @@ this pattern — the modules' `roleValidFrom`/`roleValidTo` stay reusable either
 The role code classes ship empty. The standard role list, UN/CEFACT UNTDED 3035
 (`unece:PartyRoleCodeList`, 625 codes), ships as reference data under
 `authoritative-ontologies/UNCEFACT/`. A hub either adopts it as its role list or links its
-own roles to it with `skos:exactMatch` / `skos:closeMatch`; see `governed-code-list`, "Party
-roles sit between the two cases".
+own roles to it with `skos:exactMatch` / `skos:closeMatch`; see `governed-code-list`,
+"Where the values live", where party roles are the worked example of choosing between
+kind 1 (adopt the shipped list) and kind 3 (own roles, linked).
 
 ## Cardinality rules (advisory)
 

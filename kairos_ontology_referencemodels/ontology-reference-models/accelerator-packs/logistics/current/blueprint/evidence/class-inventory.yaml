@@ -739,7 +739,10 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#equipmentOwner
 - comments:
-  - 'ISO 6346 size/type code (e.g., 22G1, 45G1). UN/CEFACT CCL D23B: LogisticsTransportEquipment.categoryCode.'
+  - 'ISO 6346 size/type code (e.g., 22G1, 45G1). UN/CEFACT CCL D23B: LogisticsTransportEquipment.categoryCode.
+    ISO 6346 size/type codes are not shipped (neither ISO nor BIC publishes a free-reuse statement), so
+    the governed equipment-type list is client- or system-owned (kind 3, blueprints/patterns/governed-code-list)
+    and carries this code as an attribute of each row.'
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#TransportEquipment
   kind: datatype_property
@@ -5522,7 +5525,11 @@ records:
     \ CustomsBroker, Bank, Manufacturer,\n    Supplier, NotifyParty, InsuranceProvider, TerminalOperator,\
     \ WarehouseKeeper, ...).\n\n    Named per blueprints/patterns/governed-code-list (<Dimension>Code).\
     \ The value\n    set corresponds to the deprecated role subclasses above; survivorship and\n    value\
-    \ governance are a pack-level MDM concern, not fixed by this module."
+    \ governance are a pack-level MDM concern, not fixed by this module.\n\n    Kind 3 per blueprints/patterns/governed-code-list\
+    \ (\"Where the values live\"): this module ships the class WITHOUT members and does not mark it kairos-ext:isReferenceData;\
+    \ the role names above are examples, not shipped members. The standard role list, UNTDED 3035, ships\
+    \ as unece:PartyRoleCodeList (authoritative-ontologies/UNCEFACT). A hub either adopts it (unece:PartyRoleCodeList\
+    \ rdfs:subClassOf this class) or links its own roles to it with skos:exactMatch / skos:closeMatch."
   domains: []
   kind: class
   labels:
@@ -9464,7 +9471,10 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/dcsa/demurrage-detention#hasWaiver
 - comments:
-  - 'DCSA AN API: ISO 6346 equipment size/type code (e.g., 22G1, 45G1).'
+  - 'DCSA AN API: ISO 6346 equipment size/type code (e.g., 22G1, 45G1). ISO 6346 size/type codes are not
+    shipped (neither ISO nor BIC publishes a free-reuse statement), so the governed equipment-type list
+    is client- or system-owned (kind 3, blueprints/patterns/governed-code-list) and carries this code
+    as an attribute of each row.'
   domains:
   - https://www.kairosflow.ai/ont/dcsa/demurrage-detention#FreeTimeAllowance
   kind: datatype_property
@@ -9867,7 +9877,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/dcsa/equipment#isShipperOwned
 - comments:
-  - ISO 6346 container type code (4 characters).
+  - ISO 6346 container type code (4 characters). ISO 6346 size/type codes are not shipped (neither ISO
+    nor BIC publishes a free-reuse statement), so the governed equipment-type list is client- or system-owned
+    (kind 3, blueprints/patterns/governed-code-list) and carries this code as an attribute of each row.
   domains:
   - https://www.kairosflow.ai/ont/dcsa/equipment#Container
   kind: datatype_property
@@ -21982,7 +21994,9 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/equipment#equipmentIdentifier
 - comments:
-  - ISO 6346 equipment size and type code.
+  - ISO 6346 equipment size and type code. ISO 6346 size/type codes are not shipped (neither ISO nor BIC
+    publishes a free-reuse statement), so the governed equipment-type list is client- or system-owned
+    (kind 3, blueprints/patterns/governed-code-list) and carries this code as an attribute of each row.
   domains:
   - https://www.kairosflow.ai/ont/mmt/equipment#TransportEquipment
   kind: datatype_property
@@ -24044,7 +24058,12 @@ records:
     \ CustomsBroker, NotifyParty, TerminalOperator,\n    WarehouseOperator). Named per blueprints/patterns/governed-code-list\n\
     \    (<Dimension>Code); value governance is a pack-level MDM concern.\n\n    Properties: roleCodeValue,\
     \ roleDescription.\n    UN/CEFACT MMT-RDM: TransportPartyRoleCodeType — roleCodeValue is the\n   \
-    \ code value (e.g., CGN, CNE); roleDescription is the description of\n    the role."
+    \ code value (e.g., CGN, CNE); roleDescription is the description of\n    the role.\n\n    Kind 3\
+    \ per blueprints/patterns/governed-code-list (\"Where the values live\"): this module ships the class\
+    \ WITHOUT members and does not mark it kairos-ext:isReferenceData; the role names above are examples,\
+    \ not shipped members. The standard role list, UNTDED 3035, ships as unece:PartyRoleCodeList (authoritative-ontologies/UNCEFACT).\
+    \ A hub either adopts it (unece:PartyRoleCodeList rdfs:subClassOf this class) or links its own roles\
+    \ to it with skos:exactMatch / skos:closeMatch."
   domains: []
   kind: class
   labels:

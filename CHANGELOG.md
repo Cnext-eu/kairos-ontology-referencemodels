@@ -5,6 +5,54 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.41.0] - 2026-10-18
+
+### Changed
+
+- **Three named kinds of code list** (gh#125). `governed-code-list` § "Where the values
+  live" is restated around them:
+  - **1. Shipped standard list:** members vendored under `authoritative-ontologies/`.
+  - **2. Hub-loaded standard list:** shape shipped, rows loaded by the hub (UN/LOCODE
+    locations).
+  - **3. Client- or system-owned list:** an empty shell at most, linked to a standard
+    where one exists.
+
+  Members ship only for kind 1, and only kind 1 is refreshed here. Kind 3 code values are
+  out of scope. The same three kinds are now stated in the root README, `CONTRACT.md`,
+  the UNCEFACT README and the model sheet.
+
+- **The kind is decided by where the class is defined and whether it has members**, not by
+  `kairos-ext:isReferenceData`. That annotation is the toolkit's hub-side projection
+  marker: a hub may set it on its own kind-3 class, and the IATA and OMG-LCC lists, which
+  ship with members, do not carry it. The empty shells (`bsp/party#PartyRoleCode`,
+  `mmt/party#TransportPartyRoleCode`) do not carry it.
+
+- **Local extensions follow the list's kind.** For kinds 1 and 2, an extension is a row in
+  a hub extension seed with an `origin` column, not an individual in the hub ontology
+  (this replaces the earlier "hub-local individual" guidance). For kind 3, the list is
+  the client's own. Codes come from a reserved user-assigned range where the standard has
+  one (ISO 3166-1: `AA`, `QM`–`QZ`, `XA`–`XZ`, `ZZ`). Otherwise the `origin` column and
+  the binding's `unique` check are the protection.
+
+- **ISO 6346 size/type codes are kind 3.** The hub's own equipment-type list carries the
+  code as an attribute. The four derived properties that hold it now say so: BSP
+  `commercial:equipmentSizeType`, DCSA `equipment:isoEquipmentCode` and
+  `demurrage-detention:isoEquipmentCode`, and MMT `equipment:equipmentSizeType`.
+
+- **The party-role shells say they are kind 3.** They carry no members, and the role names
+  in their comments are examples. They point at `unece:PartyRoleCodeList` for a hub that
+  adopts or links to it.
+
+- **Countries and currencies each have one list to bind to:** `unlcdv:Country` and
+  `unece:CurrencyCodeList`, rather than the OMG-LCC or IATA copies. The pattern also says
+  to join on (list, code), not on the member IRI, because UN/CEFACT has announced path
+  IRIs.
+
+- The UNCEFACT README no longer says toolkit#1126 generates the UN/LOCODE loader: loading
+  a kind-2 list is ordinary source binding in the hub.
+
+- Module versions: BSP 2.5.3, DCSA 1.6.3, MMT 2.5.3. Previous versions are archived.
+
 ## [1.40.0] - 2026-10-17
 
 ### Added

@@ -117,13 +117,27 @@ the same list (see `blueprints/patterns/governed-code-list`, "Where the values l
 > a code is a breaking change for hubs that store it. See `VERSIONING.md`, "Refreshing
 > reference data".
 
-Each code-list class carries its provenance in the graph: `kairos-ext:isReferenceData true`,
+**Three kinds of code list.** Which kind a list is decides where its rows come from and what
+this repository gives a hub (`blueprints/patterns/governed-code-list`, "Where the values live"):
+
+| Kind | Examples | Rows come from | What ships here |
+|---|---|---|---|
+| **1. Shipped standard list** | the UNCEFACT lists above, IATA ONE Record code lists | vendored individuals, refreshed by script | the class **and its members** |
+| **2. Hub-loaded standard list** | UN/LOCODE locations (~116,000 rows) | the hub loads the standard's own release | the **shape** only (class and properties, no members) |
+| **3. Client- or system-owned list** | a TMS container-type master, internal status codes, readable party roles such as `SHIPPER` | the client's source systems | at most an empty governed class, plus the link to a standard where one exists |
+
+Members ship only for kind 1, and only kind 1 is refreshed here. **Client and system code
+values (kind 3) are out of scope:** this repository never ships them. Where a standard
+exists but cannot be shipped (ISO 6346 container size/type codes: no free-reuse statement),
+the client list carries the standard's code as an attribute.
+
+Each shipped code-list class carries its provenance in the graph: `kairos-ext:isReferenceData true`,
 `owl:versionInfo` (the snapshot date), `dcterms:source` (where it was downloaded from), and
 `rdfs:seeAlso` (the module README). Each code keeps its code in `rdf:value` as the join key
 to source data.
 
-Lists a client defines (party roles, internal statuses) are **not** shipped: their
-governed classes are empty shells that the hub fills in its `reference-data` domain.
+Where the same standard ships twice, logistics hubs bind to `unlcdv:Country` (not OMG-LCC's
+ISO 3166-1 countries) and `unece:CurrencyCodeList` (not IATA's `CurrencyCode`).
 
 ---
 

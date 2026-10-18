@@ -32,6 +32,13 @@ python scripts/download_uncefact_codelists.py           # refresh
 The monthly `reference-data-freshness` workflow opens a PR when upstream changed. A
 **removed** code is breaking for hubs that store it.
 
+## Which kind of code list is this?
+
+Ten of the lists are **kind 1** (shipped with their members). UN/LOCODE locations are
+**kind 2** (shape shipped, rows loaded by the hub). Client and system code lists are
+**kind 3** and never ship here. See `blueprints/patterns/governed-code-list`, "Where the
+values live".
+
 ## UN/LOCODE locations are loaded by the hub, not shipped
 
 The ~116,000 UN/LOCODE locations are reference data too, but they are too large and change
