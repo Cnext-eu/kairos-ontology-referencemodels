@@ -45,6 +45,14 @@ Three upstream subdivisions (`SNDB `, `SOGE `, `THS `) have a trailing space in 
 IRI, which makes them invalid IRIs. They are skipped rather than corrected, because
 correcting them would mint IRIs UN/CEFACT never published. `METADATA.txt` lists them.
 
+**Errata.** A wrong *literal* upstream is corrected in the extract, from the `ERRATA` table in
+the generator, and listed under `errata` in `METADATA.txt`. Today there is one:
+`unlocode-countries#FR` is labelled "Saint-Pierre = PM FSP" upstream (a UN/LOCODE "="
+cross-reference row taken as France's name) and ships as "FRANCE". A correction applies only
+while upstream still carries exactly the wrong value. When upstream fixes it, the refresh
+reports the erratum as obsolete; if upstream changes it to anything else, the refresh fails
+for review. IRIs are never corrected this way.
+
 Each code is an instance of its list's class, with the code in `rdf:value` and its name
 in `rdfs:label` or `rdfs:comment` (the patch copies a comment to `rdfs:label` where the
 code has no label):

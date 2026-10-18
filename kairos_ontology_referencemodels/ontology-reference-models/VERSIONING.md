@@ -122,6 +122,12 @@ After a refresh:
 month and opens a PR when upstream changed; that PR still needs steps 1–3. Run `--check` by
 hand before a release.
 
+If a refresh prints `NOTE erratum obsolete`, upstream has fixed a known error: delete that
+entry from `ERRATA` in the script. If it fails with `erratum no longer matches upstream`,
+upstream changed a corrected value: review the new value before deciding to keep, change or
+drop the erratum. Report every new upstream error to UN/CEFACT
+(`opensource.unicc.org/un/unece/uncefact`) as well as adding an erratum.
+
 Never hand-edit the generated files (`UNCEFACT-CodeLists.ttl`,
 `UNCEFACT-CodeLists.owl-patch.ttl`, `UNCEFACT-IATA-alignment.ttl`, `METADATA.txt`). To
 vendor another standards-body list, add it to `CODE_LISTS` in the script and to

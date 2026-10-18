@@ -5,6 +5,23 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.41.2] - 2026-10-18
+
+### Fixed
+
+- **France's country label.** UN/CEFACT's UN/LOCODE countries document labels
+  `unlocode-countries#FR` "Saint-Pierre = PM FSP". That is a UN/LOCODE "=" cross-reference
+  row for Saint-Pierre (listed under PM as FSP), taken as France's name. It now ships as
+  "FRANCE", matching the BSP document's `unece:CountryId#FR` and the uppercase style of the
+  other 248 labels. No other country label is affected.
+
+  The correction comes from a new `ERRATA` table in `download_uncefact_codelists.py`. An
+  erratum fixes a literal, never an IRI, and applies only while upstream still carries
+  exactly the wrong value. A refresh reports it as obsolete once upstream fixes it, and
+  fails for review if upstream changes the value to something else. Applied errata are
+  listed in `METADATA.txt`. Tests check that country labels stay country names and cover
+  the three erratum outcomes.
+
 ## [1.41.1] - 2026-10-18
 
 ### Documentation
