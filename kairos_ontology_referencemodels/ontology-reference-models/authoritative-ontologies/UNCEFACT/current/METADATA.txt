@@ -61,3 +61,6 @@ deviations:
       'unlcds:SNDB ' (Diourbel)
       'unlcds:SOGE ' (Gedo)
       'unlcds:THS ' (Phatthaya)
+  - Errata: known upstream literal errors corrected in the extract (each applies only
+    while upstream still carries the wrong value; see ERRATA in the generator):
+      unlcdc:FR rdfs:label 'Saint-Pierre = PM FSP' -> 'FRANCE' (UN/LOCODE's '=' cross-reference row for Saint-Pierre (listed under PM as FSP) was taken as France's country name; the BSP document's unece:CountryId#FR is 'FRANCE', matching the uppercase style of the other 248 country labels)

@@ -95,6 +95,37 @@ def test_hub_loaded_reference_classes_say_where_their_rows_come_from() -> None:
     assert "not vendored" in str(patch.value(cls, DCTERMS.description))
 
 
+def test_country_labels_are_country_names() -> None:
+    """Upstream once labelled France with a UN/LOCODE '=' cross-reference row (an erratum fixes it)."""
+    current = ONTOLOGY_ROOT / "authoritative-ontologies" / "UNCEFACT" / "current"
+    extract = Graph().parse(current / "UNCEFACT-CodeLists.ttl")
+    labels = {
+        str(extract.value(c, RDF.value)): str(extract.value(c, RDFS.label))
+        for c in extract.subjects(RDF.type, UNLCDV.Country)
+    }
+    assert labels["FR"] == "FRANCE"
+    malformed = {code: label for code, label in labels.items() if "=" in label or label != label.upper()}
+    assert not malformed, f"country labels that are not country names: {malformed}"
+
+
+def test_errata_apply_only_to_the_exact_wrong_value() -> None:
+    from scripts.download_uncefact_codelists import ERRATA, Expander, ERRATA_CONTEXT, apply_errata
+
+    erratum = ERRATA[0]
+    expand = Expander(ERRATA_CONTEXT)
+    node, predicate = expand(erratum.node), expand(erratum.predicate)
+    for upstream, expected in [
+        (erratum.wrong, ("applied", erratum.corrected)),
+        (erratum.corrected, ("obsolete", erratum.corrected)),
+        ("SOMETHING ELSE", ("conflict", "SOMETHING ELSE")),
+    ]:
+        graph = Graph()
+        graph.add((node, predicate, Literal(upstream)))
+        applied, obsolete, conflicts = apply_errata(graph)
+        outcome = "applied" if applied else "obsolete" if obsolete else "conflict" if conflicts else None
+        assert (outcome, str(graph.value(node, predicate))) == expected, upstream
+
+
 def test_every_code_is_an_owl_individual_with_a_code(module) -> None:
     extract, patch = module["extract"], module["patch"]
     for cls in module["classes"]:
