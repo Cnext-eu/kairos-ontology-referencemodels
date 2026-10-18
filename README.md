@@ -301,31 +301,61 @@ git pull
 
 ---
 
-## 🔄 Update Strategy
+## 🔄 Upgrading a hub to a new release
 
-### For Customer Projects Using Submodules
+**The hub owns its pin, and the hub assesses the impact.** A hub pins one release of this
+repository in its own `pyproject.toml`, as a GitHub Release wheel. Nothing outside the hub
+moves that pin:
+- **A toolkit release** does not change it.
+- **This repository** does not test its releases against client hubs, and cannot judge
+  whether a changed class, property or code list matters to a particular hub.
+
+So a hub upgrades when it chooses to, in a pull request of its own, and the reviewer of that
+pull request decides whether the impact is acceptable.
+
+### Example: one upgrade pull request
 
 ```bash
-# Update to latest version
-cd my-project/reference-models
-git fetch --tags
-git checkout v1.1.0  # Or specific tag
-cd ..
-git add reference-models
-git commit -m "Update reference-models to v1.1.0"
+git switch -c chore/refmodels-v1.41.0
 
-# Validate before deployment
-kairos-ontology validate --all
+# 1. Read what changed between your pin and the target release: every CHANGELOG.md
+#    section after your current version. A MAJOR bump lists its breaking changes.
+gh release view v1.41.0 --repo Cnext-eu/kairos-ontology-referencemodels
+
+# 2. Move the pin. This moves the reference models only;
+#    `kairos-ontology update --upgrade` moves the toolkit as well.
+uv run kairos-ontology update-refmodels --version v1.41.0
+
+# 3. Does every binding still resolve against the new closure?
+uv run kairos-ontology compile --all --check
+
+# 4. Regenerate what the hub commits.
+uv run kairos-ontology export-reference-list --all   # only if the hub generates reference-list seeds
+uv run kairos-ontology compile --all --emit --confirm-emit
+uv run kairos-ontology project --target erd --target ddd
+
+# 5. The diff is the impact.
+git diff --stat
 ```
 
-### Breaking Changes
+### Reading the result
 
-When a new MAJOR version is released:
-1. Review CHANGELOG.md for breaking changes
-2. Update customer extensions if affected
-3. Revalidate all customer ontologies
-4. Test projection generation
-5. Deploy to staging environment first
+| What you see | What it means | What to do |
+|---|---|---|
+| Step 3 fails on a term | A class or property your bindings use was removed, renamed or deprecated | Check the CHANGELOG for its replacement, then fix the binding or your domain ontology |
+| Silver models or contracts change | A bound class or property changed meaning: its parent class, an inherited property, a range or a cardinality | Inspect the term with `kairos-ontology explain-term <IRI> --domain <domain>`, then decide whether the change is wanted |
+| Generated reference-list seeds change | A shipped code list has a new snapshot: codes added, renamed or deprecated | Run `kairos-ontology validate-dbt-contracts`, which checks your crosswalk seeds against the new codes |
+| Only diagrams or documentation change | Labels and comments changed | Review and commit |
+| Nothing changes | The release touches nothing your hub uses | Commit the pin and lock file |
+
+Never read a `.ttl` file as text to judge a change; use `explain-term` or
+`show-class-inventory`, which see the whole import closure.
+
+The hub's own CI regenerates the same output and fails the pull request when anything is
+left uncommitted. It checks that the regenerated output was committed, not whether the
+change is right; that judgement is the reviewer's. If the result is not acceptable yet,
+stay on the old release (`update-refmodels --version <your current tag>`) and open an issue
+here.
 
 ---
 
