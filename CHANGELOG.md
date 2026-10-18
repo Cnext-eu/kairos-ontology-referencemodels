@@ -5,6 +5,21 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.41.1] - 2026-10-18
+
+### Documentation
+
+- **A hub owns its reference-models pin and assesses an upgrade's impact itself.** The
+  root README's "Update Strategy" described git submodules, which no hub uses. It is
+  replaced by "Upgrading a hub to a new release":
+  - Neither a toolkit release nor a release here moves a hub's pin, and this repository
+    does not test against client hubs.
+  - It gives one worked upgrade pull request: read the CHANGELOG, then
+    `update-refmodels --version`, `compile --all --check`, regenerate, and read the diff.
+  - It has a table for reading the result, from a failing binding to an unchanged hub.
+
+  `CONTRACT.md` gains the matching consumer rule. No ontology content changes.
+
 ## [1.41.0] - 2026-10-18
 
 ### Changed

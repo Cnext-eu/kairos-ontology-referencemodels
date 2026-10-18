@@ -56,6 +56,12 @@ list (client or system codes) never ships members here. The kind is decided by w
 class is defined and whether it has members, not by `kairos-ext:isReferenceData`. See
 `blueprints/patterns/governed-code-list`, "Where the values live".
 
+**The hub owns its pin and its upgrade.** A hub pins one release of this repository in its
+own `pyproject.toml`. Neither a toolkit release nor a release here moves that pin, and this
+repository does not test against client hubs. So the hub upgrades in a pull request of its
+own, regenerates its output, and its reviewer judges the impact. The root README, "Upgrading
+a hub to a new release", gives the commands and how to read the result.
+
 **Bind mode at the reservation, never at the order.** See
 `blueprints/patterns/multimodal-order-leg`. An order spanning three modes has no single mode
 value; `mode_bindings[].target_iris` names the grain-3 class each mode binds to.
