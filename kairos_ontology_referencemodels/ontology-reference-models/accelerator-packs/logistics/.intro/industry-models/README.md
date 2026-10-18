@@ -20,6 +20,7 @@ pack ships is listed; a module with no sheet yet is shown as such rather than om
 | supply-chain | [supply-chain-integration.md](supply-chain-integration.md) | 1.5.0 |
 | RAIL | [rail-taf-tsi.md](rail-taf-tsi.md) | 1.1.0 |
 | IATA | [iata-one-record.md](iata-one-record.md) | 3.3.0 RC1 (2026-08 standard) |
+| ISO4217 | [iso4217-currency-codes.md](iso4217-currency-codes.md) | 2026-09-17 (list one publication date) |
 | UNCEFACT | [uncefact-code-lists.md](uncefact-code-lists.md) | 2026-10-17 (snapshot date; upstream publishes no version) |
 <!-- END GENERATED: sheets -->
 
@@ -39,5 +40,6 @@ pack ships is listed; a module with no sheet yet is shown as such rather than om
 | supply-chain | 1.5.0 |
 | RAIL | 1.1.0 |
 | IATA | 3.3.0 RC1 (2026-08 standard) |
+| ISO4217 | 2026-09-17 (list one publication date) |
 | UNCEFACT | 2026-10-17 (snapshot date; upstream publishes no version) |
 <!-- END GENERATED: versions -->

@@ -51,6 +51,14 @@ OMG LCC (Languages, Countries and Codes)
   - License: MIT License
   - Homepage: https://www.omg.org/spec/LCC/
 
+ISO 4217 currency codes
+  - Path: ontology-reference-models/authoritative-ontologies/ISO4217/
+  - Publisher: SIX Financial Information AG, maintenance agency for ISO 4217, on
+    behalf of ISO
+  - License: provided "online and free of charge"; ISO states use of the codes is
+    free of charge. No explicit redistribution clause found; see the module README
+  - Homepage: https://www.six-group.com/
+
 UN/CEFACT code lists (UNECE Recommendations 5, 9, 16, 19, 20 and 21; UNTDED; UN/LOCODE)
   - Path: ontology-reference-models/authoritative-ontologies/UNCEFACT/
   - Publisher: UN/CEFACT, United Nations Economic Commission for Europe

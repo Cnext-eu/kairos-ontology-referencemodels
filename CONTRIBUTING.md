@@ -201,6 +201,7 @@ Refresh it **with the scripts**, never by hand:
 | # | Step | Command / check |
 |---|---|---|
 | 1 | Check upstream | `python scripts/download_uncefact_codelists.py --check` (exit 1 = changed) |
+| 1b | Check ISO 4217 | `python scripts/download_iso4217.py --check` (SIX, the ISO 4217 maintenance agency) |
 | 2 | Refresh | `python scripts/download_uncefact_codelists.py` — archives the old snapshot, regenerates the extract, OWL patch, `METADATA.txt` and the IATA alignment |
 | 3 | Review | Diff `UNCEFACT-CodeLists.ttl`. A **removed** code is breaking for hubs that store it. |
 | 4 | Gate | Full validation gate; `tests/test_reference_data.py` checks snapshot-date consistency |

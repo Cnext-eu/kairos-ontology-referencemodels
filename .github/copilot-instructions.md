@@ -35,6 +35,8 @@ scripts**, never edited by hand:
 ```bash
 python scripts/download_uncefact_codelists.py --check   # exit 1 if upstream changed
 python scripts/download_uncefact_codelists.py           # refresh; archives the old snapshot
+python scripts/download_iso4217.py --check              # ISO 4217 currencies, from SIX
+python scripts/download_iso4217.py
 ```
 
 The refresh also regenerates `UNCEFACT-IATA-alignment.ttl`. After re-vendoring IATA, run

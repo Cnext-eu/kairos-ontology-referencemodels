@@ -117,6 +117,8 @@ currencies, party roles, countries, subdivisions, UN/LOCODE functions). They are
 ```bash
 python scripts/download_uncefact_codelists.py --check   # exit 1 if upstream changed
 python scripts/download_uncefact_codelists.py           # refresh
+python scripts/download_iso4217.py --check              # ISO 4217 currencies, from SIX (maintenance agency)
+python scripts/download_iso4217.py
 ```
 
 The script archives `current/` to `archive/<old download date>/`, rewrites the extract,

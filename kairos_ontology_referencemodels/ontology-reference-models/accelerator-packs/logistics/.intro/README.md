@@ -27,6 +27,7 @@ This folder contains a business-and-architecture oriented documentation set for 
 | supply-chain | 1.5.0 |
 | RAIL | 1.1.0 |
 | IATA | 3.3.0 RC1 (2026-08 standard) |
+| ISO4217 | 2026-09-17 (list one publication date) |
 | UNCEFACT | 2026-10-17 (snapshot date; upstream publishes no version) |
 <!-- END GENERATED: versions -->
 

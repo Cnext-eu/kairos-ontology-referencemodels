@@ -135,3 +135,49 @@ def test_every_code_is_an_owl_individual_with_a_code(module) -> None:
         assert not missing_value, f"{cls}: members without rdf:value: {missing_value[:5]}"
         untyped = [m for m in members if (m, RDF.type, OWL.NamedIndividual) not in patch]
         assert not untyped, f"{cls}: members the patch does not type: {untyped[:5]}"
+
+
+ISO = Namespace("https://www.kairosflow.ai/ont/iso4217#")
+ISO4217_DIR = ONTOLOGY_ROOT / "authoritative-ontologies" / "ISO4217" / "current"
+
+
+@pytest.fixture(scope="module")
+def iso4217() -> Graph:
+    return Graph().parse(ISO4217_DIR / "ISO4217-CurrencyCodes.ttl")
+
+
+def test_iso4217_version_is_the_list_one_publication_date(iso4217) -> None:
+    import xml.etree.ElementTree as ET
+
+    published = ET.parse(ISO4217_DIR / "list-one.xml").getroot().get("Pblshd")
+    ontology = URIRef("https://www.kairosflow.ai/ont/iso4217")
+    assert str(iso4217.value(ontology, OWL.versionInfo)) == published
+    assert str(iso4217.value(ISO.CurrencyCode, OWL.versionInfo)) == published
+    assert iso4217.value(ISO.CurrencyCode, KAIROS_EXT.isReferenceData) == Literal(True)
+    assert published in (ISO4217_DIR / "METADATA.txt").read_text(encoding="utf-8")
+
+
+def test_iso4217_current_and_withdrawn_follow_six(iso4217) -> None:
+    """gh#128: the codes UN/CEFACT got wrong must be right here."""
+    def deprecated(code: str) -> bool:
+        return iso4217.value(ISO[code], OWL.deprecated) == Literal(True)
+
+    for code in ("XAD", "XCG", "ZWG", "EUR", "USD"):
+        assert (ISO[code], RDF.value, Literal(code)) in iso4217, code
+        assert not deprecated(code), f"{code} is current in ISO 4217"
+    for code, month in (("ANG", "2025-03"), ("BGN", "2026-01"), ("CUC", "2021-06"), ("ZWL", "2024-09")):
+        assert deprecated(code), f"{code} is withdrawn"
+        assert str(iso4217.value(ISO[code], ISO.withdrawalDate)) == month
+    assert iso4217.value(ISO.XAD, ISO.isFund) == Literal(True)
+
+
+def test_iso4217_members_are_well_formed(iso4217) -> None:
+    members = set(iso4217.subjects(RDF.type, ISO.CurrencyCode))
+    assert len(members) > 250
+    for member in members:
+        code = str(iso4217.value(member, RDF.value))
+        assert len(code) == 3 and code.isupper() and str(member).endswith("#" + code), member
+        number = iso4217.value(member, ISO.numericCode)
+        assert number is None or (len(str(number)) == 3 and str(number).isdigit()), member
+        assert (member, RDF.type, OWL.NamedIndividual) in iso4217
+        assert iso4217.value(member, RDFS.label) is not None, member

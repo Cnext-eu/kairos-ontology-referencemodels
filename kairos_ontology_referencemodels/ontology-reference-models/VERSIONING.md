@@ -87,7 +87,10 @@ uv run --extra dev python -m pytest tests/test_bundle_conformance.py -v
 
 This repository ships **reference data** as well as ontologies: the members of code lists
 that standards bodies publish (`authoritative-ontologies/UNCEFACT/`: UNECE Rec 19 transport
-modes, Rec 20 units of measure, Rec 21 package types). Ontology mirrors change when a
+modes, Rec 20 units of measure, Rec 21 package types and more; `authoritative-ontologies/ISO4217/`:
+ISO 4217 currencies from SIX, refreshed with `python scripts/download_iso4217.py [--check]`).
+SIX amends ISO 4217 several times a year; a newly withdrawn currency becomes `owl:deprecated`
+and is never removed. Ontology mirrors change when a
 release is published, and you hear about it. Code lists are revised **in place**: the
 UN/CEFACT vocabulary endpoint serves one unversioned dump with no release to watch. A
 vendored snapshot therefore goes stale silently, and **must be refreshed periodically with
@@ -154,6 +157,7 @@ python scripts/archive_version.py --all
 | `scripts/version_manager.py` | List, bump, sync, check versions |
 | `scripts/validate_structure.py` | Validate structure (211 checks) |
 | `scripts/download_fibo.py` | Download latest FIBO (auto-archives old) |
+| `scripts/download_iso4217.py` | Refresh ISO 4217 currency codes from SIX (`--check`, auto-archives old) |
 | `scripts/download_uncefact_codelists.py` | Refresh UN/CEFACT reference data (`--check`, auto-archives old) |
 | `scripts/generate_uncefact_iata_alignment.py` | Regenerate IATA → UNECE code links |
 | `scripts/generate_iata_domain_patch.py` | Regenerate the IATA `rdfs:domain` sidecar |

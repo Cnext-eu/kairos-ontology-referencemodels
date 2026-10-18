@@ -52,7 +52,7 @@ the list's rows come from, and what the reference models give a hub.
 
 | Kind | Examples | Rows come from | What the reference models ship |
 |---|---|---|---|
-| **1. Shipped standard list** | UNECE Rec 19 / 20 / 21, Incoterms (UNTDED 4053), currencies (ISO 4217), party roles (UNTDED 3035), ISO 3166-1 countries and 3166-2 subdivisions, UN/LOCODE function classifiers, IATA ONE Record code lists | vendored individuals under `authoritative-ontologies/`, refreshed by script | the class **and its members**, each code in `rdf:value`, with `owl:versionInfo` (snapshot) and `dcterms:source` |
+| **1. Shipped standard list** | UNECE Rec 19 / 20 / 21, Incoterms (UNTDED 4053), ISO 4217 currencies (from SIX), party roles (UNTDED 3035), ISO 3166-1 countries and 3166-2 subdivisions, UN/LOCODE function classifiers, IATA ONE Record code lists | vendored individuals under `authoritative-ontologies/`, refreshed by script | the class **and its members**, each code in `rdf:value`, with `owl:versionInfo` (snapshot) and `dcterms:source` |
 | **2. Hub-loaded standard list** | UN/LOCODE locations (~116,000 rows, re-released twice a year) | the hub loads them from the standard's own release | the **target shape** only: class and properties, no members (`unlcdv:UNLOCODE`, with the loading instruction in `dcterms:description`) |
 | **3. Client- or system-owned list** | a TMS container-type master, internal status codes, readable party roles such as `SHIPPER` | the client's own source systems | **no members.** At most an empty governed-class shell (`bsp/party#PartyRoleCode`, `mmt/party#TransportPartyRoleCode`) and, where a standard exists, the link to it |
 
@@ -96,7 +96,7 @@ When the same standard ships twice, use the list the logistics pack routes:
 | Dimension | Use | Also present (do not bind to) |
 |---|---|---|
 | Country | `unlcdv:Country` (UNCEFACT, linked to subdivisions and UN/LOCODE) | OMG-LCC ISO 3166-1 (FIBO closure) |
-| Currency | `unece:CurrencyCodeList` (UNCEFACT) | IATA `code-lists:CurrencyCode` (air profile) |
+| Currency | `iso4217:CurrencyCode` (ISO4217, from SIX, the ISO 4217 maintenance agency; withdrawn codes kept as `owl:deprecated`) | `unece:CurrencyCodeList` and FIBO's ISO 4217 identifiers (both lag ISO; linked by `skos:exactMatch`). IATA `code-lists:CurrencyCode` has no members. |
 | Transport mode | `unece:TransportModeCodeList` (all 10 Rec 19 codes) | IATA `code-lists:ModeCode` (air profile, linked by `skos:exactMatch`) |
 
 ### Kind 2: load the rows in the hub, to the shipped shape
