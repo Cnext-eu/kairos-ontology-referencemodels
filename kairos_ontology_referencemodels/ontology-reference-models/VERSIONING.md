@@ -157,6 +157,7 @@ python scripts/archive_version.py --all
 | `scripts/version_manager.py` | List, bump, sync, check versions |
 | `scripts/validate_structure.py` | Validate structure (211 checks) |
 | `scripts/download_fibo.py` | Download latest FIBO (auto-archives old) |
+| `scripts/build_unece_rec28.py` | Rebuild UNECE Rec 28 from its vendored XLS, per new revision (`uv run --with xlrd`) |
 | `scripts/download_iso4217.py` | Refresh ISO 4217 currency codes from SIX (`--check`, auto-archives old) |
 | `scripts/download_uncefact_codelists.py` | Refresh UN/CEFACT reference data (`--check`, auto-archives old) |
 | `scripts/generate_uncefact_iata_alignment.py` | Regenerate IATA → UNECE code links |

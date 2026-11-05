@@ -59,8 +59,9 @@ ISO 4217 currency codes
     free of charge. No explicit redistribution clause found; see the module README
   - Homepage: https://www.six-group.com/
 
-UN/CEFACT code lists (UNECE Recommendations 5, 9, 16, 19, 20 and 21; UNTDED; UN/LOCODE)
-  - Path: ontology-reference-models/authoritative-ontologies/UNCEFACT/
+UN/CEFACT code lists (UNECE Recommendations 5, 9, 16, 19, 20, 21 and 28; UNTDED; UN/LOCODE)
+  - Path: ontology-reference-models/authoritative-ontologies/UNCEFACT/ and
+    ontology-reference-models/authoritative-ontologies/UNECE-Rec28/
   - Publisher: UN/CEFACT, United Nations Economic Commission for Europe
   - License: CC BY 4.0 per UN/CEFACT ("All UN/CEFACT standards are free to use
     under CC By 4.0 license"); written confirmation for the vocabulary.uncefact.org

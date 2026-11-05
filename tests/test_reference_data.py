@@ -35,6 +35,8 @@ REFERENCE_DATA_MODULES = {
             UNECE.TransportMovementStageCodeList,
             UNECE.CurrencyCodeList,
             UNECE.PartyRoleCodeList,
+            UNECE.TransportEquipmentCategoryCodeList,
+            UNECE.TransportMeansTypeCodeList,
             UNLCDV.Country,
             UNLCDV.Subdivision,
             UNLCDV.Function,
@@ -181,3 +183,41 @@ def test_iso4217_members_are_well_formed(iso4217) -> None:
         assert number is None or (len(str(number)) == 3 and str(number).isdigit()), member
         assert (member, RDF.type, OWL.NamedIndividual) in iso4217
         assert iso4217.value(member, RDFS.label) is not None, member
+
+
+REC28 = Namespace("https://www.kairosflow.ai/ont/unece-rec28#")
+REC28_DIR = ONTOLOGY_ROOT / "authoritative-ontologies" / "UNECE-Rec28" / "current"
+SKOS = Namespace("http://www.w3.org/2004/02/skos/core#")
+
+
+@pytest.fixture(scope="module")
+def rec28() -> Graph:
+    return Graph().parse(REC28_DIR / "UNECE-Rec28.ttl")
+
+
+def test_rec28_has_the_complete_revision(rec28) -> None:
+    members = set(rec28.subjects(RDF.type, REC28.TransportMeansTypeCode))
+    assert len(members) == 282
+    assert rec28.value(REC28.TransportMeansTypeCode, KAIROS_EXT.isReferenceData) == Literal(True)
+    labels = {code: str(rec28.value(REC28[code], RDFS.label)) for code in ("31", "33", "34", "342")}
+    assert labels == {"31": "Truck", "33": "Tractor", "34": "Van", "342": "Van, light"}
+
+
+def test_rec28_hierarchy_modes_and_deprecations(rec28) -> None:
+    assert (REC28["342"], SKOS.broader, REC28["34"]) in rec28
+    mode = URIRef("https://vocabulary.uncefact.org/TransportModeCodeList#3")
+    assert (REC28["342"], REC28.transportMode, mode) in rec28
+    for member in rec28.subjects(RDF.type, REC28.TransportMeansTypeCode):
+        code = str(rec28.value(member, RDF.value))
+        expected = URIRef(f"https://vocabulary.uncefact.org/TransportModeCodeList#{code[0]}")
+        assert rec28.value(member, REC28.transportMode) == expected, code
+    for code in ("852", "853", "854", "855"):
+        assert rec28.value(REC28[code], OWL.deprecated) == Literal(True), code
+
+
+def test_rec28_four_digit_codes_align_with_the_vocabulary(rec28) -> None:
+    alignment = Graph().parse(REC28_DIR / "UNECE-Rec28-alignment.ttl")
+    four = {str(rec28.value(m, RDF.value)) for m in rec28.subjects(RDF.type, REC28.TransportMeansTypeCode)
+            if len(str(rec28.value(m, RDF.value))) == 4}
+    linked = {str(s).rpartition("#")[2] for s in alignment.subjects(SKOS.exactMatch, None)}
+    assert linked == four and len(four) == 134

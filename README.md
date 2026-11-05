@@ -100,7 +100,8 @@ the same list (see `blueprints/patterns/governed-code-list`, "Where the values l
 
 | Module | Contents | Refresh with |
 |---|---|---|
-| `authoritative-ontologies/UNCEFACT/` | UNECE Rec 19 transport modes (10), Rec 20 units of measure (1,828), Rec 21 package types (405), Rec 5 Incoterms (13), transport stage (30), ISO 4217 currencies (179), UNTDED 3035 party roles (625), ISO 3166-1 countries (249), ISO 3166-2 subdivisions (4,669), UN/LOCODE functions (11) | `scripts/download_uncefact_codelists.py` |
+| `authoritative-ontologies/UNCEFACT/` | UNECE Rec 19 transport modes (10), Rec 20 units of measure (1,828), Rec 21 package types (405), Rec 5 Incoterms (13), transport stage (30), ISO 4217 currencies (179), UNTDED 3035 party roles (625), UNTDED 8053 equipment categories (98), ISO 3166-1 countries (249), ISO 3166-2 subdivisions (4,669), UN/LOCODE functions (11) | `scripts/download_uncefact_codelists.py` |
+| `authoritative-ontologies/UNECE-Rec28/` | UNECE Rec 28 types of means of transport, Rev 4.2: all 282 codes (vessels, trains, road vehicles, aircraft), hierarchical, each tied to its Rec 19 mode. The UN/CEFACT copy has only the 134 four-digit codes. | `scripts/build_unece_rec28.py` (per new revision; needs `uv run --with xlrd`) |
 | `authoritative-ontologies/ISO4217/` | ISO 4217 currency and fund codes from SIX, the ISO 4217 maintenance agency: 178 current, 129 withdrawn (kept, `owl:deprecated`), with numeric code and minor unit. **The currency list to bind.** | `scripts/download_iso4217.py` |
 | `authoritative-ontologies/UNCEFACT/` (`UNCEFACT-IATA-alignment.ttl`) | Links from IATA ONE Record codes to the UNECE codes | `scripts/generate_uncefact_iata_alignment.py` (run automatically by the refresh above) |
 | `authoritative-ontologies/IATA/` (`IATA-1R-CL-Ontology.ttl`) | IATA ONE Record code lists (air cargo profiles) | manual re-vendor, see `VERSIONING.md` |
@@ -125,7 +126,7 @@ this repository gives a hub (`blueprints/patterns/governed-code-list`, "Where th
 
 | Kind | Examples | Rows come from | What ships here |
 |---|---|---|---|
-| **1. Shipped standard list** | the UNCEFACT and ISO 4217 lists above, IATA ONE Record code lists | vendored individuals, refreshed by script | the class **and its members** |
+| **1. Shipped standard list** | the UNCEFACT, ISO 4217 and Rec 28 lists above, IATA ONE Record code lists | vendored individuals, refreshed by script | the class **and its members** |
 | **2. Hub-loaded standard list** | UN/LOCODE locations (~116,000 rows) | the hub loads the standard's own release | the **shape** only (class and properties, no members) |
 | **3. Client- or system-owned list** | a TMS container-type master, internal status codes, readable party roles such as `SHIPPER` | the client's source systems | at most an empty governed class, plus the link to a standard where one exists |
 

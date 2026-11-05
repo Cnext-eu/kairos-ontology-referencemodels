@@ -59,6 +59,13 @@
     <uri name="https://www.kairosflow.ai/ont/iso4217/alignment"
          uri="authoritative-ontologies/ISO4217/current/ISO4217-alignment.ttl"/>
 
+    <!-- ========== UNECE Recommendation 28 (types of means of transport) ========== -->
+    <!-- Built from UNECE's Rev 4.2 XLS by scripts/build_unece_rec28.py; Kairos-minted IRIs. -->
+    <uri name="https://www.kairosflow.ai/ont/unece-rec28"
+         uri="authoritative-ontologies/UNECE-Rec28/current/UNECE-Rec28.ttl"/>
+    <uri name="https://www.kairosflow.ai/ont/unece-rec28/alignment"
+         uri="authoritative-ontologies/UNECE-Rec28/current/UNECE-Rec28-alignment.ttl"/>
+
     <!-- ========== FIBO: single rewrite rule resolves all FIBO URIs to the stable local path.
          The folder is always named "fibo/" regardless of release version. -->
     <rewriteURI uriStartString="https://spec.edmcouncil.org/fibo/ontology/"

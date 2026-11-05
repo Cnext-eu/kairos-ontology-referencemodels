@@ -10,9 +10,9 @@ pack ships is listed; a module with no sheet yet is shown as such rather than om
 <!-- BEGIN GENERATED: sheets -->
 | Model | Sheet | Version |
 |---|---|---|
-| DCSA | [dcsa.md](dcsa.md) | 1.6.4 |
-| MMT | [mmt-un-cefact.md](mmt-un-cefact.md) | 2.5.4 |
-| BSP | [bsp-iso-20197.md](bsp-iso-20197.md) | 2.5.4 |
+| DCSA | [dcsa.md](dcsa.md) | 1.6.5 |
+| MMT | [mmt-un-cefact.md](mmt-un-cefact.md) | 2.5.5 |
+| BSP | [bsp-iso-20197.md](bsp-iso-20197.md) | 2.5.5 |
 | TIC | [tic-4-0.md](tic-4-0.md) | 1.6.2 |
 | IMO | [imo.md](imo.md) | 1.4.2 |
 | WCO | [wco.md](wco.md) | 1.4.2 |
@@ -21,6 +21,7 @@ pack ships is listed; a module with no sheet yet is shown as such rather than om
 | RAIL | [rail-taf-tsi.md](rail-taf-tsi.md) | 1.1.0 |
 | IATA | [iata-one-record.md](iata-one-record.md) | 3.3.0 RC1 (2026-08 standard) |
 | ISO4217 | [iso4217-currency-codes.md](iso4217-currency-codes.md) | 2026-09-17 (list one publication date) |
+| UNECE-Rec28 | [unece-rec28-means-of-transport.md](unece-rec28-means-of-transport.md) | Rev 4.2 (2018) |
 | UNCEFACT | [uncefact-code-lists.md](uncefact-code-lists.md) | 2026-10-17 (snapshot date; upstream publishes no version) |
 <!-- END GENERATED: sheets -->
 
@@ -30,9 +31,9 @@ pack ships is listed; a module with no sheet yet is shown as such rather than om
 | Component | Version |
 |---|---|
 | Kairos Logistics Accelerator Pack | 1.10.1 |
-| DCSA | 1.6.4 |
-| MMT | 2.5.4 |
-| BSP | 2.5.4 |
+| DCSA | 1.6.5 |
+| MMT | 2.5.5 |
+| BSP | 2.5.5 |
 | TIC | 1.6.2 |
 | IMO | 1.4.2 |
 | WCO | 1.4.2 |
@@ -41,5 +42,6 @@ pack ships is listed; a module with no sheet yet is shown as such rather than om
 | RAIL | 1.1.0 |
 | IATA | 3.3.0 RC1 (2026-08 standard) |
 | ISO4217 | 2026-09-17 (list one publication date) |
+| UNECE-Rec28 | Rev 4.2 (2018) |
 | UNCEFACT | 2026-10-17 (snapshot date; upstream publishes no version) |
 <!-- END GENERATED: versions -->

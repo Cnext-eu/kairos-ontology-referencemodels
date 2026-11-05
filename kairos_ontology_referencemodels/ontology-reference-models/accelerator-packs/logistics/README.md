@@ -21,9 +21,9 @@ The Logistics Accelerator bundles **9 ontologies** via **11 `owl:imports`** (som
 
 | Ontology | Standard | Version | Focus |
 |---|---|---|---|
-| DCSA | Digital Container Shipping Association | `1.6.4` | Container shipping lifecycle |
-| MMT | Multi-Modal Transport | `2.5.4` | Consignment, movement, cargo, equipment |
-| BSP | Buy-Ship-Pay | `2.5.4` | Party, contract, invoice, settlement |
+| DCSA | Digital Container Shipping Association | `1.6.5` | Container shipping lifecycle |
+| MMT | Multi-Modal Transport | `2.5.5` | Consignment, movement, cargo, equipment |
+| BSP | Buy-Ship-Pay | `2.5.5` | Party, contract, invoice, settlement |
 | TIC | Terminal Industry Committee 4.0 | `1.6.2` | Terminal operations, handling, automotive |
 | IMO | International Maritime Organization | `1.4.2` | Vessel registry, dangerous goods, port-call, crew, environmental, maritime security |
 | WCO | World Customs Organization | `1.4.2` | Customs declarations, goods items, procedures, trade facilitation |
@@ -37,7 +37,8 @@ Reference-only — catalogued and bindable, deliberately **not** imported:
 |---|---|---|---|
 | IATA | IATA ONE Record (air cargo) | `3.3.0 RC1 (2026-08 standard)` | Air cargo booking, shipment, transport movement |
 | ISO4217 | ISO 4217 currency codes (SIX, maintenance agency) | `2026-09-17 (list one publication date)` | Current and withdrawn ISO 4217 currency and fund codes, with numeric code and minor unit |
-| UNCEFACT | UN/CEFACT code lists (UNECE Rec 5, 9, 16, 19, 20, 21) | `2026-10-17 (snapshot date; upstream publishes no version)` | Standards-body code lists: transport modes, units of measure, package types, Incoterms, transport stage, currencies, party roles, countries, subdivisions, UN/LOCODE functions |
+| UNECE-Rec28 | UNECE Rec 28 types of means of transport (Rev 4.2) | `Rev 4.2 (2018)` | Vessel, train, road vehicle and aircraft types, hierarchical, each tied to its Rec 19 transport mode |
+| UNCEFACT | UN/CEFACT code lists (UNECE Rec 5, 9, 16, 19, 20, 21, 28; UNTDED 3035, 8051, 8053) | `2026-10-17 (snapshot date; upstream publishes no version)` | Standards-body code lists: transport modes, units of measure, package types, Incoterms, transport stage, currencies, party roles, equipment categories, countries, subdivisions, UN/LOCODE functions |
 <!-- END GENERATED: modules -->
 
 ### What's NOT included?

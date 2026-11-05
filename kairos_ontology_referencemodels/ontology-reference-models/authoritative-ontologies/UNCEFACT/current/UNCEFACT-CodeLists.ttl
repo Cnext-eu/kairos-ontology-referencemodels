@@ -23,6 +23,14 @@ unece:PartyRoleCodeList a rdfs:Class ;
     rdfs:label "PartyRoleCodeList" ;
     rdfs:comment "A character string used to replace or represent a role of a party." .
 
+unece:TransportEquipmentCategoryCodeList a rdfs:Class ;
+    rdfs:label "TransportEquipmentCategoryCodeList" ;
+    rdfs:comment "A character string used to represent the transport equipment category." .
+
+unece:TransportMeansTypeCodeList a rdfs:Class ;
+    rdfs:label "TransportMeansTypeCodeList" ;
+    rdfs:comment "A character string used to represent the transport means type." .
+
 unece:TransportModeCodeList a rdfs:Class ;
     rdfs:label "TransportModeCodeList" ;
     rdfs:comment "A character string used to represent a transport mode." .
@@ -4934,6 +4942,934 @@ unlcdv:UNLOCODE a rdfs:Class ;
 <https://vocabulary.uncefact.org/PartyRoleCodeList#ZZZ> a unece:PartyRoleCodeList ;
     rdf:value "ZZZ" ;
     rdfs:comment "Mutually defined" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AA> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "AA" ;
+    rdfs:comment "Ground equipment" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AB> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "AB" ;
+    rdfs:comment "Chain" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AD> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "AD" ;
+    rdfs:comment "Temperature recorder" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AE> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "AE" ;
+    rdfs:comment "Body trailer" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AG> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "AG" ;
+    rdfs:comment "Slipsheet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AH> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "AH" ;
+    rdfs:comment "No special equipment needed" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AI> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "AI" ;
+    rdfs:comment "Vessel hold" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AJ> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "AJ" ;
+    rdfs:comment "Flat rack" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AK> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "AK" ;
+    rdfs:comment "Aircraft" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AL> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "AL" ;
+    rdfs:comment "Medical device" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AM> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "AM" ;
+    rdfs:comment "Refrigerated container" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AN> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "AN" ;
+    rdfs:comment "Synthetic pallet 80*120cm" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AO> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "AO" ;
+    rdfs:comment "Synthetic pallet 100*120cm" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AP> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "AP" ;
+    rdfs:comment "Clothing hanger rack" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AQ> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "AQ" ;
+    rdfs:comment "Road/rail trailer" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AT> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "AT" ;
+    rdfs:comment "Overhang wagon" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BB> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "BB" ;
+    rdfs:comment "Un-containerized cargo (breakbulk)" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BL> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "BL" ;
+    rdfs:comment "Blocks" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPN> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "BPN" ;
+    rdfs:comment "Box pallet non-exchangeable" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPO> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "BPO" ;
+    rdfs:comment "Truck being transported" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPP> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "BPP" ;
+    rdfs:comment "Truck and trailer combination being transported" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPQ> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "BPQ" ;
+    rdfs:comment "Tractor and trailer being transported" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPR> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "BPR" ;
+    rdfs:comment "Postal bag" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPS> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "BPS" ;
+    rdfs:comment "Letter Tray" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPT> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "BPT" ;
+    rdfs:comment "Roller Cage" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPU> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "BPU" ;
+    rdfs:comment "Flats Tray" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPV> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "BPV" ;
+    rdfs:comment "Out of bag parcel" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPW> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "BPW" ;
+    rdfs:comment "Wheeled Platform" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPX> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "BPX" ;
+    rdfs:comment "Container non-compliant with the Customs Convention on Containers" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPY> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "BPY" ;
+    rdfs:comment "Box pallet EUR Y non exchangeable" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPZ> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "BPZ" ;
+    rdfs:comment "Roll Pallet 1" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BR> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "BR" ;
+    rdfs:comment "Barge" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BX> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "BX" ;
+    rdfs:comment "Boxcar" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#CH> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "CH" ;
+    rdfs:comment "Chassis" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#CN> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "CN" ;
+    rdfs:comment "Container" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPA> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "DPA" ;
+    rdfs:comment "Deadlight (panel)" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPB> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "DPB" ;
+    rdfs:comment "Roll Pallet 2" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPC> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "DPC" ;
+    rdfs:comment "Container gantry crane" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPD> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "DPD" ;
+    rdfs:comment "Mobile crane" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPE> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "DPE" ;
+    rdfs:comment "Floating crane" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPF> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "DPF" ;
+    rdfs:comment "Ship's equipment crane" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPG> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "DPG" ;
+    rdfs:comment "Conveyor belt" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPH> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "DPH" ;
+    rdfs:comment "Forklift" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPI> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "DPI" ;
+    rdfs:comment "Stacking equipment" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPJ> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "DPJ" ;
+    rdfs:comment "Taillift" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPK> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "DPK" ;
+    rdfs:comment "Pallet ISO 0 - 1/2 EURO Pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPL> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "DPL" ;
+    rdfs:comment "On-board equipment" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPM> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "DPM" ;
+    rdfs:comment "Pallet ISO 1 - 1/1 EURO Pallet (GS1 Temporary Code)" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPN> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "DPN" ;
+    rdfs:comment "Pallet ISO 2" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPO> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "DPO" ;
+    rdfs:comment "1/4 EURO Pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFP> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EFP" ;
+    rdfs:comment "Exchangeable EUR flat pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFQ> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EFQ" ;
+    rdfs:comment "1/8 EURO Pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFR> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EFR" ;
+    rdfs:comment "Wholesaler pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFS> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EFS" ;
+    rdfs:comment "Pallet 80 X 100 cm" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFT> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EFT" ;
+    rdfs:comment "Pallet 60 X 100 cm" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFU> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EFU" ;
+    rdfs:comment "Oneway pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFV> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EFV" ;
+    rdfs:comment "Returnable pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFW> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EFW" ;
+    rdfs:comment "Bottlecrate" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFX> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EFX" ;
+    rdfs:comment "Bottle, non-protected, cylindrical" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFY> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EFY" ;
+    rdfs:comment "Box" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFZ> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EFZ" ;
+    rdfs:comment "CHEP Eurobox" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EGA> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EGA" ;
+    rdfs:comment "Case" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EGB> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EGB" ;
+    rdfs:comment "Display package" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EGC> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EGC" ;
+    rdfs:comment "Isothermic case" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EGD> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EGD" ;
+    rdfs:comment "Pallet modular collars 80*100" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EGE> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EGE" ;
+    rdfs:comment "Pallet modular collars 80*120" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EGF> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EGF" ;
+    rdfs:comment "Tray" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EGG> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EGG" ;
+    rdfs:comment "Roll cage" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EGH> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EGH" ;
+    rdfs:comment "Trolley" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EGI> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EGI" ;
+    rdfs:comment "Landside power generator" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EYP> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "EYP" ;
+    rdfs:comment "Exchangeable EUR Y box pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#FPN> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "FPN" ;
+    rdfs:comment "Flat pallet EUR non exchangeable" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#FPR> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "FPR" ;
+    rdfs:comment "Flat pallet (railway property) non-exchangeable" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#IL> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "IL" ;
+    rdfs:comment "Lidded stackable rigid tray (CEN TS 14482:2002)" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#LAR> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "LAR" ;
+    rdfs:comment "Lashing rope" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#LU> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "LU" ;
+    rdfs:comment "Load/unload device on equipment" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#MPA> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "MPA" ;
+    rdfs:comment "Movable panel" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#PA> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "PA" ;
+    rdfs:comment "Pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#PBP> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "PBP" ;
+    rdfs:comment "Identified private box pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#PFP> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "PFP" ;
+    rdfs:comment "Identified private flat pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#PL> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "PL" ;
+    rdfs:comment "Platform" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#PPA> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "PPA" ;
+    rdfs:comment "Protecting panel" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#PST> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "PST" ;
+    rdfs:comment "Portable stove" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#RF> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "RF" ;
+    rdfs:comment "Flat car" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#RG> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "RG" ;
+    rdfs:comment "Reefer generator" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#RGF> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "RGF" ;
+    rdfs:comment "Ground facility" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#RO> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "RO" ;
+    rdfs:comment "Rope" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#RR> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "RR" ;
+    rdfs:comment "Rail car" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#SM> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "SM" ;
+    rdfs:comment "Semi-trailer" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#SPP> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "SPP" ;
+    rdfs:comment "Identified special pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#STR> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "STR" ;
+    rdfs:comment "Strap" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#SW> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "SW" ;
+    rdfs:comment "Swap body" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#TE> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "TE" ;
+    rdfs:comment "Trailer" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#TN> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "TN" ;
+    rdfs:comment "Tank" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#TP> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "TP" ;
+    rdfs:comment "Tarpaulin" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#TS> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "TS" ;
+    rdfs:comment "Tackles" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#TSU> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "TSU" ;
+    rdfs:comment "Tarpaulin support" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#UL> a unece:TransportEquipmentCategoryCodeList ;
+    rdf:value "UL" ;
+    rdfs:comment "ULD (Unit load device)" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1501> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1501" ;
+    rdfs:comment "Grain vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1502> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1502" ;
+    rdfs:comment "Timber/log carrier" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1503> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1503" ;
+    rdfs:comment "Wood chips vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1504> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1504" ;
+    rdfs:comment "Steel products vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1505> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1505" ;
+    rdfs:comment "Carrier, general cargo/container" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1506> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1506" ;
+    rdfs:comment "Temperature controlled cargo vessels" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1511> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1511" ;
+    rdfs:comment "Full container ship/cellular vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1512> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1512" ;
+    rdfs:comment "RoRo vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1513> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1513" ;
+    rdfs:comment "Car carrier" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1514> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1514" ;
+    rdfs:comment "Livestock carrier" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1515> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1515" ;
+    rdfs:comment "Barge carrier - Lash ship" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1516> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1516" ;
+    rdfs:comment "Chemical carrier" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1517> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1517" ;
+    rdfs:comment "Irradiated fuel carrier" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1518> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1518" ;
+    rdfs:comment "Heavy cargo vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1519> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1519" ;
+    rdfs:comment "RoRo/Container vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1521> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1521" ;
+    rdfs:comment "Dry bulk carrier" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1522> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1522" ;
+    rdfs:comment "Ore carrier" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1523> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1523" ;
+    rdfs:comment "Cement carrier" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1524> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1524" ;
+    rdfs:comment "Gravel carrier" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1525> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1525" ;
+    rdfs:comment "Coal carrier" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1531> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1531" ;
+    rdfs:comment "Crude oil tanker" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1532> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1532" ;
+    rdfs:comment "Chemical tanker, coaster" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1533> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1533" ;
+    rdfs:comment "Chemical tanker, deep sea" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1534> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1534" ;
+    rdfs:comment "Oil and other derivatives tanker" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1541> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1541" ;
+    rdfs:comment "LPG tanker" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1542> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1542" ;
+    rdfs:comment "LNG tanker" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1543> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1543" ;
+    rdfs:comment "LNG/LPG tanker" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1551> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1551" ;
+    rdfs:comment "Asphalt/bitumen tanker" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1552> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1552" ;
+    rdfs:comment "Molasses tanker" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1553> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1553" ;
+    rdfs:comment "Vegetable oil tanker" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1591> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1591" ;
+    rdfs:comment "Cruise ship" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1592> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1592" ;
+    rdfs:comment "Ferry" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1593> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1593" ;
+    rdfs:comment "Other passenger ship" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1594> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1594" ;
+    rdfs:comment "Passenger ship, sailing" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1601> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1601" ;
+    rdfs:comment "Tug, without tow" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1602> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1602" ;
+    rdfs:comment "Tug, with tow" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1603> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1603" ;
+    rdfs:comment "Salvage vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1604> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1604" ;
+    rdfs:comment "Rescue vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1605> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1605" ;
+    rdfs:comment "Oil combat vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1606> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1606" ;
+    rdfs:comment "Oil rig" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1607> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1607" ;
+    rdfs:comment "Hospital vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1711> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1711" ;
+    rdfs:comment "Pilot boat" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1712> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1712" ;
+    rdfs:comment "Patrol/measure ship" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1721> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1721" ;
+    rdfs:comment "Supply vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1723> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1723" ;
+    rdfs:comment "Offshore support vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1724> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1724" ;
+    rdfs:comment "Pontoon" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1725> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1725" ;
+    rdfs:comment "Stone dumping vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1726> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1726" ;
+    rdfs:comment "Cable layer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1727> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1727" ;
+    rdfs:comment "Buoyage vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1728> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1728" ;
+    rdfs:comment "Icebreaker" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1729> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1729" ;
+    rdfs:comment "Pipelaying vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1751> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1751" ;
+    rdfs:comment "Trawler" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1752> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1752" ;
+    rdfs:comment "Cutter" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1753> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1753" ;
+    rdfs:comment "Factory ship" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1761> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1761" ;
+    rdfs:comment "Fishery research vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1762> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1762" ;
+    rdfs:comment "Climate registration vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1763> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1763" ;
+    rdfs:comment "Ship for environmental measurement" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1764> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1764" ;
+    rdfs:comment "Scientific vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1765> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1765" ;
+    rdfs:comment "Sailing school ship" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1766> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1766" ;
+    rdfs:comment "Training vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1781> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1781" ;
+    rdfs:comment "Crane, floating" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1782> a unece:TransportMeansTypeCodeList ;
+    rdf:value "1782" ;
+    rdfs:comment "Dock, floating" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2201> a unece:TransportMeansTypeCodeList ;
+    rdf:value "2201" ;
+    rdfs:comment "Train, super express" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2202> a unece:TransportMeansTypeCodeList ;
+    rdf:value "2202" ;
+    rdfs:comment "Train, sleeper" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2203> a unece:TransportMeansTypeCodeList ;
+    rdf:value "2203" ;
+    rdfs:comment "Train, passenger, hired group" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2301> a unece:TransportMeansTypeCodeList ;
+    rdf:value "2301" ;
+    rdfs:comment "Blocktrain" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2302> a unece:TransportMeansTypeCodeList ;
+    rdf:value "2302" ;
+    rdfs:comment "Train, container" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2303> a unece:TransportMeansTypeCodeList ;
+    rdf:value "2303" ;
+    rdfs:comment "Train, with one wagon" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2304> a unece:TransportMeansTypeCodeList ;
+    rdf:value "2304" ;
+    rdfs:comment "Train, with more than one and less than 20 wagons" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2305> a unece:TransportMeansTypeCodeList ;
+    rdf:value "2305" ;
+    rdfs:comment "Train, with more than 20 wagons" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3100> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3100" ;
+    rdfs:comment "Truck, tautliner with removal trailer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3101> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3101" ;
+    rdfs:comment "Truck, tautliner with removable roof and removal trailer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3102> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3102" ;
+    rdfs:comment "Car, with caravan" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3103> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3103" ;
+    rdfs:comment "Truck, tautliner, 25 tonne" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3104> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3104" ;
+    rdfs:comment "Truck, tautliner, 25 tonne with removable roof" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3105> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3105" ;
+    rdfs:comment "Lorry, articulated, flat bed, 25 tonne" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3106> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3106" ;
+    rdfs:comment "Lorry, articulated, flat bed, 24 tonne, with 10 metre crane" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3107> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3107" ;
+    rdfs:comment "Lorry, articulated, flat bed, 24 tonne, with 15 metre crane" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3108> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3108" ;
+    rdfs:comment "Lorry, articulated, flat bed, 24 tonne, with 18 metre crane" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3109> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3109" ;
+    rdfs:comment "Lorry, articulated, flat bed, 10 tonne" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3110> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3110" ;
+    rdfs:comment "Truck, tautliner, 25 tonne, with 90 cubic metre trailer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3111> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3111" ;
+    rdfs:comment "Truck, tautliner, 25 tonne, with 120 cubic metre trailer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3112> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3112" ;
+    rdfs:comment "Lorry, flat with trailer and 10 metre crane" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3113> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3113" ;
+    rdfs:comment "Lorry, articulated with tank" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3114> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3114" ;
+    rdfs:comment "Lorry, flat, 15 tonne" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3115> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3115" ;
+    rdfs:comment "Lorry, flat, 15 tonne with crane" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3116> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3116" ;
+    rdfs:comment "Truck, isothermic" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3117> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3117" ;
+    rdfs:comment "Truck, refrigerated" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3118> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3118" ;
+    rdfs:comment "Van, freezer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3119> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3119" ;
+    rdfs:comment "Van, isothermic" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3120> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3120" ;
+    rdfs:comment "Van, refrigerated" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3121> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3121" ;
+    rdfs:comment "Truck, bulk" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3122> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3122" ;
+    rdfs:comment "Truck, tip-up" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3123> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3123" ;
+    rdfs:comment "Truck, articulated, tip-up" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3124> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3124" ;
+    rdfs:comment "Truck, rigid, with tank" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3125> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3125" ;
+    rdfs:comment "Truck, tautliner" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3126> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3126" ;
+    rdfs:comment "Truck, tautliner, with removable roof" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3127> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3127" ;
+    rdfs:comment "Truck, with opening floor" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3128> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3128" ;
+    rdfs:comment "Truck, freezer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3129> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3129" ;
+    rdfs:comment "Truck, with crane for moving goods, without trailer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3130> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3130" ;
+    rdfs:comment "Truck, with crane for moving goods, with trailer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3131> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3131" ;
+    rdfs:comment "Truck, with crane for lifting goods, without trailer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3132> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3132" ;
+    rdfs:comment "Truck, with crane for lifting goods, with trailer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3133> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3133" ;
+    rdfs:comment "Taxi cab" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3134> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3134" ;
+    rdfs:comment "Truck, furniture" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3135> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3135" ;
+    rdfs:comment "Truck, hydrant" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3136> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3136" ;
+    rdfs:comment "Car" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3137> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3137" ;
+    rdfs:comment "Truck, with tail-lift" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3138> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3138" ;
+    rdfs:comment "Armoured vehicle" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3201> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3201" ;
+    rdfs:comment "Car, elevator" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3301> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3301" ;
+    rdfs:comment "Bus, with trailer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3302> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3302" ;
+    rdfs:comment "Bus, highway" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3303> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3303" ;
+    rdfs:comment "Bus, sightseeing" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3304> a unece:TransportMeansTypeCodeList ;
+    rdf:value "3304" ;
+    rdfs:comment "Bus, airport/city" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#4000> a unece:TransportMeansTypeCodeList ;
+    rdf:value "4000" ;
+    rdfs:comment "Aircraft, type unknown" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#5000> a unece:TransportMeansTypeCodeList ;
+    rdf:value "5000" ;
+    rdfs:comment "Mail, type unknown" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8021> a unece:TransportMeansTypeCodeList ;
+    rdf:value "8021" ;
+    rdfs:comment "Motor tanker, liquid cargo, type N" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8022> a unece:TransportMeansTypeCodeList ;
+    rdf:value "8022" ;
+    rdfs:comment "Motor tanker, liquid cargo, type C" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8023> a unece:TransportMeansTypeCodeList ;
+    rdf:value "8023" ;
+    rdfs:comment "Motor tanker, dry cargo" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8161> a unece:TransportMeansTypeCodeList ;
+    rdf:value "8161" ;
+    rdfs:comment "Tank barge, liquid cargo, type N" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8162> a unece:TransportMeansTypeCodeList ;
+    rdf:value "8162" ;
+    rdfs:comment "Tank barge, liquid cargo, type C" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8163> a unece:TransportMeansTypeCodeList ;
+    rdf:value "8163" ;
+    rdfs:comment "Tank barge, dry cargo" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8441> a unece:TransportMeansTypeCodeList ;
+    rdf:value "8441" ;
+    rdfs:comment "Ferry" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8442> a unece:TransportMeansTypeCodeList ;
+    rdf:value "8442" ;
+    rdfs:comment "Red cross ship" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8443> a unece:TransportMeansTypeCodeList ;
+    rdf:value "8443" ;
+    rdfs:comment "Cruise ship" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8444> a unece:TransportMeansTypeCodeList ;
+    rdf:value "8444" ;
+    rdfs:comment "Passenger ship without accommodation" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8445> a unece:TransportMeansTypeCodeList ;
+    rdf:value "8445" ;
+    rdfs:comment "Day-trip high speed vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8446> a unece:TransportMeansTypeCodeList ;
+    rdf:value "8446" ;
+    rdfs:comment "Day-trip hydrofoil vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8447> a unece:TransportMeansTypeCodeList ;
+    rdf:value "8447" ;
+    rdfs:comment "Sailing cruise ship" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8448> a unece:TransportMeansTypeCodeList ;
+    rdf:value "8448" ;
+    rdfs:comment "Sailing passenger ship without accommodation" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8451> a unece:TransportMeansTypeCodeList ;
+    rdf:value "8451" ;
+    rdfs:comment "Service vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8452> a unece:TransportMeansTypeCodeList ;
+    rdf:value "8452" ;
+    rdfs:comment "Police patrol vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8453> a unece:TransportMeansTypeCodeList ;
+    rdf:value "8453" ;
+    rdfs:comment "Port service vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8454> a unece:TransportMeansTypeCodeList ;
+    rdf:value "8454" ;
+    rdfs:comment "Navigation surveillance vessel" .
 
 <https://vocabulary.uncefact.org/TransportModeCodeList#0> a unece:TransportModeCodeList ;
     rdf:value "0" ;
@@ -40707,7 +41643,7 @@ unlcdv:subdivisionType a rdf:Property ;
 <https://www.kairosflow.ai/ont/uncefact/code-lists-vendor-extract> a owl:Ontology ;
     rdfs:label "UN/CEFACT code lists (vendor extract)" ;
     dcterms:source unece: ;
-    rdfs:comment "Verbatim extract of standards-body code lists from the UN/CEFACT web vocabulary (UNECE Rec 5, 9, 16, 19, 20, 21 and UNTDED 3035, 8051), retrieved 2026-10-17 from: https://vocabulary.uncefact.org/ (sha256 d8d194408fc2adb774c3e783ef362c19140bae75418f4b82419d1ddc203ad7aa); https://vocabulary.uncefact.org/unlocode-vocab (sha256 245ca42549d4a5a05eb61e62e37d76f6c501d063a0b19e0d563a60ed31c6b19f); https://vocabulary.uncefact.org/unlocode-countries (sha256 86c0ff0cdc14498d77fb2e40b833ff78f79981136bb4912f4aff486ab75a5d39); https://vocabulary.uncefact.org/unlocode-subdivisions (sha256 3b1b474a81de412d845bbd75544ae33a0619b57cbc9064d7e9e9f76dcb801cf9); https://vocabulary.uncefact.org/unlocode-functions (sha256 7a5f556bc3939d95db40ae8f49902b159b1e3c99ead313ef1413983c63e270a0). Verbatim except the literal corrections listed under 'errata' in METADATA.txt. Generated by scripts/download_uncefact_codelists.py; do not hand-edit." ;
+    rdfs:comment "Verbatim extract of standards-body code lists from the UN/CEFACT web vocabulary (UNECE Rec 5, 9, 16, 19, 20, 21, 28 and UNTDED 3035, 8051, 8053), retrieved 2026-10-17 from: https://vocabulary.uncefact.org/ (sha256 d8d194408fc2adb774c3e783ef362c19140bae75418f4b82419d1ddc203ad7aa); https://vocabulary.uncefact.org/unlocode-vocab (sha256 245ca42549d4a5a05eb61e62e37d76f6c501d063a0b19e0d563a60ed31c6b19f); https://vocabulary.uncefact.org/unlocode-countries (sha256 86c0ff0cdc14498d77fb2e40b833ff78f79981136bb4912f4aff486ab75a5d39); https://vocabulary.uncefact.org/unlocode-subdivisions (sha256 3b1b474a81de412d845bbd75544ae33a0619b57cbc9064d7e9e9f76dcb801cf9); https://vocabulary.uncefact.org/unlocode-functions (sha256 7a5f556bc3939d95db40ae8f49902b159b1e3c99ead313ef1413983c63e270a0). Verbatim except the literal corrections listed under 'errata' in METADATA.txt. Generated by scripts/download_uncefact_codelists.py; do not hand-edit." ;
     owl:versionInfo "snapshot 2026-10-17" .
 
 <https://vocabulary.uncefact.org/unlocode-countries#BA> a unlcdv:Country ;

@@ -23,6 +23,8 @@ code_lists:
   - unece:TransportMovementStageCodeList (30 codes) -- Transport stage code qualifier (UNTDED 8051), e.g. 10 pre-carriage, 20 main carriage, 30 on-carriage
   - unece:CurrencyCodeList (179 codes) -- Currency codes (UNTDED 6345): ISO 4217 alphabetic codes, UNECE Recommendation No. 9
   - unece:PartyRoleCodeList (625 codes) -- Party function code qualifier (UNTDED 3035): the UN/CEFACT party roles, e.g. CZ consignor, CN consignee, CA carrier, N1 notify party
+  - unece:TransportEquipmentCategoryCodeList (98 codes) -- Equipment category (UNTDED 8053): e.g. CN container, TE trailer, SM semi-trailer, CH chassis, SW swap body
+  - unece:TransportMeansTypeCodeList (134 codes) -- Types of means of transport (UNECE Rec 28), four-digit codes only; the complete Rev 4.2 list ships in authoritative-ontologies/UNECE-Rec28
   - unlcdv:Country (249 codes) -- ISO 3166-1 alpha-2 country codes, as published with UN/LOCODE (UNECE Recommendation No. 16)
   - unlcdv:Subdivision (4669 codes) -- ISO 3166-2 country subdivision codes, as published with UN/LOCODE (UNECE Recommendation No. 16)
   - unlcdv:Function (11 codes) -- UN/LOCODE function classifiers (UNECE Recommendation No. 16)

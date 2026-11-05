@@ -63,10 +63,15 @@ package:
       uri: "https://www.kairosflow.ai/ont/iso4217#"
       focus: "Current and withdrawn ISO 4217 currency and fund codes, with numeric code and minor unit"
       note: "Authoritative reference data vendored under authoritative-ontologies/ISO4217/ from SIX (gh#128). The currency list hubs bind to; unece:CurrencyCodeList is a lagging secondary copy. Exposed via the OASIS catalog; not bulk-imported."
+    - id: UNECE-Rec28
+      name: "UNECE Rec 28 types of means of transport (Rev 4.2)"
+      uri: "https://www.kairosflow.ai/ont/unece-rec28#"
+      focus: "Vessel, train, road vehicle and aircraft types, hierarchical, each tied to its Rec 19 transport mode"
+      note: "Authoritative reference data built from UNECE's Rev 4.2 code list under authoritative-ontologies/UNECE-Rec28/. The complete list (282 codes); the UN/CEFACT vocabulary carries only the 134 four-digit codes. Exposed via the OASIS catalog; not bulk-imported."
     - id: UNCEFACT
-      name: "UN/CEFACT code lists (UNECE Rec 5, 9, 16, 19, 20, 21)"
+      name: "UN/CEFACT code lists (UNECE Rec 5, 9, 16, 19, 20, 21, 28; UNTDED 3035, 8051, 8053)"
       uri: "https://www.kairosflow.ai/ont/uncefact/code-lists#"
-      focus: "Standards-body code lists: transport modes, units of measure, package types, Incoterms, transport stage, currencies, party roles, countries, subdivisions, UN/LOCODE functions"
+      focus: "Standards-body code lists: transport modes, units of measure, package types, Incoterms, transport stage, currencies, party roles, equipment categories, countries, subdivisions, UN/LOCODE functions"
       note: "Authoritative extract vendored under authoritative-ontologies/UNCEFACT/ (gh#120). Exposed via the OASIS catalog; not bulk-imported into this pack. A hub links its governed code-list class to these members instead of re-ingesting the lists."
 
   excludes:

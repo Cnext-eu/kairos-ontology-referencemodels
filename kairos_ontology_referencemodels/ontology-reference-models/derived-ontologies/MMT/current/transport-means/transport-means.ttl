@@ -15,8 +15,8 @@
     capacity. Based on UN/CEFACT MMT Reference Data Model.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-09-18"^^xsd:date ;
-    owl:versionInfo "2.5.4" ;
+    dcterms:modified "2026-11-05"^^xsd:date ;
+    owl:versionInfo "2.5.5" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
     owl:imports <https://www.kairosflow.ai/ont/mmt/events> ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
@@ -202,13 +202,16 @@
 
 :railVehicleType a owl:DatatypeProperty ;
     rdfs:label "rail vehicle type" ;
-    rdfs:comment "Type of rail vehicle (locomotive, wagon, freight car). UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType rail vehicle type." ;
+    rdfs:comment "Type of rail vehicle (locomotive, wagon, freight car). UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType rail vehicle type. Rail vehicles map to UNTDED 8053 equipment categories (unece:TransportEquipmentCategoryCodeList, authoritative-ontologies/UNCEFACT): wagon / freight car=RR (rail car), flat car=RF, boxcar=BX; a locomotive has no 8053 code. UNECE Rec 28's rail codes (210-2305) type trains, not rail vehicles." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList> ;
     rdfs:domain :RailVehicle ;
     rdfs:range xsd:string .
 
 :roadVehicleType a owl:DatatypeProperty ;
     rdfs:label "road vehicle type" ;
-    rdfs:comment "Vehicle type (truck, trailer, van). UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType road vehicle type." ;
+    rdfs:comment "Vehicle type (truck, trailer, van). UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType road vehicle type. Vehicle types map to UNECE Rec 28 (rec28:TransportMeansTypeCode, authoritative-ontologies/UNECE-Rec28): truck=31, van=34 (light van 342), tractor=33. Rec 28 has no code for a trailer on its own: use UNTDED 8053 (unece:TransportEquipmentCategoryCodeList) TE trailer / SM semi-trailer; a finer trailer typology is client-owned (kind 3) and links to TE/SM with skos:broadMatch." ;
+    rdfs:seeAlso <https://www.kairosflow.ai/ont/unece-rec28#TransportMeansTypeCode> ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList> ;
     rdfs:domain :RoadVehicle ;
     rdfs:range xsd:string .
 

@@ -1,0 +1,24 @@
+UNECE Recommendation 28 - Source Information
+============================================
+
+source: UNECE Recommendation No. 28, Codes for Types of Means of Transport
+publisher: UN/CEFACT, United Nations Economic Commission for Europe
+source_page: https://unece.org/trade/uncefact/cl-recommendations
+source_file: Rec28_Rev4.2e_2018.xls (vendored unchanged; 94208 bytes, sha256 61341eac23ef4bcc535cd769f98fdc9fe26d9c64dda65ef5deac6fd7be34c80b)
+version: Rev 4.2 (2018)
+codes: 282 (20 two-digit, 128 three-digit, 134 four-digit)
+deprecated: 852, 853, 854, 855 (change indicator X: marked for deletion in this revision)
+alignment: 134 four-digit codes linked by skos:exactMatch to unece:TransportMeansTypeCodeList
+ontology_files:
+  - UNECE-Rec28.ttl            (generated; ontology IRI https://www.kairosflow.ai/ont/unece-rec28)
+  - UNECE-Rec28-alignment.ttl  (generated; ontology IRI https://www.kairosflow.ai/ont/unece-rec28/alignment)
+license: UNECE recommendation; same position as authoritative-ontologies/UNCEFACT (CC BY 4.0 per
+  UN/CEFACT, confirmation pending). See README.md, section License.
+generator: scripts/build_unece_rec28.py (uv run --with xlrd ...) -- do not hand-edit.
+deviations:
+  - IRIs are Kairos-minted (https://www.kairosflow.ai/ont/unece-rec28#<code>): the full list is XLS only.
+  - The code is Mode + Code-A + Code-B as printed; skos:broader and rec28:transportMode are derived
+    from those columns.
+  - Sub-codes without a printed Code-A row get no skos:broader: 1711 (no 171 row), 1712 (no 171 row), 4000 (no 400 row), 5000 (no 500 row)
+  - Labels are kept exactly as printed, including an en dash (1515) and non-breaking spaces
+    (e.g. "type N"); the UN/CEFACT vocabulary writes 1515 with a hyphen.
