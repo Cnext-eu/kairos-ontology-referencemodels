@@ -15,8 +15,8 @@
     trailers, and equipment properties. Based on UN/CEFACT MMT Reference Data Model.""" ;
     dcterms:creator "Kairos Ontology Team" ;
     dcterms:created "2026-01-06"^^xsd:date ;
-    dcterms:modified "2026-10-18"^^xsd:date ;
-    owl:versionInfo "2.5.4" ;
+    dcterms:modified "2026-11-05"^^xsd:date ;
+    owl:versionInfo "2.5.5" ;
     dcterms:source "UN/CEFACT Multi-Modal Transport Reference Data Model" ;
     owl:imports <https://www.kairosflow.ai/ont/mmt/events> ;
     rdfs:seeAlso <https://unece.org/trade/uncefact/rdm> .
@@ -396,7 +396,8 @@
 
 :slaveEquipmentType a owl:DatatypeProperty ;
     rdfs:label "slave equipment type" ;
-    rdfs:comment "Type of slave equipment (ROLL_TRAILER, CASSETTE, TRESTLE)." ;
+    rdfs:comment "Type of slave equipment (ROLL_TRAILER, CASSETTE, TRESTLE). No exact UNTDED 8053 code (unece:TransportEquipmentCategoryCodeList, authoritative-ontologies/UNCEFACT): ROLL_TRAILER falls under TE (trailer); CASSETTE and TRESTLE have none, so these values are a client- or system-owned list (kind 3) linked to 8053 with skos:broadMatch where one applies." ;
+    rdfs:seeAlso <https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList> ;
     rdfs:domain :SlaveEquipment ;
     rdfs:range xsd:string .
 

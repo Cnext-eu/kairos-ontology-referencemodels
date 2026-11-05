@@ -3703,6 +3703,716 @@ unece:PartyRoleCodeList a owl:Class ;
 <https://vocabulary.uncefact.org/PartyRoleCodeList#ZZZ> a owl:NamedIndividual ;
     rdfs:label "Mutually defined" .
 
+unece:TransportEquipmentCategoryCodeList a owl:Class ;
+    dcterms:description "Equipment category (UNTDED 8053): e.g. CN container, TE trailer, SM semi-trailer, CH chassis, SW swap body" ;
+    dcterms:source unece: ;
+    rdfs:seeAlso <https://github.com/Cnext-eu/kairos-ontology-referencemodels/blob/main/kairos_ontology_referencemodels/ontology-reference-models/authoritative-ontologies/UNCEFACT/README.md> ;
+    owl:versionInfo "2026-10-17" ;
+    kairos-ext:isReferenceData true .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AA> a owl:NamedIndividual ;
+    rdfs:label "Ground equipment" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AB> a owl:NamedIndividual ;
+    rdfs:label "Chain" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AD> a owl:NamedIndividual ;
+    rdfs:label "Temperature recorder" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AE> a owl:NamedIndividual ;
+    rdfs:label "Body trailer" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AG> a owl:NamedIndividual ;
+    rdfs:label "Slipsheet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AH> a owl:NamedIndividual ;
+    rdfs:label "No special equipment needed" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AI> a owl:NamedIndividual ;
+    rdfs:label "Vessel hold" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AJ> a owl:NamedIndividual ;
+    rdfs:label "Flat rack" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AK> a owl:NamedIndividual ;
+    rdfs:label "Aircraft" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AL> a owl:NamedIndividual ;
+    rdfs:label "Medical device" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AM> a owl:NamedIndividual ;
+    rdfs:label "Refrigerated container" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AN> a owl:NamedIndividual ;
+    rdfs:label "Synthetic pallet 80*120cm" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AO> a owl:NamedIndividual ;
+    rdfs:label "Synthetic pallet 100*120cm" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AP> a owl:NamedIndividual ;
+    rdfs:label "Clothing hanger rack" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AQ> a owl:NamedIndividual ;
+    rdfs:label "Road/rail trailer" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#AT> a owl:NamedIndividual ;
+    rdfs:label "Overhang wagon" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BB> a owl:NamedIndividual ;
+    rdfs:label "Un-containerized cargo (breakbulk)" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BL> a owl:NamedIndividual ;
+    rdfs:label "Blocks" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPN> a owl:NamedIndividual ;
+    rdfs:label "Box pallet non-exchangeable" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPO> a owl:NamedIndividual ;
+    rdfs:label "Truck being transported" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPP> a owl:NamedIndividual ;
+    rdfs:label "Truck and trailer combination being transported" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPQ> a owl:NamedIndividual ;
+    rdfs:label "Tractor and trailer being transported" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPR> a owl:NamedIndividual ;
+    rdfs:label "Postal bag" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPS> a owl:NamedIndividual ;
+    rdfs:label "Letter Tray" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPT> a owl:NamedIndividual ;
+    rdfs:label "Roller Cage" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPU> a owl:NamedIndividual ;
+    rdfs:label "Flats Tray" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPV> a owl:NamedIndividual ;
+    rdfs:label "Out of bag parcel" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPW> a owl:NamedIndividual ;
+    rdfs:label "Wheeled Platform" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPX> a owl:NamedIndividual ;
+    rdfs:label "Container non-compliant with the Customs Convention on Containers" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPY> a owl:NamedIndividual ;
+    rdfs:label "Box pallet EUR Y non exchangeable" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BPZ> a owl:NamedIndividual ;
+    rdfs:label "Roll Pallet 1" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BR> a owl:NamedIndividual ;
+    rdfs:label "Barge" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#BX> a owl:NamedIndividual ;
+    rdfs:label "Boxcar" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#CH> a owl:NamedIndividual ;
+    rdfs:label "Chassis" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#CN> a owl:NamedIndividual ;
+    rdfs:label "Container" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPA> a owl:NamedIndividual ;
+    rdfs:label "Deadlight (panel)" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPB> a owl:NamedIndividual ;
+    rdfs:label "Roll Pallet 2" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPC> a owl:NamedIndividual ;
+    rdfs:label "Container gantry crane" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPD> a owl:NamedIndividual ;
+    rdfs:label "Mobile crane" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPE> a owl:NamedIndividual ;
+    rdfs:label "Floating crane" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPF> a owl:NamedIndividual ;
+    rdfs:label "Ship's equipment crane" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPG> a owl:NamedIndividual ;
+    rdfs:label "Conveyor belt" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPH> a owl:NamedIndividual ;
+    rdfs:label "Forklift" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPI> a owl:NamedIndividual ;
+    rdfs:label "Stacking equipment" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPJ> a owl:NamedIndividual ;
+    rdfs:label "Taillift" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPK> a owl:NamedIndividual ;
+    rdfs:label "Pallet ISO 0 - 1/2 EURO Pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPL> a owl:NamedIndividual ;
+    rdfs:label "On-board equipment" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPM> a owl:NamedIndividual ;
+    rdfs:label "Pallet ISO 1 - 1/1 EURO Pallet (GS1 Temporary Code)" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPN> a owl:NamedIndividual ;
+    rdfs:label "Pallet ISO 2" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#DPO> a owl:NamedIndividual ;
+    rdfs:label "1/4 EURO Pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFP> a owl:NamedIndividual ;
+    rdfs:label "Exchangeable EUR flat pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFQ> a owl:NamedIndividual ;
+    rdfs:label "1/8 EURO Pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFR> a owl:NamedIndividual ;
+    rdfs:label "Wholesaler pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFS> a owl:NamedIndividual ;
+    rdfs:label "Pallet 80 X 100 cm" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFT> a owl:NamedIndividual ;
+    rdfs:label "Pallet 60 X 100 cm" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFU> a owl:NamedIndividual ;
+    rdfs:label "Oneway pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFV> a owl:NamedIndividual ;
+    rdfs:label "Returnable pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFW> a owl:NamedIndividual ;
+    rdfs:label "Bottlecrate" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFX> a owl:NamedIndividual ;
+    rdfs:label "Bottle, non-protected, cylindrical" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFY> a owl:NamedIndividual ;
+    rdfs:label "Box" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EFZ> a owl:NamedIndividual ;
+    rdfs:label "CHEP Eurobox" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EGA> a owl:NamedIndividual ;
+    rdfs:label "Case" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EGB> a owl:NamedIndividual ;
+    rdfs:label "Display package" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EGC> a owl:NamedIndividual ;
+    rdfs:label "Isothermic case" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EGD> a owl:NamedIndividual ;
+    rdfs:label "Pallet modular collars 80*100" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EGE> a owl:NamedIndividual ;
+    rdfs:label "Pallet modular collars 80*120" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EGF> a owl:NamedIndividual ;
+    rdfs:label "Tray" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EGG> a owl:NamedIndividual ;
+    rdfs:label "Roll cage" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EGH> a owl:NamedIndividual ;
+    rdfs:label "Trolley" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EGI> a owl:NamedIndividual ;
+    rdfs:label "Landside power generator" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#EYP> a owl:NamedIndividual ;
+    rdfs:label "Exchangeable EUR Y box pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#FPN> a owl:NamedIndividual ;
+    rdfs:label "Flat pallet EUR non exchangeable" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#FPR> a owl:NamedIndividual ;
+    rdfs:label "Flat pallet (railway property) non-exchangeable" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#IL> a owl:NamedIndividual ;
+    rdfs:label "Lidded stackable rigid tray (CEN TS 14482:2002)" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#LAR> a owl:NamedIndividual ;
+    rdfs:label "Lashing rope" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#LU> a owl:NamedIndividual ;
+    rdfs:label "Load/unload device on equipment" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#MPA> a owl:NamedIndividual ;
+    rdfs:label "Movable panel" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#PA> a owl:NamedIndividual ;
+    rdfs:label "Pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#PBP> a owl:NamedIndividual ;
+    rdfs:label "Identified private box pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#PFP> a owl:NamedIndividual ;
+    rdfs:label "Identified private flat pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#PL> a owl:NamedIndividual ;
+    rdfs:label "Platform" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#PPA> a owl:NamedIndividual ;
+    rdfs:label "Protecting panel" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#PST> a owl:NamedIndividual ;
+    rdfs:label "Portable stove" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#RF> a owl:NamedIndividual ;
+    rdfs:label "Flat car" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#RG> a owl:NamedIndividual ;
+    rdfs:label "Reefer generator" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#RGF> a owl:NamedIndividual ;
+    rdfs:label "Ground facility" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#RO> a owl:NamedIndividual ;
+    rdfs:label "Rope" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#RR> a owl:NamedIndividual ;
+    rdfs:label "Rail car" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#SM> a owl:NamedIndividual ;
+    rdfs:label "Semi-trailer" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#SPP> a owl:NamedIndividual ;
+    rdfs:label "Identified special pallet" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#STR> a owl:NamedIndividual ;
+    rdfs:label "Strap" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#SW> a owl:NamedIndividual ;
+    rdfs:label "Swap body" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#TE> a owl:NamedIndividual ;
+    rdfs:label "Trailer" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#TN> a owl:NamedIndividual ;
+    rdfs:label "Tank" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#TP> a owl:NamedIndividual ;
+    rdfs:label "Tarpaulin" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#TS> a owl:NamedIndividual ;
+    rdfs:label "Tackles" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#TSU> a owl:NamedIndividual ;
+    rdfs:label "Tarpaulin support" .
+
+<https://vocabulary.uncefact.org/TransportEquipmentCategoryCodeList#UL> a owl:NamedIndividual ;
+    rdfs:label "ULD (Unit load device)" .
+
+unece:TransportMeansTypeCodeList a owl:Class ;
+    dcterms:description "Types of means of transport (UNECE Rec 28), four-digit codes only; the complete Rev 4.2 list ships in authoritative-ontologies/UNECE-Rec28" ;
+    dcterms:source unece: ;
+    rdfs:seeAlso <https://github.com/Cnext-eu/kairos-ontology-referencemodels/blob/main/kairos_ontology_referencemodels/ontology-reference-models/authoritative-ontologies/UNCEFACT/README.md> ;
+    owl:versionInfo "2026-10-17" ;
+    kairos-ext:isReferenceData true .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1501> a owl:NamedIndividual ;
+    rdfs:label "Grain vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1502> a owl:NamedIndividual ;
+    rdfs:label "Timber/log carrier" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1503> a owl:NamedIndividual ;
+    rdfs:label "Wood chips vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1504> a owl:NamedIndividual ;
+    rdfs:label "Steel products vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1505> a owl:NamedIndividual ;
+    rdfs:label "Carrier, general cargo/container" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1506> a owl:NamedIndividual ;
+    rdfs:label "Temperature controlled cargo vessels" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1511> a owl:NamedIndividual ;
+    rdfs:label "Full container ship/cellular vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1512> a owl:NamedIndividual ;
+    rdfs:label "RoRo vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1513> a owl:NamedIndividual ;
+    rdfs:label "Car carrier" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1514> a owl:NamedIndividual ;
+    rdfs:label "Livestock carrier" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1515> a owl:NamedIndividual ;
+    rdfs:label "Barge carrier - Lash ship" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1516> a owl:NamedIndividual ;
+    rdfs:label "Chemical carrier" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1517> a owl:NamedIndividual ;
+    rdfs:label "Irradiated fuel carrier" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1518> a owl:NamedIndividual ;
+    rdfs:label "Heavy cargo vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1519> a owl:NamedIndividual ;
+    rdfs:label "RoRo/Container vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1521> a owl:NamedIndividual ;
+    rdfs:label "Dry bulk carrier" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1522> a owl:NamedIndividual ;
+    rdfs:label "Ore carrier" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1523> a owl:NamedIndividual ;
+    rdfs:label "Cement carrier" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1524> a owl:NamedIndividual ;
+    rdfs:label "Gravel carrier" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1525> a owl:NamedIndividual ;
+    rdfs:label "Coal carrier" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1531> a owl:NamedIndividual ;
+    rdfs:label "Crude oil tanker" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1532> a owl:NamedIndividual ;
+    rdfs:label "Chemical tanker, coaster" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1533> a owl:NamedIndividual ;
+    rdfs:label "Chemical tanker, deep sea" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1534> a owl:NamedIndividual ;
+    rdfs:label "Oil and other derivatives tanker" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1541> a owl:NamedIndividual ;
+    rdfs:label "LPG tanker" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1542> a owl:NamedIndividual ;
+    rdfs:label "LNG tanker" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1543> a owl:NamedIndividual ;
+    rdfs:label "LNG/LPG tanker" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1551> a owl:NamedIndividual ;
+    rdfs:label "Asphalt/bitumen tanker" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1552> a owl:NamedIndividual ;
+    rdfs:label "Molasses tanker" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1553> a owl:NamedIndividual ;
+    rdfs:label "Vegetable oil tanker" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1591> a owl:NamedIndividual ;
+    rdfs:label "Cruise ship" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1592> a owl:NamedIndividual ;
+    rdfs:label "Ferry" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1593> a owl:NamedIndividual ;
+    rdfs:label "Other passenger ship" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1594> a owl:NamedIndividual ;
+    rdfs:label "Passenger ship, sailing" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1601> a owl:NamedIndividual ;
+    rdfs:label "Tug, without tow" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1602> a owl:NamedIndividual ;
+    rdfs:label "Tug, with tow" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1603> a owl:NamedIndividual ;
+    rdfs:label "Salvage vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1604> a owl:NamedIndividual ;
+    rdfs:label "Rescue vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1605> a owl:NamedIndividual ;
+    rdfs:label "Oil combat vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1606> a owl:NamedIndividual ;
+    rdfs:label "Oil rig" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1607> a owl:NamedIndividual ;
+    rdfs:label "Hospital vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1711> a owl:NamedIndividual ;
+    rdfs:label "Pilot boat" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1712> a owl:NamedIndividual ;
+    rdfs:label "Patrol/measure ship" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1721> a owl:NamedIndividual ;
+    rdfs:label "Supply vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1723> a owl:NamedIndividual ;
+    rdfs:label "Offshore support vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1724> a owl:NamedIndividual ;
+    rdfs:label "Pontoon" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1725> a owl:NamedIndividual ;
+    rdfs:label "Stone dumping vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1726> a owl:NamedIndividual ;
+    rdfs:label "Cable layer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1727> a owl:NamedIndividual ;
+    rdfs:label "Buoyage vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1728> a owl:NamedIndividual ;
+    rdfs:label "Icebreaker" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1729> a owl:NamedIndividual ;
+    rdfs:label "Pipelaying vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1751> a owl:NamedIndividual ;
+    rdfs:label "Trawler" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1752> a owl:NamedIndividual ;
+    rdfs:label "Cutter" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1753> a owl:NamedIndividual ;
+    rdfs:label "Factory ship" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1761> a owl:NamedIndividual ;
+    rdfs:label "Fishery research vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1762> a owl:NamedIndividual ;
+    rdfs:label "Climate registration vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1763> a owl:NamedIndividual ;
+    rdfs:label "Ship for environmental measurement" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1764> a owl:NamedIndividual ;
+    rdfs:label "Scientific vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1765> a owl:NamedIndividual ;
+    rdfs:label "Sailing school ship" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1766> a owl:NamedIndividual ;
+    rdfs:label "Training vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1781> a owl:NamedIndividual ;
+    rdfs:label "Crane, floating" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1782> a owl:NamedIndividual ;
+    rdfs:label "Dock, floating" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2201> a owl:NamedIndividual ;
+    rdfs:label "Train, super express" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2202> a owl:NamedIndividual ;
+    rdfs:label "Train, sleeper" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2203> a owl:NamedIndividual ;
+    rdfs:label "Train, passenger, hired group" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2301> a owl:NamedIndividual ;
+    rdfs:label "Blocktrain" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2302> a owl:NamedIndividual ;
+    rdfs:label "Train, container" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2303> a owl:NamedIndividual ;
+    rdfs:label "Train, with one wagon" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2304> a owl:NamedIndividual ;
+    rdfs:label "Train, with more than one and less than 20 wagons" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2305> a owl:NamedIndividual ;
+    rdfs:label "Train, with more than 20 wagons" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3100> a owl:NamedIndividual ;
+    rdfs:label "Truck, tautliner with removal trailer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3101> a owl:NamedIndividual ;
+    rdfs:label "Truck, tautliner with removable roof and removal trailer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3102> a owl:NamedIndividual ;
+    rdfs:label "Car, with caravan" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3103> a owl:NamedIndividual ;
+    rdfs:label "Truck, tautliner, 25 tonne" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3104> a owl:NamedIndividual ;
+    rdfs:label "Truck, tautliner, 25 tonne with removable roof" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3105> a owl:NamedIndividual ;
+    rdfs:label "Lorry, articulated, flat bed, 25 tonne" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3106> a owl:NamedIndividual ;
+    rdfs:label "Lorry, articulated, flat bed, 24 tonne, with 10 metre crane" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3107> a owl:NamedIndividual ;
+    rdfs:label "Lorry, articulated, flat bed, 24 tonne, with 15 metre crane" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3108> a owl:NamedIndividual ;
+    rdfs:label "Lorry, articulated, flat bed, 24 tonne, with 18 metre crane" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3109> a owl:NamedIndividual ;
+    rdfs:label "Lorry, articulated, flat bed, 10 tonne" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3110> a owl:NamedIndividual ;
+    rdfs:label "Truck, tautliner, 25 tonne, with 90 cubic metre trailer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3111> a owl:NamedIndividual ;
+    rdfs:label "Truck, tautliner, 25 tonne, with 120 cubic metre trailer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3112> a owl:NamedIndividual ;
+    rdfs:label "Lorry, flat with trailer and 10 metre crane" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3113> a owl:NamedIndividual ;
+    rdfs:label "Lorry, articulated with tank" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3114> a owl:NamedIndividual ;
+    rdfs:label "Lorry, flat, 15 tonne" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3115> a owl:NamedIndividual ;
+    rdfs:label "Lorry, flat, 15 tonne with crane" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3116> a owl:NamedIndividual ;
+    rdfs:label "Truck, isothermic" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3117> a owl:NamedIndividual ;
+    rdfs:label "Truck, refrigerated" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3118> a owl:NamedIndividual ;
+    rdfs:label "Van, freezer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3119> a owl:NamedIndividual ;
+    rdfs:label "Van, isothermic" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3120> a owl:NamedIndividual ;
+    rdfs:label "Van, refrigerated" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3121> a owl:NamedIndividual ;
+    rdfs:label "Truck, bulk" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3122> a owl:NamedIndividual ;
+    rdfs:label "Truck, tip-up" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3123> a owl:NamedIndividual ;
+    rdfs:label "Truck, articulated, tip-up" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3124> a owl:NamedIndividual ;
+    rdfs:label "Truck, rigid, with tank" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3125> a owl:NamedIndividual ;
+    rdfs:label "Truck, tautliner" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3126> a owl:NamedIndividual ;
+    rdfs:label "Truck, tautliner, with removable roof" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3127> a owl:NamedIndividual ;
+    rdfs:label "Truck, with opening floor" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3128> a owl:NamedIndividual ;
+    rdfs:label "Truck, freezer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3129> a owl:NamedIndividual ;
+    rdfs:label "Truck, with crane for moving goods, without trailer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3130> a owl:NamedIndividual ;
+    rdfs:label "Truck, with crane for moving goods, with trailer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3131> a owl:NamedIndividual ;
+    rdfs:label "Truck, with crane for lifting goods, without trailer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3132> a owl:NamedIndividual ;
+    rdfs:label "Truck, with crane for lifting goods, with trailer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3133> a owl:NamedIndividual ;
+    rdfs:label "Taxi cab" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3134> a owl:NamedIndividual ;
+    rdfs:label "Truck, furniture" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3135> a owl:NamedIndividual ;
+    rdfs:label "Truck, hydrant" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3136> a owl:NamedIndividual ;
+    rdfs:label "Car" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3137> a owl:NamedIndividual ;
+    rdfs:label "Truck, with tail-lift" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3138> a owl:NamedIndividual ;
+    rdfs:label "Armoured vehicle" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3201> a owl:NamedIndividual ;
+    rdfs:label "Car, elevator" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3301> a owl:NamedIndividual ;
+    rdfs:label "Bus, with trailer" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3302> a owl:NamedIndividual ;
+    rdfs:label "Bus, highway" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3303> a owl:NamedIndividual ;
+    rdfs:label "Bus, sightseeing" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3304> a owl:NamedIndividual ;
+    rdfs:label "Bus, airport/city" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#4000> a owl:NamedIndividual ;
+    rdfs:label "Aircraft, type unknown" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#5000> a owl:NamedIndividual ;
+    rdfs:label "Mail, type unknown" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8021> a owl:NamedIndividual ;
+    rdfs:label "Motor tanker, liquid cargo, type N" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8022> a owl:NamedIndividual ;
+    rdfs:label "Motor tanker, liquid cargo, type C" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8023> a owl:NamedIndividual ;
+    rdfs:label "Motor tanker, dry cargo" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8161> a owl:NamedIndividual ;
+    rdfs:label "Tank barge, liquid cargo, type N" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8162> a owl:NamedIndividual ;
+    rdfs:label "Tank barge, liquid cargo, type C" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8163> a owl:NamedIndividual ;
+    rdfs:label "Tank barge, dry cargo" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8441> a owl:NamedIndividual ;
+    rdfs:label "Ferry" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8442> a owl:NamedIndividual ;
+    rdfs:label "Red cross ship" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8443> a owl:NamedIndividual ;
+    rdfs:label "Cruise ship" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8444> a owl:NamedIndividual ;
+    rdfs:label "Passenger ship without accommodation" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8445> a owl:NamedIndividual ;
+    rdfs:label "Day-trip high speed vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8446> a owl:NamedIndividual ;
+    rdfs:label "Day-trip hydrofoil vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8447> a owl:NamedIndividual ;
+    rdfs:label "Sailing cruise ship" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8448> a owl:NamedIndividual ;
+    rdfs:label "Sailing passenger ship without accommodation" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8451> a owl:NamedIndividual ;
+    rdfs:label "Service vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8452> a owl:NamedIndividual ;
+    rdfs:label "Police patrol vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8453> a owl:NamedIndividual ;
+    rdfs:label "Port service vessel" .
+
+<https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8454> a owl:NamedIndividual ;
+    rdfs:label "Navigation surveillance vessel" .
+
 unece:TransportModeCodeList a owl:Class ;
     dcterms:description "UNECE Recommendation No. 19 (Codes for Modes of Transport)" ;
     dcterms:source unece: ;

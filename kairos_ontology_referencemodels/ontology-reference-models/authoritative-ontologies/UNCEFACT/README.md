@@ -30,6 +30,8 @@ unchanged and keeps its `https://vocabulary.uncefact.org/` IRI.
 | `unece:DeliveryTermsCodeList` | Delivery terms (UNTDED 4053): the 11 ICC Incoterms 2020 abbreviations (Rec 5) + 2 generic codes | 13 | `/` (BSP) |
 | `unece:TransportMovementStageCodeList` | Transport stage (UNTDED 8051): 10 pre-carriage, 20 main carriage, 30 on-carriage, … | 30 | `/` (BSP) |
 | `unece:CurrencyCodeList` | Currency codes (UNTDED 6345): ISO 4217, Rec 9. **Secondary:** lags ISO; bind `iso4217:CurrencyCode` (`authoritative-ontologies/ISO4217/`) instead | 179 | `/` (BSP) |
+| `unece:TransportEquipmentCategoryCodeList` | Equipment category (UNTDED 8053): CN container, TE trailer, SM semi-trailer, CH chassis, SW swap body, RR rail car, … | 98 | `/` (BSP) |
+| `unece:TransportMeansTypeCodeList` | Rec 28 types of means of transport, **four-digit codes only. Secondary:** bind `rec28:TransportMeansTypeCode` (`authoritative-ontologies/UNECE-Rec28/`, all 282 codes) instead | 134 | `/` (BSP) |
 | `unece:PartyRoleCodeList` | Party roles (UNTDED 3035): CZ consignor, CN consignee, CA carrier, N1 notify party, … | 625 | `/` (BSP) |
 | `unlcdv:Country` | ISO 3166-1 alpha-2 countries, as published with UN/LOCODE (Rec 16) | 249 | `/unlocode-countries` |
 | `unlcdv:Subdivision` | ISO 3166-2 subdivisions, as published with UN/LOCODE (Rec 16) | 4,669 | `/unlocode-subdivisions` |

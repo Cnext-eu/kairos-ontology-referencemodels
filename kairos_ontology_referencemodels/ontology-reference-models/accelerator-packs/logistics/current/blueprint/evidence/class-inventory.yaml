@@ -756,7 +756,10 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/bsp/commercial#equipmentSizeType
 - comments:
-  - 'Type of transport equipment (CONTAINER, PALLET, FLAT_RACK, TANK, OPEN_TOP). UN/CEFACT CCL D23B: LogisticsTransportEquipment.typeCode.'
+  - 'Type of transport equipment (CONTAINER, PALLET, FLAT_RACK, TANK, OPEN_TOP). UN/CEFACT CCL D23B: LogisticsTransportEquipment.typeCode.
+    Maps to UNTDED 8053 equipment categories (unece:TransportEquipmentCategoryCodeList, authoritative-ontologies/UNCEFACT):
+    CONTAINER=CN, PALLET=PA, FLAT_RACK=AJ, TANK=TN. OPEN_TOP is an ISO 6346 container type with no 8053
+    code of its own (category CN); ISO 6346 is not shipped (kind 3, blueprints/patterns/governed-code-list).'
   domains:
   - https://www.kairosflow.ai/ont/bsp/commercial#TransportEquipment
   kind: datatype_property
@@ -9388,7 +9391,10 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/dcsa/demurrage-detention#disputeStatus
 - comments:
-  - ISO equipment type code (e.g., 22G1 for 20ft dry, 45G1 for 40ft HC).
+  - ISO equipment type code (e.g., 22G1 for 20ft dry, 45G1 for 40ft HC). ISO 6346 size/type codes are
+    not shipped (neither ISO nor BIC publishes a free-reuse statement), so the governed equipment-type
+    list is client- or system-owned (kind 3, blueprints/patterns/governed-code-list) and carries this
+    code as an attribute of each row.
   domains:
   - https://www.kairosflow.ai/ont/dcsa/demurrage-detention#DemurrageDetentionTariff
   kind: datatype_property
@@ -22333,7 +22339,10 @@ records:
   superclasses: []
   uri: https://www.kairosflow.ai/ont/mmt/equipment#sealType
 - comments:
-  - Type of slave equipment (ROLL_TRAILER, CASSETTE, TRESTLE).
+  - 'Type of slave equipment (ROLL_TRAILER, CASSETTE, TRESTLE). No exact UNTDED 8053 code (unece:TransportEquipmentCategoryCodeList,
+    authoritative-ontologies/UNCEFACT): ROLL_TRAILER falls under TE (trailer); CASSETTE and TRESTLE have
+    none, so these values are a client- or system-owned list (kind 3) linked to 8053 with skos:broadMatch
+    where one applies.'
   domains:
   - https://www.kairosflow.ai/ont/mmt/equipment#SlaveEquipment
   kind: datatype_property
@@ -24897,7 +24906,9 @@ records:
   uri: https://www.kairosflow.ai/ont/mmt/transport-means#motRegistration
 - comments:
   - 'Type of rail vehicle (locomotive, wagon, freight car). UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType
-    rail vehicle type.'
+    rail vehicle type. Rail vehicles map to UNTDED 8053 equipment categories (unece:TransportEquipmentCategoryCodeList,
+    authoritative-ontologies/UNCEFACT): wagon / freight car=RR (rail car), flat car=RF, boxcar=BX; a locomotive
+    has no 8053 code. UNECE Rec 28''s rail codes (210-2305) type trains, not rail vehicles.'
   domains:
   - https://www.kairosflow.ai/ont/mmt/transport-means#RailVehicle
   kind: datatype_property
@@ -24926,7 +24937,10 @@ records:
   uri: https://www.kairosflow.ai/ont/mmt/transport-means#railwayCompany
 - comments:
   - 'Vehicle type (truck, trailer, van). UN/CEFACT MMT-RDM: LogisticsMeansOfTransportType road vehicle
-    type.'
+    type. Vehicle types map to UNECE Rec 28 (rec28:TransportMeansTypeCode, authoritative-ontologies/UNECE-Rec28):
+    truck=31, van=34 (light van 342), tractor=33. Rec 28 has no code for a trailer on its own: use UNTDED
+    8053 (unece:TransportEquipmentCategoryCodeList) TE trailer / SM semi-trailer; a finer trailer typology
+    is client-owned (kind 3) and links to TE/SM with skos:broadMatch.'
   domains:
   - https://www.kairosflow.ai/ont/mmt/transport-means#RoadVehicle
   kind: datatype_property

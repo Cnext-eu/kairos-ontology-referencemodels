@@ -1,0 +1,277 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rec28: <https://www.kairosflow.ai/ont/unece-rec28#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+rec28:1501 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1501> .
+
+rec28:1502 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1502> .
+
+rec28:1503 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1503> .
+
+rec28:1504 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1504> .
+
+rec28:1505 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1505> .
+
+rec28:1506 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1506> .
+
+rec28:1511 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1511> .
+
+rec28:1512 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1512> .
+
+rec28:1513 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1513> .
+
+rec28:1514 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1514> .
+
+rec28:1515 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1515> .
+
+rec28:1516 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1516> .
+
+rec28:1517 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1517> .
+
+rec28:1518 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1518> .
+
+rec28:1519 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1519> .
+
+rec28:1521 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1521> .
+
+rec28:1522 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1522> .
+
+rec28:1523 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1523> .
+
+rec28:1524 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1524> .
+
+rec28:1525 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1525> .
+
+rec28:1531 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1531> .
+
+rec28:1532 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1532> .
+
+rec28:1533 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1533> .
+
+rec28:1534 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1534> .
+
+rec28:1541 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1541> .
+
+rec28:1542 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1542> .
+
+rec28:1543 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1543> .
+
+rec28:1551 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1551> .
+
+rec28:1552 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1552> .
+
+rec28:1553 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1553> .
+
+rec28:1591 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1591> .
+
+rec28:1592 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1592> .
+
+rec28:1593 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1593> .
+
+rec28:1594 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1594> .
+
+rec28:1601 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1601> .
+
+rec28:1602 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1602> .
+
+rec28:1603 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1603> .
+
+rec28:1604 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1604> .
+
+rec28:1605 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1605> .
+
+rec28:1606 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1606> .
+
+rec28:1607 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1607> .
+
+rec28:1711 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1711> .
+
+rec28:1712 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1712> .
+
+rec28:1721 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1721> .
+
+rec28:1723 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1723> .
+
+rec28:1724 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1724> .
+
+rec28:1725 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1725> .
+
+rec28:1726 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1726> .
+
+rec28:1727 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1727> .
+
+rec28:1728 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1728> .
+
+rec28:1729 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1729> .
+
+rec28:1751 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1751> .
+
+rec28:1752 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1752> .
+
+rec28:1753 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1753> .
+
+rec28:1761 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1761> .
+
+rec28:1762 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1762> .
+
+rec28:1763 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1763> .
+
+rec28:1764 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1764> .
+
+rec28:1765 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1765> .
+
+rec28:1766 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1766> .
+
+rec28:1781 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1781> .
+
+rec28:1782 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#1782> .
+
+rec28:2201 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2201> .
+
+rec28:2202 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2202> .
+
+rec28:2203 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2203> .
+
+rec28:2301 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2301> .
+
+rec28:2302 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2302> .
+
+rec28:2303 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2303> .
+
+rec28:2304 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2304> .
+
+rec28:2305 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#2305> .
+
+rec28:3100 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3100> .
+
+rec28:3101 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3101> .
+
+rec28:3102 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3102> .
+
+rec28:3103 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3103> .
+
+rec28:3104 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3104> .
+
+rec28:3105 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3105> .
+
+rec28:3106 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3106> .
+
+rec28:3107 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3107> .
+
+rec28:3108 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3108> .
+
+rec28:3109 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3109> .
+
+rec28:3110 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3110> .
+
+rec28:3111 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3111> .
+
+rec28:3112 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3112> .
+
+rec28:3113 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3113> .
+
+rec28:3114 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3114> .
+
+rec28:3115 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3115> .
+
+rec28:3116 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3116> .
+
+rec28:3117 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3117> .
+
+rec28:3118 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3118> .
+
+rec28:3119 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3119> .
+
+rec28:3120 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3120> .
+
+rec28:3121 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3121> .
+
+rec28:3122 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3122> .
+
+rec28:3123 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3123> .
+
+rec28:3124 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3124> .
+
+rec28:3125 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3125> .
+
+rec28:3126 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3126> .
+
+rec28:3127 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3127> .
+
+rec28:3128 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3128> .
+
+rec28:3129 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3129> .
+
+rec28:3130 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3130> .
+
+rec28:3131 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3131> .
+
+rec28:3132 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3132> .
+
+rec28:3133 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3133> .
+
+rec28:3134 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3134> .
+
+rec28:3135 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3135> .
+
+rec28:3136 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3136> .
+
+rec28:3137 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3137> .
+
+rec28:3138 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3138> .
+
+rec28:3201 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3201> .
+
+rec28:3301 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3301> .
+
+rec28:3302 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3302> .
+
+rec28:3303 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3303> .
+
+rec28:3304 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#3304> .
+
+rec28:4000 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#4000> .
+
+rec28:5000 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#5000> .
+
+rec28:8021 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8021> .
+
+rec28:8022 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8022> .
+
+rec28:8023 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8023> .
+
+rec28:8161 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8161> .
+
+rec28:8162 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8162> .
+
+rec28:8163 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8163> .
+
+rec28:8441 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8441> .
+
+rec28:8442 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8442> .
+
+rec28:8443 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8443> .
+
+rec28:8444 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8444> .
+
+rec28:8445 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8445> .
+
+rec28:8446 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8446> .
+
+rec28:8447 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8447> .
+
+rec28:8448 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8448> .
+
+rec28:8451 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8451> .
+
+rec28:8452 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8452> .
+
+rec28:8453 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8453> .
+
+rec28:8454 skos:exactMatch <https://vocabulary.uncefact.org/TransportMeansTypeCodeList#8454> .
+
+<https://www.kairosflow.ai/ont/unece-rec28/alignment> a owl:Ontology ;
+    rdfs:label "UNECE Rec 28 to UN/CEFACT vocabulary alignment" ;
+    rdfs:comment "skos:exactMatch from each of the 134 four-digit Rec 28 codes to the same code in unece:TransportMeansTypeCodeList, which carries only those. Generated by scripts/build_unece_rec28.py; do not hand-edit." .
+

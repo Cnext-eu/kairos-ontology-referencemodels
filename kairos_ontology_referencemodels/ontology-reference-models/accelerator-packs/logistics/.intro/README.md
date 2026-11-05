@@ -17,9 +17,9 @@ This folder contains a business-and-architecture oriented documentation set for 
 | Component | Version |
 |---|---|
 | Kairos Logistics Accelerator Pack | 1.10.1 |
-| DCSA | 1.6.4 |
-| MMT | 2.5.4 |
-| BSP | 2.5.4 |
+| DCSA | 1.6.5 |
+| MMT | 2.5.5 |
+| BSP | 2.5.5 |
 | TIC | 1.6.2 |
 | IMO | 1.4.2 |
 | WCO | 1.4.2 |
@@ -28,6 +28,7 @@ This folder contains a business-and-architecture oriented documentation set for 
 | RAIL | 1.1.0 |
 | IATA | 3.3.0 RC1 (2026-08 standard) |
 | ISO4217 | 2026-09-17 (list one publication date) |
+| UNECE-Rec28 | Rev 4.2 (2018) |
 | UNCEFACT | 2026-10-17 (snapshot date; upstream publishes no version) |
 <!-- END GENERATED: versions -->
 

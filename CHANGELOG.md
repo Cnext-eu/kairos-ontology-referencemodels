@@ -5,6 +5,51 @@ All notable changes to the Kairos Reference Models will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.43.0] - 2026-11-05
+
+### Added
+
+- **UNECE Recommendation 28, complete (Rev 4.2, 2018).** `authoritative-ontologies/UNECE-Rec28/`
+  is built by `scripts/build_unece_rec28.py` from UNECE's official XLS code list, which is
+  vendored unchanged next to the generated Turtle.
+  - **282 `rec28:TransportMeansTypeCode` members**, each code being Mode + Code-A + Code-B.
+    This includes the generic road codes the UN/CEFACT vocabulary lacks (31 Truck,
+    33 Tractor, 34 Van, 342 Van, light).
+  - **Hierarchy:** `skos:broader` runs from a sub-type to its type (342 → 34). Four
+    sub-codes have no printed parent and get none: 1711, 1712, 4000, 5000.
+  - **Mode:** `rec28:transportMode` links each code to the Rec 19 mode its first digit
+    stands for.
+  - **Change indicator:** recorded as `rec28:changeIndicator`. The four codes marked for
+    deletion (852–855) are `owl:deprecated`.
+  - **Alignment:** `UNECE-Rec28-alignment.ttl` links the 134 four-digit codes by
+    `skos:exactMatch` to the vocabulary's copy. The build fails if the two ever disagree.
+  - **Refresh:** none scheduled; the module is rebuilt per new UNECE revision
+    (`uv run --with xlrd ...`).
+- **Two more lists in the UN/CEFACT extract:**
+  - `unece:TransportEquipmentCategoryCodeList` (UNTDED 8053, 98 codes: CN container,
+    TE trailer, SM semi-trailer, CH chassis, SW swap body, RR rail car, …);
+  - `unece:TransportMeansTypeCodeList` (Rec 28, the 134 four-digit codes only; secondary to
+    the Rec 28 module).
+- Model sheet `unece-rec28-means-of-transport.md`. Tests for the Rec 28 count, hierarchy,
+  modes, deprecations and alignment, and for the two new extract classes.
+
+### Changed
+
+- **Equipment and vehicle type fields point at the new lists:**
+  - BSP `commercial:equipmentType` → 8053: CONTAINER=CN, PALLET=PA, FLAT_RACK=AJ, TANK=TN.
+    OPEN_TOP is an ISO 6346 type.
+  - MMT `transport-means:roadVehicleType` → Rec 28 (truck=31, van=34, tractor=33) and 8053
+    TE/SM for trailers, which Rec 28 does not code.
+  - MMT `transport-means:railVehicleType` → 8053 (wagon=RR, flat car=RF, boxcar=BX).
+    Rec 28's rail codes type trains, not vehicles.
+  - MMT `equipment:slaveEquipmentType` → 8053 (ROLL_TRAILER under TE; CASSETTE and TRESTLE
+    have no code).
+  - DCSA `demurrage-detention:equipmentType` gets the ISO 6346 kind-3 note it missed in 1.41.0.
+- **Pattern and docs.** The `governed-code-list` table names `rec28:TransportMeansTypeCode`
+  as the means-of-transport list. Trailer typologies are kind 3, linked to 8053 TE/SM by
+  `skos:broadMatch`.
+- Module versions: BSP 2.5.5, DCSA 1.6.5, MMT 2.5.5. Previous versions are archived.
+
 ## [1.42.1] - 2026-10-18
 
 ### Changed

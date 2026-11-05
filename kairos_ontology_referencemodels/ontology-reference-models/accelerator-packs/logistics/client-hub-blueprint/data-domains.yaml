@@ -597,9 +597,16 @@ groups:
               Vendored under authoritative-ontologies/ISO4217/ from SIX, the ISO 4217
               maintenance agency (gh#128). The currency list to bind; the UN/CEFACT copy
               lags ISO and is linked by skos:exactMatch.
+          - uri: "https://www.kairosflow.ai/ont/unece-rec28#"
+            module: "UNECE Rec 28 / Types of Means of Transport"
+            provides: "Vessel, train, road vehicle and aircraft type codes (Rev 4.2), hierarchical, tied to Rec 19 modes"
+            import_policy: reference-only
+            note: >
+              Built from UNECE's Rev 4.2 code list under authoritative-ontologies/UNECE-Rec28/.
+              The complete list; the UN/CEFACT vocabulary copy has only the four-digit codes.
           - uri: "https://www.kairosflow.ai/ont/uncefact/code-lists#"
             module: "UN/CEFACT / Code Lists"
-            provides: "UNECE Rec 19 transport modes, Rec 20 units of measure, Rec 21 package types, Rec 5 Incoterms (delivery terms), transport stage, ISO 4217 currencies, UNTDED 3035 party roles, ISO 3166-1 countries and 3166-2 subdivisions, UN/LOCODE function classifiers"
+            provides: "UNECE Rec 19 transport modes, Rec 20 units of measure, Rec 21 package types, Rec 5 Incoterms (delivery terms), transport stage, ISO 4217 currencies, UNTDED 3035 party roles, UNTDED 8053 equipment categories, ISO 3166-1 countries and 3166-2 subdivisions, UN/LOCODE function classifiers"
             import_policy: reference-only
             note: >
               Vendored under authoritative-ontologies/UNCEFACT/ and resolved through the
@@ -624,7 +631,7 @@ groups:
           - "UN/LOCODE"
           - "ISO code lists"
           - "UN/CEFACT CCL"
-          - "UNECE Rec 5 / 9 / 16 / 19 / 20 / 21"
+          - "UNECE Rec 5 / 9 / 16 / 19 / 20 / 21 / 28"
           - "ISO 4217 (SIX)"
 
   - id: master-data-management
